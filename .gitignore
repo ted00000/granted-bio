@@ -4,3 +4,7 @@
    __pycache__/
    *.pyc
    .vscode/settings.json
+
+# Data files - keep CSVs out of git
+/data/*.csv
+/data/**/*.csv
