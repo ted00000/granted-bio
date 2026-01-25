@@ -1,5 +1,6 @@
    node_modules/
    .env
+   .env*.local
    .DS_Store
    __pycache__/
    *.pyc
@@ -7,4 +8,10 @@
 
 # Data files - keep CSVs out of git
 /data/*.csv
+<<<<<<< Updated upstream
 /data/**/*.csv
+=======
+/data/**/*.csv.env.local
+.env*.local
+.DS_Store
+>>>>>>> Stashed changes
