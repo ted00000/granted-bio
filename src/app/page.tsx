@@ -4,14 +4,14 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Header } from '@/components/Header'
-import { createClient } from '@/lib/supabase/client'
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 export default function Home() {
   const router = useRouter()
 
   useEffect(() => {
     const checkAuth = async () => {
-      const supabase = createClient()
+      const supabase = createBrowserSupabaseClient()
       const { data: { user } } = await supabase.auth.getUser()
 
       if (user) {
