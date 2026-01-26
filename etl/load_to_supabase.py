@@ -39,16 +39,17 @@ def get_supabase_client() -> Client:
     return create_client(url, key)
 
 
-def batch_insert(supabase: Client, table: str, records: List[Dict], batch_size: int = 500, on_conflict: str = None) -> int:
+def batch_insert(supabase: Client, table: str, records: List[Dict], batch_size: int = 500) -> int:
     """
     Insert records in batches with upsert support.
+
+    Upsert automatically handles conflicts based on table's unique constraints.
 
     Args:
         supabase: Supabase client
         table: Table name
         records: Records to insert
         batch_size: Size of each batch
-        on_conflict: Column name(s) for conflict resolution (e.g., 'application_id')
 
     Returns number of records inserted.
     """
@@ -57,10 +58,7 @@ def batch_insert(supabase: Client, table: str, records: List[Dict], batch_size: 
     for i in range(0, len(records), batch_size):
         batch = records[i:i + batch_size]
         try:
-            if on_conflict:
-                result = supabase.table(table).upsert(batch, on_conflict=on_conflict).execute()
-            else:
-                result = supabase.table(table).upsert(batch).execute()
+            result = supabase.table(table).upsert(batch).execute()
             total_inserted += len(batch)
             print(f"  Inserted batch {i // batch_size + 1}: {len(batch)} records to {table}")
         except Exception as e:
@@ -68,10 +66,7 @@ def batch_insert(supabase: Client, table: str, records: List[Dict], batch_size: 
             # Try individual inserts for failed batch
             for record in batch:
                 try:
-                    if on_conflict:
-                        supabase.table(table).upsert(record, on_conflict=on_conflict).execute()
-                    else:
-                        supabase.table(table).upsert(record).execute()
+                    supabase.table(table).upsert(record).execute()
                     total_inserted += 1
                 except Exception as e2:
                     print(f"    Failed to insert record: {e2}")
@@ -304,21 +299,21 @@ def run_etl(
 
     # Load projects
     print("\nLoading projects to Supabase...")
-    stats['projects_loaded'] = batch_insert(supabase, 'projects', classified_projects, on_conflict='application_id')
+    stats['projects_loaded'] = batch_insert(supabase, 'projects', classified_projects)
 
     # Load abstracts
     print("\nLoading abstracts to Supabase...")
-    stats['abstracts_loaded'] = batch_insert(supabase, 'abstracts', abstracts_to_load, on_conflict='application_id')
+    stats['abstracts_loaded'] = batch_insert(supabase, 'abstracts', abstracts_to_load)
 
     # Load publications
     print("\nLoading publications to Supabase...")
-    stats['publications_loaded'] = batch_insert(supabase, 'publications', publications, on_conflict='pmid')
+    stats['publications_loaded'] = batch_insert(supabase, 'publications', publications)
 
     # Load patents
     print("\nLoading patents to Supabase...")
-    stats['patents_loaded'] = batch_insert(supabase, 'patents', patents, on_conflict='patent_id')
+    stats['patents_loaded'] = batch_insert(supabase, 'patents', patents)
 
-    # Load clinical studies (no unique constraint, will skip duplicates)
+    # Load clinical studies
     print("\nLoading clinical studies to Supabase...")
     stats['clinical_studies_loaded'] = batch_insert(supabase, 'clinical_studies', clinical_studies)
 
@@ -338,8 +333,7 @@ def run_etl(
                     'pmid': pmid,
                 })
     print(f"  Filtered to {len(links)} links for loaded projects/publications")
-    # Use composite key for project_publications
-    stats['links_loaded'] = batch_insert(supabase, 'project_publications', links, on_conflict='project_number,pmid')
+    stats['links_loaded'] = batch_insert(supabase, 'project_publications', links)
 
     # Generate embeddings if requested
     if not skip_embeddings:
