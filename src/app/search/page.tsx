@@ -25,10 +25,10 @@ const focusAreas = [
 
 // Organization Types
 const orgTypes = [
-  { id: 'company', label: 'Company' },
-  { id: 'university', label: 'University' },
-  { id: 'hospital', label: 'Hospital' },
-  { id: 'research_institute', label: 'Research Institute' },
+  { id: 'company', label: 'Company', icon: '🏢' },
+  { id: 'university', label: 'University', icon: '🎓' },
+  { id: 'hospital', label: 'Hospital', icon: '🏥' },
+  { id: 'research_institute', label: 'Research Institute', icon: '🔬' },
 ]
 
 // Fiscal Years (limited to recent years)
@@ -225,7 +225,7 @@ function SearchContent() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Life Science Channel */}
               <div className="border-l-4 border-cyan-500 pl-4">
-                <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Life Science</div>
+                <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Life Science Area</div>
                 <div className="space-y-2">
                   {lifeScienceCategories.map((cat) => (
                     <button
@@ -246,7 +246,7 @@ function SearchContent() {
 
               {/* Organization Channel */}
               <div className="border-l-4 border-teal-400 pl-4">
-                <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Organization</div>
+                <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Organization Type</div>
                 <div className="space-y-2">
                   {orgTypes.map((type) => (
                     <button
@@ -258,6 +258,7 @@ function SearchContent() {
                           : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                       }`}
                     >
+                      <span className="mr-2">{type.icon}</span>
                       {type.label}
                     </button>
                   ))}
@@ -276,7 +277,7 @@ function SearchContent() {
                     <button
                       key={option.id}
                       onClick={() => setSupplementFilter(option.id as 'all' | 'base' | 'supplements')}
-                      className={`w-full text-left px-4 py-3 rounded-lg font-semibold transition-all ${
+                      className={`w-full text-left px-4 py-3 rounded-lg font-medium transition-all ${
                         supplementFilter === option.id
                           ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/30'
                           : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
@@ -299,7 +300,7 @@ function SearchContent() {
                           : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                       }`}
                     >
-                      SBIR/STTR
+                      SBIR/STTR ONLY
                     </button>
                   </div>
                 </div>
@@ -313,7 +314,7 @@ function SearchContent() {
                     <button
                       key={year}
                       onClick={() => toggleYear(year)}
-                      className={`px-3 py-2 rounded-lg font-semibold transition-all text-sm ${
+                      className={`px-3 py-2 rounded-lg font-medium transition-all text-sm ${
                         selectedYears.includes(year)
                           ? 'bg-gradient-to-r from-cyan-400 to-teal-400 text-white shadow-md'
                           : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
