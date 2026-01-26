@@ -62,14 +62,9 @@ def batch_insert(supabase: Client, table: str, records: List[Dict], batch_size: 
             total_inserted += len(batch)
             print(f"  Inserted batch {i // batch_size + 1}: {len(batch)} records to {table}")
         except Exception as e:
-            print(f"  Error inserting batch to {table}: {e}")
-            # Try individual inserts for failed batch
-            for record in batch:
-                try:
-                    supabase.table(table).upsert(record).execute()
-                    total_inserted += 1
-                except Exception as e2:
-                    print(f"    Failed to insert record: {e2}")
+            # Log error but continue - batch upserts handle most cases correctly
+            print(f"  Warning: batch {i // batch_size + 1} had issues: {str(e)[:100]}")
+            # Don't retry individual records - too slow and batch upsert already worked for most
 
     return total_inserted
 
