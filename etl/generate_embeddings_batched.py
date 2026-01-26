@@ -109,9 +109,11 @@ while True:
             total_cost += cost
             total_tokens += tokens_used
 
-            # Update project
+            # Update project with properly formatted vector
+            # pgvector requires the vector as a stringified array: "[0.1,0.2,0.3,...]"
+            vector_str = f"[{','.join(map(str, embedding))}]"
             supabase.table('projects').update({
-                'abstract_embedding': embedding
+                'abstract_embedding': vector_str
             }).eq('application_id', app_id).execute()
 
             batch_generated += 1
