@@ -185,6 +185,7 @@ def process_projects_csv(filepath: str, limit: Optional[int] = None) -> Generato
 def load_projects(data_dir: str = 'data/raw', limit: Optional[int] = None) -> list:
     """
     Load and process all projects from the CSV file.
+    Deduplicates by project_number, keeping the most recent fiscal year.
 
     Args:
         data_dir: Directory containing the raw CSV files
@@ -198,8 +199,24 @@ def load_projects(data_dir: str = 'data/raw', limit: Optional[int] = None) -> li
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Projects file not found: {filepath}")
 
-    projects = list(process_projects_csv(filepath, limit))
-    print(f"Loaded {len(projects)} bio-related projects")
+    projects_raw = list(process_projects_csv(filepath, limit))
+    print(f"Loaded {len(projects_raw)} bio-related projects (before deduplication)")
+
+    # Deduplicate by project_number, keeping most recent fiscal year
+    projects_map = {}
+    for project in projects_raw:
+        proj_num = project.get('project_number')
+        if not proj_num:
+            continue
+
+        fiscal_year = project.get('fiscal_year') or 0
+
+        # If we haven't seen this project, or this is a more recent fiscal year, keep it
+        if proj_num not in projects_map or fiscal_year > projects_map[proj_num].get('fiscal_year', 0):
+            projects_map[proj_num] = project
+
+    projects = list(projects_map.values())
+    print(f"After deduplication: {len(projects)} unique projects")
 
     return projects
 
