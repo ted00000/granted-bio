@@ -1,0 +1,1010 @@
+============================================================
+GRANTED.BIO ETL PIPELINE
+============================================================
+
+[1/6] Loading projects...
+Processed 72087 total rows, 60347 bio-related projects
+Loaded 60347 bio-related projects
+  - Base grants: 57312
+  - Supplements: 3035
+  Loaded 60347 projects
+
+[2/6] Loading publications...
+Processed 103228 rows, 103228 unique publications
+Loaded publication links for 84499 projects
+  Loaded 103228 publications
+
+[3/6] Loading patents...
+Processed 85138 rows, 46065 unique patents
+Loaded 46065 patents for 20955 projects
+  Loaded 46065 patents
+
+[4/6] Loading clinical studies...
+Processed 38140 rows, 38140 unique clinical studies
+Loaded 38140 clinical studies for 22912 projects
+  Loaded 38140 clinical studies
+
+[5/6] Loading abstracts...
+Loaded 71751 abstracts
+
+[6/6] Classifying projects...
+  Classified 1000/60347 projects...
+  Classified 2000/60347 projects...
+  Classified 3000/60347 projects...
+  Classified 4000/60347 projects...
+  Classified 5000/60347 projects...
+  Classified 6000/60347 projects...
+  Classified 7000/60347 projects...
+  Classified 8000/60347 projects...
+  Classified 9000/60347 projects...
+  Classified 10000/60347 projects...
+  Classified 11000/60347 projects...
+  Classified 12000/60347 projects...
+  Classified 13000/60347 projects...
+  Classified 14000/60347 projects...
+  Classified 15000/60347 projects...
+  Classified 16000/60347 projects...
+  Classified 17000/60347 projects...
+  Classified 18000/60347 projects...
+  Classified 19000/60347 projects...
+  Classified 20000/60347 projects...
+  Classified 21000/60347 projects...
+  Classified 22000/60347 projects...
+  Classified 23000/60347 projects...
+  Classified 24000/60347 projects...
+  Classified 25000/60347 projects...
+  Classified 26000/60347 projects...
+  Classified 27000/60347 projects...
+  Classified 28000/60347 projects...
+  Classified 29000/60347 projects...
+  Classified 30000/60347 projects...
+  Classified 31000/60347 projects...
+  Classified 32000/60347 projects...
+  Classified 33000/60347 projects...
+  Classified 34000/60347 projects...
+  Classified 35000/60347 projects...
+  Classified 36000/60347 projects...
+  Classified 37000/60347 projects...
+  Classified 38000/60347 projects...
+  Classified 39000/60347 projects...
+  Classified 40000/60347 projects...
+  Classified 41000/60347 projects...
+  Classified 42000/60347 projects...
+  Classified 43000/60347 projects...
+  Classified 44000/60347 projects...
+  Classified 45000/60347 projects...
+  Classified 46000/60347 projects...
+  Classified 47000/60347 projects...
+  Classified 48000/60347 projects...
+  Classified 49000/60347 projects...
+  Classified 50000/60347 projects...
+  Classified 51000/60347 projects...
+  Classified 52000/60347 projects...
+  Classified 53000/60347 projects...
+  Classified 54000/60347 projects...
+  Classified 55000/60347 projects...
+  Classified 56000/60347 projects...
+  Classified 57000/60347 projects...
+  Classified 58000/60347 projects...
+  Classified 59000/60347 projects...
+  Classified 60000/60347 projects...
+  Classified 60347 projects
+  HIGH confidence (60+): 1766
+  MODERATE confidence (35-59): 27544
+  LOW confidence (<35): 31037
+
+============================================================
+LOADING TO SUPABASE
+============================================================
+
+Loading projects to Supabase...
+  Warning: batch 1 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 2 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 3 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 4 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 5 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 6 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 7 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 8 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 9 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 10 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 11 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 12 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 13 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 14 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 15 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 16 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 17 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 18 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 19 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 20 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 21 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 22 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 23 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 24 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 25 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 26 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 27 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 28 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 29 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 30 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 31 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 32 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 33 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 34 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 35 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 36 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 37 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 38 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 39 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 40 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 41 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 42 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 43 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 44 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 45 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 46 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 47 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 48 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 49 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 50 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 51 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 52 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 53 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 54 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 55 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 56 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 57 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 58 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 59 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 60 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 61 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 62 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 63 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 64 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 65 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 66 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 67 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 68 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 69 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 70 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 71 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 72 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 73 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 74 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 75 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 76 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 77 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 78 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 79 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 80 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 81 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 82 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 83 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 84 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 85 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 86 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 87 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 88 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 89 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 90 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 91 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 92 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 93 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 94 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 95 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 96 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 97 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 98 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 99 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 100 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 101 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 102 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 103 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 104 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 105 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 106 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 107 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 108 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 109 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 110 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 111 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 112 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 113 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 114 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 115 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 116 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 117 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 118 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 119 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 120 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+  Warning: batch 121 had issues: {'message': 'duplicate key value violates unique constraint "projects_project_number_key"', 'code': 
+
+Loading abstracts to Supabase...
+  Warning: batch 1 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 2 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 3 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 4 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 5 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 6 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 7 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 8 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 9 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 10 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 11 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 12 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 13 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 14 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 15 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 16 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 17 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 18 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 19 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 20 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 21 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 22 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 23 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 24 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 25 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 26 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 27 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 28 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 29 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 30 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 31 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 32 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 33 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 34 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 35 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 36 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 37 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 38 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 39 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 40 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 41 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 42 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 43 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 44 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 45 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 46 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 47 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 48 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 49 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 50 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 51 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 52 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 53 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 54 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 55 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 56 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 57 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 58 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 59 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 60 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 61 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 62 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 63 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 64 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 65 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 66 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 67 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 68 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 69 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 70 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 71 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 72 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 73 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 74 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 75 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 76 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 77 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 78 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 79 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 80 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 81 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 82 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 83 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 84 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 85 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 86 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 87 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 88 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 89 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 90 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 91 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 92 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 93 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 94 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 95 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 96 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 97 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 98 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 99 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 100 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 101 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 102 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 103 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 104 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 105 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 106 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 107 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 108 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 109 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 110 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 111 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 112 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 113 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 114 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 115 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 116 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 117 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 118 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 119 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 120 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+  Warning: batch 121 had issues: {'message': 'insert or update on table "abstracts" violates foreign key constraint "abstracts_applic
+
+Loading publications to Supabase...
+  Warning: batch 1 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 2 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 3 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 4 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 5 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 6 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 7 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 8 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 9 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 10 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 11 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 12 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 13 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 14 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 15 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 16 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 17 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 18 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 19 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 20 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 21 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 22 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 23 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 24 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 25 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 26 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 27 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 28 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 29 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 30 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 31 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 32 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 33 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 34 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 35 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 36 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 37 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 38 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 39 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 40 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 41 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 42 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 43 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 44 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 45 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 46 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 47 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 48 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 49 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 50 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 51 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 52 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 53 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 54 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 55 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 56 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 57 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 58 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 59 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 60 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 61 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 62 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 63 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 64 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 65 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 66 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 67 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 68 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 69 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 70 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 71 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 72 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 73 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 74 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 75 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 76 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 77 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 78 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 79 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 80 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 81 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 82 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 83 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 84 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 85 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 86 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 87 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 88 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 89 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 90 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 91 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 92 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 93 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 94 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 95 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 96 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 97 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 98 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 99 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 100 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 101 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 102 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 103 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 104 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 105 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 106 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 107 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 108 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 109 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 110 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 111 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 112 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 113 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 114 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 115 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 116 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 117 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 118 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 119 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 120 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 121 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 122 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 123 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 124 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 125 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 126 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 127 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 128 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 129 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 130 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 131 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 132 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 133 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 134 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 135 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 136 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 137 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 138 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 139 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 140 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 141 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 142 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 143 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 144 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 145 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 146 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 147 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 148 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 149 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 150 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 151 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 152 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 153 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 154 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 155 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 156 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 157 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 158 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 159 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 160 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 161 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 162 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 163 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 164 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 165 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 166 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 167 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 168 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 169 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 170 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 171 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 172 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 173 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 174 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 175 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 176 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 177 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 178 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 179 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 180 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 181 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 182 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 183 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 184 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 185 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 186 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 187 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 188 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 189 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 190 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 191 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 192 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 193 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 194 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 195 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 196 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 197 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 198 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 199 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 200 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 201 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 202 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 203 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 204 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 205 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 206 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+  Warning: batch 207 had issues: {'message': 'duplicate key value violates unique constraint "publications_pmid_key"', 'code': '23505
+
+Loading patents to Supabase...
+  Warning: batch 1 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 2 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 3 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 4 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 5 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 6 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 7 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 8 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 9 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 10 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 11 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 12 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 13 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 14 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 15 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 16 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 17 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 18 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 19 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 20 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 21 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 22 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 23 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 24 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 25 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 26 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 27 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 28 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 29 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 30 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 31 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 32 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 33 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 34 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 35 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 36 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 37 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 38 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 39 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 40 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 41 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 42 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 43 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 44 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 45 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 46 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 47 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 48 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 49 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 50 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 51 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 52 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 53 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 54 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 55 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 56 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 57 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 58 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 59 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 60 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 61 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 62 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 63 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 64 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 65 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 66 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 67 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 68 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 69 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 70 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 71 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 72 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 73 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 74 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 75 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 76 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 77 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 78 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 79 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 80 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 81 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 82 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 83 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 84 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 85 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 86 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 87 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 88 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 89 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 90 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 91 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 92 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+  Warning: batch 93 had issues: {'message': 'duplicate key value violates unique constraint "patents_patent_id_key"', 'code': '23505
+
+Loading clinical studies to Supabase...
+  Inserted batch 1: 500 records to clinical_studies
+  Inserted batch 2: 500 records to clinical_studies
+  Inserted batch 3: 500 records to clinical_studies
+  Inserted batch 4: 500 records to clinical_studies
+  Inserted batch 5: 500 records to clinical_studies
+  Inserted batch 6: 500 records to clinical_studies
+  Inserted batch 7: 500 records to clinical_studies
+  Inserted batch 8: 500 records to clinical_studies
+  Inserted batch 9: 500 records to clinical_studies
+  Inserted batch 10: 500 records to clinical_studies
+  Inserted batch 11: 500 records to clinical_studies
+  Inserted batch 12: 500 records to clinical_studies
+  Inserted batch 13: 500 records to clinical_studies
+  Inserted batch 14: 500 records to clinical_studies
+  Inserted batch 15: 500 records to clinical_studies
+  Inserted batch 16: 500 records to clinical_studies
+  Inserted batch 17: 500 records to clinical_studies
+  Inserted batch 18: 500 records to clinical_studies
+  Inserted batch 19: 500 records to clinical_studies
+  Inserted batch 20: 500 records to clinical_studies
+  Inserted batch 21: 500 records to clinical_studies
+  Inserted batch 22: 500 records to clinical_studies
+  Inserted batch 23: 500 records to clinical_studies
+  Inserted batch 24: 500 records to clinical_studies
+  Inserted batch 25: 500 records to clinical_studies
+  Inserted batch 26: 500 records to clinical_studies
+  Inserted batch 27: 500 records to clinical_studies
+  Inserted batch 28: 500 records to clinical_studies
+  Inserted batch 29: 500 records to clinical_studies
+  Inserted batch 30: 500 records to clinical_studies
+  Inserted batch 31: 500 records to clinical_studies
+  Inserted batch 32: 500 records to clinical_studies
+  Inserted batch 33: 500 records to clinical_studies
+  Inserted batch 34: 500 records to clinical_studies
+  Inserted batch 35: 500 records to clinical_studies
+  Inserted batch 36: 500 records to clinical_studies
+  Inserted batch 37: 500 records to clinical_studies
+  Inserted batch 38: 500 records to clinical_studies
+  Inserted batch 39: 500 records to clinical_studies
+  Inserted batch 40: 500 records to clinical_studies
+  Inserted batch 41: 500 records to clinical_studies
+  Inserted batch 42: 500 records to clinical_studies
+  Inserted batch 43: 500 records to clinical_studies
+  Inserted batch 44: 500 records to clinical_studies
+  Inserted batch 45: 500 records to clinical_studies
+  Inserted batch 46: 500 records to clinical_studies
+  Inserted batch 47: 500 records to clinical_studies
+  Inserted batch 48: 500 records to clinical_studies
+  Inserted batch 49: 500 records to clinical_studies
+  Inserted batch 50: 500 records to clinical_studies
+  Inserted batch 51: 500 records to clinical_studies
+  Inserted batch 52: 500 records to clinical_studies
+  Inserted batch 53: 500 records to clinical_studies
+  Inserted batch 54: 500 records to clinical_studies
+  Inserted batch 55: 500 records to clinical_studies
+  Inserted batch 56: 500 records to clinical_studies
+  Inserted batch 57: 500 records to clinical_studies
+  Inserted batch 58: 500 records to clinical_studies
+  Inserted batch 59: 500 records to clinical_studies
+  Inserted batch 60: 500 records to clinical_studies
+  Inserted batch 61: 500 records to clinical_studies
+  Inserted batch 62: 500 records to clinical_studies
+  Inserted batch 63: 500 records to clinical_studies
+  Inserted batch 64: 500 records to clinical_studies
+  Inserted batch 65: 500 records to clinical_studies
+  Inserted batch 66: 500 records to clinical_studies
+  Inserted batch 67: 500 records to clinical_studies
+  Inserted batch 68: 500 records to clinical_studies
+  Inserted batch 69: 500 records to clinical_studies
+  Inserted batch 70: 500 records to clinical_studies
+  Inserted batch 71: 500 records to clinical_studies
+  Inserted batch 72: 500 records to clinical_studies
+  Inserted batch 73: 500 records to clinical_studies
+  Inserted batch 74: 500 records to clinical_studies
+  Inserted batch 75: 500 records to clinical_studies
+  Inserted batch 76: 500 records to clinical_studies
+  Inserted batch 77: 140 records to clinical_studies
+
+Loading publication links to Supabase...
+  Filtered to 132633 links for loaded projects/publications
+  Warning: batch 1 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 2 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 3 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 4 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 5 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 6 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 7 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 8 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 9 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 10 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 11 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 12 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 13 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 14 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 15 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 16 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 17 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 18 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 19 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 20 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 21 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 22 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 23 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 24 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 25 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 26 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 27 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 28 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 29 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 30 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 31 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 32 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 33 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 34 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 35 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 36 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 37 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 38 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 39 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 40 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 41 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 42 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 43 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 44 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 45 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 46 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 47 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 48 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 49 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 50 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 51 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 52 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 53 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 54 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 55 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 56 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 57 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 58 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 59 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 60 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 61 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 62 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 63 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 64 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 65 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 66 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 67 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 68 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 69 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 70 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 71 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 72 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 73 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 74 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 75 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 76 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 77 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 78 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 79 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 80 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 81 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 82 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 83 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 84 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 85 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 86 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 87 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 88 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 89 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 90 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 91 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 92 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 93 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 94 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 95 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 96 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 97 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 98 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 99 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 100 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 101 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 102 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 103 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 104 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 105 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 106 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 107 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 108 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 109 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 110 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 111 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 112 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 113 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 114 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 115 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 116 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 117 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 118 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 119 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 120 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 121 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 122 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 123 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 124 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 125 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 126 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 127 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 128 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 129 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 130 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 131 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 132 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 133 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 134 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 135 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 136 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 137 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 138 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 139 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 140 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 141 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 142 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 143 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 144 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 145 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 146 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 147 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 148 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 149 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 150 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 151 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 152 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 153 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 154 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 155 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 156 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 157 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 158 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 159 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 160 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 161 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 162 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 163 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 164 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 165 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 166 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 167 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 168 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 169 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 170 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 171 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 172 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 173 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 174 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 175 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 176 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 177 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 178 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 179 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 180 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 181 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 182 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 183 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 184 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 185 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 186 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 187 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 188 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 189 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 190 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 191 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 192 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 193 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 194 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 195 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 196 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 197 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 198 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 199 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 200 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 201 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 202 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 203 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 204 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 205 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 206 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 207 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 208 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 209 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 210 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 211 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 212 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 213 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 214 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 215 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 216 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 217 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 218 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 219 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 220 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 221 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 222 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 223 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 224 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 225 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 226 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 227 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 228 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 229 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 230 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 231 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 232 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 233 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 234 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 235 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 236 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 237 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 238 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 239 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 240 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 241 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 242 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 243 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 244 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 245 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 246 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 247 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 248 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 249 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 250 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 251 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 252 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 253 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 254 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 255 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 256 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 257 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 258 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 259 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 260 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 261 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 262 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 263 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 264 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 265 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+  Warning: batch 266 had issues: {'message': 'insert or update on table "project_publications" violates foreign key constraint "proje
+
+Refreshing materialized views...
+  Warning: Could not refresh materialized views: {'message': 'cannot refresh materialized view "public.projects_enriched" concurrently', 'code': '55000', 'hint': 'Create a unique index with no WHERE clause on one or more columns of the materialized view.', 'details': None}
+
+============================================================
+ETL COMPLETE
+============================================================
+Time elapsed: 0:04:17.176542
+Projects loaded: 0
+Abstracts loaded: 0
+Publications loaded: 0
+Patents loaded: 0
+Clinical studies loaded: 38140
+Publication links loaded: 0

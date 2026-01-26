@@ -1,0 +1,1010 @@
+============================================================
+GRANTED.BIO ETL PIPELINE
+============================================================
+
+[1/6] Loading projects...
+Processed 72087 total rows, 60347 bio-related projects
+Loaded 60347 bio-related projects
+  - Base grants: 57312
+  - Supplements: 3035
+  Loaded 60347 projects
+
+[2/6] Loading publications...
+Processed 103228 rows, 103228 unique publications
+Loaded publication links for 84499 projects
+  Loaded 103228 publications
+
+[3/6] Loading patents...
+Processed 85138 rows, 46065 unique patents
+Loaded 46065 patents for 20955 projects
+  Loaded 46065 patents
+
+[4/6] Loading clinical studies...
+Processed 38140 rows, 38140 unique clinical studies
+Loaded 38140 clinical studies for 22912 projects
+  Loaded 38140 clinical studies
+
+[5/6] Loading abstracts...
+Loaded 71751 abstracts
+
+[6/6] Classifying projects...
+  Classified 1000/60347 projects...
+  Classified 2000/60347 projects...
+  Classified 3000/60347 projects...
+  Classified 4000/60347 projects...
+  Classified 5000/60347 projects...
+  Classified 6000/60347 projects...
+  Classified 7000/60347 projects...
+  Classified 8000/60347 projects...
+  Classified 9000/60347 projects...
+  Classified 10000/60347 projects...
+  Classified 11000/60347 projects...
+  Classified 12000/60347 projects...
+  Classified 13000/60347 projects...
+  Classified 14000/60347 projects...
+  Classified 15000/60347 projects...
+  Classified 16000/60347 projects...
+  Classified 17000/60347 projects...
+  Classified 18000/60347 projects...
+  Classified 19000/60347 projects...
+  Classified 20000/60347 projects...
+  Classified 21000/60347 projects...
+  Classified 22000/60347 projects...
+  Classified 23000/60347 projects...
+  Classified 24000/60347 projects...
+  Classified 25000/60347 projects...
+  Classified 26000/60347 projects...
+  Classified 27000/60347 projects...
+  Classified 28000/60347 projects...
+  Classified 29000/60347 projects...
+  Classified 30000/60347 projects...
+  Classified 31000/60347 projects...
+  Classified 32000/60347 projects...
+  Classified 33000/60347 projects...
+  Classified 34000/60347 projects...
+  Classified 35000/60347 projects...
+  Classified 36000/60347 projects...
+  Classified 37000/60347 projects...
+  Classified 38000/60347 projects...
+  Classified 39000/60347 projects...
+  Classified 40000/60347 projects...
+  Classified 41000/60347 projects...
+  Classified 42000/60347 projects...
+  Classified 43000/60347 projects...
+  Classified 44000/60347 projects...
+  Classified 45000/60347 projects...
+  Classified 46000/60347 projects...
+  Classified 47000/60347 projects...
+  Classified 48000/60347 projects...
+  Classified 49000/60347 projects...
+  Classified 50000/60347 projects...
+  Classified 51000/60347 projects...
+  Classified 52000/60347 projects...
+  Classified 53000/60347 projects...
+  Classified 54000/60347 projects...
+  Classified 55000/60347 projects...
+  Classified 56000/60347 projects...
+  Classified 57000/60347 projects...
+  Classified 58000/60347 projects...
+  Classified 59000/60347 projects...
+  Classified 60000/60347 projects...
+  Classified 60347 projects
+  HIGH confidence (60+): 1766
+  MODERATE confidence (35-59): 27544
+  LOW confidence (<35): 31037
+
+============================================================
+LOADING TO SUPABASE
+============================================================
+
+Loading projects to Supabase...
+  Inserted batch 1: 500 records to projects
+  Inserted batch 2: 500 records to projects
+  Inserted batch 3: 500 records to projects
+  Inserted batch 4: 500 records to projects
+  Inserted batch 5: 500 records to projects
+  Inserted batch 6: 500 records to projects
+  Inserted batch 7: 500 records to projects
+  Inserted batch 8: 500 records to projects
+  Inserted batch 9: 500 records to projects
+  Inserted batch 10: 500 records to projects
+  Inserted batch 11: 500 records to projects
+  Inserted batch 12: 500 records to projects
+  Inserted batch 13: 500 records to projects
+  Inserted batch 14: 500 records to projects
+  Inserted batch 15: 500 records to projects
+  Inserted batch 16: 500 records to projects
+  Inserted batch 17: 500 records to projects
+  Inserted batch 18: 500 records to projects
+  Inserted batch 19: 500 records to projects
+  Inserted batch 20: 500 records to projects
+  Inserted batch 21: 500 records to projects
+  Inserted batch 22: 500 records to projects
+  Inserted batch 23: 500 records to projects
+  Inserted batch 24: 500 records to projects
+  Inserted batch 25: 500 records to projects
+  Inserted batch 26: 500 records to projects
+  Inserted batch 27: 500 records to projects
+  Inserted batch 28: 500 records to projects
+  Inserted batch 29: 500 records to projects
+  Inserted batch 30: 500 records to projects
+  Inserted batch 31: 500 records to projects
+  Inserted batch 32: 500 records to projects
+  Inserted batch 33: 500 records to projects
+  Inserted batch 34: 500 records to projects
+  Inserted batch 35: 500 records to projects
+  Inserted batch 36: 500 records to projects
+  Inserted batch 37: 500 records to projects
+  Inserted batch 38: 500 records to projects
+  Inserted batch 39: 500 records to projects
+  Inserted batch 40: 500 records to projects
+  Inserted batch 41: 500 records to projects
+  Inserted batch 42: 500 records to projects
+  Inserted batch 43: 500 records to projects
+  Inserted batch 44: 500 records to projects
+  Inserted batch 45: 500 records to projects
+  Inserted batch 46: 500 records to projects
+  Inserted batch 47: 500 records to projects
+  Inserted batch 48: 500 records to projects
+  Inserted batch 49: 500 records to projects
+  Inserted batch 50: 500 records to projects
+  Inserted batch 51: 500 records to projects
+  Inserted batch 52: 500 records to projects
+  Inserted batch 53: 500 records to projects
+  Inserted batch 54: 500 records to projects
+  Inserted batch 55: 500 records to projects
+  Inserted batch 56: 500 records to projects
+  Inserted batch 57: 500 records to projects
+  Inserted batch 58: 500 records to projects
+  Inserted batch 59: 500 records to projects
+  Inserted batch 60: 500 records to projects
+  Inserted batch 61: 500 records to projects
+  Inserted batch 62: 500 records to projects
+  Inserted batch 63: 500 records to projects
+  Inserted batch 64: 500 records to projects
+  Inserted batch 65: 500 records to projects
+  Inserted batch 66: 500 records to projects
+  Inserted batch 67: 500 records to projects
+  Inserted batch 68: 500 records to projects
+  Inserted batch 69: 500 records to projects
+  Inserted batch 70: 500 records to projects
+  Inserted batch 71: 500 records to projects
+  Inserted batch 72: 500 records to projects
+  Inserted batch 73: 500 records to projects
+  Inserted batch 74: 500 records to projects
+  Inserted batch 75: 500 records to projects
+  Inserted batch 76: 500 records to projects
+  Inserted batch 77: 500 records to projects
+  Inserted batch 78: 500 records to projects
+  Inserted batch 79: 500 records to projects
+  Inserted batch 80: 500 records to projects
+  Inserted batch 81: 500 records to projects
+  Inserted batch 82: 500 records to projects
+  Inserted batch 83: 500 records to projects
+  Inserted batch 84: 500 records to projects
+  Inserted batch 85: 500 records to projects
+  Inserted batch 86: 500 records to projects
+  Inserted batch 87: 500 records to projects
+  Inserted batch 88: 500 records to projects
+  Inserted batch 89: 500 records to projects
+  Inserted batch 90: 500 records to projects
+  Inserted batch 91: 500 records to projects
+  Inserted batch 92: 500 records to projects
+  Inserted batch 93: 500 records to projects
+  Inserted batch 94: 500 records to projects
+  Inserted batch 95: 500 records to projects
+  Inserted batch 96: 500 records to projects
+  Inserted batch 97: 500 records to projects
+  Inserted batch 98: 500 records to projects
+  Inserted batch 99: 500 records to projects
+  Inserted batch 100: 500 records to projects
+  Inserted batch 101: 500 records to projects
+  Inserted batch 102: 500 records to projects
+  Inserted batch 103: 500 records to projects
+  Inserted batch 104: 500 records to projects
+  Inserted batch 105: 500 records to projects
+  Inserted batch 106: 500 records to projects
+  Inserted batch 107: 500 records to projects
+  Inserted batch 108: 500 records to projects
+  Inserted batch 109: 500 records to projects
+  Inserted batch 110: 500 records to projects
+  Inserted batch 111: 500 records to projects
+  Inserted batch 112: 500 records to projects
+  Inserted batch 113: 500 records to projects
+  Inserted batch 114: 500 records to projects
+  Inserted batch 115: 500 records to projects
+  Inserted batch 116: 500 records to projects
+  Inserted batch 117: 500 records to projects
+  Inserted batch 118: 500 records to projects
+  Inserted batch 119: 500 records to projects
+  Inserted batch 120: 500 records to projects
+  Inserted batch 121: 347 records to projects
+
+Loading abstracts to Supabase...
+  Inserted batch 1: 500 records to abstracts
+  Inserted batch 2: 500 records to abstracts
+  Inserted batch 3: 500 records to abstracts
+  Inserted batch 4: 500 records to abstracts
+  Inserted batch 5: 500 records to abstracts
+  Inserted batch 6: 500 records to abstracts
+  Inserted batch 7: 500 records to abstracts
+  Inserted batch 8: 500 records to abstracts
+  Inserted batch 9: 500 records to abstracts
+  Inserted batch 10: 500 records to abstracts
+  Inserted batch 11: 500 records to abstracts
+  Inserted batch 12: 500 records to abstracts
+  Inserted batch 13: 500 records to abstracts
+  Inserted batch 14: 500 records to abstracts
+  Inserted batch 15: 500 records to abstracts
+  Inserted batch 16: 500 records to abstracts
+  Inserted batch 17: 500 records to abstracts
+  Inserted batch 18: 500 records to abstracts
+  Inserted batch 19: 500 records to abstracts
+  Inserted batch 20: 500 records to abstracts
+  Inserted batch 21: 500 records to abstracts
+  Inserted batch 22: 500 records to abstracts
+  Inserted batch 23: 500 records to abstracts
+  Inserted batch 24: 500 records to abstracts
+  Inserted batch 25: 500 records to abstracts
+  Inserted batch 26: 500 records to abstracts
+  Inserted batch 27: 500 records to abstracts
+  Inserted batch 28: 500 records to abstracts
+  Inserted batch 29: 500 records to abstracts
+  Inserted batch 30: 500 records to abstracts
+  Inserted batch 31: 500 records to abstracts
+  Inserted batch 32: 500 records to abstracts
+  Inserted batch 33: 500 records to abstracts
+  Inserted batch 34: 500 records to abstracts
+  Inserted batch 35: 500 records to abstracts
+  Inserted batch 36: 500 records to abstracts
+  Inserted batch 37: 500 records to abstracts
+  Inserted batch 38: 500 records to abstracts
+  Inserted batch 39: 500 records to abstracts
+  Inserted batch 40: 500 records to abstracts
+  Inserted batch 41: 500 records to abstracts
+  Inserted batch 42: 500 records to abstracts
+  Inserted batch 43: 500 records to abstracts
+  Inserted batch 44: 500 records to abstracts
+  Inserted batch 45: 500 records to abstracts
+  Inserted batch 46: 500 records to abstracts
+  Inserted batch 47: 500 records to abstracts
+  Inserted batch 48: 500 records to abstracts
+  Inserted batch 49: 500 records to abstracts
+  Inserted batch 50: 500 records to abstracts
+  Inserted batch 51: 500 records to abstracts
+  Inserted batch 52: 500 records to abstracts
+  Inserted batch 53: 500 records to abstracts
+  Inserted batch 54: 500 records to abstracts
+  Inserted batch 55: 500 records to abstracts
+  Inserted batch 56: 500 records to abstracts
+  Inserted batch 57: 500 records to abstracts
+  Inserted batch 58: 500 records to abstracts
+  Inserted batch 59: 500 records to abstracts
+  Inserted batch 60: 500 records to abstracts
+  Inserted batch 61: 500 records to abstracts
+  Inserted batch 62: 500 records to abstracts
+  Inserted batch 63: 500 records to abstracts
+  Inserted batch 64: 500 records to abstracts
+  Inserted batch 65: 500 records to abstracts
+  Inserted batch 66: 500 records to abstracts
+  Inserted batch 67: 500 records to abstracts
+  Inserted batch 68: 500 records to abstracts
+  Inserted batch 69: 500 records to abstracts
+  Inserted batch 70: 500 records to abstracts
+  Inserted batch 71: 500 records to abstracts
+  Inserted batch 72: 500 records to abstracts
+  Inserted batch 73: 500 records to abstracts
+  Inserted batch 74: 500 records to abstracts
+  Inserted batch 75: 500 records to abstracts
+  Inserted batch 76: 500 records to abstracts
+  Inserted batch 77: 500 records to abstracts
+  Inserted batch 78: 500 records to abstracts
+  Inserted batch 79: 500 records to abstracts
+  Inserted batch 80: 500 records to abstracts
+  Inserted batch 81: 500 records to abstracts
+  Inserted batch 82: 500 records to abstracts
+  Inserted batch 83: 500 records to abstracts
+  Inserted batch 84: 500 records to abstracts
+  Inserted batch 85: 500 records to abstracts
+  Inserted batch 86: 500 records to abstracts
+  Inserted batch 87: 500 records to abstracts
+  Inserted batch 88: 500 records to abstracts
+  Inserted batch 89: 500 records to abstracts
+  Inserted batch 90: 500 records to abstracts
+  Inserted batch 91: 500 records to abstracts
+  Inserted batch 92: 500 records to abstracts
+  Inserted batch 93: 500 records to abstracts
+  Inserted batch 94: 500 records to abstracts
+  Inserted batch 95: 500 records to abstracts
+  Inserted batch 96: 500 records to abstracts
+  Inserted batch 97: 500 records to abstracts
+  Inserted batch 98: 500 records to abstracts
+  Inserted batch 99: 500 records to abstracts
+  Inserted batch 100: 500 records to abstracts
+  Inserted batch 101: 500 records to abstracts
+  Inserted batch 102: 500 records to abstracts
+  Inserted batch 103: 500 records to abstracts
+  Inserted batch 104: 500 records to abstracts
+  Inserted batch 105: 500 records to abstracts
+  Inserted batch 106: 500 records to abstracts
+  Inserted batch 107: 500 records to abstracts
+  Inserted batch 108: 500 records to abstracts
+  Inserted batch 109: 500 records to abstracts
+  Inserted batch 110: 500 records to abstracts
+  Inserted batch 111: 500 records to abstracts
+  Inserted batch 112: 500 records to abstracts
+  Inserted batch 113: 500 records to abstracts
+  Inserted batch 114: 500 records to abstracts
+  Inserted batch 115: 500 records to abstracts
+  Inserted batch 116: 500 records to abstracts
+  Inserted batch 117: 500 records to abstracts
+  Inserted batch 118: 500 records to abstracts
+  Inserted batch 119: 500 records to abstracts
+  Inserted batch 120: 500 records to abstracts
+  Inserted batch 121: 31 records to abstracts
+
+Loading publications to Supabase...
+  Inserted batch 1: 500 records to publications
+  Inserted batch 2: 500 records to publications
+  Inserted batch 3: 500 records to publications
+  Inserted batch 4: 500 records to publications
+  Inserted batch 5: 500 records to publications
+  Inserted batch 6: 500 records to publications
+  Inserted batch 7: 500 records to publications
+  Inserted batch 8: 500 records to publications
+  Inserted batch 9: 500 records to publications
+  Inserted batch 10: 500 records to publications
+  Inserted batch 11: 500 records to publications
+  Inserted batch 12: 500 records to publications
+  Inserted batch 13: 500 records to publications
+  Inserted batch 14: 500 records to publications
+  Inserted batch 15: 500 records to publications
+  Inserted batch 16: 500 records to publications
+  Inserted batch 17: 500 records to publications
+  Inserted batch 18: 500 records to publications
+  Inserted batch 19: 500 records to publications
+  Inserted batch 20: 500 records to publications
+  Inserted batch 21: 500 records to publications
+  Inserted batch 22: 500 records to publications
+  Inserted batch 23: 500 records to publications
+  Inserted batch 24: 500 records to publications
+  Inserted batch 25: 500 records to publications
+  Inserted batch 26: 500 records to publications
+  Inserted batch 27: 500 records to publications
+  Inserted batch 28: 500 records to publications
+  Inserted batch 29: 500 records to publications
+  Inserted batch 30: 500 records to publications
+  Inserted batch 31: 500 records to publications
+  Inserted batch 32: 500 records to publications
+  Inserted batch 33: 500 records to publications
+  Inserted batch 34: 500 records to publications
+  Inserted batch 35: 500 records to publications
+  Inserted batch 36: 500 records to publications
+  Inserted batch 37: 500 records to publications
+  Inserted batch 38: 500 records to publications
+  Inserted batch 39: 500 records to publications
+  Inserted batch 40: 500 records to publications
+  Inserted batch 41: 500 records to publications
+  Inserted batch 42: 500 records to publications
+  Inserted batch 43: 500 records to publications
+  Inserted batch 44: 500 records to publications
+  Inserted batch 45: 500 records to publications
+  Inserted batch 46: 500 records to publications
+  Inserted batch 47: 500 records to publications
+  Inserted batch 48: 500 records to publications
+  Inserted batch 49: 500 records to publications
+  Inserted batch 50: 500 records to publications
+  Inserted batch 51: 500 records to publications
+  Inserted batch 52: 500 records to publications
+  Inserted batch 53: 500 records to publications
+  Inserted batch 54: 500 records to publications
+  Inserted batch 55: 500 records to publications
+  Inserted batch 56: 500 records to publications
+  Inserted batch 57: 500 records to publications
+  Inserted batch 58: 500 records to publications
+  Inserted batch 59: 500 records to publications
+  Inserted batch 60: 500 records to publications
+  Inserted batch 61: 500 records to publications
+  Inserted batch 62: 500 records to publications
+  Inserted batch 63: 500 records to publications
+  Inserted batch 64: 500 records to publications
+  Inserted batch 65: 500 records to publications
+  Inserted batch 66: 500 records to publications
+  Inserted batch 67: 500 records to publications
+  Inserted batch 68: 500 records to publications
+  Inserted batch 69: 500 records to publications
+  Inserted batch 70: 500 records to publications
+  Inserted batch 71: 500 records to publications
+  Inserted batch 72: 500 records to publications
+  Inserted batch 73: 500 records to publications
+  Inserted batch 74: 500 records to publications
+  Inserted batch 75: 500 records to publications
+  Inserted batch 76: 500 records to publications
+  Inserted batch 77: 500 records to publications
+  Inserted batch 78: 500 records to publications
+  Inserted batch 79: 500 records to publications
+  Inserted batch 80: 500 records to publications
+  Inserted batch 81: 500 records to publications
+  Inserted batch 82: 500 records to publications
+  Inserted batch 83: 500 records to publications
+  Inserted batch 84: 500 records to publications
+  Inserted batch 85: 500 records to publications
+  Inserted batch 86: 500 records to publications
+  Inserted batch 87: 500 records to publications
+  Inserted batch 88: 500 records to publications
+  Inserted batch 89: 500 records to publications
+  Inserted batch 90: 500 records to publications
+  Inserted batch 91: 500 records to publications
+  Inserted batch 92: 500 records to publications
+  Inserted batch 93: 500 records to publications
+  Inserted batch 94: 500 records to publications
+  Inserted batch 95: 500 records to publications
+  Inserted batch 96: 500 records to publications
+  Inserted batch 97: 500 records to publications
+  Inserted batch 98: 500 records to publications
+  Inserted batch 99: 500 records to publications
+  Inserted batch 100: 500 records to publications
+  Inserted batch 101: 500 records to publications
+  Inserted batch 102: 500 records to publications
+  Inserted batch 103: 500 records to publications
+  Inserted batch 104: 500 records to publications
+  Inserted batch 105: 500 records to publications
+  Inserted batch 106: 500 records to publications
+  Inserted batch 107: 500 records to publications
+  Inserted batch 108: 500 records to publications
+  Inserted batch 109: 500 records to publications
+  Inserted batch 110: 500 records to publications
+  Inserted batch 111: 500 records to publications
+  Inserted batch 112: 500 records to publications
+  Inserted batch 113: 500 records to publications
+  Inserted batch 114: 500 records to publications
+  Inserted batch 115: 500 records to publications
+  Inserted batch 116: 500 records to publications
+  Inserted batch 117: 500 records to publications
+  Inserted batch 118: 500 records to publications
+  Inserted batch 119: 500 records to publications
+  Inserted batch 120: 500 records to publications
+  Inserted batch 121: 500 records to publications
+  Inserted batch 122: 500 records to publications
+  Inserted batch 123: 500 records to publications
+  Inserted batch 124: 500 records to publications
+  Inserted batch 125: 500 records to publications
+  Inserted batch 126: 500 records to publications
+  Inserted batch 127: 500 records to publications
+  Inserted batch 128: 500 records to publications
+  Inserted batch 129: 500 records to publications
+  Inserted batch 130: 500 records to publications
+  Inserted batch 131: 500 records to publications
+  Inserted batch 132: 500 records to publications
+  Inserted batch 133: 500 records to publications
+  Inserted batch 134: 500 records to publications
+  Inserted batch 135: 500 records to publications
+  Inserted batch 136: 500 records to publications
+  Inserted batch 137: 500 records to publications
+  Inserted batch 138: 500 records to publications
+  Inserted batch 139: 500 records to publications
+  Inserted batch 140: 500 records to publications
+  Inserted batch 141: 500 records to publications
+  Inserted batch 142: 500 records to publications
+  Inserted batch 143: 500 records to publications
+  Inserted batch 144: 500 records to publications
+  Inserted batch 145: 500 records to publications
+  Inserted batch 146: 500 records to publications
+  Inserted batch 147: 500 records to publications
+  Inserted batch 148: 500 records to publications
+  Inserted batch 149: 500 records to publications
+  Inserted batch 150: 500 records to publications
+  Inserted batch 151: 500 records to publications
+  Inserted batch 152: 500 records to publications
+  Inserted batch 153: 500 records to publications
+  Inserted batch 154: 500 records to publications
+  Inserted batch 155: 500 records to publications
+  Inserted batch 156: 500 records to publications
+  Inserted batch 157: 500 records to publications
+  Inserted batch 158: 500 records to publications
+  Inserted batch 159: 500 records to publications
+  Inserted batch 160: 500 records to publications
+  Inserted batch 161: 500 records to publications
+  Inserted batch 162: 500 records to publications
+  Inserted batch 163: 500 records to publications
+  Inserted batch 164: 500 records to publications
+  Inserted batch 165: 500 records to publications
+  Inserted batch 166: 500 records to publications
+  Inserted batch 167: 500 records to publications
+  Inserted batch 168: 500 records to publications
+  Inserted batch 169: 500 records to publications
+  Inserted batch 170: 500 records to publications
+  Inserted batch 171: 500 records to publications
+  Inserted batch 172: 500 records to publications
+  Inserted batch 173: 500 records to publications
+  Inserted batch 174: 500 records to publications
+  Inserted batch 175: 500 records to publications
+  Inserted batch 176: 500 records to publications
+  Inserted batch 177: 500 records to publications
+  Inserted batch 178: 500 records to publications
+  Inserted batch 179: 500 records to publications
+  Inserted batch 180: 500 records to publications
+  Inserted batch 181: 500 records to publications
+  Inserted batch 182: 500 records to publications
+  Inserted batch 183: 500 records to publications
+  Inserted batch 184: 500 records to publications
+  Inserted batch 185: 500 records to publications
+  Inserted batch 186: 500 records to publications
+  Inserted batch 187: 500 records to publications
+  Inserted batch 188: 500 records to publications
+  Inserted batch 189: 500 records to publications
+  Inserted batch 190: 500 records to publications
+  Inserted batch 191: 500 records to publications
+  Inserted batch 192: 500 records to publications
+  Inserted batch 193: 500 records to publications
+  Inserted batch 194: 500 records to publications
+  Inserted batch 195: 500 records to publications
+  Inserted batch 196: 500 records to publications
+  Inserted batch 197: 500 records to publications
+  Inserted batch 198: 500 records to publications
+  Inserted batch 199: 500 records to publications
+  Inserted batch 200: 500 records to publications
+  Inserted batch 201: 500 records to publications
+  Inserted batch 202: 500 records to publications
+  Inserted batch 203: 500 records to publications
+  Inserted batch 204: 500 records to publications
+  Inserted batch 205: 500 records to publications
+  Inserted batch 206: 500 records to publications
+  Inserted batch 207: 228 records to publications
+
+Loading patents to Supabase...
+  Inserted batch 1: 500 records to patents
+  Inserted batch 2: 500 records to patents
+  Inserted batch 3: 500 records to patents
+  Inserted batch 4: 500 records to patents
+  Inserted batch 5: 500 records to patents
+  Inserted batch 6: 500 records to patents
+  Inserted batch 7: 500 records to patents
+  Inserted batch 8: 500 records to patents
+  Inserted batch 9: 500 records to patents
+  Inserted batch 10: 500 records to patents
+  Inserted batch 11: 500 records to patents
+  Inserted batch 12: 500 records to patents
+  Inserted batch 13: 500 records to patents
+  Inserted batch 14: 500 records to patents
+  Inserted batch 15: 500 records to patents
+  Inserted batch 16: 500 records to patents
+  Inserted batch 17: 500 records to patents
+  Inserted batch 18: 500 records to patents
+  Inserted batch 19: 500 records to patents
+  Inserted batch 20: 500 records to patents
+  Inserted batch 21: 500 records to patents
+  Inserted batch 22: 500 records to patents
+  Inserted batch 23: 500 records to patents
+  Inserted batch 24: 500 records to patents
+  Inserted batch 25: 500 records to patents
+  Inserted batch 26: 500 records to patents
+  Inserted batch 27: 500 records to patents
+  Inserted batch 28: 500 records to patents
+  Inserted batch 29: 500 records to patents
+  Inserted batch 30: 500 records to patents
+  Inserted batch 31: 500 records to patents
+  Inserted batch 32: 500 records to patents
+  Inserted batch 33: 500 records to patents
+  Inserted batch 34: 500 records to patents
+  Inserted batch 35: 500 records to patents
+  Inserted batch 36: 500 records to patents
+  Inserted batch 37: 500 records to patents
+  Inserted batch 38: 500 records to patents
+  Inserted batch 39: 500 records to patents
+  Inserted batch 40: 500 records to patents
+  Inserted batch 41: 500 records to patents
+  Inserted batch 42: 500 records to patents
+  Inserted batch 43: 500 records to patents
+  Inserted batch 44: 500 records to patents
+  Inserted batch 45: 500 records to patents
+  Inserted batch 46: 500 records to patents
+  Inserted batch 47: 500 records to patents
+  Inserted batch 48: 500 records to patents
+  Inserted batch 49: 500 records to patents
+  Inserted batch 50: 500 records to patents
+  Inserted batch 51: 500 records to patents
+  Inserted batch 52: 500 records to patents
+  Inserted batch 53: 500 records to patents
+  Inserted batch 54: 500 records to patents
+  Inserted batch 55: 500 records to patents
+  Inserted batch 56: 500 records to patents
+  Inserted batch 57: 500 records to patents
+  Inserted batch 58: 500 records to patents
+  Inserted batch 59: 500 records to patents
+  Inserted batch 60: 500 records to patents
+  Inserted batch 61: 500 records to patents
+  Inserted batch 62: 500 records to patents
+  Inserted batch 63: 500 records to patents
+  Inserted batch 64: 500 records to patents
+  Inserted batch 65: 500 records to patents
+  Inserted batch 66: 500 records to patents
+  Inserted batch 67: 500 records to patents
+  Inserted batch 68: 500 records to patents
+  Inserted batch 69: 500 records to patents
+  Inserted batch 70: 500 records to patents
+  Inserted batch 71: 500 records to patents
+  Inserted batch 72: 500 records to patents
+  Inserted batch 73: 500 records to patents
+  Inserted batch 74: 500 records to patents
+  Inserted batch 75: 500 records to patents
+  Inserted batch 76: 500 records to patents
+  Inserted batch 77: 500 records to patents
+  Inserted batch 78: 500 records to patents
+  Inserted batch 79: 500 records to patents
+  Inserted batch 80: 500 records to patents
+  Inserted batch 81: 500 records to patents
+  Inserted batch 82: 500 records to patents
+  Inserted batch 83: 500 records to patents
+  Inserted batch 84: 500 records to patents
+  Inserted batch 85: 500 records to patents
+  Inserted batch 86: 500 records to patents
+  Inserted batch 87: 500 records to patents
+  Inserted batch 88: 500 records to patents
+  Inserted batch 89: 500 records to patents
+  Inserted batch 90: 500 records to patents
+  Inserted batch 91: 500 records to patents
+  Inserted batch 92: 500 records to patents
+  Inserted batch 93: 65 records to patents
+
+Loading clinical studies to Supabase...
+  Inserted batch 1: 500 records to clinical_studies
+  Inserted batch 2: 500 records to clinical_studies
+  Inserted batch 3: 500 records to clinical_studies
+  Inserted batch 4: 500 records to clinical_studies
+  Inserted batch 5: 500 records to clinical_studies
+  Inserted batch 6: 500 records to clinical_studies
+  Inserted batch 7: 500 records to clinical_studies
+  Inserted batch 8: 500 records to clinical_studies
+  Inserted batch 9: 500 records to clinical_studies
+  Inserted batch 10: 500 records to clinical_studies
+  Inserted batch 11: 500 records to clinical_studies
+  Inserted batch 12: 500 records to clinical_studies
+  Inserted batch 13: 500 records to clinical_studies
+  Inserted batch 14: 500 records to clinical_studies
+  Inserted batch 15: 500 records to clinical_studies
+  Inserted batch 16: 500 records to clinical_studies
+  Inserted batch 17: 500 records to clinical_studies
+  Inserted batch 18: 500 records to clinical_studies
+  Inserted batch 19: 500 records to clinical_studies
+  Inserted batch 20: 500 records to clinical_studies
+  Inserted batch 21: 500 records to clinical_studies
+  Inserted batch 22: 500 records to clinical_studies
+  Inserted batch 23: 500 records to clinical_studies
+  Inserted batch 24: 500 records to clinical_studies
+  Inserted batch 25: 500 records to clinical_studies
+  Inserted batch 26: 500 records to clinical_studies
+  Inserted batch 27: 500 records to clinical_studies
+  Inserted batch 28: 500 records to clinical_studies
+  Inserted batch 29: 500 records to clinical_studies
+  Inserted batch 30: 500 records to clinical_studies
+  Inserted batch 31: 500 records to clinical_studies
+  Inserted batch 32: 500 records to clinical_studies
+  Inserted batch 33: 500 records to clinical_studies
+  Inserted batch 34: 500 records to clinical_studies
+  Inserted batch 35: 500 records to clinical_studies
+  Inserted batch 36: 500 records to clinical_studies
+  Inserted batch 37: 500 records to clinical_studies
+  Inserted batch 38: 500 records to clinical_studies
+  Inserted batch 39: 500 records to clinical_studies
+  Inserted batch 40: 500 records to clinical_studies
+  Inserted batch 41: 500 records to clinical_studies
+  Inserted batch 42: 500 records to clinical_studies
+  Inserted batch 43: 500 records to clinical_studies
+  Inserted batch 44: 500 records to clinical_studies
+  Inserted batch 45: 500 records to clinical_studies
+  Inserted batch 46: 500 records to clinical_studies
+  Inserted batch 47: 500 records to clinical_studies
+  Inserted batch 48: 500 records to clinical_studies
+  Inserted batch 49: 500 records to clinical_studies
+  Inserted batch 50: 500 records to clinical_studies
+  Inserted batch 51: 500 records to clinical_studies
+  Inserted batch 52: 500 records to clinical_studies
+  Inserted batch 53: 500 records to clinical_studies
+  Inserted batch 54: 500 records to clinical_studies
+  Inserted batch 55: 500 records to clinical_studies
+  Inserted batch 56: 500 records to clinical_studies
+  Inserted batch 57: 500 records to clinical_studies
+  Inserted batch 58: 500 records to clinical_studies
+  Inserted batch 59: 500 records to clinical_studies
+  Inserted batch 60: 500 records to clinical_studies
+  Inserted batch 61: 500 records to clinical_studies
+  Inserted batch 62: 500 records to clinical_studies
+  Inserted batch 63: 500 records to clinical_studies
+  Inserted batch 64: 500 records to clinical_studies
+  Inserted batch 65: 500 records to clinical_studies
+  Inserted batch 66: 500 records to clinical_studies
+  Inserted batch 67: 500 records to clinical_studies
+  Inserted batch 68: 500 records to clinical_studies
+  Inserted batch 69: 500 records to clinical_studies
+  Inserted batch 70: 500 records to clinical_studies
+  Inserted batch 71: 500 records to clinical_studies
+  Inserted batch 72: 500 records to clinical_studies
+  Inserted batch 73: 500 records to clinical_studies
+  Inserted batch 74: 500 records to clinical_studies
+  Inserted batch 75: 500 records to clinical_studies
+  Inserted batch 76: 500 records to clinical_studies
+  Inserted batch 77: 140 records to clinical_studies
+
+Loading publication links to Supabase...
+  Filtered to 132633 links for loaded projects/publications
+  Inserted batch 1: 500 records to project_publications
+  Inserted batch 2: 500 records to project_publications
+  Inserted batch 3: 500 records to project_publications
+  Inserted batch 4: 500 records to project_publications
+  Inserted batch 5: 500 records to project_publications
+  Inserted batch 6: 500 records to project_publications
+  Inserted batch 7: 500 records to project_publications
+  Inserted batch 8: 500 records to project_publications
+  Inserted batch 9: 500 records to project_publications
+  Inserted batch 10: 500 records to project_publications
+  Inserted batch 11: 500 records to project_publications
+  Inserted batch 12: 500 records to project_publications
+  Inserted batch 13: 500 records to project_publications
+  Inserted batch 14: 500 records to project_publications
+  Inserted batch 15: 500 records to project_publications
+  Inserted batch 16: 500 records to project_publications
+  Inserted batch 17: 500 records to project_publications
+  Inserted batch 18: 500 records to project_publications
+  Inserted batch 19: 500 records to project_publications
+  Inserted batch 20: 500 records to project_publications
+  Inserted batch 21: 500 records to project_publications
+  Inserted batch 22: 500 records to project_publications
+  Inserted batch 23: 500 records to project_publications
+  Inserted batch 24: 500 records to project_publications
+  Inserted batch 25: 500 records to project_publications
+  Inserted batch 26: 500 records to project_publications
+  Inserted batch 27: 500 records to project_publications
+  Inserted batch 28: 500 records to project_publications
+  Inserted batch 29: 500 records to project_publications
+  Inserted batch 30: 500 records to project_publications
+  Inserted batch 31: 500 records to project_publications
+  Inserted batch 32: 500 records to project_publications
+  Inserted batch 33: 500 records to project_publications
+  Inserted batch 34: 500 records to project_publications
+  Inserted batch 35: 500 records to project_publications
+  Inserted batch 36: 500 records to project_publications
+  Inserted batch 37: 500 records to project_publications
+  Inserted batch 38: 500 records to project_publications
+  Inserted batch 39: 500 records to project_publications
+  Inserted batch 40: 500 records to project_publications
+  Inserted batch 41: 500 records to project_publications
+  Inserted batch 42: 500 records to project_publications
+  Inserted batch 43: 500 records to project_publications
+  Inserted batch 44: 500 records to project_publications
+  Inserted batch 45: 500 records to project_publications
+  Inserted batch 46: 500 records to project_publications
+  Inserted batch 47: 500 records to project_publications
+  Inserted batch 48: 500 records to project_publications
+  Inserted batch 49: 500 records to project_publications
+  Inserted batch 50: 500 records to project_publications
+  Inserted batch 51: 500 records to project_publications
+  Inserted batch 52: 500 records to project_publications
+  Inserted batch 53: 500 records to project_publications
+  Inserted batch 54: 500 records to project_publications
+  Inserted batch 55: 500 records to project_publications
+  Inserted batch 56: 500 records to project_publications
+  Inserted batch 57: 500 records to project_publications
+  Inserted batch 58: 500 records to project_publications
+  Inserted batch 59: 500 records to project_publications
+  Inserted batch 60: 500 records to project_publications
+  Inserted batch 61: 500 records to project_publications
+  Inserted batch 62: 500 records to project_publications
+  Inserted batch 63: 500 records to project_publications
+  Inserted batch 64: 500 records to project_publications
+  Inserted batch 65: 500 records to project_publications
+  Inserted batch 66: 500 records to project_publications
+  Inserted batch 67: 500 records to project_publications
+  Inserted batch 68: 500 records to project_publications
+  Inserted batch 69: 500 records to project_publications
+  Inserted batch 70: 500 records to project_publications
+  Inserted batch 71: 500 records to project_publications
+  Inserted batch 72: 500 records to project_publications
+  Inserted batch 73: 500 records to project_publications
+  Inserted batch 74: 500 records to project_publications
+  Inserted batch 75: 500 records to project_publications
+  Inserted batch 76: 500 records to project_publications
+  Inserted batch 77: 500 records to project_publications
+  Inserted batch 78: 500 records to project_publications
+  Inserted batch 79: 500 records to project_publications
+  Inserted batch 80: 500 records to project_publications
+  Inserted batch 81: 500 records to project_publications
+  Inserted batch 82: 500 records to project_publications
+  Inserted batch 83: 500 records to project_publications
+  Inserted batch 84: 500 records to project_publications
+  Inserted batch 85: 500 records to project_publications
+  Inserted batch 86: 500 records to project_publications
+  Inserted batch 87: 500 records to project_publications
+  Inserted batch 88: 500 records to project_publications
+  Inserted batch 89: 500 records to project_publications
+  Inserted batch 90: 500 records to project_publications
+  Inserted batch 91: 500 records to project_publications
+  Inserted batch 92: 500 records to project_publications
+  Inserted batch 93: 500 records to project_publications
+  Inserted batch 94: 500 records to project_publications
+  Inserted batch 95: 500 records to project_publications
+  Inserted batch 96: 500 records to project_publications
+  Inserted batch 97: 500 records to project_publications
+  Inserted batch 98: 500 records to project_publications
+  Inserted batch 99: 500 records to project_publications
+  Inserted batch 100: 500 records to project_publications
+  Inserted batch 101: 500 records to project_publications
+  Inserted batch 102: 500 records to project_publications
+  Inserted batch 103: 500 records to project_publications
+  Inserted batch 104: 500 records to project_publications
+  Inserted batch 105: 500 records to project_publications
+  Inserted batch 106: 500 records to project_publications
+  Inserted batch 107: 500 records to project_publications
+  Inserted batch 108: 500 records to project_publications
+  Inserted batch 109: 500 records to project_publications
+  Inserted batch 110: 500 records to project_publications
+  Inserted batch 111: 500 records to project_publications
+  Inserted batch 112: 500 records to project_publications
+  Inserted batch 113: 500 records to project_publications
+  Inserted batch 114: 500 records to project_publications
+  Inserted batch 115: 500 records to project_publications
+  Inserted batch 116: 500 records to project_publications
+  Inserted batch 117: 500 records to project_publications
+  Inserted batch 118: 500 records to project_publications
+  Inserted batch 119: 500 records to project_publications
+  Inserted batch 120: 500 records to project_publications
+  Inserted batch 121: 500 records to project_publications
+  Inserted batch 122: 500 records to project_publications
+  Inserted batch 123: 500 records to project_publications
+  Inserted batch 124: 500 records to project_publications
+  Inserted batch 125: 500 records to project_publications
+  Inserted batch 126: 500 records to project_publications
+  Inserted batch 127: 500 records to project_publications
+  Inserted batch 128: 500 records to project_publications
+  Inserted batch 129: 500 records to project_publications
+  Inserted batch 130: 500 records to project_publications
+  Inserted batch 131: 500 records to project_publications
+  Inserted batch 132: 500 records to project_publications
+  Inserted batch 133: 500 records to project_publications
+  Inserted batch 134: 500 records to project_publications
+  Inserted batch 135: 500 records to project_publications
+  Inserted batch 136: 500 records to project_publications
+  Inserted batch 137: 500 records to project_publications
+  Inserted batch 138: 500 records to project_publications
+  Inserted batch 139: 500 records to project_publications
+  Inserted batch 140: 500 records to project_publications
+  Inserted batch 141: 500 records to project_publications
+  Inserted batch 142: 500 records to project_publications
+  Inserted batch 143: 500 records to project_publications
+  Inserted batch 144: 500 records to project_publications
+  Inserted batch 145: 500 records to project_publications
+  Inserted batch 146: 500 records to project_publications
+  Inserted batch 147: 500 records to project_publications
+  Inserted batch 148: 500 records to project_publications
+  Inserted batch 149: 500 records to project_publications
+  Inserted batch 150: 500 records to project_publications
+  Inserted batch 151: 500 records to project_publications
+  Inserted batch 152: 500 records to project_publications
+  Inserted batch 153: 500 records to project_publications
+  Inserted batch 154: 500 records to project_publications
+  Inserted batch 155: 500 records to project_publications
+  Inserted batch 156: 500 records to project_publications
+  Inserted batch 157: 500 records to project_publications
+  Inserted batch 158: 500 records to project_publications
+  Inserted batch 159: 500 records to project_publications
+  Inserted batch 160: 500 records to project_publications
+  Inserted batch 161: 500 records to project_publications
+  Inserted batch 162: 500 records to project_publications
+  Inserted batch 163: 500 records to project_publications
+  Inserted batch 164: 500 records to project_publications
+  Inserted batch 165: 500 records to project_publications
+  Inserted batch 166: 500 records to project_publications
+  Inserted batch 167: 500 records to project_publications
+  Inserted batch 168: 500 records to project_publications
+  Inserted batch 169: 500 records to project_publications
+  Inserted batch 170: 500 records to project_publications
+  Inserted batch 171: 500 records to project_publications
+  Inserted batch 172: 500 records to project_publications
+  Inserted batch 173: 500 records to project_publications
+  Inserted batch 174: 500 records to project_publications
+  Inserted batch 175: 500 records to project_publications
+  Inserted batch 176: 500 records to project_publications
+  Inserted batch 177: 500 records to project_publications
+  Inserted batch 178: 500 records to project_publications
+  Inserted batch 179: 500 records to project_publications
+  Inserted batch 180: 500 records to project_publications
+  Inserted batch 181: 500 records to project_publications
+  Inserted batch 182: 500 records to project_publications
+  Inserted batch 183: 500 records to project_publications
+  Inserted batch 184: 500 records to project_publications
+  Inserted batch 185: 500 records to project_publications
+  Inserted batch 186: 500 records to project_publications
+  Inserted batch 187: 500 records to project_publications
+  Inserted batch 188: 500 records to project_publications
+  Inserted batch 189: 500 records to project_publications
+  Inserted batch 190: 500 records to project_publications
+  Inserted batch 191: 500 records to project_publications
+  Inserted batch 192: 500 records to project_publications
+  Inserted batch 193: 500 records to project_publications
+  Inserted batch 194: 500 records to project_publications
+  Inserted batch 195: 500 records to project_publications
+  Inserted batch 196: 500 records to project_publications
+  Inserted batch 197: 500 records to project_publications
+  Inserted batch 198: 500 records to project_publications
+  Inserted batch 199: 500 records to project_publications
+  Inserted batch 200: 500 records to project_publications
+  Inserted batch 201: 500 records to project_publications
+  Inserted batch 202: 500 records to project_publications
+  Inserted batch 203: 500 records to project_publications
+  Inserted batch 204: 500 records to project_publications
+  Inserted batch 205: 500 records to project_publications
+  Inserted batch 206: 500 records to project_publications
+  Inserted batch 207: 500 records to project_publications
+  Inserted batch 208: 500 records to project_publications
+  Inserted batch 209: 500 records to project_publications
+  Inserted batch 210: 500 records to project_publications
+  Inserted batch 211: 500 records to project_publications
+  Inserted batch 212: 500 records to project_publications
+  Inserted batch 213: 500 records to project_publications
+  Inserted batch 214: 500 records to project_publications
+  Inserted batch 215: 500 records to project_publications
+  Inserted batch 216: 500 records to project_publications
+  Inserted batch 217: 500 records to project_publications
+  Inserted batch 218: 500 records to project_publications
+  Inserted batch 219: 500 records to project_publications
+  Inserted batch 220: 500 records to project_publications
+  Inserted batch 221: 500 records to project_publications
+  Inserted batch 222: 500 records to project_publications
+  Inserted batch 223: 500 records to project_publications
+  Inserted batch 224: 500 records to project_publications
+  Inserted batch 225: 500 records to project_publications
+  Inserted batch 226: 500 records to project_publications
+  Inserted batch 227: 500 records to project_publications
+  Inserted batch 228: 500 records to project_publications
+  Inserted batch 229: 500 records to project_publications
+  Inserted batch 230: 500 records to project_publications
+  Inserted batch 231: 500 records to project_publications
+  Inserted batch 232: 500 records to project_publications
+  Inserted batch 233: 500 records to project_publications
+  Inserted batch 234: 500 records to project_publications
+  Inserted batch 235: 500 records to project_publications
+  Inserted batch 236: 500 records to project_publications
+  Inserted batch 237: 500 records to project_publications
+  Inserted batch 238: 500 records to project_publications
+  Inserted batch 239: 500 records to project_publications
+  Inserted batch 240: 500 records to project_publications
+  Inserted batch 241: 500 records to project_publications
+  Inserted batch 242: 500 records to project_publications
+  Inserted batch 243: 500 records to project_publications
+  Inserted batch 244: 500 records to project_publications
+  Inserted batch 245: 500 records to project_publications
+  Inserted batch 246: 500 records to project_publications
+  Inserted batch 247: 500 records to project_publications
+  Inserted batch 248: 500 records to project_publications
+  Inserted batch 249: 500 records to project_publications
+  Inserted batch 250: 500 records to project_publications
+  Inserted batch 251: 500 records to project_publications
+  Inserted batch 252: 500 records to project_publications
+  Inserted batch 253: 500 records to project_publications
+  Inserted batch 254: 500 records to project_publications
+  Inserted batch 255: 500 records to project_publications
+  Inserted batch 256: 500 records to project_publications
+  Inserted batch 257: 500 records to project_publications
+  Inserted batch 258: 500 records to project_publications
+  Inserted batch 259: 500 records to project_publications
+  Inserted batch 260: 500 records to project_publications
+  Inserted batch 261: 500 records to project_publications
+  Inserted batch 262: 500 records to project_publications
+  Inserted batch 263: 500 records to project_publications
+  Inserted batch 264: 500 records to project_publications
+  Inserted batch 265: 500 records to project_publications
+  Inserted batch 266: 133 records to project_publications
+
+Refreshing materialized views...
+  Warning: Could not refresh materialized views: {'message': 'cannot refresh materialized view "public.projects_enriched" concurrently', 'code': '55000', 'hint': 'Create a unique index with no WHERE clause on one or more columns of the materialized view.', 'details': None}
+
+============================================================
+ETL COMPLETE
+============================================================
+Time elapsed: 0:06:50.701420
+Projects loaded: 60347
+Abstracts loaded: 60031
+Publications loaded: 103228
+Patents loaded: 46065
+Clinical studies loaded: 38140
+Publication links loaded: 132633

@@ -7,12 +7,12 @@ export const dynamic = 'force-dynamic'
 
 interface SearchParams {
   query?: string
-  category?: string
+  categories?: string[]
   minConfidence?: number
   maxConfidence?: number
-  year?: number
-  orgType?: string
-  fundingMechanism?: string
+  years?: number[]
+  orgTypes?: string[]
+  fundingMechanisms?: string[]
   supplements?: 'all' | 'base' | 'supplements'
   page?: number
   limit?: number
@@ -47,18 +47,16 @@ export async function GET(request: NextRequest) {
 
     const params: SearchParams = {
       query: searchParams.get('q') || searchParams.get('query') || undefined,
-      category: searchParams.get('category') || undefined,
+      categories: searchParams.get('categories')?.split(',').filter(Boolean) || undefined,
       minConfidence: searchParams.get('minConfidence')
         ? parseInt(searchParams.get('minConfidence')!)
         : undefined,
       maxConfidence: searchParams.get('maxConfidence')
         ? parseInt(searchParams.get('maxConfidence')!)
         : undefined,
-      year: searchParams.get('year')
-        ? parseInt(searchParams.get('year')!)
-        : undefined,
-      orgType: searchParams.get('orgType') || undefined,
-      fundingMechanism: searchParams.get('fundingMechanism') || undefined,
+      years: searchParams.get('years')?.split(',').map(y => parseInt(y)).filter(Boolean) || undefined,
+      orgTypes: searchParams.get('orgTypes')?.split(',').filter(Boolean) || undefined,
+      fundingMechanisms: searchParams.get('fundingMechanisms')?.split(',').filter(Boolean) || undefined,
       supplements: (searchParams.get('supplements') as 'all' | 'base' | 'supplements') || undefined,
       page: parseInt(searchParams.get('page') || '1'),
       limit: Math.min(parseInt(searchParams.get('limit') || '20'), 100),
@@ -120,8 +118,8 @@ async function standardSearch(params: SearchParams, offset: number) {
   }
 
   // Apply filters
-  if (params.category) {
-    query = query.eq('primary_category', params.category)
+  if (params.categories && params.categories.length > 0) {
+    query = query.in('primary_category', params.categories)
   }
 
   if (params.minConfidence !== undefined) {
@@ -132,16 +130,18 @@ async function standardSearch(params: SearchParams, offset: number) {
     query = query.lte('biotools_confidence', params.maxConfidence)
   }
 
-  if (params.year) {
-    query = query.eq('fiscal_year', params.year)
+  if (params.years && params.years.length > 0) {
+    query = query.in('fiscal_year', params.years)
   }
 
-  if (params.orgType) {
-    query = query.eq('org_type', params.orgType)
+  if (params.orgTypes && params.orgTypes.length > 0) {
+    query = query.in('org_type', params.orgTypes)
   }
 
-  if (params.fundingMechanism) {
-    query = query.ilike('funding_mechanism', `%${params.fundingMechanism}%`)
+  if (params.fundingMechanisms && params.fundingMechanisms.length > 0) {
+    // For funding mechanisms, we need to check if any of them are in the funding_mechanism field
+    const orConditions = params.fundingMechanisms.map(fm => `funding_mechanism.ilike.%${fm}%`).join(',')
+    query = query.or(orConditions)
   }
 
   if (params.supplements) {
@@ -219,12 +219,12 @@ export async function POST(request: NextRequest) {
 
     const params: SearchParams = {
       query: body.query,
-      category: body.category,
+      categories: body.categories,
       minConfidence: body.minConfidence,
       maxConfidence: body.maxConfidence,
-      year: body.year,
-      orgType: body.orgType,
-      fundingMechanism: body.fundingMechanism,
+      years: body.years,
+      orgTypes: body.orgTypes,
+      fundingMechanisms: body.fundingMechanisms,
       supplements: body.supplements,
       page: body.page || 1,
       limit: Math.min(body.limit || 20, 100),

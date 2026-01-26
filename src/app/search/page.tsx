@@ -31,9 +31,8 @@ const orgTypes = [
   { id: 'research_institute', label: 'Research Institute' },
 ]
 
-// Fiscal Years (last 10 years)
-const currentYear = new Date().getFullYear()
-const fiscalYears = Array.from({ length: 10 }, (_, i) => currentYear - i)
+// Fiscal Years (limited to recent years)
+const fiscalYears = [2026, 2025, 2024, 2023]
 
 interface SearchResult {
   id: string
@@ -60,28 +59,69 @@ function SearchContent() {
 
   const [query, setQuery] = useState(searchParams.get('q') || '')
 
-  // Filters
-  const [selectedCategory, setSelectedCategory] = useState('')
-  const [selectedFocus, setSelectedFocus] = useState('')
-  const [selectedOrgType, setSelectedOrgType] = useState('')
-  const [selectedYear, setSelectedYear] = useState<number | null>(null)
-  const [sbirOnly, setSbirOnly] = useState(false)
+  // Multi-select Filters
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [selectedOrgTypes, setSelectedOrgTypes] = useState<string[]>([])
+  const [selectedYears, setSelectedYears] = useState<number[]>([])
+  const [selectedFundingMechanisms, setSelectedFundingMechanisms] = useState<string[]>([])
   const [supplementFilter, setSupplementFilter] = useState<'all' | 'base' | 'supplements'>('all')
 
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState(0)
 
+  // Toggle functions for multi-select
+  const toggleCategory = (categoryId: string) => {
+    setSelectedCategories(prev =>
+      prev.includes(categoryId)
+        ? prev.filter(id => id !== categoryId)
+        : [...prev, categoryId]
+    )
+  }
+
+  const toggleOrgType = (orgTypeId: string) => {
+    setSelectedOrgTypes(prev =>
+      prev.includes(orgTypeId)
+        ? prev.filter(id => id !== orgTypeId)
+        : [...prev, orgTypeId]
+    )
+  }
+
+  const toggleYear = (year: number) => {
+    setSelectedYears(prev =>
+      prev.includes(year)
+        ? prev.filter(y => y !== year)
+        : [...prev, year]
+    )
+  }
+
+  const toggleFundingMechanism = (mechanism: string) => {
+    setSelectedFundingMechanisms(prev =>
+      prev.includes(mechanism)
+        ? prev.filter(m => m !== mechanism)
+        : [...prev, mechanism]
+    )
+  }
+
   const performSearch = useCallback(async () => {
     setLoading(true)
     try {
       const params = new URLSearchParams()
       if (query) params.set('q', query)
-      if (selectedCategory) params.set('category', selectedCategory)
-      if (selectedFocus) params.set('focus', selectedFocus)
-      if (selectedOrgType) params.set('orgType', selectedOrgType)
-      if (selectedYear) params.set('year', selectedYear.toString())
-      if (sbirOnly) params.set('fundingMechanism', 'SBIR')
+
+      // Multi-select filters - send as comma-separated values
+      if (selectedCategories.length > 0) {
+        params.set('categories', selectedCategories.join(','))
+      }
+      if (selectedOrgTypes.length > 0) {
+        params.set('orgTypes', selectedOrgTypes.join(','))
+      }
+      if (selectedYears.length > 0) {
+        params.set('years', selectedYears.join(','))
+      }
+      if (selectedFundingMechanisms.length > 0) {
+        params.set('fundingMechanisms', selectedFundingMechanisms.join(','))
+      }
       if (supplementFilter !== 'all') params.set('supplements', supplementFilter)
       params.set('limit', '50')
 
@@ -95,13 +135,13 @@ function SearchContent() {
     } finally {
       setLoading(false)
     }
-  }, [query, selectedCategory, selectedFocus, selectedOrgType, selectedYear, sbirOnly, supplementFilter])
+  }, [query, selectedCategories, selectedOrgTypes, selectedYears, selectedFundingMechanisms, supplementFilter])
 
   useEffect(() => {
-    if (query || selectedCategory || selectedFocus || selectedOrgType || selectedYear) {
+    if (query || selectedCategories.length > 0 || selectedOrgTypes.length > 0 || selectedYears.length > 0 || selectedFundingMechanisms.length > 0) {
       performSearch()
     }
-  }, [performSearch, query, selectedCategory, selectedFocus, selectedOrgType, selectedYear, supplementFilter])
+  }, [performSearch, query, selectedCategories, selectedOrgTypes, selectedYears, selectedFundingMechanisms, supplementFilter])
 
   const handleSearch = async (e?: React.FormEvent) => {
     e?.preventDefault()
@@ -183,7 +223,48 @@ function SearchContent() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* Grant Type Channel */}
+              {/* Life Science Channel */}
+              <div className="border-l-4 border-cyan-500 pl-4">
+                <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Life Science</div>
+                <div className="space-y-2">
+                  {lifeScienceCategories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      onClick={() => toggleCategory(cat.id)}
+                      className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all text-sm ${
+                        selectedCategories.includes(cat.id)
+                          ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-md'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                    >
+                      <span className="mr-2">{cat.icon}</span>
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Organization Channel */}
+              <div className="border-l-4 border-teal-400 pl-4">
+                <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Organization</div>
+                <div className="space-y-2">
+                  {orgTypes.map((type) => (
+                    <button
+                      key={type.id}
+                      onClick={() => toggleOrgType(type.id)}
+                      className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all text-sm ${
+                        selectedOrgTypes.includes(type.id)
+                          ? 'bg-gradient-to-r from-teal-400 to-cyan-400 text-white shadow-md'
+                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                      }`}
+                    >
+                      {type.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Grant Type Channel (with SBIR/STTR) */}
               <div className="border-l-4 border-teal-500 pl-4">
                 <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Grant Type</div>
                 <div className="space-y-2">
@@ -209,56 +290,18 @@ function SearchContent() {
                       </div>
                     </button>
                   ))}
-                </div>
-              </div>
-
-              {/* Category Channel */}
-              <div className="border-l-4 border-cyan-500 pl-4">
-                <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Life Science</div>
-                <div className="space-y-2">
-                  {lifeScienceCategories.map((cat) => (
+                  <div className="pt-2 border-t border-gray-200 mt-2">
                     <button
-                      key={cat.id}
-                      onClick={() => setSelectedCategory(cat.id === selectedCategory ? '' : cat.id)}
+                      onClick={() => toggleFundingMechanism('SBIR')}
                       className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all text-sm ${
-                        selectedCategory === cat.id
-                          ? 'bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-md'
+                        selectedFundingMechanisms.includes('SBIR')
+                          ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-md'
                           : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                       }`}
                     >
-                      <span className="mr-2">{cat.icon}</span>
-                      {cat.label}
+                      SBIR/STTR
                     </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Organization Channel */}
-              <div className="border-l-4 border-teal-400 pl-4">
-                <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Organization</div>
-                <div className="space-y-2">
-                  {orgTypes.map((type) => (
-                    <button
-                      key={type.id}
-                      onClick={() => setSelectedOrgType(type.id === selectedOrgType ? '' : type.id)}
-                      className={`w-full text-left px-3 py-2 rounded-lg font-medium transition-all text-sm ${
-                        selectedOrgType === type.id
-                          ? 'bg-gradient-to-r from-teal-400 to-cyan-400 text-white shadow-md'
-                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
-                      }`}
-                    >
-                      {type.label}
-                    </button>
-                  ))}
-                  <label className="flex items-center gap-2 px-3 py-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={sbirOnly}
-                      onChange={(e) => setSbirOnly(e.target.checked)}
-                      className="w-4 h-4 rounded border-gray-300 text-teal-500 focus:ring-teal-500"
-                    />
-                    <span className="text-sm font-medium text-gray-700">SBIR/STTR</span>
-                  </label>
+                  </div>
                 </div>
               </div>
 
@@ -266,12 +309,12 @@ function SearchContent() {
               <div className="border-l-4 border-cyan-400 pl-4">
                 <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Fiscal Year</div>
                 <div className="grid grid-cols-2 gap-2">
-                  {fiscalYears.slice(0, 8).map((year) => (
+                  {fiscalYears.map((year) => (
                     <button
                       key={year}
-                      onClick={() => setSelectedYear(year === selectedYear ? null : year)}
+                      onClick={() => toggleYear(year)}
                       className={`px-3 py-2 rounded-lg font-semibold transition-all text-sm ${
-                        selectedYear === year
+                        selectedYears.includes(year)
                           ? 'bg-gradient-to-r from-cyan-400 to-teal-400 text-white shadow-md'
                           : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                       }`}
