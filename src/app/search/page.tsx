@@ -52,6 +52,8 @@ interface SearchResult {
   funding_mechanism: string | null
   primary_category: string | null
   biotools_confidence: number | null
+  is_supplement: boolean | null
+  supplement_number: string | null
 }
 
 function SearchContent() {
@@ -66,6 +68,7 @@ function SearchContent() {
   const [selectedOrgType, setSelectedOrgType] = useState('')
   const [selectedYear, setSelectedYear] = useState<number | null>(null)
   const [sbirOnly, setSbirOnly] = useState(false)
+  const [supplementFilter, setSupplementFilter] = useState<'all' | 'base' | 'supplements'>('all')
 
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
@@ -82,6 +85,7 @@ function SearchContent() {
       if (selectedOrgType) params.set('orgType', selectedOrgType)
       if (selectedYear) params.set('year', selectedYear.toString())
       if (sbirOnly) params.set('fundingMechanism', 'SBIR')
+      if (supplementFilter !== 'all') params.set('supplements', supplementFilter)
       params.set('limit', '50')
 
       const response = await fetch(`/api/search?${params.toString()}`)
@@ -94,13 +98,13 @@ function SearchContent() {
     } finally {
       setLoading(false)
     }
-  }, [query, selectedCategory, selectedFocus, selectedOrgType, selectedYear, sbirOnly])
+  }, [query, selectedCategory, selectedFocus, selectedOrgType, selectedYear, sbirOnly, supplementFilter])
 
   useEffect(() => {
     if (query || selectedCategory || selectedFocus || selectedOrgType || selectedYear) {
       performSearch()
     }
-  }, [performSearch, query, selectedCategory, selectedFocus, selectedOrgType, selectedYear])
+  }, [performSearch, query, selectedCategory, selectedFocus, selectedOrgType, selectedYear, supplementFilter])
 
   const handleSearch = async (e?: React.FormEvent) => {
     e?.preventDefault()
@@ -280,6 +284,30 @@ function SearchContent() {
                 SBIR/STTR Only
               </span>
             </label>
+
+            {/* Supplement Filter */}
+            <div className="flex items-center gap-2">
+              <span className="text-gray-400 text-sm font-medium">Grants:</span>
+              <div className="flex items-center gap-1 bg-gray-900/50 rounded-lg p-1 border border-gray-700">
+                {[
+                  { id: 'all', label: 'All' },
+                  { id: 'base', label: 'Base Only' },
+                  { id: 'supplements', label: 'Supplements' }
+                ].map((option) => (
+                  <button
+                    key={option.id}
+                    onClick={() => setSupplementFilter(option.id as 'all' | 'base' | 'supplements')}
+                    className={`px-3 py-1.5 rounded text-xs font-semibold transition-all ${
+                      supplementFilter === option.id
+                        ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg'
+                        : 'text-gray-400 hover:text-gray-200'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Results Count */}
             {total > 0 && (

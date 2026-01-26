@@ -13,6 +13,7 @@ interface SearchParams {
   year?: number
   orgType?: string
   fundingMechanism?: string
+  supplements?: 'all' | 'base' | 'supplements'
   page?: number
   limit?: number
   useVector?: boolean
@@ -35,6 +36,8 @@ interface SearchResult {
   biotools_confidence: number | null
   biotools_reasoning: string | null
   pi_names: string | null
+  is_supplement: boolean | null
+  supplement_number: string | null
   similarity?: number
 }
 
@@ -56,6 +59,7 @@ export async function GET(request: NextRequest) {
         : undefined,
       orgType: searchParams.get('orgType') || undefined,
       fundingMechanism: searchParams.get('fundingMechanism') || undefined,
+      supplements: (searchParams.get('supplements') as 'all' | 'base' | 'supplements') || undefined,
       page: parseInt(searchParams.get('page') || '1'),
       limit: Math.min(parseInt(searchParams.get('limit') || '20'), 100),
       useVector: searchParams.get('useVector') === 'true',
@@ -99,7 +103,9 @@ async function standardSearch(params: SearchParams, offset: number) {
       primary_category,
       biotools_confidence,
       biotools_reasoning,
-      pi_names
+      pi_names,
+      is_supplement,
+      supplement_number
     `,
       { count: 'exact' }
     )
@@ -136,6 +142,15 @@ async function standardSearch(params: SearchParams, offset: number) {
 
   if (params.fundingMechanism) {
     query = query.ilike('funding_mechanism', `%${params.fundingMechanism}%`)
+  }
+
+  if (params.supplements) {
+    if (params.supplements === 'base') {
+      query = query.eq('is_supplement', false)
+    } else if (params.supplements === 'supplements') {
+      query = query.eq('is_supplement', true)
+    }
+    // 'all' means no filter
   }
 
   // Order by confidence descending
@@ -210,6 +225,7 @@ export async function POST(request: NextRequest) {
       year: body.year,
       orgType: body.orgType,
       fundingMechanism: body.fundingMechanism,
+      supplements: body.supplements,
       page: body.page || 1,
       limit: Math.min(body.limit || 20, 100),
       useVector: body.useVector || false,

@@ -119,6 +119,25 @@ def determine_org_type(org_name: str, funding_mechanism: str) -> str:
     return 'other'
 
 
+def parse_supplement_info(full_project_num: Optional[str]) -> tuple[bool, Optional[str]]:
+    """
+    Extract supplement information from full project number.
+    Supplements end with S followed by number (e.g., 3R01AG071228-05S1).
+
+    Returns:
+        (is_supplement, supplement_number) tuple
+        e.g., (True, "S1") or (False, None)
+    """
+    import re
+    if not full_project_num:
+        return False, None
+
+    match = re.search(r'S(\d+)$', full_project_num)
+    if match:
+        return True, f"S{match.group(1)}"
+    return False, None
+
+
 def process_projects_csv(filepath: str, limit: Optional[int] = None) -> Generator[Dict[str, Any], None, None]:
     """
     Process the NIH RePORTER projects CSV file.
@@ -148,11 +167,15 @@ def process_projects_csv(filepath: str, limit: Optional[int] = None) -> Generato
             # Extract and transform fields
             org_name = row.get('ORG_NAME', '')
             funding_mechanism = row.get('FUNDING_MECHANISM', '')
+            full_project_num = row.get('FULL_PROJECT_NUM')
+
+            # Parse supplement information
+            is_supplement, supplement_number = parse_supplement_info(full_project_num)
 
             project = {
                 'application_id': row.get('APPLICATION_ID'),
                 'project_number': row.get('CORE_PROJECT_NUM'),
-                'full_project_num': row.get('FULL_PROJECT_NUM'),
+                'full_project_num': full_project_num,
                 'activity_code': row.get('ACTIVITY'),
                 'funding_mechanism': funding_mechanism,
                 'title': row.get('PROJECT_TITLE'),
@@ -172,6 +195,8 @@ def process_projects_csv(filepath: str, limit: Optional[int] = None) -> Generato
                 'pi_names': row.get('PI_NAMEs'),
                 'funding_agency': 'NIH',
                 'is_bio_related': True,
+                'is_supplement': is_supplement,
+                'supplement_number': supplement_number,
             }
 
             yield project
@@ -185,7 +210,9 @@ def process_projects_csv(filepath: str, limit: Optional[int] = None) -> Generato
 def load_projects(data_dir: str = 'data/raw', limit: Optional[int] = None) -> list:
     """
     Load and process all projects from the CSV file.
-    Deduplicates by project_number, keeping the most recent fiscal year.
+
+    NOTE: No deduplication is performed. Each APPLICATION_ID is unique and represents
+    distinct funding (including supplements, multi-year phases, etc.).
 
     Args:
         data_dir: Directory containing the raw CSV files
@@ -199,24 +226,13 @@ def load_projects(data_dir: str = 'data/raw', limit: Optional[int] = None) -> li
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Projects file not found: {filepath}")
 
-    projects_raw = list(process_projects_csv(filepath, limit))
-    print(f"Loaded {len(projects_raw)} bio-related projects (before deduplication)")
+    projects = list(process_projects_csv(filepath, limit))
+    print(f"Loaded {len(projects)} bio-related projects")
 
-    # Deduplicate by project_number, keeping most recent fiscal year
-    projects_map = {}
-    for project in projects_raw:
-        proj_num = project.get('project_number')
-        if not proj_num:
-            continue
-
-        fiscal_year = project.get('fiscal_year') or 0
-
-        # If we haven't seen this project, or this is a more recent fiscal year, keep it
-        if proj_num not in projects_map or fiscal_year > projects_map[proj_num].get('fiscal_year', 0):
-            projects_map[proj_num] = project
-
-    projects = list(projects_map.values())
-    print(f"After deduplication: {len(projects)} unique projects")
+    # Count supplements for reporting
+    supplement_count = sum(1 for p in projects if p.get('is_supplement'))
+    print(f"  - Base grants: {len(projects) - supplement_count}")
+    print(f"  - Supplements: {supplement_count}")
 
     return projects
 
