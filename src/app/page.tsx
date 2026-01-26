@@ -1,7 +1,27 @@
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Header } from '@/components/Header'
+import { createClient } from '@/lib/supabase/client'
 
 export default function Home() {
+  const router = useRouter()
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const supabase = createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (user) {
+        router.push('/search')
+      }
+    }
+
+    checkAuth()
+  }, [router])
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       <Header />
