@@ -300,7 +300,7 @@ function SearchContent() {
                           : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                       }`}
                     >
-                      SBIR/STTR ONLY
+                      SBIR/STTR Only
                     </button>
                   </div>
                 </div>
