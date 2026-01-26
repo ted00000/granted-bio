@@ -85,6 +85,76 @@ def load_abstracts_map(data_dir: str = 'data/raw') -> Dict[str, str]:
     return abstracts_map
 
 
+def generate_embeddings(supabase: Client, projects: List[Dict], abstracts: List[Dict]) -> int:
+    """
+    Generate embeddings for projects and abstracts using OpenAI.
+
+    Returns number of embeddings generated.
+    """
+    import openai
+
+    openai_key = os.environ.get('OPENAI_API_KEY')
+    if not openai_key:
+        print("  OPENAI_API_KEY not found, skipping embeddings")
+        return 0
+
+    client = openai.OpenAI(api_key=openai_key)
+    model = "text-embedding-3-small"
+
+    embeddings_generated = 0
+    total_cost = 0.0
+
+    # Cost: $0.00002 per 1K tokens (text-embedding-3-small)
+    # Average ~1000 tokens per project = $0.00002 per embedding
+
+    print(f"\n  Generating embeddings for {len(projects)} projects...")
+    print(f"  Model: {model}")
+    print(f"  Estimated cost: ${len(projects) * 0.000021:.4f}")
+
+    for i, (project, abstract) in enumerate(zip(projects, abstracts)):
+        if i % 100 == 0 and i > 0:
+            print(f"  Generated {i}/{len(projects)} embeddings... (cost: ${total_cost:.4f})")
+
+        try:
+            # Create embedding text from title + phr + terms + abstract
+            text = f"{project.get('title', '')} {project.get('phr', '')} {project.get('terms', '')} {abstract.get('abstract_text', '')}"
+            text = text[:8000]  # Truncate to reasonable length
+
+            if not text.strip():
+                continue
+
+            # Generate embedding
+            response = client.embeddings.create(
+                model=model,
+                input=text
+            )
+
+            embedding = response.data[0].embedding
+            tokens_used = response.usage.total_tokens
+            cost = (tokens_used / 1000) * 0.00002
+            total_cost += cost
+
+            # Update project with embedding
+            supabase.table('projects').update({
+                'embedding': embedding
+            }).eq('application_id', project['application_id']).execute()
+
+            # Update abstract with embedding
+            supabase.table('abstracts').update({
+                'embedding': embedding
+            }).eq('application_id', project['application_id']).execute()
+
+            embeddings_generated += 1
+
+        except Exception as e:
+            print(f"  Error generating embedding for project {project.get('application_id')}: {e}")
+
+    print(f"\n  Generated {embeddings_generated} embeddings")
+    print(f"  Total cost: ${total_cost:.4f}")
+
+    return embeddings_generated
+
+
 def run_etl(
     data_dir: str = 'data/raw',
     limit: Optional[int] = None,
@@ -257,6 +327,13 @@ def run_etl(
     print(f"  Filtered to {len(links)} links for loaded projects/publications")
     stats['links_loaded'] = batch_insert(supabase, 'project_publications', links)
 
+    # Generate embeddings if requested
+    if not skip_embeddings:
+        print("\n" + "=" * 60)
+        print("GENERATING EMBEDDINGS")
+        print("=" * 60)
+        stats['embeddings_generated'] = generate_embeddings(supabase, classified_projects, abstracts_to_load)
+
     # Refresh materialized views
     print("\nRefreshing materialized views...")
     try:
@@ -287,12 +364,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Run granted.bio ETL pipeline')
     parser.add_argument('--limit', type=int, default=None, help='Limit number of projects to process')
     parser.add_argument('--data-dir', type=str, default='data/raw', help='Directory containing raw CSV files')
-    parser.add_argument('--skip-embeddings', action='store_true', default=True, help='Skip embedding generation')
+    parser.add_argument('--generate-embeddings', action='store_true', default=False, help='Generate embeddings (uses OpenAI API)')
 
     args = parser.parse_args()
 
     run_etl(
         data_dir=args.data_dir,
         limit=args.limit,
-        skip_embeddings=args.skip_embeddings,
+        skip_embeddings=not args.generate_embeddings,
     )
