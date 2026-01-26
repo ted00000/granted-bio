@@ -4,16 +4,38 @@ import { Suspense, useState, useCallback, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
-const categories = [
+// Life Science Categories
+const lifeScienceCategories = [
+  { id: 'biotools', label: 'Biotools', icon: '🔧' },
+  { id: 'therapeutics', label: 'Therapeutics', icon: '💊' },
+  { id: 'diagnostics', label: 'Diagnostics', icon: '🩺' },
+  { id: 'medical_device', label: 'Medical Device', icon: '⚕️' },
+  { id: 'digital_health', label: 'Digital Health', icon: '📱' },
+]
+
+// Research Focus Areas
+const focusAreas = [
   { id: 'proteomics', label: 'Proteomics', icon: '🧬' },
   { id: 'genomics', label: 'Genomics', icon: '🔬' },
-  { id: 'diagnostics', label: 'Diagnostics', icon: '🩺' },
   { id: 'imaging', label: 'Imaging', icon: '📷' },
-  { id: 'drug-dev', label: 'Drug Development', icon: '💊' },
+  { id: 'drug-dev', label: 'Drug Development', icon: '💉' },
   { id: 'bioinformatics', label: 'Bioinformatics', icon: '💻' },
   { id: 'sequencing', label: 'Sequencing', icon: '🧪' },
   { id: 'gene-editing', label: 'Gene Editing', icon: '✂️' },
+  { id: 'immunology', label: 'Immunology', icon: '🛡️' },
 ]
+
+// Organization Types
+const orgTypes = [
+  { id: 'company', label: 'Company', icon: '🏢' },
+  { id: 'university', label: 'University', icon: '🎓' },
+  { id: 'hospital', label: 'Hospital', icon: '🏥' },
+  { id: 'research_institute', label: 'Research Institute', icon: '🔬' },
+]
+
+// Fiscal Years (last 10 years)
+const currentYear = new Date().getFullYear()
+const fiscalYears = Array.from({ length: 10 }, (_, i) => currentYear - i)
 
 interface SearchResult {
   id: string
@@ -37,8 +59,14 @@ function SearchContent() {
   const searchParams = useSearchParams()
 
   const [query, setQuery] = useState(searchParams.get('q') || '')
+
+  // Filters
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedFocus, setSelectedFocus] = useState('')
+  const [selectedOrgType, setSelectedOrgType] = useState('')
+  const [selectedYear, setSelectedYear] = useState<number | null>(null)
   const [sbirOnly, setSbirOnly] = useState(false)
+
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState(0)
@@ -50,6 +78,9 @@ function SearchContent() {
       const params = new URLSearchParams()
       if (query) params.set('q', query)
       if (selectedCategory) params.set('category', selectedCategory)
+      if (selectedFocus) params.set('focus', selectedFocus)
+      if (selectedOrgType) params.set('orgType', selectedOrgType)
+      if (selectedYear) params.set('year', selectedYear.toString())
       if (sbirOnly) params.set('fundingMechanism', 'SBIR')
       params.set('limit', '50')
 
@@ -63,22 +94,17 @@ function SearchContent() {
     } finally {
       setLoading(false)
     }
-  }, [query, selectedCategory, sbirOnly])
+  }, [query, selectedCategory, selectedFocus, selectedOrgType, selectedYear, sbirOnly])
 
   useEffect(() => {
-    if (query || selectedCategory) {
+    if (query || selectedCategory || selectedFocus || selectedOrgType || selectedYear) {
       performSearch()
     }
-  }, [performSearch, query, selectedCategory])
+  }, [performSearch, query, selectedCategory, selectedFocus, selectedOrgType, selectedYear])
 
   const handleSearch = async (e?: React.FormEvent) => {
     e?.preventDefault()
     performSearch()
-  }
-
-  const handleCategoryClick = (catId: string) => {
-    const newCategory = catId === selectedCategory ? '' : catId
-    setSelectedCategory(newCategory)
   }
 
   return (
@@ -149,22 +175,90 @@ function SearchContent() {
             </div>
           </form>
 
-          {/* Category Pills */}
-          <div className="flex flex-wrap gap-3 justify-center max-w-6xl mx-auto mb-8">
-            {categories.map((cat) => (
-              <button
-                key={cat.id}
-                onClick={() => handleCategoryClick(cat.id)}
-                className={`group px-6 py-3 rounded-full font-semibold transition-all transform hover:scale-105 ${
-                  selectedCategory === cat.id
-                    ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-xl shadow-teal-500/30 scale-105'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700 hover:border-teal-500/50'
-                }`}
-              >
-                <span className="mr-2 text-xl">{cat.icon}</span>
-                <span>{cat.label}</span>
-              </button>
-            ))}
+          {/* Filters Section */}
+          <div className="space-y-6 max-w-6xl mx-auto">
+            {/* Life Science Category Filter */}
+            <div>
+              <div className="text-sm font-semibold text-gray-400 mb-3">Life Science Category</div>
+              <div className="flex flex-wrap gap-2">
+                {lifeScienceCategories.map((cat) => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id === selectedCategory ? '' : cat.id)}
+                    className={`px-4 py-2 rounded-full font-medium transition-all transform hover:scale-105 text-sm ${
+                      selectedCategory === cat.id
+                        ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/30 scale-105'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700 hover:border-teal-500/50'
+                    }`}
+                  >
+                    <span className="mr-1.5">{cat.icon}</span>
+                    <span>{cat.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Research Focus Filter */}
+            <div>
+              <div className="text-sm font-semibold text-gray-400 mb-3">Research Focus</div>
+              <div className="flex flex-wrap gap-2">
+                {focusAreas.map((focus) => (
+                  <button
+                    key={focus.id}
+                    onClick={() => setSelectedFocus(focus.id === selectedFocus ? '' : focus.id)}
+                    className={`px-4 py-2 rounded-full font-medium transition-all transform hover:scale-105 text-sm ${
+                      selectedFocus === focus.id
+                        ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/30 scale-105'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700 hover:border-teal-500/50'
+                    }`}
+                  >
+                    <span className="mr-1.5">{focus.icon}</span>
+                    <span>{focus.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Organization Type Filter */}
+            <div>
+              <div className="text-sm font-semibold text-gray-400 mb-3">Organization Type</div>
+              <div className="flex flex-wrap gap-2">
+                {orgTypes.map((type) => (
+                  <button
+                    key={type.id}
+                    onClick={() => setSelectedOrgType(type.id === selectedOrgType ? '' : type.id)}
+                    className={`px-4 py-2 rounded-full font-medium transition-all transform hover:scale-105 text-sm ${
+                      selectedOrgType === type.id
+                        ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/30 scale-105'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700 hover:border-teal-500/50'
+                    }`}
+                  >
+                    <span className="mr-1.5">{type.icon}</span>
+                    <span>{type.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Year Filter */}
+            <div>
+              <div className="text-sm font-semibold text-gray-400 mb-3">Fiscal Year</div>
+              <div className="flex flex-wrap gap-2">
+                {fiscalYears.map((year) => (
+                  <button
+                    key={year}
+                    onClick={() => setSelectedYear(year === selectedYear ? null : year)}
+                    className={`px-4 py-2 rounded-full font-medium transition-all transform hover:scale-105 text-sm ${
+                      selectedYear === year
+                        ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-lg shadow-teal-500/30 scale-105'
+                        : 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700 hover:border-teal-500/50'
+                    }`}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -291,17 +385,17 @@ function SearchContent() {
               </Link>
             ))}
           </div>
-        ) : (query || selectedCategory) ? (
+        ) : (query || selectedCategory || selectedFocus || selectedOrgType || selectedYear) ? (
           <div className="text-center py-32">
             <div className="text-8xl mb-6 opacity-20">🔍</div>
             <p className="text-gray-400 text-xl font-medium mb-2">No results found</p>
-            <p className="text-gray-500">Try adjusting your search or explore different categories</p>
+            <p className="text-gray-500">Try adjusting your search or filters</p>
           </div>
         ) : (
           <div className="text-center py-32">
             <div className="text-8xl mb-6">🧬</div>
             <p className="text-gray-300 text-2xl font-bold mb-3">Ready to explore?</p>
-            <p className="text-gray-500 text-lg">Enter a search query or select a category above</p>
+            <p className="text-gray-500 text-lg">Enter a search query or select filters above</p>
           </div>
         )}
       </main>
