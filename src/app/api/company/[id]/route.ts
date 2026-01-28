@@ -12,12 +12,44 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const { id } = await params
 
-    // Fetch the project
-    const { data: project, error: projectError } = await supabaseAdmin
-      .from('projects')
-      .select('*')
-      .or(`id.eq.${id},project_number.eq.${id},application_id.eq.${id}`)
-      .single()
+    // Fetch the project - try project_number first (most common), then application_id
+    // Don't try UUID match unless it looks like a UUID
+    const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id)
+
+    let project = null
+    let projectError = null
+
+    if (isUUID) {
+      const result = await supabaseAdmin
+        .from('projects')
+        .select('*')
+        .eq('id', id)
+        .single()
+      project = result.data
+      projectError = result.error
+    }
+
+    if (!project) {
+      // Try project_number
+      const result = await supabaseAdmin
+        .from('projects')
+        .select('*')
+        .eq('project_number', id)
+        .maybeSingle()
+      project = result.data
+      projectError = result.error
+    }
+
+    if (!project) {
+      // Try application_id (numeric string)
+      const result = await supabaseAdmin
+        .from('projects')
+        .select('*')
+        .eq('application_id', id)
+        .maybeSingle()
+      project = result.data
+      projectError = result.error
+    }
 
     if (projectError || !project) {
       return NextResponse.json(
