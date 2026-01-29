@@ -33,9 +33,9 @@ const orgTypes = [
 
 // Fiscal Years (limited to recent years)
 const fiscalYears = [
-  { year: 2026, active: false },
-  { year: 2025, active: true },
-  { year: 2024, active: false },
+  { year: 2026, active: false, hasData: false },
+  { year: 2025, active: false, hasData: true },
+  { year: 2024, active: false, hasData: false },
 ]
 
 interface SearchResult {
@@ -66,7 +66,7 @@ function SearchContent() {
   // Multi-select Filters
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedOrgTypes, setSelectedOrgTypes] = useState<string[]>([])
-  const [selectedYears, setSelectedYears] = useState<number[]>([])
+  const [selectedYears, setSelectedYears] = useState<number[]>([2025])
   const [selectedFundingMechanisms, setSelectedFundingMechanisms] = useState<string[]>([])
   const [supplementFilter, setSupplementFilter] = useState<'all' | 'base' | 'supplements'>('all')
 
@@ -160,6 +160,17 @@ function SearchContent() {
   const handleSearch = async (e?: React.FormEvent) => {
     e?.preventDefault()
     performSearch()
+  }
+
+  const clearFilters = () => {
+    setQuery('')
+    setSelectedCategories([])
+    setSelectedOrgTypes([])
+    setSelectedYears([2025])
+    setSelectedFundingMechanisms([])
+    setSupplementFilter('all')
+    setResults([])
+    setTotal(0)
   }
 
   return (
@@ -324,18 +335,16 @@ function SearchContent() {
               <div className="border-l-4 border-cyan-400 pl-4">
                 <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Fiscal Year</div>
                 <div className="grid grid-cols-2 gap-2">
-                  {fiscalYears.map(({ year, active }) => (
+                  {fiscalYears.map(({ year, active, hasData }) => (
                     <button
                       key={year}
                       onClick={() => active && toggleYear(year)}
                       disabled={!active}
-                      title={!active ? 'Coming soon!' : undefined}
-                      className={`px-3 py-2 rounded-lg font-medium transition-all text-sm ${
-                        !active
-                          ? 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
-                          : selectedYears.includes(year)
+                      title={!hasData ? 'Coming soon!' : undefined}
+                      className={`px-3 py-2 rounded-lg font-medium transition-all text-sm cursor-default ${
+                        hasData
                           ? 'bg-gradient-to-r from-cyan-400 to-teal-400 text-white shadow-md'
-                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
+                          : 'bg-gray-100 text-gray-400 border border-gray-200'
                       }`}
                     >
                       {year}
@@ -343,6 +352,23 @@ function SearchContent() {
                   ))}
                 </div>
               </div>
+            </div>
+
+            {/* Filter Actions */}
+            <div className="flex items-center justify-end gap-4 mt-6 pt-6 border-t border-gray-200">
+              <button
+                onClick={clearFilters}
+                className="px-6 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"
+              >
+                Clear
+              </button>
+              <button
+                onClick={performSearch}
+                disabled={loading}
+                className="px-8 py-2.5 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-bold hover:from-teal-600 hover:to-cyan-600 transition-all disabled:opacity-50 shadow-lg"
+              >
+                {loading ? 'Searching...' : 'Apply'}
+              </button>
             </div>
           </div>
         </div>
