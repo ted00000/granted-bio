@@ -32,7 +32,11 @@ const orgTypes = [
 ]
 
 // Fiscal Years (limited to recent years)
-const fiscalYears = [2026, 2025, 2024, 2023]
+const fiscalYears = [
+  { year: 2026, active: false },
+  { year: 2025, active: true },
+  { year: 2024, active: false },
+]
 
 interface SearchResult {
   id: string
@@ -69,6 +73,7 @@ function SearchContent() {
   const [results, setResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
   const [total, setTotal] = useState(0)
+  const [totalProjects, setTotalProjects] = useState<number | null>(null)
 
   // Toggle functions for multi-select
   const toggleCategory = (categoryId: string) => {
@@ -137,11 +142,20 @@ function SearchContent() {
     }
   }, [query, selectedCategories, selectedOrgTypes, selectedYears, selectedFundingMechanisms, supplementFilter])
 
+  // Fetch total project count on mount
   useEffect(() => {
-    if (query || selectedCategories.length > 0 || selectedOrgTypes.length > 0 || selectedYears.length > 0 || selectedFundingMechanisms.length > 0) {
-      performSearch()
+    async function fetchTotalProjects() {
+      try {
+        const response = await fetch('/api/search?limit=0')
+        const data = await response.json()
+        setTotalProjects(data.total || 0)
+      } catch (error) {
+        console.error('Error fetching total projects:', error)
+      }
     }
-  }, [performSearch, query, selectedCategories, selectedOrgTypes, selectedYears, selectedFundingMechanisms, supplementFilter])
+    fetchTotalProjects()
+  }, [])
+
 
   const handleSearch = async (e?: React.FormEvent) => {
     e?.preventDefault()
@@ -160,7 +174,7 @@ function SearchContent() {
             </Link>
             <div className="flex items-center gap-6">
               <div className="text-sm text-gray-600">
-                <span className="text-teal-600 font-bold">{total > 0 ? total.toLocaleString() : '60K+'}</span> grants
+                <span className="text-teal-600 font-bold">{totalProjects !== null ? totalProjects.toLocaleString() : '...'}</span> grants
               </div>
               <Link href="/admin" className="text-gray-600 hover:text-teal-600 text-sm font-medium transition-colors">
                 Admin
@@ -310,12 +324,16 @@ function SearchContent() {
               <div className="border-l-4 border-cyan-400 pl-4">
                 <div className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Fiscal Year</div>
                 <div className="grid grid-cols-2 gap-2">
-                  {fiscalYears.map((year) => (
+                  {fiscalYears.map(({ year, active }) => (
                     <button
                       key={year}
-                      onClick={() => toggleYear(year)}
+                      onClick={() => active && toggleYear(year)}
+                      disabled={!active}
+                      title={!active ? 'Coming soon!' : undefined}
                       className={`px-3 py-2 rounded-lg font-medium transition-all text-sm ${
-                        selectedYears.includes(year)
+                        !active
+                          ? 'bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed'
+                          : selectedYears.includes(year)
                           ? 'bg-gradient-to-r from-cyan-400 to-teal-400 text-white shadow-md'
                           : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                       }`}
