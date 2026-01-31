@@ -105,7 +105,7 @@ Uses Claude 3.5 Haiku to classify projects into:
 - other
 
 **Estimated time:** ~2-4 hours for 60K projects
-**Estimated cost:** ~$5-10 (Anthropic API)
+**Estimated cost:** $0 with Claude Max subscription (or ~$5-10 via Anthropic API)
 
 ### Step 7: Extract Emails from Publications
 
@@ -185,8 +185,8 @@ For a typical fiscal year (~60K projects):
 | Patent embeddings | $0.50 |
 | Publication embeddings | $2.00 |
 | Clinical study embeddings | $0.40 |
-| AI Classification | $5-10 |
-| **Total** | **~$10-15** |
+| AI Classification | $0 (Claude Max) |
+| **Total** | **~$4-5** |
 
 ## Incremental Updates (2026 Ongoing)
 
