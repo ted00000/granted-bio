@@ -16,14 +16,25 @@ This guide documents the steps to load new fiscal year data (e.g., 2024, 2026) i
 
 Download CSV files from NIH RePORTER (https://reporter.nih.gov/exporter) and place in `data/raw/`:
 
+### Per-Fiscal-Year Files
+These files are specific to each fiscal year. Download for each year you want to load:
+
 | File | Description |
 |------|-------------|
 | `RePORTER_PRJ_C_FY{YEAR}.csv` | Projects |
 | `RePORTER_PRJABS_C_FY{YEAR}.csv` | Project abstracts |
 | `RePORTER_PUB_C_FY{YEAR}.csv` | Publications |
 | `RePORTER_PUBLNK_C_FY{YEAR}.csv` | Project-publication links |
-| `RePORTER_PATENTS_C_FY{YEAR}.csv` | Patents |
-| `ClinicalStudies.csv` | Clinical studies |
+
+### All-Years Files
+These files contain data across ALL fiscal years. Only need to download once and refresh periodically:
+
+| File | Description |
+|------|-------------|
+| `Patents.csv` | All patents (linked to projects via project_number) |
+| `ClinicalStudies.csv` | All clinical studies (linked via project_number) |
+
+**Note:** The ETL uses UPSERT with conflict resolution, so re-running with the same files won't create duplicates.
 
 ## Step-by-Step Process
 
