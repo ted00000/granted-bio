@@ -81,10 +81,12 @@ print("-" * 70)
 try:
     total_projects = supabase.table('projects').select('project_number', count='exact').execute().count
     link_count = supabase.table('project_publications').select('project_number', count='exact').execute().count
-
-    # Count unique projects that have publications
-    # This requires a different approach - let's just show link count
     print(f"  project_publications links: {link_count:,}")
+
+    # Get unique projects with publications (sample-based estimate)
+    sample = supabase.table('project_publications').select('project_number').limit(10000).execute()
+    unique_projects_with_pubs = len(set(r['project_number'] for r in sample.data))
+    print(f"  unique projects with publications (sample): ~{unique_projects_with_pubs:,}+ / {total_projects:,}")
 except Exception as e:
     print(f"  project_publications: ERROR - {e}")
 
@@ -136,6 +138,20 @@ try:
     print(f"  publications with pub_title: {with_title:,} / {total:,} ({100*with_title/total:.1f}%)")
 except Exception as e:
     print(f"  publication fields: ERROR - {e}")
+
+# Email coverage
+print("\n[6] EMAIL COVERAGE")
+print("-" * 70)
+
+try:
+    total = supabase.table('publications').select('pmid', count='exact').execute().count
+    try:
+        with_email = supabase.table('publications').select('pmid', count='exact').not_.is_('pi_email', 'null').neq('pi_email', '').execute().count
+        print(f"  publications with pi_email: {with_email:,} / {total:,} ({100*with_email/total:.1f}%)")
+    except:
+        print(f"  publications.pi_email: COLUMN MISSING or NOT EXTRACTED")
+except Exception as e:
+    print(f"  email coverage: ERROR - {e}")
 
 print("\n" + "=" * 70)
 print("AUDIT COMPLETE")
