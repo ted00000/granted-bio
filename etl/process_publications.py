@@ -207,25 +207,59 @@ def process_publication_links_csv(filepath: str) -> Dict[str, list]:
 
 def load_publications(data_dir: str = 'data/raw', limit: Optional[int] = None) -> tuple:
     """
-    Load and process publications and their links.
+    Load and process publications and their links for all available fiscal years.
 
     Returns:
         Tuple of (publications_list, project_to_pmids_dict)
     """
-    pubs_filepath = os.path.join(data_dir, 'RePORTER_PUB_C_FY2025.csv')
-    links_filepath = os.path.join(data_dir, 'RePORTER_PUBLNK_C_FY2025.csv')
+    import glob
 
-    if not os.path.exists(pubs_filepath):
-        raise FileNotFoundError(f"Publications file not found: {pubs_filepath}")
+    # Find all publication files
+    pubs_pattern = os.path.join(data_dir, 'RePORTER_PUB_C_FY*.csv')
+    links_pattern = os.path.join(data_dir, 'RePORTER_PUBLNK_C_FY*.csv')
 
-    publications = list(process_publications_csv(pubs_filepath, limit))
+    pubs_files = sorted(glob.glob(pubs_pattern))
+    links_files = sorted(glob.glob(links_pattern))
 
-    # Load links if available
-    project_pubs = {}
-    if os.path.exists(links_filepath):
+    if not pubs_files:
+        raise FileNotFoundError(f"No publication files found matching: {pubs_pattern}")
+
+    print(f"Found {len(pubs_files)} publication files: {[os.path.basename(f) for f in pubs_files]}")
+
+    # Track unique publications across all files
+    all_publications = {}
+    all_project_pubs = {}
+
+    for pubs_filepath in pubs_files:
+        fy = os.path.basename(pubs_filepath).replace('RePORTER_PUB_C_FY', '').replace('.csv', '')
+        print(f"  Processing publications FY{fy}...")
+        pubs = list(process_publications_csv(pubs_filepath, limit))
+        # Dedupe by PMID (keep first occurrence)
+        for pub in pubs:
+            if pub['pmid'] not in all_publications:
+                all_publications[pub['pmid']] = pub
+        print(f"    Loaded {len(pubs)} publications from FY{fy}")
+
+    for links_filepath in links_files:
+        fy = os.path.basename(links_filepath).replace('RePORTER_PUBLNK_C_FY', '').replace('.csv', '')
+        print(f"  Processing publication links FY{fy}...")
         project_pubs = process_publication_links_csv(links_filepath)
+        # Merge links
+        for proj_num, pmids in project_pubs.items():
+            if proj_num not in all_project_pubs:
+                all_project_pubs[proj_num] = []
+            all_project_pubs[proj_num].extend(pmids)
+        print(f"    Loaded links for {len(project_pubs)} projects from FY{fy}")
 
-    return publications, project_pubs
+    # Dedupe links
+    for proj_num in all_project_pubs:
+        all_project_pubs[proj_num] = list(set(all_project_pubs[proj_num]))
+
+    publications = list(all_publications.values())
+    print(f"Loaded {len(publications)} unique publications total")
+    print(f"Loaded links for {len(all_project_pubs)} projects total")
+
+    return publications, all_project_pubs
 
 
 if __name__ == '__main__':

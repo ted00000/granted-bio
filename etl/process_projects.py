@@ -209,32 +209,45 @@ def process_projects_csv(filepath: str, limit: Optional[int] = None) -> Generato
 
 def load_projects(data_dir: str = 'data/raw', limit: Optional[int] = None) -> list:
     """
-    Load and process all projects from the CSV file.
+    Load and process all projects from CSV files for all available fiscal years.
 
     NOTE: No deduplication is performed. Each APPLICATION_ID is unique and represents
     distinct funding (including supplements, multi-year phases, etc.).
 
     Args:
         data_dir: Directory containing the raw CSV files
-        limit: Optional limit on number of projects to load
+        limit: Optional limit on number of projects to load (per fiscal year)
 
     Returns:
         List of processed project dictionaries
     """
-    filepath = os.path.join(data_dir, 'RePORTER_PRJ_C_FY2025.csv')
+    import glob
 
-    if not os.path.exists(filepath):
-        raise FileNotFoundError(f"Projects file not found: {filepath}")
+    # Find all project files for any fiscal year
+    pattern = os.path.join(data_dir, 'RePORTER_PRJ_C_FY*.csv')
+    filepaths = sorted(glob.glob(pattern))
 
-    projects = list(process_projects_csv(filepath, limit))
-    print(f"Loaded {len(projects)} bio-related projects")
+    if not filepaths:
+        raise FileNotFoundError(f"No project files found matching: {pattern}")
+
+    print(f"Found {len(filepaths)} project files: {[os.path.basename(f) for f in filepaths]}")
+
+    all_projects = []
+    for filepath in filepaths:
+        fy = os.path.basename(filepath).replace('RePORTER_PRJ_C_FY', '').replace('.csv', '')
+        print(f"  Processing FY{fy}...")
+        projects = list(process_projects_csv(filepath, limit))
+        all_projects.extend(projects)
+        print(f"    Loaded {len(projects)} bio-related projects from FY{fy}")
+
+    print(f"Loaded {len(all_projects)} total bio-related projects")
 
     # Count supplements for reporting
-    supplement_count = sum(1 for p in projects if p.get('is_supplement'))
-    print(f"  - Base grants: {len(projects) - supplement_count}")
+    supplement_count = sum(1 for p in all_projects if p.get('is_supplement'))
+    print(f"  - Base grants: {len(all_projects) - supplement_count}")
     print(f"  - Supplements: {supplement_count}")
 
-    return projects
+    return all_projects
 
 
 if __name__ == '__main__':

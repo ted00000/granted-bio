@@ -39,17 +39,16 @@ def get_supabase_client() -> Client:
     return create_client(url, key)
 
 
-def batch_insert(supabase: Client, table: str, records: List[Dict], batch_size: int = 500) -> int:
+def batch_insert(supabase: Client, table: str, records: List[Dict], batch_size: int = 500, on_conflict: Optional[str] = None) -> int:
     """
     Insert records in batches with upsert support.
-
-    Upsert automatically handles conflicts based on table's unique constraints.
 
     Args:
         supabase: Supabase client
         table: Table name
         records: Records to insert
         batch_size: Size of each batch
+        on_conflict: Column name to use for conflict resolution (e.g., 'pmid', 'application_id')
 
     Returns number of records inserted.
     """
@@ -58,24 +57,39 @@ def batch_insert(supabase: Client, table: str, records: List[Dict], batch_size: 
     for i in range(0, len(records), batch_size):
         batch = records[i:i + batch_size]
         try:
-            result = supabase.table(table).upsert(batch).execute()
+            if on_conflict:
+                result = supabase.table(table).upsert(batch, on_conflict=on_conflict).execute()
+            else:
+                result = supabase.table(table).upsert(batch).execute()
             total_inserted += len(batch)
             print(f"  Inserted batch {i // batch_size + 1}: {len(batch)} records to {table}")
         except Exception as e:
             # Log error but continue - batch upserts handle most cases correctly
             print(f"  Warning: batch {i // batch_size + 1} had issues: {str(e)[:100]}")
-            # Don't retry individual records - too slow and batch upsert already worked for most
 
     return total_inserted
 
 
 def load_abstracts_map(data_dir: str = 'data/raw') -> Dict[str, str]:
-    """Load abstracts into a map keyed by application_id."""
+    """Load abstracts into a map keyed by application_id from all fiscal years."""
     import csv
-    filepath = os.path.join(data_dir, 'RePORTER_PRJABS_C_FY2025.csv')
+    import glob
+
+    # Find all abstract files
+    pattern = os.path.join(data_dir, 'RePORTER_PRJABS_C_FY*.csv')
+    filepaths = sorted(glob.glob(pattern))
+
+    if not filepaths:
+        print(f"No abstract files found matching: {pattern}")
+        return {}
+
+    print(f"Found {len(filepaths)} abstract files: {[os.path.basename(f) for f in filepaths]}")
 
     abstracts_map = {}
-    if os.path.exists(filepath):
+    for filepath in filepaths:
+        fy = os.path.basename(filepath).replace('RePORTER_PRJABS_C_FY', '').replace('.csv', '')
+        print(f"  Processing abstracts FY{fy}...")
+        count = 0
         with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
             reader = csv.DictReader(f)
             for row in reader:
@@ -83,8 +97,10 @@ def load_abstracts_map(data_dir: str = 'data/raw') -> Dict[str, str]:
                 abstract = row.get('ABSTRACT_TEXT')
                 if app_id and abstract:
                     abstracts_map[app_id] = abstract
+                    count += 1
+        print(f"    Loaded {count} abstracts from FY{fy}")
 
-    print(f"Loaded {len(abstracts_map)} abstracts")
+    print(f"Loaded {len(abstracts_map)} total abstracts")
     return abstracts_map
 
 
@@ -294,23 +310,23 @@ def run_etl(
 
     # Load projects
     print("\nLoading projects to Supabase...")
-    stats['projects_loaded'] = batch_insert(supabase, 'projects', classified_projects)
+    stats['projects_loaded'] = batch_insert(supabase, 'projects', classified_projects, on_conflict='application_id')
 
     # Load abstracts
     print("\nLoading abstracts to Supabase...")
-    stats['abstracts_loaded'] = batch_insert(supabase, 'abstracts', abstracts_to_load)
+    stats['abstracts_loaded'] = batch_insert(supabase, 'abstracts', abstracts_to_load, on_conflict='application_id')
 
     # Load publications
     print("\nLoading publications to Supabase...")
-    stats['publications_loaded'] = batch_insert(supabase, 'publications', publications)
+    stats['publications_loaded'] = batch_insert(supabase, 'publications', publications, on_conflict='pmid')
 
     # Load patents
     print("\nLoading patents to Supabase...")
-    stats['patents_loaded'] = batch_insert(supabase, 'patents', patents)
+    stats['patents_loaded'] = batch_insert(supabase, 'patents', patents, on_conflict='patent_id')
 
     # Load clinical studies
     print("\nLoading clinical studies to Supabase...")
-    stats['clinical_studies_loaded'] = batch_insert(supabase, 'clinical_studies', clinical_studies)
+    stats['clinical_studies_loaded'] = batch_insert(supabase, 'clinical_studies', clinical_studies, on_conflict='nct_id')
 
     # Load project-publication links (only for loaded projects and publications)
     print("\nLoading publication links to Supabase...")
