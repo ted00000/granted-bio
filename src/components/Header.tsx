@@ -66,10 +66,16 @@ export function Header() {
           </Link>
           <nav className="flex items-center space-x-4">
             <Link
+              href="/chat"
+              className="px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+            >
+              AI Search
+            </Link>
+            <Link
               href="/search"
               className="px-3 py-2 text-sm font-medium text-gray-600 hover:text-blue-600"
             >
-              Search
+              Browse
             </Link>
             {user ? (
               <>

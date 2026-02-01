@@ -1,0 +1,218 @@
+Advanced Projects Search
+
+Researcher and Organization
+Fiscal Year
+Fiscal Year (FY) Active Projects: Unless specified, RePORTER searches for the most recent record of projects that have not yet reached their budget end date (in the case of extramural grants), contracts from the most recent fiscal year, or intramural projects from the most recent annual reports from the NIH intramural programs (information on contracts and intramural projects is updated in RePORTER at the close of each fiscal year). This means that the results of "Active Projects" searches may include projects awarded in an earlier fiscal year that are still active (e.g., extramural awards in a no-cost extension period) or not yet updated by the end-of-year intramural project report. RePORTER contains records beginning with FY 1985.
+Prior Years: Searches conducted on fiscal years prior to the current year will produce lists of only those awards funded in the chosen fiscal year.
+
+Current FY is 2026
+Principal Investigator (PI)
+Principal Investigator/Project Leader: The individual designated by the grantee to direct the project supported by the grant. Searches for projects conducted by a particular individual can either be performed by entering their last name or first name or both. Recommended formats are lastname, firstname or firstname lastname or lastname, firstname middlename/initial.
+An implicit wild card search is performed on any name entered.
+A maximum of 1000 PIs separated by semicolon can be searched at a time. The Project Search Results will show the contact PI at the top and all the other PIs in an alphabetical order below the contact PI.
+
+PI Names or Profile IDs, semicolon ";" separated
+Organization
+Organization: Use to search for an institution that receives a grant, contract or cooperative agreement. The LOOKUP feature will offer selections that meet the 3-character minimum user entry that occurs at the beginning of any word within the full organization name.
+
+Enter at least 3 characters to search
+City
+City: Geographical location (City) of awarded projects.
+
+State
+State: Geographical location (State) of awarded projects.
+
+Country
+Country: Geographical location (Country) of awarded projects.
+
+Congressional District
+Congressional District: A territorial division of a state from which a member of the United States House of Representatives is elected. The congressional district to which each grant is assigned is based on the business address of the grantee organization or contractor, not the actual performance site of the research being performed. The search selector is periodically updated to reflect the current listings of congressional districts. Information on historical awards is not updated to reflect changing district information.
+
+Please select a state first
+Department Type
+Department Type: Standardized version of the academic department within an institution of higher education. To aid reporting on academic departments, NIH uses a standardized list, mapped from the department name provided on the application. Institutional signing officials may initiate a correction using the Grant Re-assign guidance in the eRA Commons or contact the  eRA Service Desk.
+
+Organization Type
+Organization Type: Standardized version of the type of organization, classified according to the function, mission, or service of the organization receiving a grant, contract, or cooperative agreement. To aid reporting on organizations, NIH uses a standardized list, mapped from information provided on the application. Institutional signing officials may initiate a correction using the Grant Re-assign guidance in the eRA Commons or contact the eRA Service Desk.
+
+Text Search
+Text Search (Logic)
+
+AND
+And: Find projects in which all of the search terms are found. For example, a search on brain disorder will retrieve projects containing both "brain" and "disorder". Maximum of 2500 characters including spaces are allowed at a time.
+
+OR
+Or: Find projects that contain at least one of the search terms entered. For example, a search on brain disorder will retrieve all projects containing either "brain" or "disorder". Maximum of 2500 characters including spaces are allowed at a time.
+
+Advanced
+Advanced: Boolean search with following operands:
+
+
+and - to search for all terms, ex: breast and cancer
+or – to search for any term, ex: cancer or tumor
+not – to exclude a term from search, ex: cancer not tumor
+double-quoted (" ") – to search for exact phrase, ex: "lung cancer"
+parenthesis - to group the search terms, ex: (breast and cancer) or tumor
+You can mix and match multiple operands, for ex:(breast and cancer or "lung cancer") not tumor
+Text Search: Text search of project titles, abstracts, and scientific terms. If the "And" logic is selected (the default), RePORTER finds projects in which all of the search terms are found within the title, abstract, or scientific terms. If the "Or" logic is used, RePORTER finds projects that contain at least one of the terms entered. For example, using the default "And" search, a search on brain disorder will retrieve projects with both "brain" and "disorder" in their title, abstract, or scientific terms. Changing the logic to "Or" will retrieve all projects with either "brain" or "disorder" in these fields. Use quotes around the entered text to search for exact phrases. Please reference RCDC Thesaurus for scientific terms.
+The "Advanced" logic option provides additional capability to narrow selection criteria more precisely and evaluate complex entries such as chemical references.
+Text search automatically disregards certains common stopwords like a, an, and, are, as, at, be, of, on, or, into, is, it, etc. Wildcard is not supported in current text search.
+
+2,500 characters left
+Limit Project search to
+Text can be searched from up to three sources: Project Title, Project Terms, and Project Abstract. Selecting these sources individually or in combination includes them in the search. Selecting none of the sources has the same effect as selecting all of them.
+
+Project Title
+
+Project Terms
+
+Project Abstracts
+Project Details
+Agency/Institute/Center
+Agency/Institute or Center (IC): The agency or agency component responsible for administering the research grant or contract (Admin IC) or funding (Funding IC) the research. Admin is selected by default. Please note that funding data is only available for NIH, CDC, FDA, AHRQ, and ACF projects. Funding IC data is not available for NIH sub-projects. This may represent a federal department, agency, or sub-agency (institute or center).
+
+
+Admin
+
+Funding
+NIH Spending Category
+NIH Spending Category: One of several historically-reported categories of diseases, conditions, or research areas. Available for fiscal years 2008 and onward, based on a computerized process the NIH uses at the end of each fiscal year to categorize research projects. Projects by Spending Category for each fiscal year are made available the following fiscal year as part of the next President’s Budget request. Only projects administered by NIH are organized into spending categories. Projects of other agencies are not included. RePORTER provides up-to-date award information, including modifications made after the close of each fiscal year. As a result, project listings and award amounts may not match exactly the official year-end NIH Categorical Spending reports at https://report.nih.gov//funding/categorical-spending
+
+
+AND
+
+OR
+Funding Mechanism
+Funding Mechanism: The options in RePORTER include the major mechanism categories used in NIH budget mechanism tables for the President’s budget.
+
+Award Type
+Award Type: From the standard award types, RePORTER has created four groupings: New (type 1s), Competing Renewal (types 2, 4, and 9), Noncompeting (types 4, 5, 6, 7 and 8), and Revision or Supplement (type 3).
+
+Project Number/Application ID
+Project Number: Commonly referred to as a grant number or contract number. For grants, this unique identification number is composed of the type code, activity code, Institute/Center code, serial number, support year, and/or suffix code. You may search for a full or partial project number or using the split project number fields.
+Application IDs: A unique 7 or 8 digit number assigned to each project number.
+Multiple entries: 1000 Project Numbers / 1000 Application IDs maximum. Entries must be separated by a semi-colon or comma. Project number queries greater than 100 entries must be in full 5R01CA012345-04 format and any use of implicit wildcard feature will be ignored
+
+Format: 5R01CA012345-04/ 8515397, semicolon ";" separated
+OR
+Application Type Code
+
+1
+Activity Code
+
+R01
+IC Code
+
+CA
+Serial Number
+
+811099
+Support Year
+
+01
+Suffix Code
+
+A1S1
+Activity Code
+Activity Code: A 3-character code, applied to various funding mechanisms to identify a specific category of extramural research activity. A comprehensive list of activity codes currently in use may be found on the Types of Grant Programs Web page.
+Several major groupings of activities and some commonly-used activity codes may be selected in RePORTER. The major groupings are:
+	•	Research Grants
+	•	Research Project Grants
+	◦	R01 Equivalents: R01, R23, R29, R37, DP2, and RF1 activity codes. (The R23 and R29 are no longer used by NIH and apply to historical searches only).
+	◦	Research Career Awards
+	◦	SBIR/STTR
+	•	Research Center Grants
+	◦	Construction Grants
+	•	Cooperative Agreements
+	•	Fellowships
+	•	Training Grants
+	•	Contracts (R&D)
+	•	Intramural
+	•	Resources: Grants for institutional resources such as modernization of existing research facilities.
+	◦	Other Research
+	◦	All Other
+
+
+Cooperative Agreement
+Cooperative Agreement: A legal instrument of financial assistance between a Federal awarding agency or pass-through entity and a non-Federal entity. Cooperative agreements are indicated by a “U” in the activity code or mechanism (e.g. U01, U54).
+See also definitions for Cooperative agreements
+
+Study Section
+Study Section: A group responsible for the review of grant applications in an area of science. Study sections are grouped into larger Integrated Review Groups (IRGs), and into Fellowship and SBIR/STTR Study Sections. Study section codes and rosters of current study sections can be found at https://www.csr.nih.gov/Committees/rosterindex.asp.
+
+Standing CSR study sections only
+Program Officer (PO)
+Program Officer: The NIH official responsible for the programmatic, scientific, and/or technical aspects of a grant. Searches for projects managed by a particular individual can either be performed by entering their last name or first name or both. Recommended formats are lastname, firstname or firstname lastname or lastname, firstname middlename/initial.
+An implicit wild card search is performed on any name entered.
+A maximum of 1000 POs separated by semicolon can be searched at a time.
+
+PO Names, semicolon ";" separated
+Project Start Date
+Project Start Date: Date the project began. You can manually enter the date or click the calendar icon to bring up the calendar date selector.
+By default, the calendar tool has the "Before" option selected, which allows projects with start date before the entered date to be searched. You may also choose "Range" or "After" options.
+date
+
+Format: MM/DD/YYYY
+Project End Date
+Project End Date: Date the project ended. You can manually enter the date or click the calendar icon to bring up the calendar date selector.
+By default, the calendar tool has the "Before" option selected, which allows projects with end date before the entered date to be searched. You may also choose "Range" or "After" options.
+date
+
+Format: MM/DD/YYYY
+Award Notice Date
+Award Notice Date: Date on which the award notice was issued. The award notice is the legally binding document that notifies the grantee that an award has been made, contains all terms and conditions of the award, and documents the obligation of Federal funds.
+By default, the calendar tool has the "Before" option selected, which allows projects with award notice date before the entered date to be searched. You may also choose "Range" or "After" options.
+date
+
+Format: MM/DD/YYYY
+Opportunity Number
+Opportunity Number (Funding Opportunity Announcement): RePORTER provides the ability to search for projects originally solicited under a request for applications (RFA) or program announcement (PA) issued in the NIH Guide for Grants and Contracts. RFA numbers take the format RFA-IC-fy-nnn, where IC is the Agency/Institute/Center issuing the RFA, fy is the fiscal year of the solicitation, and nnn is a serial number. PA numbers are formatted as PA-fy-nnn.
+You may search for a full or partial Opportunity Number.
+When searching for multiple Opportunity Number numbers at a single time, recommended limit is 20 numbers, separated by semi-colon or comma.
+
+Format: RFA-IC-09-003 or PA-09-003, semicolon ";" separated
+Funding Opportunities and Notices
+Additional Filters
+NIH COVID-19 Response
+NIH COVID-19 Response: These special selectors will return projects awarded to study COVID-19 and related topics, as funded under:
+	•	RegCV - NIH regular appropriations funding
+	•	CV - Coronavirus Preparedness and Response Supplemental Appropriations Act, 2020
+	•	C3 - CARES Act (Coronavirus Aid, Relief, and Economic Security Act)
+	•	C4 - Paycheck Protection Program and Health Care Enhancement Act
+	•	C5 - Coronavirus Response and Relief Supplemental Appropriations Act, 2021
+	•	C6 - American Rescue Plan Act of 2021
+These special selectors can be used in any combination and also can be combined with other search criteria on this page.
+Currently, this filtered search item applies only to parent grants, grant revisions, and grant supplements. As of Spring 2021, aligned with release of the President’s budget for FY2022, these grant records and the records for COVID-19 contracts, intramurals, and subprojects all will be reported through the Coronaviruses NIH spending category.
+Administrative Supplement: A request for (or the award of) additional funds during a current project period to provide for an increase in costs due to unforeseen circumstances. All additional costs must be within the scope of the peer reviewed and approved project.
+Competitive Revision: A request for (or the award of) additional funds during a current project period to support new or additional activities, which are not identified in the current award and reflect an expansion of the scope of the grant-approved activities.
+Get the latest public health information from CDC: https://www.coronavirus.gov
+Get the latest NIH research information: https://www.nih.gov/coronavirus
+Get HHS grant funding under these special appropriations: https://taggs.hhs.gov/Coronavirus
+
+Award Size
+Award Size: Only awards greater or less than the amount entered will be shown on the hit list. Awarded amounts are total costs (direct + indirect costs) awarded in the fiscal year indicated on the project record.
+You may manually enter the award range or use the slider to pick the minimum or maximum awards.
+Min
+$0
+Max
+$448,283,318
+
+
+Only for NIH, CDC, FDA, AHRQ, and ACF
+
+Exclude Subprojects
+Exclude Subprojects: On selection, Subprojects will not be shown on hit list.
+
+Projects with Outcomes Only
+Projects with Outcomes Only: Along with any other filter criteria entered, only projects with Outcomes will be selected. These projects will either have a Final or Interim Research Performance Progress Report (RPPR) submitted after October 1, 2017.
+
+Multi-PI Only
+Multi-PI Only: Along with any other filter criteria entered, only projects with more than one PI assigned to that project will be selected. The Project Search Results will show the contact PI at the top and all the other PIs in an alphabetical order below the contact PI.
+
+Newly Added Projects Only
+Project added since 01/24/2026
+NIH ARRA Selection
+NIH ARRA Selection: NIH ARRA Selection: Research projects funded, entirely or in part, with funds appropriated under the American Recovery and Reinvestment Act of 2009.
+
+
+
