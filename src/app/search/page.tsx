@@ -3,6 +3,7 @@
 import { Suspense, useState, useCallback, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 // Life Science Categories
 const lifeScienceCategories = [
@@ -62,6 +63,23 @@ function SearchContent() {
   const searchParams = useSearchParams()
 
   const [query, setQuery] = useState(searchParams.get('q') || '')
+  const [user, setUser] = useState<any>(null)
+
+  // Check auth state
+  useEffect(() => {
+    const supabase = createBrowserSupabaseClient()
+    supabase.auth.getUser().then(({ data: { user } }) => setUser(user))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleSignOut = async () => {
+    const supabase = createBrowserSupabaseClient()
+    await supabase.auth.signOut()
+    router.push('/')
+  }
 
   // Multi-select Filters
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
@@ -183,13 +201,27 @@ function SearchContent() {
               <span className="text-gray-900">granted</span>
               <span className="text-teal-500">.bio</span>
             </Link>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-4">
               <div className="text-sm text-gray-600">
                 <span className="text-teal-600 font-bold">{totalProjects !== null ? totalProjects.toLocaleString() : '...'}</span> grants
               </div>
+              <Link
+                href="/chat"
+                className="px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-lg text-sm font-bold hover:from-teal-600 hover:to-cyan-600 transition-all shadow-md"
+              >
+                AI Search
+              </Link>
               <Link href="/admin" className="text-gray-600 hover:text-teal-600 text-sm font-medium transition-colors">
                 Admin
               </Link>
+              {user && (
+                <button
+                  onClick={handleSignOut}
+                  className="text-gray-600 hover:text-teal-600 text-sm font-medium transition-colors"
+                >
+                  Sign out
+                </button>
+              )}
             </div>
           </div>
         </div>
