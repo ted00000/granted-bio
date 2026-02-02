@@ -174,56 +174,79 @@ export async function searchProjects(
     // Generate embedding for semantic search
     const queryEmbedding = await generateEmbedding(query)
 
-    // Use the search_projects RPC function
-    const { data, error } = await supabaseAdmin.rpc('search_projects', {
+    // Try optimized function with SQL-level filtering first
+    const { data, error } = await supabaseAdmin.rpc('search_projects_filtered', {
       query_embedding: queryEmbedding,
       match_threshold: 0.5,
       match_count: effectiveLimit,
-      min_biotools_confidence: 0
+      min_biotools_confidence: 0,
+      // Push filters to SQL for better performance
+      filter_fiscal_years: filters?.fiscal_year?.length ? filters.fiscal_year : null,
+      filter_categories: filters?.primary_category?.length ? filters.primary_category : null,
+      filter_org_types: filters?.org_type?.length ? filters.org_type : null,
+      filter_state: filters?.state || null,
+      filter_min_funding: filters?.min_funding ?? null,
+      filter_max_funding: filters?.max_funding ?? null
     })
 
     if (error) {
-      console.error('Vector search error:', error)
-      throw error
+      // Fallback to original function if optimized one doesn't exist yet
+      console.warn('Optimized search not available, falling back:', error.message)
+      const { data: fallbackData, error: fallbackError } = await supabaseAdmin.rpc('search_projects', {
+        query_embedding: queryEmbedding,
+        match_threshold: 0.5,
+        match_count: effectiveLimit * 2, // Get more to filter
+        min_biotools_confidence: 0
+      })
+
+      if (fallbackError) throw fallbackError
+
+      let results = fallbackData as ProjectResult[]
+
+      // Apply filters in JS as fallback
+      if (filters) {
+        if (filters.fiscal_year?.length) {
+          results = results.filter(p => p.fiscal_year && filters.fiscal_year!.includes(p.fiscal_year))
+        }
+        if (filters.primary_category?.length) {
+          results = results.filter(p => p.primary_category && filters.primary_category!.includes(p.primary_category))
+        }
+        if (filters.org_type?.length) {
+          results = results.filter(p => p.org_type && filters.org_type!.includes(p.org_type))
+        }
+        if (filters.min_funding !== undefined) {
+          results = results.filter(p => (p.total_cost || 0) >= filters.min_funding!)
+        }
+        if (filters.max_funding !== undefined) {
+          results = results.filter(p => (p.total_cost || 0) <= filters.max_funding!)
+        }
+        if (filters.state) {
+          results = results.filter(p => p.org_state === filters.state)
+        }
+      }
+
+      return {
+        results: results.slice(0, effectiveLimit).map(summarizeProject),
+        total: results.length
+      }
     }
 
     let results = data as ProjectResult[]
 
-    // Apply additional filters
-    if (filters) {
-      if (filters.fiscal_year?.length) {
-        results = results.filter(p => p.fiscal_year && filters.fiscal_year!.includes(p.fiscal_year))
-      }
-      if (filters.primary_category?.length) {
-        results = results.filter(p => p.primary_category && filters.primary_category!.includes(p.primary_category))
-      }
-      if (filters.org_type?.length) {
-        results = results.filter(p => p.org_type && filters.org_type!.includes(p.org_type))
-      }
-      if (filters.is_sbir !== undefined) {
-        // Check activity code for SBIR
-        results = results.filter(p =>
-          filters.is_sbir
-            ? p.funding_mechanism?.includes('SBIR')
-            : !p.funding_mechanism?.includes('SBIR')
-        )
-      }
-      if (filters.is_sttr !== undefined) {
-        results = results.filter(p =>
-          filters.is_sttr
-            ? p.funding_mechanism?.includes('STTR')
-            : !p.funding_mechanism?.includes('STTR')
-        )
-      }
-      if (filters.min_funding !== undefined) {
-        results = results.filter(p => (p.total_cost || 0) >= filters.min_funding!)
-      }
-      if (filters.max_funding !== undefined) {
-        results = results.filter(p => (p.total_cost || 0) <= filters.max_funding!)
-      }
-      if (filters.state) {
-        results = results.filter(p => p.org_state === filters.state)
-      }
+    // Only apply SBIR/STTR filter in JS (not in SQL function yet)
+    if (filters?.is_sbir !== undefined) {
+      results = results.filter(p =>
+        filters.is_sbir
+          ? p.funding_mechanism?.includes('SBIR')
+          : !p.funding_mechanism?.includes('SBIR')
+      )
+    }
+    if (filters?.is_sttr !== undefined) {
+      results = results.filter(p =>
+        filters.is_sttr
+          ? p.funding_mechanism?.includes('STTR')
+          : !p.funding_mechanism?.includes('STTR')
+      )
     }
 
     return {
