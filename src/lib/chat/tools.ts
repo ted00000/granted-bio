@@ -64,8 +64,9 @@ export const AGENT_TOOLS: Tool[] = [
               description: 'Maximum total funding amount'
             },
             state: {
-              type: 'string',
-              description: 'Two-letter US state code, e.g. CA, MA, NY'
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Two-letter US state codes, e.g. ["CA", "MA", "NY"]. Leave empty for all states.'
             }
           }
         },
@@ -184,7 +185,7 @@ export async function searchProjects(
       filter_fiscal_years: filters?.fiscal_year?.length ? filters.fiscal_year : null,
       filter_categories: filters?.primary_category?.length ? filters.primary_category : null,
       filter_org_types: filters?.org_type?.length ? filters.org_type : null,
-      filter_state: filters?.state || null,
+      filter_states: filters?.state?.length ? filters.state : null,
       filter_min_funding: filters?.min_funding ?? null,
       filter_max_funding: filters?.max_funding ?? null
     })
@@ -220,8 +221,8 @@ export async function searchProjects(
         if (filters.max_funding !== undefined) {
           results = results.filter(p => (p.total_cost || 0) <= filters.max_funding!)
         }
-        if (filters.state) {
-          results = results.filter(p => p.org_state === filters.state)
+        if (filters.state?.length) {
+          results = results.filter(p => p.org_state && filters.state!.includes(p.org_state))
         }
       }
 

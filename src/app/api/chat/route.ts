@@ -108,12 +108,6 @@ export async function POST(request: NextRequest) {
             for (const block of response.content) {
               if (block.type === 'text') {
                 responseText += block.text
-                // Stream the text
-                controller.enqueue(
-                  encoder.encode(
-                    `data: ${JSON.stringify({ type: 'text', content: block.text })}\n\n`
-                  )
-                )
               } else if (block.type === 'tool_use') {
                 toolUseBlocks.push({
                   type: 'tool_use',
@@ -122,6 +116,16 @@ export async function POST(request: NextRequest) {
                   input: block.input as Record<string, unknown>
                 })
               }
+            }
+
+            // Only stream text if there are no tool calls (final response)
+            // This prevents intermediate "I'll search for..." text from showing
+            if (toolUseBlocks.length === 0 && responseText) {
+              controller.enqueue(
+                encoder.encode(
+                  `data: ${JSON.stringify({ type: 'text', content: responseText })}\n\n`
+                )
+              )
             }
 
             // If no tool use, we're done
