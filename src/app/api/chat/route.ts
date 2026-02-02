@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { PERSONA_PROMPTS } from '@/lib/chat/prompts'
 import { AGENT_TOOLS, executeTool } from '@/lib/chat/tools'
-import type { PersonaType, UserAccess, Message } from '@/lib/chat/types'
+import type { PersonaType, UserAccess } from '@/lib/chat/types'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 export const runtime = 'nodejs'
@@ -25,8 +25,6 @@ async function getUserAccess(userId: string | null): Promise<UserAccess> {
     }
   }
 
-  // TODO: Look up user tier from database
-  // For now, return pro access for authenticated users
   return {
     tier: 'pro',
     resultsLimit: 100,
@@ -40,6 +38,11 @@ async function getUserAccess(userId: string | null): Promise<UserAccess> {
 interface ChatRequestBody {
   messages: Array<{ role: 'user' | 'assistant'; content: string }>
   persona: PersonaType
+}
+
+type AnthropicMessage = {
+  role: 'user' | 'assistant'
+  content: string | Anthropic.Messages.ContentBlockParam[]
 }
 
 export async function POST(request: NextRequest) {
@@ -68,173 +71,118 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Convert messages to Anthropic format
-    const anthropicMessages = messages.map(m => ({
-      role: m.role as 'user' | 'assistant',
+    // Build conversation history
+    const conversationMessages: AnthropicMessage[] = messages.map(m => ({
+      role: m.role,
       content: m.content
     }))
 
-    // Create streaming response
     const encoder = new TextEncoder()
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          let response = await anthropic.messages.create({
-            model: 'claude-3-5-haiku-20241022',
-            max_tokens: 4096,
-            system: systemPrompt,
-            tools: AGENT_TOOLS,
-            messages: anthropicMessages,
-            stream: true
-          })
+          const maxToolIterations = 3
+          let iteration = 0
 
-          let currentText = ''
-          let toolUseBlocks: Array<{
-            id: string
-            name: string
-            input: Record<string, unknown>
-          }> = []
+          while (iteration < maxToolIterations) {
+            iteration++
 
-          for await (const event of response) {
-            if (event.type === 'content_block_delta') {
-              if (event.delta.type === 'text_delta') {
-                currentText += event.delta.text
+            // Make the API call
+            const response = await anthropic.messages.create({
+              model: 'claude-3-5-haiku-20241022',
+              max_tokens: 4096,
+              system: systemPrompt,
+              tools: AGENT_TOOLS,
+              messages: conversationMessages
+            })
+
+            // Extract text and tool use from response
+            let responseText = ''
+            const toolUseBlocks: Array<{
+              type: 'tool_use'
+              id: string
+              name: string
+              input: Record<string, unknown>
+            }> = []
+
+            for (const block of response.content) {
+              if (block.type === 'text') {
+                responseText += block.text
+                // Stream the text
                 controller.enqueue(
                   encoder.encode(
-                    `data: ${JSON.stringify({ type: 'text', content: event.delta.text })}\n\n`
+                    `data: ${JSON.stringify({ type: 'text', content: block.text })}\n\n`
                   )
                 )
-              } else if (event.delta.type === 'input_json_delta') {
-                // Accumulating tool input
-              }
-            } else if (event.type === 'content_block_start') {
-              if (event.content_block.type === 'tool_use') {
+              } else if (block.type === 'tool_use') {
                 toolUseBlocks.push({
-                  id: event.content_block.id,
-                  name: event.content_block.name,
-                  input: {}
+                  type: 'tool_use',
+                  id: block.id,
+                  name: block.name,
+                  input: block.input as Record<string, unknown>
                 })
               }
-            } else if (event.type === 'content_block_stop') {
-              // Block finished
-            } else if (event.type === 'message_delta') {
-              if (event.delta.stop_reason === 'tool_use') {
-                // Need to execute tools and continue
-              }
-            } else if (event.type === 'message_stop') {
-              // Message complete
             }
-          }
 
-          // Check if we need to execute tools
-          // Re-fetch the full response to check for tool use
-          const fullResponse = await anthropic.messages.create({
-            model: 'claude-3-5-haiku-20241022',
-            max_tokens: 4096,
-            system: systemPrompt,
-            tools: AGENT_TOOLS,
-            messages: anthropicMessages
-          })
-
-          // Handle tool use in a loop
-          let currentResponse = fullResponse
-          let continueLoop = true
-          const maxIterations = 5
-          let iterations = 0
-
-          while (continueLoop && iterations < maxIterations) {
-            iterations++
-            const toolUseContent = currentResponse.content.filter(
-              block => block.type === 'tool_use'
-            )
-
-            if (toolUseContent.length === 0 || currentResponse.stop_reason !== 'tool_use') {
-              continueLoop = false
+            // If no tool use, we're done
+            if (response.stop_reason !== 'tool_use' || toolUseBlocks.length === 0) {
               break
             }
 
-            // Send tool use notification
+            // Notify client about tool execution
             controller.enqueue(
               encoder.encode(
-                `data: ${JSON.stringify({ type: 'tool_start', tools: toolUseContent.map(t => (t as any).name) })}\n\n`
+                `data: ${JSON.stringify({
+                  type: 'tool_start',
+                  tools: toolUseBlocks.map(t => t.name)
+                })}\n\n`
               )
             )
 
-            // Execute all tool calls
-            const toolResults = await Promise.all(
-              toolUseContent.map(async (toolBlock) => {
-                const block = toolBlock as {
-                  type: 'tool_use'
-                  id: string
-                  name: string
-                  input: Record<string, unknown>
-                }
+            // Execute all tools
+            const toolResults: Anthropic.Messages.ToolResultBlockParam[] = await Promise.all(
+              toolUseBlocks.map(async (block) => {
                 try {
                   const result = await executeTool(block.name, block.input, userAccess)
                   return {
                     type: 'tool_result' as const,
                     tool_use_id: block.id,
-                    content: JSON.stringify(result)
+                    content: JSON.stringify(result, null, 2)
                   }
                 } catch (error) {
+                  console.error(`Tool ${block.name} error:`, error)
                   return {
                     type: 'tool_result' as const,
                     tool_use_id: block.id,
-                    content: JSON.stringify({ error: String(error) }),
+                    content: `Error executing ${block.name}: ${String(error)}`,
                     is_error: true
                   }
                 }
               })
             )
 
-            // Send tool results notification
+            // Notify client that tools completed
             controller.enqueue(
               encoder.encode(
                 `data: ${JSON.stringify({ type: 'tool_complete' })}\n\n`
               )
             )
 
-            // Continue conversation with tool results
-            const newMessages = [
-              ...anthropicMessages,
-              { role: 'assistant' as const, content: currentResponse.content },
-              { role: 'user' as const, content: toolResults }
-            ]
-
-            // Stream the follow-up response
-            const followUpStream = await anthropic.messages.create({
-              model: 'claude-3-5-haiku-20241022',
-              max_tokens: 4096,
-              system: systemPrompt,
-              tools: AGENT_TOOLS,
-              messages: newMessages,
-              stream: true
+            // Add assistant response and tool results to conversation
+            conversationMessages.push({
+              role: 'assistant',
+              content: response.content
             })
-
-            for await (const event of followUpStream) {
-              if (event.type === 'content_block_delta' && event.delta.type === 'text_delta') {
-                controller.enqueue(
-                  encoder.encode(
-                    `data: ${JSON.stringify({ type: 'text', content: event.delta.text })}\n\n`
-                  )
-                )
-              }
-            }
-
-            // Get full response to check for more tool use
-            currentResponse = await anthropic.messages.create({
-              model: 'claude-3-5-haiku-20241022',
-              max_tokens: 4096,
-              system: systemPrompt,
-              tools: AGENT_TOOLS,
-              messages: newMessages
+            conversationMessages.push({
+              role: 'user',
+              content: toolResults
             })
           }
 
           controller.enqueue(encoder.encode('data: [DONE]\n\n'))
           controller.close()
         } catch (error) {
-          console.error('Streaming error:', error)
+          console.error('Chat error:', error)
           controller.enqueue(
             encoder.encode(
               `data: ${JSON.stringify({ type: 'error', error: String(error) })}\n\n`
