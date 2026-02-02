@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect, useMemo } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import type { PersonaType } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 
@@ -63,17 +63,18 @@ export function Chat({ persona, onBack }: ChatProps) {
     inputRef.current?.focus()
   }, [])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!input.trim() || isLoading) return
+  // Core function to send a message
+  const sendMessage = useCallback(async (text: string, currentMessages: Message[]) => {
+    if (!text.trim() || isLoading) return
 
     const userMessage: Message = {
       id: crypto.randomUUID(),
       role: 'user',
-      content: input.trim()
+      content: text.trim()
     }
 
-    setMessages(prev => [...prev, userMessage])
+    const updatedMessages = [...currentMessages, userMessage]
+    setMessages(updatedMessages)
     setInput('')
     setIsLoading(true)
 
@@ -89,7 +90,7 @@ export function Chat({ persona, onBack }: ChatProps) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          messages: [...messages, userMessage].map(m => ({
+          messages: updatedMessages.map(m => ({
             role: m.role,
             content: m.content
           })),
@@ -183,12 +184,17 @@ export function Chat({ persona, onBack }: ChatProps) {
     } finally {
       setIsLoading(false)
     }
+  }, [isLoading, persona])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    sendMessage(input, messages)
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      handleSubmit(e)
+      sendMessage(input, messages)
     }
   }
 
@@ -197,17 +203,10 @@ export function Chat({ persona, onBack }: ChatProps) {
     inputRef.current?.focus()
   }
 
-  // Handle clicking a choice button - send it as user message
+  // Handle clicking a choice button - send it as user message directly
   const handleChoiceClick = (choice: string) => {
     if (isLoading) return
-    // Simulate form submission with the choice as input
-    const fakeEvent = { preventDefault: () => {} } as React.FormEvent
-    setInput(choice)
-    // Need to trigger submission after state updates
-    setTimeout(() => {
-      const form = document.querySelector('form')
-      form?.requestSubmit()
-    }, 0)
+    sendMessage(choice, messages)
   }
 
   // Check if this is the last assistant message (for showing clickable choices)
