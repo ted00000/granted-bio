@@ -143,13 +143,32 @@ export const AGENT_TOOLS: Tool[] = [
   }
 ]
 
+// Summarize project for chat context (reduces token usage)
+function summarizeProject(p: ProjectResult) {
+  return {
+    application_id: p.application_id,
+    title: p.title,
+    org_name: p.org_name,
+    org_state: p.org_state,
+    org_type: p.org_type,
+    total_cost: p.total_cost,
+    fiscal_year: p.fiscal_year,
+    pi_names: p.pi_names,
+    primary_category: p.primary_category,
+    biotools_confidence: p.biotools_confidence,
+    is_sbir: p.funding_mechanism?.includes('SBIR') || false,
+    is_sttr: p.funding_mechanism?.includes('STTR') || false
+  }
+}
+
 // Tool implementations
 export async function searchProjects(
   params: SearchProjectsParams,
   userAccess: UserAccess
-): Promise<{ results: ProjectResult[], total: number }> {
-  const { query, filters, limit = 25 } = params
-  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+): Promise<{ results: ReturnType<typeof summarizeProject>[], total: number }> {
+  const { query, filters, limit = 10 } = params
+  // Cap at 15 results for chat to avoid token overflow
+  const effectiveLimit = Math.min(limit, 15, userAccess.resultsLimit)
 
   try {
     // Generate embedding for semantic search
@@ -208,7 +227,7 @@ export async function searchProjects(
     }
 
     return {
-      results: results.slice(0, effectiveLimit),
+      results: results.slice(0, effectiveLimit).map(summarizeProject),
       total: results.length
     }
   } catch (error) {
@@ -217,10 +236,31 @@ export async function searchProjects(
   }
 }
 
+// Summarize company profile for chat context
+function summarizeCompanyProfile(profile: CompanyProfile) {
+  return {
+    org_name: profile.org_name,
+    total_funding: profile.total_funding,
+    project_count: profile.project_count,
+    patent_count: profile.patent_count,
+    publication_count: profile.publication_count,
+    clinical_trial_count: profile.clinical_trial_count,
+    primary_categories: profile.primary_categories,
+    fiscal_years: profile.fiscal_years,
+    // Only include top 5 projects summarized
+    top_projects: profile.projects.slice(0, 5).map(p => ({
+      title: p.title,
+      total_cost: p.total_cost,
+      fiscal_year: p.fiscal_year,
+      primary_category: p.primary_category
+    }))
+  }
+}
+
 export async function getCompanyProfile(
   params: GetCompanyProfileParams,
   userAccess: UserAccess
-): Promise<CompanyProfile | null> {
+): Promise<ReturnType<typeof summarizeCompanyProfile> | null> {
   const { org_name } = params
 
   try {
@@ -273,28 +313,46 @@ export async function getCompanyProfile(
       if (p.org_state) states.add(p.org_state)
     })
 
-    return {
+    const profile: CompanyProfile = {
       org_name: canonicalOrgName || org_name,
       total_funding: totalFunding,
       project_count: projects.length,
       patent_count: patentCount || 0,
       publication_count: pubCount || 0,
       clinical_trial_count: trialCount || 0,
-      projects: projects.slice(0, userAccess.resultsLimit) as ProjectResult[],
+      projects: projects.slice(0, 10) as ProjectResult[],
       primary_categories: categories,
       fiscal_years: Array.from(fiscalYears).sort((a, b) => b - a),
       states: Array.from(states)
     }
+    // Return summarized version for chat context
+    return summarizeCompanyProfile(profile)
   } catch (error) {
     console.error('Get company profile error:', error)
     throw error
   }
 }
 
+// Summarized PI profile type for chat
+type SummarizedPIProfile = {
+  pi_name: string
+  organizations: string[]
+  total_funding: number
+  project_count: number
+  publication_count: number
+  top_projects: Array<{
+    title: string
+    org_name: string | null
+    total_cost: number | null
+    fiscal_year: number | null
+    primary_category: string | null
+  }>
+}
+
 export async function getPIProfile(
   params: GetPIProfileParams,
   userAccess: UserAccess
-): Promise<PIProfile | null> {
+): Promise<SummarizedPIProfile | null> {
   const { pi_name } = params
 
   try {
@@ -329,7 +387,14 @@ export async function getPIProfile(
       total_funding: totalFunding,
       project_count: projects.length,
       publication_count: pubCount || 0,
-      projects: projects.slice(0, userAccess.resultsLimit) as ProjectResult[]
+      // Only return top 5 projects summarized
+      top_projects: projects.slice(0, 5).map(p => ({
+        title: p.title,
+        org_name: p.org_name,
+        total_cost: p.total_cost,
+        fiscal_year: p.fiscal_year,
+        primary_category: p.primary_category
+      }))
     }
   } catch (error) {
     console.error('Get PI profile error:', error)
@@ -340,9 +405,10 @@ export async function getPIProfile(
 export async function findSimilar(
   params: FindSimilarParams,
   userAccess: UserAccess
-): Promise<ProjectResult[]> {
+): Promise<ReturnType<typeof summarizeProject>[]> {
   const { project_id, limit = 10 } = params
-  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+  // Cap at 10 for chat context
+  const effectiveLimit = Math.min(limit, 10, userAccess.resultsLimit)
 
   try {
     // Get the source project's embedding
@@ -371,7 +437,7 @@ export async function findSimilar(
       p => p.application_id !== project_id
     )
 
-    return results.slice(0, effectiveLimit)
+    return results.slice(0, effectiveLimit).map(summarizeProject)
   } catch (error) {
     console.error('Find similar error:', error)
     throw error
@@ -382,8 +448,9 @@ export async function searchPatents(
   params: SearchPatentsParams,
   userAccess: UserAccess
 ): Promise<PatentResult[]> {
-  const { query, limit = 20 } = params
-  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+  const { query, limit = 10 } = params
+  // Cap at 15 for chat context
+  const effectiveLimit = Math.min(limit, 15, userAccess.resultsLimit)
 
   try {
     // Generate embedding for semantic search
