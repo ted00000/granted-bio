@@ -883,3 +883,122 @@ const tools = [
 - [ ] Alerts (email on new matches)
 - [ ] API access for enterprise
 - [ ] CRM integration
+
+---
+
+## Part 9: Current Implementation Status (February 2026)
+
+### 9.1 What's Built
+
+| Component | Status | Location |
+|-----------|--------|----------|
+| Persona selection UI | ✅ Done | `/src/app/page.tsx` |
+| Chat interface | ✅ Done | `/src/components/chat/` |
+| Chat API route | ✅ Done | `/src/app/api/chat/route.ts` |
+| Agent tools | ✅ Done | `/src/lib/chat/tools.ts` |
+| Persona prompts | ✅ Done | `/src/lib/chat/prompts.ts` |
+| User auth (Supabase) | ✅ Done | `/src/lib/supabase-server.ts` |
+| Vector search function | ✅ Done | `search_projects_filtered()` in DB |
+| Database indexes | ✅ Done | B-tree, GIN, composite indexes |
+
+### 9.2 Agent Architecture (Implemented)
+
+**Model:** Claude 3.5 Haiku (`claude-3-5-haiku-20241022`)
+
+**Tool Loop:**
+- Max 5 iterations per user message
+- Each iteration = 1 Anthropic API call
+- Typical query uses 1-3 iterations
+
+**Available Tools:**
+| Tool | Purpose |
+|------|---------|
+| `search_projects` | Semantic vector search with filters |
+| `get_company_profile` | Aggregate org data (grants, patents, pubs) |
+| `get_pi_profile` | Aggregate PI data |
+| `find_similar` | Vector similarity to find related projects |
+| `search_patents` | Patent search by technology |
+
+### 9.3 Current Limits & Settings
+
+| Setting | Value | Location |
+|---------|-------|----------|
+| Match threshold | 0.5 | `tools.ts:180` |
+| Results per search (chat) | 15 | `tools.ts:171` |
+| Max tool iterations | 5 | `route.ts:84` |
+| Free tier searches | 10 | `route.ts:24` |
+| Free tier results limit | 25 | `route.ts:20` |
+| Pro tier results limit | 100 | `route.ts:30` |
+
+### 9.4 Database Optimizations Applied
+
+**Migrations:**
+- `015_database_optimization.sql` - B-tree, GIN, composite indexes
+- `017_filter_states_array.sql` - Multi-state filtering support
+
+**Indexes Created:**
+- B-tree: fiscal_year, org_state, org_type, primary_category, total_cost, funding_mechanism
+- GIN (trigram): org_name, pi_names, title
+- Composite: (fiscal_year, org_state) WHERE is_bio_related
+- Vector: IVFFlat on abstract_embedding (lists=100)
+
+**HNSW Index:** Not created - times out on Supabase. Would need support ticket for manual creation.
+
+### 9.5 Known Issues & Fixes Applied
+
+| Issue | Status | Fix |
+|-------|--------|-----|
+| Intermediate text showing ("I'll search...") | ✅ Fixed | Only stream text when no tool calls |
+| State filter single value only | ✅ Fixed | Changed to array, updated SQL function |
+| Low result counts with filters | ⚠️ Partial | Threshold at 0.5 may be too strict |
+| IVFFlat index dropped | ✅ Fixed | Recreated with lists=100 |
+
+### 9.6 Cost Structure (Per User Message)
+
+| Cost Driver | Estimate |
+|-------------|----------|
+| Haiku API (1-5 calls) | $0.001-0.005 |
+| OpenAI embedding | $0.00002 |
+| Supabase DB | ~$0 (included) |
+| **Total per message** | **~$0.001-0.005** |
+
+**Monthly estimate at scale:**
+- 1000 users × 20 messages/mo = 20K messages
+- Cost: $20-100/month in API calls
+
+### 9.7 Pending Decisions
+
+1. **Search threshold** - Lower from 0.5 to 0.35 for more results?
+2. **Tool iterations** - Reduce from 5 to 3 to cap costs?
+3. **Result caps** - Increase from 15 for pro users?
+4. **Free tier limits** - Currently 10 searches, 25 results
+5. **Pricing implementation** - Stripe not yet integrated
+
+### 9.8 Updated Roadmap
+
+**Phase 1: Core Agent (MVP)** ✅ COMPLETE
+- [x] Persona selection page
+- [x] Chat interface with streaming
+- [x] All three agents (Researcher, BD, Investor)
+- [x] Basic result display
+- [x] User auth (Supabase)
+
+**Phase 2: Optimization & Quality** 🔄 IN PROGRESS
+- [x] Database indexes for performance
+- [x] Fix intermediate text streaming
+- [x] Multi-state filtering
+- [ ] Tune search threshold for better recall
+- [ ] Add logging for cost monitoring
+- [ ] Test and validate search quality
+
+**Phase 3: Monetization** ⏳ NOT STARTED
+- [ ] Stripe integration
+- [ ] Tier enforcement (free/pro/enterprise)
+- [ ] Report generation (PDF)
+- [ ] Email visibility by tier
+
+**Phase 4: Advanced Features** ⏳ NOT STARTED
+- [ ] Saved searches
+- [ ] Alerts (email on new matches)
+- [ ] API access for enterprise
+- [ ] CRM integration
