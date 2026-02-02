@@ -1,0 +1,942 @@
+============================================================
+EMAIL EXTRACTION FROM PUBLICATIONS
+============================================================
+
+Connecting to Supabase...
+✓ Connected to Supabase
+
+Checking total publications with affiliations...
+✓ Found 203,020 publications with affiliations
+Checking publications without extracted emails...
+✓ Found 99,792 publications needing email extraction
+
+============================================================
+STARTING EMAIL EXTRACTION
+============================================================
+Total publications to process: 99,792
+Batch size: 1000
+
+
+============================================================
+BATCH 1
+============================================================
+Processing 1000 publications...
+✓ Batch 1 complete:
+  Found emails: 120/1000 (12.0%)
+  Errors: 0
+  Running total: 120 emails found
+
+============================================================
+BATCH 2
+============================================================
+Processing 1000 publications...
+✓ Batch 2 complete:
+  Found emails: 147/1000 (14.7%)
+  Errors: 0
+  Running total: 267 emails found
+
+============================================================
+BATCH 3
+============================================================
+Processing 1000 publications...
+✓ Batch 3 complete:
+  Found emails: 147/1000 (14.7%)
+  Errors: 0
+  Running total: 414 emails found
+
+============================================================
+BATCH 4
+============================================================
+Processing 1000 publications...
+✓ Batch 4 complete:
+  Found emails: 151/1000 (15.1%)
+  Errors: 0
+  Running total: 565 emails found
+
+============================================================
+BATCH 5
+============================================================
+Processing 1000 publications...
+✓ Batch 5 complete:
+  Found emails: 132/1000 (13.2%)
+  Errors: 0
+  Running total: 697 emails found
+
+============================================================
+BATCH 6
+============================================================
+Processing 1000 publications...
+✓ Batch 6 complete:
+  Found emails: 131/1000 (13.1%)
+  Errors: 0
+  Running total: 828 emails found
+
+============================================================
+BATCH 7
+============================================================
+Processing 1000 publications...
+✓ Batch 7 complete:
+  Found emails: 147/1000 (14.7%)
+  Errors: 0
+  Running total: 975 emails found
+
+============================================================
+BATCH 8
+============================================================
+Processing 1000 publications...
+✓ Batch 8 complete:
+  Found emails: 153/1000 (15.3%)
+  Errors: 0
+  Running total: 1,128 emails found
+
+============================================================
+BATCH 9
+============================================================
+Processing 1000 publications...
+✓ Batch 9 complete:
+  Found emails: 161/1000 (16.1%)
+  Errors: 0
+  Running total: 1,289 emails found
+
+============================================================
+BATCH 10
+============================================================
+Processing 1000 publications...
+  ERROR on 38992226: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+✓ Batch 10 complete:
+  Found emails: 116/1000 (11.6%)
+  Errors: 1
+  Running total: 1,405 emails found
+
+============================================================
+BATCH 11
+============================================================
+Processing 1000 publications...
+✓ Batch 11 complete:
+  Found emails: 133/1000 (13.3%)
+  Errors: 0
+  Running total: 1,538 emails found
+
+============================================================
+BATCH 12
+============================================================
+Processing 1000 publications...
+✓ Batch 12 complete:
+  Found emails: 141/1000 (14.1%)
+  Errors: 0
+  Running total: 1,679 emails found
+
+============================================================
+BATCH 13
+============================================================
+Processing 1000 publications...
+✓ Batch 13 complete:
+  Found emails: 137/1000 (13.7%)
+  Errors: 0
+  Running total: 1,816 emails found
+
+============================================================
+BATCH 14
+============================================================
+Processing 1000 publications...
+✓ Batch 14 complete:
+  Found emails: 124/1000 (12.4%)
+  Errors: 0
+  Running total: 1,940 emails found
+
+============================================================
+BATCH 15
+============================================================
+Processing 1000 publications...
+✓ Batch 15 complete:
+  Found emails: 140/1000 (14.0%)
+  Errors: 0
+  Running total: 2,080 emails found
+
+============================================================
+BATCH 16
+============================================================
+Processing 1000 publications...
+✓ Batch 16 complete:
+  Found emails: 129/1000 (12.9%)
+  Errors: 0
+  Running total: 2,209 emails found
+
+============================================================
+BATCH 17
+============================================================
+Processing 1000 publications...
+✓ Batch 17 complete:
+  Found emails: 156/1000 (15.6%)
+  Errors: 0
+  Running total: 2,365 emails found
+
+============================================================
+BATCH 18
+============================================================
+Processing 1000 publications...
+✓ Batch 18 complete:
+  Found emails: 129/1000 (12.9%)
+  Errors: 0
+  Running total: 2,494 emails found
+
+============================================================
+BATCH 19
+============================================================
+Processing 1000 publications...
+✓ Batch 19 complete:
+  Found emails: 153/1000 (15.3%)
+  Errors: 0
+  Running total: 2,647 emails found
+
+============================================================
+BATCH 20
+============================================================
+Processing 1000 publications...
+  ERROR on 39203058: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+✓ Batch 20 complete:
+  Found emails: 136/1000 (13.6%)
+  Errors: 1
+  Running total: 2,783 emails found
+
+============================================================
+BATCH 21
+============================================================
+Processing 1000 publications...
+✓ Batch 21 complete:
+  Found emails: 122/1000 (12.2%)
+  Errors: 0
+  Running total: 2,905 emails found
+
+============================================================
+BATCH 22
+============================================================
+Processing 1000 publications...
+  ERROR on 38827089: Server disconnected
+✓ Batch 22 complete:
+  Found emails: 121/1000 (12.1%)
+  Errors: 1
+  Running total: 3,026 emails found
+
+============================================================
+BATCH 23
+============================================================
+Processing 1000 publications...
+✓ Batch 23 complete:
+  Found emails: 135/1000 (13.5%)
+  Errors: 0
+  Running total: 3,161 emails found
+
+============================================================
+BATCH 24
+============================================================
+Processing 1000 publications...
+✓ Batch 24 complete:
+  Found emails: 144/1000 (14.4%)
+  Errors: 0
+  Running total: 3,305 emails found
+
+============================================================
+BATCH 25
+============================================================
+Processing 1000 publications...
+✓ Batch 25 complete:
+  Found emails: 134/1000 (13.4%)
+  Errors: 0
+  Running total: 3,439 emails found
+
+============================================================
+BATCH 26
+============================================================
+Processing 1000 publications...
+✓ Batch 26 complete:
+  Found emails: 145/1000 (14.5%)
+  Errors: 0
+  Running total: 3,584 emails found
+
+============================================================
+BATCH 27
+============================================================
+Processing 1000 publications...
+✓ Batch 27 complete:
+  Found emails: 137/1000 (13.7%)
+  Errors: 0
+  Running total: 3,721 emails found
+
+============================================================
+BATCH 28
+============================================================
+Processing 1000 publications...
+✓ Batch 28 complete:
+  Found emails: 143/1000 (14.3%)
+  Errors: 0
+  Running total: 3,864 emails found
+
+============================================================
+BATCH 29
+============================================================
+Processing 1000 publications...
+✓ Batch 29 complete:
+  Found emails: 133/1000 (13.3%)
+  Errors: 0
+  Running total: 3,997 emails found
+
+============================================================
+BATCH 30
+============================================================
+Processing 1000 publications...
+✓ Batch 30 complete:
+  Found emails: 116/1000 (11.6%)
+  Errors: 0
+  Running total: 4,113 emails found
+
+============================================================
+BATCH 31
+============================================================
+Processing 1000 publications...
+✓ Batch 31 complete:
+  Found emails: 136/1000 (13.6%)
+  Errors: 0
+  Running total: 4,249 emails found
+
+============================================================
+BATCH 32
+============================================================
+Processing 1000 publications...
+  ERROR on 39771973: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+✓ Batch 32 complete:
+  Found emails: 126/1000 (12.6%)
+  Errors: 1
+  Running total: 4,375 emails found
+
+============================================================
+BATCH 33
+============================================================
+Processing 1000 publications...
+  ERROR on 38006505: {'message': 'JSON could not be generated', 'code': 502, 'hint': 'Refer to full m
+✓ Batch 33 complete:
+  Found emails: 132/1000 (13.2%)
+  Errors: 1
+  Running total: 4,507 emails found
+
+============================================================
+BATCH 34
+============================================================
+Processing 1000 publications...
+✓ Batch 34 complete:
+  Found emails: 131/1000 (13.1%)
+  Errors: 0
+  Running total: 4,638 emails found
+
+============================================================
+BATCH 35
+============================================================
+Processing 1000 publications...
+✓ Batch 35 complete:
+  Found emails: 109/1000 (10.9%)
+  Errors: 0
+  Running total: 4,747 emails found
+
+============================================================
+BATCH 36
+============================================================
+Processing 1000 publications...
+✓ Batch 36 complete:
+  Found emails: 122/1000 (12.2%)
+  Errors: 0
+  Running total: 4,869 emails found
+
+============================================================
+BATCH 37
+============================================================
+Processing 1000 publications...
+✓ Batch 37 complete:
+  Found emails: 138/1000 (13.8%)
+  Errors: 0
+  Running total: 5,007 emails found
+
+============================================================
+BATCH 38
+============================================================
+Processing 1000 publications...
+✓ Batch 38 complete:
+  Found emails: 119/1000 (11.9%)
+  Errors: 0
+  Running total: 5,126 emails found
+
+============================================================
+BATCH 39
+============================================================
+Processing 1000 publications...
+✓ Batch 39 complete:
+  Found emails: 120/1000 (12.0%)
+  Errors: 0
+  Running total: 5,246 emails found
+
+============================================================
+BATCH 40
+============================================================
+Processing 1000 publications...
+✓ Batch 40 complete:
+  Found emails: 148/1000 (14.8%)
+  Errors: 0
+  Running total: 5,394 emails found
+
+============================================================
+BATCH 41
+============================================================
+Processing 1000 publications...
+✓ Batch 41 complete:
+  Found emails: 119/1000 (11.9%)
+  Errors: 0
+  Running total: 5,513 emails found
+
+============================================================
+BATCH 42
+============================================================
+Processing 1000 publications...
+  ERROR on 38913573: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+✓ Batch 42 complete:
+  Found emails: 140/1000 (14.0%)
+  Errors: 1
+  Running total: 5,653 emails found
+
+============================================================
+BATCH 43
+============================================================
+Processing 1000 publications...
+✓ Batch 43 complete:
+  Found emails: 147/1000 (14.7%)
+  Errors: 0
+  Running total: 5,800 emails found
+
+============================================================
+BATCH 44
+============================================================
+Processing 1000 publications...
+✓ Batch 44 complete:
+  Found emails: 132/1000 (13.2%)
+  Errors: 0
+  Running total: 5,932 emails found
+
+============================================================
+BATCH 45
+============================================================
+Processing 1000 publications...
+✓ Batch 45 complete:
+  Found emails: 124/1000 (12.4%)
+  Errors: 0
+  Running total: 6,056 emails found
+
+============================================================
+BATCH 46
+============================================================
+Processing 1000 publications...
+✓ Batch 46 complete:
+  Found emails: 130/1000 (13.0%)
+  Errors: 0
+  Running total: 6,186 emails found
+
+============================================================
+BATCH 47
+============================================================
+Processing 1000 publications...
+✓ Batch 47 complete:
+  Found emails: 111/1000 (11.1%)
+  Errors: 0
+  Running total: 6,297 emails found
+
+============================================================
+BATCH 48
+============================================================
+Processing 1000 publications...
+✓ Batch 48 complete:
+  Found emails: 161/1000 (16.1%)
+  Errors: 0
+  Running total: 6,458 emails found
+
+============================================================
+BATCH 49
+============================================================
+Processing 1000 publications...
+✓ Batch 49 complete:
+  Found emails: 142/1000 (14.2%)
+  Errors: 0
+  Running total: 6,600 emails found
+
+============================================================
+BATCH 50
+============================================================
+Processing 1000 publications...
+✓ Batch 50 complete:
+  Found emails: 116/1000 (11.6%)
+  Errors: 0
+  Running total: 6,716 emails found
+
+============================================================
+BATCH 51
+============================================================
+Processing 1000 publications...
+✓ Batch 51 complete:
+  Found emails: 126/1000 (12.6%)
+  Errors: 0
+  Running total: 6,842 emails found
+
+============================================================
+BATCH 52
+============================================================
+Processing 1000 publications...
+  ERROR on 39265189: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+✓ Batch 52 complete:
+  Found emails: 148/1000 (14.8%)
+  Errors: 1
+  Running total: 6,990 emails found
+
+============================================================
+BATCH 53
+============================================================
+Processing 1000 publications...
+✓ Batch 53 complete:
+  Found emails: 119/1000 (11.9%)
+  Errors: 0
+  Running total: 7,109 emails found
+
+============================================================
+BATCH 54
+============================================================
+Processing 1000 publications...
+✓ Batch 54 complete:
+  Found emails: 123/1000 (12.3%)
+  Errors: 0
+  Running total: 7,232 emails found
+
+============================================================
+BATCH 55
+============================================================
+Processing 1000 publications...
+✓ Batch 55 complete:
+  Found emails: 155/1000 (15.5%)
+  Errors: 0
+  Running total: 7,387 emails found
+
+============================================================
+BATCH 56
+============================================================
+Processing 1000 publications...
+✓ Batch 56 complete:
+  Found emails: 138/1000 (13.8%)
+  Errors: 0
+  Running total: 7,525 emails found
+
+============================================================
+BATCH 57
+============================================================
+Processing 1000 publications...
+✓ Batch 57 complete:
+  Found emails: 113/1000 (11.3%)
+  Errors: 0
+  Running total: 7,638 emails found
+
+============================================================
+BATCH 58
+============================================================
+Processing 1000 publications...
+✓ Batch 58 complete:
+  Found emails: 133/1000 (13.3%)
+  Errors: 0
+  Running total: 7,771 emails found
+
+============================================================
+BATCH 59
+============================================================
+Processing 1000 publications...
+✓ Batch 59 complete:
+  Found emails: 133/1000 (13.3%)
+  Errors: 0
+  Running total: 7,904 emails found
+
+============================================================
+BATCH 60
+============================================================
+Processing 1000 publications...
+✓ Batch 60 complete:
+  Found emails: 135/1000 (13.5%)
+  Errors: 0
+  Running total: 8,039 emails found
+
+============================================================
+BATCH 61
+============================================================
+Processing 1000 publications...
+✓ Batch 61 complete:
+  Found emails: 113/1000 (11.3%)
+  Errors: 0
+  Running total: 8,152 emails found
+
+============================================================
+BATCH 62
+============================================================
+Processing 1000 publications...
+  ERROR on 38517561: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+✓ Batch 62 complete:
+  Found emails: 135/1000 (13.5%)
+  Errors: 1
+  Running total: 8,287 emails found
+
+============================================================
+BATCH 63
+============================================================
+Processing 1000 publications...
+✓ Batch 63 complete:
+  Found emails: 130/1000 (13.0%)
+  Errors: 0
+  Running total: 8,417 emails found
+
+============================================================
+BATCH 64
+============================================================
+Processing 1000 publications...
+✓ Batch 64 complete:
+  Found emails: 156/1000 (15.6%)
+  Errors: 0
+  Running total: 8,573 emails found
+
+============================================================
+BATCH 65
+============================================================
+Processing 1000 publications...
+✓ Batch 65 complete:
+  Found emails: 110/1000 (11.0%)
+  Errors: 0
+  Running total: 8,683 emails found
+
+============================================================
+BATCH 66
+============================================================
+Processing 1000 publications...
+✓ Batch 66 complete:
+  Found emails: 135/1000 (13.5%)
+  Errors: 0
+  Running total: 8,818 emails found
+
+============================================================
+BATCH 67
+============================================================
+Processing 1000 publications...
+✓ Batch 67 complete:
+  Found emails: 128/1000 (12.8%)
+  Errors: 0
+  Running total: 8,946 emails found
+
+============================================================
+BATCH 68
+============================================================
+Processing 1000 publications...
+✓ Batch 68 complete:
+  Found emails: 141/1000 (14.1%)
+  Errors: 0
+  Running total: 9,087 emails found
+
+============================================================
+BATCH 69
+============================================================
+Processing 1000 publications...
+✓ Batch 69 complete:
+  Found emails: 126/1000 (12.6%)
+  Errors: 0
+  Running total: 9,213 emails found
+
+============================================================
+BATCH 70
+============================================================
+Processing 1000 publications...
+✓ Batch 70 complete:
+  Found emails: 151/1000 (15.1%)
+  Errors: 0
+  Running total: 9,364 emails found
+
+============================================================
+BATCH 71
+============================================================
+Processing 1000 publications...
+✓ Batch 71 complete:
+  Found emails: 137/1000 (13.7%)
+  Errors: 0
+  Running total: 9,501 emails found
+
+============================================================
+BATCH 72
+============================================================
+Processing 1000 publications...
+  ERROR on 38939756: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+✓ Batch 72 complete:
+  Found emails: 137/1000 (13.7%)
+  Errors: 1
+  Running total: 9,638 emails found
+
+============================================================
+BATCH 73
+============================================================
+Processing 1000 publications...
+✓ Batch 73 complete:
+  Found emails: 145/1000 (14.5%)
+  Errors: 0
+  Running total: 9,783 emails found
+
+============================================================
+BATCH 74
+============================================================
+Processing 1000 publications...
+  ERROR on 38350292: The read operation timed out
+✓ Batch 74 complete:
+  Found emails: 144/1000 (14.4%)
+  Errors: 2
+  Running total: 9,927 emails found
+
+============================================================
+BATCH 75
+============================================================
+Processing 1000 publications...
+✓ Batch 75 complete:
+  Found emails: 143/1000 (14.3%)
+  Errors: 0
+  Running total: 10,070 emails found
+
+============================================================
+BATCH 76
+============================================================
+Processing 1000 publications...
+✓ Batch 76 complete:
+  Found emails: 138/1000 (13.8%)
+  Errors: 0
+  Running total: 10,208 emails found
+
+============================================================
+BATCH 77
+============================================================
+Processing 1000 publications...
+✓ Batch 77 complete:
+  Found emails: 148/1000 (14.8%)
+  Errors: 0
+  Running total: 10,356 emails found
+
+============================================================
+BATCH 78
+============================================================
+Processing 1000 publications...
+✓ Batch 78 complete:
+  Found emails: 152/1000 (15.2%)
+  Errors: 0
+  Running total: 10,508 emails found
+
+============================================================
+BATCH 79
+============================================================
+Processing 1000 publications...
+✓ Batch 79 complete:
+  Found emails: 140/1000 (14.0%)
+  Errors: 0
+  Running total: 10,648 emails found
+
+============================================================
+BATCH 80
+============================================================
+Processing 1000 publications...
+✓ Batch 80 complete:
+  Found emails: 137/1000 (13.7%)
+  Errors: 1
+  Running total: 10,785 emails found
+
+============================================================
+BATCH 81
+============================================================
+Processing 1000 publications...
+✓ Batch 81 complete:
+  Found emails: 123/1000 (12.3%)
+  Errors: 1
+  Running total: 10,908 emails found
+
+============================================================
+BATCH 82
+============================================================
+Processing 1000 publications...
+✓ Batch 82 complete:
+  Found emails: 126/1000 (12.6%)
+  Errors: 0
+  Running total: 11,034 emails found
+
+============================================================
+BATCH 83
+============================================================
+Processing 1000 publications...
+✓ Batch 83 complete:
+  Found emails: 131/1000 (13.1%)
+  Errors: 0
+  Running total: 11,165 emails found
+
+============================================================
+BATCH 84
+============================================================
+Processing 1000 publications...
+✓ Batch 84 complete:
+  Found emails: 111/1000 (11.1%)
+  Errors: 0
+  Running total: 11,276 emails found
+
+============================================================
+BATCH 85
+============================================================
+Processing 1000 publications...
+✓ Batch 85 complete:
+  Found emails: 140/1000 (14.0%)
+  Errors: 0
+  Running total: 11,416 emails found
+
+============================================================
+BATCH 86
+============================================================
+Processing 1000 publications...
+✓ Batch 86 complete:
+  Found emails: 135/1000 (13.5%)
+  Errors: 0
+  Running total: 11,551 emails found
+
+============================================================
+BATCH 87
+============================================================
+Processing 1000 publications...
+✓ Batch 87 complete:
+  Found emails: 128/1000 (12.8%)
+  Errors: 1
+  Running total: 11,679 emails found
+
+============================================================
+BATCH 88
+============================================================
+Processing 1000 publications...
+✓ Batch 88 complete:
+  Found emails: 115/1000 (11.5%)
+  Errors: 1
+  Running total: 11,794 emails found
+
+============================================================
+BATCH 89
+============================================================
+Processing 1000 publications...
+✓ Batch 89 complete:
+  Found emails: 149/1000 (14.9%)
+  Errors: 0
+  Running total: 11,943 emails found
+
+============================================================
+BATCH 90
+============================================================
+Processing 1000 publications...
+✓ Batch 90 complete:
+  Found emails: 133/1000 (13.3%)
+  Errors: 0
+  Running total: 12,076 emails found
+
+============================================================
+BATCH 91
+============================================================
+Processing 1000 publications...
+✓ Batch 91 complete:
+  Found emails: 148/1000 (14.8%)
+  Errors: 0
+  Running total: 12,224 emails found
+
+============================================================
+BATCH 92
+============================================================
+Processing 1000 publications...
+✓ Batch 92 complete:
+  Found emails: 119/1000 (11.9%)
+  Errors: 1
+  Running total: 12,343 emails found
+
+============================================================
+BATCH 93
+============================================================
+Processing 1000 publications...
+✓ Batch 93 complete:
+  Found emails: 116/1000 (11.6%)
+  Errors: 0
+  Running total: 12,459 emails found
+
+============================================================
+BATCH 94
+============================================================
+Processing 1000 publications...
+✓ Batch 94 complete:
+  Found emails: 123/1000 (12.3%)
+  Errors: 0
+  Running total: 12,582 emails found
+
+============================================================
+BATCH 95
+============================================================
+Processing 1000 publications...
+✓ Batch 95 complete:
+  Found emails: 135/1000 (13.5%)
+  Errors: 0
+  Running total: 12,717 emails found
+
+============================================================
+BATCH 96
+============================================================
+Processing 1000 publications...
+✓ Batch 96 complete:
+  Found emails: 123/1000 (12.3%)
+  Errors: 0
+  Running total: 12,840 emails found
+
+============================================================
+BATCH 97
+============================================================
+Processing 1000 publications...
+✓ Batch 97 complete:
+  Found emails: 139/1000 (13.9%)
+  Errors: 0
+  Running total: 12,979 emails found
+
+============================================================
+BATCH 98
+============================================================
+Processing 1000 publications...
+✓ Batch 98 complete:
+  Found emails: 129/1000 (12.9%)
+  Errors: 0
+  Running total: 13,108 emails found
+
+============================================================
+BATCH 99
+============================================================
+Processing 1000 publications...
+✓ Batch 99 complete:
+  Found emails: 135/1000 (13.5%)
+  Errors: 0
+  Running total: 13,243 emails found
+
+============================================================
+BATCH 100
+============================================================
+Processing 794 publications...
+✓ Batch 100 complete:
+  Found emails: 103/794 (13.0%)
+  Errors: 0
+  Running total: 13,346 emails found
+
+============================================================
+BATCH 101
+============================================================
+✓ No more publications to process!
+
+============================================================
+EMAIL EXTRACTION COMPLETE
+============================================================
+Total processed: 99,778
+Total with emails: 13,346
+Email extraction rate: 13.4%
+Total errors: 16
+============================================================

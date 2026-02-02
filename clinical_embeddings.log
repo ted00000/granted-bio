@@ -1,0 +1,661 @@
+============================================================
+CLINICAL STUDY EMBEDDING GENERATION FOR GRANTED.BIO
+============================================================
+
+Connecting to Supabase...
+✓ Connected to Supabase
+✓ OpenAI client ready (model: text-embedding-3-small)
+
+Checking total clinical studies...
+✓ Found 38,140 total clinical studies
+Checking clinical studies without embeddings...
+✓ Found 19,136 clinical studies needing embeddings
+
+============================================================
+STARTING CLINICAL STUDY EMBEDDING GENERATION
+============================================================
+Total clinical studies to process: 19,136
+Batch size: 500 studies
+Estimated cost: $0.19
+Estimated time: ~95.7 minutes
+
+
+============================================================
+BATCH 1
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 1 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 500 embeddings, $0.0002
+
+============================================================
+BATCH 2
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 2 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 1,000 embeddings, $0.0004
+
+============================================================
+BATCH 3
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 3 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 1,500 embeddings, $0.0006
+
+============================================================
+BATCH 4
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 4 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 2,000 embeddings, $0.0008
+
+============================================================
+BATCH 5
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 5 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 2,500 embeddings, $0.0009
+
+============================================================
+BATCH 6
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 6 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 3,000 embeddings, $0.0011
+
+============================================================
+BATCH 7
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 7 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 3,500 embeddings, $0.0013
+
+============================================================
+BATCH 8
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 8 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 4,000 embeddings, $0.0015
+
+============================================================
+BATCH 9
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 9 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 4,500 embeddings, $0.0016
+
+============================================================
+BATCH 10
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 10 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 5,000 embeddings, $0.0018
+
+============================================================
+BATCH 11
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 11 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 5,500 embeddings, $0.0020
+
+============================================================
+BATCH 12
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 12 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 6,000 embeddings, $0.0022
+
+============================================================
+BATCH 13
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 13 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 6,500 embeddings, $0.0024
+
+============================================================
+BATCH 14
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 14 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 7,000 embeddings, $0.0025
+
+============================================================
+BATCH 15
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 15 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 7,500 embeddings, $0.0027
+
+============================================================
+BATCH 16
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 16 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 8,000 embeddings, $0.0029
+
+============================================================
+BATCH 17
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 17 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 8,500 embeddings, $0.0031
+
+============================================================
+BATCH 18
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 18 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 9,000 embeddings, $0.0033
+
+============================================================
+BATCH 19
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 19 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 9,500 embeddings, $0.0034
+
+============================================================
+BATCH 20
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 20 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 10,000 embeddings, $0.0036
+
+============================================================
+BATCH 21
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 21 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 10,500 embeddings, $0.0038
+
+============================================================
+BATCH 22
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+  ERROR on NCT01143142: The read operation timed out
+
+✓ Batch 22 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 10,999 embeddings, $0.0040
+
+============================================================
+BATCH 23
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 23 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 11,499 embeddings, $0.0042
+
+============================================================
+BATCH 24
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 24 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 11,999 embeddings, $0.0044
+
+============================================================
+BATCH 25
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+  ERROR on NCT03421327: Server disconnected
+
+✓ Batch 25 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 12,498 embeddings, $0.0045
+
+============================================================
+BATCH 26
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 26 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 12,998 embeddings, $0.0047
+
+============================================================
+BATCH 27
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 27 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 13,498 embeddings, $0.0049
+
+============================================================
+BATCH 28
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 28 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 13,998 embeddings, $0.0050
+
+============================================================
+BATCH 29
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 29 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 14,498 embeddings, $0.0052
+
+============================================================
+BATCH 30
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 30 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 14,998 embeddings, $0.0054
+
+============================================================
+BATCH 31
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 31 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 15,498 embeddings, $0.0056
+
+============================================================
+BATCH 32
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 32 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 15,998 embeddings, $0.0058
+
+============================================================
+BATCH 33
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 33 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 16,498 embeddings, $0.0060
+
+============================================================
+BATCH 34
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 34 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 16,998 embeddings, $0.0061
+
+============================================================
+BATCH 35
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+  ERROR on NCT03859297: Server disconnected
+
+✓ Batch 35 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 17,497 embeddings, $0.0063
+
+============================================================
+BATCH 36
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 36 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 17,997 embeddings, $0.0065
+
+============================================================
+BATCH 37
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 37 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 18,497 embeddings, $0.0067
+
+============================================================
+BATCH 38
+============================================================
+Processing 500 clinical studies in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 38 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 18,997 embeddings, $0.0068
+
+============================================================
+BATCH 39
+============================================================
+Processing 137 clinical studies in this batch...
+  [0/137] Batch cost: $0.0000, Errors: 0
+  [100/137] Batch cost: $0.0000, Errors: 0
+
+✓ Batch 39 complete:
+  Generated: 137/137
+  Errors: 0
+  Batch cost: $0.0000
+  Running total: 19,134 embeddings, $0.0069
+
+============================================================
+BATCH 40
+============================================================
+✓ No more clinical studies to process!
+
+============================================================
+CLINICAL STUDY EMBEDDING GENERATION COMPLETE
+============================================================
+Total embeddings generated: 19,134
+Total errors: 3
+Success rate: 100.0%
+Total tokens: 344,252
+Total cost: $0.0069
+Average cost per study: $0.000000
+============================================================

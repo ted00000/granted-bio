@@ -1,0 +1,3252 @@
+============================================================
+PUBLICATION EMBEDDING GENERATION FOR GRANTED.BIO
+============================================================
+
+Connecting to Supabase...
+✓ Connected to Supabase
+✓ OpenAI client ready (model: text-embedding-3-small)
+
+Checking total publications...
+✓ Found 203,020 total publications
+Checking publications without embeddings...
+✓ Found 99,792 publications needing embeddings
+
+============================================================
+STARTING PUBLICATION EMBEDDING GENERATION
+============================================================
+Total publications to process: 99,792
+Batch size: 500 publications
+Estimated cost: $2.00
+Estimated time: ~499.0 minutes
+
+
+============================================================
+BATCH 1
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 1 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 500 embeddings, $0.0002
+
+============================================================
+BATCH 2
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 2 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 1,000 embeddings, $0.0004
+
+============================================================
+BATCH 3
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 3 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 1,500 embeddings, $0.0007
+
+============================================================
+BATCH 4
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 4 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 2,000 embeddings, $0.0009
+
+============================================================
+BATCH 5
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 5 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 2,500 embeddings, $0.0011
+
+============================================================
+BATCH 6
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 6 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 3,000 embeddings, $0.0013
+
+============================================================
+BATCH 7
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 7 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 3,500 embeddings, $0.0016
+
+============================================================
+BATCH 8
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 8 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 4,000 embeddings, $0.0018
+
+============================================================
+BATCH 9
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+  ERROR on 38285957: [Errno 8] nodename nor servname provided, or not known
+
+✓ Batch 9 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 4,499 embeddings, $0.0020
+
+============================================================
+BATCH 10
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  ERROR on 38619737: Server disconnected
+  [300/500] Batch cost: $0.0001, Errors: 1
+  [400/500] Batch cost: $0.0002, Errors: 1
+
+✓ Batch 10 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 4,998 embeddings, $0.0023
+
+============================================================
+BATCH 11
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 11 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 5,498 embeddings, $0.0025
+
+============================================================
+BATCH 12
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 12 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 5,998 embeddings, $0.0027
+
+============================================================
+BATCH 13
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 13 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 6,498 embeddings, $0.0029
+
+============================================================
+BATCH 14
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 14 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 6,998 embeddings, $0.0032
+
+============================================================
+BATCH 15
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 15 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 7,498 embeddings, $0.0034
+
+============================================================
+BATCH 16
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 16 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 7,998 embeddings, $0.0036
+
+============================================================
+BATCH 17
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 17 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 8,498 embeddings, $0.0038
+
+============================================================
+BATCH 18
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 18 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 8,998 embeddings, $0.0041
+
+============================================================
+BATCH 19
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 19 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 9,498 embeddings, $0.0043
+
+============================================================
+BATCH 20
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 20 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 9,998 embeddings, $0.0045
+
+============================================================
+BATCH 21
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 21 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 10,498 embeddings, $0.0047
+
+============================================================
+BATCH 22
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 22 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 10,998 embeddings, $0.0050
+
+============================================================
+BATCH 23
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 23 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 11,498 embeddings, $0.0052
+
+============================================================
+BATCH 24
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 24 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 11,998 embeddings, $0.0054
+
+============================================================
+BATCH 25
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 25 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 12,498 embeddings, $0.0057
+
+============================================================
+BATCH 26
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 26 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 12,998 embeddings, $0.0059
+
+============================================================
+BATCH 27
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 27 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 13,498 embeddings, $0.0061
+
+============================================================
+BATCH 28
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 28 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 13,998 embeddings, $0.0063
+
+============================================================
+BATCH 29
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 29 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 14,498 embeddings, $0.0066
+
+============================================================
+BATCH 30
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 30 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 14,998 embeddings, $0.0068
+
+============================================================
+BATCH 31
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 31 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 15,498 embeddings, $0.0070
+
+============================================================
+BATCH 32
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 32 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 15,998 embeddings, $0.0072
+
+============================================================
+BATCH 33
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  ERROR on 39548452: Server disconnected
+  [200/500] Batch cost: $0.0001, Errors: 1
+  [300/500] Batch cost: $0.0001, Errors: 1
+  [400/500] Batch cost: $0.0002, Errors: 1
+
+✓ Batch 33 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 16,497 embeddings, $0.0075
+
+============================================================
+BATCH 34
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 34 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 16,997 embeddings, $0.0077
+
+============================================================
+BATCH 35
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 35 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 17,497 embeddings, $0.0079
+
+============================================================
+BATCH 36
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  ERROR on 38229469: The read operation timed out
+  [400/500] Batch cost: $0.0002, Errors: 1
+
+✓ Batch 36 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 17,996 embeddings, $0.0081
+
+============================================================
+BATCH 37
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 37 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 18,496 embeddings, $0.0084
+
+============================================================
+BATCH 38
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 38 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 18,996 embeddings, $0.0086
+
+============================================================
+BATCH 39
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 39 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 19,496 embeddings, $0.0088
+
+============================================================
+BATCH 40
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 40 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 19,996 embeddings, $0.0090
+
+============================================================
+BATCH 41
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 41 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 20,496 embeddings, $0.0093
+
+============================================================
+BATCH 42
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 42 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 20,996 embeddings, $0.0095
+
+============================================================
+BATCH 43
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 43 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 21,496 embeddings, $0.0097
+
+============================================================
+BATCH 44
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 44 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 21,996 embeddings, $0.0099
+
+============================================================
+BATCH 45
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  ERROR on 38532024: The read operation timed out
+  [300/500] Batch cost: $0.0001, Errors: 1
+  [400/500] Batch cost: $0.0002, Errors: 1
+
+✓ Batch 45 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 22,495 embeddings, $0.0102
+
+============================================================
+BATCH 46
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 46 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 22,995 embeddings, $0.0104
+
+============================================================
+BATCH 47
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 47 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 23,495 embeddings, $0.0106
+
+============================================================
+BATCH 48
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 48 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 23,995 embeddings, $0.0108
+
+============================================================
+BATCH 49
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 49 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 24,495 embeddings, $0.0110
+
+============================================================
+BATCH 50
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 50 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 24,995 embeddings, $0.0113
+
+============================================================
+BATCH 51
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 51 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 25,495 embeddings, $0.0115
+
+============================================================
+BATCH 52
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 52 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 25,995 embeddings, $0.0117
+
+============================================================
+BATCH 53
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 53 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 26,495 embeddings, $0.0119
+
+============================================================
+BATCH 54
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 54 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 26,995 embeddings, $0.0122
+
+============================================================
+BATCH 55
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 55 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 27,495 embeddings, $0.0124
+
+============================================================
+BATCH 56
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 56 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 27,995 embeddings, $0.0126
+
+============================================================
+BATCH 57
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 57 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 28,495 embeddings, $0.0128
+
+============================================================
+BATCH 58
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 58 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 28,995 embeddings, $0.0131
+
+============================================================
+BATCH 59
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 59 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 29,495 embeddings, $0.0133
+
+============================================================
+BATCH 60
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 60 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 29,995 embeddings, $0.0135
+
+============================================================
+BATCH 61
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 61 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 30,495 embeddings, $0.0137
+
+============================================================
+BATCH 62
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 62 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 30,995 embeddings, $0.0139
+
+============================================================
+BATCH 63
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 63 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 31,495 embeddings, $0.0142
+
+============================================================
+BATCH 64
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 64 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 31,995 embeddings, $0.0144
+
+============================================================
+BATCH 65
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 65 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 32,495 embeddings, $0.0146
+
+============================================================
+BATCH 66
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 66 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 32,995 embeddings, $0.0148
+
+============================================================
+BATCH 67
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 67 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 33,495 embeddings, $0.0151
+
+============================================================
+BATCH 68
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 68 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 33,995 embeddings, $0.0153
+
+============================================================
+BATCH 69
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 69 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 34,495 embeddings, $0.0155
+
+============================================================
+BATCH 70
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 70 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 34,995 embeddings, $0.0157
+
+============================================================
+BATCH 71
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 71 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 35,495 embeddings, $0.0159
+
+============================================================
+BATCH 72
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 72 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 35,995 embeddings, $0.0162
+
+============================================================
+BATCH 73
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 73 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 36,495 embeddings, $0.0164
+
+============================================================
+BATCH 74
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 74 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 36,995 embeddings, $0.0166
+
+============================================================
+BATCH 75
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 75 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 37,495 embeddings, $0.0169
+
+============================================================
+BATCH 76
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 76 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 37,995 embeddings, $0.0171
+
+============================================================
+BATCH 77
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 77 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 38,495 embeddings, $0.0173
+
+============================================================
+BATCH 78
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 78 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 38,995 embeddings, $0.0175
+
+============================================================
+BATCH 79
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  ERROR on 38042932: {'message': 'JSON could not be generated', 'code': 502, 'hint': 'Refer to full m
+  [100/500] Batch cost: $0.0000, Errors: 1
+  [200/500] Batch cost: $0.0001, Errors: 1
+  [300/500] Batch cost: $0.0001, Errors: 1
+  [400/500] Batch cost: $0.0002, Errors: 1
+
+✓ Batch 79 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 39,494 embeddings, $0.0178
+
+============================================================
+BATCH 80
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 80 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 39,994 embeddings, $0.0180
+
+============================================================
+BATCH 81
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 81 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 40,494 embeddings, $0.0182
+
+============================================================
+BATCH 82
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 82 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 40,994 embeddings, $0.0184
+
+============================================================
+BATCH 83
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 83 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 41,494 embeddings, $0.0186
+
+============================================================
+BATCH 84
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 84 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 41,994 embeddings, $0.0189
+
+============================================================
+BATCH 85
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 85 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 42,494 embeddings, $0.0191
+
+============================================================
+BATCH 86
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 86 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 42,994 embeddings, $0.0193
+
+============================================================
+BATCH 87
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 87 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 43,494 embeddings, $0.0195
+
+============================================================
+BATCH 88
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 88 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 43,994 embeddings, $0.0197
+
+============================================================
+BATCH 89
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 89 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 44,494 embeddings, $0.0200
+
+============================================================
+BATCH 90
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 90 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 44,994 embeddings, $0.0202
+
+============================================================
+BATCH 91
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 91 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 45,494 embeddings, $0.0204
+
+============================================================
+BATCH 92
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  ERROR on 37950107: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+  [400/500] Batch cost: $0.0002, Errors: 1
+
+✓ Batch 92 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 45,993 embeddings, $0.0207
+
+============================================================
+BATCH 93
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 93 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 46,493 embeddings, $0.0209
+
+============================================================
+BATCH 94
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 94 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 46,993 embeddings, $0.0211
+
+============================================================
+BATCH 95
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 95 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 47,493 embeddings, $0.0213
+
+============================================================
+BATCH 96
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 96 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 47,993 embeddings, $0.0215
+
+============================================================
+BATCH 97
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 97 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 48,493 embeddings, $0.0218
+
+============================================================
+BATCH 98
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0001, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0002, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 98 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0003
+  Running total: 48,993 embeddings, $0.0220
+
+============================================================
+BATCH 99
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 99 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 49,493 embeddings, $0.0223
+
+============================================================
+BATCH 100
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 100 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 49,993 embeddings, $0.0225
+
+============================================================
+BATCH 101
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0002, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 101 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 50,493 embeddings, $0.0228
+
+============================================================
+BATCH 102
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0001, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0002, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 102 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0003
+  Running total: 50,993 embeddings, $0.0230
+
+============================================================
+BATCH 103
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 103 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 51,493 embeddings, $0.0233
+
+============================================================
+BATCH 104
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 104 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 51,993 embeddings, $0.0235
+
+============================================================
+BATCH 105
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 105 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0003
+  Running total: 52,493 embeddings, $0.0238
+
+============================================================
+BATCH 106
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 106 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 52,993 embeddings, $0.0240
+
+============================================================
+BATCH 107
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 107 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 53,493 embeddings, $0.0242
+
+============================================================
+BATCH 108
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  ERROR on 39181122: EOF occurred in violation of protocol (_ssl.c:2406)
+  [100/500] Batch cost: $0.0000, Errors: 1
+  [200/500] Batch cost: $0.0001, Errors: 1
+  [300/500] Batch cost: $0.0001, Errors: 1
+  [400/500] Batch cost: $0.0002, Errors: 1
+
+✓ Batch 108 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 53,992 embeddings, $0.0245
+
+============================================================
+BATCH 109
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 109 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 54,492 embeddings, $0.0247
+
+============================================================
+BATCH 110
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 110 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 54,992 embeddings, $0.0249
+
+============================================================
+BATCH 111
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 111 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 55,492 embeddings, $0.0252
+
+============================================================
+BATCH 112
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 112 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 55,992 embeddings, $0.0254
+
+============================================================
+BATCH 113
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 113 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 56,492 embeddings, $0.0256
+
+============================================================
+BATCH 114
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0001, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 114 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 56,992 embeddings, $0.0259
+
+============================================================
+BATCH 115
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 115 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 57,492 embeddings, $0.0261
+
+============================================================
+BATCH 116
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 116 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 57,992 embeddings, $0.0263
+
+============================================================
+BATCH 117
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 117 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 58,492 embeddings, $0.0266
+
+============================================================
+BATCH 118
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 118 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 58,992 embeddings, $0.0268
+
+============================================================
+BATCH 119
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 119 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 59,492 embeddings, $0.0270
+
+============================================================
+BATCH 120
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 120 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 59,992 embeddings, $0.0272
+
+============================================================
+BATCH 121
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 121 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 60,492 embeddings, $0.0275
+
+============================================================
+BATCH 122
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 122 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 60,992 embeddings, $0.0277
+
+============================================================
+BATCH 123
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 123 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 61,492 embeddings, $0.0279
+
+============================================================
+BATCH 124
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 124 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 61,992 embeddings, $0.0281
+
+============================================================
+BATCH 125
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 125 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 62,492 embeddings, $0.0284
+
+============================================================
+BATCH 126
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 126 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 62,992 embeddings, $0.0286
+
+============================================================
+BATCH 127
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 127 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 63,492 embeddings, $0.0288
+
+============================================================
+BATCH 128
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 128 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 63,992 embeddings, $0.0290
+
+============================================================
+BATCH 129
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 129 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 64,492 embeddings, $0.0293
+
+============================================================
+BATCH 130
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 130 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 64,992 embeddings, $0.0295
+
+============================================================
+BATCH 131
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 131 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 65,492 embeddings, $0.0297
+
+============================================================
+BATCH 132
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  ERROR on 38217704: [Errno 8] nodename nor servname provided, or not known
+  [300/500] Batch cost: $0.0001, Errors: 1
+  [400/500] Batch cost: $0.0002, Errors: 1
+
+✓ Batch 132 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 65,991 embeddings, $0.0299
+
+============================================================
+BATCH 133
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 133 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 66,491 embeddings, $0.0302
+
+============================================================
+BATCH 134
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 134 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 66,991 embeddings, $0.0304
+
+============================================================
+BATCH 135
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 135 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 67,491 embeddings, $0.0306
+
+============================================================
+BATCH 136
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 136 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 67,991 embeddings, $0.0308
+
+============================================================
+BATCH 137
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 137 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 68,491 embeddings, $0.0311
+
+============================================================
+BATCH 138
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 138 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 68,991 embeddings, $0.0313
+
+============================================================
+BATCH 139
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 139 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 69,491 embeddings, $0.0315
+
+============================================================
+BATCH 140
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 140 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 69,991 embeddings, $0.0318
+
+============================================================
+BATCH 141
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 141 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 70,491 embeddings, $0.0320
+
+============================================================
+BATCH 142
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 142 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 70,991 embeddings, $0.0322
+
+============================================================
+BATCH 143
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  ERROR on 38830205: Connection error.
+  ERROR on 39081648: Server disconnected
+  ERROR on 39078402: Connection error.
+  ERROR on 39075835: Connection error.
+  ERROR on 39076085: Connection error.
+  ERROR on 37609141: Connection error.
+  [400/500] Batch cost: $0.0002, Errors: 6
+
+✓ Batch 143 complete:
+  Generated: 494/500
+  Errors: 6
+  Batch cost: $0.0002
+  Running total: 71,485 embeddings, $0.0324
+
+============================================================
+BATCH 144
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0001, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 144 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 71,985 embeddings, $0.0327
+
+============================================================
+BATCH 145
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 145 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 72,485 embeddings, $0.0329
+
+============================================================
+BATCH 146
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 146 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 72,985 embeddings, $0.0331
+
+============================================================
+BATCH 147
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 147 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 73,485 embeddings, $0.0333
+
+============================================================
+BATCH 148
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 148 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 73,985 embeddings, $0.0336
+
+============================================================
+BATCH 149
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 149 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 74,485 embeddings, $0.0338
+
+============================================================
+BATCH 150
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 150 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 74,985 embeddings, $0.0340
+
+============================================================
+BATCH 151
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 151 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 75,485 embeddings, $0.0343
+
+============================================================
+BATCH 152
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 152 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 75,985 embeddings, $0.0345
+
+============================================================
+BATCH 153
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 153 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 76,485 embeddings, $0.0347
+
+============================================================
+BATCH 154
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 154 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 76,985 embeddings, $0.0349
+
+============================================================
+BATCH 155
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 155 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 77,485 embeddings, $0.0352
+
+============================================================
+BATCH 156
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 156 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 77,985 embeddings, $0.0354
+
+============================================================
+BATCH 157
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 157 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 78,485 embeddings, $0.0356
+
+============================================================
+BATCH 158
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 158 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 78,985 embeddings, $0.0358
+
+============================================================
+BATCH 159
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 159 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 79,485 embeddings, $0.0361
+
+============================================================
+BATCH 160
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 160 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 79,985 embeddings, $0.0363
+
+============================================================
+BATCH 161
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 161 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 80,485 embeddings, $0.0365
+
+============================================================
+BATCH 162
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 162 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 80,985 embeddings, $0.0367
+
+============================================================
+BATCH 163
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 163 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 81,485 embeddings, $0.0369
+
+============================================================
+BATCH 164
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 164 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 81,985 embeddings, $0.0372
+
+============================================================
+BATCH 165
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 165 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 82,485 embeddings, $0.0374
+
+============================================================
+BATCH 166
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 166 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 82,985 embeddings, $0.0376
+
+============================================================
+BATCH 167
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 167 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 83,485 embeddings, $0.0378
+
+============================================================
+BATCH 168
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 168 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 83,985 embeddings, $0.0380
+
+============================================================
+BATCH 169
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 169 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 84,485 embeddings, $0.0383
+
+============================================================
+BATCH 170
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 170 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 84,985 embeddings, $0.0385
+
+============================================================
+BATCH 171
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 171 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 85,485 embeddings, $0.0387
+
+============================================================
+BATCH 172
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 172 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 85,985 embeddings, $0.0389
+
+============================================================
+BATCH 173
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 173 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 86,485 embeddings, $0.0391
+
+============================================================
+BATCH 174
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 174 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 86,985 embeddings, $0.0394
+
+============================================================
+BATCH 175
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 175 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 87,485 embeddings, $0.0396
+
+============================================================
+BATCH 176
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 176 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 87,985 embeddings, $0.0398
+
+============================================================
+BATCH 177
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 177 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 88,485 embeddings, $0.0400
+
+============================================================
+BATCH 178
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 178 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 88,985 embeddings, $0.0402
+
+============================================================
+BATCH 179
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 179 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 89,485 embeddings, $0.0405
+
+============================================================
+BATCH 180
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 180 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 89,985 embeddings, $0.0407
+
+============================================================
+BATCH 181
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 181 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 90,485 embeddings, $0.0409
+
+============================================================
+BATCH 182
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 182 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 90,985 embeddings, $0.0412
+
+============================================================
+BATCH 183
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 183 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 91,485 embeddings, $0.0414
+
+============================================================
+BATCH 184
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0001, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0002, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 184 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0003
+  Running total: 91,985 embeddings, $0.0416
+
+============================================================
+BATCH 185
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 185 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 92,485 embeddings, $0.0419
+
+============================================================
+BATCH 186
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 186 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 92,985 embeddings, $0.0421
+
+============================================================
+BATCH 187
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 187 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 93,485 embeddings, $0.0423
+
+============================================================
+BATCH 188
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 188 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 93,985 embeddings, $0.0425
+
+============================================================
+BATCH 189
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 189 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 94,485 embeddings, $0.0428
+
+============================================================
+BATCH 190
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 190 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 94,985 embeddings, $0.0430
+
+============================================================
+BATCH 191
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 191 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 95,485 embeddings, $0.0432
+
+============================================================
+BATCH 192
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 192 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 95,985 embeddings, $0.0435
+
+============================================================
+BATCH 193
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 193 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 96,485 embeddings, $0.0437
+
+============================================================
+BATCH 194
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 194 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 96,985 embeddings, $0.0439
+
+============================================================
+BATCH 195
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 195 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 97,485 embeddings, $0.0441
+
+============================================================
+BATCH 196
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  ERROR on 36856915: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+  [400/500] Batch cost: $0.0002, Errors: 1
+
+✓ Batch 196 complete:
+  Generated: 499/500
+  Errors: 1
+  Batch cost: $0.0002
+  Running total: 97,984 embeddings, $0.0443
+
+============================================================
+BATCH 197
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 197 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 98,484 embeddings, $0.0446
+
+============================================================
+BATCH 198
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 198 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 98,984 embeddings, $0.0448
+
+============================================================
+BATCH 199
+============================================================
+Processing 500 publications in this batch...
+  [0/500] Batch cost: $0.0000, Errors: 0
+  [100/500] Batch cost: $0.0000, Errors: 0
+  [200/500] Batch cost: $0.0001, Errors: 0
+  [300/500] Batch cost: $0.0001, Errors: 0
+  [400/500] Batch cost: $0.0002, Errors: 0
+
+✓ Batch 199 complete:
+  Generated: 500/500
+  Errors: 0
+  Batch cost: $0.0002
+  Running total: 99,484 embeddings, $0.0450
+
+============================================================
+BATCH 200
+============================================================
+Processing 302 publications in this batch...
+  [0/302] Batch cost: $0.0000, Errors: 0
+  [100/302] Batch cost: $0.0000, Errors: 0
+  [200/302] Batch cost: $0.0001, Errors: 0
+  [300/302] Batch cost: $0.0001, Errors: 0
+
+✓ Batch 200 complete:
+  Generated: 302/302
+  Errors: 0
+  Batch cost: $0.0001
+  Running total: 99,786 embeddings, $0.0451
+
+============================================================
+BATCH 201
+============================================================
+✓ No more publications to process!
+
+============================================================
+PUBLICATION EMBEDDING GENERATION COMPLETE
+============================================================
+Total embeddings generated: 99,786
+Total errors: 16
+Success rate: 100.0%
+Total tokens: 2,257,184
+Total cost: $0.0451
+Average cost per publication: $0.000000
+============================================================

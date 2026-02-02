@@ -7,7 +7,7 @@ Connecting to Supabase...
 ✓ OpenAI client ready (model: text-embedding-3-small)
 
 Checking total projects without embeddings...
-✓ Found 60,347 total projects needing embeddings
+✓ Found 43,572 total projects needing embeddings
 
 Fetching all abstracts...
 ✓ Loaded 1,000 abstracts
@@ -15,10 +15,10 @@ Fetching all abstracts...
 ============================================================
 STARTING EMBEDDING GENERATION
 ============================================================
-Total projects: 60,347
+Total projects: 43,572
 Batch size: 1000 projects
-Estimated cost: $1.27
-Estimated time: ~8.4 hours
+Estimated cost: $0.92
+Estimated time: ~6.1 hours
 
 
 ============================================================
@@ -51,7 +51,7 @@ Processing 1000 projects in this batch...
   [200/1000] Batch cost: $0.00, Errors: 0
   [300/1000] Batch cost: $0.00, Errors: 0
   [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.01, Errors: 0
+  [500/1000] Batch cost: $0.00, Errors: 0
   [600/1000] Batch cost: $0.01, Errors: 0
   [700/1000] Batch cost: $0.01, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
@@ -145,7 +145,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 6,000 embeddings, $0.06
+  Running total: 6,000 embeddings, $0.05
 
 ============================================================
 BATCH 7
@@ -157,7 +157,7 @@ Processing 1000 projects in this batch...
   [300/1000] Batch cost: $0.00, Errors: 0
   [400/1000] Batch cost: $0.00, Errors: 0
   [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.00, Errors: 0
+  [600/1000] Batch cost: $0.01, Errors: 0
   [700/1000] Batch cost: $0.01, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
   [900/1000] Batch cost: $0.01, Errors: 0
@@ -178,7 +178,7 @@ Processing 1000 projects in this batch...
   [300/1000] Batch cost: $0.00, Errors: 0
   [400/1000] Batch cost: $0.00, Errors: 0
   [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.00, Errors: 0
+  [600/1000] Batch cost: $0.01, Errors: 0
   [700/1000] Batch cost: $0.01, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
   [900/1000] Batch cost: $0.01, Errors: 0
@@ -220,11 +220,11 @@ Processing 1000 projects in this batch...
   [300/1000] Batch cost: $0.00, Errors: 0
   [400/1000] Batch cost: $0.00, Errors: 0
   [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.00, Errors: 0
+  [600/1000] Batch cost: $0.01, Errors: 0
   [700/1000] Batch cost: $0.01, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
   [900/1000] Batch cost: $0.01, Errors: 0
-  ERROR on 11098714: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+  ERROR on 10817173: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
 
 ✓ Batch 10 complete:
   Generated: 999/1000
@@ -242,7 +242,7 @@ Processing 1000 projects in this batch...
   [300/1000] Batch cost: $0.00, Errors: 0
   [400/1000] Batch cost: $0.00, Errors: 0
   [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.00, Errors: 0
+  [600/1000] Batch cost: $0.01, Errors: 0
   [700/1000] Batch cost: $0.01, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
   [900/1000] Batch cost: $0.01, Errors: 0
@@ -293,7 +293,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 12,999 embeddings, $0.11
+  Running total: 12,999 embeddings, $0.12
 
 ============================================================
 BATCH 14
@@ -314,7 +314,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 13,999 embeddings, $0.12
+  Running total: 13,999 embeddings, $0.13
 
 ============================================================
 BATCH 15
@@ -335,7 +335,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 14,999 embeddings, $0.13
+  Running total: 14,999 embeddings, $0.14
 
 ============================================================
 BATCH 16
@@ -347,7 +347,7 @@ Processing 1000 projects in this batch...
   [300/1000] Batch cost: $0.00, Errors: 0
   [400/1000] Batch cost: $0.00, Errors: 0
   [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
+  [600/1000] Batch cost: $0.00, Errors: 0
   [700/1000] Batch cost: $0.01, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
   [900/1000] Batch cost: $0.01, Errors: 0
@@ -368,7 +368,7 @@ Processing 1000 projects in this batch...
   [300/1000] Batch cost: $0.00, Errors: 0
   [400/1000] Batch cost: $0.00, Errors: 0
   [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
+  [600/1000] Batch cost: $0.00, Errors: 0
   [700/1000] Batch cost: $0.01, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
   [900/1000] Batch cost: $0.01, Errors: 0
@@ -435,7 +435,7 @@ Processing 1000 projects in this batch...
   [700/1000] Batch cost: $0.01, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
   [900/1000] Batch cost: $0.01, Errors: 0
-  ERROR on 11139445: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
+  ERROR on 10862992: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
 
 ✓ Batch 20 complete:
   Generated: 999/1000
@@ -537,16 +537,17 @@ Processing 1000 projects in this batch...
   [300/1000] Batch cost: $0.00, Errors: 0
   [400/1000] Batch cost: $0.00, Errors: 0
   [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
+  ERROR on 10878715: {'message': 'canceling statement due to statement timeout', 'code': '57014', 'hi
+  [600/1000] Batch cost: $0.01, Errors: 1
+  [700/1000] Batch cost: $0.01, Errors: 1
+  [800/1000] Batch cost: $0.01, Errors: 1
+  [900/1000] Batch cost: $0.01, Errors: 1
 
 ✓ Batch 25 complete:
-  Generated: 1000/1000
-  Errors: 0
+  Generated: 999/1000
+  Errors: 1
   Batch cost: $0.01
-  Running total: 24,998 embeddings, $0.22
+  Running total: 24,997 embeddings, $0.22
 
 ============================================================
 BATCH 26
@@ -567,7 +568,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 25,998 embeddings, $0.23
+  Running total: 25,997 embeddings, $0.23
 
 ============================================================
 BATCH 27
@@ -588,7 +589,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 26,998 embeddings, $0.24
+  Running total: 26,997 embeddings, $0.24
 
 ============================================================
 BATCH 28
@@ -609,7 +610,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 27,998 embeddings, $0.25
+  Running total: 27,997 embeddings, $0.25
 
 ============================================================
 BATCH 29
@@ -630,7 +631,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 28,998 embeddings, $0.26
+  Running total: 28,997 embeddings, $0.26
 
 ============================================================
 BATCH 30
@@ -651,7 +652,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 29,998 embeddings, $0.26
+  Running total: 29,997 embeddings, $0.27
 
 ============================================================
 BATCH 31
@@ -672,136 +673,32 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 30,998 embeddings, $0.27
+  Running total: 30,997 embeddings, $0.28
 
 ============================================================
 BATCH 32
 ============================================================
 Processing 1000 projects in this batch...
   [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
+  ERROR on 10999066: {'message': 'canceling statement due to statement timeout', 'code': '57014', 'hi
+  [100/1000] Batch cost: $0.00, Errors: 1
+  [200/1000] Batch cost: $0.00, Errors: 1
+  [300/1000] Batch cost: $0.00, Errors: 1
+  [400/1000] Batch cost: $0.00, Errors: 1
+  [500/1000] Batch cost: $0.00, Errors: 1
+  [600/1000] Batch cost: $0.01, Errors: 1
+  [700/1000] Batch cost: $0.01, Errors: 1
+  [800/1000] Batch cost: $0.01, Errors: 1
+  [900/1000] Batch cost: $0.01, Errors: 1
 
 ✓ Batch 32 complete:
-  Generated: 1000/1000
-  Errors: 0
+  Generated: 999/1000
+  Errors: 1
   Batch cost: $0.01
-  Running total: 31,998 embeddings, $0.28
+  Running total: 31,996 embeddings, $0.28
 
 ============================================================
 BATCH 33
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 33 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 32,998 embeddings, $0.29
-
-============================================================
-BATCH 34
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 34 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 33,998 embeddings, $0.30
-
-============================================================
-BATCH 35
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 35 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 34,998 embeddings, $0.31
-
-============================================================
-BATCH 36
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 36 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 35,998 embeddings, $0.32
-
-============================================================
-BATCH 37
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 37 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 36,998 embeddings, $0.33
-
-============================================================
-BATCH 38
 ============================================================
 Processing 1000 projects in this batch...
   [0/1000] Batch cost: $0.00, Errors: 0
@@ -815,11 +712,117 @@ Processing 1000 projects in this batch...
   [800/1000] Batch cost: $0.01, Errors: 0
   [900/1000] Batch cost: $0.01, Errors: 0
 
-✓ Batch 38 complete:
+✓ Batch 33 complete:
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 37,998 embeddings, $0.33
+  Running total: 32,996 embeddings, $0.29
+
+============================================================
+BATCH 34
+============================================================
+Processing 1000 projects in this batch...
+  [0/1000] Batch cost: $0.00, Errors: 0
+  [100/1000] Batch cost: $0.00, Errors: 0
+  [200/1000] Batch cost: $0.00, Errors: 0
+  [300/1000] Batch cost: $0.00, Errors: 0
+  [400/1000] Batch cost: $0.00, Errors: 0
+  [500/1000] Batch cost: $0.00, Errors: 0
+  [600/1000] Batch cost: $0.00, Errors: 0
+  [700/1000] Batch cost: $0.00, Errors: 0
+  [800/1000] Batch cost: $0.01, Errors: 0
+  [900/1000] Batch cost: $0.01, Errors: 0
+
+✓ Batch 34 complete:
+  Generated: 1000/1000
+  Errors: 0
+  Batch cost: $0.01
+  Running total: 33,996 embeddings, $0.30
+
+============================================================
+BATCH 35
+============================================================
+Processing 1000 projects in this batch...
+  [0/1000] Batch cost: $0.00, Errors: 0
+  [100/1000] Batch cost: $0.00, Errors: 0
+  [200/1000] Batch cost: $0.00, Errors: 0
+  [300/1000] Batch cost: $0.00, Errors: 0
+  [400/1000] Batch cost: $0.00, Errors: 0
+  [500/1000] Batch cost: $0.00, Errors: 0
+  [600/1000] Batch cost: $0.00, Errors: 0
+  [700/1000] Batch cost: $0.01, Errors: 0
+  [800/1000] Batch cost: $0.01, Errors: 0
+  [900/1000] Batch cost: $0.01, Errors: 0
+
+✓ Batch 35 complete:
+  Generated: 1000/1000
+  Errors: 0
+  Batch cost: $0.01
+  Running total: 34,996 embeddings, $0.31
+
+============================================================
+BATCH 36
+============================================================
+Processing 1000 projects in this batch...
+  [0/1000] Batch cost: $0.00, Errors: 0
+  [100/1000] Batch cost: $0.00, Errors: 0
+  [200/1000] Batch cost: $0.00, Errors: 0
+  [300/1000] Batch cost: $0.00, Errors: 0
+  [400/1000] Batch cost: $0.00, Errors: 0
+  [500/1000] Batch cost: $0.00, Errors: 0
+  [600/1000] Batch cost: $0.00, Errors: 0
+  [700/1000] Batch cost: $0.00, Errors: 0
+  [800/1000] Batch cost: $0.01, Errors: 0
+  [900/1000] Batch cost: $0.01, Errors: 0
+
+✓ Batch 36 complete:
+  Generated: 1000/1000
+  Errors: 0
+  Batch cost: $0.01
+  Running total: 35,996 embeddings, $0.31
+
+============================================================
+BATCH 37
+============================================================
+Processing 1000 projects in this batch...
+  [0/1000] Batch cost: $0.00, Errors: 0
+  [100/1000] Batch cost: $0.00, Errors: 0
+  [200/1000] Batch cost: $0.00, Errors: 0
+  [300/1000] Batch cost: $0.00, Errors: 0
+  [400/1000] Batch cost: $0.00, Errors: 0
+  [500/1000] Batch cost: $0.00, Errors: 0
+  [600/1000] Batch cost: $0.00, Errors: 0
+  [700/1000] Batch cost: $0.01, Errors: 0
+  [800/1000] Batch cost: $0.01, Errors: 0
+  [900/1000] Batch cost: $0.01, Errors: 0
+
+✓ Batch 37 complete:
+  Generated: 1000/1000
+  Errors: 0
+  Batch cost: $0.01
+  Running total: 36,996 embeddings, $0.32
+
+============================================================
+BATCH 38
+============================================================
+Processing 1000 projects in this batch...
+  [0/1000] Batch cost: $0.00, Errors: 0
+  [100/1000] Batch cost: $0.00, Errors: 0
+  ERROR on 11160018: [Errno 8] nodename nor servname provided, or not known
+  [200/1000] Batch cost: $0.00, Errors: 1
+  [300/1000] Batch cost: $0.00, Errors: 1
+  [400/1000] Batch cost: $0.00, Errors: 1
+  [500/1000] Batch cost: $0.00, Errors: 1
+  [600/1000] Batch cost: $0.00, Errors: 1
+  [700/1000] Batch cost: $0.01, Errors: 1
+  [800/1000] Batch cost: $0.01, Errors: 1
+  [900/1000] Batch cost: $0.01, Errors: 1
+
+✓ Batch 38 complete:
+  Generated: 999/1000
+  Errors: 1
+  Batch cost: $0.01
+  Running total: 37,995 embeddings, $0.33
 
 ============================================================
 BATCH 39
@@ -832,7 +835,7 @@ Processing 1000 projects in this batch...
   [400/1000] Batch cost: $0.00, Errors: 0
   [500/1000] Batch cost: $0.00, Errors: 0
   [600/1000] Batch cost: $0.00, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
+  [700/1000] Batch cost: $0.00, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
   [900/1000] Batch cost: $0.01, Errors: 0
 
@@ -840,7 +843,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 38,998 embeddings, $0.34
+  Running total: 38,995 embeddings, $0.33
 
 ============================================================
 BATCH 40
@@ -852,16 +855,18 @@ Processing 1000 projects in this batch...
   [300/1000] Batch cost: $0.00, Errors: 0
   [400/1000] Batch cost: $0.00, Errors: 0
   [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
+  ERROR on 11189418: Server disconnected
+  [600/1000] Batch cost: $0.00, Errors: 1
+  [700/1000] Batch cost: $0.00, Errors: 1
+  [800/1000] Batch cost: $0.01, Errors: 1
+  ERROR on 11191270: Server disconnected
+  [900/1000] Batch cost: $0.01, Errors: 2
 
 ✓ Batch 40 complete:
-  Generated: 1000/1000
-  Errors: 0
+  Generated: 998/1000
+  Errors: 2
   Batch cost: $0.01
-  Running total: 39,998 embeddings, $0.35
+  Running total: 39,993 embeddings, $0.34
 
 ============================================================
 BATCH 41
@@ -869,21 +874,20 @@ BATCH 41
 Processing 1000 projects in this batch...
   [0/1000] Batch cost: $0.00, Errors: 0
   [100/1000] Batch cost: $0.00, Errors: 0
-  ERROR on 11396745: <ConnectionTerminated error_code:0, last_stream_id:19999, additional_data:None>
-  [200/1000] Batch cost: $0.00, Errors: 1
-  [300/1000] Batch cost: $0.00, Errors: 1
-  [400/1000] Batch cost: $0.00, Errors: 1
-  [500/1000] Batch cost: $0.00, Errors: 1
-  [600/1000] Batch cost: $0.01, Errors: 1
-  [700/1000] Batch cost: $0.01, Errors: 1
-  [800/1000] Batch cost: $0.01, Errors: 1
-  [900/1000] Batch cost: $0.01, Errors: 1
+  [200/1000] Batch cost: $0.00, Errors: 0
+  [300/1000] Batch cost: $0.00, Errors: 0
+  [400/1000] Batch cost: $0.00, Errors: 0
+  [500/1000] Batch cost: $0.00, Errors: 0
+  [600/1000] Batch cost: $0.00, Errors: 0
+  [700/1000] Batch cost: $0.00, Errors: 0
+  [800/1000] Batch cost: $0.00, Errors: 0
+  [900/1000] Batch cost: $0.00, Errors: 0
 
 ✓ Batch 41 complete:
-  Generated: 999/1000
-  Errors: 1
+  Generated: 1000/1000
+  Errors: 0
   Batch cost: $0.01
-  Running total: 40,997 embeddings, $0.36
+  Running total: 40,993 embeddings, $0.35
 
 ============================================================
 BATCH 42
@@ -904,7 +908,7 @@ Processing 1000 projects in this batch...
   Generated: 1000/1000
   Errors: 0
   Batch cost: $0.01
-  Running total: 41,997 embeddings, $0.37
+  Running total: 41,993 embeddings, $0.36
 
 ============================================================
 BATCH 43
@@ -919,398 +923,52 @@ Processing 1000 projects in this batch...
   [600/1000] Batch cost: $0.01, Errors: 0
   [700/1000] Batch cost: $0.01, Errors: 0
   [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
+  ERROR on 10894661: [Errno 60] Operation timed out
+  ERROR on 10894665: [Errno 8] nodename nor servname provided, or not known
+  ERROR on 10894666: [Errno 8] nodename nor servname provided, or not known
+  ERROR on 10894670: [Errno 8] nodename nor servname provided, or not known
+  ERROR on 10894672: [Errno 8] nodename nor servname provided, or not known
+  ERROR on 10894673: [Errno 8] nodename nor servname provided, or not known
+  ERROR on 10894674: [Errno 8] nodename nor servname provided, or not known
+  ERROR on 10989418: <StreamReset stream_id:161, error_code:1, remote_reset:True>
+  [900/1000] Batch cost: $0.01, Errors: 8
+  ERROR on 10998527: {'message': 'canceling statement due to statement timeout', 'code': '57014', 'hi
 
 ✓ Batch 43 complete:
-  Generated: 1000/1000
-  Errors: 0
+  Generated: 991/1000
+  Errors: 9
   Batch cost: $0.01
-  Running total: 42,997 embeddings, $0.38
+  Running total: 42,984 embeddings, $0.37
 
 ============================================================
 BATCH 44
 ============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
+Processing 585 projects in this batch...
+  [0/585] Batch cost: $0.00, Errors: 0
+  [100/585] Batch cost: $0.00, Errors: 0
+  [200/585] Batch cost: $0.00, Errors: 0
+  [300/585] Batch cost: $0.00, Errors: 0
+  [400/585] Batch cost: $0.00, Errors: 0
+  [500/585] Batch cost: $0.00, Errors: 0
 
 ✓ Batch 44 complete:
-  Generated: 1000/1000
+  Generated: 585/585
   Errors: 0
-  Batch cost: $0.01
-  Running total: 43,997 embeddings, $0.39
+  Batch cost: $0.00
+  Running total: 43,569 embeddings, $0.37
 
 ============================================================
 BATCH 45
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.01, Errors: 0
-  [500/1000] Batch cost: $0.01, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 45 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 44,997 embeddings, $0.40
-
-============================================================
-BATCH 46
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 46 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 45,997 embeddings, $0.41
-
-============================================================
-BATCH 47
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 47 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 46,997 embeddings, $0.42
-
-============================================================
-BATCH 48
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 48 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 47,997 embeddings, $0.43
-
-============================================================
-BATCH 49
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 49 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 48,997 embeddings, $0.44
-
-============================================================
-BATCH 50
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 50 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 49,997 embeddings, $0.45
-
-============================================================
-BATCH 51
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 51 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 50,997 embeddings, $0.46
-
-============================================================
-BATCH 52
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 52 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 51,997 embeddings, $0.47
-
-============================================================
-BATCH 53
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 53 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 52,997 embeddings, $0.48
-
-============================================================
-BATCH 54
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 54 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 53,997 embeddings, $0.49
-
-============================================================
-BATCH 55
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 55 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 54,997 embeddings, $0.49
-
-============================================================
-BATCH 56
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 56 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 55,997 embeddings, $0.50
-
-============================================================
-BATCH 57
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.01, Errors: 0
-  [500/1000] Batch cost: $0.01, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 57 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 56,997 embeddings, $0.52
-
-============================================================
-BATCH 58
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 58 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 57,997 embeddings, $0.52
-
-============================================================
-BATCH 59
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 59 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 58,997 embeddings, $0.53
-
-============================================================
-BATCH 60
-============================================================
-Processing 1000 projects in this batch...
-  [0/1000] Batch cost: $0.00, Errors: 0
-  [100/1000] Batch cost: $0.00, Errors: 0
-  [200/1000] Batch cost: $0.00, Errors: 0
-  [300/1000] Batch cost: $0.00, Errors: 0
-  [400/1000] Batch cost: $0.00, Errors: 0
-  [500/1000] Batch cost: $0.00, Errors: 0
-  [600/1000] Batch cost: $0.01, Errors: 0
-  [700/1000] Batch cost: $0.01, Errors: 0
-  [800/1000] Batch cost: $0.01, Errors: 0
-  [900/1000] Batch cost: $0.01, Errors: 0
-
-✓ Batch 60 complete:
-  Generated: 1000/1000
-  Errors: 0
-  Batch cost: $0.01
-  Running total: 59,997 embeddings, $0.54
-
-============================================================
-BATCH 61
-============================================================
-Processing 350 projects in this batch...
-  [0/350] Batch cost: $0.00, Errors: 0
-  [100/350] Batch cost: $0.00, Errors: 0
-  [200/350] Batch cost: $0.00, Errors: 0
-  [300/350] Batch cost: $0.00, Errors: 0
-
-✓ Batch 61 complete:
-  Generated: 350/350
-  Errors: 0
-  Batch cost: $0.00
-  Running total: 60,347 embeddings, $0.55
-
-============================================================
-BATCH 62
 ============================================================
 ✓ No more projects to process!
 
 ============================================================
 EMBEDDING GENERATION COMPLETE
 ============================================================
-Total embeddings generated: 60,347
-Total errors: 3
+Total embeddings generated: 43,569
+Total errors: 16
 Success rate: 100.0%
-Total tokens: 27,376,147
-Total cost: $0.55
-Average cost per project: $0.000009
+Total tokens: 18,476,283
+Total cost: $0.37
+Average cost per project: $0.000008
 ============================================================

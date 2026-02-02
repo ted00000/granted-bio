@@ -1,0 +1,364 @@
+============================================================
+RETRY FAILED CLASSIFICATIONS
+============================================================
+✓ Connected to Supabase
+✓ Anthropic client ready
+✓ Loaded 1,000 abstracts
+
+✓ Found 4,202 projects needing classification
+
+
+Batch 1: 100 projects remaining...
+  Classifying 20 projects... /Users/tednunes/Projects/granted-bio/etl/retry_failed_classifications.py:84: DeprecationWarning: The model 'claude-3-5-haiku-latest' is deprecated and will reach end-of-life on February 19th, 2026.
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+  message = anthropic_client.messages.create(
+OK (20 updated)
+  Classifying 20 projects... /Users/tednunes/Projects/granted-bio/etl/retry_failed_classifications.py:84: DeprecationWarning: The model 'claude-3-5-haiku-latest' is deprecated and will reach end-of-life on February 19th, 2026.
+Please migrate to a newer model. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information.
+  message = anthropic_client.messages.create(
+OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 100 classified, 0 errors
+
+Batch 2: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 200 classified, 0 errors
+
+Batch 3: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 300 classified, 0 errors
+
+Batch 4: 100 projects remaining...
+  Classifying 20 projects... OK (19 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 399 classified, 0 errors
+
+Batch 5: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 499 classified, 0 errors
+
+Batch 6: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 599 classified, 0 errors
+
+Batch 7: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 699 classified, 0 errors
+
+Batch 8: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 799 classified, 0 errors
+
+Batch 9: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 899 classified, 0 errors
+
+Batch 10: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 999 classified, 0 errors
+
+Batch 11: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,099 classified, 0 errors
+
+Batch 12: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,199 classified, 0 errors
+
+Batch 13: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,299 classified, 0 errors
+
+Batch 14: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,399 classified, 0 errors
+
+Batch 15: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,499 classified, 0 errors
+
+Batch 16: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,599 classified, 0 errors
+
+Batch 17: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,699 classified, 0 errors
+
+Batch 18: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (19 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,798 classified, 0 errors
+
+Batch 19: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,898 classified, 0 errors
+
+Batch 20: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 1,998 classified, 0 errors
+
+Batch 21: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,098 classified, 0 errors
+
+Batch 22: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,198 classified, 0 errors
+
+Batch 23: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,298 classified, 0 errors
+
+Batch 24: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,398 classified, 0 errors
+
+Batch 25: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,498 classified, 0 errors
+
+Batch 26: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,598 classified, 0 errors
+
+Batch 27: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,698 classified, 0 errors
+
+Batch 28: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (19 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,797 classified, 0 errors
+
+Batch 29: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,897 classified, 0 errors
+
+Batch 30: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 2,997 classified, 0 errors
+
+Batch 31: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,097 classified, 0 errors
+
+Batch 32: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,197 classified, 0 errors
+
+Batch 33: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,297 classified, 0 errors
+
+Batch 34: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,397 classified, 0 errors
+
+Batch 35: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,497 classified, 0 errors
+
+Batch 36: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,597 classified, 0 errors
+
+Batch 37: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,697 classified, 0 errors
+
+Batch 38: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,797 classified, 0 errors
+
+Batch 39: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,897 classified, 0 errors
+
+Batch 40: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 3,997 classified, 0 errors
+
+Batch 41: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 4,097 classified, 0 errors
+
+Batch 42: 100 projects remaining...
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Classifying 20 projects... OK (20 updated)
+  Progress: 4,197 classified, 0 errors
+
+Batch 43: 5 projects remaining...
+  Classifying 5 projects... OK (5 updated)
+  Progress: 4,202 classified, 0 errors
+
+✓ All projects classified!
+
+============================================================
+RETRY COMPLETE
+============================================================
+Total classified: 4,202
+Total errors: 0
+Remaining unclassified: 0
