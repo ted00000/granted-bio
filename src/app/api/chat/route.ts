@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
     const stream = new ReadableStream({
       async start(controller) {
         try {
-          const maxToolIterations = 3
+          const maxToolIterations = 5
           let iteration = 0
 
           while (iteration < maxToolIterations) {
@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
             // Make the API call
             const response = await anthropic.messages.create({
               model: 'claude-3-5-haiku-20241022',
-              max_tokens: 4096,
+              max_tokens: 8192,
               system: systemPrompt,
               tools: AGENT_TOOLS,
               messages: conversationMessages
@@ -126,6 +126,14 @@ export async function POST(request: NextRequest) {
 
             // If no tool use, we're done
             if (response.stop_reason !== 'tool_use' || toolUseBlocks.length === 0) {
+              // Warn if response was truncated
+              if (response.stop_reason === 'max_tokens') {
+                controller.enqueue(
+                  encoder.encode(
+                    `data: ${JSON.stringify({ type: 'text', content: '\n\n[Response truncated due to length. Ask a more specific question for detailed results.]' })}\n\n`
+                  )
+                )
+              }
               break
             }
 
