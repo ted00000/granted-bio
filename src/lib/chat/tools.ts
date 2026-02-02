@@ -411,20 +411,26 @@ export async function findSimilar(
   const effectiveLimit = Math.min(limit, 10, userAccess.resultsLimit)
 
   try {
-    // Get the source project's embedding
+    // Get the source project's embedding (use abstract_embedding for best semantic match)
     const { data: sourceProject, error: sourceError } = await supabaseAdmin
       .from('projects')
-      .select('project_embedding, title')
+      .select('abstract_embedding, title_embedding, title')
       .eq('application_id', project_id)
       .single()
 
-    if (sourceError || !sourceProject?.project_embedding) {
-      throw new Error('Project not found or has no embedding')
+    if (sourceError) {
+      throw new Error('Project not found')
+    }
+
+    // Prefer abstract embedding, fall back to title embedding
+    const embedding = sourceProject?.abstract_embedding || sourceProject?.title_embedding
+    if (!embedding) {
+      throw new Error('Project has no embedding for similarity search')
     }
 
     // Search for similar projects
     const { data, error } = await supabaseAdmin.rpc('search_projects', {
-      query_embedding: sourceProject.project_embedding,
+      query_embedding: embedding,
       match_threshold: 0.6,
       match_count: effectiveLimit + 1, // +1 to exclude self
       min_biotools_confidence: 0
