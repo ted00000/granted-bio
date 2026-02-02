@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import type { PersonaType } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 
@@ -15,6 +15,33 @@ interface Message {
 interface ChatProps {
   persona: PersonaType
   onBack: () => void
+}
+
+// Parse message content to extract choices (bullet points at the end)
+function parseMessageWithChoices(content: string): { text: string; choices: string[] } {
+  const lines = content.split('\n')
+  const choices: string[] = []
+  let lastNonChoiceIndex = lines.length - 1
+
+  // Find consecutive bullet points at the end
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const line = lines[i].trim()
+    if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
+      const choice = line.replace(/^[•\-*]\s*/, '').trim()
+      if (choice) {
+        choices.unshift(choice)
+        lastNonChoiceIndex = i - 1
+      }
+    } else if (line === '') {
+      // Allow empty lines between choices
+      continue
+    } else {
+      break
+    }
+  }
+
+  const text = lines.slice(0, lastNonChoiceIndex + 1).join('\n').trim()
+  return { text, choices }
 }
 
 export function Chat({ persona, onBack }: ChatProps) {
@@ -170,6 +197,25 @@ export function Chat({ persona, onBack }: ChatProps) {
     inputRef.current?.focus()
   }
 
+  // Handle clicking a choice button - send it as user message
+  const handleChoiceClick = (choice: string) => {
+    if (isLoading) return
+    // Simulate form submission with the choice as input
+    const fakeEvent = { preventDefault: () => {} } as React.FormEvent
+    setInput(choice)
+    // Need to trigger submission after state updates
+    setTimeout(() => {
+      const form = document.querySelector('form')
+      form?.requestSubmit()
+    }, 0)
+  }
+
+  // Check if this is the last assistant message (for showing clickable choices)
+  const isLastAssistantMessage = (messageId: string) => {
+    const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant')
+    return lastAssistant?.id === messageId
+  }
+
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
@@ -227,36 +273,61 @@ export function Chat({ persona, onBack }: ChatProps) {
           )}
 
           {/* Message list */}
-          {messages.map(message => (
-            <div
-              key={message.id}
-              className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-            >
+          {messages.map(message => {
+            // Parse choices for assistant messages
+            const showChoices = message.role === 'assistant' &&
+                               !message.isStreaming &&
+                               !isLoading &&
+                               isLastAssistantMessage(message.id)
+            const { text, choices } = showChoices
+              ? parseMessageWithChoices(message.content)
+              : { text: message.content, choices: [] }
+
+            return (
               <div
-                className={`max-w-[85%] rounded-lg px-4 py-3 ${
-                  message.role === 'user'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white border border-gray-200 text-gray-900'
-                }`}
+                key={message.id}
+                className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                {message.isToolCall && (
-                  <div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
-                    <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    <span>Searching database...</span>
+                <div
+                  className={`max-w-[85%] rounded-lg px-4 py-3 ${
+                    message.role === 'user'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-white border border-gray-200 text-gray-900'
+                  }`}
+                >
+                  {message.isToolCall && (
+                    <div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
+                      <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      <span>Searching database...</span>
+                    </div>
+                  )}
+                  <div className="whitespace-pre-wrap">
+                    {showChoices ? text : message.content}
+                    {message.isStreaming && !message.content && (
+                      <span className="inline-block w-2 h-4 bg-gray-400 animate-pulse" />
+                    )}
                   </div>
-                )}
-                <div className="whitespace-pre-wrap">
-                  {message.content}
-                  {message.isStreaming && !message.content && (
-                    <span className="inline-block w-2 h-4 bg-gray-400 animate-pulse" />
+                  {/* Clickable choice buttons */}
+                  {showChoices && choices.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {choices.map((choice, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => handleChoiceClick(choice)}
+                          className="px-3 py-1.5 text-sm bg-blue-50 text-blue-700 border border-blue-200 rounded-full hover:bg-blue-100 hover:border-blue-300 transition-colors"
+                        >
+                          {choice}
+                        </button>
+                      ))}
+                    </div>
                   )}
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
           <div ref={messagesEndRef} />
         </div>
       </div>
