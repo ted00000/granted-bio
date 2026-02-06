@@ -8,6 +8,8 @@ import type {
   GetPIProfileParams,
   FindSimilarParams,
   SearchPatentsParams,
+  KeywordSearchParams,
+  KeywordSearchResult,
   ProjectResult,
   CompanyProfile,
   PIProfile,
@@ -19,8 +21,47 @@ import type { Tool } from '@anthropic-ai/sdk/resources/messages'
 // Tool definitions for Claude
 export const AGENT_TOOLS: Tool[] = [
   {
+    name: 'keyword_search',
+    description: 'Search NIH projects by keyword in abstracts. Returns total count and breakdown by life science category and organization type. Use this FIRST when user mentions a specific technology, method, or term (e.g., "mass spectrometry", "CRISPR", "proteomics"). This gives you counts to report back before drilling down.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        keyword: {
+          type: 'string',
+          description: 'The keyword or phrase to search for in project abstracts (e.g., "mass spectrometry", "CRISPR", "CAR-T")'
+        },
+        filters: {
+          type: 'object',
+          description: 'Optional filters to apply after keyword search',
+          properties: {
+            primary_category: {
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Filter by life science category: biotools, therapeutics, diagnostics, medical_device, digital_health, other'
+            },
+            org_type: {
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Filter by organization type: company, university, hospital, research_institute'
+            },
+            state: {
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Filter by US state codes, e.g. ["CA", "MA"]'
+            },
+            min_funding: {
+              type: 'number',
+              description: 'Minimum total funding amount'
+            }
+          }
+        }
+      },
+      required: ['keyword']
+    }
+  },
+  {
     name: 'search_projects',
-    description: 'Search NIH projects using semantic similarity and filters. Use this to find projects matching a research area, technology, or topic.',
+    description: 'Search NIH projects using semantic similarity and filters. Use this for broad conceptual searches where exact keyword matching is not needed.',
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -163,6 +204,173 @@ function summarizeProject(p: ProjectResult) {
 }
 
 // Tool implementations
+
+// Keyword search - finds projects by exact keyword match in abstracts
+// Uses parallel client-side queries for reliability
+export async function keywordSearch(
+  params: KeywordSearchParams,
+  userAccess: UserAccess
+): Promise<KeywordSearchResult> {
+  const { keyword, filters } = params
+
+  try {
+    // Step 1: Search abstracts for keyword, get all application_ids (paginate to get beyond 1000 limit)
+    const matchingIds: string[] = []
+    let offset = 0
+    const pageSize = 1000
+
+    while (true) {
+      const { data: abstractMatches, error: abstractError } = await supabaseAdmin
+        .from('abstracts')
+        .select('application_id')
+        .ilike('abstract_text', `%${keyword}%`)
+        .range(offset, offset + pageSize - 1)
+
+      if (abstractError) throw abstractError
+
+      if (!abstractMatches || abstractMatches.length === 0) break
+
+      matchingIds.push(...abstractMatches.map(a => a.application_id))
+
+      if (abstractMatches.length < pageSize) break
+      offset += pageSize
+    }
+
+    if (matchingIds.length === 0) {
+      return {
+        total_count: 0,
+        by_category: {},
+        by_org_type: {},
+        sample_results: []
+      }
+    }
+
+    // Step 2: Get projects for these IDs with optional filters (parallel batches)
+    const allProjects: Array<{
+      application_id: string
+      title: string
+      org_name: string | null
+      org_state: string | null
+      org_type: string | null
+      primary_category: string | null
+      total_cost: number | null
+      pi_names: string | null
+      project_number: string | null
+    }> = []
+
+    // Process in batches of 500 IDs (Supabase IN clause limit)
+    const idBatches: string[][] = []
+    for (let i = 0; i < matchingIds.length; i += 500) {
+      idBatches.push(matchingIds.slice(i, i + 500))
+    }
+
+    // Run all batch queries in parallel for speed
+    const batchPromises = idBatches.map(async (idBatch) => {
+      let query = supabaseAdmin
+        .from('projects')
+        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, pi_names, project_number')
+        .in('application_id', idBatch)
+
+      // Apply filters
+      if (filters?.primary_category?.length) {
+        query = query.in('primary_category', filters.primary_category)
+      }
+      if (filters?.org_type?.length) {
+        query = query.in('org_type', filters.org_type)
+      }
+      if (filters?.state?.length) {
+        query = query.in('org_state', filters.state)
+      }
+      if (filters?.min_funding) {
+        query = query.gte('total_cost', filters.min_funding)
+      }
+
+      return query
+    })
+
+    const batchResults = await Promise.all(batchPromises)
+
+    for (const result of batchResults) {
+      if (result.error) throw result.error
+      if (result.data) {
+        allProjects.push(...result.data)
+      }
+    }
+
+    // Step 3: Aggregate by category and org_type
+    const byCategory: Record<string, number> = {}
+    const byOrgType: Record<string, number> = {}
+
+    allProjects.forEach(p => {
+      const cat = p.primary_category || 'other'
+      const org = p.org_type || 'other'
+      byCategory[cat] = (byCategory[cat] || 0) + 1
+      byOrgType[org] = (byOrgType[org] || 0) + 1
+    })
+
+    // Step 4: Get sample results (top 10 by funding) with PI emails
+    const topProjects = [...allProjects]
+      .sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
+      .slice(0, 10)
+
+    // Get PI emails for sample results via publications
+    const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean)
+    let piEmails: Record<string, string> = {}
+
+    if (projectNumbers.length > 0 && userAccess.canSeeEmails) {
+      // Get pmids linked to these projects
+      const { data: pubLinks } = await supabaseAdmin
+        .from('project_publications')
+        .select('project_number, pmid')
+        .in('project_number', projectNumbers)
+
+      if (pubLinks?.length) {
+        const pmids = pubLinks.map(pl => pl.pmid)
+        // Get emails from publications
+        const { data: pubs } = await supabaseAdmin
+          .from('publications')
+          .select('pmid, pi_email')
+          .in('pmid', pmids)
+          .not('pi_email', 'is', null)
+          .neq('pi_email', '')
+
+        // Map project_number to email
+        const pmidToEmail: Record<string, string> = {}
+        pubs?.forEach(p => {
+          if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
+        })
+        pubLinks?.forEach(pl => {
+          if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
+            piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+          }
+        })
+      }
+    }
+
+    const sampleResults = topProjects.map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      total_cost: p.total_cost,
+      pi_names: p.pi_names,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null
+    }))
+
+    return {
+      total_count: allProjects.length,
+      by_category: byCategory,
+      by_org_type: byOrgType,
+      sample_results: sampleResults
+    }
+  } catch (error) {
+    console.error('Keyword search error:', error)
+    throw error
+  }
+}
+
 export async function searchProjects(
   params: SearchProjectsParams,
   userAccess: UserAccess
@@ -520,6 +728,8 @@ export async function executeTool(
   userAccess: UserAccess
 ): Promise<unknown> {
   switch (toolName) {
+    case 'keyword_search':
+      return keywordSearch(args as unknown as KeywordSearchParams, userAccess)
     case 'search_projects':
       return searchProjects(args as unknown as SearchProjectsParams, userAccess)
     case 'get_company_profile':

@@ -61,6 +61,33 @@ export interface SearchPatentsParams {
   limit?: number
 }
 
+export interface KeywordSearchParams {
+  keyword: string
+  filters?: {
+    primary_category?: string[]
+    org_type?: string[]
+    state?: string[]
+    min_funding?: number
+  }
+}
+
+export interface KeywordSearchResult {
+  total_count: number
+  by_category: Record<string, number>
+  by_org_type: Record<string, number>
+  sample_results: Array<{
+    application_id: string
+    title: string
+    org_name: string | null
+    org_state: string | null
+    org_type: string | null
+    primary_category: string | null
+    total_cost: number | null
+    pi_names: string | null
+    pi_email: string | null
+  }>
+}
+
 // Search result types (matching existing API)
 export interface ProjectResult {
   id: string
