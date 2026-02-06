@@ -51,3 +51,8 @@ __pycache__/
 .venv/
 venv/
 *.egg-info/
+
+# Temp debug scripts
+scripts/check-states.ts
+scripts/count-projects.ts
+scripts/test-search.ts
