@@ -1,8 +1,10 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import type { IntentType, PersonaType } from '@/lib/chat/types'
 import { INTENT_TO_PERSONA } from '@/lib/chat/types'
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
 
 interface PersonaSelectorProps {
@@ -47,9 +49,17 @@ const intents: {
 ]
 
 export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
+  const router = useRouter()
+
   const handleSelect = (intent: IntentType) => {
     const persona = INTENT_TO_PERSONA[intent]
     onSelect(persona)
+  }
+
+  const handleSignOut = async () => {
+    const supabase = createBrowserSupabaseClient()
+    await supabase.auth.signOut()
+    router.push('/')
   }
 
   return (
@@ -60,6 +70,12 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
           <span className="text-2xl font-semibold tracking-tight text-gray-900">
             granted<span className="text-[#E07A5F]">.bio</span>
           </span>
+          <button
+            onClick={handleSignOut}
+            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Sign out
+          </button>
         </nav>
       </header>
 
