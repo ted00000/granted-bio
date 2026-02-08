@@ -29,89 +29,81 @@ export default function ResetPasswordPage() {
     }
   }
 
-  if (success) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8 text-center">
-          <div>
-            <Link href="/" className="block">
-              <h1 className="text-3xl font-bold text-blue-600">granted.bio</h1>
-            </Link>
-          </div>
-          <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-6 rounded-lg">
-            <h2 className="text-xl font-semibold mb-2">Check your email</h2>
-            <p>
-              We&apos;ve sent a password reset link to <strong>{email}</strong>.
-              Please click the link to reset your password.
-            </p>
-          </div>
-          <Link href="/login" className="text-blue-600 hover:text-blue-500">
-            Back to login
-          </Link>
-        </div>
-      </div>
-    )
-  }
-
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div>
-          <Link href="/" className="block text-center">
-            <h1 className="text-3xl font-bold text-blue-600">granted.bio</h1>
+    <div className="min-h-screen bg-white">
+      <header className="px-6 py-4">
+        <nav className="max-w-md mx-auto">
+          <Link href="/" className="text-2xl font-semibold tracking-tight text-gray-900">
+            granted<span className="text-[#E07A5F]">.bio</span>
           </Link>
-          <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">
-            Reset your password
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Enter your email address and we&apos;ll send you a link to reset your password.
-          </p>
-        </div>
+        </nav>
+      </header>
 
-        <form className="mt-8 space-y-6" onSubmit={handleResetPassword}>
-          {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-              {error}
+      <main className="px-6 py-12">
+        <div className="max-w-sm mx-auto">
+          {success ? (
+            <div className="text-center">
+              <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Check your email</h2>
+              <p className="text-sm text-gray-500 mb-6">
+                We sent a password reset link to<br />
+                <span className="text-gray-900">{email}</span>
+              </p>
+              <Link
+                href="/"
+                className="text-sm text-[#E07A5F] hover:underline"
+              >
+                Back to sign in
+              </Link>
             </div>
+          ) : (
+            <>
+              <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+                Reset password
+              </h1>
+              <p className="text-sm text-gray-500 mb-6">
+                Enter your email and we'll send you a reset link.
+              </p>
+
+              <form onSubmit={handleResetPassword} className="space-y-4">
+                {error && (
+                  <p className="text-sm text-red-600">{error}</p>
+                )}
+
+                <input
+                  type="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
+                />
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors disabled:opacity-50"
+                >
+                  {loading ? 'Sending...' : 'Send reset link'}
+                </button>
+
+                <div className="text-center">
+                  <Link
+                    href="/"
+                    className="text-sm text-gray-500 hover:text-gray-900"
+                  >
+                    Back to sign in
+                  </Link>
+                </div>
+              </form>
+            </>
           )}
-
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email address
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              autoComplete="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 rounded-md placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              placeholder="you@example.com"
-            />
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-            >
-              {loading ? 'Sending...' : 'Send reset link'}
-            </button>
-          </div>
-
-          <div className="text-center text-sm">
-            <Link
-              href="/login"
-              className="font-medium text-blue-600 hover:text-blue-500"
-            >
-              Back to login
-            </Link>
-          </div>
-        </form>
-      </div>
+        </div>
+      </main>
     </div>
   )
 }

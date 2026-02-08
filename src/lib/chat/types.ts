@@ -151,7 +151,7 @@ export interface PatentResult {
 }
 
 // User tier for access control
-export type UserTier = 'free' | 'pro' | 'enterprise'
+export type UserTier = 'free' | 'basic' | 'advanced' | 'unlimited'
 
 export interface UserAccess {
   tier: UserTier
@@ -159,7 +159,43 @@ export interface UserAccess {
   canExport: boolean
   canSeeEmails: boolean
   canSeeAbstracts: boolean
-  searchesRemaining: number | null // null = unlimited
+  searchesPerMonth: number | null // null = unlimited
+}
+
+// Tier configuration
+export const TIER_LIMITS: Record<UserTier, UserAccess> = {
+  free: {
+    tier: 'free',
+    resultsLimit: 10,
+    canExport: false,
+    canSeeEmails: false,
+    canSeeAbstracts: false,
+    searchesPerMonth: 25,
+  },
+  basic: {
+    tier: 'basic',
+    resultsLimit: 50,
+    canExport: false,
+    canSeeEmails: false,
+    canSeeAbstracts: true,
+    searchesPerMonth: 100,
+  },
+  advanced: {
+    tier: 'advanced',
+    resultsLimit: 200,
+    canExport: true,
+    canSeeEmails: true,
+    canSeeAbstracts: true,
+    searchesPerMonth: 500,
+  },
+  unlimited: {
+    tier: 'unlimited',
+    resultsLimit: 1000,
+    canExport: true,
+    canSeeEmails: true,
+    canSeeAbstracts: true,
+    searchesPerMonth: null,
+  },
 }
 
 // Chat request/response types
