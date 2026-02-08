@@ -103,35 +103,65 @@ const intents: {
 
 export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   const router = useRouter()
-  const [userName, setUserName] = useState<string | null>(null)
+  const [firstName, setFirstName] = useState<string | null>(null)
+  const [needsName, setNeedsName] = useState(false)
+  const [nameInput, setNameInput] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
   const supabase = useMemo(() => createBrowserSupabaseClient(), [])
 
-  // Fetch user's name on mount
+  // Fetch user's first name on mount
   useEffect(() => {
     const fetchUserName = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        // Try to get name from profile first
+        setUserId(user.id)
+
+        // Check for first_name in profile
         const { data: profile } = await supabase
           .from('user_profiles')
-          .select('full_name')
+          .select('first_name, full_name')
           .eq('id', user.id)
           .single()
 
-        if (profile?.full_name) {
-          setUserName(profile.full_name)
-        } else if (user.user_metadata?.full_name) {
-          // Fall back to auth metadata (from Google)
-          setUserName(user.user_metadata.full_name)
-        } else if (user.user_metadata?.name) {
-          setUserName(user.user_metadata.name)
+        if (profile?.first_name) {
+          setFirstName(profile.first_name)
+        } else if (profile?.full_name) {
+          // Extract first name from full name
+          const extracted = profile.full_name.split(' ')[0]
+          setFirstName(extracted)
+        } else if (user.user_metadata?.full_name || user.user_metadata?.name) {
+          // Extract from Google metadata
+          const fullName = user.user_metadata.full_name || user.user_metadata.name
+          const extracted = fullName.split(' ')[0]
+          setFirstName(extracted)
+        } else {
+          // No name found - prompt user
+          setNeedsName(true)
         }
       }
     }
     fetchUserName()
   }, [supabase])
 
-  const greeting = useMemo(() => getGreeting(userName), [userName])
+  const handleSaveName = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!nameInput.trim() || !userId) return
+
+    setSaving(true)
+    const trimmedName = nameInput.trim()
+
+    await supabase
+      .from('user_profiles')
+      .update({ first_name: trimmedName })
+      .eq('id', userId)
+
+    setFirstName(trimmedName)
+    setNeedsName(false)
+    setSaving(false)
+  }
+
+  const greeting = useMemo(() => getGreeting(firstName), [firstName])
 
   const handleSelect = (intent: IntentType) => {
     const persona = INTENT_TO_PERSONA[intent]
@@ -163,16 +193,45 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
       {/* Main content */}
       <main className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="max-w-3xl mx-auto w-full">
-          <div className="text-center mb-10">
-            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-3">
-              {greeting}
-            </h1>
-            <p className="text-lg text-gray-500">
-              Choose your focus to get started
-            </p>
-          </div>
+          {needsName ? (
+            <div className="max-w-sm mx-auto text-center">
+              <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-3">
+                Welcome to granted.bio
+              </h1>
+              <p className="text-lg text-gray-500 mb-8">
+                What should we call you?
+              </p>
+              <form onSubmit={handleSaveName} className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Your first name"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  autoFocus
+                  required
+                  className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-center text-lg"
+                />
+                <button
+                  type="submit"
+                  disabled={saving || !nameInput.trim()}
+                  className="w-full py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors disabled:opacity-50"
+                >
+                  {saving ? 'Saving...' : 'Continue'}
+                </button>
+              </form>
+            </div>
+          ) : (
+            <>
+              <div className="text-center mb-10">
+                <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-3">
+                  {greeting}
+                </h1>
+                <p className="text-lg text-gray-500">
+                  Choose your focus to get started
+                </p>
+              </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {intents.map(intent => (
               <button
                 key={intent.id}
@@ -193,7 +252,9 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
                 </p>
               </button>
             ))}
-          </div>
+              </div>
+            </>
+          )}
         </div>
       </main>
 

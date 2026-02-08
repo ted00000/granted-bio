@@ -18,24 +18,29 @@ function AuthCallbackHandler() {
 
     const handleAuthCallback = async () => {
       try {
+        let session = null
+
         // OAuth callback - exchange code for session
         if (code) {
-          const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
           if (exchangeError) {
             console.error('Code exchange error:', exchangeError)
             setError(exchangeError.message)
             return
           }
+          session = data.session
         }
 
-        // Check for session (works for both OAuth and magic links)
+        // If no code (magic link), check for existing session
         // Magic link tokens in the hash are automatically handled by Supabase
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession()
-
-        if (sessionError) {
-          console.error('Session error:', sessionError)
-          setError(sessionError.message)
-          return
+        if (!session) {
+          const { data: { session: existingSession }, error: sessionError } = await supabase.auth.getSession()
+          if (sessionError) {
+            console.error('Session error:', sessionError)
+            setError(sessionError.message)
+            return
+          }
+          session = existingSession
         }
 
         if (session) {

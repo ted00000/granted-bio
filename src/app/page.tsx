@@ -125,7 +125,7 @@ function AuthForm() {
       <form onSubmit={handleMagicLink} className="space-y-3">
         <input
           type="text"
-          placeholder="Your name"
+          placeholder="Your first name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"

@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS user_profiles (
   -- Basic info (pulled from auth provider)
   email TEXT,
   full_name TEXT,
+  first_name TEXT,  -- Extracted from full_name for personalized greetings
   avatar_url TEXT,
 
   -- Subscription
@@ -73,12 +74,20 @@ CREATE POLICY "Admins can update all profiles" ON user_profiles
 -- Function to automatically create profile on signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
+DECLARE
+  full_name_val TEXT;
 BEGIN
-  INSERT INTO public.user_profiles (id, email, full_name, avatar_url)
+  full_name_val := COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name');
+
+  INSERT INTO public.user_profiles (id, email, full_name, first_name, avatar_url)
   VALUES (
     NEW.id,
     NEW.email,
-    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name'),
+    full_name_val,
+    CASE
+      WHEN full_name_val IS NOT NULL THEN split_part(full_name_val, ' ', 1)
+      ELSE NULL
+    END,
     NEW.raw_user_meta_data->>'avatar_url'
   );
   RETURN NEW;
@@ -114,3 +123,4 @@ GRANT ALL ON public.user_profiles TO authenticated;
 COMMENT ON TABLE user_profiles IS 'User profiles extending Supabase auth with subscription tiers';
 COMMENT ON COLUMN user_profiles.tier IS 'Subscription tier: free, basic, advanced, unlimited';
 COMMENT ON COLUMN user_profiles.searches_this_month IS 'Number of searches used in current billing period';
+COMMENT ON COLUMN user_profiles.first_name IS 'First name extracted from full_name, used for personalized greetings';
