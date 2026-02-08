@@ -72,22 +72,15 @@ CREATE POLICY "Admins can update all profiles" ON user_profiles
   );
 
 -- Function to automatically create profile on signup
+-- Note: first_name is left NULL so user is prompted to enter it on first login
 CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS TRIGGER AS $$
-DECLARE
-  full_name_val TEXT;
 BEGIN
-  full_name_val := COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name');
-
-  INSERT INTO public.user_profiles (id, email, full_name, first_name, avatar_url)
+  INSERT INTO public.user_profiles (id, email, full_name, avatar_url)
   VALUES (
     NEW.id,
     NEW.email,
-    full_name_val,
-    CASE
-      WHEN full_name_val IS NOT NULL THEN split_part(full_name_val, ' ', 1)
-      ELSE NULL
-    END,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name'),
     NEW.raw_user_meta_data->>'avatar_url'
   );
   RETURN NEW;

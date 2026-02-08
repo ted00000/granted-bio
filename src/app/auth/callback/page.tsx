@@ -1,19 +1,23 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect, useState, Suspense, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 function AuthCallbackHandler() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
+  const hasRun = useRef(false)
 
   const next = searchParams.get('next') || '/chat'
   const code = searchParams.get('code')
   const type = searchParams.get('type')
 
   useEffect(() => {
+    // Prevent running multiple times (OAuth codes are single-use)
+    if (hasRun.current) return
+    hasRun.current = true
+
     const supabase = createBrowserSupabaseClient()
 
     const handleAuthCallback = async () => {
@@ -25,10 +29,17 @@ function AuthCallbackHandler() {
           const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
           if (exchangeError) {
             console.error('Code exchange error:', exchangeError)
-            setError(exchangeError.message)
-            return
+            // If code was already used, check for existing session
+            const { data: { session: existingSession } } = await supabase.auth.getSession()
+            if (existingSession) {
+              session = existingSession
+            } else {
+              setError(exchangeError.message)
+              return
+            }
+          } else {
+            session = data.session
           }
-          session = data.session
         }
 
         // If no code (magic link), check for existing session
@@ -46,7 +57,7 @@ function AuthCallbackHandler() {
         if (session) {
           // Handle password recovery
           if (type === 'recovery') {
-            router.replace('/update-password')
+            window.location.href = '/update-password'
             return
           }
 
@@ -83,7 +94,7 @@ function AuthCallbackHandler() {
     }
 
     handleAuthCallback()
-  }, [code, type, next, router])
+  }, [code, type, next])
 
   if (error) {
     return (
@@ -97,7 +108,7 @@ function AuthCallbackHandler() {
           <h2 className="text-lg font-medium text-gray-900 mb-2">Sign in failed</h2>
           <p className="text-sm text-gray-500 mb-4">{error}</p>
           <button
-            onClick={() => router.replace('/')}
+            onClick={() => window.location.href = '/'}
             className="text-sm text-[#E07A5F] hover:underline"
           >
             Back to sign in
