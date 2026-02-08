@@ -21,17 +21,17 @@ async function getUserAccess(userId: string | null): Promise<UserAccess> {
       canExport: false,
       canSeeEmails: false,
       canSeeAbstracts: false,
-      searchesRemaining: 10
+      searchesPerMonth: 10
     }
   }
 
   return {
-    tier: 'pro',
+    tier: 'unlimited',
     resultsLimit: 100,
     canExport: true,
     canSeeEmails: true,
     canSeeAbstracts: true,
-    searchesRemaining: null
+    searchesPerMonth: null
   }
 }
 
