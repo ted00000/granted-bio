@@ -10,7 +10,6 @@ function AuthForm() {
   const redirect = searchParams.get('redirect') || '/chat'
 
   const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
   const [loading, setLoading] = useState<'google' | 'magic' | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [magicLinkSent, setMagicLinkSent] = useState(false)
@@ -43,7 +42,6 @@ function AuthForm() {
       email,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback?next=${redirect}`,
-        data: name ? { full_name: name } : undefined,
       },
     })
 
@@ -123,13 +121,6 @@ function AuthForm() {
 
       {/* Magic Link */}
       <form onSubmit={handleMagicLink} className="space-y-3">
-        <input
-          type="text"
-          placeholder="Your first name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
-        />
         <input
           type="email"
           placeholder="Email address"

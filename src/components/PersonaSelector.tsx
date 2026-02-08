@@ -192,12 +192,9 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
             </div>
           ) : needsName ? (
             <div className="max-w-sm mx-auto text-center">
-              <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-3">
-                Welcome to granted.bio
-              </h1>
-              <p className="text-lg text-gray-500 mb-8">
+              <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-8">
                 What should we call you?
-              </p>
+              </h1>
               <form onSubmit={handleSaveName} className="space-y-4">
                 <input
                   type="text"
