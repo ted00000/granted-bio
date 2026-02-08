@@ -22,36 +22,28 @@ function AuthCallbackHandler() {
 
     const handleAuthCallback = async () => {
       try {
-        let session = null
+        // First, check if there's already a session (from previous successful auth)
+        const { data: { session: existingSession } } = await supabase.auth.getSession()
 
-        // OAuth callback - exchange code for session
-        if (code) {
+        let session = existingSession
+
+        // If no session and we have a code, exchange it
+        if (!session && code) {
           const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
           if (exchangeError) {
             console.error('Code exchange error:', exchangeError)
-            // If code was already used, check for existing session
-            const { data: { session: existingSession } } = await supabase.auth.getSession()
-            if (existingSession) {
-              session = existingSession
-            } else {
-              setError(exchangeError.message)
-              return
-            }
-          } else {
-            session = data.session
-          }
-        }
-
-        // If no code (magic link), check for existing session
-        // Magic link tokens in the hash are automatically handled by Supabase
-        if (!session) {
-          const { data: { session: existingSession }, error: sessionError } = await supabase.auth.getSession()
-          if (sessionError) {
-            console.error('Session error:', sessionError)
-            setError(sessionError.message)
+            setError(exchangeError.message)
             return
           }
-          session = existingSession
+          session = data.session
+        }
+
+        // For magic links, tokens in hash are handled by Supabase client automatically
+        // If still no session, wait and retry (magic link tokens take a moment)
+        if (!session) {
+          await new Promise(resolve => setTimeout(resolve, 500))
+          const { data: { session: retrySession } } = await supabase.auth.getSession()
+          session = retrySession
         }
 
         if (session) {
@@ -76,16 +68,7 @@ function AuthCallbackHandler() {
           // Regular user - go to chat (hard redirect to ensure cookies are read)
           window.location.href = next
         } else {
-          // No session yet - wait a moment and try again
-          // (magic link tokens in hash take a moment to process)
-          await new Promise(resolve => setTimeout(resolve, 500))
-
-          const { data: { session: retrySession } } = await supabase.auth.getSession()
-          if (retrySession) {
-            window.location.href = next
-          } else {
-            setError('Unable to sign in. Please try again.')
-          }
+          setError('Unable to sign in. Please try again.')
         }
       } catch (err) {
         console.error('Auth callback exception:', err)
