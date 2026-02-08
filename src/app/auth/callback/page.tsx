@@ -58,12 +58,12 @@ function AuthCallbackHandler() {
             .single()
 
           if (profile?.role === 'admin') {
-            router.replace('/admin')
+            window.location.href = '/admin'
             return
           }
 
-          // Regular user - go to chat
-          router.replace(next)
+          // Regular user - go to chat (hard redirect to ensure cookies are read)
+          window.location.href = next
         } else {
           // No session yet - wait a moment and try again
           // (magic link tokens in hash take a moment to process)
@@ -71,7 +71,7 @@ function AuthCallbackHandler() {
 
           const { data: { session: retrySession } } = await supabase.auth.getSession()
           if (retrySession) {
-            router.replace(next)
+            window.location.href = next
           } else {
             setError('Unable to sign in. Please try again.')
           }

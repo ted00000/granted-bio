@@ -126,17 +126,8 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
 
         if (profile?.first_name) {
           setFirstName(profile.first_name)
-        } else if (profile?.full_name) {
-          // Extract first name from full name
-          const extracted = profile.full_name.split(' ')[0]
-          setFirstName(extracted)
-        } else if (user.user_metadata?.full_name || user.user_metadata?.name) {
-          // Extract from Google metadata
-          const fullName = user.user_metadata.full_name || user.user_metadata.name
-          const extracted = fullName.split(' ')[0]
-          setFirstName(extracted)
         } else {
-          // No name found - prompt user
+          // No first_name set - prompt user (even for Google users)
           setNeedsName(true)
         }
       }
