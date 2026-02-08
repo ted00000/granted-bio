@@ -8,6 +8,8 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get('next') ?? '/chat'
   const type = searchParams.get('type')
 
+  console.log('[Auth Callback] Starting:', { hasCode: !!code, next, type, origin })
+
   if (code) {
     const cookieStore = await cookies()
 
@@ -28,9 +30,15 @@ export async function GET(request: NextRequest) {
       }
     )
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
-    if (!error) {
+    console.log('[Auth Callback] Exchange result:', {
+      success: !error,
+      hasSession: !!data?.session,
+      error: error?.message
+    })
+
+    if (!error && data?.session) {
       // Handle password recovery redirect
       if (type === 'recovery') {
         return NextResponse.redirect(`${origin}/update-password`)
@@ -51,10 +59,12 @@ export async function GET(request: NextRequest) {
       }
 
       // Successful auth - redirect to next page
+      console.log('[Auth Callback] Redirecting to:', `${origin}${next}`)
       return NextResponse.redirect(`${origin}${next}`)
     }
   }
 
   // Auth error - redirect to error page or home
+  console.log('[Auth Callback] Failed - no code or exchange failed, redirecting to home')
   return NextResponse.redirect(`${origin}/?error=auth_callback_error`)
 }
