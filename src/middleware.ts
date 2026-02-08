@@ -34,24 +34,35 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  // Helper to create redirect with cookies preserved
+  const redirectWithCookies = (pathname: string, searchParams?: Record<string, string>) => {
+    const url = request.nextUrl.clone()
+    url.pathname = pathname
+    if (searchParams) {
+      Object.entries(searchParams).forEach(([key, value]) => {
+        url.searchParams.set(key, value)
+      })
+    }
+    const response = NextResponse.redirect(url)
+    // Forward any cookies that were set during session refresh
+    supabaseResponse.cookies.getAll().forEach(cookie => {
+      response.cookies.set(cookie.name, cookie.value)
+    })
+    return response
+  }
+
   // Redirect authenticated users from homepage to chat
   if (request.nextUrl.pathname === '/' && user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/chat'
-    return NextResponse.redirect(url)
+    return redirectWithCookies('/chat')
   }
 
   // Protect admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/login'
-      url.searchParams.set('redirect', request.nextUrl.pathname)
-      return NextResponse.redirect(url)
+      return redirectWithCookies('/', { redirect: request.nextUrl.pathname })
     }
 
-    // Check if user is admin (you can customize this logic)
-    // For now, we'll check user metadata or a specific email domain
+    // Check if user is admin
     const { data: profile } = await supabase
       .from('user_profiles')
       .select('role')
@@ -59,9 +70,7 @@ export async function middleware(request: NextRequest) {
       .single()
 
     if (!profile || profile.role !== 'admin') {
-      const url = request.nextUrl.clone()
-      url.pathname = '/unauthorized'
-      return NextResponse.redirect(url)
+      return redirectWithCookies('/unauthorized')
     }
   }
 
