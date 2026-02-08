@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { IntentType, PersonaType } from '@/lib/chat/types'
@@ -9,6 +10,58 @@ import { Search, TrendingUp, Users, Activity } from 'lucide-react'
 
 interface PersonaSelectorProps {
   onSelect: (persona: PersonaType) => void
+}
+
+// Greetings with {name} placeholder
+const GREETINGS = [
+  "Good to see you, {name}",
+  "Welcome back, {name}",
+  "Hey {name}, ready to explore?",
+  "Hi {name}, what can I help you find?",
+  "Hello {name}, let's discover something",
+  "{name}, good to have you here",
+  "What's on your mind today, {name}?",
+  "Ready when you are, {name}",
+  "{name}, where shall we start?",
+  "Nice to see you again, {name}",
+  "Hey there, {name}",
+  "What are we researching today, {name}?",
+  "{name}, let's find some insights",
+  "Welcome, {name}. What's the mission?",
+  "Hi {name}, what's the focus today?",
+  "{name}, ready to dive in?",
+  "Good day, {name}",
+  "Let's get to work, {name}",
+  "What can I find for you, {name}?",
+  "{name}, what shall we explore?",
+]
+
+// Time-based greetings
+const getTimeGreeting = () => {
+  const hour = new Date().getHours()
+  if (hour < 12) return "Good morning"
+  if (hour < 17) return "Good afternoon"
+  return "Good evening"
+}
+
+function getGreeting(name: string | null): string {
+  if (!name) {
+    return "What are you looking for?"
+  }
+
+  const firstName = name.split(' ')[0]
+
+  // Use date as seed for consistent daily greeting
+  const today = new Date()
+  const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate()
+  const index = seed % GREETINGS.length
+
+  // 20% chance to use time-based greeting instead
+  if (seed % 5 === 0) {
+    return `${getTimeGreeting()}, ${firstName}`
+  }
+
+  return GREETINGS[index].replace('{name}', firstName)
 }
 
 const intents: {
@@ -50,6 +103,35 @@ const intents: {
 
 export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   const router = useRouter()
+  const [userName, setUserName] = useState<string | null>(null)
+  const supabase = useMemo(() => createBrowserSupabaseClient(), [])
+
+  // Fetch user's name on mount
+  useEffect(() => {
+    const fetchUserName = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        // Try to get name from profile first
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('full_name')
+          .eq('id', user.id)
+          .single()
+
+        if (profile?.full_name) {
+          setUserName(profile.full_name)
+        } else if (user.user_metadata?.full_name) {
+          // Fall back to auth metadata (from Google)
+          setUserName(user.user_metadata.full_name)
+        } else if (user.user_metadata?.name) {
+          setUserName(user.user_metadata.name)
+        }
+      }
+    }
+    fetchUserName()
+  }, [supabase])
+
+  const greeting = useMemo(() => getGreeting(userName), [userName])
 
   const handleSelect = (intent: IntentType) => {
     const persona = INTENT_TO_PERSONA[intent]
@@ -57,7 +139,6 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   }
 
   const handleSignOut = async () => {
-    const supabase = createBrowserSupabaseClient()
     await supabase.auth.signOut()
     router.push('/')
   }
@@ -84,7 +165,7 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
         <div className="max-w-3xl mx-auto w-full">
           <div className="text-center mb-10">
             <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-3">
-              What are you looking for?
+              {greeting}
             </h1>
             <p className="text-lg text-gray-500">
               Choose your focus to get started
