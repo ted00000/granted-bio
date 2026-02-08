@@ -1,20 +1,45 @@
 'use client'
 
-import { Suspense, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
+import { Suspense, useState, useEffect } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 function AuthForm() {
   const searchParams = useSearchParams()
+  const router = useRouter()
   const redirect = searchParams.get('redirect') || '/chat'
 
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState<'google' | 'magic' | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [magicLinkSent, setMagicLinkSent] = useState(false)
+  const [checkingAuth, setCheckingAuth] = useState(true)
 
   const supabase = createBrowserSupabaseClient()
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        router.replace(redirect)
+      } else {
+        setCheckingAuth(false)
+      }
+    }
+    checkAuth()
+  }, [supabase, router, redirect])
+
+  if (checkingAuth) {
+    return (
+      <div className="space-y-4 animate-pulse">
+        <div className="h-12 bg-gray-100 rounded-lg" />
+        <div className="h-12 bg-gray-100 rounded-lg" />
+        <div className="h-12 bg-gray-200 rounded-lg" />
+      </div>
+    )
+  }
 
   const handleGoogleSignIn = async () => {
     setLoading('google')
