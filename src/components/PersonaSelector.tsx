@@ -11,86 +11,55 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   const personas: PersonaType[] = ['researcher', 'bd', 'investor']
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col">
       {/* Header */}
-      <header className="border-b border-gray-100 bg-white/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <span className="text-2xl font-bold text-blue-600">granted.bio</span>
-            <div className="text-sm text-gray-500">
-              Life Science Grant Intelligence
-            </div>
-          </div>
-        </div>
+      <header className="px-6 py-4">
+        <nav className="max-w-5xl mx-auto flex items-center justify-between">
+          <span className="text-xl font-semibold tracking-tight text-gray-900">
+            granted<span className="text-[#E07A5F]">.bio</span>
+          </span>
+        </nav>
       </header>
 
       {/* Main content */}
-      <main className="flex-1 flex items-center justify-center px-4 py-16">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
-            What brings you here today?
-          </h1>
-          <p className="text-xl text-gray-600 mb-12">
-            Choose your role for a personalized AI-powered search experience
-          </p>
+      <main className="flex-1 flex items-center justify-center px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-3">
+              What brings you here today?
+            </h1>
+            <p className="text-lg text-gray-500">
+              Choose your role for a personalized search experience
+            </p>
+          </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-4">
             {personas.map(persona => {
               const meta = PERSONA_METADATA[persona]
               return (
                 <button
                   key={persona}
                   onClick={() => onSelect(persona)}
-                  className="group p-8 bg-white rounded-2xl border-2 border-gray-100 hover:border-blue-500 hover:shadow-lg transition-all text-left"
+                  className="group p-6 bg-white rounded-xl border border-gray-100 hover:border-[#E07A5F] hover:shadow-md transition-all text-left"
                 >
-                  <div className="text-5xl mb-4 group-hover:scale-110 transition-transform">
+                  <div className="text-3xl mb-3">
                     {meta.icon}
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h2 className="text-lg font-medium text-gray-900 mb-1">
                     {meta.title}
                   </h2>
-                  <p className="text-lg text-blue-600 mb-3">
+                  <p className="text-sm text-[#E07A5F] mb-2">
                     &ldquo;{meta.subtitle}&rdquo;
                   </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 leading-relaxed">
                     {meta.description}
                   </p>
                 </button>
               )
             })}
           </div>
-
-          {/* Stats */}
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-              <div className="text-2xl font-bold text-blue-600">128K+</div>
-              <div className="text-sm text-gray-500">NIH Projects</div>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-              <div className="text-2xl font-bold text-green-600">46K+</div>
-              <div className="text-sm text-gray-500">Patents</div>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-              <div className="text-2xl font-bold text-purple-600">203K+</div>
-              <div className="text-sm text-gray-500">Publications</div>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-              <div className="text-2xl font-bold text-orange-600">38K+</div>
-              <div className="text-sm text-gray-500">Clinical Trials</div>
-            </div>
-          </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="border-t border-gray-100 bg-white py-6">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm text-gray-500">
-            Data sourced from NIH RePORTER FY2024-2025.
-            AI-powered classification and semantic search.
-          </p>
-        </div>
-      </footer>
     </div>
   )
 }

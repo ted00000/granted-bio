@@ -1,138 +1,259 @@
 'use client'
 
+import { Suspense, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
-import { Header } from '@/components/Header'
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+
+function AuthForm() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirect = searchParams.get('redirect') || '/chat'
+  const message = searchParams.get('message')
+
+  const [mode, setMode] = useState<'login' | 'signup'>('login')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
+
+  const supabase = createBrowserSupabaseClient()
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+
+    if (mode === 'signup') {
+      if (password !== confirmPassword) {
+        setError('Passwords do not match')
+        setLoading(false)
+        return
+      }
+      if (password.length < 8) {
+        setError('Password must be at least 8 characters')
+        setLoading(false)
+        return
+      }
+
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
+
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+      } else {
+        setSuccess(true)
+      }
+    } else {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+
+      if (error) {
+        setError(error.message)
+        setLoading(false)
+      } else {
+        router.push(redirect)
+        router.refresh()
+      }
+    }
+  }
+
+  if (success) {
+    return (
+      <div className="text-center py-8">
+        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+          <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Check your email</h3>
+        <p className="text-sm text-gray-500">
+          We sent a confirmation link to<br />
+          <span className="text-gray-900">{email}</span>
+        </p>
+      </div>
+    )
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {message === 'password_updated' && (
+        <p className="text-sm text-green-600 text-center">
+          Password updated. Please sign in.
+        </p>
+      )}
+
+      {error && (
+        <p className="text-sm text-red-600 text-center">{error}</p>
+      )}
+
+      <div>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        />
+      </div>
+
+      <div>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
+        />
+      </div>
+
+      {mode === 'signup' && (
+        <div>
+          <input
+            type="password"
+            placeholder="Confirm password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200"
+          />
+        </div>
+      )}
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors disabled:opacity-50"
+      >
+        {loading ? (mode === 'login' ? 'Signing in...' : 'Creating account...') : (mode === 'login' ? 'Sign in' : 'Create account')}
+      </button>
+
+      <div className="text-center text-sm text-gray-500">
+        {mode === 'login' ? (
+          <>
+            <button
+              type="button"
+              onClick={() => setMode('signup')}
+              className="text-[#E07A5F] hover:underline"
+            >
+              Create an account
+            </button>
+            <span className="mx-2">·</span>
+            <Link href="/reset-password" className="text-gray-500 hover:text-gray-900 hover:underline">
+              Forgot password
+            </Link>
+          </>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setMode('login')}
+            className="text-[#E07A5F] hover:underline"
+          >
+            Already have an account? Sign in
+          </button>
+        )}
+      </div>
+    </form>
+  )
+}
+
+function AuthFormFallback() {
+  return (
+    <div className="space-y-4 animate-pulse">
+      <div className="h-12 bg-gray-100 rounded-lg" />
+      <div className="h-12 bg-gray-100 rounded-lg" />
+      <div className="h-12 bg-gray-200 rounded-lg" />
+    </div>
+  )
+}
+
+const stats = [
+  { label: 'NIH Projects', value: '129K' },
+  { label: 'Patents', value: '46K' },
+  { label: 'Publications', value: '203K' },
+  { label: 'Clinical Trials', value: '38K' },
+]
+
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
-      <Header />
+    <div className="min-h-screen bg-white">
+      {/* Header */}
+      <header className="px-6 py-4">
+        <nav className="max-w-6xl mx-auto flex items-center justify-between">
+          <span className="text-xl font-semibold tracking-tight text-gray-900">
+            granted<span className="text-[#E07A5F]">.bio</span>
+          </span>
+          <Link
+            href="/chat"
+            className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors"
+          >
+            Go to app
+          </Link>
+        </nav>
+      </header>
 
-      {/* Hero Section */}
-      <main className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-            Life Sciences Grant Intelligence
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
-            AI-powered search across 128K NIH projects, 46K patents, and 203K publications.
-            Find funded research, discover competitors, and build qualified leads.
-          </p>
+      {/* Main */}
+      <main className="px-6 py-16 md:py-24">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-start">
+            {/* Left column */}
+            <div className="space-y-8">
+              <div className="space-y-4">
+                <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 leading-tight">
+                  Life Sciences Grant Intelligence
+                </h1>
+                <p className="text-lg text-gray-500 leading-relaxed">
+                  Search across NIH grants, patents, publications, and clinical trials with natural language. Find funded research, discover competitors, and build qualified leads.
+                </p>
+              </div>
 
-          {/* AI Chat CTA */}
-          <div className="max-w-2xl mx-auto mb-12">
-            <Link href="/chat">
-              <div className="group flex items-center bg-blue-600 hover:bg-blue-700 rounded-2xl shadow-lg px-8 py-6 transition-all cursor-pointer">
-                <div className="flex-1 text-left">
-                  <div className="text-white font-semibold text-lg mb-1">
-                    Start AI Search
+              {/* Stats */}
+              <div className="grid grid-cols-2 gap-6">
+                {stats.map((stat) => (
+                  <div key={stat.label}>
+                    <div className="text-3xl font-semibold text-gray-900">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-gray-500">{stat.label}</div>
                   </div>
-                  <div className="text-blue-100 text-sm">
-                    Natural language search tailored to your role
-                  </div>
-                </div>
-                <svg
-                  className="w-6 h-6 text-white group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7l5 5m0 0l-5 5m5-5H6"
-                  />
-                </svg>
+                ))}
               </div>
-            </Link>
-            <div className="mt-4 text-sm text-gray-500">
-              or{' '}
-              <Link href="/search" className="text-blue-600 hover:underline">
-                browse with filters
-              </Link>
-            </div>
-          </div>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16">
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <div className="text-3xl font-bold text-blue-600">128K+</div>
-              <div className="text-sm text-gray-500">NIH Projects</div>
             </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <div className="text-3xl font-bold text-green-600">22K+</div>
-              <div className="text-sm text-gray-500">Biotools Projects</div>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <div className="text-3xl font-bold text-purple-600">46K+</div>
-              <div className="text-sm text-gray-500">Patents</div>
-            </div>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <div className="text-3xl font-bold text-orange-600">203K+</div>
-              <div className="text-sm text-gray-500">Publications</div>
-            </div>
-          </div>
 
-          {/* Persona Cards */}
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Link href="/chat" className="block">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-left hover:shadow-lg hover:border-blue-200 transition-all">
-                <div className="text-4xl mb-4">🔬</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  For Researchers
-                </h3>
-                <p className="text-blue-600 text-sm font-medium mb-2">
-                  &ldquo;Who&apos;s funded in my area?&rdquo;
-                </p>
-                <p className="text-gray-600 text-sm">
-                  Understand the competitive landscape before writing your R01.
-                  Find competitors, collaborators, and validate novelty.
-                </p>
+            {/* Right column - Auth */}
+            <div className="md:max-w-sm md:ml-auto">
+              <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                <h2 className="text-lg font-medium text-gray-900 mb-6">
+                  Get started
+                </h2>
+                <Suspense fallback={<AuthFormFallback />}>
+                  <AuthForm />
+                </Suspense>
               </div>
-            </Link>
-
-            <Link href="/chat" className="block">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-left hover:shadow-lg hover:border-blue-200 transition-all">
-                <div className="text-4xl mb-4">📈</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  For BD Teams
-                </h3>
-                <p className="text-blue-600 text-sm font-medium mb-2">
-                  &ldquo;Find companies to sell to&rdquo;
-                </p>
-                <p className="text-gray-600 text-sm">
-                  Build qualified lead lists of funded companies. Filter by
-                  technology, funding level, and get PI contact information.
-                </p>
-              </div>
-            </Link>
-
-            <Link href="/chat" className="block">
-              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 text-left hover:shadow-lg hover:border-blue-200 transition-all">
-                <div className="text-4xl mb-4">💰</div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  For Investors
-                </h3>
-                <p className="text-blue-600 text-sm font-medium mb-2">
-                  &ldquo;Evaluate or map a market&rdquo;
-                </p>
-                <p className="text-gray-600 text-sm">
-                  Due diligence on specific companies or map entire market segments.
-                  Track funding trajectories and competitive positioning.
-                </p>
-              </div>
-            </Link>
+            </div>
           </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-gray-100 bg-white mt-16">
-        <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-gray-500">
-            Data sourced from NIH RePORTER. Classification powered by multi-tier
-            signal analysis.
+      <footer className="px-6 py-8 mt-auto">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-sm text-gray-400">
+Data sourced from NIH RePORTER
           </p>
         </div>
       </footer>
