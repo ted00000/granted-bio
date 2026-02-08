@@ -56,6 +56,11 @@ export async function middleware(request: NextRequest) {
     return redirectWithCookies('/chat')
   }
 
+  // Protect chat route - redirect unauthenticated users to login
+  if (request.nextUrl.pathname === '/chat' && !user) {
+    return redirectWithCookies('/')
+  }
+
   // Protect admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!user) {
