@@ -49,7 +49,8 @@ function AuthCallbackHandler() {
         if (session) {
           // Handle password recovery
           if (type === 'recovery') {
-            window.location.href = '/update-password'
+            await new Promise(resolve => setTimeout(resolve, 100))
+            window.location.replace('/update-password')
             return
           }
 
@@ -61,12 +62,15 @@ function AuthCallbackHandler() {
             .single()
 
           if (profile?.role === 'admin') {
-            window.location.href = '/admin'
+            await new Promise(resolve => setTimeout(resolve, 100))
+            window.location.replace('/admin')
             return
           }
 
-          // Regular user - go to chat (hard redirect to ensure cookies are read)
-          window.location.href = next
+          // Regular user - go to chat
+          // Small delay to ensure cookies are fully written before redirect
+          await new Promise(resolve => setTimeout(resolve, 100))
+          window.location.replace(next)
         } else {
           setError('Unable to sign in. Please try again.')
         }
