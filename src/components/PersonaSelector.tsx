@@ -103,6 +103,7 @@ const intents: {
 
 export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(true)
   const [firstName, setFirstName] = useState<string | null>(null)
   const [needsName, setNeedsName] = useState(false)
   const [nameInput, setNameInput] = useState('')
@@ -131,6 +132,7 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
           setNeedsName(true)
         }
       }
+      setIsLoading(false)
     }
     fetchUserName()
   }, [supabase])
@@ -184,7 +186,11 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
       {/* Main content */}
       <main className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="max-w-3xl mx-auto w-full">
-          {needsName ? (
+          {isLoading ? (
+            <div className="flex justify-center">
+              <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+            </div>
+          ) : needsName ? (
             <div className="max-w-sm mx-auto text-center">
               <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-gray-900 mb-3">
                 Welcome to granted.bio
