@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import type { IntentType, PersonaType } from '@/lib/chat/types'
 import { INTENT_TO_PERSONA } from '@/lib/chat/types'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
@@ -98,6 +99,26 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="px-6 py-8 border-t border-gray-100">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <p className="text-sm text-gray-400">
+            Data sourced from NIH RePORTER
+          </p>
+          <div className="flex items-center gap-6 text-sm text-gray-400">
+            <a href="mailto:hello@granted.bio" className="hover:text-gray-600 transition-colors">
+              Contact
+            </a>
+            <Link href="/privacy" className="hover:text-gray-600 transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-gray-600 transition-colors">
+              Terms
+            </Link>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

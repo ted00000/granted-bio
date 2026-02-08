@@ -236,7 +236,7 @@ export default function Home() {
 
             {/* Right column - Auth */}
             <div className="md:max-w-sm md:ml-auto">
-              <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+              <div className="bg-white rounded-2xl p-8 border border-gray-200">
                 <h2 className="text-lg font-medium text-gray-900 mb-6">
                   Get started
                 </h2>
@@ -250,11 +250,22 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="px-6 py-8 mt-auto">
-        <div className="max-w-6xl mx-auto">
+      <footer className="px-6 py-8 mt-auto border-t border-gray-100">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p className="text-sm text-gray-400">
-Data sourced from NIH RePORTER
+            Data sourced from NIH RePORTER
           </p>
+          <div className="flex items-center gap-6 text-sm text-gray-400">
+            <a href="mailto:hello@granted.bio" className="hover:text-gray-600 transition-colors">
+              Contact
+            </a>
+            <Link href="/privacy" className="hover:text-gray-600 transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-gray-600 transition-colors">
+              Terms
+            </Link>
+          </div>
         </div>
       </footer>
     </div>
