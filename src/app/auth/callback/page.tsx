@@ -1,86 +1,79 @@
 'use client'
 
-import { useEffect, useState, Suspense, useRef } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 function AuthCallbackHandler() {
   const searchParams = useSearchParams()
   const [error, setError] = useState<string | null>(null)
-  const hasRun = useRef(false)
+  const [status, setStatus] = useState<string>('Initializing...')
 
   const next = searchParams.get('next') || '/chat'
   const code = searchParams.get('code')
   const type = searchParams.get('type')
 
   useEffect(() => {
-    // Prevent running multiple times (OAuth codes are single-use)
-    if (hasRun.current) return
-    hasRun.current = true
-
     const supabase = createBrowserSupabaseClient()
 
-    const handleAuthCallback = async () => {
-      try {
-        // First, check if there's already a session (from previous successful auth)
-        const { data: { session: existingSession } } = await supabase.auth.getSession()
+    // Listen for auth state changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session) {
+        setStatus('Session found, redirecting...')
 
-        let session = existingSession
-
-        // If no session and we have a code, exchange it
-        if (!session && code) {
-          const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
-          if (exchangeError) {
-            console.error('Code exchange error:', exchangeError)
-            setError(exchangeError.message)
-            return
-          }
-          session = data.session
+        // Handle password recovery
+        if (type === 'recovery') {
+          window.location.href = '/update-password'
+          return
         }
 
-        // For magic links, tokens in hash are handled by Supabase client automatically
-        // If still no session, wait and retry (magic link tokens take a moment)
-        if (!session) {
-          await new Promise(resolve => setTimeout(resolve, 500))
-          const { data: { session: retrySession } } = await supabase.auth.getSession()
-          session = retrySession
+        // Check if user is admin
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('role')
+          .eq('id', session.user.id)
+          .single()
+
+        if (profile?.role === 'admin') {
+          window.location.href = '/admin'
+          return
         }
 
-        if (session) {
-          // Handle password recovery
-          if (type === 'recovery') {
-            await new Promise(resolve => setTimeout(resolve, 100))
-            window.location.replace('/update-password')
-            return
-          }
+        // Regular user - go to chat
+        window.location.href = next
+      }
+    })
 
-          // Check if user is admin
-          const { data: profile } = await supabase
-            .from('user_profiles')
-            .select('role')
-            .eq('id', session.user.id)
-            .single()
+    // Also try to exchange code if present
+    const handleCode = async () => {
+      if (code) {
+        setStatus('Exchanging code...')
+        const { error: exchangeError } = await supabase.auth.exchangeCodeForSession(code)
+        if (exchangeError) {
+          console.error('Code exchange error:', exchangeError)
+          // Don't set error - the auth state change listener will handle existing sessions
+        }
+      }
 
-          if (profile?.role === 'admin') {
-            await new Promise(resolve => setTimeout(resolve, 100))
-            window.location.replace('/admin')
-            return
-          }
+      // Check for existing session (will trigger onAuthStateChange if found)
+      setStatus('Checking session...')
+      const { data: { session } } = await supabase.auth.getSession()
 
-          // Regular user - go to chat
-          // Small delay to ensure cookies are fully written before redirect
-          await new Promise(resolve => setTimeout(resolve, 100))
-          window.location.replace(next)
-        } else {
+      // If no session after a delay, show error
+      if (!session) {
+        await new Promise(resolve => setTimeout(resolve, 2000))
+        const { data: { session: retrySession } } = await supabase.auth.getSession()
+        if (!retrySession) {
           setError('Unable to sign in. Please try again.')
         }
-      } catch (err) {
-        console.error('Auth callback exception:', err)
-        setError('An error occurred during sign in.')
       }
     }
 
-    handleAuthCallback()
+    handleCode()
+
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [code, type, next])
 
   if (error) {
@@ -109,7 +102,7 @@ function AuthCallbackHandler() {
     <div className="min-h-screen bg-white flex items-center justify-center">
       <div className="text-center">
         <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-gray-500">Signing you in...</p>
+        <p className="text-gray-500">{status}</p>
       </div>
     </div>
   )
