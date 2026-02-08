@@ -193,7 +193,7 @@ export default function Home() {
       {/* Header */}
       <header className="px-6 py-4">
         <nav className="max-w-6xl mx-auto flex items-center justify-between">
-          <span className="text-xl font-semibold tracking-tight text-gray-900">
+          <span className="text-2xl font-semibold tracking-tight text-gray-900">
             granted<span className="text-[#E07A5F]">.bio</span>
           </span>
           <Link

@@ -2,9 +2,16 @@
 
 import type { PersonaType } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
+import { FlaskConical, TrendingUp, Wallet } from 'lucide-react'
 
 interface PersonaSelectorProps {
   onSelect: (persona: PersonaType) => void
+}
+
+const personaIcons: Record<PersonaType, React.ReactNode> = {
+  researcher: <FlaskConical className="w-7 h-7" strokeWidth={1.5} />,
+  bd: <TrendingUp className="w-7 h-7" strokeWidth={1.5} />,
+  investor: <Wallet className="w-7 h-7" strokeWidth={1.5} />,
 }
 
 export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
@@ -15,7 +22,7 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
       {/* Header */}
       <header className="px-6 py-4">
         <nav className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="text-xl font-semibold tracking-tight text-gray-900">
+          <span className="text-2xl font-semibold tracking-tight text-gray-900">
             granted<span className="text-[#E07A5F]">.bio</span>
           </span>
         </nav>
@@ -42,8 +49,8 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
                   onClick={() => onSelect(persona)}
                   className="group p-6 bg-white rounded-xl border border-gray-100 hover:border-[#E07A5F] hover:shadow-md transition-all text-left"
                 >
-                  <div className="text-3xl mb-3">
-                    {meta.icon}
+                  <div className="text-gray-400 mb-4 group-hover:text-[#E07A5F] transition-colors">
+                    {personaIcons[persona]}
                   </div>
                   <h2 className="text-lg font-medium text-gray-900 mb-1">
                     {meta.title}
