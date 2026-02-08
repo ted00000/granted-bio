@@ -34,6 +34,13 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
+  // Redirect authenticated users from homepage to chat
+  if (request.nextUrl.pathname === '/' && user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/chat'
+    return NextResponse.redirect(url)
+  }
+
   // Protect admin routes
   if (request.nextUrl.pathname.startsWith('/admin')) {
     if (!user) {
