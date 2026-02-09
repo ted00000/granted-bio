@@ -1,6 +1,6 @@
 // Chat types and interfaces for the AI agent system
 
-export type PersonaType = 'researcher' | 'bd' | 'investor'
+export type PersonaType = 'researcher' | 'bd' | 'investor' | 'trials'
 
 // Intent-based selection (maps to personas for prompts)
 export type IntentType = 'research' | 'market' | 'leads' | 'trials'
@@ -9,7 +9,7 @@ export const INTENT_TO_PERSONA: Record<IntentType, PersonaType> = {
   research: 'researcher',
   market: 'investor',
   leads: 'bd',
-  trials: 'researcher', // TODO: create dedicated trials prompt
+  trials: 'trials',
 }
 
 export interface Message {

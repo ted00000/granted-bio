@@ -81,8 +81,8 @@ const intents: {
   {
     id: 'market',
     title: 'Market',
-    question: 'Who are the key players?',
-    description: 'Competitive landscape, trends, segment mapping',
+    question: 'How big is the opportunity?',
+    description: 'Market size, funding trends, competitive landscape',
     icon: <TrendingUp className="w-6 h-6" strokeWidth={1.5} />,
   },
   {
