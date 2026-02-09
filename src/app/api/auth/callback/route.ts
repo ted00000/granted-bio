@@ -1,6 +1,5 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
@@ -11,7 +10,8 @@ export async function GET(request: NextRequest) {
   console.log('[Auth Callback] Starting:', { hasCode: !!code, next, type, origin })
 
   if (code) {
-    const cookieStore = await cookies()
+    // Collect cookies to set on the response
+    const cookiesToSet: { name: string; value: string; options: any }[] = []
 
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -19,11 +19,11 @@ export async function GET(request: NextRequest) {
       {
         cookies: {
           getAll() {
-            return cookieStore.getAll()
+            return request.cookies.getAll()
           },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options)
+          setAll(cookies) {
+            cookies.forEach((cookie) => {
+              cookiesToSet.push(cookie)
             })
           },
         },
@@ -35,32 +35,39 @@ export async function GET(request: NextRequest) {
     console.log('[Auth Callback] Exchange result:', {
       success: !error,
       hasSession: !!data?.session,
-      error: error?.message
+      error: error?.message,
+      cookiesCount: cookiesToSet.length
     })
 
     if (!error && data?.session) {
-      // Handle password recovery redirect
+      // Determine redirect URL
+      let redirectUrl = `${origin}${next}`
+
       if (type === 'recovery') {
-        return NextResponse.redirect(`${origin}/update-password`)
-      }
+        redirectUrl = `${origin}/update-password`
+      } else {
+        // Check if user is admin
+        const { data: { user } } = await supabase.auth.getUser()
+        if (user) {
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('role')
+            .eq('id', user.id)
+            .single()
 
-      // Check if user is admin
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single()
-
-        if (profile?.role === 'admin') {
-          return NextResponse.redirect(`${origin}/admin`)
+          if (profile?.role === 'admin') {
+            redirectUrl = `${origin}/admin`
+          }
         }
       }
 
-      // Successful auth - redirect to next page
-      console.log('[Auth Callback] Redirecting to:', `${origin}${next}`)
-      return NextResponse.redirect(`${origin}${next}`)
+      // Create response and attach all cookies
+      console.log('[Auth Callback] Redirecting to:', redirectUrl)
+      const response = NextResponse.redirect(redirectUrl)
+      cookiesToSet.forEach(({ name, value, options }) => {
+        response.cookies.set(name, value, options)
+      })
+      return response
     }
   }
 
