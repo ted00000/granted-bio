@@ -102,7 +102,6 @@ const intents: {
 ]
 
 export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
-  console.log('[PersonaSelector] Component rendering')
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [firstName, setFirstName] = useState<string | null>(null)
@@ -116,26 +115,20 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   useEffect(() => {
     const fetchUserName = async () => {
       const { data: { user } } = await supabase.auth.getUser()
-      console.log('[PersonaSelector] User:', user?.id)
 
       if (user) {
         setUserId(user.id)
 
         // Check for first_name in profile
-        const { data: profile, error } = await supabase
+        const { data: profile } = await supabase
           .from('user_profiles')
-          .select('first_name, full_name')
+          .select('first_name')
           .eq('id', user.id)
           .single()
 
-        console.log('[PersonaSelector] Profile:', { profile, error: error?.message })
-
         if (profile?.first_name) {
-          console.log('[PersonaSelector] Has first_name, showing greeting')
           setFirstName(profile.first_name)
         } else {
-          // No first_name set - prompt user (even for Google users)
-          console.log('[PersonaSelector] No first_name, showing prompt')
           setNeedsName(true)
         }
       }

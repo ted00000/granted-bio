@@ -7,8 +7,6 @@ export async function GET(request: NextRequest) {
   const next = searchParams.get('next') ?? '/chat'
   const type = searchParams.get('type')
 
-  console.log('[Auth Callback] Starting:', { hasCode: !!code, next, type, origin })
-
   if (code) {
     // Collect cookies to set on the response
     const cookiesToSet: { name: string; value: string; options: any }[] = []
@@ -32,13 +30,6 @@ export async function GET(request: NextRequest) {
 
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
-    console.log('[Auth Callback] Exchange result:', {
-      success: !error,
-      hasSession: !!data?.session,
-      error: error?.message,
-      cookiesCount: cookiesToSet.length
-    })
-
     if (!error && data?.session) {
       // Determine redirect URL
       let redirectUrl = `${origin}${next}`
@@ -61,8 +52,6 @@ export async function GET(request: NextRequest) {
         }
       }
 
-      // Create response and attach all cookies
-      console.log('[Auth Callback] Redirecting to:', redirectUrl)
       const response = NextResponse.redirect(redirectUrl)
       cookiesToSet.forEach(({ name, value, options }) => {
         response.cookies.set(name, value, options)
@@ -71,7 +60,6 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Auth error - redirect to error page or home
-  console.log('[Auth Callback] Failed - no code or exchange failed, redirecting to home')
+  // Auth error - redirect to home with error
   return NextResponse.redirect(`${origin}/?error=auth_callback_error`)
 }
