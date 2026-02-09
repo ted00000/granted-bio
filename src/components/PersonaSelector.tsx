@@ -102,6 +102,7 @@ const intents: {
 ]
 
 export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
+  console.log('[PersonaSelector] Component rendering')
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(true)
   const [firstName, setFirstName] = useState<string | null>(null)
