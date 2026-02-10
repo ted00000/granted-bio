@@ -380,15 +380,15 @@ TONE: Clinical and scientific precision. Focus on therapeutic development and pi
 export const PERSONA_METADATA: Record<PersonaType, {
   title: string
   subtitle: string
-  icon: string
+  icon: 'search' | 'trending' | 'users' | 'activity'
   description: string
   exampleQueries: string[]
 }> = {
   researcher: {
-    title: 'Researcher',
-    subtitle: "Who's funded in my area?",
-    icon: '🔬',
-    description: 'Understand the competitive landscape for grant writing',
+    title: 'Research',
+    subtitle: 'What science is being funded?',
+    icon: 'search',
+    description: 'Topic deep dives, funded projects, publications',
     exampleQueries: [
       "I'm writing an R01 on spatial transcriptomics",
       "I work on CRISPR delivery to the CNS",
@@ -397,10 +397,10 @@ export const PERSONA_METADATA: Record<PersonaType, {
     ]
   },
   bd: {
-    title: 'BD / Sales',
-    subtitle: 'Find companies to sell to',
-    icon: '📈',
-    description: 'Build qualified lead lists of funded companies',
+    title: 'Leads',
+    subtitle: 'Who should I talk to?',
+    icon: 'users',
+    description: 'Find companies, contacts, partnership targets',
     exampleQueries: [
       "I sell mass spec instruments",
       "We're a CRO specializing in PK studies",
@@ -409,10 +409,10 @@ export const PERSONA_METADATA: Record<PersonaType, {
     ]
   },
   investor: {
-    title: 'Investor',
-    subtitle: 'Evaluate or map a market',
-    icon: '💰',
-    description: 'Due diligence and market analysis for life science investments',
+    title: 'Market',
+    subtitle: 'How big is the opportunity?',
+    icon: 'trending',
+    description: 'Market size, funding trends, competitive landscape',
     exampleQueries: [
       "Doing DD on a gene therapy company",
       "Mapping the synthetic biology landscape",
@@ -421,10 +421,10 @@ export const PERSONA_METADATA: Record<PersonaType, {
     ]
   },
   trials: {
-    title: 'Clinical Trials',
+    title: 'Trials',
     subtitle: "What's in development?",
-    icon: '🧬',
-    description: 'Track clinical pipelines and therapeutic development',
+    icon: 'activity',
+    description: 'Clinical pipelines, phases, trial tracking',
     exampleQueries: [
       "What's in development for ALS?",
       "CAR-T trials in solid tumors",

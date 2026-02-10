@@ -1,8 +1,19 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { Search, TrendingUp, Users, Activity } from 'lucide-react'
 import type { PersonaType } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+
+const ICONS = {
+  search: Search,
+  trending: TrendingUp,
+  users: Users,
+  activity: Activity,
+} as const
 
 interface Message {
   id: string
@@ -272,14 +283,22 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
 }
 
 export function Chat({ persona, onBack }: ChatProps) {
+  const router = useRouter()
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const supabase = useMemo(() => createBrowserSupabaseClient(), [])
 
   const metadata = PERSONA_METADATA[persona]
+  const IconComponent = ICONS[metadata.icon]
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/')
+  }
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -384,39 +403,42 @@ export function Chat({ persona, onBack }: ChatProps) {
   }
 
   return (
-    <div className="flex h-screen bg-white">
-      {/* Left Panel - Chat */}
-      <div className="flex flex-col w-full lg:w-[480px] xl:w-[520px] lg:border-r lg:border-gray-100">
-        {/* Header */}
-        <header className="px-6 py-4 border-b border-gray-100">
-          <nav className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <button onClick={onBack} className="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <span className="text-2xl font-semibold tracking-tight text-gray-900">
-                granted<span className="text-[#E07A5F]">.bio</span>
-              </span>
-            </div>
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
-              <span>{metadata.icon}</span>
-              <span>{metadata.title}</span>
-            </div>
-          </nav>
-        </header>
+    <div className="min-h-screen bg-white flex flex-col">
+      {/* Header */}
+      <header className="px-6 py-4">
+        <nav className="max-w-5xl mx-auto flex items-center justify-between">
+          <button onClick={onBack} className="text-2xl font-semibold tracking-tight text-gray-900">
+            granted<span className="text-[#E07A5F]">.bio</span>
+          </button>
+          <button
+            onClick={handleSignOut}
+            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+          >
+            Sign out
+          </button>
+        </nav>
+      </header>
+
+      {/* Main content */}
+      <main className="flex-1 flex">
+        {/* Left Panel - Chat */}
+        <div className="flex flex-col w-full lg:w-[480px] xl:w-[520px] lg:border-r lg:border-gray-100">
 
         {/* Messages */}
         <div className="flex-1 overflow-y-auto px-6 py-8">
           <div className="space-y-6">
             {messages.length === 0 && (
               <div className="text-center py-12">
-                <div className="text-5xl mb-6">{metadata.icon}</div>
+                <div className="flex justify-center mb-6">
+                  <IconComponent className="w-12 h-12 text-gray-300" strokeWidth={1.5} />
+                </div>
                 <h2 className="text-2xl font-semibold tracking-tight text-gray-900 mb-2">
-                  {metadata.subtitle}
+                  {metadata.title}
                 </h2>
-                <p className="text-gray-500 mb-8 max-w-sm mx-auto">
+                <p className="text-sm text-[#E07A5F] mb-2">
+                  &ldquo;{metadata.subtitle}&rdquo;
+                </p>
+                <p className="text-gray-400 mb-8 max-w-sm mx-auto text-sm">
                   {metadata.description}
                 </p>
                 <div className="space-y-3">
@@ -513,16 +535,37 @@ export function Chat({ persona, onBack }: ChatProps) {
         </div>
       </div>
 
-      {/* Right Panel - Results */}
-      <div className="hidden lg:flex flex-col flex-1">
-        <div className="px-6 py-4 border-b border-gray-100">
-          <h2 className="text-lg font-semibold tracking-tight text-gray-900">Results</h2>
-          <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER & USPTO PatentsView</p>
+        {/* Right Panel - Results */}
+        <div className="hidden lg:flex flex-col flex-1">
+          <div className="px-6 py-4 border-b border-gray-100">
+            <h2 className="text-lg font-semibold tracking-tight text-gray-900">Results</h2>
+            <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER & USPTO PatentsView</p>
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <ResultsPanel results={toolResults} />
+          </div>
         </div>
-        <div className="flex-1 overflow-hidden">
-          <ResultsPanel results={toolResults} />
+      </main>
+
+      {/* Footer */}
+      <footer className="px-6 py-8 border-t border-gray-100">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <p className="text-sm text-gray-400">
+            Data from NIH RePORTER & USPTO PatentsView
+          </p>
+          <div className="flex items-center gap-6 text-sm text-gray-400">
+            <a href="mailto:hello@granted.bio" className="hover:text-gray-600 transition-colors">
+              Contact
+            </a>
+            <Link href="/privacy" className="hover:text-gray-600 transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-gray-600 transition-colors">
+              Terms
+            </Link>
+          </div>
         </div>
-      </div>
+      </footer>
     </div>
   )
 }
