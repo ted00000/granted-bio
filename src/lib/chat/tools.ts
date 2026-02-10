@@ -203,6 +203,12 @@ export const AGENT_TOOLS: Tool[] = [
 
 // Summarize project for chat context (reduces token usage)
 function summarizeProject(p: ProjectResult) {
+  // Check for SBIR/STTR - must NOT match "NON-SBIR/STTR"
+  const mechanism = p.funding_mechanism?.toUpperCase() || ''
+  const isNonSbir = mechanism.includes('NON-SBIR') || mechanism.includes('NON SBIR')
+  const isSbir = !isNonSbir && mechanism.includes('SBIR')
+  const isSttr = !isNonSbir && mechanism.includes('STTR')
+
   return {
     application_id: p.application_id,
     title: p.title,
@@ -213,8 +219,8 @@ function summarizeProject(p: ProjectResult) {
     fiscal_year: p.fiscal_year,
     pi_names: p.pi_names,
     primary_category: p.primary_category,
-    is_sbir: p.funding_mechanism?.includes('SBIR') || false,
-    is_sttr: p.funding_mechanism?.includes('STTR') || false
+    is_sbir: isSbir,
+    is_sttr: isSttr
   }
 }
 
