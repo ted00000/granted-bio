@@ -710,9 +710,10 @@ export async function searchPatents(
     const queryEmbedding = await generateEmbedding(query)
 
     // Search patents using vector similarity
+    // Using 0.3 threshold - lower than typical because patent language varies significantly
     const { data, error } = await supabaseAdmin.rpc('search_patents', {
       query_embedding: queryEmbedding,
-      match_threshold: 0.5,
+      match_threshold: 0.3,
       match_count: effectiveLimit
     })
 

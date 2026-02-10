@@ -3,7 +3,7 @@
 
 CREATE OR REPLACE FUNCTION search_patents(
   query_embedding VECTOR(1536),
-  match_threshold FLOAT DEFAULT 0.5,
+  match_threshold FLOAT DEFAULT 0.3,
   match_count INT DEFAULT 20
 )
 RETURNS TABLE (
