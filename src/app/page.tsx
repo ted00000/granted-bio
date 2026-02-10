@@ -223,7 +223,7 @@ export default function Home() {
       <footer className="px-6 py-8 mt-auto border-t border-gray-100">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p className="text-sm text-gray-400">
-            Data sourced from NIH RePORTER (2024–2025)
+            Data from NIH RePORTER & USPTO PatentsView
           </p>
           <div className="flex items-center gap-6 text-sm text-gray-400">
             <a href="mailto:hello@granted.bio" className="hover:text-gray-600 transition-colors">

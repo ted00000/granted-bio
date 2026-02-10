@@ -359,7 +359,7 @@ export function Chat({ persona, onBack }: ChatProps) {
             </button>
           </div>
           <p className="text-xs text-gray-400 mt-2 text-center">
-            Data from NIH RePORTER FY2024-2025 | 128K projects, 46K patents, 203K publications
+            NIH RePORTER & USPTO PatentsView
           </p>
         </form>
       </div>
