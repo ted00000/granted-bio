@@ -150,6 +150,25 @@ export interface PatentResult {
   similarity?: number
 }
 
+export interface GetPatentDetailsParams {
+  patent_id: string
+}
+
+export interface PatentDetails {
+  patent_id: string
+  patent_title: string
+  patent_abstract: string | null
+  patent_date: string | null
+  patent_type: string | null
+  assignees: string[]
+  inventors: string[]
+  cpc_codes: string[]
+  cited_by_count: number
+  claims_count: number
+  // Link back to NIH project if available
+  linked_project_number: string | null
+}
+
 // User tier for access control
 export type UserTier = 'free' | 'basic' | 'advanced' | 'unlimited'
 
