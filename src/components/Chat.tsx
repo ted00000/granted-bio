@@ -403,9 +403,9 @@ export function Chat({ persona, onBack }: ChatProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="h-screen bg-white flex flex-col overflow-hidden">
       {/* Header */}
-      <header className="px-6 py-4">
+      <header className="flex-shrink-0 px-6 py-4">
         <nav className="max-w-5xl mx-auto flex items-center justify-between">
           <button onClick={onBack} className="text-2xl font-semibold tracking-tight text-gray-900">
             granted<span className="text-[#E07A5F]">.bio</span>
@@ -420,12 +420,12 @@ export function Chat({ persona, onBack }: ChatProps) {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 flex">
+      <main className="flex-1 flex min-h-0">
         {/* Left Panel - Chat */}
-        <div className="flex flex-col w-full lg:w-[480px] xl:w-[520px] lg:border-r lg:border-gray-100">
+        <div className="flex flex-col w-full lg:w-[480px] xl:w-[520px] lg:border-r lg:border-gray-100 min-h-0">
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-6 py-8">
+        <div className="flex-1 overflow-y-auto px-6 py-8 min-h-0">
           <div className="space-y-6">
             {messages.length === 0 && (
               <div className="text-center py-12">
@@ -507,7 +507,7 @@ export function Chat({ persona, onBack }: ChatProps) {
         </div>
 
         {/* Input */}
-        <div className="px-6 py-4 border-t border-gray-100">
+        <div className="flex-shrink-0 px-6 py-4 border-t border-gray-100">
           <form onSubmit={handleSubmit}>
             <div className="flex items-end space-x-3">
               <textarea
@@ -548,7 +548,7 @@ export function Chat({ persona, onBack }: ChatProps) {
       </main>
 
       {/* Footer */}
-      <footer className="px-6 py-8 border-t border-gray-100">
+      <footer className="flex-shrink-0 px-6 py-4 border-t border-gray-100">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p className="text-sm text-gray-400">
             Data from NIH RePORTER & USPTO PatentsView
