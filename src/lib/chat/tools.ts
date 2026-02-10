@@ -213,7 +213,6 @@ function summarizeProject(p: ProjectResult) {
     fiscal_year: p.fiscal_year,
     pi_names: p.pi_names,
     primary_category: p.primary_category,
-    biotools_confidence: p.biotools_confidence,
     is_sbir: p.funding_mechanism?.includes('SBIR') || false,
     is_sttr: p.funding_mechanism?.includes('STTR') || false
   }
