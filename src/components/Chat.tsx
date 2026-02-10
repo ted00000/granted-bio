@@ -29,7 +29,6 @@ function parseMessageWithChoices(content: string): { text: string; choices: stri
   const choices: string[] = []
   let lastNonChoiceIndex = lines.length - 1
 
-  // Find consecutive bullet points at the end
   for (let i = lines.length - 1; i >= 0; i--) {
     const line = lines[i].trim()
     if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
@@ -39,7 +38,6 @@ function parseMessageWithChoices(content: string): { text: string; choices: stri
         lastNonChoiceIndex = i - 1
       }
     } else if (line === '') {
-      // Allow empty lines between choices
       continue
     } else {
       break
@@ -50,14 +48,9 @@ function parseMessageWithChoices(content: string): { text: string; choices: stri
   return { text, choices }
 }
 
-// Format currency
 function formatCurrency(amount: number): string {
-  if (amount >= 1000000) {
-    return `$${(amount / 1000000).toFixed(1)}M`
-  }
-  if (amount >= 1000) {
-    return `$${(amount / 1000).toFixed(0)}K`
-  }
+  if (amount >= 1000000) return `$${(amount / 1000000).toFixed(1)}M`
+  if (amount >= 1000) return `$${(amount / 1000).toFixed(0)}K`
   return `$${amount}`
 }
 
@@ -65,12 +58,14 @@ function formatCurrency(amount: number): string {
 function ResultsPanel({ results }: { results: ToolResult[] }) {
   if (results.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full text-gray-400">
+      <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <svg className="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <p className="text-sm">Search results will appear here</p>
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+            <svg className="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <p className="text-sm text-gray-400">Results will appear here</p>
         </div>
       </div>
     )
@@ -78,7 +73,6 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
 
   const latestResult = results[results.length - 1]
 
-  // Render based on tool type
   if (latestResult.name === 'keyword_search') {
     const data = latestResult.data as {
       total_count: number
@@ -88,30 +82,26 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
         application_id: string
         title: string
         org_name: string | null
-        org_type: string | null
         total_cost: number | null
-        pi_names: string | null
       }>
     }
 
     return (
       <div className="h-full overflow-y-auto">
-        {/* Summary stats */}
-        <div className="p-4 border-b border-gray-200 bg-gray-50">
-          <div className="text-2xl font-semibold text-gray-900">{data.total_count.toLocaleString()}</div>
-          <div className="text-sm text-gray-500">projects found</div>
+        <div className="p-6 border-b border-gray-100">
+          <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total_count.toLocaleString()}</div>
+          <div className="text-sm text-gray-400 mt-1">projects found</div>
         </div>
 
-        {/* Category breakdown */}
         {Object.keys(data.by_category).length > 0 && (
-          <div className="p-4 border-b border-gray-200">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">By Category</h3>
-            <div className="space-y-2">
+          <div className="p-6 border-b border-gray-100">
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">By Category</h3>
+            <div className="space-y-3">
               {Object.entries(data.by_category)
                 .sort(([, a], [, b]) => b - a)
                 .map(([cat, count]) => (
                   <div key={cat} className="flex justify-between items-center">
-                    <span className="text-sm text-gray-700 capitalize">{cat.replace('_', ' ')}</span>
+                    <span className="text-sm text-gray-600 capitalize">{cat.replace('_', ' ')}</span>
                     <span className="text-sm font-medium text-gray-900">{count.toLocaleString()}</span>
                   </div>
                 ))}
@@ -119,16 +109,15 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           </div>
         )}
 
-        {/* Org type breakdown */}
         {Object.keys(data.by_org_type).length > 0 && (
-          <div className="p-4 border-b border-gray-200">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">By Organization</h3>
-            <div className="space-y-2">
+          <div className="p-6 border-b border-gray-100">
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">By Organization</h3>
+            <div className="space-y-3">
               {Object.entries(data.by_org_type)
                 .sort(([, a], [, b]) => b - a)
                 .map(([org, count]) => (
                   <div key={org} className="flex justify-between items-center">
-                    <span className="text-sm text-gray-700 capitalize">{org.replace('_', ' ')}</span>
+                    <span className="text-sm text-gray-600 capitalize">{org.replace('_', ' ')}</span>
                     <span className="text-sm font-medium text-gray-900">{count.toLocaleString()}</span>
                   </div>
                 ))}
@@ -136,20 +125,19 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           </div>
         )}
 
-        {/* Sample results */}
         {data.sample_results.length > 0 && (
-          <div className="p-4">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">Top Funded</h3>
-            <div className="space-y-3">
-              {data.sample_results.map((project, idx) => (
-                <div key={project.application_id} className="p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-start justify-between gap-2">
+          <div className="p-6">
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">Top Funded</h3>
+            <div className="space-y-4">
+              {data.sample_results.map((project) => (
+                <div key={project.application_id} className="group">
+                  <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{project.title}</p>
-                      <p className="text-xs text-gray-500 mt-1">{project.org_name}</p>
+                      <p className="text-sm text-gray-900 leading-snug">{project.title}</p>
+                      <p className="text-xs text-gray-400 mt-1">{project.org_name}</p>
                     </div>
                     {project.total_cost && (
-                      <span className="text-sm font-medium text-green-700 whitespace-nowrap">
+                      <span className="text-sm font-medium text-[#E07A5F] whitespace-nowrap">
                         {formatCurrency(project.total_cost)}
                       </span>
                     )}
@@ -171,61 +159,44 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
       patent_count: number
       publication_count: number
       clinical_trial_count: number
-      top_projects: Array<{
-        title: string
-        total_cost: number | null
-        fiscal_year: number | null
-      }>
+      top_projects: Array<{ title: string; total_cost: number | null; fiscal_year: number | null }>
     }
 
-    if (!data) {
-      return (
-        <div className="flex items-center justify-center h-full text-gray-400">
-          <p className="text-sm">Company not found</p>
-        </div>
-      )
-    }
+    if (!data) return <div className="flex items-center justify-center h-full text-gray-400 text-sm">Not found</div>
 
     return (
       <div className="h-full overflow-y-auto">
-        <div className="p-4 border-b border-gray-200 bg-gray-50">
+        <div className="p-6 border-b border-gray-100">
           <div className="text-lg font-semibold text-gray-900">{data.org_name}</div>
-          <div className="text-2xl font-semibold text-green-700 mt-1">{formatCurrency(data.total_funding)}</div>
-          <div className="text-sm text-gray-500">total funding</div>
+          <div className="text-3xl font-semibold tracking-tight text-[#E07A5F] mt-2">{formatCurrency(data.total_funding)}</div>
+          <div className="text-sm text-gray-400 mt-1">total funding</div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 p-4 border-b border-gray-200">
-          <div>
-            <div className="text-xl font-semibold text-gray-900">{data.project_count}</div>
-            <div className="text-xs text-gray-500">Projects</div>
-          </div>
-          <div>
-            <div className="text-xl font-semibold text-gray-900">{data.patent_count}</div>
-            <div className="text-xs text-gray-500">Patents</div>
-          </div>
-          <div>
-            <div className="text-xl font-semibold text-gray-900">{data.publication_count}</div>
-            <div className="text-xs text-gray-500">Publications</div>
-          </div>
-          <div>
-            <div className="text-xl font-semibold text-gray-900">{data.clinical_trial_count}</div>
-            <div className="text-xs text-gray-500">Trials</div>
-          </div>
+        <div className="grid grid-cols-2 gap-6 p-6 border-b border-gray-100">
+          {[
+            { label: 'Projects', value: data.project_count },
+            { label: 'Patents', value: data.patent_count },
+            { label: 'Publications', value: data.publication_count },
+            { label: 'Trials', value: data.clinical_trial_count },
+          ].map(stat => (
+            <div key={stat.label}>
+              <div className="text-2xl font-semibold text-gray-900">{stat.value}</div>
+              <div className="text-xs text-gray-400">{stat.label}</div>
+            </div>
+          ))}
         </div>
 
         {data.top_projects?.length > 0 && (
-          <div className="p-4">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">Recent Projects</h3>
-            <div className="space-y-3">
+          <div className="p-6">
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">Recent Projects</h3>
+            <div className="space-y-4">
               {data.top_projects.map((project, idx) => (
-                <div key={idx} className="p-3 bg-gray-50 rounded-lg">
-                  <p className="text-sm font-medium text-gray-900">{project.title}</p>
+                <div key={idx}>
+                  <p className="text-sm text-gray-900">{project.title}</p>
                   <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-gray-500">FY{project.fiscal_year}</span>
+                    <span className="text-xs text-gray-400">FY{project.fiscal_year}</span>
                     {project.total_cost && (
-                      <span className="text-sm font-medium text-green-700">
-                        {formatCurrency(project.total_cost)}
-                      </span>
+                      <span className="text-sm font-medium text-[#E07A5F]">{formatCurrency(project.total_cost)}</span>
                     )}
                   </div>
                 </div>
@@ -248,55 +219,43 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
       cited_by_count: number
     }
 
-    if (!data) {
-      return (
-        <div className="flex items-center justify-center h-full text-gray-400">
-          <p className="text-sm">Patent not found</p>
-        </div>
-      )
-    }
+    if (!data) return <div className="flex items-center justify-center h-full text-gray-400 text-sm">Not found</div>
 
     return (
       <div className="h-full overflow-y-auto">
-        <div className="p-4 border-b border-gray-200 bg-gray-50">
-          <div className="text-xs text-gray-500 mb-1">US{data.patent_id}</div>
-          <div className="text-lg font-semibold text-gray-900">{data.patent_title}</div>
-          {data.patent_date && (
-            <div className="text-sm text-gray-500 mt-1">Filed {data.patent_date}</div>
-          )}
+        <div className="p-6 border-b border-gray-100">
+          <div className="text-xs text-gray-400 mb-2">US{data.patent_id}</div>
+          <div className="text-lg font-semibold text-gray-900 leading-snug">{data.patent_title}</div>
+          {data.patent_date && <div className="text-sm text-gray-400 mt-2">Filed {data.patent_date}</div>}
         </div>
 
         {data.patent_abstract && (
-          <div className="p-4 border-b border-gray-200">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Abstract</h3>
-            <p className="text-sm text-gray-700 leading-relaxed">{data.patent_abstract}</p>
+          <div className="p-6 border-b border-gray-100">
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">Abstract</h3>
+            <p className="text-sm text-gray-600 leading-relaxed">{data.patent_abstract}</p>
           </div>
         )}
 
-        <div className="p-4 border-b border-gray-200">
+        <div className="p-6 border-b border-gray-100">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-gray-500">Cited by</span>
-            <span className="text-lg font-semibold text-gray-900">{data.cited_by_count} patents</span>
+            <span className="text-sm text-gray-400">Cited by</span>
+            <span className="text-xl font-semibold text-gray-900">{data.cited_by_count}</span>
           </div>
         </div>
 
         {data.assignees?.length > 0 && (
-          <div className="p-4 border-b border-gray-200">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Assignees</h3>
-            <div className="space-y-1">
-              {data.assignees.map((a, i) => (
-                <p key={i} className="text-sm text-gray-700">{a}</p>
-              ))}
-            </div>
+          <div className="p-6 border-b border-gray-100">
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">Assignees</h3>
+            {data.assignees.map((a, i) => <p key={i} className="text-sm text-gray-600">{a}</p>)}
           </div>
         )}
 
         {data.inventors?.length > 0 && (
-          <div className="p-4">
-            <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Inventors</h3>
+          <div className="p-6">
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">Inventors</h3>
             <div className="flex flex-wrap gap-2">
               {data.inventors.map((inv, i) => (
-                <span key={i} className="px-2 py-1 bg-gray-100 rounded text-sm text-gray-700">{inv}</span>
+                <span key={i} className="px-3 py-1.5 bg-gray-50 rounded-full text-sm text-gray-600">{inv}</span>
               ))}
             </div>
           </div>
@@ -305,12 +264,9 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
     )
   }
 
-  // Generic fallback for other tool results
   return (
-    <div className="h-full overflow-y-auto p-4">
-      <pre className="text-xs text-gray-600 whitespace-pre-wrap">
-        {JSON.stringify(latestResult.data, null, 2)}
-      </pre>
+    <div className="h-full overflow-y-auto p-6">
+      <pre className="text-xs text-gray-500 whitespace-pre-wrap">{JSON.stringify(latestResult.data, null, 2)}</pre>
     </div>
   )
 }
@@ -325,61 +281,38 @@ export function Chat({ persona, onBack }: ChatProps) {
 
   const metadata = PERSONA_METADATA[persona]
 
-  // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
-  // Focus input on mount
   useEffect(() => {
     inputRef.current?.focus()
   }, [])
 
-  // Core function to send a message
   const sendMessage = useCallback(async (text: string, currentMessages: Message[]) => {
     if (!text.trim() || isLoading) return
 
-    const userMessage: Message = {
-      id: crypto.randomUUID(),
-      role: 'user',
-      content: text.trim()
-    }
-
+    const userMessage: Message = { id: crypto.randomUUID(), role: 'user', content: text.trim() }
     const updatedMessages = [...currentMessages, userMessage]
     setMessages(updatedMessages)
     setInput('')
     setIsLoading(true)
 
-    // Create assistant message placeholder for streaming
     const assistantId = crypto.randomUUID()
-    setMessages(prev => [
-      ...prev,
-      { id: assistantId, role: 'assistant', content: '', isStreaming: true }
-    ])
+    setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '', isStreaming: true }])
 
     try {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: updatedMessages.map(m => ({
-            role: m.role,
-            content: m.content
-          })),
-          persona
-        })
+        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona })
       })
 
-      if (!response.ok) {
-        throw new Error('Chat request failed')
-      }
+      if (!response.ok) throw new Error('Chat request failed')
 
       const reader = response.body?.getReader()
       const decoder = new TextDecoder()
-
-      if (!reader) {
-        throw new Error('No response body')
-      }
+      if (!reader) throw new Error('No response body')
 
       let buffer = ''
 
@@ -395,80 +328,36 @@ export function Chat({ persona, onBack }: ChatProps) {
           if (line.startsWith('data: ')) {
             const data = line.slice(6)
             if (data === '[DONE]') {
-              setMessages(prev =>
-                prev.map(m =>
-                  m.id === assistantId ? { ...m, isStreaming: false } : m
-                )
-              )
+              setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isStreaming: false } : m))
               continue
             }
 
             try {
               const parsed = JSON.parse(data)
               if (parsed.type === 'text') {
-                setMessages(prev =>
-                  prev.map(m =>
-                    m.id === assistantId
-                      ? { ...m, content: m.content + parsed.content }
-                      : m
-                  )
-                )
+                setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: m.content + parsed.content } : m))
               } else if (parsed.type === 'tool_start') {
-                setMessages(prev =>
-                  prev.map(m =>
-                    m.id === assistantId
-                      ? { ...m, isToolCall: true }
-                      : m
-                  )
-                )
+                setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: true } : m))
               } else if (parsed.type === 'tool_result') {
-                // Add tool result to side panel
-                setToolResults(prev => [
-                  ...prev,
-                  {
-                    name: parsed.name,
-                    data: parsed.data,
-                    timestamp: Date.now()
-                  }
-                ])
+                setToolResults(prev => [...prev, { name: parsed.name, data: parsed.data, timestamp: Date.now() }])
               } else if (parsed.type === 'tool_complete') {
-                setMessages(prev =>
-                  prev.map(m =>
-                    m.id === assistantId
-                      ? { ...m, isToolCall: false }
-                      : m
-                  )
-                )
+                setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: false } : m))
               } else if (parsed.type === 'error') {
-                setMessages(prev =>
-                  prev.map(m =>
-                    m.id === assistantId
-                      ? { ...m, content: `Error: ${parsed.error}`, isStreaming: false }
-                      : m
-                  )
-                )
+                setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: `Error: ${parsed.error}`, isStreaming: false } : m))
               }
-            } catch {
-              // Ignore parse errors
-            }
+            } catch { /* ignore */ }
           }
         }
       }
     } catch (error) {
       console.error('Chat error:', error)
-      setMessages(prev =>
-        prev.map(m =>
-          m.id === assistantId
-            ? { ...m, content: 'Sorry, an error occurred. Please try again.', isStreaming: false }
-            : m
-        )
-      )
+      setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: 'Sorry, an error occurred.', isStreaming: false } : m))
     } finally {
       setIsLoading(false)
     }
   }, [isLoading, persona])
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     sendMessage(input, messages)
   }
@@ -485,13 +374,10 @@ export function Chat({ persona, onBack }: ChatProps) {
     inputRef.current?.focus()
   }
 
-  // Handle clicking a choice button - send it as user message directly
   const handleChoiceClick = (choice: string) => {
-    if (isLoading) return
-    sendMessage(choice, messages)
+    if (!isLoading) sendMessage(choice, messages)
   }
 
-  // Check if this is the last assistant message (for showing clickable choices)
   const isLastAssistantMessage = (messageId: string) => {
     const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant')
     return lastAssistant?.id === messageId
@@ -500,49 +386,47 @@ export function Chat({ persona, onBack }: ChatProps) {
   return (
     <div className="flex h-screen bg-white">
       {/* Left Panel - Chat */}
-      <div className="flex flex-col w-full lg:w-1/2 xl:w-2/5 border-r border-gray-200">
+      <div className="flex flex-col w-full lg:w-[480px] xl:w-[520px] lg:border-r lg:border-gray-100">
         {/* Header */}
-        <header className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200">
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={onBack}
-              className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <div>
-              <div className="flex items-center space-x-2">
-                <span className="text-xl">{metadata.icon}</span>
-                <h1 className="font-semibold text-gray-900">{metadata.title}</h1>
-              </div>
-              <p className="text-sm text-gray-500">{metadata.subtitle}</p>
+        <header className="px-6 py-4 border-b border-gray-100">
+          <nav className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <button onClick={onBack} className="text-gray-400 hover:text-gray-600 transition-colors">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <span className="text-2xl font-semibold tracking-tight text-gray-900">
+                granted<span className="text-[#E07A5F]">.bio</span>
+              </span>
             </div>
-          </div>
+            <div className="flex items-center space-x-2 text-sm text-gray-400">
+              <span>{metadata.icon}</span>
+              <span>{metadata.title}</span>
+            </div>
+          </nav>
         </header>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 py-6 bg-gray-50">
-          <div className="space-y-4">
-            {/* Welcome message */}
+        <div className="flex-1 overflow-y-auto px-6 py-8">
+          <div className="space-y-6">
             {messages.length === 0 && (
-              <div className="text-center py-8">
-                <div className="text-4xl mb-4">{metadata.icon}</div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">
+              <div className="text-center py-12">
+                <div className="text-5xl mb-6">{metadata.icon}</div>
+                <h2 className="text-2xl font-semibold tracking-tight text-gray-900 mb-2">
                   {metadata.subtitle}
                 </h2>
-                <p className="text-sm text-gray-600 mb-6 max-w-sm mx-auto">
+                <p className="text-gray-500 mb-8 max-w-sm mx-auto">
                   {metadata.description}
                 </p>
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-500 mb-3">Try an example:</p>
+                <div className="space-y-3">
+                  <p className="text-xs text-gray-400">Try an example</p>
                   <div className="flex flex-wrap justify-center gap-2">
                     {metadata.exampleQueries.slice(0, 3).map((query, index) => (
                       <button
                         key={index}
                         onClick={() => handleExampleClick(query)}
-                        className="px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg hover:border-gray-300 hover:bg-gray-50 text-gray-700 transition-colors"
+                        className="px-4 py-2 text-sm bg-white border border-gray-100 rounded-full hover:border-[#E07A5F] hover:shadow-md text-gray-600 transition-all"
                       >
                         {query}
                       </button>
@@ -552,56 +436,44 @@ export function Chat({ persona, onBack }: ChatProps) {
               </div>
             )}
 
-            {/* Message list */}
             {messages.map(message => {
-              // Parse choices for assistant messages
-              const showChoices = message.role === 'assistant' &&
-                                 !message.isStreaming &&
-                                 !isLoading &&
-                                 isLastAssistantMessage(message.id)
-              const { text, choices } = showChoices
-                ? parseMessageWithChoices(message.content)
-                : { text: message.content, choices: [] }
+              const showChoices = message.role === 'assistant' && !message.isStreaming && !isLoading && isLastAssistantMessage(message.id)
+              const { text, choices } = showChoices ? parseMessageWithChoices(message.content) : { text: message.content, choices: [] }
 
               return (
-                <div
-                  key={message.id}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[90%] rounded-2xl px-4 py-2.5 ${
-                      message.role === 'user'
-                        ? 'bg-[#E07A5F] text-white'
-                        : 'bg-white border border-gray-200 text-gray-900'
-                    }`}
-                  >
-                    {message.isToolCall && (
-                      <div className="flex items-center space-x-2 text-sm text-gray-500 mb-2">
-                        <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                        </svg>
-                        <span>Searching...</span>
+                <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[85%] ${message.role === 'user' ? 'text-right' : ''}`}>
+                    {message.role === 'user' ? (
+                      <div className="inline-block px-4 py-2.5 bg-gray-100 rounded-2xl rounded-br-md">
+                        <p className="text-sm text-gray-900">{message.content}</p>
                       </div>
-                    )}
-                    <div className="whitespace-pre-wrap text-sm leading-relaxed">
-                      {showChoices ? text : message.content}
-                      {message.isStreaming && !message.content && (
-                        <span className="inline-block w-2 h-4 bg-gray-400 animate-pulse" />
-                      )}
-                    </div>
-                    {/* Clickable choice buttons */}
-                    {showChoices && choices.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {choices.map((choice, idx) => (
-                          <button
-                            key={idx}
-                            onClick={() => handleChoiceClick(choice)}
-                            className="px-3 py-1.5 text-xs bg-gray-50 text-gray-700 border border-gray-200 rounded-full hover:bg-gray-100 hover:border-gray-300 transition-colors"
-                          >
-                            {choice}
-                          </button>
-                        ))}
+                    ) : (
+                      <div>
+                        {message.isToolCall && (
+                          <div className="flex items-center space-x-2 text-sm text-gray-400 mb-3">
+                            <div className="w-4 h-4 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+                            <span>Searching...</span>
+                          </div>
+                        )}
+                        <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                          {showChoices ? text : message.content}
+                          {message.isStreaming && !message.content && (
+                            <span className="inline-block w-1.5 h-4 bg-gray-300 animate-pulse ml-0.5" />
+                          )}
+                        </div>
+                        {showChoices && choices.length > 0 && (
+                          <div className="mt-4 flex flex-wrap gap-2">
+                            {choices.map((choice, idx) => (
+                              <button
+                                key={idx}
+                                onClick={() => handleChoiceClick(choice)}
+                                className="px-3 py-1.5 text-xs bg-white border border-gray-100 rounded-full hover:border-[#E07A5F] hover:shadow-sm text-gray-600 transition-all"
+                              >
+                                {choice}
+                              </button>
+                            ))}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -613,29 +485,27 @@ export function Chat({ persona, onBack }: ChatProps) {
         </div>
 
         {/* Input */}
-        <div className="border-t border-gray-200 bg-white px-4 py-3">
+        <div className="px-6 py-4 border-t border-gray-100">
           <form onSubmit={handleSubmit}>
-            <div className="flex items-end space-x-2">
-              <div className="flex-1 relative">
-                <textarea
-                  ref={inputRef}
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Ask a question..."
-                  rows={1}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent text-sm"
-                  style={{ maxHeight: '120px' }}
-                  disabled={isLoading}
-                />
-              </div>
+            <div className="flex items-end space-x-3">
+              <textarea
+                ref={inputRef}
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Ask a question..."
+                rows={1}
+                className="flex-1 px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
+                style={{ maxHeight: '120px' }}
+                disabled={isLoading}
+              />
               <button
                 type="submit"
                 disabled={isLoading || !input.trim()}
-                className="p-2.5 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </button>
             </div>
@@ -644,10 +514,10 @@ export function Chat({ persona, onBack }: ChatProps) {
       </div>
 
       {/* Right Panel - Results */}
-      <div className="hidden lg:flex flex-col flex-1 bg-white">
-        <div className="px-4 py-3 border-b border-gray-200">
-          <h2 className="font-medium text-gray-900">Results</h2>
-          <p className="text-xs text-gray-500">NIH RePORTER & USPTO PatentsView</p>
+      <div className="hidden lg:flex flex-col flex-1">
+        <div className="px-6 py-4 border-b border-gray-100">
+          <h2 className="text-lg font-semibold tracking-tight text-gray-900">Results</h2>
+          <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER & USPTO PatentsView</p>
         </div>
         <div className="flex-1 overflow-hidden">
           <ResultsPanel results={toolResults} />
