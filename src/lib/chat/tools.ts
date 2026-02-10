@@ -702,35 +702,59 @@ export async function searchPatents(
   userAccess: UserAccess
 ): Promise<PatentResult[]> {
   const { query, limit = 10 } = params
-  // Cap at 15 for chat context
-  const effectiveLimit = Math.min(limit, 15, userAccess.resultsLimit)
+  // Cap at 20 for hybrid search, will dedupe
+  const effectiveLimit = Math.min(limit, 20, userAccess.resultsLimit)
 
   try {
-    // Generate embedding for semantic search
-    const queryEmbedding = await generateEmbedding(query)
+    // Run HYBRID search: semantic + keyword
+    // Patent titles are short so semantic alone misses many relevant results
 
-    // Search patents using vector similarity
-    // Using 0.3 threshold - lower than typical because patent language varies significantly
-    const { data, error } = await supabaseAdmin.rpc('search_patents', {
+    // 1. Semantic search with low threshold
+    const queryEmbedding = await generateEmbedding(query)
+    const semanticPromise = supabaseAdmin.rpc('search_patents', {
       query_embedding: queryEmbedding,
-      match_threshold: 0.3,
+      match_threshold: 0.25,
       match_count: effectiveLimit
     })
 
-    if (error) {
-      // If RPC doesn't exist, fall back to text search
-      console.warn('Patent vector search not available, falling back to text search')
-      const { data: textResults, error: textError } = await supabaseAdmin
-        .from('patents')
-        .select('patent_id, patent_title, project_number')
-        .ilike('patent_title', `%${query}%`)
-        .limit(effectiveLimit)
+    // 2. Keyword search on title - split query into words for OR matching
+    const queryWords = query.toLowerCase().split(/\s+/).filter(w => w.length > 3)
+    const keywordPromise = supabaseAdmin
+      .from('patents')
+      .select('patent_id, patent_title, project_number')
+      .or(queryWords.map(word => `patent_title.ilike.%${word}%`).join(','))
+      .limit(effectiveLimit)
 
-      if (textError) throw textError
-      return textResults as PatentResult[]
+    // Run both in parallel
+    const [semanticResult, keywordResult] = await Promise.all([semanticPromise, keywordPromise])
+
+    // Merge results, prioritizing semantic matches
+    const seenIds = new Set<string>()
+    const merged: PatentResult[] = []
+
+    // Add semantic results first (they have similarity scores)
+    if (semanticResult.data) {
+      for (const patent of semanticResult.data as PatentResult[]) {
+        if (!seenIds.has(patent.patent_id)) {
+          seenIds.add(patent.patent_id)
+          merged.push(patent)
+        }
+      }
     }
 
-    return data as PatentResult[]
+    // Add keyword results that weren't in semantic results
+    if (keywordResult.data) {
+      for (const patent of keywordResult.data as PatentResult[]) {
+        if (!seenIds.has(patent.patent_id)) {
+          seenIds.add(patent.patent_id)
+          // No similarity score for keyword matches
+          merged.push({ ...patent, similarity: undefined })
+        }
+      }
+    }
+
+    // Return up to the limit
+    return merged.slice(0, effectiveLimit)
   } catch (error) {
     console.error('Search patents error:', error)
     throw error
