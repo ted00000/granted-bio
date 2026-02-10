@@ -93,7 +93,13 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
         application_id: string
         title: string
         org_name: string | null
+        org_state: string | null
         total_cost: number | null
+        fiscal_year: number | null
+        pi_names: string | null
+        primary_category: string | null
+        is_sbir: boolean
+        is_sttr: boolean
       }>
     }
 
@@ -104,7 +110,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           <div className="text-sm text-gray-400 mt-1">projects found</div>
         </div>
 
-        {Object.keys(data.by_category).length > 0 && (
+        {Object.keys(data.by_category || {}).length > 0 && (
           <div className="p-6 border-b border-gray-100">
             <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">By Category</h3>
             <div className="space-y-3">
@@ -112,7 +118,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                 .sort(([, a], [, b]) => b - a)
                 .map(([cat, count]) => (
                   <div key={cat} className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 capitalize">{cat.replace('_', ' ')}</span>
+                    <span className="text-sm text-gray-600 capitalize">{cat.replace(/_/g, ' ')}</span>
                     <span className="text-sm font-medium text-gray-900">{count.toLocaleString()}</span>
                   </div>
                 ))}
@@ -120,7 +126,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           </div>
         )}
 
-        {Object.keys(data.by_org_type).length > 0 && (
+        {Object.keys(data.by_org_type || {}).length > 0 && (
           <div className="p-6 border-b border-gray-100">
             <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">By Organization</h3>
             <div className="space-y-3">
@@ -128,7 +134,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                 .sort(([, a], [, b]) => b - a)
                 .map(([org, count]) => (
                   <div key={org} className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 capitalize">{org.replace('_', ' ')}</span>
+                    <span className="text-sm text-gray-600 capitalize">{org.replace(/_/g, ' ')}</span>
                     <span className="text-sm font-medium text-gray-900">{count.toLocaleString()}</span>
                   </div>
                 ))}
@@ -136,21 +142,39 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           </div>
         )}
 
-        {data.sample_results.length > 0 && (
+        {data.sample_results?.length > 0 && (
           <div className="p-6">
             <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">Top Funded</h3>
-            <div className="space-y-4">
+            <div className="space-y-5">
               {data.sample_results.map((project) => (
-                <div key={project.application_id} className="group">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-gray-900 leading-snug">{project.title}</p>
-                      <p className="text-xs text-gray-400 mt-1">{project.org_name}</p>
-                    </div>
+                <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
                     {project.total_cost && (
-                      <span className="text-sm font-medium text-[#E07A5F] whitespace-nowrap">
+                      <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
                         {formatCurrency(project.total_cost)}
                       </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <span>{project.org_name}</span>
+                    {project.org_state && <span>• {project.org_state}</span>}
+                    {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
+                  </div>
+                  {project.pi_names && (
+                    <p className="text-xs text-gray-500 mt-1">PI: {project.pi_names.split(';')[0]?.trim()}</p>
+                  )}
+                  <div className="flex items-center gap-2 mt-2">
+                    {project.primary_category && (
+                      <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
+                        {project.primary_category.replace(/_/g, ' ')}
+                      </span>
+                    )}
+                    {project.is_sbir && (
+                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-600 rounded">SBIR</span>
+                    )}
+                    {project.is_sttr && (
+                      <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-600 rounded">STTR</span>
                     )}
                   </div>
                 </div>
@@ -158,6 +182,45 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
             </div>
           </div>
         )}
+      </div>
+    )
+  }
+
+  if (latestResult.name === 'search_patents') {
+    const data = latestResult.data as Array<{
+      patent_id: string
+      patent_title: string
+      project_number: string | null
+      similarity?: number
+    }>
+
+    return (
+      <div className="h-full overflow-y-auto">
+        <div className="p-6 border-b border-gray-100">
+          <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.length}</div>
+          <div className="text-sm text-gray-400 mt-1">patents found</div>
+        </div>
+
+        <div className="p-6">
+          <div className="space-y-4">
+            {data.map((patent) => (
+              <div key={patent.patent_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
+                <div className="flex items-start justify-between gap-3 mb-1">
+                  <p className="text-sm text-gray-900 leading-snug flex-1">{patent.patent_title}</p>
+                  {patent.similarity && (
+                    <span className="text-xs text-gray-400 whitespace-nowrap">
+                      {Math.round(patent.similarity * 100)}%
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 text-xs text-gray-400">
+                  <span>US{patent.patent_id}</span>
+                  {patent.project_number && <span>• NIH {patent.project_number}</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
