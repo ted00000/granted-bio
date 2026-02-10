@@ -173,6 +173,27 @@ export async function POST(request: NextRequest) {
               })
             )
 
+            // Send tool results to client for display in side panel
+            for (let i = 0; i < toolUseBlocks.length; i++) {
+              const block = toolUseBlocks[i]
+              const result = toolResults[i]
+              if (!result.is_error) {
+                try {
+                  controller.enqueue(
+                    encoder.encode(
+                      `data: ${JSON.stringify({
+                        type: 'tool_result',
+                        name: block.name,
+                        data: JSON.parse(result.content as string)
+                      })}\n\n`
+                    )
+                  )
+                } catch {
+                  // Skip if can't parse result
+                }
+              }
+            }
+
             // Notify client that tools completed
             controller.enqueue(
               encoder.encode(
