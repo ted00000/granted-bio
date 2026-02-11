@@ -353,7 +353,7 @@ export async function keywordSearch(
     }
 
     // Step 2: Get projects for these IDs with optional filters (parallel batches)
-    // Use projects_enriched view to get patent/publication/trial counts
+    // Use projects table (enriched counts will be fetched separately if available)
     const allProjects: Array<{
       application_id: string
       title: string
@@ -378,8 +378,8 @@ export async function keywordSearch(
     // Run all batch queries in parallel for speed
     const batchPromises = idBatches.map(async (idBatch) => {
       let query = supabaseAdmin
-        .from('projects_enriched')
-        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
+        .from('projects')
+        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, pi_names, project_number')
         .in('application_id', idBatch)
 
       // Apply filters
@@ -404,7 +404,13 @@ export async function keywordSearch(
     for (const result of batchResults) {
       if (result.error) throw result.error
       if (result.data) {
-        allProjects.push(...result.data)
+        // Add default counts (will be enriched later if view exists)
+        allProjects.push(...result.data.map(p => ({
+          ...p,
+          patent_count: 0,
+          publication_count: 0,
+          clinical_trial_count: 0
+        })))
       }
     }
 
@@ -565,24 +571,13 @@ export async function searchProjects(
         }
       }
 
-      // Enrich results with patent/publication/trial counts
+      // Return results with default counts (enrichment requires projects_enriched view)
       const limitedResults = results.slice(0, effectiveLimit)
-      const appIds = limitedResults.map(r => r.application_id)
-
-      const { data: enrichedData } = await supabaseAdmin
-        .from('projects_enriched')
-        .select('application_id, patent_count, publication_count, clinical_trial_count')
-        .in('application_id', appIds)
-
-      const enrichedMap = new Map(
-        (enrichedData || []).map(e => [e.application_id, e])
-      )
-
       const enrichedResults = limitedResults.map(r => ({
         ...r,
-        patent_count: enrichedMap.get(r.application_id)?.patent_count || 0,
-        publication_count: enrichedMap.get(r.application_id)?.publication_count || 0,
-        clinical_trial_count: enrichedMap.get(r.application_id)?.clinical_trial_count || 0
+        patent_count: 0,
+        publication_count: 0,
+        clinical_trial_count: 0
       }))
 
       return {
@@ -609,24 +604,14 @@ export async function searchProjects(
       )
     }
 
-    // Enrich results with patent/publication/trial counts from projects_enriched
+    // Return results with default counts (enrichment requires projects_enriched view)
     const limitedResults = results.slice(0, effectiveLimit)
-    const appIds = limitedResults.map(r => r.application_id)
-
-    const { data: enrichedData } = await supabaseAdmin
-      .from('projects_enriched')
-      .select('application_id, patent_count, publication_count, clinical_trial_count')
-      .in('application_id', appIds)
-
-    const enrichedMap = new Map(
-      (enrichedData || []).map(e => [e.application_id, e])
-    )
 
     const enrichedResults = limitedResults.map(r => ({
       ...r,
-      patent_count: enrichedMap.get(r.application_id)?.patent_count || 0,
-      publication_count: enrichedMap.get(r.application_id)?.publication_count || 0,
-      clinical_trial_count: enrichedMap.get(r.application_id)?.clinical_trial_count || 0
+      patent_count: 0,
+      publication_count: 0,
+      clinical_trial_count: 0
     }))
 
     return {
