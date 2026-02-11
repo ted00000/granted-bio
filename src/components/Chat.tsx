@@ -111,39 +111,44 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           <div className="text-sm text-gray-400 mt-1">projects found</div>
         </div>
 
-        {Object.keys(data.by_category || {}).length > 0 && (
+        {(Object.keys(data.by_category || {}).length > 0 || Object.keys(data.by_org_type || {}).length > 0) && (
           <div className="p-6 border-b border-gray-100">
-            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">By Category</h3>
-            <table className="w-full">
-              <tbody>
-                {Object.entries(data.by_category)
-                  .sort(([, a], [, b]) => b - a)
-                  .map(([cat, count]) => (
-                    <tr key={cat} className="border-b border-gray-50 last:border-0">
-                      <td className="py-2 text-sm text-gray-700 capitalize">{cat.replace(/_/g, ' ')}</td>
-                      <td className="py-2 text-sm font-semibold text-gray-900 text-right tabular-nums">{count.toLocaleString()}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {Object.keys(data.by_org_type || {}).length > 0 && (
-          <div className="p-6 border-b border-gray-100">
-            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">By Organization</h3>
-            <table className="w-full">
-              <tbody>
-                {Object.entries(data.by_org_type)
-                  .sort(([, a], [, b]) => b - a)
-                  .map(([org, count]) => (
-                    <tr key={org} className="border-b border-gray-50 last:border-0">
-                      <td className="py-2 text-sm text-gray-700 capitalize">{org.replace(/_/g, ' ')}</td>
-                      <td className="py-2 text-sm font-semibold text-gray-900 text-right tabular-nums">{count.toLocaleString()}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+            <div className="grid grid-cols-2 gap-6">
+              {Object.keys(data.by_category || {}).length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-3">Category</h3>
+                  <table className="w-full">
+                    <tbody>
+                      {Object.entries(data.by_category)
+                        .sort(([, a], [, b]) => b - a)
+                        .map(([cat, count]) => (
+                          <tr key={cat}>
+                            <td className="py-1.5 text-sm text-gray-700 capitalize">{cat.replace(/_/g, ' ')}</td>
+                            <td className="py-1.5 text-sm font-semibold text-gray-900 text-right tabular-nums">{count.toLocaleString()}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+              {Object.keys(data.by_org_type || {}).length > 0 && (
+                <div>
+                  <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-3">Organization</h3>
+                  <table className="w-full">
+                    <tbody>
+                      {Object.entries(data.by_org_type)
+                        .sort(([, a], [, b]) => b - a)
+                        .map(([org, count]) => (
+                          <tr key={org}>
+                            <td className="py-1.5 text-sm text-gray-700 capitalize">{org.replace(/_/g, ' ')}</td>
+                            <td className="py-1.5 text-sm font-semibold text-gray-900 text-right tabular-nums">{count.toLocaleString()}</td>
+                          </tr>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
