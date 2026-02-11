@@ -178,6 +178,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                   {project.pi_names && (
                     <p className="text-xs text-gray-500 mt-1">PI: {project.pi_names.split(';')[0]?.trim()}</p>
                   )}
+                  <p className="text-xs text-gray-400 mt-1">ID: {project.application_id}</p>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
                     {project.primary_category && (
                       <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
@@ -270,6 +271,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                   {project.pi_names && (
                     <p className="text-xs text-gray-500 mt-1">PI: {project.pi_names.split(';')[0]?.trim()}</p>
                   )}
+                  <p className="text-xs text-gray-400 mt-1">ID: {project.application_id}</p>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
                     {project.primary_category && (
                       <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
@@ -545,6 +547,8 @@ export function Chat({ persona, onBack }: ChatProps) {
               if (parsed.type === 'text') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: m.content + parsed.content } : m))
               } else if (parsed.type === 'tool_start') {
+                // Clear previous results when starting a new tool call
+                setToolResults([])
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: true } : m))
               } else if (parsed.type === 'tool_result') {
                 setToolResults(prev => [...prev, { name: parsed.name, data: parsed.data, timestamp: Date.now() }])
