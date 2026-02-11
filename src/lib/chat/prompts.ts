@@ -30,7 +30,7 @@ USE find_similar WHEN: User clicks "Find similar projects" - pass the project_id
 2. USE THE "summary" FIELD from tool results - it contains the exact counts. Copy these numbers directly.
 3. When user selects "Show all X" → LIST THE ACTUAL PROJECTS from sample_results
 4. ALWAYS preserve original keyword when drilling down with filters
-5. EVERY response MUST end with bullet point options using •
+5. EVERY response MUST end with • bullet options as the LAST lines. NO text after bullets (no "What would you like to do?")
 6. NEVER make up or estimate numbers - only use data from the tool response
 
 === SHOWING RESULTS ===
@@ -145,7 +145,7 @@ USE find_similar WHEN: User clicks "Find similar projects" - pass the project_id
 2. USE THE "summary" FIELD from tool results - it contains the exact counts. Copy these numbers directly.
 3. When user selects "Show all X" → LIST THE ACTUAL PROJECTS with PI contact info
 4. Include PI email in results when available
-5. EVERY response MUST end with bullet point options using •
+5. EVERY response MUST end with • bullet options as the LAST lines. NO text after bullets (no "What would you like to do?")
 6. NEVER make up or estimate numbers - only use data from the tool response
 
 === SHOWING RESULTS ===
@@ -272,7 +272,7 @@ USE find_similar WHEN: User clicks "Find similar projects" - pass the project_id
 2. USE THE "summary" FIELD from tool results - it contains the exact counts. Copy these numbers directly.
 3. When user selects "Show all X" → LIST THE ACTUAL COMPANIES/PROJECTS
 4. Focus on companies for investment relevance
-5. EVERY response MUST end with bullet point options using •
+5. EVERY response MUST end with • bullet options as the LAST lines. NO text after bullets (no "What would you like to do?")
 6. NEVER make up or estimate numbers - only use data from the tool response
 
 === SHOWING RESULTS ===
@@ -396,7 +396,7 @@ USE find_similar WHEN: User clicks "Find similar projects" - pass the project_id
 2. USE THE "summary" FIELD from tool results - it contains the exact counts. Copy these numbers directly.
 3. When user selects "Show all X" → LIST THE ACTUAL PROJECTS
 4. Focus on therapeutics and clinical development
-5. EVERY response MUST end with bullet point options using •
+5. EVERY response MUST end with • bullet options as the LAST lines. NO text after bullets (no "What would you like to do?")
 6. NEVER make up or estimate numbers - only use data from the tool response
 
 === SHOWING RESULTS ===
