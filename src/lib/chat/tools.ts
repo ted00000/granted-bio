@@ -349,6 +349,7 @@ export async function keywordSearch(
     }
 
     // Step 2: Get projects for these IDs with optional filters (parallel batches)
+    // Use projects_enriched view to get patent/publication/trial counts
     const allProjects: Array<{
       application_id: string
       title: string
@@ -359,6 +360,9 @@ export async function keywordSearch(
       total_cost: number | null
       pi_names: string | null
       project_number: string | null
+      patent_count: number
+      publication_count: number
+      clinical_trial_count: number
     }> = []
 
     // Process in batches of 500 IDs (Supabase IN clause limit)
@@ -370,8 +374,8 @@ export async function keywordSearch(
     // Run all batch queries in parallel for speed
     const batchPromises = idBatches.map(async (idBatch) => {
       let query = supabaseAdmin
-        .from('projects')
-        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, pi_names, project_number')
+        .from('projects_enriched')
+        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
         .in('application_id', idBatch)
 
       // Apply filters
@@ -459,7 +463,11 @@ export async function keywordSearch(
       primary_category: p.primary_category,
       total_cost: p.total_cost,
       pi_names: p.pi_names,
-      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      // Enriched counts from projects_enriched view
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
     }))
 
     // Generate natural language summary for Claude to read

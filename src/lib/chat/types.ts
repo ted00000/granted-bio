@@ -96,6 +96,10 @@ export interface KeywordSearchResult {
     total_cost: number | null
     pi_names: string | null
     pi_email: string | null
+    // Enriched counts from projects_enriched view
+    patent_count: number
+    publication_count: number
+    clinical_trial_count: number
   }>
 }
 

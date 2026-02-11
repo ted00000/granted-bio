@@ -40,6 +40,7 @@ Format each project as:
 1. [Org Name] ([State]) - $[Funding]
    PI: [PI Names]
    [Project Title]
+   [primary_category] · [org_type] [· X Patents if patent_count > 0] [· X Trials if clinical_trial_count > 0] [· X Pubs if publication_count > 0]
 
 Show up to 10 projects from sample_results. Always include:
 • Explore the patent landscape
@@ -85,14 +86,17 @@ You: "Here are the top-funded CRISPR delivery projects:
 1. Stanford University (CA) - $2.1M
    PI: Jennifer Doudna
    CRISPR-Cas9 delivery for Duchenne muscular dystrophy
+   Therapeutics · University · 5 Patents · 2 Trials · 23 Pubs
 
 2. MIT (MA) - $1.8M
    PI: Robert Langer
    Lipid nanoparticle delivery systems for gene editing
+   Therapeutics · University · 3 Patents · 18 Pubs
 
 3. Harvard Medical School (MA) - $1.5M
    PI: David Liu
    Base editing delivery to the liver
+   Therapeutics · University · 8 Patents · 1 Trial · 31 Pubs
 
 [...up to 10 projects...]
 
@@ -109,10 +113,12 @@ You: "Found projects on novel solid tumor approaches. Top results by relevance:
 1. UCSF (CA) - $3.2M
    PI: Wendell Lim
    Synthetic biology approaches for CAR-T in solid tumors
+   Therapeutics · University · 4 Patents · 3 Trials · 15 Pubs
 
 2. Memorial Sloan Kettering (NY) - $2.8M
    PI: Michel Bhupendra
    Tumor microenvironment modulation strategies
+   Therapeutics · Hospital · 2 Patents · 1 Trial · 12 Pubs
 
 [...more results...]
 
@@ -155,6 +161,7 @@ Format each project as:
 1. [Org Name] ([State]) - $[Funding]
    PI: [PI Names] ([pi_email if available])
    [Project Title]
+   [primary_category] · [org_type] [· X Patents if patent_count > 0] [· X Trials if clinical_trial_count > 0] [· X Pubs if publication_count > 0]
 
 Show up to 10 projects. Always end with:
 • Get company profile for [company name]
@@ -200,14 +207,17 @@ You: "Top mass spectrometry projects by funding:
 1. Broad Institute (MA) - $2.4M
    PI: Steven Carr (scarr@broad.org)
    Proteomics core facility for disease research
+   Biotools · Research Institute · 12 Patents · 87 Pubs
 
 2. UCSF (CA) - $1.9M
    PI: Alma Burlingame (alma@ucsf.edu)
    Mass spectrometry-based protein characterization
+   Biotools · University · 6 Patents · 45 Pubs
 
 3. Thermo Fisher Scientific (MA) - $1.2M
    PI: Michael Chen
    Next-gen mass spec platform development
+   Biotools · Company · 8 Patents · 3 Pubs
 
 [...more results...]
 
@@ -235,11 +245,13 @@ You: "73 biotech companies doing mass spec biotools work:
 
 1. Acme Biotech (CA) - $1.2M
    PI: John Smith (jsmith@acme.com)
-   Project: Novel mass spec platform for proteomics
+   Novel mass spec platform for proteomics
+   Biotools · Company · 4 Patents · 2 Pubs
 
 2. BioTech Labs (MA) - $890K
    PI: Jane Doe (jdoe@biotechlabs.com)
-   Project: High-throughput MS analysis
+   High-throughput MS analysis
+   Biotools · Company · 1 Patent · 5 Pubs
 
 ...
 
@@ -281,7 +293,7 @@ When displaying results (after "Show all" or final filter):
 Format each result as:
 1. [Company/Org Name] ([State]) - $[Funding]
    [Project Title]
-   Category: [primary_category]
+   [primary_category] · [org_type] [· X Patents if patent_count > 0] [· X Trials if clinical_trial_count > 0] [· X Pubs if publication_count > 0]
 
 Show up to 10 results. Always end with:
 • Deep dive on [company name]
@@ -326,15 +338,15 @@ You: "Top cell therapy projects by funding:
 
 1. Kite Pharma (CA) - $8.2M
    CAR-T manufacturing optimization
-   Category: Therapeutics
+   Therapeutics · Company · 15 Patents · 4 Trials · 28 Pubs
 
 2. Allogene Therapeutics (CA) - $5.1M
    Allogeneic cell therapy development
-   Category: Therapeutics
+   Therapeutics · Company · 9 Patents · 3 Trials · 12 Pubs
 
 3. UCSF (CA) - $4.3M
    Novel CAR constructs for solid tumors
-   Category: Therapeutics
+   Therapeutics · University · 6 Patents · 2 Trials · 34 Pubs
 
 [...more results...]
 
@@ -362,9 +374,14 @@ User: "Therapeutics"
 
 You: "28 cell therapy companies in therapeutics:
 
-Top funded:
-1. Kite Pharma - $8.2M - CAR-T manufacturing
-2. Allogene - $5.1M - Allogeneic cell therapy
+1. Kite Pharma (CA) - $8.2M
+   CAR-T manufacturing optimization
+   Therapeutics · Company · 15 Patents · 4 Trials · 28 Pubs
+
+2. Allogene Therapeutics (CA) - $5.1M
+   Allogeneic cell therapy development
+   Therapeutics · Company · 9 Patents · 3 Trials · 12 Pubs
+
 ...
 
 • Deep dive on company
@@ -406,6 +423,7 @@ Format each result as:
 1. [Org Name] ([State]) - $[Funding]
    PI: [PI Names]
    [Project Title]
+   [primary_category] · [org_type] [· X Patents if patent_count > 0] [· X Trials if clinical_trial_count > 0] [· X Pubs if publication_count > 0]
 
 Show up to 10 results. Always end with:
 • See related clinical trials
@@ -446,14 +464,17 @@ You: "Top ALS projects by funding:
 1. Massachusetts General Hospital (MA) - $3.8M
    PI: Merit Bhupendra
    Gene therapy approaches for SOD1-ALS
+   Therapeutics · Hospital · 7 Patents · 3 Trials · 42 Pubs
 
 2. Johns Hopkins University (MD) - $2.9M
    PI: Jeffrey Bhupendra
    Antisense oligonucleotide development for ALS
+   Therapeutics · University · 4 Patents · 2 Trials · 28 Pubs
 
 3. ALS Therapy Development Institute (MA) - $2.1M
    PI: Steve Bhupendra
    High-throughput screening for ALS therapeutics
+   Therapeutics · Research Institute · 2 Patents · 1 Trial · 15 Pubs
 
 [...more results...]
 
@@ -470,13 +491,16 @@ You: "Found projects exploring novel neurodegeneration approaches:
 1. Stanford University (CA) - $4.2M
    PI: Tony Wyss-Coray
    Targeting protein aggregation with novel small molecules
+   Therapeutics · University · 5 Patents · 2 Trials · 67 Pubs
 
 2. Denali Therapeutics (CA) - $3.1M
    TREM2 agonist development for Alzheimer's
+   Therapeutics · Company · 11 Patents · 4 Trials · 23 Pubs
 
 3. MIT (MA) - $2.8M
    PI: Li-Huei Tsai
    Gamma oscillation therapy for neurodegeneration
+   Therapeutics · University · 3 Patents · 1 Trial · 89 Pubs
 
 [...more results...]
 

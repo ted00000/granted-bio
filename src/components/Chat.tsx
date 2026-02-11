@@ -196,6 +196,80 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
     )
   }
 
+  if (latestResult.name === 'search_projects') {
+    const data = latestResult.data as {
+      results: Array<{
+        application_id: string
+        title: string
+        org_name: string | null
+        org_state: string | null
+        org_type: string | null
+        total_cost: number | null
+        fiscal_year: number | null
+        pi_names: string | null
+        primary_category: string | null
+        is_sbir: boolean
+        is_sttr: boolean
+      }>
+      total: number
+    }
+
+    return (
+      <div className="h-full overflow-y-auto">
+        <div className="p-6 border-b border-gray-100">
+          <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total.toLocaleString()}</div>
+          <div className="text-sm text-gray-400 mt-1">projects found</div>
+        </div>
+
+        {data.results?.length > 0 && (
+          <div className="p-6">
+            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Top Results</h3>
+            <div className="space-y-5">
+              {data.results.map((project) => (
+                <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
+                  <div className="flex items-start justify-between gap-3 mb-2">
+                    <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
+                    {project.total_cost && (
+                      <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
+                        {formatCurrency(project.total_cost)}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <span>{project.org_name}</span>
+                    {project.org_state && <span>• {project.org_state}</span>}
+                    {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
+                  </div>
+                  {project.pi_names && (
+                    <p className="text-xs text-gray-500 mt-1">PI: {project.pi_names.split(';')[0]?.trim()}</p>
+                  )}
+                  <div className="flex items-center gap-2 mt-2">
+                    {project.primary_category && (
+                      <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
+                        {project.primary_category.replace(/_/g, ' ')}
+                      </span>
+                    )}
+                    {project.org_type && (
+                      <span className="px-2 py-0.5 text-xs bg-gray-50 text-gray-500 rounded capitalize">
+                        {project.org_type.replace(/_/g, ' ')}
+                      </span>
+                    )}
+                    {project.is_sbir && (
+                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-600 rounded">SBIR</span>
+                    )}
+                    {project.is_sttr && (
+                      <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-600 rounded">STTR</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
   if (latestResult.name === 'search_patents') {
     const data = latestResult.data as Array<{
       patent_id: string
