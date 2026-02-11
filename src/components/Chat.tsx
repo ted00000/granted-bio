@@ -95,12 +95,16 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
         title: string
         org_name: string | null
         org_state: string | null
+        org_type: string | null
         total_cost: number | null
         fiscal_year: number | null
         pi_names: string | null
         primary_category: string | null
         is_sbir: boolean
         is_sttr: boolean
+        patent_count: number
+        publication_count: number
+        clinical_trial_count: number
       }>
     }
 
@@ -174,14 +178,34 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                   {project.pi_names && (
                     <p className="text-xs text-gray-500 mt-1">PI: {project.pi_names.split(';')[0]?.trim()}</p>
                   )}
-                  <div className="flex items-center gap-2 mt-2">
+                  <div className="flex items-center flex-wrap gap-2 mt-2">
                     {project.primary_category && (
                       <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
                         {project.primary_category.replace(/_/g, ' ')}
                       </span>
                     )}
+                    {project.org_type && (
+                      <span className="px-2 py-0.5 text-xs bg-gray-50 text-gray-500 rounded capitalize">
+                        {project.org_type.replace(/_/g, ' ')}
+                      </span>
+                    )}
+                    {project.patent_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
+                        {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
+                    {project.clinical_trial_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-green-50 text-green-700 rounded">
+                        {project.clinical_trial_count} Trial{project.clinical_trial_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
+                    {project.publication_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-700 rounded">
+                        {project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
                     {project.is_sbir && (
-                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-600 rounded">SBIR</span>
+                      <span className="px-2 py-0.5 text-xs bg-indigo-50 text-indigo-600 rounded">SBIR</span>
                     )}
                     {project.is_sttr && (
                       <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-600 rounded">STTR</span>
@@ -210,6 +234,9 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
         primary_category: string | null
         is_sbir: boolean
         is_sttr: boolean
+        patent_count: number
+        publication_count: number
+        clinical_trial_count: number
       }>
       total: number
     }
@@ -243,7 +270,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                   {project.pi_names && (
                     <p className="text-xs text-gray-500 mt-1">PI: {project.pi_names.split(';')[0]?.trim()}</p>
                   )}
-                  <div className="flex items-center gap-2 mt-2">
+                  <div className="flex items-center flex-wrap gap-2 mt-2">
                     {project.primary_category && (
                       <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
                         {project.primary_category.replace(/_/g, ' ')}
@@ -254,8 +281,23 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                         {project.org_type.replace(/_/g, ' ')}
                       </span>
                     )}
+                    {project.patent_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
+                        {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
+                    {project.clinical_trial_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-green-50 text-green-700 rounded">
+                        {project.clinical_trial_count} Trial{project.clinical_trial_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
+                    {project.publication_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-700 rounded">
+                        {project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
                     {project.is_sbir && (
-                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-600 rounded">SBIR</span>
+                      <span className="px-2 py-0.5 text-xs bg-indigo-50 text-indigo-600 rounded">SBIR</span>
                     )}
                     {project.is_sttr && (
                       <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-600 rounded">STTR</span>

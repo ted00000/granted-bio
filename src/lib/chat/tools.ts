@@ -202,7 +202,7 @@ export const AGENT_TOOLS: Tool[] = [
 ]
 
 // Summarize project for chat context (reduces token usage)
-function summarizeProject(p: ProjectResult) {
+function summarizeProject(p: ProjectResult & { patent_count?: number; publication_count?: number; clinical_trial_count?: number }) {
   // Check for SBIR/STTR - must NOT match "NON-SBIR/STTR"
   const mechanism = p.funding_mechanism?.toUpperCase() || ''
   const isNonSbir = mechanism.includes('NON-SBIR') || mechanism.includes('NON SBIR')
@@ -220,7 +220,11 @@ function summarizeProject(p: ProjectResult) {
     pi_names: p.pi_names,
     primary_category: p.primary_category,
     is_sbir: isSbir,
-    is_sttr: isSttr
+    is_sttr: isSttr,
+    // Enriched counts
+    patent_count: p.patent_count || 0,
+    publication_count: p.publication_count || 0,
+    clinical_trial_count: p.clinical_trial_count || 0
   }
 }
 
@@ -561,8 +565,28 @@ export async function searchProjects(
         }
       }
 
+      // Enrich results with patent/publication/trial counts
+      const limitedResults = results.slice(0, effectiveLimit)
+      const appIds = limitedResults.map(r => r.application_id)
+
+      const { data: enrichedData } = await supabaseAdmin
+        .from('projects_enriched')
+        .select('application_id, patent_count, publication_count, clinical_trial_count')
+        .in('application_id', appIds)
+
+      const enrichedMap = new Map(
+        (enrichedData || []).map(e => [e.application_id, e])
+      )
+
+      const enrichedResults = limitedResults.map(r => ({
+        ...r,
+        patent_count: enrichedMap.get(r.application_id)?.patent_count || 0,
+        publication_count: enrichedMap.get(r.application_id)?.publication_count || 0,
+        clinical_trial_count: enrichedMap.get(r.application_id)?.clinical_trial_count || 0
+      }))
+
       return {
-        results: results.slice(0, effectiveLimit).map(summarizeProject),
+        results: enrichedResults.map(summarizeProject),
         total: results.length
       }
     }
@@ -585,8 +609,28 @@ export async function searchProjects(
       )
     }
 
+    // Enrich results with patent/publication/trial counts from projects_enriched
+    const limitedResults = results.slice(0, effectiveLimit)
+    const appIds = limitedResults.map(r => r.application_id)
+
+    const { data: enrichedData } = await supabaseAdmin
+      .from('projects_enriched')
+      .select('application_id, patent_count, publication_count, clinical_trial_count')
+      .in('application_id', appIds)
+
+    const enrichedMap = new Map(
+      (enrichedData || []).map(e => [e.application_id, e])
+    )
+
+    const enrichedResults = limitedResults.map(r => ({
+      ...r,
+      patent_count: enrichedMap.get(r.application_id)?.patent_count || 0,
+      publication_count: enrichedMap.get(r.application_id)?.publication_count || 0,
+      clinical_trial_count: enrichedMap.get(r.application_id)?.clinical_trial_count || 0
+    }))
+
     return {
-      results: results.slice(0, effectiveLimit).map(summarizeProject),
+      results: enrichedResults.map(summarizeProject),
       total: results.length
     }
   } catch (error) {
