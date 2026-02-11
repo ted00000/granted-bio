@@ -228,6 +228,71 @@ function summarizeProject(p: ProjectResult) {
 
 // Keyword search - finds projects by exact keyword match in abstracts
 // Uses parallel client-side queries for reliability
+// Generate keyword variations for more robust search
+// Handles plural/singular forms for common scientific terms
+function generateKeywordVariations(keyword: string): string[] {
+  const variations = new Set<string>()
+  const words = keyword.toLowerCase().trim().split(/\s+/)
+
+  // Always include original (lowercase for case-insensitive matching)
+  variations.add(keyword.toLowerCase())
+
+  // Process each word for singular/plural variations
+  const processedWords = words.map(word => {
+    const wordVariations: string[] = [word]
+
+    // Skip short words and likely acronyms (all caps in original, or <= 3 chars)
+    const originalWord = keyword.split(/\s+/).find(w => w.toLowerCase() === word)
+    const isAcronym = originalWord && (originalWord === originalWord.toUpperCase() || word.length <= 3)
+    if (isAcronym) {
+      return wordVariations // Don't pluralize acronyms like CHO, DNA, RNA
+    }
+
+    // Handle common plural patterns (plural -> singular)
+    if (word.endsWith('ies') && word.length > 4) {
+      // antibodies -> antibody
+      wordVariations.push(word.slice(0, -3) + 'y')
+    } else if (word.endsWith('es') && word.length > 4) {
+      if (word.endsWith('ses') || word.endsWith('xes') || word.endsWith('ches') || word.endsWith('shes') || word.endsWith('zes')) {
+        // analyses -> analysis, boxes -> box
+        wordVariations.push(word.slice(0, -2))
+      }
+    } else if (word.endsWith('s') && !word.endsWith('ss') && word.length > 4) {
+      // cells -> cell (but not 'mass' -> 'mas', not short words)
+      wordVariations.push(word.slice(0, -1))
+    }
+
+    // Handle singular -> plural (only if not already plural)
+    if (!word.endsWith('s') && word.length > 3) {
+      if (word.endsWith('y') && !['ay', 'ey', 'oy', 'uy'].some(end => word.endsWith(end))) {
+        // antibody -> antibodies
+        wordVariations.push(word.slice(0, -1) + 'ies')
+      } else {
+        // cell -> cells
+        wordVariations.push(word + 's')
+      }
+    }
+
+    return [...new Set(wordVariations)] // dedupe
+  })
+
+  // Generate combinations (limit to avoid explosion)
+  if (words.length <= 3) {
+    const generateCombinations = (wordIndex: number, current: string[]): void => {
+      if (wordIndex === processedWords.length) {
+        variations.add(current.join(' '))
+        return
+      }
+      for (const variant of processedWords[wordIndex]) {
+        generateCombinations(wordIndex + 1, [...current, variant])
+      }
+    }
+    generateCombinations(0, [])
+  }
+
+  return [...variations]
+}
+
 export async function keywordSearch(
   params: KeywordSearchParams,
   userAccess: UserAccess
@@ -235,30 +300,47 @@ export async function keywordSearch(
   const { keyword, filters } = params
 
   try {
-    // Step 1: Search abstracts for keyword, get all application_ids (paginate to get beyond 1000 limit)
-    const matchingIds: string[] = []
-    let offset = 0
-    const pageSize = 1000
+    // Generate keyword variations to handle plural/singular forms
+    const keywordVariations = generateKeywordVariations(keyword)
 
-    while (true) {
-      const { data: abstractMatches, error: abstractError } = await supabaseAdmin
-        .from('abstracts')
-        .select('application_id')
-        .ilike('abstract_text', `%${keyword}%`)
-        .range(offset, offset + pageSize - 1)
+    // Step 1: Search abstracts for all keyword variations, get all application_ids
+    const matchingIds = new Set<string>()
 
-      if (abstractError) throw abstractError
+    // Search for each variation in parallel
+    const searchPromises = keywordVariations.map(async (variation) => {
+      const ids: string[] = []
+      let offset = 0
+      const pageSize = 1000
 
-      if (!abstractMatches || abstractMatches.length === 0) break
+      while (true) {
+        const { data: abstractMatches, error: abstractError } = await supabaseAdmin
+          .from('abstracts')
+          .select('application_id')
+          .ilike('abstract_text', `%${variation}%`)
+          .range(offset, offset + pageSize - 1)
 
-      matchingIds.push(...abstractMatches.map(a => a.application_id))
+        if (abstractError) throw abstractError
 
-      if (abstractMatches.length < pageSize) break
-      offset += pageSize
-    }
+        if (!abstractMatches || abstractMatches.length === 0) break
 
-    if (matchingIds.length === 0) {
+        ids.push(...abstractMatches.map(a => a.application_id))
+
+        if (abstractMatches.length < pageSize) break
+        offset += pageSize
+      }
+
+      return ids
+    })
+
+    const allResults = await Promise.all(searchPromises)
+    allResults.forEach(ids => ids.forEach(id => matchingIds.add(id)))
+
+    // Convert Set to Array for further processing
+    const matchingIdsArray = [...matchingIds]
+
+    if (matchingIdsArray.length === 0) {
       return {
+        summary: 'Found 0 projects.',
         total_count: 0,
         by_category: {},
         by_org_type: {},
@@ -281,8 +363,8 @@ export async function keywordSearch(
 
     // Process in batches of 500 IDs (Supabase IN clause limit)
     const idBatches: string[][] = []
-    for (let i = 0; i < matchingIds.length; i += 500) {
-      idBatches.push(matchingIds.slice(i, i + 500))
+    for (let i = 0; i < matchingIdsArray.length; i += 500) {
+      idBatches.push(matchingIdsArray.slice(i, i + 500))
     }
 
     // Run all batch queries in parallel for speed
@@ -380,7 +462,23 @@ export async function keywordSearch(
       pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null
     }))
 
+    // Generate natural language summary for Claude to read
+    const categoryBreakdown = Object.entries(byCategory)
+      .sort(([, a], [, b]) => b - a)
+      .map(([cat, count]) => `${cat}: ${count}`)
+      .join(', ')
+
+    const orgTypeBreakdown = Object.entries(byOrgType)
+      .sort(([, a], [, b]) => b - a)
+      .map(([org, count]) => `${org}: ${count}`)
+      .join(', ')
+
+    const summary = `Found ${allProjects.length} projects. ` +
+      `By category: ${categoryBreakdown}. ` +
+      `By org_type: ${orgTypeBreakdown}.`
+
     return {
+      summary, // Natural language summary for Claude to read
       total_count: allProjects.length,
       by_category: byCategory,
       by_org_type: byOrgType,
@@ -602,6 +700,62 @@ type SummarizedPIProfile = {
   }>
 }
 
+// Helper to extract the actual PI name from pi_names field
+// pi_names format: "LASTNAME, FIRSTNAME M. (contact)" or "LASTNAME, FIRSTNAME;OTHER, NAME"
+function extractPIName(piNames: string | null, searchPattern: string): string | null {
+  if (!piNames) return null
+
+  // Split by semicolon for multiple PIs
+  const pis = piNames.split(';').map(p => p.trim())
+
+  // Find the one matching our search pattern
+  const patternLower = searchPattern.toLowerCase()
+  for (const pi of pis) {
+    if (pi.toLowerCase().includes(patternLower)) {
+      // Remove "(contact)" suffix and clean up
+      return pi.replace(/\s*\(contact\)\s*/i, '').trim()
+    }
+  }
+
+  // If no match, return the first PI (primary)
+  return pis[0]?.replace(/\s*\(contact\)\s*/i, '').trim() || null
+}
+
+// Helper to generate name search patterns for PI lookup
+// Database stores names as "LASTNAME, FIRSTNAME M." or "LASTNAME, FIRSTNAME"
+function generateNamePatterns(name: string): string[] {
+  const patterns: string[] = []
+  const cleaned = name.trim()
+
+  // Always include the original
+  patterns.push(cleaned)
+
+  // Check if already in "Last, First" format
+  if (cleaned.includes(',')) {
+    const [last, first] = cleaned.split(',').map(s => s.trim())
+    patterns.push(last) // Just last name
+    if (first) {
+      // Handle "Last, First M." -> try "First Last" too
+      const firstPart = first.split(' ')[0] // Get first name without middle
+      patterns.push(`${firstPart} ${last}`)
+      patterns.push(`${last}, ${firstPart}`)
+    }
+  } else {
+    // Assume "First Last" or "First M. Last" format
+    const parts = cleaned.split(/\s+/)
+    if (parts.length >= 2) {
+      const lastName = parts[parts.length - 1]
+      const firstName = parts[0]
+      // Try "LASTNAME, FIRSTNAME" format (how DB stores it)
+      patterns.push(`${lastName}, ${firstName}`)
+      patterns.push(lastName) // Just last name as fallback
+    }
+  }
+
+  // Dedupe and filter empty
+  return [...new Set(patterns)].filter(p => p.length > 0)
+}
+
 export async function getPIProfile(
   params: GetPIProfileParams,
   userAccess: UserAccess
@@ -609,18 +763,43 @@ export async function getPIProfile(
   const { pi_name } = params
 
   try {
-    // Search for projects with this PI
-    const { data: projects, error: projectsError } = await supabaseAdmin
-      .from('projects')
-      .select('*')
-      .ilike('pi_names', `%${pi_name}%`)
-      .order('fiscal_year', { ascending: false })
+    // Generate multiple name patterns to handle different formats
+    const namePatterns = generateNamePatterns(pi_name)
 
-    if (projectsError) throw projectsError
+    // Try each pattern until we find matches
+    let projects: Array<{
+      org_name: string | null
+      project_number: string | null
+      total_cost: number | null
+      title: string
+      fiscal_year: number | null
+      primary_category: string | null
+      pi_names: string | null
+    }> | null = null
+    let matchedPattern: string | null = null
+
+    for (const pattern of namePatterns) {
+      const { data, error } = await supabaseAdmin
+        .from('projects')
+        .select('org_name, project_number, total_cost, title, fiscal_year, primary_category, pi_names')
+        .ilike('pi_names', `%${pattern}%`)
+        .order('fiscal_year', { ascending: false })
+
+      if (error) throw error
+
+      if (data?.length) {
+        projects = data
+        matchedPattern = pattern
+        break
+      }
+    }
 
     if (!projects?.length) {
       return null
     }
+
+    // Extract the actual PI name from the matched record for consistency
+    const actualPiName = extractPIName(projects[0].pi_names, matchedPattern || pi_name) || pi_name
 
     // Get unique organizations
     const organizations = [...new Set(projects.map(p => p.org_name).filter(Boolean))]
@@ -635,7 +814,7 @@ export async function getPIProfile(
     const totalFunding = projects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
 
     return {
-      pi_name,
+      pi_name: actualPiName,
       organizations: organizations as string[],
       total_funding: totalFunding,
       project_count: projects.length,

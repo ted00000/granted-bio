@@ -82,6 +82,7 @@ export interface KeywordSearchParams {
 }
 
 export interface KeywordSearchResult {
+  summary: string // Natural language summary for Claude to read
   total_count: number
   by_category: Record<string, number>
   by_org_type: Record<string, number>

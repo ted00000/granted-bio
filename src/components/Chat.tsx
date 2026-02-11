@@ -42,8 +42,9 @@ function parseMessageWithChoices(content: string): { text: string; choices: stri
 
   for (let i = lines.length - 1; i >= 0; i--) {
     const line = lines[i].trim()
-    if (line.startsWith('•') || line.startsWith('-') || line.startsWith('*')) {
-      const choice = line.replace(/^[•\-*]\s*/, '').trim()
+    // Only match • for choices - dashes and asterisks are used for other lists
+    if (line.startsWith('•')) {
+      const choice = line.replace(/^•\s*/, '').trim()
       if (choice) {
         choices.unshift(choice)
         lastNonChoiceIndex = i - 1
