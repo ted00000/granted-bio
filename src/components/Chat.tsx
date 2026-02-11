@@ -113,9 +113,9 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
 
         {(Object.keys(data.by_category || {}).length > 0 || Object.keys(data.by_org_type || {}).length > 0) && (
           <div className="p-6 border-b border-gray-100">
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-4">
               {Object.keys(data.by_category || {}).length > 0 && (
-                <div>
+                <div className="bg-gray-50 rounded-lg p-4">
                   <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-3">Category</h3>
                   <table className="w-full">
                     <tbody>
@@ -132,7 +132,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                 </div>
               )}
               {Object.keys(data.by_org_type || {}).length > 0 && (
-                <div>
+                <div className="bg-gray-50 rounded-lg p-4">
                   <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-3">Organization</h3>
                   <table className="w-full">
                     <tbody>
