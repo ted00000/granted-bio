@@ -113,39 +113,43 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
 
         {Object.keys(data.by_category || {}).length > 0 && (
           <div className="p-6 border-b border-gray-100">
-            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">By Category</h3>
-            <div className="space-y-3">
-              {Object.entries(data.by_category)
-                .sort(([, a], [, b]) => b - a)
-                .map(([cat, count]) => (
-                  <div key={cat} className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 capitalize">{cat.replace(/_/g, ' ')}</span>
-                    <span className="text-sm font-medium text-gray-900">{count.toLocaleString()}</span>
-                  </div>
-                ))}
-            </div>
+            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">By Category</h3>
+            <table className="w-full">
+              <tbody>
+                {Object.entries(data.by_category)
+                  .sort(([, a], [, b]) => b - a)
+                  .map(([cat, count]) => (
+                    <tr key={cat} className="border-b border-gray-50 last:border-0">
+                      <td className="py-2 text-sm text-gray-700 capitalize">{cat.replace(/_/g, ' ')}</td>
+                      <td className="py-2 text-sm font-semibold text-gray-900 text-right tabular-nums">{count.toLocaleString()}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
           </div>
         )}
 
         {Object.keys(data.by_org_type || {}).length > 0 && (
           <div className="p-6 border-b border-gray-100">
-            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">By Organization</h3>
-            <div className="space-y-3">
-              {Object.entries(data.by_org_type)
-                .sort(([, a], [, b]) => b - a)
-                .map(([org, count]) => (
-                  <div key={org} className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600 capitalize">{org.replace(/_/g, ' ')}</span>
-                    <span className="text-sm font-medium text-gray-900">{count.toLocaleString()}</span>
-                  </div>
-                ))}
-            </div>
+            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">By Organization</h3>
+            <table className="w-full">
+              <tbody>
+                {Object.entries(data.by_org_type)
+                  .sort(([, a], [, b]) => b - a)
+                  .map(([org, count]) => (
+                    <tr key={org} className="border-b border-gray-50 last:border-0">
+                      <td className="py-2 text-sm text-gray-700 capitalize">{org.replace(/_/g, ' ')}</td>
+                      <td className="py-2 text-sm font-semibold text-gray-900 text-right tabular-nums">{count.toLocaleString()}</td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
           </div>
         )}
 
         {data.sample_results?.length > 0 && (
           <div className="p-6">
-            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">Top Funded</h3>
+            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Top Funded</h3>
             <div className="space-y-5">
               {data.sample_results.map((project) => (
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
