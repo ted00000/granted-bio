@@ -1,8 +1,12 @@
 -- User profiles table with subscription tiers
 -- This extends Supabase auth.users with app-specific data
 
--- Create tier enum
-CREATE TYPE user_tier AS ENUM ('free', 'basic', 'advanced', 'unlimited');
+-- Create tier enum (if not exists)
+DO $$ BEGIN
+  CREATE TYPE user_tier AS ENUM ('free', 'basic', 'advanced', 'unlimited');
+EXCEPTION
+  WHEN duplicate_object THEN null;
+END $$;
 
 -- Create user_profiles table
 CREATE TABLE IF NOT EXISTS user_profiles (
@@ -31,25 +35,28 @@ CREATE TABLE IF NOT EXISTS user_profiles (
 );
 
 -- Indexes
-CREATE INDEX idx_user_profiles_email ON user_profiles(email);
-CREATE INDEX idx_user_profiles_tier ON user_profiles(tier);
-CREATE INDEX idx_user_profiles_role ON user_profiles(role);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_email ON user_profiles(email);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_tier ON user_profiles(tier);
+CREATE INDEX IF NOT EXISTS idx_user_profiles_role ON user_profiles(role);
 
 -- Enable RLS
 ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 
 -- Users can read their own profile
+DROP POLICY IF EXISTS "Users can read own profile" ON user_profiles;
 CREATE POLICY "Users can read own profile" ON user_profiles
   FOR SELECT
   USING (auth.uid() = id);
 
 -- Users can update their own profile (except tier and role)
+DROP POLICY IF EXISTS "Users can update own profile" ON user_profiles;
 CREATE POLICY "Users can update own profile" ON user_profiles
   FOR UPDATE
   USING (auth.uid() = id)
   WITH CHECK (auth.uid() = id);
 
 -- Admins can read all profiles
+DROP POLICY IF EXISTS "Admins can read all profiles" ON user_profiles;
 CREATE POLICY "Admins can read all profiles" ON user_profiles
   FOR SELECT
   USING (
@@ -61,6 +68,7 @@ CREATE POLICY "Admins can read all profiles" ON user_profiles
   );
 
 -- Admins can update all profiles
+DROP POLICY IF EXISTS "Admins can update all profiles" ON user_profiles;
 CREATE POLICY "Admins can update all profiles" ON user_profiles
   FOR UPDATE
   USING (
@@ -103,6 +111,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS update_user_profiles_updated_at ON user_profiles;
 CREATE TRIGGER update_user_profiles_updated_at
   BEFORE UPDATE ON user_profiles
   FOR EACH ROW

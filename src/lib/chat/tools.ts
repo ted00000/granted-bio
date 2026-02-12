@@ -254,71 +254,129 @@ function summarizeProject(p: ProjectResult & { patent_count?: number; publicatio
 
 // Tool implementations
 
-// Keyword search - finds projects by exact keyword match in abstracts
-// Uses parallel client-side queries for reliability
-// Generate keyword variations for more robust search
-// Handles plural/singular forms for common scientific terms
-function generateKeywordVariations(keyword: string): string[] {
-  const variations = new Set<string>()
-  const words = keyword.toLowerCase().trim().split(/\s+/)
+// Keyword search - finds projects by keyword match in abstracts and terms
+// Uses word-by-word AND logic: "wheat genomics" finds projects with both words
+// Generate variations for a single word (singular/plural forms)
+function generateWordVariations(word: string, originalKeyword: string): string[] {
+  const variations: string[] = [word]
 
-  // Always include original (lowercase for case-insensitive matching)
-  variations.add(keyword.toLowerCase())
-
-  // Process each word for singular/plural variations
-  const processedWords = words.map(word => {
-    const wordVariations: string[] = [word]
-
-    // Skip short words and likely acronyms (all caps in original, or <= 3 chars)
-    const originalWord = keyword.split(/\s+/).find(w => w.toLowerCase() === word)
-    const isAcronym = originalWord && (originalWord === originalWord.toUpperCase() || word.length <= 3)
-    if (isAcronym) {
-      return wordVariations // Don't pluralize acronyms like CHO, DNA, RNA
-    }
-
-    // Handle common plural patterns (plural -> singular)
-    if (word.endsWith('ies') && word.length > 4) {
-      // antibodies -> antibody
-      wordVariations.push(word.slice(0, -3) + 'y')
-    } else if (word.endsWith('es') && word.length > 4) {
-      if (word.endsWith('ses') || word.endsWith('xes') || word.endsWith('ches') || word.endsWith('shes') || word.endsWith('zes')) {
-        // analyses -> analysis, boxes -> box
-        wordVariations.push(word.slice(0, -2))
-      }
-    } else if (word.endsWith('s') && !word.endsWith('ss') && word.length > 4) {
-      // cells -> cell (but not 'mass' -> 'mas', not short words)
-      wordVariations.push(word.slice(0, -1))
-    }
-
-    // Handle singular -> plural (only if not already plural)
-    if (!word.endsWith('s') && word.length > 3) {
-      if (word.endsWith('y') && !['ay', 'ey', 'oy', 'uy'].some(end => word.endsWith(end))) {
-        // antibody -> antibodies
-        wordVariations.push(word.slice(0, -1) + 'ies')
-      } else {
-        // cell -> cells
-        wordVariations.push(word + 's')
-      }
-    }
-
-    return [...new Set(wordVariations)] // dedupe
-  })
-
-  // Generate combinations (limit to avoid explosion)
-  if (words.length <= 3) {
-    const generateCombinations = (wordIndex: number, current: string[]): void => {
-      if (wordIndex === processedWords.length) {
-        variations.add(current.join(' '))
-        return
-      }
-      for (const variant of processedWords[wordIndex]) {
-        generateCombinations(wordIndex + 1, [...current, variant])
-      }
-    }
-    generateCombinations(0, [])
+  // Skip short words and likely acronyms (all caps in original, or <= 3 chars)
+  const originalWord = originalKeyword.split(/\s+/).find(w => w.toLowerCase() === word)
+  const isAcronym = originalWord && (originalWord === originalWord.toUpperCase() || word.length <= 3)
+  if (isAcronym) {
+    return variations // Don't pluralize acronyms like CHO, DNA, RNA
   }
 
-  return [...variations]
+  // Handle common plural patterns (plural -> singular)
+  if (word.endsWith('ies') && word.length > 4) {
+    // antibodies -> antibody
+    variations.push(word.slice(0, -3) + 'y')
+  } else if (word.endsWith('es') && word.length > 4) {
+    if (word.endsWith('ses') || word.endsWith('xes') || word.endsWith('ches') || word.endsWith('shes') || word.endsWith('zes')) {
+      // analyses -> analysis, boxes -> box
+      variations.push(word.slice(0, -2))
+    }
+  } else if (word.endsWith('s') && !word.endsWith('ss') && word.length > 4) {
+    // cells -> cell (but not 'mass' -> 'mas', not short words)
+    variations.push(word.slice(0, -1))
+  }
+
+  // Handle singular -> plural (only if not already plural)
+  if (!word.endsWith('s') && word.length > 3) {
+    if (word.endsWith('y') && !['ay', 'ey', 'oy', 'uy'].some(end => word.endsWith(end))) {
+      // antibody -> antibodies
+      variations.push(word.slice(0, -1) + 'ies')
+    } else {
+      // cell -> cells
+      variations.push(word + 's')
+    }
+  }
+
+  return [...new Set(variations)]
+}
+
+// Search abstracts for a single word (with variations), return matching application_ids
+async function searchAbstractsForWord(word: string, originalKeyword: string): Promise<Set<string>> {
+  const variations = generateWordVariations(word, originalKeyword)
+  const matchingIds = new Set<string>()
+
+  // Search for each variation in parallel
+  const searchPromises = variations.map(async (variation) => {
+    const ids: string[] = []
+    let offset = 0
+    const pageSize = 1000
+
+    while (true) {
+      const { data: abstractMatches, error: abstractError } = await supabaseAdmin
+        .from('abstracts')
+        .select('application_id')
+        .ilike('abstract_text', `%${variation}%`)
+        .range(offset, offset + pageSize - 1)
+
+      if (abstractError) throw abstractError
+      if (!abstractMatches || abstractMatches.length === 0) break
+
+      ids.push(...abstractMatches.map(a => a.application_id))
+      if (abstractMatches.length < pageSize) break
+      offset += pageSize
+    }
+
+    return ids
+  })
+
+  const allResults = await Promise.all(searchPromises)
+  allResults.forEach(ids => ids.forEach(id => matchingIds.add(id)))
+
+  return matchingIds
+}
+
+// Search project terms for a single word (with variations), return matching application_ids
+// Gracefully handles timeouts by returning empty set (falls back to abstract-only search)
+async function searchTermsForWord(word: string, originalKeyword: string): Promise<Set<string>> {
+  const variations = generateWordVariations(word, originalKeyword)
+  const matchingIds = new Set<string>()
+
+  try {
+    // Search for each variation in parallel
+    const searchPromises = variations.map(async (variation) => {
+      const ids: string[] = []
+      let offset = 0
+      const pageSize = 1000
+
+      while (true) {
+        const { data: termMatches, error: termError } = await supabaseAdmin
+          .from('projects')
+          .select('application_id')
+          .ilike('terms', `%${variation}%`)
+          .range(offset, offset + pageSize - 1)
+
+        // Handle timeout gracefully - return what we have so far
+        if (termError) {
+          if (termError.code === '57014') {
+            // Statement timeout - return partial results
+            console.log(`Terms search timeout for variation: ${variation}`)
+            break
+          }
+          throw termError
+        }
+        if (!termMatches || termMatches.length === 0) break
+
+        ids.push(...termMatches.map(a => a.application_id))
+        if (termMatches.length < pageSize) break
+        offset += pageSize
+      }
+
+      return ids
+    })
+
+    const allResults = await Promise.all(searchPromises)
+    allResults.forEach(ids => ids.forEach(id => matchingIds.add(id)))
+  } catch (error) {
+    // If terms search fails entirely, return empty set and continue with abstracts only
+    console.log(`Terms search failed for word "${word}":`, error)
+  }
+
+  return matchingIds
 }
 
 export async function keywordSearch(
@@ -328,40 +386,50 @@ export async function keywordSearch(
   const { keyword, filters } = params
 
   try {
-    // Generate keyword variations to handle plural/singular forms
-    const keywordVariations = generateKeywordVariations(keyword)
+    // Split into individual words for AND logic
+    const words = keyword.toLowerCase().trim().split(/\s+/).filter(w => w.length > 0)
 
-    // Step 1: Search abstracts for all keyword variations, get all application_ids
-    const matchingIds = new Set<string>()
-
-    // Search for each variation in parallel
-    const searchPromises = keywordVariations.map(async (variation) => {
-      const ids: string[] = []
-      let offset = 0
-      const pageSize = 1000
-
-      while (true) {
-        const { data: abstractMatches, error: abstractError } = await supabaseAdmin
-          .from('abstracts')
-          .select('application_id')
-          .ilike('abstract_text', `%${variation}%`)
-          .range(offset, offset + pageSize - 1)
-
-        if (abstractError) throw abstractError
-
-        if (!abstractMatches || abstractMatches.length === 0) break
-
-        ids.push(...abstractMatches.map(a => a.application_id))
-
-        if (abstractMatches.length < pageSize) break
-        offset += pageSize
+    if (words.length === 0) {
+      return {
+        summary: 'Found 0 projects.',
+        total_count: 0,
+        by_category: {},
+        by_org_type: {},
+        sample_results: []
       }
+    }
 
-      return ids
+    // Step 1: For each word, find projects that match in abstracts OR terms
+    // Then intersect across words (AND logic)
+    const wordMatchPromises = words.map(async (word) => {
+      // Search both abstracts and terms for this word in parallel
+      const [abstractMatches, termMatches] = await Promise.all([
+        searchAbstractsForWord(word, keyword),
+        searchTermsForWord(word, keyword)
+      ])
+
+      // Combine results (OR logic between abstracts and terms)
+      const combinedMatches = new Set<string>()
+      abstractMatches.forEach(id => combinedMatches.add(id))
+      termMatches.forEach(id => combinedMatches.add(id))
+
+      return combinedMatches
     })
 
-    const allResults = await Promise.all(searchPromises)
-    allResults.forEach(ids => ids.forEach(id => matchingIds.add(id)))
+    const wordMatchResults = await Promise.all(wordMatchPromises)
+
+    // Intersect results across all words (AND logic)
+    let matchingIds: Set<string>
+    if (wordMatchResults.length === 1) {
+      matchingIds = wordMatchResults[0]
+    } else {
+      // Start with first word's matches, then intersect with subsequent words
+      matchingIds = wordMatchResults[0]
+      for (let i = 1; i < wordMatchResults.length; i++) {
+        const nextWordMatches = wordMatchResults[i]
+        matchingIds = new Set([...matchingIds].filter(id => nextWordMatches.has(id)))
+      }
+    }
 
     // Convert Set to Array for further processing
     const matchingIdsArray = [...matchingIds]
