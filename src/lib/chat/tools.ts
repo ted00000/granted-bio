@@ -54,6 +54,18 @@ export const AGENT_TOOLS: Tool[] = [
             min_funding: {
               type: 'number',
               description: 'Minimum total funding amount'
+            },
+            has_patents: {
+              type: 'boolean',
+              description: 'Filter to only projects with at least one patent'
+            },
+            has_publications: {
+              type: 'boolean',
+              description: 'Filter to only projects with at least one publication'
+            },
+            has_clinical_trials: {
+              type: 'boolean',
+              description: 'Filter to only projects with at least one clinical trial'
             }
           }
         }
@@ -110,6 +122,18 @@ export const AGENT_TOOLS: Tool[] = [
               type: 'array',
               items: { type: 'string' },
               description: 'Two-letter US state codes, e.g. ["CA", "MA", "NY"]. Leave empty for all states.'
+            },
+            has_patents: {
+              type: 'boolean',
+              description: 'Filter to only projects with at least one patent'
+            },
+            has_publications: {
+              type: 'boolean',
+              description: 'Filter to only projects with at least one publication'
+            },
+            has_clinical_trials: {
+              type: 'boolean',
+              description: 'Filter to only projects with at least one clinical trial'
             }
           }
         },
@@ -395,6 +419,15 @@ export async function keywordSearch(
       if (filters?.min_funding) {
         query = query.gte('total_cost', filters.min_funding)
       }
+      if (filters?.has_patents) {
+        query = query.gt('patent_count', 0)
+      }
+      if (filters?.has_publications) {
+        query = query.gt('publication_count', 0)
+      }
+      if (filters?.has_clinical_trials) {
+        query = query.gt('clinical_trial_count', 0)
+      }
 
       return query
     })
@@ -571,6 +604,9 @@ export async function searchProjects(
         }
       }
 
+      // Note: has_patents/publications/trials filters not supported in fallback mode
+      // since enrichment data isn't available here
+
       // Return results with default counts (enrichment requires projects_enriched view)
       const limitedResults = results.slice(0, effectiveLimit)
       const enrichedResults = limitedResults.map(r => ({
@@ -604,14 +640,45 @@ export async function searchProjects(
       )
     }
 
-    // Return results with default counts (enrichment requires projects_enriched view)
+    // Fetch actual counts from projects table for filtering and display
+    const applicationIds = results.map(r => r.application_id)
+    let countsMap: Record<string, { patent_count: number; publication_count: number; clinical_trial_count: number }> = {}
+
+    if (applicationIds.length > 0) {
+      const { data: countsData } = await supabaseAdmin
+        .from('projects')
+        .select('application_id, patent_count, publication_count, clinical_trial_count')
+        .in('application_id', applicationIds)
+
+      if (countsData) {
+        countsData.forEach(c => {
+          countsMap[c.application_id] = {
+            patent_count: c.patent_count ?? 0,
+            publication_count: c.publication_count ?? 0,
+            clinical_trial_count: c.clinical_trial_count ?? 0
+          }
+        })
+      }
+    }
+
+    // Apply has_patents/publications/trials filters
+    if (filters?.has_patents) {
+      results = results.filter(r => (countsMap[r.application_id]?.patent_count || 0) > 0)
+    }
+    if (filters?.has_publications) {
+      results = results.filter(r => (countsMap[r.application_id]?.publication_count || 0) > 0)
+    }
+    if (filters?.has_clinical_trials) {
+      results = results.filter(r => (countsMap[r.application_id]?.clinical_trial_count || 0) > 0)
+    }
+
     const limitedResults = results.slice(0, effectiveLimit)
 
     const enrichedResults = limitedResults.map(r => ({
       ...r,
-      patent_count: 0,
-      publication_count: 0,
-      clinical_trial_count: 0
+      patent_count: countsMap[r.application_id]?.patent_count || 0,
+      publication_count: countsMap[r.application_id]?.publication_count || 0,
+      clinical_trial_count: countsMap[r.application_id]?.clinical_trial_count || 0
     }))
 
     return {

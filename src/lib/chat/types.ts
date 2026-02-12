@@ -44,6 +44,9 @@ export interface SearchFilters {
   state?: string
   activity_code?: string[]
   supplements?: 'all' | 'base' | 'supplements'
+  has_patents?: boolean
+  has_publications?: boolean
+  has_clinical_trials?: boolean
 }
 
 // Tool parameter types
@@ -78,6 +81,9 @@ export interface KeywordSearchParams {
     org_type?: string[]
     state?: string[]
     min_funding?: number
+    has_patents?: boolean
+    has_publications?: boolean
+    has_clinical_trials?: boolean
   }
 }
 
