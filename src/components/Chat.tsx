@@ -67,17 +67,32 @@ function formatCurrency(amount: number): string {
 }
 
 // Results Panel Component
-function ResultsPanel({ results }: { results: ToolResult[] }) {
+function ResultsPanel({ results, isSearching }: { results: ToolResult[]; isSearching: boolean }) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-            <svg className="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </div>
-          <p className="text-sm text-gray-400">Results will appear here</p>
+          {isSearching ? (
+            <>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
+                <svg className="w-8 h-8 text-blue-400 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </div>
+              <p className="text-sm text-blue-500 font-medium">Searching...</p>
+              <p className="text-xs text-gray-400 mt-1">Finding relevant projects</p>
+            </>
+          ) : (
+            <>
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+                <svg className="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <p className="text-sm text-gray-400">Results will appear here</p>
+            </>
+          )}
         </div>
       </div>
     )
@@ -481,6 +496,7 @@ export function Chat({ persona, onBack }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -553,12 +569,16 @@ export function Chat({ persona, onBack }: ChatProps) {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: m.content + parsed.content } : m))
               } else if (parsed.type === 'tool_start') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: true } : m))
+                setIsSearching(true)
               } else if (parsed.type === 'tool_result') {
                 setToolResults(prev => [...prev, { name: parsed.name, data: parsed.data, timestamp: Date.now() }])
+                setIsSearching(false)
               } else if (parsed.type === 'tool_complete') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: false } : m))
+                setIsSearching(false)
               } else if (parsed.type === 'error') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: `Error: ${parsed.error}`, isStreaming: false } : m))
+                setIsSearching(false)
               }
             } catch { /* ignore */ }
           }
@@ -738,7 +758,7 @@ export function Chat({ persona, onBack }: ChatProps) {
             <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER & USPTO PatentsView</p>
           </div>
           <div className="flex-1 overflow-hidden">
-            <ResultsPanel results={toolResults} />
+            <ResultsPanel results={toolResults} isSearching={isSearching} />
           </div>
         </div>
       </main>
