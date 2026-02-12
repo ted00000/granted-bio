@@ -379,7 +379,7 @@ export async function keywordSearch(
     const batchPromises = idBatches.map(async (idBatch) => {
       let query = supabaseAdmin
         .from('projects')
-        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, pi_names, project_number')
+        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
         .in('application_id', idBatch)
 
       // Apply filters
@@ -404,12 +404,12 @@ export async function keywordSearch(
     for (const result of batchResults) {
       if (result.error) throw result.error
       if (result.data) {
-        // Add default counts (will be enriched later if view exists)
+        // Use counts from projects table if available, default to 0 if null
         allProjects.push(...result.data.map(p => ({
           ...p,
-          patent_count: 0,
-          publication_count: 0,
-          clinical_trial_count: 0
+          patent_count: p.patent_count ?? 0,
+          publication_count: p.publication_count ?? 0,
+          clinical_trial_count: p.clinical_trial_count ?? 0
         })))
       }
     }

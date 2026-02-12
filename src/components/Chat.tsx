@@ -83,7 +83,10 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
     )
   }
 
-  const latestResult = results[results.length - 1]
+  // Prioritize project results over patent results when both exist
+  // This ensures "find projects with patents" shows projects (with patent badges), not raw patents
+  const projectResult = results.find(r => r.name === 'search_projects' || r.name === 'keyword_search')
+  const latestResult = projectResult || results[results.length - 1]
 
   if (latestResult.name === 'keyword_search') {
     const data = latestResult.data as {
@@ -507,6 +510,8 @@ export function Chat({ persona, onBack }: ChatProps) {
     setMessages(updatedMessages)
     setInput('')
     setIsLoading(true)
+    // Clear tool results when starting a new user message (not on each tool_start)
+    setToolResults([])
 
     const assistantId = crypto.randomUUID()
     setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '', isStreaming: true }])
@@ -547,8 +552,6 @@ export function Chat({ persona, onBack }: ChatProps) {
               if (parsed.type === 'text') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: m.content + parsed.content } : m))
               } else if (parsed.type === 'tool_start') {
-                // Clear previous results when starting a new tool call
-                setToolResults([])
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: true } : m))
               } else if (parsed.type === 'tool_result') {
                 setToolResults(prev => [...prev, { name: parsed.name, data: parsed.data, timestamp: Date.now() }])

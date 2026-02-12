@@ -1,43 +1,37 @@
 -- Migration: Fix universities incorrectly classified as "company"
--- Run this in Supabase SQL Editor
+-- Run each UPDATE separately in Supabase SQL Editor to avoid timeout
 
--- Fix organizations with "UNIVERSITY" in name
+-- STEP 1: Fix "UNIVERSITY" (run this first)
 UPDATE projects
 SET org_type = 'university'
 WHERE org_type = 'company'
   AND org_name ILIKE '%UNIVERSITY%';
 
--- Fix organizations with "COLLEGE" in name
+-- STEP 2: Fix "COLLEGE" (run this second)
 UPDATE projects
 SET org_type = 'university'
 WHERE org_type = 'company'
   AND org_name ILIKE '%COLLEGE%';
 
--- Fix organizations with " UNIV " or "UNIV," in name
-UPDATE projects
-SET org_type = 'university'
-WHERE org_type = 'company'
-  AND (org_name ILIKE '% UNIV %' OR org_name ILIKE '%UNIV,%');
-
--- Fix medical schools
+-- STEP 3: Fix "SCHOOL OF MEDICINE" and "MEDICAL SCHOOL"
 UPDATE projects
 SET org_type = 'university'
 WHERE org_type = 'company'
   AND (org_name ILIKE '%SCHOOL OF MEDICINE%' OR org_name ILIKE '%MEDICAL SCHOOL%');
 
--- Fix institutes of technology (MIT, Caltech, Georgia Tech, etc.)
+-- STEP 4: Fix "INSTITUTE OF TECHNOLOGY"
 UPDATE projects
 SET org_type = 'university'
 WHERE org_type = 'company'
   AND org_name ILIKE '%INSTITUTE OF TECHNOLOGY%';
 
--- Fix hospitals incorrectly marked as company
+-- STEP 5: Fix hospitals
 UPDATE projects
 SET org_type = 'hospital'
 WHERE org_type = 'company'
-  AND (org_name ILIKE '%HOSPITAL%' OR org_name ILIKE '%MEDICAL CENTER%' OR org_name ILIKE '%CLINIC%');
+  AND (org_name ILIKE '%HOSPITAL%' OR org_name ILIKE '%MEDICAL CENTER%');
 
--- Verify the fix
+-- STEP 6: Verify (run last)
 SELECT org_type, COUNT(*) as count
 FROM projects
 GROUP BY org_type
