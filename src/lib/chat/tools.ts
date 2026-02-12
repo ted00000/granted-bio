@@ -386,6 +386,7 @@ export async function keywordSearch(
       org_type: string | null
       primary_category: string | null
       total_cost: number | null
+      fiscal_year: number | null
       pi_names: string | null
       project_number: string | null
       patent_count: number
@@ -403,7 +404,7 @@ export async function keywordSearch(
     const batchPromises = idBatches.map(async (idBatch) => {
       let query = supabaseAdmin
         .from('projects')
-        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
+        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
         .in('application_id', idBatch)
 
       // Apply filters
@@ -505,6 +506,7 @@ export async function keywordSearch(
       org_type: p.org_type,
       primary_category: p.primary_category,
       total_cost: p.total_cost,
+      fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
       pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
       // Enriched counts from projects_enriched view
