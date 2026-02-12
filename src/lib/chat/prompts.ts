@@ -17,13 +17,25 @@ Choose the right tool based on query type:
 |------------|------|---------|
 | Specific technique/method | keyword_search | "CRISPR", "mass spectrometry", "CHO cells" |
 | Broad concept/area | search_projects | "novel cancer therapies", "drug delivery approaches" |
+| Projects with patents | keyword_search or search_projects | Use filters: {has_patents: true} |
+| Projects with trials | keyword_search or search_projects | Use filters: {has_clinical_trials: true} |
 | Similar to a specific project | find_similar | Pass project_id from current results |
-| Patents/IP | search_patents | "patents on mRNA delivery" |
+| Patents/IP landscape | search_patents | "patents on mRNA delivery" |
 | Specific patent | get_patent_details | drilling into a patent result |
 
 USE keyword_search WHEN: User mentions a specific, searchable term (technique, method, molecule, cell type)
 USE search_projects WHEN: User describes a concept, asks "what's being funded in X", or uses broad language
 USE find_similar WHEN: User clicks "Find similar projects" - pass the project_id of a relevant project from sample_results
+
+=== FILTERING FOR PATENTS/PUBLICATIONS/TRIALS ===
+When user asks for "projects with patents" or "patented projects":
+- Use keyword_search or search_projects with filters: {has_patents: true}
+- This returns PROJECTS that have associated patents (shows patent count badge)
+- Do NOT use search_patents for this - that searches the patent database directly
+
+When user wants to see the actual patent landscape:
+- Use search_patents to search patent titles/abstracts
+- This returns PATENTS, not projects
 
 === CRITICAL RULES ===
 1. Match the right tool to the query type
@@ -140,11 +152,19 @@ DATABASE: 60K NIH projects (FY2024-2025), 27K PI emails, 46K patents, 38K clinic
 |------------|------|---------|
 | Specific product/technique | keyword_search | "mass spectrometry", "flow cytometry" |
 | Broad market/application | search_projects | "protein analysis tools", "cell sorting" |
+| Projects with patents | keyword_search or search_projects | Use filters: {has_patents: true} |
+| Projects with trials | keyword_search or search_projects | Use filters: {has_clinical_trials: true} |
 | Similar to a specific project | find_similar | Pass project_id from current results |
-| Patents/IP | search_patents | "patents on sequencing" |
+| Patents/IP landscape | search_patents | "patents on sequencing" |
 | Company deep-dive | get_company_profile | drilling into a specific company |
 
 USE find_similar WHEN: User clicks "Find similar projects" - pass the project_id of a relevant project from sample_results
+
+=== FILTERING FOR PATENTS/PUBLICATIONS/TRIALS ===
+When user asks for "projects with patents" or "patented projects":
+- Use keyword_search or search_projects with filters: {has_patents: true}
+- This returns PROJECTS that have associated patents (shows patent count badge)
+- Do NOT use search_patents for this - that searches the patent database directly
 
 === CRITICAL RULES ===
 1. Match the right tool to the query type
@@ -273,11 +293,19 @@ DATABASE: 60K NIH projects (FY2024-2025), 46K patents, 203K publications, 38K cl
 |------------|------|---------|
 | Specific technology/target | keyword_search | "CAR-T", "GLP-1", "mRNA" |
 | Market/thesis exploration | search_projects | "cell therapy landscape", "emerging modalities" |
+| Projects with patents | keyword_search or search_projects | Use filters: {has_patents: true} |
+| Projects with trials | keyword_search or search_projects | Use filters: {has_clinical_trials: true} |
 | Similar to a specific project | find_similar | Pass project_id from current results |
 | IP landscape | search_patents | "gene therapy patents" |
 | Company due diligence | get_company_profile | DD on a specific company |
 
 USE find_similar WHEN: User clicks "Find similar projects" - pass the project_id of a relevant project from sample_results
+
+=== FILTERING FOR PATENTS/PUBLICATIONS/TRIALS ===
+When user asks for "projects with patents" or "patented projects":
+- Use keyword_search or search_projects with filters: {has_patents: true}
+- This returns PROJECTS that have associated patents (shows patent count badge)
+- Do NOT use search_patents for this - that searches the patent database directly
 
 === CRITICAL RULES ===
 1. Match the right tool to the query type
@@ -402,11 +430,19 @@ DATABASE: 60K NIH projects (FY2024-2025), 38K clinical studies, 46K patents, 203
 |------------|------|---------|
 | Specific indication/drug | keyword_search | "ALS", "pembrolizumab", "GLP-1" |
 | Broad therapeutic exploration | search_projects | "novel cancer immunotherapies", "neurodegeneration treatments" |
+| Projects with patents | keyword_search or search_projects | Use filters: {has_patents: true} |
+| Projects with trials | keyword_search or search_projects | Use filters: {has_clinical_trials: true} |
 | Similar to a specific project | find_similar | Pass project_id from current results |
-| IP/patents | search_patents | "gene therapy patents for DMD" |
+| IP/patents landscape | search_patents | "gene therapy patents for DMD" |
 | Company pipeline | get_company_profile | pipeline for a specific company |
 
 USE find_similar WHEN: User clicks "Find similar projects" - pass the project_id of a relevant project from sample_results
+
+=== FILTERING FOR PATENTS/PUBLICATIONS/TRIALS ===
+When user asks for "projects with patents" or "patented projects":
+- Use keyword_search or search_projects with filters: {has_patents: true}
+- This returns PROJECTS that have associated patents (shows patent count badge)
+- Do NOT use search_patents for this - that searches the patent database directly
 
 === CRITICAL RULES ===
 1. Match the right tool to the query type
