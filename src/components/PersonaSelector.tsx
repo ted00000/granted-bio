@@ -111,30 +111,56 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   const [userId, setUserId] = useState<string | null>(null)
   const supabase = useMemo(() => createBrowserSupabaseClient(), [])
 
-  // Fetch user's first name on mount
+  // Fetch user's first name - needs to handle auth state changes for OAuth callbacks
   useEffect(() => {
-    const fetchUserName = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
+    const fetchUserProfile = async (userId: string) => {
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('first_name')
+        .eq('id', userId)
+        .single()
 
-      if (user) {
-        setUserId(user.id)
-
-        // Check for first_name in profile
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('first_name')
-          .eq('id', user.id)
-          .single()
-
-        if (profile?.first_name) {
-          setFirstName(profile.first_name)
-        } else {
-          setNeedsName(true)
-        }
+      if (profileError) {
+        console.error('Profile fetch error:', profileError.code, profileError.message)
+        // PGRST116 = "not found" - row doesn't exist yet
+        setNeedsName(true)
+      } else if (profile?.first_name) {
+        setFirstName(profile.first_name)
+      } else {
+        setNeedsName(true)
       }
       setIsLoading(false)
     }
-    fetchUserName()
+
+    // Subscribe to auth state changes to handle OAuth callback properly
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session?.user) {
+          setUserId(session.user.id)
+          await fetchUserProfile(session.user.id)
+        } else if (event === 'SIGNED_OUT') {
+          setFirstName(null)
+          setUserId(null)
+          setIsLoading(false)
+        }
+      }
+    )
+
+    // Also check current session immediately
+    const checkCurrentSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session?.user) {
+        setUserId(session.user.id)
+        await fetchUserProfile(session.user.id)
+      } else {
+        setIsLoading(false)
+      }
+    }
+    checkCurrentSession()
+
+    return () => {
+      subscription.unsubscribe()
+    }
   }, [supabase])
 
   const handleSaveName = async (e: React.FormEvent) => {
