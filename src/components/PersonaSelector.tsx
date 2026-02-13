@@ -116,28 +116,33 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   useEffect(() => {
     let isMounted = true
 
-    const fetchProfile = async (id: string) => {
+    const fetchProfile = async (id: string, retryCount = 0) => {
       try {
-        // Add timeout to prevent infinite loading on RLS issues
-        const timeoutPromise = new Promise<null>((_, reject) =>
-          setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
-        )
+        // Small delay to ensure session cookies are fully set after OAuth callback
+        if (retryCount === 0) {
+          await new Promise(resolve => setTimeout(resolve, 100))
+        }
 
-        const fetchPromise = supabase
+        const { data: profile, error: profileError } = await supabase
           .from('user_profiles')
           .select('first_name')
           .eq('id', id)
           .single()
 
-        const result = await Promise.race([fetchPromise, timeoutPromise])
-
         if (!isMounted) return
 
-        if (!result || result.error) {
-          console.error('Profile fetch error:', result?.error)
+        if (profileError) {
+          // If permission denied and haven't retried, wait and retry once
+          // This handles race condition with OAuth session setup
+          if (profileError.code === 'PGRST116' && retryCount < 2) {
+            console.log('Profile not found, retrying...', retryCount)
+            await new Promise(resolve => setTimeout(resolve, 500))
+            return fetchProfile(id, retryCount + 1)
+          }
+          console.error('Profile fetch error:', profileError)
           setNeedsName(true)
-        } else if (result.data?.first_name) {
-          setFirstName(result.data.first_name)
+        } else if (profile?.first_name) {
+          setFirstName(profile.first_name)
         } else {
           setNeedsName(true)
         }
@@ -157,11 +162,23 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
       async (event, session) => {
         if (!isMounted) return
 
-        if (session?.user) {
-          setUserId(session.user.id)
-          await fetchProfile(session.user.id)
-        } else {
-          // No session - not logged in
+        // For SIGNED_IN events (including OAuth callback), ensure session is set
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
+          if (session?.user) {
+            setUserId(session.user.id)
+            // Set the session explicitly to ensure the client has the JWT
+            await supabase.auth.setSession({
+              access_token: session.access_token,
+              refresh_token: session.refresh_token,
+            })
+            await fetchProfile(session.user.id)
+          } else if (event === 'INITIAL_SESSION') {
+            // No initial session - not logged in
+            setFirstName(null)
+            setUserId(null)
+            setIsLoading(false)
+          }
+        } else if (event === 'SIGNED_OUT') {
           setFirstName(null)
           setUserId(null)
           setIsLoading(false)
