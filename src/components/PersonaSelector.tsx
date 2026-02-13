@@ -111,57 +111,49 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   const [userId, setUserId] = useState<string | null>(null)
   const supabase = useMemo(() => createBrowserSupabaseClient(), [])
 
-  // Fetch user's first name on mount
+  // Fetch user's first name on mount using onAuthStateChange
+  // This handles OAuth callbacks properly since it fires with INITIAL_SESSION
   useEffect(() => {
     let isMounted = true
 
-    const fetchUserProfile = async () => {
-      try {
-        // Get current session
-        const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+    const fetchProfile = async (id: string) => {
+      const { data: profile, error: profileError } = await supabase
+        .from('user_profiles')
+        .select('first_name')
+        .eq('id', id)
+        .single()
 
-        if (sessionError) {
-          console.error('Session error:', sessionError)
-          if (isMounted) setIsLoading(false)
-          return
-        }
+      if (!isMounted) return
 
-        if (!session?.user) {
-          if (isMounted) setIsLoading(false)
-          return
-        }
-
-        if (isMounted) setUserId(session.user.id)
-
-        // Fetch profile
-        const { data: profile, error: profileError } = await supabase
-          .from('user_profiles')
-          .select('first_name')
-          .eq('id', session.user.id)
-          .single()
-
-        if (!isMounted) return
-
-        if (profileError) {
-          console.error('Profile fetch error:', profileError.code, profileError.message)
-          setNeedsName(true)
-        } else if (profile?.first_name) {
-          setFirstName(profile.first_name)
-        } else {
-          setNeedsName(true)
-        }
-      } catch (err) {
-        console.error('Unexpected error:', err)
-        if (isMounted) setNeedsName(true)
-      } finally {
-        if (isMounted) setIsLoading(false)
+      if (profileError) {
+        setNeedsName(true)
+      } else if (profile?.first_name) {
+        setFirstName(profile.first_name)
+      } else {
+        setNeedsName(true)
       }
+      setIsLoading(false)
     }
 
-    fetchUserProfile()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (!isMounted) return
+
+        if (session?.user) {
+          setUserId(session.user.id)
+          await fetchProfile(session.user.id)
+        } else {
+          // No session - not logged in
+          setFirstName(null)
+          setUserId(null)
+          setIsLoading(false)
+        }
+      }
+    )
 
     return () => {
       isMounted = false
+      subscription.unsubscribe()
     }
   }, [supabase])
 

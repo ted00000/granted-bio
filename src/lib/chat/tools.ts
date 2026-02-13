@@ -296,6 +296,9 @@ function generateWordVariations(word: string, originalKeyword: string): string[]
 }
 
 // Search abstracts for a single word (with variations), return matching application_ids
+// Caps at MAX_RESULTS_PER_WORD to prevent timeouts on broad queries
+const MAX_RESULTS_PER_WORD = 15000
+
 async function searchAbstractsForWord(word: string, originalKeyword: string): Promise<Set<string>> {
   const variations = generateWordVariations(word, originalKeyword)
   const matchingIds = new Set<string>()
@@ -305,8 +308,10 @@ async function searchAbstractsForWord(word: string, originalKeyword: string): Pr
     const ids: string[] = []
     let offset = 0
     const pageSize = 1000
+    const maxPages = Math.ceil(MAX_RESULTS_PER_WORD / pageSize)
+    let pageCount = 0
 
-    while (true) {
+    while (pageCount < maxPages) {
       const { data: abstractMatches, error: abstractError } = await supabaseAdmin
         .from('abstracts')
         .select('application_id')
@@ -319,6 +324,7 @@ async function searchAbstractsForWord(word: string, originalKeyword: string): Pr
       ids.push(...abstractMatches.map(a => a.application_id))
       if (abstractMatches.length < pageSize) break
       offset += pageSize
+      pageCount++
     }
 
     return ids
@@ -342,8 +348,10 @@ async function searchTermsForWord(word: string, originalKeyword: string): Promis
       const ids: string[] = []
       let offset = 0
       const pageSize = 1000
+      const maxPages = Math.ceil(MAX_RESULTS_PER_WORD / pageSize)
+      let pageCount = 0
 
-      while (true) {
+      while (pageCount < maxPages) {
         const { data: termMatches, error: termError } = await supabaseAdmin
           .from('projects')
           .select('application_id')
@@ -364,6 +372,7 @@ async function searchTermsForWord(word: string, originalKeyword: string): Promis
         ids.push(...termMatches.map(a => a.application_id))
         if (termMatches.length < pageSize) break
         offset += pageSize
+        pageCount++
       }
 
       return ids

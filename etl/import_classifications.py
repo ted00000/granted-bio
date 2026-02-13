@@ -65,7 +65,7 @@ with open(input_file, 'r', encoding='utf-8') as csvfile:
                 primary_category = 'other'
 
             # Validate org_type
-            valid_org_types = ['company', 'university', 'hospital', 'research_institute', 'other']
+            valid_org_types = ['company', 'university', 'hospital', 'research_institute', 'government', 'other']
             if org_type not in valid_org_types:
                 print(f"  Warning: Invalid org_type '{org_type}' for {app_id}, using 'other'")
                 org_type = 'other'
