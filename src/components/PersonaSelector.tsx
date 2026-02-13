@@ -117,22 +117,40 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
     let isMounted = true
 
     const fetchProfile = async (id: string) => {
-      const { data: profile, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('first_name')
-        .eq('id', id)
-        .single()
+      try {
+        // Add timeout to prevent infinite loading on RLS issues
+        const timeoutPromise = new Promise<null>((_, reject) =>
+          setTimeout(() => reject(new Error('Profile fetch timeout')), 5000)
+        )
 
-      if (!isMounted) return
+        const fetchPromise = supabase
+          .from('user_profiles')
+          .select('first_name')
+          .eq('id', id)
+          .single()
 
-      if (profileError) {
-        setNeedsName(true)
-      } else if (profile?.first_name) {
-        setFirstName(profile.first_name)
-      } else {
-        setNeedsName(true)
+        const result = await Promise.race([fetchPromise, timeoutPromise])
+
+        if (!isMounted) return
+
+        if (!result || result.error) {
+          console.error('Profile fetch error:', result?.error)
+          setNeedsName(true)
+        } else if (result.data?.first_name) {
+          setFirstName(result.data.first_name)
+        } else {
+          setNeedsName(true)
+        }
+      } catch (err) {
+        console.error('Profile fetch failed:', err)
+        if (isMounted) {
+          setNeedsName(true)
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false)
+        }
       }
-      setIsLoading(false)
     }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
