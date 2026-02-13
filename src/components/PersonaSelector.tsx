@@ -158,27 +158,20 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
       }
     }
 
+    // Track if we've already processed a session to prevent duplicate fetches
+    let hasProcessedSession = false
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!isMounted) return
 
-        // For SIGNED_IN events (including OAuth callback), ensure session is set
-        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
-          if (session?.user) {
-            setUserId(session.user.id)
-            // Set the session explicitly to ensure the client has the JWT
-            await supabase.auth.setSession({
-              access_token: session.access_token,
-              refresh_token: session.refresh_token,
-            })
-            await fetchProfile(session.user.id)
-          } else if (event === 'INITIAL_SESSION') {
-            // No initial session - not logged in
-            setFirstName(null)
-            setUserId(null)
-            setIsLoading(false)
-          }
-        } else if (event === 'SIGNED_OUT') {
+        if (session?.user && !hasProcessedSession) {
+          hasProcessedSession = true
+          setUserId(session.user.id)
+          await fetchProfile(session.user.id)
+        } else if (!session) {
+          // No session - not logged in
+          hasProcessedSession = false
           setFirstName(null)
           setUserId(null)
           setIsLoading(false)
