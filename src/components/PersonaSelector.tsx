@@ -111,18 +111,12 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
   const [userId, setUserId] = useState<string | null>(null)
   const supabase = useMemo(() => createBrowserSupabaseClient(), [])
 
-  // Fetch user's first name on mount using onAuthStateChange
-  // This handles OAuth callbacks properly since it fires with INITIAL_SESSION
+  // Fetch user's first name on mount
   useEffect(() => {
     let isMounted = true
 
-    const fetchProfile = async (id: string, retryCount = 0) => {
+    const fetchProfile = async (id: string) => {
       try {
-        // Small delay to ensure session cookies are fully set after OAuth callback
-        if (retryCount === 0) {
-          await new Promise(resolve => setTimeout(resolve, 100))
-        }
-
         const { data: profile, error: profileError } = await supabase
           .from('user_profiles')
           .select('first_name')
@@ -132,13 +126,6 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
         if (!isMounted) return
 
         if (profileError) {
-          // If permission denied and haven't retried, wait and retry once
-          // This handles race condition with OAuth session setup
-          if (profileError.code === 'PGRST116' && retryCount < 2) {
-            console.log('Profile not found, retrying...', retryCount)
-            await new Promise(resolve => setTimeout(resolve, 500))
-            return fetchProfile(id, retryCount + 1)
-          }
           console.error('Profile fetch error:', profileError)
           setNeedsName(true)
         } else if (profile?.first_name) {
@@ -158,22 +145,31 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
       }
     }
 
-    // Track if we've already processed a session to prevent duplicate fetches
-    let hasProcessedSession = false
+    // Check session immediately on mount
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
 
+      if (!isMounted) return
+
+      if (session?.user) {
+        setUserId(session.user.id)
+        await fetchProfile(session.user.id)
+      } else {
+        setIsLoading(false)
+      }
+    }
+
+    checkSession()
+
+    // Also listen for auth changes (sign out, etc)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (!isMounted) return
 
-        if (session?.user && !hasProcessedSession) {
-          hasProcessedSession = true
-          setUserId(session.user.id)
-          await fetchProfile(session.user.id)
-        } else if (!session) {
-          // No session - not logged in
-          hasProcessedSession = false
+        if (event === 'SIGNED_OUT') {
           setFirstName(null)
           setUserId(null)
+          setNeedsName(false)
           setIsLoading(false)
         }
       }
