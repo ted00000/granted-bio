@@ -7,11 +7,19 @@ import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 // Life Science Categories
 const lifeScienceCategories = [
-  { id: 'biotools', label: 'Biotools', icon: '🔧' },
+  // Applied/Product-focused
   { id: 'therapeutics', label: 'Therapeutics', icon: '💊' },
+  { id: 'biotools', label: 'Biotools', icon: '🔧' },
   { id: 'diagnostics', label: 'Diagnostics', icon: '🩺' },
   { id: 'medical_device', label: 'Medical Device', icon: '⚕️' },
   { id: 'digital_health', label: 'Digital Health', icon: '📱' },
+  // Research-focused
+  { id: 'basic_research', label: 'Basic Research', icon: '🧬' },
+  { id: 'clinical', label: 'Clinical Research', icon: '👨‍⚕️' },
+  { id: 'public_health', label: 'Public Health', icon: '🌍' },
+  // Grant types
+  { id: 'training', label: 'Training', icon: '🎓' },
+  { id: 'infrastructure', label: 'Infrastructure', icon: '🏛️' },
 ]
 
 // Research Focus Areas
