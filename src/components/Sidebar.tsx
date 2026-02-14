@@ -83,7 +83,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
         `}
       >
         {/* Logo */}
-        <div className="flex-shrink-0 px-5 py-6">
+        <div className="flex-shrink-0 px-5 py-6 text-center">
           <button
             onClick={handleHomeClick}
             className="text-xl font-semibold tracking-tight text-gray-900 hover:opacity-80 transition-opacity"
@@ -142,6 +142,10 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
             <LogOut className="w-5 h-5 text-gray-400" strokeWidth={1.5} />
             <span className="text-sm">Sign out</span>
           </button>
+          <div className="flex items-center justify-center gap-4 pt-2 text-xs text-gray-400">
+            <Link href="/privacy" className="hover:text-gray-600">Privacy</Link>
+            <Link href="/terms" className="hover:text-gray-600">Terms</Link>
+          </div>
         </div>
       </aside>
     </>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback } from 'react'
-import Link from 'next/link'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
 import type { PersonaType } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
@@ -729,26 +728,6 @@ export function Chat({ persona }: ChatProps) {
             <ResultsPanel results={toolResults} isSearching={isSearching} />
           </div>
         </div>
-
-      {/* Footer */}
-      <footer className="flex-shrink-0 px-6 py-4 border-t border-gray-100">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <p className="text-sm text-gray-400">
-            Data from NIH RePORTER & USPTO PatentsView
-          </p>
-          <div className="flex items-center gap-6 text-sm text-gray-400">
-            <a href="mailto:hello@granted.bio" className="hover:text-gray-600 transition-colors">
-              Contact
-            </a>
-            <Link href="/privacy" className="hover:text-gray-600 transition-colors">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-gray-600 transition-colors">
-              Terms
-            </Link>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }
