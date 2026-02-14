@@ -1,12 +1,10 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
 import type { PersonaType } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
-import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 const ICONS = {
   search: Search,
@@ -31,7 +29,6 @@ interface ToolResult {
 
 interface ChatProps {
   persona: PersonaType
-  onBack: () => void
 }
 
 // Parse message content to extract choices (bullet points at the end)
@@ -486,8 +483,7 @@ function ResultsPanel({ results, isSearching }: { results: ToolResult[]; isSearc
   )
 }
 
-export function Chat({ persona, onBack }: ChatProps) {
-  const router = useRouter()
+export function Chat({ persona }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -495,15 +491,9 @@ export function Chat({ persona, onBack }: ChatProps) {
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
-  const supabase = useMemo(() => createBrowserSupabaseClient(), [])
 
   const metadata = PERSONA_METADATA[persona]
   const IconComponent = ICONS[metadata.icon]
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    router.push('/')
-  }
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -614,24 +604,7 @@ export function Chat({ persona, onBack }: ChatProps) {
   }
 
   return (
-    <div className="h-screen bg-white flex flex-col overflow-hidden">
-      {/* Header */}
-      <header className="flex-shrink-0 px-6 py-4">
-        <nav className="max-w-5xl mx-auto flex items-center justify-between">
-          <button onClick={onBack} className="text-2xl font-semibold tracking-tight text-gray-900">
-            granted<span className="text-[#E07A5F]">.bio</span>
-          </button>
-          <button
-            onClick={handleSignOut}
-            className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            Sign out
-          </button>
-        </nav>
-      </header>
-
-      {/* Main content */}
-      <main className="flex-1 flex min-h-0">
+    <div className="h-full bg-white flex overflow-hidden">
         {/* Left Panel - Chat */}
         <div className="flex flex-col w-full lg:w-[480px] xl:w-[520px] lg:border-r lg:border-gray-100 min-h-0">
 
@@ -756,7 +729,6 @@ export function Chat({ persona, onBack }: ChatProps) {
             <ResultsPanel results={toolResults} isSearching={isSearching} />
           </div>
         </div>
-      </main>
 
       {/* Footer */}
       <footer className="flex-shrink-0 px-6 py-4 border-t border-gray-100">
