@@ -39,7 +39,7 @@ export const AGENT_TOOLS: Tool[] = [
             primary_category: {
               type: 'array',
               items: { type: 'string' },
-              description: 'Filter by life science category: biotools, therapeutics, diagnostics, medical_device, digital_health, other'
+              description: 'Filter by life science category: biotools, therapeutics, diagnostics, medical_device, digital_health, basic_research, clinical, public_health, training, infrastructure, other'
             },
             org_type: {
               type: 'array',
@@ -95,7 +95,7 @@ export const AGENT_TOOLS: Tool[] = [
             primary_category: {
               type: 'array',
               items: { type: 'string' },
-              description: 'Filter by life science category: biotools, therapeutics, diagnostics, medical_device, digital_health, other'
+              description: 'Filter by life science category: biotools, therapeutics, diagnostics, medical_device, digital_health, basic_research, clinical, public_health, training, infrastructure, other'
             },
             org_type: {
               type: 'array',
@@ -635,7 +635,7 @@ export async function searchProjects(
     // Try optimized function with SQL-level filtering first
     const { data, error } = await supabaseAdmin.rpc('search_projects_filtered', {
       query_embedding: queryEmbedding,
-      match_threshold: 0.5,
+      match_threshold: 0.3,
       match_count: effectiveLimit,
       min_biotools_confidence: 0,
       // Push filters to SQL for better performance
@@ -652,7 +652,7 @@ export async function searchProjects(
       console.warn('Optimized search not available, falling back:', error.message)
       const { data: fallbackData, error: fallbackError } = await supabaseAdmin.rpc('search_projects', {
         query_embedding: queryEmbedding,
-        match_threshold: 0.5,
+        match_threshold: 0.3,
         match_count: effectiveLimit * 2, // Get more to filter
         min_biotools_confidence: 0
       })
