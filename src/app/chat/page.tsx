@@ -52,7 +52,7 @@ function ChatContent() {
       {selectedPersona ? (
         <Chat persona={selectedPersona} />
       ) : (
-        <WelcomeScreen onSelectPersona={handlePersonaChange} />
+        <WelcomeScreen onSelectPersona={handlePersonaChange} userName={userName} />
       )}
     </AppLayout>
   )

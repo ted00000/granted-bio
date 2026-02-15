@@ -5,6 +5,7 @@ import type { PersonaType } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
   onSelectPersona: (persona: PersonaType) => void
+  userName?: string | null
 }
 
 const PERSONA_OPTIONS: Array<{
@@ -44,15 +45,17 @@ const PERSONA_OPTIONS: Array<{
   }
 ]
 
-export function WelcomeScreen({ onSelectPersona }: WelcomeScreenProps) {
+export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps) {
   return (
     <div className="h-full flex flex-col items-center justify-center p-8">
       <div className="max-w-2xl w-full text-center">
         <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-2">
-          Welcome to granted<span className="text-[#E07A5F]">.bio</span>
+          {userName ? `Hi ${userName}, what would you like to explore?` : (
+            <>Welcome to granted<span className="text-[#E07A5F]">.bio</span></>
+          )}
         </h1>
         <p className="text-gray-500 mb-10">
-          Your AI-powered life science intelligence platform
+          {userName ? 'Select a mode to get started' : 'Your AI-powered life science intelligence platform'}
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
