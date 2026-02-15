@@ -20,9 +20,9 @@ const NAV_ITEMS: Array<{
   icon: typeof Search
 }> = [
   { id: 'researcher', label: 'Research', subtitle: 'Topic deep dives', icon: Search },
-  { id: 'bd', label: 'Leads', subtitle: 'Find contacts', icon: Users },
-  { id: 'investor', label: 'Market', subtitle: 'Market sizing', icon: TrendingUp },
+  { id: 'investor', label: 'Market', subtitle: 'Macro intelligence', icon: TrendingUp },
   { id: 'trials', label: 'Trials', subtitle: 'Clinical pipelines', icon: Activity },
+  { id: 'bd', label: 'Leads', subtitle: 'Find contacts', icon: Users },
 ]
 
 export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarProps) {

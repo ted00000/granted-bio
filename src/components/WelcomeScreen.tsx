@@ -23,17 +23,10 @@ const PERSONA_OPTIONS: Array<{
     icon: Search
   },
   {
-    id: 'bd',
-    title: 'Leads',
-    subtitle: 'Who should I talk to?',
-    description: 'Find companies, contacts, partnership targets',
-    icon: Users
-  },
-  {
     id: 'investor',
     title: 'Market',
     subtitle: 'How big is the opportunity?',
-    description: 'Market size, funding trends, competitive landscape',
+    description: 'Macro intelligence, funding trends, competitive analysis',
     icon: TrendingUp
   },
   {
@@ -42,6 +35,13 @@ const PERSONA_OPTIONS: Array<{
     subtitle: "What's in development?",
     description: 'Clinical pipelines, phases, trial tracking',
     icon: Activity
+  },
+  {
+    id: 'bd',
+    title: 'Leads',
+    subtitle: 'Who should I talk to?',
+    description: 'Find companies, contacts, partnership targets',
+    icon: Users
   }
 ]
 
