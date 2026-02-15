@@ -87,6 +87,21 @@ export interface KeywordSearchParams {
   }
 }
 
+// Hybrid search combines keyword + semantic search with RRF scoring
+export interface HybridSearchParams {
+  query: string
+  filters?: {
+    primary_category?: string[]
+    org_type?: string[]
+    state?: string[]
+    min_funding?: number
+    has_patents?: boolean
+    has_publications?: boolean
+    has_clinical_trials?: boolean
+  }
+  limit?: number
+}
+
 export interface KeywordSearchResult {
   summary: string // Natural language summary for Claude to read
   total_count: number

@@ -11,6 +11,7 @@ import type {
   GetPatentDetailsParams,
   KeywordSearchParams,
   KeywordSearchResult,
+  HybridSearchParams,
   ProjectResult,
   CompanyProfile,
   PIProfile,
@@ -23,23 +24,23 @@ import type { Tool } from '@anthropic-ai/sdk/resources/messages'
 // Tool definitions for Claude
 export const AGENT_TOOLS: Tool[] = [
   {
-    name: 'keyword_search',
-    description: 'Search NIH projects by keyword in abstracts. Returns total count and breakdown by life science category and organization type. Use this FIRST when user mentions a specific technology, method, or term (e.g., "mass spectrometry", "CRISPR", "proteomics"). This gives you counts to report back before drilling down.',
+    name: 'search_projects',
+    description: 'Search NIH projects using hybrid keyword + semantic search. Returns total count, breakdown by life science category and organization type, and top results ranked by relevance.',
     input_schema: {
       type: 'object' as const,
       properties: {
-        keyword: {
+        query: {
           type: 'string',
-          description: 'The keyword or phrase to search for in project abstracts (e.g., "mass spectrometry", "CRISPR", "CAR-T")'
+          description: 'Search query - can be specific terms (e.g., "CRISPR", "mass spectrometry") or broader concepts (e.g., "novel cancer therapies")'
         },
         filters: {
           type: 'object',
-          description: 'Optional filters to apply after keyword search',
+          description: 'Optional filters to narrow results',
           properties: {
             primary_category: {
               type: 'array',
               items: { type: 'string' },
-              description: 'Filter by life science category: biotools, therapeutics, diagnostics, medical_device, digital_health, basic_research, clinical, public_health, training, infrastructure, other'
+              description: 'Filter by life science category: biotools, therapeutics, diagnostics, medical_device, digital_health, other'
             },
             org_type: {
               type: 'array',
@@ -68,78 +69,10 @@ export const AGENT_TOOLS: Tool[] = [
               description: 'Filter to only projects with at least one clinical trial'
             }
           }
-        }
-      },
-      required: ['keyword']
-    }
-  },
-  {
-    name: 'search_projects',
-    description: 'Search NIH projects using semantic similarity and filters. Use this for broad conceptual searches where exact keyword matching is not needed.',
-    input_schema: {
-      type: 'object' as const,
-      properties: {
-        query: {
-          type: 'string',
-          description: 'Natural language search query describing the research area or technology'
-        },
-        filters: {
-          type: 'object',
-          description: 'Optional filters to narrow results',
-          properties: {
-            fiscal_year: {
-              type: 'array',
-              items: { type: 'number' },
-              description: 'Filter by fiscal year(s), e.g. [2024, 2025]'
-            },
-            primary_category: {
-              type: 'array',
-              items: { type: 'string' },
-              description: 'Filter by life science category: biotools, therapeutics, diagnostics, medical_device, digital_health, basic_research, clinical, public_health, training, infrastructure, other'
-            },
-            org_type: {
-              type: 'array',
-              items: { type: 'string' },
-              description: 'Filter by organization type: company, university, hospital, research_institute'
-            },
-            is_sbir: {
-              type: 'boolean',
-              description: 'Filter to SBIR grants only'
-            },
-            is_sttr: {
-              type: 'boolean',
-              description: 'Filter to STTR grants only'
-            },
-            min_funding: {
-              type: 'number',
-              description: 'Minimum total funding amount'
-            },
-            max_funding: {
-              type: 'number',
-              description: 'Maximum total funding amount'
-            },
-            state: {
-              type: 'array',
-              items: { type: 'string' },
-              description: 'Two-letter US state codes, e.g. ["CA", "MA", "NY"]. Leave empty for all states.'
-            },
-            has_patents: {
-              type: 'boolean',
-              description: 'Filter to only projects with at least one patent'
-            },
-            has_publications: {
-              type: 'boolean',
-              description: 'Filter to only projects with at least one publication'
-            },
-            has_clinical_trials: {
-              type: 'boolean',
-              description: 'Filter to only projects with at least one clinical trial'
-            }
-          }
         },
         limit: {
           type: 'number',
-          description: 'Maximum number of results to return (default 25)'
+          description: 'Maximum number of results to return (default 100)'
         }
       },
       required: ['query']
@@ -770,6 +703,320 @@ export async function searchProjects(
   }
 }
 
+// Hybrid search: combines keyword + semantic search with RRF scoring
+export async function searchProjectsHybrid(
+  params: HybridSearchParams,
+  userAccess: UserAccess
+): Promise<KeywordSearchResult> {
+  const { query, filters, limit = 100 } = params
+  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+
+  try {
+    // Run keyword and semantic searches in parallel
+    const [keywordIds, semanticResults] = await Promise.all([
+      // Keyword search: get matching project IDs
+      getKeywordMatchingIds(query),
+      // Semantic search: get scored results
+      getSemanticResults(query, effectiveLimit * 2) // Get more for merging
+    ])
+
+    // Build RRF (Reciprocal Rank Fusion) scores
+    // RRF formula: score = sum(1 / (k + rank)) where k=60 is standard
+    const K = 60
+    const rrfScores: Map<string, { score: number; data: ProjectWithCounts | null }> = new Map()
+
+    // Score keyword matches (rank by position in set - use insertion order)
+    let keywordRank = 1
+    for (const id of keywordIds) {
+      const existing = rrfScores.get(id)
+      const keywordScore = 1 / (K + keywordRank)
+      if (existing) {
+        existing.score += keywordScore
+      } else {
+        rrfScores.set(id, { score: keywordScore, data: null })
+      }
+      keywordRank++
+    }
+
+    // Score semantic matches (already ranked by similarity)
+    let semanticRank = 1
+    for (const result of semanticResults) {
+      const existing = rrfScores.get(result.application_id)
+      const semanticScore = 1 / (K + semanticRank)
+      // Boost by similarity score (0-1) for better semantic matches
+      const boostedScore = semanticScore * (1 + (result.similarity || 0))
+      if (existing) {
+        existing.score += boostedScore
+        existing.data = result
+      } else {
+        rrfScores.set(result.application_id, { score: boostedScore, data: result })
+      }
+      semanticRank++
+    }
+
+    // Get project data for keyword-only matches
+    const keywordOnlyIds = [...rrfScores.entries()]
+      .filter(([, v]) => v.data === null)
+      .map(([id]) => id)
+
+    if (keywordOnlyIds.length > 0) {
+      const keywordProjects = await fetchProjectsByIds(keywordOnlyIds)
+      for (const project of keywordProjects) {
+        const entry = rrfScores.get(project.application_id)
+        if (entry) {
+          entry.data = project
+        }
+      }
+    }
+
+    // Convert to array and sort by RRF score
+    let allProjects = [...rrfScores.entries()]
+      .filter(([, v]) => v.data !== null)
+      .map(([id, v]) => ({ ...v.data!, rrf_score: v.score }))
+      .sort((a, b) => b.rrf_score - a.rrf_score)
+
+    // Apply filters
+    if (filters?.primary_category?.length) {
+      allProjects = allProjects.filter(p => p.primary_category && filters.primary_category!.includes(p.primary_category))
+    }
+    if (filters?.org_type?.length) {
+      allProjects = allProjects.filter(p => p.org_type && filters.org_type!.includes(p.org_type))
+    }
+    if (filters?.state?.length) {
+      allProjects = allProjects.filter(p => p.org_state && filters.state!.includes(p.org_state))
+    }
+    if (filters?.min_funding) {
+      allProjects = allProjects.filter(p => (p.total_cost || 0) >= filters.min_funding!)
+    }
+    if (filters?.has_patents) {
+      allProjects = allProjects.filter(p => (p.patent_count || 0) > 0)
+    }
+    if (filters?.has_publications) {
+      allProjects = allProjects.filter(p => (p.publication_count || 0) > 0)
+    }
+    if (filters?.has_clinical_trials) {
+      allProjects = allProjects.filter(p => (p.clinical_trial_count || 0) > 0)
+    }
+
+    // Aggregate by category and org_type
+    const byCategory: Record<string, number> = {}
+    const byOrgType: Record<string, number> = {}
+
+    allProjects.forEach(p => {
+      const cat = p.primary_category || 'other'
+      const org = p.org_type || 'other'
+      byCategory[cat] = (byCategory[cat] || 0) + 1
+      byOrgType[org] = (byOrgType[org] || 0) + 1
+    })
+
+    // Get sample results (top by RRF score, already sorted)
+    const topProjects = allProjects.slice(0, Math.min(10, effectiveLimit))
+
+    // Get PI emails for sample results
+    const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean) as string[]
+    let piEmails: Record<string, string> = {}
+
+    if (projectNumbers.length > 0 && userAccess.canSeeEmails) {
+      const { data: pubLinks } = await supabaseAdmin
+        .from('project_publications')
+        .select('project_number, pmid')
+        .in('project_number', projectNumbers)
+
+      if (pubLinks?.length) {
+        const pmids = pubLinks.map(pl => pl.pmid)
+        const { data: pubs } = await supabaseAdmin
+          .from('publications')
+          .select('pmid, pi_email')
+          .in('pmid', pmids)
+          .not('pi_email', 'is', null)
+          .neq('pi_email', '')
+
+        const pmidToEmail: Record<string, string> = {}
+        pubs?.forEach(p => {
+          if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
+        })
+        pubLinks?.forEach(pl => {
+          if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
+            piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+          }
+        })
+      }
+    }
+
+    const sampleResults = topProjects.map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      total_cost: p.total_cost,
+      fiscal_year: p.fiscal_year,
+      pi_names: p.pi_names,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
+    }))
+
+    // Generate summary
+    const categoryBreakdown = Object.entries(byCategory)
+      .sort(([, a], [, b]) => b - a)
+      .map(([cat, count]) => `${cat}: ${count}`)
+      .join(', ')
+
+    const orgTypeBreakdown = Object.entries(byOrgType)
+      .sort(([, a], [, b]) => b - a)
+      .map(([org, count]) => `${org}: ${count}`)
+      .join(', ')
+
+    const summary = `Found ${allProjects.length} projects. ` +
+      `By category: ${categoryBreakdown}. ` +
+      `By org_type: ${orgTypeBreakdown}.`
+
+    return {
+      summary,
+      total_count: allProjects.length,
+      by_category: byCategory,
+      by_org_type: byOrgType,
+      sample_results: sampleResults
+    }
+  } catch (error) {
+    console.error('Hybrid search error:', error)
+    throw error
+  }
+}
+
+// Helper type for projects with counts
+interface ProjectWithCounts {
+  application_id: string
+  title: string
+  org_name: string | null
+  org_state: string | null
+  org_type: string | null
+  primary_category: string | null
+  total_cost: number | null
+  fiscal_year: number | null
+  pi_names: string | null
+  project_number: string | null
+  patent_count: number
+  publication_count: number
+  clinical_trial_count: number
+  similarity?: number
+}
+
+// Helper: Get project IDs matching keyword search
+// Supports pipe-separated synonyms: "neural|brain|cerebral organoids"
+// Groups are AND'd together, synonyms within a group are OR'd
+async function getKeywordMatchingIds(query: string): Promise<Set<string>> {
+  // Split into word groups (space-separated)
+  const wordGroups = query.toLowerCase().trim().split(/\s+/).filter(g => g.length > 2)
+
+  if (wordGroups.length === 0) return new Set()
+
+  // For each word group, find matching project IDs
+  // Within a group, pipe-separated synonyms use OR logic
+  const groupMatchPromises = wordGroups.map(async (group) => {
+    // Split by pipe to get synonyms (e.g., "neural|brain|cerebral" -> ["neural", "brain", "cerebral"])
+    const synonyms = group.split('|').filter(s => s.length > 2)
+
+    if (synonyms.length === 0) return new Set<string>()
+
+    // Search all synonyms in parallel (OR logic within group)
+    const synonymMatchPromises = synonyms.map(async (synonym) => {
+      const [abstractMatches, termMatches] = await Promise.all([
+        searchAbstractsForWord(synonym, query),
+        searchTermsForWord(synonym, query)
+      ])
+
+      const combined = new Set<string>()
+      abstractMatches.forEach(id => combined.add(id))
+      termMatches.forEach(id => combined.add(id))
+      return combined
+    })
+
+    const synonymResults = await Promise.all(synonymMatchPromises)
+
+    // Union all synonym matches (OR logic)
+    const groupMatches = new Set<string>()
+    for (const matches of synonymResults) {
+      matches.forEach(id => groupMatches.add(id))
+    }
+    return groupMatches
+  })
+
+  const groupMatchResults = await Promise.all(groupMatchPromises)
+
+  // Intersect results across groups (AND logic)
+  if (groupMatchResults.length === 1) return groupMatchResults[0]
+
+  let matchingIds = groupMatchResults[0]
+  for (let i = 1; i < groupMatchResults.length; i++) {
+    matchingIds = new Set([...matchingIds].filter(id => groupMatchResults[i].has(id)))
+  }
+
+  return matchingIds
+}
+
+// Helper: Get semantic search results with similarity scores
+async function getSemanticResults(query: string, limit: number): Promise<ProjectWithCounts[]> {
+  const queryEmbedding = await generateEmbedding(query)
+
+  const { data, error } = await supabaseAdmin.rpc('search_projects_filtered', {
+    query_embedding: queryEmbedding,
+    match_threshold: 0.25, // Lower threshold for hybrid (we'll filter by RRF)
+    match_count: limit,
+    min_biotools_confidence: 0,
+    filter_fiscal_years: null,
+    filter_categories: null,
+    filter_org_types: null,
+    filter_states: null,
+    filter_min_funding: null,
+    filter_max_funding: null
+  })
+
+  if (error) {
+    console.warn('Semantic search fallback:', error.message)
+    // Fallback to basic search
+    const { data: fallbackData } = await supabaseAdmin.rpc('search_projects', {
+      query_embedding: queryEmbedding,
+      match_threshold: 0.25,
+      match_count: limit,
+      min_biotools_confidence: 0
+    })
+    return (fallbackData || []) as ProjectWithCounts[]
+  }
+
+  return (data || []) as ProjectWithCounts[]
+}
+
+// Helper: Fetch full project data for given IDs
+async function fetchProjectsByIds(ids: string[]): Promise<ProjectWithCounts[]> {
+  if (ids.length === 0) return []
+
+  const results: ProjectWithCounts[] = []
+
+  // Process in batches of 500
+  for (let i = 0; i < ids.length; i += 500) {
+    const batch = ids.slice(i, i + 500)
+    const { data } = await supabaseAdmin
+      .from('projects')
+      .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
+      .in('application_id', batch)
+
+    if (data) {
+      results.push(...data.map(p => ({
+        ...p,
+        patent_count: p.patent_count ?? 0,
+        publication_count: p.publication_count ?? 0,
+        clinical_trial_count: p.clinical_trial_count ?? 0
+      })))
+    }
+  }
+
+  return results
+}
+
 // Summarize company profile for chat context
 function summarizeCompanyProfile(profile: CompanyProfile) {
   return {
@@ -1240,10 +1487,9 @@ export async function executeTool(
   userAccess: UserAccess
 ): Promise<unknown> {
   switch (toolName) {
-    case 'keyword_search':
-      return keywordSearch(args as unknown as KeywordSearchParams, userAccess)
     case 'search_projects':
-      return searchProjects(args as unknown as SearchProjectsParams, userAccess)
+      // Uses hybrid search (keyword + semantic with RRF scoring)
+      return searchProjectsHybrid(args as unknown as HybridSearchParams, userAccess)
     case 'get_company_profile':
       return getCompanyProfile(args as unknown as GetCompanyProfileParams, userAccess)
     case 'get_pi_profile':
@@ -1254,6 +1500,11 @@ export async function executeTool(
       return searchPatents(args as unknown as SearchPatentsParams, userAccess)
     case 'get_patent_details':
       return getPatentDetails(args as unknown as GetPatentDetailsParams, userAccess)
+    // Legacy support for old tool names
+    case 'keyword_search':
+      // Redirect to hybrid search
+      const keywordArgs = args as unknown as KeywordSearchParams
+      return searchProjectsHybrid({ query: keywordArgs.keyword, filters: keywordArgs.filters }, userAccess)
     default:
       throw new Error(`Unknown tool: ${toolName}`)
   }
