@@ -231,8 +231,12 @@ function ResultsPanel({ results, isSearching }: { results: ToolResult[]; isSearc
   }
 
   if (latestResult.name === 'search_projects') {
+    // Now returns KeywordSearchResult format from hybrid search
     const data = latestResult.data as {
-      results: Array<{
+      total_count: number
+      by_category: Record<string, number>
+      by_org_type: Record<string, number>
+      sample_results: Array<{
         application_id: string
         title: string
         org_name: string | null
@@ -242,27 +246,24 @@ function ResultsPanel({ results, isSearching }: { results: ToolResult[]; isSearc
         fiscal_year: number | null
         pi_names: string | null
         primary_category: string | null
-        is_sbir: boolean
-        is_sttr: boolean
         patent_count: number
         publication_count: number
         clinical_trial_count: number
       }>
-      total: number
     }
 
     return (
       <div className="h-full overflow-y-auto">
         <div className="p-6 border-b border-gray-100">
-          <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total.toLocaleString()}</div>
+          <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total_count.toLocaleString()}</div>
           <div className="text-sm text-gray-400 mt-1">projects found</div>
         </div>
 
-        {data.results?.length > 0 && (
+        {data.sample_results?.length > 0 && (
           <div className="p-6">
             <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Top Results</h3>
             <div className="space-y-5">
-              {data.results.map((project) => (
+              {data.sample_results.map((project) => (
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
@@ -306,12 +307,6 @@ function ResultsPanel({ results, isSearching }: { results: ToolResult[]; isSearc
                       <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-700 rounded">
                         {project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}
                       </span>
-                    )}
-                    {project.is_sbir && (
-                      <span className="px-2 py-0.5 text-xs bg-indigo-50 text-indigo-600 rounded">SBIR</span>
-                    )}
-                    {project.is_sttr && (
-                      <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-600 rounded">STTR</span>
                     )}
                   </div>
                 </div>
