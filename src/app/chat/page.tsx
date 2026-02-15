@@ -14,6 +14,7 @@ function ChatContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [userName, setUserName] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
   const supabase = createBrowserSupabaseClient()
 
   const personaParam = searchParams.get('persona')
@@ -35,6 +36,7 @@ function ChatContent() {
           setUserName(profile.first_name || profile.full_name?.split(' ')[0] || user.email?.split('@')[0] || null)
         }
       }
+      setIsLoading(false)
     }
     fetchUser()
   }, [supabase])
@@ -51,6 +53,10 @@ function ChatContent() {
     >
       {selectedPersona ? (
         <Chat persona={selectedPersona} />
+      ) : isLoading ? (
+        <div className="h-full flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+        </div>
       ) : (
         <WelcomeScreen onSelectPersona={handlePersonaChange} userName={userName} />
       )}
