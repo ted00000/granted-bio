@@ -335,6 +335,7 @@ export async function keywordSearch(
       return {
         summary: 'Found 0 projects.',
         total_count: 0,
+        showing_count: 0,
         by_category: {},
         by_org_type: {},
         sample_results: []
@@ -380,6 +381,7 @@ export async function keywordSearch(
       return {
         summary: 'Found 0 projects.',
         total_count: 0,
+        showing_count: 0,
         by_category: {},
         by_org_type: {},
         sample_results: []
