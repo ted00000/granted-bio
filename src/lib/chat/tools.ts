@@ -821,10 +821,8 @@ export async function searchProjectsHybrid(
       byOrgType[org] = (byOrgType[org] || 0) + 1
     })
 
-    // Get sample results (top by funding, highest to lowest)
-    const topProjects = [...allProjects]
-      .sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
-      .slice(0, Math.min(10, effectiveLimit))
+    // Get sample results (top by RRF relevance score, already sorted)
+    const topProjects = allProjects.slice(0, Math.min(10, effectiveLimit))
 
     // Get PI emails for sample results
     const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean) as string[]
@@ -870,7 +868,8 @@ export async function searchProjectsHybrid(
       pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
-      clinical_trial_count: p.clinical_trial_count || 0
+      clinical_trial_count: p.clinical_trial_count || 0,
+      relevance_score: p.rrf_score
     }))
 
     // Generate summary
