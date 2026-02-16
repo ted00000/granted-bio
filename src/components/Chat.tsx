@@ -88,6 +88,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
   if (latestResult.name === 'keyword_search') {
     const data = latestResult.data as {
       total_count: number
+      showing_count?: number
       by_category: Record<string, number>
       by_org_type: Record<string, number>
       sample_results: Array<{
@@ -108,11 +109,15 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
       }>
     }
 
+    const isCapped = data.showing_count && data.showing_count < data.total_count
+
     return (
       <div className="h-full overflow-y-auto">
         <div className="p-6 border-b border-gray-100">
           <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total_count.toLocaleString()}</div>
-          <div className="text-sm text-gray-400 mt-1">projects found</div>
+          <div className="text-sm text-gray-400 mt-1">
+            projects found{isCapped && ` · showing top ${data.showing_count}`}
+          </div>
         </div>
 
         {(Object.keys(data.by_category || {}).length > 0 || Object.keys(data.by_org_type || {}).length > 0) && (
@@ -225,6 +230,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
     // Now returns KeywordSearchResult format from hybrid search
     const data = latestResult.data as {
       total_count: number
+      showing_count?: number
       by_category: Record<string, number>
       by_org_type: Record<string, number>
       sample_results: Array<{
@@ -243,11 +249,15 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
       }>
     }
 
+    const isCapped = data.showing_count && data.showing_count < data.total_count
+
     return (
       <div className="h-full overflow-y-auto">
         <div className="p-6 border-b border-gray-100">
           <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total_count.toLocaleString()}</div>
-          <div className="text-sm text-gray-400 mt-1">projects found</div>
+          <div className="text-sm text-gray-400 mt-1">
+            projects found{isCapped && ` · showing top ${data.showing_count}`}
+          </div>
         </div>
 
         {data.sample_results?.length > 0 && (

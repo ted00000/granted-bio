@@ -810,13 +810,10 @@ export async function searchProjectsHybrid(
     }
     allProjects = [...seenProjects.values()].sort((a, b) => b.rrf_score - a.rrf_score)
 
-    // Cap at 100 results (already sorted by relevance)
-    // Note: 70% cutoff was too aggressive - projects appearing in only keyword OR semantic
-    // (not both) get at most 50% score. Keeping just the cap for now.
-    const MAX_RESULTS = 100
-    allProjects = allProjects.slice(0, MAX_RESULTS)
+    // Store total count BEFORE capping (for display purposes)
+    const totalBeforeCap = allProjects.length
 
-    // Aggregate by category and org_type
+    // Aggregate by category and org_type from FULL set (before cap)
     const byCategory: Record<string, number> = {}
     const byOrgType: Record<string, number> = {}
 
@@ -827,8 +824,12 @@ export async function searchProjectsHybrid(
       byOrgType[org] = (byOrgType[org] || 0) + 1
     })
 
-    // Get sample results (top by RRF relevance score, already sorted)
-    const topProjects = allProjects.slice(0, Math.min(10, effectiveLimit))
+    // Cap at 100 for sample results (already sorted by relevance)
+    const MAX_RESULTS = 100
+    const cappedProjects = allProjects.slice(0, MAX_RESULTS)
+
+    // Get sample results (top 10 for display)
+    const topProjects = cappedProjects.slice(0, Math.min(10, effectiveLimit))
 
     // Get PI emails for sample results
     const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean) as string[]
@@ -888,13 +889,15 @@ export async function searchProjectsHybrid(
       .map(([org, count]) => `${org}: ${count}`)
       .join(', ')
 
-    const summary = `Found ${allProjects.length} projects. ` +
-      `By category: ${categoryBreakdown}. ` +
-      `By org_type: ${orgTypeBreakdown}.`
+    const showingCount = Math.min(totalBeforeCap, MAX_RESULTS)
+    const summary = `Found ${totalBeforeCap} projects` +
+      (totalBeforeCap > MAX_RESULTS ? ` (showing top ${MAX_RESULTS})` : '') +
+      `. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
 
     return {
       summary,
-      total_count: allProjects.length,
+      total_count: totalBeforeCap,
+      showing_count: showingCount,
       by_category: byCategory,
       by_org_type: byOrgType,
       sample_results: sampleResults
