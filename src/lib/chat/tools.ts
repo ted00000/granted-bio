@@ -821,8 +821,10 @@ export async function searchProjectsHybrid(
       byOrgType[org] = (byOrgType[org] || 0) + 1
     })
 
-    // Get sample results (top by RRF score, already sorted)
-    const topProjects = allProjects.slice(0, Math.min(10, effectiveLimit))
+    // Get sample results (top by funding, highest to lowest)
+    const topProjects = [...allProjects]
+      .sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
+      .slice(0, Math.min(10, effectiveLimit))
 
     // Get PI emails for sample results
     const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean) as string[]
