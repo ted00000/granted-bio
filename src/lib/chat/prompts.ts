@@ -471,19 +471,16 @@ export const PERSONA_METADATA: Record<PersonaType, {
   subtitle: string
   icon: 'search' | 'trending' | 'users' | 'activity'
   description: string
+  placeholder?: string
   exampleQueries: string[]
 }> = {
   researcher: {
     title: 'Research',
     subtitle: 'What science is being funded?',
     icon: 'search',
-    description: 'Topic deep dives, funded projects, publications',
-    exampleQueries: [
-      "I'm writing an R01 on spatial transcriptomics",
-      "I work on CRISPR delivery to the CNS",
-      "Preparing a grant on organoid models",
-      "Researching CAR-T for solid tumors"
-    ]
+    description: 'Deep dive research on funded projects',
+    placeholder: 'Enter your life sciences topic to research...',
+    exampleQueries: []
   },
   bd: {
     title: 'Leads',

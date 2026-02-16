@@ -104,6 +104,7 @@ export interface HybridSearchParams {
 
 export interface KeywordSearchResult {
   summary: string // Natural language summary for Claude to read
+  search_query: string // The actual query that was searched
   total_count: number
   showing_count: number // How many results are actually being shown (may be capped)
   by_category: Record<string, number>

@@ -334,6 +334,7 @@ export async function keywordSearch(
     if (words.length === 0) {
       return {
         summary: 'Found 0 projects.',
+        search_query: '',
         total_count: 0,
         showing_count: 0,
         by_category: {},
@@ -380,6 +381,7 @@ export async function keywordSearch(
     if (matchingIdsArray.length === 0) {
       return {
         summary: 'Found 0 projects.',
+        search_query: '',
         total_count: 0,
         showing_count: 0,
         by_category: {},
@@ -544,6 +546,7 @@ export async function keywordSearch(
 
     return {
       summary, // Natural language summary for Claude to read
+      search_query: keyword,
       total_count: allProjects.length,
       showing_count: allProjects.length, // keyword_search doesn't cap, so same as total
       by_category: byCategory,
@@ -899,6 +902,7 @@ export async function searchProjectsHybrid(
 
     return {
       summary,
+      search_query: query,
       total_count: totalBeforeCap,
       showing_count: showingCount,
       by_category: byCategory,

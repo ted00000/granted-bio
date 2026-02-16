@@ -89,6 +89,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
     const data = latestResult.data as {
       total_count: number
       showing_count?: number
+      search_query?: string
       by_category: Record<string, number>
       by_org_type: Record<string, number>
       sample_results: Array<{
@@ -118,6 +119,11 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           <div className="text-sm text-gray-400 mt-1">
             projects found{isCapped && ` · showing top ${data.showing_count}`}
           </div>
+          {data.search_query && (
+            <div className="text-xs text-gray-400 mt-2">
+              Keyword + semantic search for "{data.search_query}"
+            </div>
+          )}
         </div>
 
         {(Object.keys(data.by_category || {}).length > 0 || Object.keys(data.by_org_type || {}).length > 0) && (
@@ -231,6 +237,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
     const data = latestResult.data as {
       total_count: number
       showing_count?: number
+      search_query?: string
       by_category: Record<string, number>
       by_org_type: Record<string, number>
       sample_results: Array<{
@@ -258,6 +265,11 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           <div className="text-sm text-gray-400 mt-1">
             projects found{isCapped && ` · showing top ${data.showing_count}`}
           </div>
+          {data.search_query && (
+            <div className="text-xs text-gray-400 mt-2">
+              Keyword + semantic search for "{data.search_query}"
+            </div>
+          )}
         </div>
 
         {data.sample_results?.length > 0 && (
@@ -694,7 +706,7 @@ export function Chat({ persona }: ChatProps) {
                 value={input}
                 onChange={e => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Ask a question..."
+                placeholder={metadata.placeholder || "Ask a question..."}
                 rows={1}
                 className="flex-1 px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
                 style={{ maxHeight: '120px' }}
