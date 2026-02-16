@@ -165,18 +165,11 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
-                    <div className="flex flex-col items-end gap-1">
-                      {project.relevance_score !== undefined && (
-                        <span className="text-xs font-medium text-emerald-600 whitespace-nowrap">
-                          {Math.round(project.relevance_score * 100)}% match
-                        </span>
-                      )}
-                      {project.total_cost && (
-                        <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
-                          {formatCurrency(project.total_cost)}
-                        </span>
-                      )}
-                    </div>
+                    {project.total_cost && (
+                      <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
+                        {formatCurrency(project.total_cost)}
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-400">
                     <span>{project.org_name}</span>
@@ -267,18 +260,11 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
-                    <div className="flex flex-col items-end gap-1">
-                      {project.relevance_score !== undefined && (
-                        <span className="text-xs font-medium text-emerald-600 whitespace-nowrap">
-                          {Math.round(project.relevance_score * 100)}% match
-                        </span>
-                      )}
-                      {project.total_cost && (
-                        <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
-                          {formatCurrency(project.total_cost)}
-                        </span>
-                      )}
-                    </div>
+                    {project.total_cost && (
+                      <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
+                        {formatCurrency(project.total_cost)}
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-400">
                     <span>{project.org_name}</span>
