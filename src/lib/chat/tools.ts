@@ -893,7 +893,7 @@ export async function searchProjectsHybrid(
       .join(', ')
 
     const showingCount = Math.min(totalBeforeCap, MAX_RESULTS)
-    const summary = `Found ${totalBeforeCap} projects` +
+    const summary = `Search: "${query}". Found ${totalBeforeCap} projects` +
       (totalBeforeCap > MAX_RESULTS ? ` (showing top ${MAX_RESULTS})` : '') +
       `. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
 
