@@ -105,7 +105,6 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
         patent_count: number
         publication_count: number
         clinical_trial_count: number
-        relevance_score?: number
       }>
     }
 
@@ -241,7 +240,6 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
         patent_count: number
         publication_count: number
         clinical_trial_count: number
-        relevance_score?: number
       }>
     }
 

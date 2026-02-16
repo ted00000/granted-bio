@@ -810,13 +810,6 @@ export async function searchProjectsHybrid(
     }
     allProjects = [...seenProjects.values()].sort((a, b) => b.rrf_score - a.rrf_score)
 
-    // Normalize RRF scores to 0-1 range (relative to top result)
-    const maxScore = allProjects.length > 0 ? allProjects[0].rrf_score : 1
-    allProjects = allProjects.map(p => ({
-      ...p,
-      normalized_score: maxScore > 0 ? p.rrf_score / maxScore : 0
-    }))
-
     // Cap at 100 results (already sorted by relevance)
     // Note: 70% cutoff was too aggressive - projects appearing in only keyword OR semantic
     // (not both) get at most 50% score. Keeping just the cap for now.
@@ -881,8 +874,7 @@ export async function searchProjectsHybrid(
       pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
-      clinical_trial_count: p.clinical_trial_count || 0,
-      relevance_score: p.normalized_score
+      clinical_trial_count: p.clinical_trial_count || 0
     }))
 
     // Generate summary
