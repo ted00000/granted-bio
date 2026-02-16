@@ -632,20 +632,22 @@ export function Chat({ persona }: ChatProps) {
                 <p className="text-gray-400 mb-8 max-w-sm mx-auto text-sm">
                   {metadata.description}
                 </p>
-                <div className="space-y-3">
-                  <p className="text-xs text-gray-400">Try an example</p>
-                  <div className="flex flex-wrap justify-center gap-2">
-                    {metadata.exampleQueries.slice(0, 3).map((query, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleExampleClick(query)}
-                        className="px-4 py-2 text-sm bg-white border border-gray-100 rounded-full hover:border-[#E07A5F] hover:shadow-md text-gray-600 transition-all"
-                      >
-                        {query}
-                      </button>
-                    ))}
+                {metadata.exampleQueries.length > 0 && (
+                  <div className="space-y-3">
+                    <p className="text-xs text-gray-400">Try an example</p>
+                    <div className="flex flex-wrap justify-center gap-2">
+                      {metadata.exampleQueries.slice(0, 3).map((query, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleExampleClick(query)}
+                          className="px-4 py-2 text-sm bg-white border border-gray-100 rounded-full hover:border-[#E07A5F] hover:shadow-md text-gray-600 transition-all"
+                        >
+                          {query}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
 
