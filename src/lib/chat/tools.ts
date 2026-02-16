@@ -817,12 +817,11 @@ export async function searchProjectsHybrid(
       normalized_score: maxScore > 0 ? p.rrf_score / maxScore : 0
     }))
 
-    // Filter by relevance cutoff (70% of top result) and cap at 100
-    const RELEVANCE_CUTOFF = 0.70
+    // Cap at 100 results (already sorted by relevance)
+    // Note: 70% cutoff was too aggressive - projects appearing in only keyword OR semantic
+    // (not both) get at most 50% score. Keeping just the cap for now.
     const MAX_RESULTS = 100
-    allProjects = allProjects
-      .filter(p => p.normalized_score >= RELEVANCE_CUTOFF)
-      .slice(0, MAX_RESULTS)
+    allProjects = allProjects.slice(0, MAX_RESULTS)
 
     // Aggregate by category and org_type
     const byCategory: Record<string, number> = {}
