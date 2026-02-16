@@ -543,6 +543,7 @@ export async function keywordSearch(
     return {
       summary, // Natural language summary for Claude to read
       total_count: allProjects.length,
+      showing_count: allProjects.length, // keyword_search doesn't cap, so same as total
       by_category: byCategory,
       by_org_type: byOrgType,
       sample_results: sampleResults
