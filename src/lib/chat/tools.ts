@@ -798,6 +798,18 @@ export async function searchProjectsHybrid(
       allProjects = allProjects.filter(p => (p.clinical_trial_count || 0) > 0)
     }
 
+    // Deduplicate by project_number, keeping the most recent fiscal year
+    // This prevents the same project from appearing multiple times across fiscal years
+    const seenProjects = new Map<string, typeof allProjects[0]>()
+    for (const project of allProjects) {
+      const key = project.project_number || project.application_id // fallback to application_id if no project_number
+      const existing = seenProjects.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(key, project)
+      }
+    }
+    allProjects = [...seenProjects.values()].sort((a, b) => b.rrf_score - a.rrf_score)
+
     // Aggregate by category and org_type
     const byCategory: Record<string, number> = {}
     const byOrgType: Record<string, number> = {}
