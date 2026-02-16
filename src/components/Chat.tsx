@@ -91,7 +91,8 @@ function ResultsPanel({ results, isSearching }: { results: ToolResult[]; isSearc
 
   // Prioritize project results over patent results when both exist
   // This ensures "find projects with patents" shows projects (with patent badges), not raw patents
-  const projectResult = results.find(r => r.name === 'search_projects' || r.name === 'keyword_search')
+  // Use findLast to get the MOST RECENT search result (in case of multiple searches in one response)
+  const projectResult = [...results].reverse().find(r => r.name === 'search_projects' || r.name === 'keyword_search')
   const latestResult = projectResult || results[results.length - 1]
 
   if (latestResult.name === 'keyword_search') {
