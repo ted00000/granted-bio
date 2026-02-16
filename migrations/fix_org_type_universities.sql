@@ -25,19 +25,41 @@ SET org_type = 'university'
 WHERE org_type = 'company'
   AND org_name ILIKE '%INSTITUTE OF TECHNOLOGY%';
 
--- STEP 5: Fix hospitals (including children's hospitals, medical centers)
+-- STEP 5a: Fix HOSPITAL (run separately)
 UPDATE projects
 SET org_type = 'hospital'
 WHERE org_type = 'company'
-  AND (
-    org_name ILIKE '%HOSPITAL%'
-    OR org_name ILIKE '%MEDICAL CENTER%'
-    OR org_name ILIKE '%CHILDRENS%'
-    OR org_name ILIKE '%CHILDREN''S%'
-    OR org_name ILIKE '%MED CTR%'
-    OR org_name ILIKE '%CLINIC%'
-    OR org_name ILIKE '%HEALTH SYSTEM%'
-  );
+  AND org_name ILIKE '%HOSPITAL%';
+
+-- STEP 5b: Fix MEDICAL CENTER (run separately)
+UPDATE projects
+SET org_type = 'hospital'
+WHERE org_type = 'company'
+  AND org_name ILIKE '%MEDICAL CENTER%';
+
+-- STEP 5c: Fix CHILDRENS (run separately)
+UPDATE projects
+SET org_type = 'hospital'
+WHERE org_type = 'company'
+  AND org_name ILIKE '%CHILDRENS%';
+
+-- STEP 5d: Fix MED CTR (run separately)
+UPDATE projects
+SET org_type = 'hospital'
+WHERE org_type = 'company'
+  AND org_name ILIKE '%MED CTR%';
+
+-- STEP 5e: Fix CLINIC (run separately)
+UPDATE projects
+SET org_type = 'hospital'
+WHERE org_type = 'company'
+  AND org_name ILIKE '%CLINIC%';
+
+-- STEP 5f: Fix HEALTH SYSTEM (run separately)
+UPDATE projects
+SET org_type = 'hospital'
+WHERE org_type = 'company'
+  AND org_name ILIKE '%HEALTH SYSTEM%';
 
 -- STEP 6: Verify (run last)
 SELECT org_type, COUNT(*) as count

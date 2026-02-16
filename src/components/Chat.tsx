@@ -63,27 +63,17 @@ function formatCurrency(amount: number): string {
 }
 
 // Results Panel Component
-function ResultsPanel({ results, isSearching }: { results: ToolResult[]; isSearching: boolean }) {
+function ResultsPanel({ results }: { results: ToolResult[] }) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          {isSearching ? (
-            <>
-              <div className="w-8 h-8 mx-auto mb-4 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-              <p className="text-sm text-[#E07A5F] font-medium">Searching...</p>
-              <p className="text-xs text-gray-400 mt-1">Finding relevant projects</p>
-            </>
-          ) : (
-            <>
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
-                <svg className="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </div>
-              <p className="text-sm text-gray-400">Results will appear here</p>
-            </>
-          )}
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center">
+            <svg className="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <p className="text-sm text-gray-400">Results will appear here</p>
         </div>
       </div>
     )
@@ -721,7 +711,7 @@ export function Chat({ persona }: ChatProps) {
             <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER & USPTO PatentsView</p>
           </div>
           <div className="flex-1 overflow-hidden">
-            <ResultsPanel results={toolResults} isSearching={isSearching} />
+            <ResultsPanel results={toolResults} />
           </div>
         </div>
     </div>
