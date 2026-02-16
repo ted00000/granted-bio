@@ -810,6 +810,20 @@ export async function searchProjectsHybrid(
     }
     allProjects = [...seenProjects.values()].sort((a, b) => b.rrf_score - a.rrf_score)
 
+    // Normalize RRF scores to 0-1 range (relative to top result)
+    const maxScore = allProjects.length > 0 ? allProjects[0].rrf_score : 1
+    allProjects = allProjects.map(p => ({
+      ...p,
+      normalized_score: maxScore > 0 ? p.rrf_score / maxScore : 0
+    }))
+
+    // Filter by relevance cutoff (70% of top result) and cap at 100
+    const RELEVANCE_CUTOFF = 0.70
+    const MAX_RESULTS = 100
+    allProjects = allProjects
+      .filter(p => p.normalized_score >= RELEVANCE_CUTOFF)
+      .slice(0, MAX_RESULTS)
+
     // Aggregate by category and org_type
     const byCategory: Record<string, number> = {}
     const byOrgType: Record<string, number> = {}
@@ -869,7 +883,7 @@ export async function searchProjectsHybrid(
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
       clinical_trial_count: p.clinical_trial_count || 0,
-      relevance_score: p.rrf_score
+      relevance_score: p.normalized_score
     }))
 
     // Generate summary
