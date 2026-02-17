@@ -26,16 +26,15 @@ Both run in parallel and results are merged using relevance scoring.
 3. Be ready to help with next steps: deep dives, similar projects, new searches.
 
 === QUERY OPTIMIZATION ===
-keyword_query: Include only CORE TECHNICAL TERMS (nouns, technologies, diseases).
-- Skip generic words like "platform", "approach", "development", "research", "tools"
-- Add synonyms with pipes. Space-separated terms use AND logic.
+keyword_query: ONLY core scientific terms. Add synonyms with pipes.
+- SKIP these generic words: platform, approach, development, research, tools, method, technique, system, application
+- These words go in semantic_query only
 
-semantic_query: Full natural language description of what user wants.
-- This handles context, modifiers, and intent
+semantic_query: Full natural language with ALL words including generic ones.
 
 Examples:
 - User: "neural organoid platform"
-  keyword_query: "neural|brain|cerebral organoid|organoids"
+  keyword_query: "neural|brain|cerebral organoid|organoids"  ← NO "platform"
   semantic_query: "neural organoid platforms for brain research and disease modeling"
 
 - User: "CRISPR gene therapy"
