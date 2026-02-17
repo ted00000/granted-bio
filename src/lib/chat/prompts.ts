@@ -26,14 +26,23 @@ Both run in parallel and results are merged using relevance scoring.
 3. Be ready to help with next steps: deep dives, similar projects, new searches.
 
 === QUERY OPTIMIZATION ===
-For keyword_query, expand with synonyms:
-- "CRISPR" → "CRISPR|Cas9|gene editing|genome editing"
-- "neural organoids" → "neural|brain|cerebral organoid|organoids"
-- "mass spectrometry" → "mass spectrometry|mass spec|MS|proteomics"
+CRITICAL: keyword_query must include ALL user terms, with synonyms added via pipes.
+Words separated by spaces use AND logic. Pipes within a word group use OR logic.
+
+Examples:
+- User: "neural organoid platform"
+  keyword_query: "neural|brain|cerebral organoid|organoids platform|platforms"
+  (Finds projects with neural/brain/cerebral AND organoid/organoids AND platform/platforms)
+
+- User: "CRISPR therapeutics"
+  keyword_query: "CRISPR|Cas9|gene editing therapeutic|therapeutics|therapy"
+
+- User: "mass spec proteomics"
+  keyword_query: "mass spectrometry|mass spec|MS proteomic|proteomics"
 
 For semantic_query, use natural descriptive language:
-- "CRISPR gene editing tools and platforms for therapeutic applications"
-- "neural organoid models for studying brain development and disease"
+- "neural organoid platforms for studying brain development and disease"
+- "CRISPR gene editing approaches for therapeutic applications"
 
 === RESPONSE STYLE ===
 After search completes:
