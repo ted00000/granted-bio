@@ -88,6 +88,9 @@ export async function POST(request: NextRequest) {
             iteration++
 
             // Make the API call
+            console.log('[Chat API] Iteration', iteration, '- Making API call')
+            console.log('[Chat API] First message:', JSON.stringify(conversationMessages[0]).slice(0, 200))
+
             const response = await anthropic.messages.create({
               model: 'claude-3-5-haiku-20241022',
               max_tokens: 8192,
@@ -95,6 +98,9 @@ export async function POST(request: NextRequest) {
               tools: AGENT_TOOLS,
               messages: conversationMessages
             })
+
+            console.log('[Chat API] Response stop_reason:', response.stop_reason)
+            console.log('[Chat API] Response content types:', response.content.map(b => b.type).join(', '))
 
             // Extract text and tool use from response
             let responseText = ''
@@ -116,6 +122,14 @@ export async function POST(request: NextRequest) {
                   input: block.input as Record<string, unknown>
                 })
               }
+            }
+
+            console.log('[Chat API] Tool use blocks found:', toolUseBlocks.length)
+            if (toolUseBlocks.length > 0) {
+              console.log('[Chat API] Tools:', toolUseBlocks.map(t => t.name).join(', '))
+            }
+            if (responseText && toolUseBlocks.length === 0) {
+              console.log('[Chat API] Final text response (first 200 chars):', responseText.slice(0, 200))
             }
 
             // Only stream text if there are no tool calls (final response)
