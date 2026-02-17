@@ -25,7 +25,7 @@ import type { Tool } from '@anthropic-ai/sdk/resources/messages'
 export const AGENT_TOOLS: Tool[] = [
   {
     name: 'search_projects',
-    description: 'Search NIH projects using hybrid keyword + semantic search. Returns total count, breakdown by life science category and organization type, and top results ranked by relevance.',
+    description: 'PRIMARY TOOL - Use this for ALL research queries. Search NIH projects using hybrid keyword + semantic search. Returns total count, breakdown by category and org type, and top results. Use this FIRST unless user explicitly asks about patents.',
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -126,7 +126,7 @@ export const AGENT_TOOLS: Tool[] = [
   },
   {
     name: 'search_patents',
-    description: 'Search patents by technology area or keyword.',
+    description: 'ONLY use when user explicitly asks about patents or IP. Search USPTO patents by keyword.',
     input_schema: {
       type: 'object' as const,
       properties: {
