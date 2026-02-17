@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { generateEmbedding } from '@/lib/openai'
+import type { HybridSearchParams, KeywordSearchResult, UserAccess } from '@/lib/chat/types'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -17,6 +18,22 @@ interface SearchParams {
   page?: number
   limit?: number
   useVector?: boolean
+}
+
+// Hybrid search params for UI filtering (matches tools.ts)
+interface HybridSearchRequest {
+  keyword_query: string
+  semantic_query: string
+  filters?: {
+    primary_category?: string[]
+    org_type?: string[]
+    state?: string[]
+    min_funding?: number
+    has_patents?: boolean
+    has_publications?: boolean
+    has_clinical_trials?: boolean
+  }
+  limit?: number
 }
 
 interface SearchResult {
@@ -217,6 +234,11 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
 
+    // Check if this is a hybrid search request (from UI filtering)
+    if (body.keyword_query && body.semantic_query) {
+      return await hybridSearch(body as HybridSearchRequest)
+    }
+
     const params: SearchParams = {
       query: body.query,
       categories: body.categories,
@@ -242,6 +264,407 @@ export async function POST(request: NextRequest) {
     console.error('Search error:', error)
     return NextResponse.json(
       { error: 'Search failed', details: String(error) },
+      { status: 500 }
+    )
+  }
+}
+
+// ============================================================================
+// HYBRID SEARCH - Used by UI for filtered searches without Claude
+// Mirrors the logic in src/lib/chat/tools.ts searchProjectsHybrid()
+// ============================================================================
+
+interface ProjectWithCounts {
+  application_id: string
+  title: string
+  org_name: string | null
+  org_state: string | null
+  org_type: string | null
+  primary_category: string | null
+  total_cost: number | null
+  fiscal_year: number | null
+  pi_names: string | null
+  project_number: string | null
+  patent_count: number
+  publication_count: number
+  clinical_trial_count: number
+  similarity?: number
+}
+
+// Generate singular/plural variations for a word
+function generateWordVariations(word: string, originalKeyword: string): string[] {
+  const variations: string[] = [word]
+
+  // Skip short words and likely acronyms
+  const originalWord = originalKeyword.split(/\s+/).find(w => w.toLowerCase() === word)
+  const isAcronym = originalWord && (originalWord === originalWord.toUpperCase() || word.length <= 3)
+  if (isAcronym) return variations
+
+  // Handle common plural patterns
+  if (word.endsWith('ies') && word.length > 4) {
+    variations.push(word.slice(0, -3) + 'y')
+  } else if (word.endsWith('es') && word.length > 4) {
+    if (word.endsWith('ses') || word.endsWith('xes') || word.endsWith('ches') || word.endsWith('shes') || word.endsWith('zes')) {
+      variations.push(word.slice(0, -2))
+    }
+  } else if (word.endsWith('s') && !word.endsWith('ss') && word.length > 4) {
+    variations.push(word.slice(0, -1))
+  }
+
+  // Handle singular -> plural
+  if (!word.endsWith('s') && word.length > 3) {
+    if (word.endsWith('y') && !['ay', 'ey', 'oy', 'uy'].some(end => word.endsWith(end))) {
+      variations.push(word.slice(0, -1) + 'ies')
+    } else {
+      variations.push(word + 's')
+    }
+  }
+
+  return [...new Set(variations)]
+}
+
+const MAX_RESULTS_PER_WORD = 15000
+
+// Search abstracts for a single word
+async function searchAbstractsForWord(word: string, originalKeyword: string): Promise<Set<string>> {
+  const variations = generateWordVariations(word, originalKeyword)
+  const matchingIds = new Set<string>()
+
+  const searchPromises = variations.map(async (variation) => {
+    const ids: string[] = []
+    let offset = 0
+    const pageSize = 1000
+    const maxPages = Math.ceil(MAX_RESULTS_PER_WORD / pageSize)
+    let pageCount = 0
+
+    while (pageCount < maxPages) {
+      const { data: abstractMatches, error: abstractError } = await supabaseAdmin
+        .from('abstracts')
+        .select('application_id')
+        .ilike('abstract_text', `%${variation}%`)
+        .range(offset, offset + pageSize - 1)
+
+      if (abstractError) throw abstractError
+      if (!abstractMatches || abstractMatches.length === 0) break
+
+      ids.push(...abstractMatches.map(a => a.application_id))
+      if (abstractMatches.length < pageSize) break
+      offset += pageSize
+      pageCount++
+    }
+
+    return ids
+  })
+
+  const allResults = await Promise.all(searchPromises)
+  allResults.forEach(ids => ids.forEach(id => matchingIds.add(id)))
+
+  return matchingIds
+}
+
+// Search terms for a single word
+async function searchTermsForWord(word: string, originalKeyword: string): Promise<Set<string>> {
+  const variations = generateWordVariations(word, originalKeyword)
+  const matchingIds = new Set<string>()
+
+  try {
+    const searchPromises = variations.map(async (variation) => {
+      const ids: string[] = []
+      let offset = 0
+      const pageSize = 1000
+      const maxPages = Math.ceil(MAX_RESULTS_PER_WORD / pageSize)
+      let pageCount = 0
+
+      while (pageCount < maxPages) {
+        const { data: termMatches, error: termError } = await supabaseAdmin
+          .from('projects')
+          .select('application_id')
+          .ilike('terms', `%${variation}%`)
+          .range(offset, offset + pageSize - 1)
+
+        if (termError) {
+          if (termError.code === '57014') break // Timeout
+          throw termError
+        }
+        if (!termMatches || termMatches.length === 0) break
+
+        ids.push(...termMatches.map(a => a.application_id))
+        if (termMatches.length < pageSize) break
+        offset += pageSize
+        pageCount++
+      }
+
+      return ids
+    })
+
+    const allResults = await Promise.all(searchPromises)
+    allResults.forEach(ids => ids.forEach(id => matchingIds.add(id)))
+  } catch (error) {
+    console.log(`Terms search failed for word "${word}":`, error)
+  }
+
+  return matchingIds
+}
+
+// Get project IDs matching keyword search with pipe-separated synonyms
+async function getKeywordMatchingIds(query: string): Promise<Set<string>> {
+  const wordGroups = query.toLowerCase().trim().split(/\s+/).filter(g => g.length > 2)
+  if (wordGroups.length === 0) return new Set()
+
+  const groupMatchPromises = wordGroups.map(async (group) => {
+    const synonyms = group.split('|').filter(s => s.length > 2)
+    if (synonyms.length === 0) return new Set<string>()
+
+    const synonymMatchPromises = synonyms.map(async (synonym) => {
+      const [abstractMatches, termMatches] = await Promise.all([
+        searchAbstractsForWord(synonym, query),
+        searchTermsForWord(synonym, query)
+      ])
+
+      const combined = new Set<string>()
+      abstractMatches.forEach(id => combined.add(id))
+      termMatches.forEach(id => combined.add(id))
+      return combined
+    })
+
+    const synonymResults = await Promise.all(synonymMatchPromises)
+    const groupMatches = new Set<string>()
+    for (const matches of synonymResults) {
+      matches.forEach(id => groupMatches.add(id))
+    }
+    return groupMatches
+  })
+
+  const groupMatchResults = await Promise.all(groupMatchPromises)
+
+  if (groupMatchResults.length === 1) return groupMatchResults[0]
+
+  let matchingIds = groupMatchResults[0]
+  for (let i = 1; i < groupMatchResults.length; i++) {
+    matchingIds = new Set([...matchingIds].filter(id => groupMatchResults[i].has(id)))
+  }
+
+  return matchingIds
+}
+
+// Get semantic search results
+async function getSemanticResults(query: string, limit: number): Promise<ProjectWithCounts[]> {
+  const queryEmbedding = await generateEmbedding(query)
+
+  const { data, error } = await supabaseAdmin.rpc('search_projects_filtered', {
+    query_embedding: queryEmbedding,
+    match_threshold: 0.25,
+    match_count: limit,
+    min_biotools_confidence: 0,
+    filter_fiscal_years: null,
+    filter_categories: null,
+    filter_org_types: null,
+    filter_states: null,
+    filter_min_funding: null,
+    filter_max_funding: null
+  })
+
+  if (error) {
+    console.warn('Semantic search fallback:', error.message)
+    const { data: fallbackData } = await supabaseAdmin.rpc('search_projects', {
+      query_embedding: queryEmbedding,
+      match_threshold: 0.25,
+      match_count: limit,
+      min_biotools_confidence: 0
+    })
+    return (fallbackData || []) as ProjectWithCounts[]
+  }
+
+  return (data || []) as ProjectWithCounts[]
+}
+
+// Fetch projects by IDs
+async function fetchProjectsByIds(ids: string[]): Promise<ProjectWithCounts[]> {
+  if (ids.length === 0) return []
+
+  const results: ProjectWithCounts[] = []
+
+  for (let i = 0; i < ids.length; i += 500) {
+    const batch = ids.slice(i, i + 500)
+    const { data } = await supabaseAdmin
+      .from('projects')
+      .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
+      .in('application_id', batch)
+
+    if (data) {
+      results.push(...data.map(p => ({
+        ...p,
+        patent_count: p.patent_count ?? 0,
+        publication_count: p.publication_count ?? 0,
+        clinical_trial_count: p.clinical_trial_count ?? 0
+      })))
+    }
+  }
+
+  return results
+}
+
+// Main hybrid search function for UI filtering
+async function hybridSearch(params: HybridSearchRequest) {
+  const { keyword_query, semantic_query, filters, limit = 100 } = params
+  const effectiveLimit = Math.min(limit, 1000) // UI can request more than Claude
+
+  try {
+    // Run keyword and semantic searches in parallel
+    const [keywordIds, semanticResults] = await Promise.all([
+      getKeywordMatchingIds(keyword_query),
+      getSemanticResults(semantic_query, effectiveLimit * 2)
+    ])
+
+    // Build RRF scores
+    const K = 60
+    const rrfScores: Map<string, { score: number; data: ProjectWithCounts | null }> = new Map()
+
+    // Score keyword matches
+    let keywordRank = 1
+    for (const id of keywordIds) {
+      const existing = rrfScores.get(id)
+      const keywordScore = 1 / (K + keywordRank)
+      if (existing) {
+        existing.score += keywordScore
+      } else {
+        rrfScores.set(id, { score: keywordScore, data: null })
+      }
+      keywordRank++
+    }
+
+    // Score semantic matches
+    let semanticRank = 1
+    for (const result of semanticResults) {
+      const existing = rrfScores.get(result.application_id)
+      const semanticScore = 1 / (K + semanticRank)
+      const boostedScore = semanticScore * (1 + (result.similarity || 0))
+      if (existing) {
+        existing.score += boostedScore
+        existing.data = result
+      } else {
+        rrfScores.set(result.application_id, { score: boostedScore, data: result })
+      }
+      semanticRank++
+    }
+
+    // Get project data for keyword-only matches
+    const keywordOnlyIds = [...rrfScores.entries()]
+      .filter(([, v]) => v.data === null)
+      .map(([id]) => id)
+
+    if (keywordOnlyIds.length > 0) {
+      const keywordProjects = await fetchProjectsByIds(keywordOnlyIds)
+      for (const project of keywordProjects) {
+        const entry = rrfScores.get(project.application_id)
+        if (entry) entry.data = project
+      }
+    }
+
+    // Convert to array and sort by RRF score
+    let allProjects = [...rrfScores.entries()]
+      .filter(([, v]) => v.data !== null)
+      .map(([id, v]) => ({ ...v.data!, rrf_score: v.score }))
+      .sort((a, b) => b.rrf_score - a.rrf_score)
+
+    // Apply filters
+    if (filters?.primary_category?.length) {
+      allProjects = allProjects.filter(p => p.primary_category && filters.primary_category!.includes(p.primary_category))
+    }
+    if (filters?.org_type?.length) {
+      allProjects = allProjects.filter(p => p.org_type && filters.org_type!.includes(p.org_type))
+    }
+    if (filters?.state?.length) {
+      allProjects = allProjects.filter(p => p.org_state && filters.state!.includes(p.org_state))
+    }
+    if (filters?.min_funding) {
+      allProjects = allProjects.filter(p => (p.total_cost || 0) >= filters.min_funding!)
+    }
+    if (filters?.has_patents) {
+      allProjects = allProjects.filter(p => (p.patent_count || 0) > 0)
+    }
+    if (filters?.has_publications) {
+      allProjects = allProjects.filter(p => (p.publication_count || 0) > 0)
+    }
+    if (filters?.has_clinical_trials) {
+      allProjects = allProjects.filter(p => (p.clinical_trial_count || 0) > 0)
+    }
+
+    // Deduplicate by project_number
+    const seenProjects = new Map<string, typeof allProjects[0]>()
+    for (const project of allProjects) {
+      const key = project.project_number || project.application_id
+      const existing = seenProjects.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(key, project)
+      }
+    }
+    allProjects = [...seenProjects.values()].sort((a, b) => b.rrf_score - a.rrf_score)
+
+    const totalBeforeCap = allProjects.length
+
+    // Aggregate by category and org_type
+    const byCategory: Record<string, number> = {}
+    const byOrgType: Record<string, number> = {}
+
+    allProjects.forEach(p => {
+      const cat = p.primary_category || 'other'
+      const org = p.org_type || 'other'
+      byCategory[cat] = (byCategory[cat] || 0) + 1
+      byOrgType[org] = (byOrgType[org] || 0) + 1
+    })
+
+    // Cap results
+    const MAX_RESULTS = 100
+    const cappedProjects = allProjects.slice(0, MAX_RESULTS)
+
+    // Format sample results (top 10)
+    const sampleResults = cappedProjects.slice(0, 10).map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      total_cost: p.total_cost,
+      pi_names: p.pi_names,
+      pi_email: null, // Don't include emails in public API
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
+    }))
+
+    // Generate summary
+    const categoryBreakdown = Object.entries(byCategory)
+      .sort(([, a], [, b]) => b - a)
+      .map(([cat, count]) => `${cat}: ${count}`)
+      .join(', ')
+
+    const orgTypeBreakdown = Object.entries(byOrgType)
+      .sort(([, a], [, b]) => b - a)
+      .map(([org, count]) => `${org}: ${count}`)
+      .join(', ')
+
+    const showingCount = Math.min(totalBeforeCap, MAX_RESULTS)
+    const summary = `Found ${totalBeforeCap} projects` +
+      (totalBeforeCap > MAX_RESULTS ? ` (showing top ${MAX_RESULTS})` : '') +
+      `. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
+
+    const result: KeywordSearchResult = {
+      summary,
+      search_query: keyword_query,
+      total_count: totalBeforeCap,
+      showing_count: showingCount,
+      by_category: byCategory,
+      by_org_type: byOrgType,
+      sample_results: sampleResults
+    }
+
+    return NextResponse.json(result)
+  } catch (error) {
+    console.error('Hybrid search error:', error)
+    return NextResponse.json(
+      { error: 'Hybrid search failed', details: String(error) },
       { status: 500 }
     )
   }

@@ -2,8 +2,9 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
-import type { PersonaType } from '@/lib/chat/types'
+import type { PersonaType, KeywordSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
+import { FilterChips } from './FilterChips'
 
 const ICONS = {
   search: Search,
@@ -24,6 +25,13 @@ interface ToolResult {
   name: string
   data: unknown
   timestamp: number
+}
+
+// Search context for filtering without Claude
+interface SearchContext {
+  keywordQuery: string
+  semanticQuery: string
+  originalResults: KeywordSearchResult
 }
 
 interface ChatProps {
@@ -63,7 +71,15 @@ function formatCurrency(amount: number): string {
 }
 
 // Results Panel Component
-function ResultsPanel({ results }: { results: ToolResult[] }) {
+interface ResultsPanelProps {
+  results: ToolResult[]
+  searchContext: SearchContext | null
+  filteredResults: KeywordSearchResult | null
+  isFiltering: boolean
+  onFilterChange: (filters: { primary_category?: string[]; org_type?: string[] }) => void
+}
+
+function ResultsPanel({ results, searchContext, filteredResults, isFiltering, onFilterChange }: ResultsPanelProps) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -85,32 +101,17 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
   const projectResult = [...results].reverse().find(r => r.name === 'search_projects' || r.name === 'keyword_search')
   const latestResult = projectResult || results[results.length - 1]
 
+  // Use filtered results if available, otherwise use original
+  const displayData = filteredResults || (projectResult?.data as KeywordSearchResult | undefined)
+
   if (latestResult.name === 'keyword_search') {
-    const data = latestResult.data as {
-      total_count: number
-      showing_count?: number
-      search_query?: string
-      by_category: Record<string, number>
-      by_org_type: Record<string, number>
-      sample_results: Array<{
-        application_id: string
-        title: string
-        org_name: string | null
-        org_state: string | null
-        org_type: string | null
-        total_cost: number | null
-        fiscal_year: number | null
-        pi_names: string | null
-        primary_category: string | null
-        is_sbir: boolean
-        is_sttr: boolean
-        patent_count: number
-        publication_count: number
-        clinical_trial_count: number
-      }>
-    }
+    // Use displayData if available (for filtered results), otherwise fall back to raw data
+    const data = displayData || latestResult.data as KeywordSearchResult
+    // Original data for filter chips (always show original counts)
+    const originalData = searchContext?.originalResults || data
 
     const isCapped = data.showing_count && data.showing_count < data.total_count
+    const isFiltered = filteredResults !== null
 
     return (
       <div className="h-full overflow-y-auto">
@@ -118,6 +119,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total_count.toLocaleString()}</div>
           <div className="text-sm text-gray-400 mt-1">
             projects found{isCapped && ` · showing top ${data.showing_count}`}
+            {isFiltered && ' (filtered)'}
           </div>
           {data.search_query && (
             <div className="text-xs text-gray-400 mt-2">
@@ -126,44 +128,17 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           )}
         </div>
 
-        {(Object.keys(data.by_category || {}).length > 0 || Object.keys(data.by_org_type || {}).length > 0) && (
+        {/* Filter Chips - always use original data for counts */}
+        {searchContext && (Object.keys(originalData.by_category || {}).length > 0 || Object.keys(originalData.by_org_type || {}).length > 0) && (
           <div className="p-6 border-b border-gray-100">
-            <div className="grid grid-cols-2 gap-4">
-              {Object.keys(data.by_category || {}).length > 0 && (
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-3">Category</h3>
-                  <table className="w-full">
-                    <tbody>
-                      {Object.entries(data.by_category)
-                        .sort(([, a], [, b]) => b - a)
-                        .map(([cat, count]) => (
-                          <tr key={cat}>
-                            <td className="py-1.5 text-sm text-gray-700 capitalize">{cat.replace(/_/g, ' ')}</td>
-                            <td className="py-1.5 text-sm font-semibold text-gray-900 text-right tabular-nums">{count.toLocaleString()}</td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-              {Object.keys(data.by_org_type || {}).length > 0 && (
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-3">Organization</h3>
-                  <table className="w-full">
-                    <tbody>
-                      {Object.entries(data.by_org_type)
-                        .sort(([, a], [, b]) => b - a)
-                        .map(([org, count]) => (
-                          <tr key={org}>
-                            <td className="py-1.5 text-sm text-gray-700 capitalize">{org.replace(/_/g, ' ')}</td>
-                            <td className="py-1.5 text-sm font-semibold text-gray-900 text-right tabular-nums">{count.toLocaleString()}</td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                </div>
-              )}
-            </div>
+            <FilterChips
+              byCategory={originalData.by_category || {}}
+              byOrgType={originalData.by_org_type || {}}
+              keywordQuery={searchContext.keywordQuery}
+              semanticQuery={searchContext.semanticQuery}
+              onFilterChange={onFilterChange}
+              isLoading={isFiltering}
+            />
           </div>
         )}
 
@@ -234,29 +209,13 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
 
   if (latestResult.name === 'search_projects') {
     // Now returns KeywordSearchResult format from hybrid search
-    const data = latestResult.data as {
-      total_count: number
-      showing_count?: number
-      search_query?: string
-      by_category: Record<string, number>
-      by_org_type: Record<string, number>
-      sample_results: Array<{
-        application_id: string
-        title: string
-        org_name: string | null
-        org_state: string | null
-        org_type: string | null
-        total_cost: number | null
-        fiscal_year: number | null
-        pi_names: string | null
-        primary_category: string | null
-        patent_count: number
-        publication_count: number
-        clinical_trial_count: number
-      }>
-    }
+    // Use displayData if available (for filtered results), otherwise fall back to raw data
+    const data = displayData || latestResult.data as KeywordSearchResult
+    // Original data for filter chips (always show original counts)
+    const originalData = searchContext?.originalResults || data
 
     const isCapped = data.showing_count && data.showing_count < data.total_count
+    const isFiltered = filteredResults !== null
 
     return (
       <div className="h-full overflow-y-auto">
@@ -264,6 +223,7 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
           <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total_count.toLocaleString()}</div>
           <div className="text-sm text-gray-400 mt-1">
             projects found{isCapped && ` · showing top ${data.showing_count}`}
+            {isFiltered && ' (filtered)'}
           </div>
           {data.search_query && (
             <div className="text-xs text-gray-400 mt-2">
@@ -271,6 +231,20 @@ function ResultsPanel({ results }: { results: ToolResult[] }) {
             </div>
           )}
         </div>
+
+        {/* Filter Chips - always use original data for counts */}
+        {searchContext && (Object.keys(originalData.by_category || {}).length > 0 || Object.keys(originalData.by_org_type || {}).length > 0) && (
+          <div className="p-6 border-b border-gray-100">
+            <FilterChips
+              byCategory={originalData.by_category || {}}
+              byOrgType={originalData.by_org_type || {}}
+              keywordQuery={searchContext.keywordQuery}
+              semanticQuery={searchContext.semanticQuery}
+              onFilterChange={onFilterChange}
+              isLoading={isFiltering}
+            />
+          </div>
+        )}
 
         {data.sample_results?.length > 0 && (
           <div className="p-6">
@@ -496,11 +470,47 @@ export function Chat({ persona }: ChatProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [isSearching, setIsSearching] = useState(false)
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
+  const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
+  const [isFiltering, setIsFiltering] = useState(false)
+  const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const metadata = PERSONA_METADATA[persona]
   const IconComponent = ICONS[metadata.icon]
+
+  // Handle filter changes - make direct API call without Claude
+  const handleFilterChange = useCallback(async (filters: { primary_category?: string[]; org_type?: string[] }) => {
+    if (!searchContext) return
+
+    // If no filters, clear filtered results and show original
+    if (!filters.primary_category?.length && !filters.org_type?.length) {
+      setFilteredResults(null)
+      return
+    }
+
+    setIsFiltering(true)
+    try {
+      const response = await fetch('/api/search', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          keyword_query: searchContext.keywordQuery,
+          semantic_query: searchContext.semanticQuery,
+          filters
+        })
+      })
+
+      if (!response.ok) throw new Error('Filter request failed')
+
+      const data = await response.json()
+      setFilteredResults(data)
+    } catch (error) {
+      console.error('Filter error:', error)
+    } finally {
+      setIsFiltering(false)
+    }
+  }, [searchContext])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -565,6 +575,16 @@ export function Chat({ persona }: ChatProps) {
               } else if (parsed.type === 'tool_result') {
                 setToolResults(prev => [...prev, { name: parsed.name, data: parsed.data, timestamp: Date.now() }])
                 setIsSearching(false)
+                // Capture search context for UI filtering
+                if (parsed.name === 'search_projects' || parsed.name === 'keyword_search') {
+                  const resultData = parsed.data as KeywordSearchResult
+                  setSearchContext({
+                    keywordQuery: resultData.search_query || '',
+                    semanticQuery: resultData.search_query || '', // Same for legacy; new dual-query will differentiate
+                    originalResults: resultData
+                  })
+                  setFilteredResults(null) // Clear any previous filters
+                }
               } else if (parsed.type === 'tool_complete') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: false } : m))
                 setIsSearching(false)
@@ -735,7 +755,13 @@ export function Chat({ persona }: ChatProps) {
             <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER & USPTO PatentsView</p>
           </div>
           <div className="flex-1 overflow-hidden">
-            <ResultsPanel results={toolResults} />
+            <ResultsPanel
+              results={toolResults}
+              searchContext={searchContext}
+              filteredResults={filteredResults}
+              isFiltering={isFiltering}
+              onFilterChange={handleFilterChange}
+            />
           </div>
         </div>
     </div>

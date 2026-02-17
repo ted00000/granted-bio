@@ -25,13 +25,17 @@ import type { Tool } from '@anthropic-ai/sdk/resources/messages'
 export const AGENT_TOOLS: Tool[] = [
   {
     name: 'search_projects',
-    description: 'PRIMARY TOOL - Use this for ALL research queries. Search NIH projects using hybrid keyword + semantic search. Returns total count, breakdown by category and org type, and top results. Use this FIRST unless user explicitly asks about patents.',
+    description: 'Search NIH projects using hybrid keyword + semantic search. Returns total count, breakdown by category and org type, and top results.',
     input_schema: {
       type: 'object' as const,
       properties: {
-        query: {
+        keyword_query: {
           type: 'string',
-          description: 'Search query - can be specific terms (e.g., "CRISPR", "mass spectrometry") or broader concepts (e.g., "novel cancer therapies")'
+          description: 'Query for keyword matching. Include synonyms separated by pipes: "neural|brain|cerebral organoid|organoids"'
+        },
+        semantic_query: {
+          type: 'string',
+          description: 'Natural language query for semantic/embedding search: "neural organoid platforms for brain disease research"'
         },
         filters: {
           type: 'object',
@@ -75,7 +79,7 @@ export const AGENT_TOOLS: Tool[] = [
           description: 'Maximum number of results to return (default 100)'
         }
       },
-      required: ['query']
+      required: ['keyword_query', 'semantic_query']
     }
   },
   {
@@ -563,13 +567,13 @@ export async function searchProjects(
   params: SearchProjectsParams,
   userAccess: UserAccess
 ): Promise<{ results: ReturnType<typeof summarizeProject>[], total: number }> {
-  const { query, filters, limit = 10 } = params
+  const { semantic_query, filters, limit = 10 } = params
   // Cap at 15 results for chat to avoid token overflow
   const effectiveLimit = Math.min(limit, 15, userAccess.resultsLimit)
 
   try {
     // Generate embedding for semantic search
-    const queryEmbedding = await generateEmbedding(query)
+    const queryEmbedding = await generateEmbedding(semantic_query)
 
     // Try optimized function with SQL-level filtering first
     const { data, error } = await supabaseAdmin.rpc('search_projects_filtered', {
@@ -714,16 +718,16 @@ export async function searchProjectsHybrid(
   params: HybridSearchParams,
   userAccess: UserAccess
 ): Promise<KeywordSearchResult> {
-  const { query, filters, limit = 100 } = params
+  const { keyword_query, semantic_query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
 
   try {
     // Run keyword and semantic searches in parallel
     const [keywordIds, semanticResults] = await Promise.all([
       // Keyword search: get matching project IDs
-      getKeywordMatchingIds(query),
+      getKeywordMatchingIds(keyword_query),
       // Semantic search: get scored results
-      getSemanticResults(query, effectiveLimit * 2) // Get more for merging
+      getSemanticResults(semantic_query, effectiveLimit * 2) // Get more for merging
     ])
 
     // Build RRF (Reciprocal Rank Fusion) scores
@@ -896,13 +900,13 @@ export async function searchProjectsHybrid(
       .join(', ')
 
     const showingCount = Math.min(totalBeforeCap, MAX_RESULTS)
-    const summary = `Search: "${query}". Found ${totalBeforeCap} projects` +
+    const summary = `Found ${totalBeforeCap} projects` +
       (totalBeforeCap > MAX_RESULTS ? ` (showing top ${MAX_RESULTS})` : '') +
       `. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
 
     return {
       summary,
-      search_query: query,
+      search_query: keyword_query,  // Store keyword_query for UI filtering
       total_count: totalBeforeCap,
       showing_count: showingCount,
       by_category: byCategory,
@@ -1530,9 +1534,13 @@ export async function executeTool(
       return getPatentDetails(args as unknown as GetPatentDetailsParams, userAccess)
     // Legacy support for old tool names
     case 'keyword_search':
-      // Redirect to hybrid search
+      // Redirect to hybrid search (use keyword for both queries in legacy mode)
       const keywordArgs = args as unknown as KeywordSearchParams
-      return searchProjectsHybrid({ query: keywordArgs.keyword, filters: keywordArgs.filters }, userAccess)
+      return searchProjectsHybrid({
+        keyword_query: keywordArgs.keyword,
+        semantic_query: keywordArgs.keyword,
+        filters: keywordArgs.filters
+      }, userAccess)
     default:
       throw new Error(`Unknown tool: ${toolName}`)
   }

@@ -51,7 +51,8 @@ export interface SearchFilters {
 
 // Tool parameter types
 export interface SearchProjectsParams {
-  query: string
+  keyword_query: string
+  semantic_query: string
   filters?: SearchFilters
   limit?: number
 }
@@ -89,7 +90,8 @@ export interface KeywordSearchParams {
 
 // Hybrid search combines keyword + semantic search with RRF scoring
 export interface HybridSearchParams {
-  query: string
+  keyword_query: string
+  semantic_query: string
   filters?: {
     primary_category?: string[]
     org_type?: string[]
@@ -117,8 +119,12 @@ export interface KeywordSearchResult {
     org_type: string | null
     primary_category: string | null
     total_cost: number | null
+    fiscal_year?: number | null
     pi_names: string | null
     pi_email: string | null
+    // SBIR/STTR flags (optional - only set by keyword_search)
+    is_sbir?: boolean
+    is_sttr?: boolean
     // Enriched counts from projects_enriched view
     patent_count: number
     publication_count: number
