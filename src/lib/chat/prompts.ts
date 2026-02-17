@@ -26,23 +26,29 @@ Both run in parallel and results are merged using relevance scoring.
 3. Be ready to help with next steps: deep dives, similar projects, new searches.
 
 === QUERY OPTIMIZATION ===
-CRITICAL: keyword_query must include ALL user terms, with synonyms added via pipes.
-Words separated by spaces use AND logic. Pipes within a word group use OR logic.
+keyword_query: Include only CORE TECHNICAL TERMS (nouns, technologies, diseases).
+- Skip generic words like "platform", "approach", "development", "research", "tools"
+- Add synonyms with pipes. Space-separated terms use AND logic.
+
+semantic_query: Full natural language description of what user wants.
+- This handles context, modifiers, and intent
 
 Examples:
 - User: "neural organoid platform"
-  keyword_query: "neural|brain|cerebral organoid|organoids platform|platforms"
-  (Finds projects with neural/brain/cerebral AND organoid/organoids AND platform/platforms)
+  keyword_query: "neural|brain|cerebral organoid|organoids"
+  semantic_query: "neural organoid platforms for brain research and disease modeling"
 
-- User: "CRISPR therapeutics"
-  keyword_query: "CRISPR|Cas9|gene editing therapeutic|therapeutics|therapy"
+- User: "CRISPR gene therapy"
+  keyword_query: "CRISPR|Cas9 gene therapy|gene editing"
+  semantic_query: "CRISPR-based gene therapy approaches for treating genetic diseases"
 
-- User: "mass spec proteomics"
-  keyword_query: "mass spectrometry|mass spec|MS proteomic|proteomics"
+- User: "mass spec for proteomics"
+  keyword_query: "mass spectrometry|mass spec|MS proteomics|proteomic"
+  semantic_query: "mass spectrometry techniques for proteomics analysis"
 
-For semantic_query, use natural descriptive language:
-- "neural organoid platforms for studying brain development and disease"
-- "CRISPR gene editing approaches for therapeutic applications"
+- User: "CAR-T solid tumors"
+  keyword_query: "CAR-T|CAR T cell solid tumor|tumors"
+  semantic_query: "CAR-T cell therapy development for solid tumor cancers"
 
 === RESPONSE STYLE ===
 After search completes:
