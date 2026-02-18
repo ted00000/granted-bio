@@ -118,6 +118,7 @@ export interface SearchResultProject {
   pi_email?: string | null
   program_officer?: string | null
   activity_code?: string | null
+  project_end?: string | null
   // Enriched counts
   patent_count: number
   publication_count: number

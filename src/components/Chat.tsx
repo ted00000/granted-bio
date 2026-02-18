@@ -82,6 +82,14 @@ function getSbirSttrStatus(activityCode: string | null | undefined): { isSbir: b
   return { isSbir, isSttr }
 }
 
+// Determine if project is active based on end date
+function isProjectActive(projectEnd: string | null | undefined): boolean | null {
+  if (!projectEnd) return null // Unknown status
+  const endDate = new Date(projectEnd)
+  const today = new Date()
+  return endDate >= today
+}
+
 // Results Panel Component
 interface ResultsPanelProps {
   results: ToolResult[]
@@ -171,6 +179,17 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     )}
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-400">
+                    {(() => {
+                      const active = isProjectActive(project.project_end)
+                      const color = active === null ? 'bg-gray-300' : active ? 'bg-emerald-400' : 'bg-rose-300'
+                      const label = active === null ? 'Unknown' : active ? 'Active' : 'Inactive'
+                      return (
+                        <span
+                          className={`w-2 h-2 rounded-full ${color}`}
+                          title={label}
+                        />
+                      )
+                    })()}
                     <span>{project.org_name}</span>
                     {project.org_state && <span>• {project.org_state}</span>}
                     {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
@@ -290,6 +309,17 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     )}
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-400">
+                    {(() => {
+                      const active = isProjectActive(project.project_end)
+                      const color = active === null ? 'bg-gray-300' : active ? 'bg-emerald-400' : 'bg-rose-300'
+                      const label = active === null ? 'Unknown' : active ? 'Active' : 'Inactive'
+                      return (
+                        <span
+                          className={`w-2 h-2 rounded-full ${color}`}
+                          title={label}
+                        />
+                      )
+                    })()}
                     <span>{project.org_name}</span>
                     {project.org_state && <span>• {project.org_state}</span>}
                     {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}

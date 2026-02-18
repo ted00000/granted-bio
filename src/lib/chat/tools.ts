@@ -901,6 +901,7 @@ export async function searchProjectsHybrid(
       pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
+      project_end: p.project_end || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
       clinical_trial_count: p.clinical_trial_count || 0
@@ -919,6 +920,7 @@ export async function searchProjectsHybrid(
       pi_names: p.pi_names,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
+      project_end: p.project_end || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
       clinical_trial_count: p.clinical_trial_count || 0
@@ -967,6 +969,7 @@ interface ProjectWithCounts {
   project_number: string | null
   program_officer: string | null
   activity_code: string | null
+  project_end: string | null
   patent_count: number
   publication_count: number
   clinical_trial_count: number
@@ -1069,7 +1072,7 @@ async function fetchProjectsByIds(ids: string[]): Promise<ProjectWithCounts[]> {
     const batch = ids.slice(i, i + 500)
     const { data } = await supabaseAdmin
       .from('projects')
-      .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, program_officer, activity_code, patent_count, publication_count, clinical_trial_count')
+      .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, program_officer, activity_code, project_end, patent_count, publication_count, clinical_trial_count')
       .in('application_id', batch)
 
     if (data) {
@@ -1077,6 +1080,7 @@ async function fetchProjectsByIds(ids: string[]): Promise<ProjectWithCounts[]> {
         ...p,
         program_officer: p.program_officer ?? null,
         activity_code: p.activity_code ?? null,
+        project_end: p.project_end ?? null,
         patent_count: p.patent_count ?? 0,
         publication_count: p.publication_count ?? 0,
         clinical_trial_count: p.clinical_trial_count ?? 0
