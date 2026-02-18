@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
@@ -76,9 +76,12 @@ interface ResultsPanelProps {
   searchContext: SearchContext | null
   filteredResults: KeywordSearchResult | null
   onFilterChange: (filters: { primary_category?: string[]; org_type?: string[] }) => void
+  // Cross-filtered counts for dynamic chip numbers
+  crossFilteredByCategory?: Record<string, number>
+  crossFilteredByOrgType?: Record<string, number>
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType }: ResultsPanelProps) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -131,6 +134,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange 
             <FilterChips
               byCategory={searchContext.originalResults.by_category || {}}
               byOrgType={searchContext.originalResults.by_org_type || {}}
+              filteredByCategory={crossFilteredByCategory}
+              filteredByOrgType={crossFilteredByOrgType}
               keywordQuery={searchContext.keywordQuery}
               semanticQuery={searchContext.semanticQuery}
               onFilterChange={onFilterChange}
@@ -227,6 +232,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange 
             <FilterChips
               byCategory={searchContext.originalResults.by_category || {}}
               byOrgType={searchContext.originalResults.by_org_type || {}}
+              filteredByCategory={crossFilteredByCategory}
+              filteredByOrgType={crossFilteredByOrgType}
               keywordQuery={searchContext.keywordQuery}
               semanticQuery={searchContext.semanticQuery}
               onFilterChange={onFilterChange}
@@ -461,6 +468,7 @@ export function Chat({ persona }: ChatProps) {
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
   const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
+  const [currentFilters, setCurrentFilters] = useState<{ primary_category?: string[]; org_type?: string[] }>({})
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -469,6 +477,8 @@ export function Chat({ persona }: ChatProps) {
 
   // Handle filter changes - filter client-side from stored results
   const handleFilterChange = useCallback((filters: { primary_category?: string[]; org_type?: string[] }) => {
+    setCurrentFilters(filters)
+
     if (!searchContext) return
 
     const allResults = searchContext.originalResults.all_results
@@ -638,6 +648,7 @@ export function Chat({ persona }: ChatProps) {
     setToolResults([])
     setSearchContext(null)
     setFilteredResults(null)
+    setCurrentFilters({})
     setInput('')
     inputRef.current?.focus()
   }
@@ -646,6 +657,53 @@ export function Chat({ persona }: ChatProps) {
     const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant')
     return lastAssistant?.id === messageId
   }
+
+  // Compute cross-filtered counts for dynamic chip numbers
+  // - crossFilteredByCategory: counts when only org_type filter is applied (for category chips)
+  // - crossFilteredByOrgType: counts when only category filter is applied (for org_type chips)
+  const { crossFilteredByCategory, crossFilteredByOrgType } = useMemo(() => {
+    if (!searchContext) return { crossFilteredByCategory: undefined, crossFilteredByOrgType: undefined }
+
+    const allResults = searchContext.originalResults.all_results
+    const hasCategory = currentFilters.primary_category?.length
+    const hasOrgType = currentFilters.org_type?.length
+
+    // If no filters, return undefined (chips will use original counts)
+    if (!hasCategory && !hasOrgType) {
+      return { crossFilteredByCategory: undefined, crossFilteredByOrgType: undefined }
+    }
+
+    // For category chips: filter by org_type only, then count categories
+    let categoryFiltered = allResults
+    if (hasOrgType) {
+      categoryFiltered = allResults.filter(p =>
+        p.org_type && currentFilters.org_type!.includes(p.org_type)
+      )
+    }
+    const byCategory: Record<string, number> = {}
+    categoryFiltered.forEach(p => {
+      const cat = p.primary_category || 'other'
+      byCategory[cat] = (byCategory[cat] || 0) + 1
+    })
+
+    // For org_type chips: filter by category only, then count org_types
+    let orgFiltered = allResults
+    if (hasCategory) {
+      orgFiltered = allResults.filter(p =>
+        p.primary_category && currentFilters.primary_category!.includes(p.primary_category)
+      )
+    }
+    const byOrgType: Record<string, number> = {}
+    orgFiltered.forEach(p => {
+      const org = p.org_type || 'other'
+      byOrgType[org] = (byOrgType[org] || 0) + 1
+    })
+
+    return {
+      crossFilteredByCategory: hasOrgType ? byCategory : undefined,
+      crossFilteredByOrgType: hasCategory ? byOrgType : undefined
+    }
+  }, [searchContext, currentFilters])
 
   return (
     <div className="h-full bg-white flex overflow-hidden">
@@ -788,6 +846,8 @@ export function Chat({ persona }: ChatProps) {
               searchContext={searchContext}
               filteredResults={filteredResults}
               onFilterChange={handleFilterChange}
+              crossFilteredByCategory={crossFilteredByCategory}
+              crossFilteredByOrgType={crossFilteredByOrgType}
             />
           </div>
         </div>

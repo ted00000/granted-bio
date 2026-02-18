@@ -5,6 +5,9 @@ import { useState, useEffect } from 'react'
 interface FilterChipsProps {
   byCategory: Record<string, number>
   byOrgType: Record<string, number>
+  // Filtered counts (dynamic based on cross-dimension selection)
+  filteredByCategory?: Record<string, number>
+  filteredByOrgType?: Record<string, number>
   keywordQuery: string
   semanticQuery: string
   onFilterChange: (filters: { primary_category?: string[]; org_type?: string[] }) => void
@@ -33,6 +36,8 @@ const ORG_TYPE_LABELS: Record<string, string> = {
 export function FilterChips({
   byCategory,
   byOrgType,
+  filteredByCategory,
+  filteredByOrgType,
   keywordQuery,
   semanticQuery,
   onFilterChange,
@@ -79,6 +84,13 @@ export function FilterChips({
   }
 
   const hasFilters = selectedCategories.length > 0 || selectedOrgTypes.length > 0
+
+  // Use original counts for chip list (so all options stay visible)
+  // Use filtered counts for display numbers (dynamic based on cross-selection)
+  const displayCategoryCounts = filteredByCategory || byCategory
+  const displayOrgTypeCounts = filteredByOrgType || byOrgType
+
+  // Sort by original counts to maintain stable order
   const sortedCategories = Object.entries(byCategory).sort(([, a], [, b]) => b - a)
   const sortedOrgTypes = Object.entries(byOrgType).sort(([, a], [, b]) => b - a)
 
@@ -109,26 +121,30 @@ export function FilterChips({
         <div>
           <h4 className="text-xs text-gray-500 mb-2">Life Science Area</h4>
           <div className="flex flex-wrap gap-2">
-            {sortedCategories.map(([category, count]) => {
+            {sortedCategories.map(([category]) => {
               const isSelected = selectedCategories.includes(category)
               const label = CATEGORY_LABELS[category] || category.replace(/_/g, ' ')
+              const displayCount = displayCategoryCounts[category] || 0
+              const isDisabled = isLoading || (!isSelected && displayCount === 0)
               return (
                 <button
                   key={category}
                   onClick={() => toggleCategory(category)}
-                  disabled={isLoading}
+                  disabled={isDisabled}
                   className={`
                     px-3 py-1.5 text-xs rounded-full border transition-all
                     ${isSelected
                       ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
+                      : displayCount === 0
+                        ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                        : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
                     }
-                    ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                    ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
                   `}
                 >
                   <span className="capitalize">{label}</span>
                   <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                    {count.toLocaleString()}
+                    {displayCount.toLocaleString()}
                   </span>
                 </button>
               )
@@ -142,26 +158,30 @@ export function FilterChips({
         <div>
           <h4 className="text-xs text-gray-500 mb-2">Organization Type</h4>
           <div className="flex flex-wrap gap-2">
-            {sortedOrgTypes.map(([orgType, count]) => {
+            {sortedOrgTypes.map(([orgType]) => {
               const isSelected = selectedOrgTypes.includes(orgType)
               const label = ORG_TYPE_LABELS[orgType] || orgType.replace(/_/g, ' ')
+              const displayCount = displayOrgTypeCounts[orgType] || 0
+              const isDisabled = isLoading || (!isSelected && displayCount === 0)
               return (
                 <button
                   key={orgType}
                   onClick={() => toggleOrgType(orgType)}
-                  disabled={isLoading}
+                  disabled={isDisabled}
                   className={`
                     px-3 py-1.5 text-xs rounded-full border transition-all
                     ${isSelected
                       ? 'bg-gray-800 text-white border-gray-800'
-                      : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
+                      : displayCount === 0
+                        ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                        : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
                     }
-                    ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                    ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
                   `}
                 >
                   <span className="capitalize">{label}</span>
                   <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                    {count.toLocaleString()}
+                    {displayCount.toLocaleString()}
                   </span>
                 </button>
               )
