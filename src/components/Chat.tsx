@@ -75,11 +75,10 @@ interface ResultsPanelProps {
   results: ToolResult[]
   searchContext: SearchContext | null
   filteredResults: KeywordSearchResult | null
-  isFiltering: boolean
   onFilterChange: (filters: { primary_category?: string[]; org_type?: string[] }) => void
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, isFiltering, onFilterChange }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange }: ResultsPanelProps) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -107,8 +106,6 @@ function ResultsPanel({ results, searchContext, filteredResults, isFiltering, on
   if (latestResult.name === 'keyword_search') {
     // Use displayData if available (for filtered results), otherwise fall back to raw data
     const data = displayData || latestResult.data as KeywordSearchResult
-    // Original data for filter chips (always show original counts)
-    const originalData = searchContext?.originalResults || data
 
     const isCapped = data.showing_count && data.showing_count < data.total_count
     const isFiltered = filteredResults !== null
@@ -128,16 +125,16 @@ function ResultsPanel({ results, searchContext, filteredResults, isFiltering, on
           )}
         </div>
 
-        {/* Filter Chips - always use original data for counts */}
-        {searchContext && (Object.keys(originalData.by_category || {}).length > 0 || Object.keys(originalData.by_org_type || {}).length > 0) && (
+        {/* Filter Chips - use current data for progressive filtering */}
+        {searchContext && (Object.keys(data.by_category || {}).length > 0 || Object.keys(data.by_org_type || {}).length > 0) && (
           <div className="p-6 border-b border-gray-100">
             <FilterChips
-              byCategory={originalData.by_category || {}}
-              byOrgType={originalData.by_org_type || {}}
+              byCategory={data.by_category || {}}
+              byOrgType={data.by_org_type || {}}
               keywordQuery={searchContext.keywordQuery}
               semanticQuery={searchContext.semanticQuery}
               onFilterChange={onFilterChange}
-              isLoading={isFiltering}
+              isLoading={false}
             />
           </div>
         )}
@@ -191,12 +188,6 @@ function ResultsPanel({ results, searchContext, filteredResults, isFiltering, on
                         {project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}
                       </span>
                     )}
-                    {project.is_sbir && (
-                      <span className="px-2 py-0.5 text-xs bg-indigo-50 text-indigo-600 rounded">SBIR</span>
-                    )}
-                    {project.is_sttr && (
-                      <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-600 rounded">STTR</span>
-                    )}
                   </div>
                 </div>
               ))}
@@ -211,8 +202,6 @@ function ResultsPanel({ results, searchContext, filteredResults, isFiltering, on
     // Now returns KeywordSearchResult format from hybrid search
     // Use displayData if available (for filtered results), otherwise fall back to raw data
     const data = displayData || latestResult.data as KeywordSearchResult
-    // Original data for filter chips (always show original counts)
-    const originalData = searchContext?.originalResults || data
 
     const isCapped = data.showing_count && data.showing_count < data.total_count
     const isFiltered = filteredResults !== null
@@ -232,16 +221,16 @@ function ResultsPanel({ results, searchContext, filteredResults, isFiltering, on
           )}
         </div>
 
-        {/* Filter Chips - always use original data for counts */}
-        {searchContext && (Object.keys(originalData.by_category || {}).length > 0 || Object.keys(originalData.by_org_type || {}).length > 0) && (
+        {/* Filter Chips - use current data for progressive filtering */}
+        {searchContext && (Object.keys(data.by_category || {}).length > 0 || Object.keys(data.by_org_type || {}).length > 0) && (
           <div className="p-6 border-b border-gray-100">
             <FilterChips
-              byCategory={originalData.by_category || {}}
-              byOrgType={originalData.by_org_type || {}}
+              byCategory={data.by_category || {}}
+              byOrgType={data.by_org_type || {}}
               keywordQuery={searchContext.keywordQuery}
               semanticQuery={searchContext.semanticQuery}
               onFilterChange={onFilterChange}
-              isLoading={isFiltering}
+              isLoading={false}
             />
           </div>
         )}
@@ -471,7 +460,6 @@ export function Chat({ persona }: ChatProps) {
   const [isSearching, setIsSearching] = useState(false)
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
-  const [isFiltering, setIsFiltering] = useState(false)
   const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -479,9 +467,11 @@ export function Chat({ persona }: ChatProps) {
   const metadata = PERSONA_METADATA[persona]
   const IconComponent = ICONS[metadata.icon]
 
-  // Handle filter changes - make direct API call without Claude
-  const handleFilterChange = useCallback(async (filters: { primary_category?: string[]; org_type?: string[] }) => {
+  // Handle filter changes - filter client-side from stored results
+  const handleFilterChange = useCallback((filters: { primary_category?: string[]; org_type?: string[] }) => {
     if (!searchContext) return
+
+    const allResults = searchContext.originalResults.all_results
 
     // If no filters, clear filtered results and show original
     if (!filters.primary_category?.length && !filters.org_type?.length) {
@@ -489,27 +479,45 @@ export function Chat({ persona }: ChatProps) {
       return
     }
 
-    setIsFiltering(true)
-    try {
-      const response = await fetch('/api/search', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          keyword_query: searchContext.keywordQuery,
-          semantic_query: searchContext.semanticQuery,
-          filters
-        })
-      })
+    // Filter the full result set client-side
+    let filtered = allResults
 
-      if (!response.ok) throw new Error('Filter request failed')
-
-      const data = await response.json()
-      setFilteredResults(data)
-    } catch (error) {
-      console.error('Filter error:', error)
-    } finally {
-      setIsFiltering(false)
+    if (filters.primary_category?.length) {
+      filtered = filtered.filter(p =>
+        p.primary_category && filters.primary_category!.includes(p.primary_category)
+      )
     }
+
+    if (filters.org_type?.length) {
+      filtered = filtered.filter(p =>
+        p.org_type && filters.org_type!.includes(p.org_type)
+      )
+    }
+
+    // Recalculate category and org_type counts from filtered set
+    const byCategory: Record<string, number> = {}
+    const byOrgType: Record<string, number> = {}
+
+    filtered.forEach(p => {
+      const cat = p.primary_category || 'other'
+      const org = p.org_type || 'other'
+      byCategory[cat] = (byCategory[cat] || 0) + 1
+      byOrgType[org] = (byOrgType[org] || 0) + 1
+    })
+
+    // Build filtered result with updated counts
+    const filteredData: KeywordSearchResult = {
+      summary: `Found ${filtered.length} projects (filtered).`,
+      search_query: searchContext.originalResults.search_query,
+      total_count: filtered.length,
+      showing_count: Math.min(filtered.length, 100),
+      by_category: byCategory,
+      by_org_type: byOrgType,
+      all_results: filtered,
+      sample_results: filtered.slice(0, 10)
+    }
+
+    setFilteredResults(filteredData)
   }, [searchContext])
 
   useEffect(() => {
@@ -759,7 +767,6 @@ export function Chat({ persona }: ChatProps) {
               results={toolResults}
               searchContext={searchContext}
               filteredResults={filteredResults}
-              isFiltering={isFiltering}
               onFilterChange={handleFilterChange}
             />
           </div>

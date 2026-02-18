@@ -104,6 +104,24 @@ export interface HybridSearchParams {
   limit?: number
 }
 
+// Minimal project data for search results (used for filtering and display)
+export interface SearchResultProject {
+  application_id: string
+  title: string
+  org_name: string | null
+  org_state: string | null
+  org_type: string | null
+  primary_category: string | null
+  total_cost: number | null
+  fiscal_year?: number | null
+  pi_names: string | null
+  pi_email?: string | null
+  // Enriched counts
+  patent_count: number
+  publication_count: number
+  clinical_trial_count: number
+}
+
 export interface KeywordSearchResult {
   summary: string // Natural language summary for Claude to read
   search_query: string // The actual query that was searched
@@ -111,25 +129,10 @@ export interface KeywordSearchResult {
   showing_count: number // How many results are actually being shown (may be capped)
   by_category: Record<string, number>
   by_org_type: Record<string, number>
-  sample_results: Array<{
-    application_id: string
-    title: string
-    org_name: string | null
-    org_state: string | null
-    org_type: string | null
-    primary_category: string | null
-    total_cost: number | null
-    fiscal_year?: number | null
-    pi_names: string | null
-    pi_email: string | null
-    // SBIR/STTR flags (optional - only set by keyword_search)
-    is_sbir?: boolean
-    is_sttr?: boolean
-    // Enriched counts from projects_enriched view
-    patent_count: number
-    publication_count: number
-    clinical_trial_count: number
-  }>
+  // All matching results for client-side filtering (full set, not capped)
+  all_results: SearchResultProject[]
+  // Top 10 sample for Claude to summarize
+  sample_results: SearchResultProject[]
 }
 
 // Search result types (matching existing API)

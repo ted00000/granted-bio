@@ -343,6 +343,7 @@ export async function keywordSearch(
         showing_count: 0,
         by_category: {},
         by_org_type: {},
+        all_results: [],
         sample_results: []
       }
     }
@@ -390,6 +391,7 @@ export async function keywordSearch(
         showing_count: 0,
         by_category: {},
         by_org_type: {},
+        all_results: [],
         sample_results: []
       }
     }
@@ -548,13 +550,30 @@ export async function keywordSearch(
       `By category: ${categoryBreakdown}. ` +
       `By org_type: ${orgTypeBreakdown}.`
 
+    // All results for client-side filtering
+    const allResults = allProjects.map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      total_cost: p.total_cost,
+      fiscal_year: p.fiscal_year,
+      pi_names: p.pi_names,
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
+    }))
+
     return {
-      summary, // Natural language summary for Claude to read
+      summary,
       search_query: keyword,
       total_count: allProjects.length,
-      showing_count: allProjects.length, // keyword_search doesn't cap, so same as total
+      showing_count: Math.min(allProjects.length, 100),
       by_category: byCategory,
       by_org_type: byOrgType,
+      all_results: allResults,
       sample_results: sampleResults
     }
   } catch (error) {
@@ -834,14 +853,10 @@ export async function searchProjectsHybrid(
       byOrgType[org] = (byOrgType[org] || 0) + 1
     })
 
-    // Cap at 100 for sample results (already sorted by relevance)
-    const MAX_RESULTS = 100
-    const cappedProjects = allProjects.slice(0, MAX_RESULTS)
+    // Get top 10 for Claude's sample_results
+    const topProjects = allProjects.slice(0, 10)
 
-    // Get sample results (top 10 for display)
-    const topProjects = cappedProjects.slice(0, Math.min(10, effectiveLimit))
-
-    // Get PI emails for sample results
+    // Get PI emails for sample results only
     const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean) as string[]
     let piEmails: Record<string, string> = {}
 
@@ -872,6 +887,7 @@ export async function searchProjectsHybrid(
       }
     }
 
+    // Sample results (top 10) for Claude to summarize
     const sampleResults = topProjects.map(p => ({
       application_id: p.application_id,
       title: p.title,
@@ -888,6 +904,22 @@ export async function searchProjectsHybrid(
       clinical_trial_count: p.clinical_trial_count || 0
     }))
 
+    // All results for client-side filtering (minimal fields, no emails)
+    const allResults = allProjects.map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      total_cost: p.total_cost,
+      fiscal_year: p.fiscal_year,
+      pi_names: p.pi_names,
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
+    }))
+
     // Generate summary
     const categoryBreakdown = Object.entries(byCategory)
       .sort(([, a], [, b]) => b - a)
@@ -899,18 +931,16 @@ export async function searchProjectsHybrid(
       .map(([org, count]) => `${org}: ${count}`)
       .join(', ')
 
-    const showingCount = Math.min(totalBeforeCap, MAX_RESULTS)
-    const summary = `Found ${totalBeforeCap} projects` +
-      (totalBeforeCap > MAX_RESULTS ? ` (showing top ${MAX_RESULTS})` : '') +
-      `. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
+    const summary = `Found ${totalBeforeCap} projects. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
 
     return {
       summary,
-      search_query: keyword_query,  // Store keyword_query for UI filtering
+      search_query: keyword_query,
       total_count: totalBeforeCap,
-      showing_count: showingCount,
+      showing_count: Math.min(totalBeforeCap, 100), // UI shows top 100
       by_category: byCategory,
       by_org_type: byOrgType,
+      all_results: allResults,
       sample_results: sampleResults
     }
   } catch (error) {

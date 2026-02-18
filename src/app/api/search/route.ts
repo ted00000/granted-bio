@@ -614,12 +614,8 @@ async function hybridSearch(params: HybridSearchRequest) {
       byOrgType[org] = (byOrgType[org] || 0) + 1
     })
 
-    // Cap results
-    const MAX_RESULTS = 100
-    const cappedProjects = allProjects.slice(0, MAX_RESULTS)
-
     // Format sample results (top 10)
-    const sampleResults = cappedProjects.slice(0, 10).map(p => ({
+    const sampleResults = allProjects.slice(0, 10).map(p => ({
       application_id: p.application_id,
       title: p.title,
       org_name: p.org_name,
@@ -628,7 +624,22 @@ async function hybridSearch(params: HybridSearchRequest) {
       primary_category: p.primary_category,
       total_cost: p.total_cost,
       pi_names: p.pi_names,
-      pi_email: null, // Don't include emails in public API
+      pi_email: null,
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
+    }))
+
+    // All results for client-side filtering
+    const allResults = allProjects.map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      total_cost: p.total_cost,
+      pi_names: p.pi_names,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
       clinical_trial_count: p.clinical_trial_count || 0
@@ -645,18 +656,16 @@ async function hybridSearch(params: HybridSearchRequest) {
       .map(([org, count]) => `${org}: ${count}`)
       .join(', ')
 
-    const showingCount = Math.min(totalBeforeCap, MAX_RESULTS)
-    const summary = `Found ${totalBeforeCap} projects` +
-      (totalBeforeCap > MAX_RESULTS ? ` (showing top ${MAX_RESULTS})` : '') +
-      `. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
+    const summary = `Found ${totalBeforeCap} projects. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
 
     const result: KeywordSearchResult = {
       summary,
       search_query: keyword_query,
       total_count: totalBeforeCap,
-      showing_count: showingCount,
+      showing_count: Math.min(totalBeforeCap, 100),
       by_category: byCategory,
       by_org_type: byOrgType,
+      all_results: allResults,
       sample_results: sampleResults
     }
 
