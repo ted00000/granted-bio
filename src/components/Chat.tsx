@@ -125,12 +125,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange 
           )}
         </div>
 
-        {/* Filter Chips - use current data for progressive filtering */}
-        {searchContext && (Object.keys(data.by_category || {}).length > 0 || Object.keys(data.by_org_type || {}).length > 0) && (
+        {/* Filter Chips - always show original counts for multi-select */}
+        {searchContext && (Object.keys(searchContext.originalResults.by_category || {}).length > 0 || Object.keys(searchContext.originalResults.by_org_type || {}).length > 0) && (
           <div className="p-6 border-b border-gray-100">
             <FilterChips
-              byCategory={data.by_category || {}}
-              byOrgType={data.by_org_type || {}}
+              byCategory={searchContext.originalResults.by_category || {}}
+              byOrgType={searchContext.originalResults.by_org_type || {}}
               keywordQuery={searchContext.keywordQuery}
               semanticQuery={searchContext.semanticQuery}
               onFilterChange={onFilterChange}
@@ -139,11 +139,11 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange 
           </div>
         )}
 
-        {data.sample_results?.length > 0 && (
+        {data.all_results?.length > 0 && (
           <div className="p-6">
             <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Most Relevant</h3>
             <div className="space-y-5">
-              {data.sample_results.map((project) => (
+              {data.all_results.slice(0, 100).map((project) => (
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
@@ -221,12 +221,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange 
           )}
         </div>
 
-        {/* Filter Chips - use current data for progressive filtering */}
-        {searchContext && (Object.keys(data.by_category || {}).length > 0 || Object.keys(data.by_org_type || {}).length > 0) && (
+        {/* Filter Chips - always show original counts for multi-select */}
+        {searchContext && (Object.keys(searchContext.originalResults.by_category || {}).length > 0 || Object.keys(searchContext.originalResults.by_org_type || {}).length > 0) && (
           <div className="p-6 border-b border-gray-100">
             <FilterChips
-              byCategory={data.by_category || {}}
-              byOrgType={data.by_org_type || {}}
+              byCategory={searchContext.originalResults.by_category || {}}
+              byOrgType={searchContext.originalResults.by_org_type || {}}
               keywordQuery={searchContext.keywordQuery}
               semanticQuery={searchContext.semanticQuery}
               onFilterChange={onFilterChange}
@@ -235,11 +235,11 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange 
           </div>
         )}
 
-        {data.sample_results?.length > 0 && (
+        {data.all_results?.length > 0 && (
           <div className="p-6">
             <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Most Relevant</h3>
             <div className="space-y-5">
-              {data.sample_results.map((project) => (
+              {data.all_results.slice(0, 100).map((project) => (
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
