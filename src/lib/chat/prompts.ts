@@ -51,7 +51,7 @@ Examples:
 
 === RESPONSE STYLE ===
 After search completes:
-"Found [X] projects on [topic]. You can filter by life science area or organization type using the chips above. Results are shown on the right.
+"Found [X] projects on [topic]. You can filter results by life science area or organization type to focus your research.
 
 Let me know if you'd like to:
 • Explore a specific organization
