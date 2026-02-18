@@ -116,6 +116,7 @@ export interface SearchResultProject {
   fiscal_year?: number | null
   pi_names: string | null
   pi_email?: string | null
+  program_officer?: string | null
   activity_code?: string | null
   // Enriched counts
   patent_count: number

@@ -899,6 +899,7 @@ export async function searchProjectsHybrid(
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
       pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
@@ -916,6 +917,7 @@ export async function searchProjectsHybrid(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
+      program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
@@ -963,6 +965,7 @@ interface ProjectWithCounts {
   fiscal_year: number | null
   pi_names: string | null
   project_number: string | null
+  program_officer: string | null
   activity_code: string | null
   patent_count: number
   publication_count: number
@@ -1066,12 +1069,13 @@ async function fetchProjectsByIds(ids: string[]): Promise<ProjectWithCounts[]> {
     const batch = ids.slice(i, i + 500)
     const { data } = await supabaseAdmin
       .from('projects')
-      .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, activity_code, patent_count, publication_count, clinical_trial_count')
+      .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, program_officer, activity_code, patent_count, publication_count, clinical_trial_count')
       .in('application_id', batch)
 
     if (data) {
       results.push(...data.map(p => ({
         ...p,
+        program_officer: p.program_officer ?? null,
         activity_code: p.activity_code ?? null,
         patent_count: p.patent_count ?? 0,
         publication_count: p.publication_count ?? 0,

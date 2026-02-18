@@ -175,8 +175,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     {project.org_state && <span>• {project.org_state}</span>}
                     {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
                   </div>
-                  {project.pi_names && (
-                    <p className="text-xs text-gray-500 mt-1">PI: {project.pi_names.split(';')[0]?.trim()}</p>
+                  {(project.pi_names || project.program_officer) && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      {project.pi_names && <>PI: {project.pi_names.split(';')[0]?.trim()}</>}
+                      {project.pi_names && project.program_officer && <span className="mx-1">•</span>}
+                      {project.program_officer && <>PO: {project.program_officer}</>}
+                    </p>
                   )}
                   <p className="text-xs text-gray-400 mt-1">ID: {project.application_id}</p>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
@@ -290,8 +294,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     {project.org_state && <span>• {project.org_state}</span>}
                     {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
                   </div>
-                  {project.pi_names && (
-                    <p className="text-xs text-gray-500 mt-1">PI: {project.pi_names.split(';')[0]?.trim()}</p>
+                  {(project.pi_names || project.program_officer) && (
+                    <p className="text-xs text-gray-500 mt-1">
+                      {project.pi_names && <>PI: {project.pi_names.split(';')[0]?.trim()}</>}
+                      {project.pi_names && project.program_officer && <span className="mx-1">•</span>}
+                      {project.program_officer && <>PO: {project.program_officer}</>}
+                    </p>
                   )}
                   <p className="text-xs text-gray-400 mt-1">ID: {project.application_id}</p>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
