@@ -70,6 +70,18 @@ function formatCurrency(amount: number): string {
   return `$${amount}`
 }
 
+// Determine SBIR/STTR status from activity code
+function getSbirSttrStatus(activityCode: string | null | undefined): { isSbir: boolean; isSttr: boolean } {
+  if (!activityCode) return { isSbir: false, isSttr: false }
+  const code = activityCode.toUpperCase()
+  // R41, R42 = SBIR Phase I/II
+  // R43, R44 = STTR Phase I/II
+  // SB1 = SBIR/STTR (we'll call it SBIR for display)
+  const isSbir = code === 'R41' || code === 'R42' || code === 'SB1'
+  const isSttr = code === 'R43' || code === 'R44'
+  return { isSbir, isSttr }
+}
+
 // Results Panel Component
 interface ResultsPanelProps {
   results: ToolResult[]
@@ -168,6 +180,23 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   )}
                   <p className="text-xs text-gray-400 mt-1">ID: {project.application_id}</p>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
+                    {(() => {
+                      const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
+                      return (
+                        <>
+                          {isSbir && (
+                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                              SBIR
+                            </span>
+                          )}
+                          {isSttr && (
+                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                              STTR
+                            </span>
+                          )}
+                        </>
+                      )
+                    })()}
                     {project.primary_category && (
                       <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
                         {project.primary_category.replace(/_/g, ' ')}
@@ -266,6 +295,23 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   )}
                   <p className="text-xs text-gray-400 mt-1">ID: {project.application_id}</p>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
+                    {(() => {
+                      const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
+                      return (
+                        <>
+                          {isSbir && (
+                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                              SBIR
+                            </span>
+                          )}
+                          {isSttr && (
+                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                              STTR
+                            </span>
+                          )}
+                        </>
+                      )
+                    })()}
                     {project.primary_category && (
                       <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
                         {project.primary_category.replace(/_/g, ' ')}

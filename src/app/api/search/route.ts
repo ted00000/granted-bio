@@ -285,6 +285,7 @@ interface ProjectWithCounts {
   fiscal_year: number | null
   pi_names: string | null
   project_number: string | null
+  activity_code: string | null
   patent_count: number
   publication_count: number
   clinical_trial_count: number
@@ -488,12 +489,13 @@ async function fetchProjectsByIds(ids: string[]): Promise<ProjectWithCounts[]> {
     const batch = ids.slice(i, i + 500)
     const { data } = await supabaseAdmin
       .from('projects')
-      .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
+      .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, activity_code, patent_count, publication_count, clinical_trial_count')
       .in('application_id', batch)
 
     if (data) {
       results.push(...data.map(p => ({
         ...p,
+        activity_code: p.activity_code ?? null,
         patent_count: p.patent_count ?? 0,
         publication_count: p.publication_count ?? 0,
         clinical_trial_count: p.clinical_trial_count ?? 0
@@ -625,6 +627,7 @@ async function hybridSearch(params: HybridSearchRequest) {
       total_cost: p.total_cost,
       pi_names: p.pi_names,
       pi_email: null,
+      activity_code: p.activity_code || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
       clinical_trial_count: p.clinical_trial_count || 0
@@ -640,6 +643,7 @@ async function hybridSearch(params: HybridSearchRequest) {
       primary_category: p.primary_category,
       total_cost: p.total_cost,
       pi_names: p.pi_names,
+      activity_code: p.activity_code || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
       clinical_trial_count: p.clinical_trial_count || 0
