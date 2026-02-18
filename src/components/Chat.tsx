@@ -633,6 +633,15 @@ export function Chat({ persona }: ChatProps) {
     if (!isLoading) sendMessage(choice, messages)
   }
 
+  const handleNewSearch = () => {
+    setMessages([])
+    setToolResults([])
+    setSearchContext(null)
+    setFilteredResults(null)
+    setInput('')
+    inputRef.current?.focus()
+  }
+
   const isLastAssistantMessage = (messageId: string) => {
     const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant')
     return lastAssistant?.id === messageId
@@ -729,6 +738,17 @@ export function Chat({ persona }: ChatProps) {
 
         {/* Input */}
         <div className="flex-shrink-0 px-6 py-4 border-t border-gray-100">
+          {/* New search link - appears when there are messages or results */}
+          {(messages.length > 0 || toolResults.length > 0) && (
+            <div className="mb-3">
+              <button
+                onClick={handleNewSearch}
+                className="text-xs text-gray-400 hover:text-[#E07A5F] transition-colors"
+              >
+                New search
+              </button>
+            </div>
+          )}
           <form onSubmit={handleSubmit}>
             <div className="flex items-end space-x-3">
               <textarea
