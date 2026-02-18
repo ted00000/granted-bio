@@ -809,20 +809,28 @@ export function Chat({ persona }: ChatProps) {
           )}
           <form onSubmit={handleSubmit}>
             <div className="flex items-end space-x-3">
-              <textarea
-                ref={inputRef}
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={metadata.placeholder || "Ask a question..."}
-                rows={1}
-                className="flex-1 px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
-                style={{ maxHeight: '120px' }}
-                disabled={isLoading}
-              />
+              <div className="flex-1 relative">
+                <textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={e => setInput(e.target.value.slice(0, 140))}
+                  onKeyDown={handleKeyDown}
+                  placeholder={metadata.placeholder || "Ask a question..."}
+                  rows={1}
+                  maxLength={140}
+                  className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
+                  style={{ maxHeight: '120px' }}
+                  disabled={isLoading}
+                />
+                {input.length > 100 && (
+                  <span className={`absolute right-3 bottom-2 text-xs ${input.length >= 140 ? 'text-red-400' : 'text-gray-400'}`}>
+                    {140 - input.length}
+                  </span>
+                )}
+              </div>
               <button
                 type="submit"
-                disabled={isLoading || !input.trim()}
+                disabled={isLoading || !input.trim() || input.length > 140}
                 className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
