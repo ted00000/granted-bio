@@ -783,18 +783,16 @@ export async function searchProjectsHybrid(
       semanticRank++
     }
 
-    // Get project data for keyword-only matches
-    const keywordOnlyIds = [...rrfScores.entries()]
-      .filter(([, v]) => v.data === null)
-      .map(([id]) => id)
+    // Fetch complete project data for ALL matches (semantic results from RPC don't have all columns)
+    const allIds = [...rrfScores.keys()]
+    const allProjectsData = await fetchProjectsByIds(allIds)
+    const projectMap = new Map(allProjectsData.map(p => [p.application_id, p]))
 
-    if (keywordOnlyIds.length > 0) {
-      const keywordProjects = await fetchProjectsByIds(keywordOnlyIds)
-      for (const project of keywordProjects) {
-        const entry = rrfScores.get(project.application_id)
-        if (entry) {
-          entry.data = project
-        }
+    // Update RRF entries with complete project data
+    for (const [id, entry] of rrfScores) {
+      const fullProject = projectMap.get(id)
+      if (fullProject) {
+        entry.data = fullProject
       }
     }
 
