@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import Link from 'next/link'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
@@ -171,7 +172,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               {data.all_results.slice(0, 100).map((project) => (
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
-                    <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
+                    <Link
+                      href={`/project/${project.application_id}`}
+                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
+                    >
+                      {project.title}
+                    </Link>
                     {project.total_cost && (
                       <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
                         {formatCurrency(project.total_cost)}
@@ -201,7 +207,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       {project.program_officer && <>PO: {project.program_officer}</>}
                     </p>
                   )}
-                  <p className="text-xs text-gray-400 mt-1">ID: {project.application_id}</p>
+                  <Link
+                    href={`/project/${project.application_id}`}
+                    className="text-xs text-gray-400 mt-1 hover:text-[#E07A5F] transition-colors inline-block"
+                  >
+                    ID: {project.application_id}
+                  </Link>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
                     {(() => {
                       const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
@@ -301,7 +312,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               {data.all_results.slice(0, 100).map((project) => (
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
-                    <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
+                    <Link
+                      href={`/project/${project.application_id}`}
+                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
+                    >
+                      {project.title}
+                    </Link>
                     {project.total_cost && (
                       <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
                         {formatCurrency(project.total_cost)}
@@ -331,7 +347,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       {project.program_officer && <>PO: {project.program_officer}</>}
                     </p>
                   )}
-                  <p className="text-xs text-gray-400 mt-1">ID: {project.application_id}</p>
+                  <Link
+                    href={`/project/${project.application_id}`}
+                    className="text-xs text-gray-400 mt-1 hover:text-[#E07A5F] transition-colors inline-block"
+                  >
+                    ID: {project.application_id}
+                  </Link>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
                     {(() => {
                       const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
