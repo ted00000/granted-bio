@@ -100,9 +100,11 @@ interface ResultsPanelProps {
   // Cross-filtered counts for dynamic chip numbers
   crossFilteredByCategory?: Record<string, number>
   crossFilteredByOrgType?: Record<string, number>
+  // Save state before navigating to project detail
+  onProjectClick?: () => void
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, onProjectClick }: ResultsPanelProps) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -174,6 +176,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <Link
                       href={`/project/${project.application_id}`}
+                      onClick={onProjectClick}
                       className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
                     >
                       {project.title}
@@ -209,6 +212,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   )}
                   <Link
                     href={`/project/${project.application_id}`}
+                    onClick={onProjectClick}
                     className="text-xs text-gray-400 mt-1 hover:text-[#E07A5F] transition-colors inline-block"
                   >
                     ID: {project.application_id}
@@ -314,6 +318,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <Link
                       href={`/project/${project.application_id}`}
+                      onClick={onProjectClick}
                       className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
                     >
                       {project.title}
@@ -349,6 +354,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   )}
                   <Link
                     href={`/project/${project.application_id}`}
+                    onClick={onProjectClick}
                     className="text-xs text-gray-400 mt-1 hover:text-[#E07A5F] transition-colors inline-block"
                   >
                     ID: {project.application_id}
@@ -579,6 +585,37 @@ export function Chat({ persona }: ChatProps) {
 
   const metadata = PERSONA_METADATA[persona]
   const IconComponent = ICONS[metadata.icon]
+
+  // Restore search state from sessionStorage on mount
+  useEffect(() => {
+    const saved = sessionStorage.getItem('searchState')
+    if (saved) {
+      try {
+        const state = JSON.parse(saved)
+        if (state.toolResults) setToolResults(state.toolResults)
+        if (state.searchContext) setSearchContext(state.searchContext)
+        if (state.filteredResults) setFilteredResults(state.filteredResults)
+        if (state.currentFilters) setCurrentFilters(state.currentFilters)
+        if (state.messages) setMessages(state.messages)
+        // Clear after restoring so refresh doesn't restore again
+        sessionStorage.removeItem('searchState')
+      } catch (e) {
+        console.error('Failed to restore search state:', e)
+      }
+    }
+  }, [])
+
+  // Save search state before navigating to project
+  const saveSearchState = useCallback(() => {
+    const state = {
+      toolResults,
+      searchContext,
+      filteredResults,
+      currentFilters,
+      messages
+    }
+    sessionStorage.setItem('searchState', JSON.stringify(state))
+  }, [toolResults, searchContext, filteredResults, currentFilters, messages])
 
   // Handle filter changes - filter client-side from stored results
   const handleFilterChange = useCallback((filters: { primary_category?: string[]; org_type?: string[] }) => {
@@ -961,6 +998,7 @@ export function Chat({ persona }: ChatProps) {
               onFilterChange={handleFilterChange}
               crossFilteredByCategory={crossFilteredByCategory}
               crossFilteredByOrgType={crossFilteredByOrgType}
+              onProjectClick={saveSearchState}
             />
           </div>
         </div>
