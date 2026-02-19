@@ -226,11 +226,11 @@ export async function POST(request: NextRequest) {
                   is_error: true
                 }
               }
-              // Strip all_results from search results - Claude only needs sample_results
+              // Strip all_results and sample_results - Claude only needs total_count and search_query
               // The UI receives the full results via the streamed tool_result event
               let resultForClaude = result
               if (result && typeof result === 'object' && 'all_results' in result) {
-                const { all_results, ...rest } = result as Record<string, unknown>
+                const { all_results, sample_results, ...rest } = result as Record<string, unknown>
                 resultForClaude = rest
               }
               return {
