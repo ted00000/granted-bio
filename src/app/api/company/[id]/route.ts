@@ -58,12 +58,13 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       )
     }
 
-    // Fetch the abstract
-    const { data: abstract } = await supabaseAdmin
+    // Fetch the abstract (use limit(1) in case of duplicates)
+    const { data: abstractRows } = await supabaseAdmin
       .from('abstracts')
       .select('abstract_text')
       .eq('application_id', project.application_id)
-      .single()
+      .limit(1)
+    const abstract = abstractRows?.[0]
 
     // Fetch publications for this project
     const { data: pubLinks } = await supabaseAdmin
