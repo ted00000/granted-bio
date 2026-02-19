@@ -125,19 +125,20 @@ export async function POST(request: NextRequest) {
             }
             const cacheRead = usage.cache_read_input_tokens || 0
             const cacheWrite = usage.cache_creation_input_tokens || 0
-            const uncachedInput = usage.input_tokens - cacheRead
+            // Note: input_tokens already excludes cached tokens
+            const uncachedInput = usage.input_tokens
 
-            // Cost calculation: cached reads are 0.1x, cache writes are 1.25x, uncached is 1x
+            // Cost calculation (Sonnet): $3/M input, $15/M output, cached reads 0.1x, cache writes 1.25x
             const inputCost = (uncachedInput * 3 + cacheRead * 0.3 + cacheWrite * 3.75) / 1000000
             const outputCost = (usage.output_tokens * 15) / 1000000
+            const totalCost = inputCost + outputCost
 
             console.log('[Chat API] Token usage:', {
               input: usage.input_tokens,
               output: usage.output_tokens,
               cache_read: cacheRead,
               cache_write: cacheWrite,
-              cost_estimate: `$${(inputCost + outputCost).toFixed(4)}`,
-              cache_savings: cacheRead > 0 ? `${Math.round((cacheRead * 2.7 / 1000000) * 10000) / 100}¢ saved` : 'no cache hit'
+              cost_estimate: `$${totalCost.toFixed(4)}`
             })
 
             // Extract text and tool use from response
