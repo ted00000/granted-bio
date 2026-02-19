@@ -101,6 +101,11 @@ export async function POST(request: NextRequest) {
 
             console.log('[Chat API] Response stop_reason:', response.stop_reason)
             console.log('[Chat API] Response content types:', response.content.map(b => b.type).join(', '))
+            console.log('[Chat API] Token usage:', {
+              input: response.usage.input_tokens,
+              output: response.usage.output_tokens,
+              cost_estimate: `$${((response.usage.input_tokens * 3 + response.usage.output_tokens * 15) / 1000000).toFixed(4)}`
+            })
 
             // Extract text and tool use from response
             let responseText = ''
@@ -166,45 +171,54 @@ export async function POST(request: NextRequest) {
             )
 
             // Execute all tools
-            const toolResults: Anthropic.Messages.ToolResultBlockParam[] = await Promise.all(
+            const toolResultsRaw = await Promise.all(
               toolUseBlocks.map(async (block) => {
                 try {
                   const result = await executeTool(block.name, block.input, userAccess)
-                  return {
-                    type: 'tool_result' as const,
-                    tool_use_id: block.id,
-                    content: JSON.stringify(result, null, 2)
-                  }
+                  return { block, result, error: null }
                 } catch (error) {
                   console.error(`Tool ${block.name} error:`, error)
-                  return {
-                    type: 'tool_result' as const,
-                    tool_use_id: block.id,
-                    content: `Error executing ${block.name}: ${String(error)}`,
-                    is_error: true
-                  }
+                  return { block, result: null, error }
                 }
               })
             )
 
-            // Send tool results to client for display in side panel
-            for (let i = 0; i < toolUseBlocks.length; i++) {
-              const block = toolUseBlocks[i]
-              const result = toolResults[i]
-              if (!result.is_error) {
-                try {
-                  controller.enqueue(
-                    encoder.encode(
-                      `data: ${JSON.stringify({
-                        type: 'tool_result',
-                        name: block.name,
-                        data: JSON.parse(result.content as string)
-                      })}\n\n`
-                    )
-                  )
-                } catch {
-                  // Skip if can't parse result
+            // Build tool results for Claude - strip all_results to save tokens (UI gets it directly)
+            const toolResults: Anthropic.Messages.ToolResultBlockParam[] = toolResultsRaw.map(({ block, result, error }) => {
+              if (error) {
+                return {
+                  type: 'tool_result' as const,
+                  tool_use_id: block.id,
+                  content: `Error executing ${block.name}: ${String(error)}`,
+                  is_error: true
                 }
+              }
+              // Strip all_results from search results - Claude only needs sample_results
+              // The UI receives the full results via the streamed tool_result event
+              let resultForClaude = result
+              if (result && typeof result === 'object' && 'all_results' in result) {
+                const { all_results, ...rest } = result as Record<string, unknown>
+                resultForClaude = rest
+              }
+              return {
+                type: 'tool_result' as const,
+                tool_use_id: block.id,
+                content: JSON.stringify(resultForClaude)
+              }
+            })
+
+            // Send full tool results to client for display in side panel (includes all_results)
+            for (const { block, result, error } of toolResultsRaw) {
+              if (!error && result) {
+                controller.enqueue(
+                  encoder.encode(
+                    `data: ${JSON.stringify({
+                      type: 'tool_result',
+                      name: block.name,
+                      data: result
+                    })}\n\n`
+                  )
+                )
               }
             }
 
