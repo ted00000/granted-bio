@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
@@ -100,8 +100,8 @@ interface ResultsPanelProps {
   // Cross-filtered counts for dynamic chip numbers
   crossFilteredByCategory?: Record<string, number>
   crossFilteredByOrgType?: Record<string, number>
-  // Save state before navigating to project detail
-  onProjectClick?: () => void
+  // Navigate to project detail (saves state first)
+  onProjectClick?: (applicationId: string) => void
 }
 
 function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, onProjectClick }: ResultsPanelProps) {
@@ -174,13 +174,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               {data.all_results.slice(0, 100).map((project) => (
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
-                    <Link
-                      href={`/project/${project.application_id}`}
-                      onClick={onProjectClick}
-                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
+                    <button
+                      onClick={() => onProjectClick?.(project.application_id)}
+                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors text-left"
                     >
                       {project.title}
-                    </Link>
+                    </button>
                     {project.total_cost && (
                       <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
                         {formatCurrency(project.total_cost)}
@@ -210,13 +209,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       {project.program_officer && <>PO: {project.program_officer}</>}
                     </p>
                   )}
-                  <Link
-                    href={`/project/${project.application_id}`}
-                    onClick={onProjectClick}
+                  <button
+                    onClick={() => onProjectClick?.(project.application_id)}
                     className="text-xs text-gray-400 mt-1 hover:text-[#E07A5F] transition-colors inline-block"
                   >
                     ID: {project.application_id}
-                  </Link>
+                  </button>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
                     {(() => {
                       const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
@@ -316,13 +314,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               {data.all_results.slice(0, 100).map((project) => (
                 <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
-                    <Link
-                      href={`/project/${project.application_id}`}
-                      onClick={onProjectClick}
-                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
+                    <button
+                      onClick={() => onProjectClick?.(project.application_id)}
+                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors text-left"
                     >
                       {project.title}
-                    </Link>
+                    </button>
                     {project.total_cost && (
                       <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
                         {formatCurrency(project.total_cost)}
@@ -352,13 +349,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       {project.program_officer && <>PO: {project.program_officer}</>}
                     </p>
                   )}
-                  <Link
-                    href={`/project/${project.application_id}`}
-                    onClick={onProjectClick}
+                  <button
+                    onClick={() => onProjectClick?.(project.application_id)}
                     className="text-xs text-gray-400 mt-1 hover:text-[#E07A5F] transition-colors inline-block"
                   >
                     ID: {project.application_id}
-                  </Link>
+                  </button>
                   <div className="flex items-center flex-wrap gap-2 mt-2">
                     {(() => {
                       const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
@@ -583,6 +579,7 @@ export function Chat({ persona }: ChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
+  const router = useRouter()
   const metadata = PERSONA_METADATA[persona]
   const IconComponent = ICONS[metadata.icon]
 
@@ -605,8 +602,8 @@ export function Chat({ persona }: ChatProps) {
     }
   }, [])
 
-  // Save search state before navigating to project
-  const saveSearchState = useCallback(() => {
+  // Save search state and navigate to project
+  const navigateToProject = useCallback((applicationId: string) => {
     const state = {
       toolResults,
       searchContext,
@@ -615,7 +612,8 @@ export function Chat({ persona }: ChatProps) {
       messages
     }
     sessionStorage.setItem('searchState', JSON.stringify(state))
-  }, [toolResults, searchContext, filteredResults, currentFilters, messages])
+    router.push(`/project/${applicationId}`)
+  }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
 
   // Handle filter changes - filter client-side from stored results
   const handleFilterChange = useCallback((filters: { primary_category?: string[]; org_type?: string[] }) => {
@@ -998,7 +996,7 @@ export function Chat({ persona }: ChatProps) {
               onFilterChange={handleFilterChange}
               crossFilteredByCategory={crossFilteredByCategory}
               crossFilteredByOrgType={crossFilteredByOrgType}
-              onProjectClick={saveSearchState}
+              onProjectClick={navigateToProject}
             />
           </div>
         </div>
