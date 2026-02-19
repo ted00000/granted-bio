@@ -609,7 +609,8 @@ export function Chat({ persona }: ChatProps) {
       searchContext,
       filteredResults,
       currentFilters,
-      messages
+      messages,
+      returnUrl: window.location.href
     }
     sessionStorage.setItem('searchState', JSON.stringify(state))
     router.push(`/project/${applicationId}`)

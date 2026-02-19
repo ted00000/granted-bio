@@ -89,6 +89,22 @@ export default function ProjectPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'abstract' | 'phr' | 'publications' | 'patents' | 'clinical'>('abstract')
+  const [returnUrl, setReturnUrl] = useState('/chat')
+
+  // Read return URL from sessionStorage
+  useEffect(() => {
+    const saved = sessionStorage.getItem('searchState')
+    if (saved) {
+      try {
+        const state = JSON.parse(saved)
+        if (state.returnUrl) {
+          setReturnUrl(state.returnUrl)
+        }
+      } catch (e) {
+        // Ignore parse errors
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,7 +139,7 @@ export default function ProjectPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Project Not Found</h1>
           <p className="text-gray-500 mb-4">{error}</p>
-          <Link href="/chat" className="text-[#E07A5F] hover:underline">
+          <Link href={returnUrl} className="text-[#E07A5F] hover:underline">
             Back to Search
           </Link>
         </div>
@@ -160,7 +176,7 @@ export default function ProjectPage() {
             <Link href="/" className="text-xl font-semibold text-gray-900">
               granted<span className="text-[#E07A5F]">.bio</span>
             </Link>
-            <Link href="/chat" className="text-sm text-gray-500 hover:text-gray-700">
+            <Link href={returnUrl} className="text-sm text-gray-500 hover:text-gray-700">
               ← Back to Search
             </Link>
           </div>
