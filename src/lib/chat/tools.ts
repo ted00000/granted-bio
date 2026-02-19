@@ -905,7 +905,7 @@ export async function searchProjectsHybrid(
       clinical_trial_count: p.clinical_trial_count || 0
     }))
 
-    // All results for client-side filtering (minimal fields, no emails)
+    // All results for client-side filtering
     const allResults = allProjects.map(p => ({
       application_id: p.application_id,
       title: p.title,
