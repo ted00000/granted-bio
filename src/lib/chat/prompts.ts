@@ -51,7 +51,9 @@ Examples:
 
 === RESPONSE STYLE ===
 After search completes, respond with exactly this format (one sentence):
-"I found [X] projects for [topic]. You can filter these results by life science area and organization type to quickly focus your research."
+"I found [X] funded projects for [topic] research. You can filter these results by life science area and organization type to quickly focus your research."
+
+Use natural phrasing for the topic (e.g., "neural organoid research" not "neural organoid platform research").
 
 Do NOT add anything else after this sentence. No bullet points, no "Let me know...", no additional paragraphs.
 Individual projects appear in the results panel - do not list them in chat.
