@@ -91,20 +91,53 @@ export async function POST(request: NextRequest) {
             console.log('[Chat API] Iteration', iteration, '- Making API call')
             console.log('[Chat API] First message:', JSON.stringify(conversationMessages[0]).slice(0, 200))
 
+            // Enable prompt caching for system prompt and tools (90% cost savings on cached tokens)
+            // Cache TTL is 5 minutes - subsequent requests within window pay only 10%
+            const cachedTools = AGENT_TOOLS.map((tool, i) =>
+              i === AGENT_TOOLS.length - 1
+                ? { ...tool, cache_control: { type: 'ephemeral' as const } }
+                : tool
+            )
+
             const response = await anthropic.messages.create({
               model: 'claude-sonnet-4-20250514',
               max_tokens: 8192,
-              system: systemPrompt,
-              tools: AGENT_TOOLS,
+              system: [
+                {
+                  type: 'text',
+                  text: systemPrompt,
+                  cache_control: { type: 'ephemeral' }
+                }
+              ],
+              tools: cachedTools,
               messages: conversationMessages
             })
 
             console.log('[Chat API] Response stop_reason:', response.stop_reason)
             console.log('[Chat API] Response content types:', response.content.map(b => b.type).join(', '))
+
+            // Log token usage with cache stats
+            const usage = response.usage as {
+              input_tokens: number
+              output_tokens: number
+              cache_creation_input_tokens?: number
+              cache_read_input_tokens?: number
+            }
+            const cacheRead = usage.cache_read_input_tokens || 0
+            const cacheWrite = usage.cache_creation_input_tokens || 0
+            const uncachedInput = usage.input_tokens - cacheRead
+
+            // Cost calculation: cached reads are 0.1x, cache writes are 1.25x, uncached is 1x
+            const inputCost = (uncachedInput * 3 + cacheRead * 0.3 + cacheWrite * 3.75) / 1000000
+            const outputCost = (usage.output_tokens * 15) / 1000000
+
             console.log('[Chat API] Token usage:', {
-              input: response.usage.input_tokens,
-              output: response.usage.output_tokens,
-              cost_estimate: `$${((response.usage.input_tokens * 3 + response.usage.output_tokens * 15) / 1000000).toFixed(4)}`
+              input: usage.input_tokens,
+              output: usage.output_tokens,
+              cache_read: cacheRead,
+              cache_write: cacheWrite,
+              cost_estimate: `$${(inputCost + outputCost).toFixed(4)}`,
+              cache_savings: cacheRead > 0 ? `${Math.round((cacheRead * 2.7 / 1000000) * 10000) / 100}¢ saved` : 'no cache hit'
             })
 
             // Extract text and tool use from response
