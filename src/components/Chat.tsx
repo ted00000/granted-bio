@@ -576,6 +576,7 @@ export function Chat({ persona }: ChatProps) {
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
   const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
   const [currentFilters, setCurrentFilters] = useState<{ primary_category?: string[]; org_type?: string[] }>({})
+  const [specificity, setSpecificity] = useState<'focused' | 'balanced' | 'broad'>('balanced')
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -697,7 +698,7 @@ export function Chat({ persona }: ChatProps) {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona })
+        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona, specificity })
       })
 
       if (!response.ok) throw new Error('Chat request failed')
@@ -948,6 +949,24 @@ export function Chat({ persona }: ChatProps) {
               </button>
             </div>
           )}
+          {/* Specificity chips */}
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-xs text-gray-400">Search scope:</span>
+            {(['focused', 'balanced', 'broad'] as const).map((level) => (
+              <button
+                key={level}
+                type="button"
+                onClick={() => setSpecificity(level)}
+                className={`px-3 py-1 text-xs rounded-full transition-colors ${
+                  specificity === level
+                    ? 'bg-[#E07A5F] text-white'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                }`}
+              >
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </button>
+            ))}
+          </div>
           <form onSubmit={handleSubmit}>
             <div className="flex items-end space-x-3">
               <div className="flex-1 relative">

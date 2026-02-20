@@ -957,14 +957,16 @@ export async function searchProjectsHybrid(
 // Faster, no timeouts on broad queries, conceptually-aware
 export async function searchProjectsSemantic(
   params: HybridSearchParams,
-  userAccess: UserAccess
+  userAccess: UserAccess,
+  specificity: Specificity = 'balanced'
 ): Promise<KeywordSearchResult> {
   const { semantic_query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+  const threshold = SPECIFICITY_THRESHOLDS[specificity]
 
   try {
     // Get semantic results only - no keyword search
-    const semanticResults = await getSemanticResults(semantic_query, effectiveLimit * 5)
+    const semanticResults = await getSemanticResults(semantic_query, effectiveLimit * 5, threshold)
 
     // Fetch complete project data
     const allIds = semanticResults.map(r => r.application_id)
@@ -1200,12 +1202,12 @@ async function getKeywordMatchingIds(query: string): Promise<Set<string>> {
 }
 
 // Helper: Get semantic search results with similarity scores
-async function getSemanticResults(query: string, limit: number): Promise<ProjectWithCounts[]> {
+async function getSemanticResults(query: string, limit: number, threshold: number = 0.25): Promise<ProjectWithCounts[]> {
   const queryEmbedding = await generateEmbedding(query)
 
   const { data, error } = await supabaseAdmin.rpc('search_projects_filtered', {
     query_embedding: queryEmbedding,
-    match_threshold: 0.25, // Lower threshold for hybrid (we'll filter by RRF)
+    match_threshold: threshold,
     match_count: limit,
     min_biotools_confidence: 0,
     filter_fiscal_years: null,
@@ -1221,7 +1223,7 @@ async function getSemanticResults(query: string, limit: number): Promise<Project
     // Fallback to basic search
     const { data: fallbackData } = await supabaseAdmin.rpc('search_projects', {
       query_embedding: queryEmbedding,
-      match_threshold: 0.25,
+      match_threshold: threshold,
       match_count: limit,
       min_biotools_confidence: 0
     })
@@ -1724,16 +1726,26 @@ export async function getPatentDetails(
   }
 }
 
+// Specificity threshold mapping
+const SPECIFICITY_THRESHOLDS = {
+  focused: 0.35,
+  balanced: 0.25,
+  broad: 0.15
+} as const
+
+export type Specificity = keyof typeof SPECIFICITY_THRESHOLDS
+
 // Tool execution dispatcher
 export async function executeTool(
   toolName: string,
   args: Record<string, unknown>,
-  userAccess: UserAccess
+  userAccess: UserAccess,
+  specificity: Specificity = 'balanced'
 ): Promise<unknown> {
   switch (toolName) {
     case 'search_projects':
       // Uses semantic-only search (embedding similarity, no keyword matching)
-      return searchProjectsSemantic(args as unknown as HybridSearchParams, userAccess)
+      return searchProjectsSemantic(args as unknown as HybridSearchParams, userAccess, specificity)
     case 'get_company_profile':
       return getCompanyProfile(args as unknown as GetCompanyProfileParams, userAccess)
     case 'get_pi_profile':
@@ -1752,7 +1764,7 @@ export async function executeTool(
         keyword_query: keywordArgs.keyword,
         semantic_query: keywordArgs.keyword,
         filters: keywordArgs.filters
-      }, userAccess)
+      }, userAccess, specificity)
     default:
       throw new Error(`Unknown tool: ${toolName}`)
   }
