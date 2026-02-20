@@ -1731,9 +1731,9 @@ export async function getPatentDetails(
 
 // Specificity threshold mapping
 const SPECIFICITY_THRESHOLDS = {
-  focused: 0.35,
-  balanced: 0.25,
-  broad: 0.15
+  focused: 0.50,
+  balanced: 0.35,
+  broad: 0.20
 } as const
 
 export type Specificity = keyof typeof SPECIFICITY_THRESHOLDS

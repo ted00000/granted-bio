@@ -762,7 +762,7 @@ export function Chat({ persona }: ChatProps) {
     } finally {
       setIsLoading(false)
     }
-  }, [isLoading, persona])
+  }, [isLoading, persona, specificity])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
