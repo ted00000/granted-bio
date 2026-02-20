@@ -953,6 +953,178 @@ export async function searchProjectsHybrid(
   }
 }
 
+// Semantic-only search: uses embedding similarity without keyword matching
+// Faster, no timeouts on broad queries, conceptually-aware
+export async function searchProjectsSemantic(
+  params: HybridSearchParams,
+  userAccess: UserAccess
+): Promise<KeywordSearchResult> {
+  const { semantic_query, filters, limit = 100 } = params
+  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+
+  try {
+    // Get semantic results only - no keyword search
+    const semanticResults = await getSemanticResults(semantic_query, effectiveLimit * 5)
+
+    // Fetch complete project data
+    const allIds = semanticResults.map(r => r.application_id)
+    const allProjectsData = await fetchProjectsByIds(allIds)
+    const projectMap = new Map(allProjectsData.map(p => [p.application_id, p]))
+
+    // Merge semantic scores with full project data
+    let allProjects = semanticResults
+      .map(r => {
+        const fullProject = projectMap.get(r.application_id)
+        return fullProject ? { ...fullProject, similarity: r.similarity || 0 } : null
+      })
+      .filter((p): p is ProjectWithCounts & { similarity: number } => p !== null)
+      .sort((a, b) => b.similarity - a.similarity)
+
+    // Apply filters
+    if (filters?.primary_category?.length) {
+      allProjects = allProjects.filter(p => p.primary_category && filters.primary_category!.includes(p.primary_category))
+    }
+    if (filters?.org_type?.length) {
+      allProjects = allProjects.filter(p => p.org_type && filters.org_type!.includes(p.org_type))
+    }
+    if (filters?.state?.length) {
+      allProjects = allProjects.filter(p => p.org_state && filters.state!.includes(p.org_state))
+    }
+    if (filters?.min_funding) {
+      allProjects = allProjects.filter(p => (p.total_cost || 0) >= filters.min_funding!)
+    }
+    if (filters?.has_patents) {
+      allProjects = allProjects.filter(p => (p.patent_count || 0) > 0)
+    }
+    if (filters?.has_publications) {
+      allProjects = allProjects.filter(p => (p.publication_count || 0) > 0)
+    }
+    if (filters?.has_clinical_trials) {
+      allProjects = allProjects.filter(p => (p.clinical_trial_count || 0) > 0)
+    }
+
+    // Deduplicate by project_number, keeping the most recent fiscal year
+    const seenProjects = new Map<string, typeof allProjects[0]>()
+    for (const project of allProjects) {
+      const key = project.project_number || project.application_id
+      const existing = seenProjects.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(key, project)
+      }
+    }
+    allProjects = [...seenProjects.values()].sort((a, b) => b.similarity - a.similarity)
+
+    const totalBeforeCap = allProjects.length
+
+    // Aggregate by category and org_type
+    const byCategory: Record<string, number> = {}
+    const byOrgType: Record<string, number> = {}
+
+    allProjects.forEach(p => {
+      const cat = p.primary_category || 'other'
+      const org = p.org_type || 'other'
+      byCategory[cat] = (byCategory[cat] || 0) + 1
+      byOrgType[org] = (byOrgType[org] || 0) + 1
+    })
+
+    // Get top 10 for sample_results
+    const topProjects = allProjects.slice(0, 10)
+    const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean) as string[]
+    let piEmails: Record<string, string> = {}
+
+    if (projectNumbers.length > 0 && userAccess.canSeeEmails) {
+      const { data: pubLinks } = await supabaseAdmin
+        .from('project_publications')
+        .select('project_number, pmid')
+        .in('project_number', projectNumbers)
+
+      if (pubLinks?.length) {
+        const pmids = pubLinks.map(pl => pl.pmid)
+        const { data: pubs } = await supabaseAdmin
+          .from('publications')
+          .select('pmid, pi_email')
+          .in('pmid', pmids)
+          .not('pi_email', 'is', null)
+
+        const pmidToEmail: Record<string, string> = {}
+        pubs?.forEach(pub => {
+          if (pub.pi_email) pmidToEmail[pub.pmid] = pub.pi_email
+        })
+
+        pubLinks.forEach(pl => {
+          if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
+            piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+          }
+        })
+      }
+    }
+
+    const sampleResults = topProjects.map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      total_cost: p.total_cost,
+      fiscal_year: p.fiscal_year,
+      pi_names: p.pi_names,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      program_officer: p.program_officer || null,
+      activity_code: p.activity_code || null,
+      project_end: p.project_end || null,
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
+    }))
+
+    // All results for client-side filtering
+    const allResults = allProjects.map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      total_cost: p.total_cost,
+      fiscal_year: p.fiscal_year,
+      pi_names: p.pi_names,
+      program_officer: p.program_officer || null,
+      activity_code: p.activity_code || null,
+      project_end: p.project_end || null,
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
+    }))
+
+    const categoryBreakdown = Object.entries(byCategory)
+      .sort(([, a], [, b]) => b - a)
+      .map(([cat, count]) => `${cat}: ${count}`)
+      .join(', ')
+
+    const orgTypeBreakdown = Object.entries(byOrgType)
+      .sort(([, a], [, b]) => b - a)
+      .map(([org, count]) => `${org}: ${count}`)
+      .join(', ')
+
+    const summary = `Found ${totalBeforeCap} projects. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
+
+    return {
+      summary,
+      search_query: semantic_query,
+      total_count: totalBeforeCap,
+      showing_count: Math.min(totalBeforeCap, 100),
+      by_category: byCategory,
+      by_org_type: byOrgType,
+      all_results: allResults,
+      sample_results: sampleResults
+    }
+  } catch (error) {
+    console.error('Semantic search error:', error)
+    throw error
+  }
+}
+
 // Helper type for projects with counts
 interface ProjectWithCounts {
   application_id: string
@@ -1560,8 +1732,8 @@ export async function executeTool(
 ): Promise<unknown> {
   switch (toolName) {
     case 'search_projects':
-      // Uses hybrid search (keyword + semantic with RRF scoring)
-      return searchProjectsHybrid(args as unknown as HybridSearchParams, userAccess)
+      // Uses semantic-only search (embedding similarity, no keyword matching)
+      return searchProjectsSemantic(args as unknown as HybridSearchParams, userAccess)
     case 'get_company_profile':
       return getCompanyProfile(args as unknown as GetCompanyProfileParams, userAccess)
     case 'get_pi_profile':
@@ -1574,9 +1746,9 @@ export async function executeTool(
       return getPatentDetails(args as unknown as GetPatentDetailsParams, userAccess)
     // Legacy support for old tool names
     case 'keyword_search':
-      // Redirect to hybrid search (use keyword for both queries in legacy mode)
+      // Redirect to semantic search
       const keywordArgs = args as unknown as KeywordSearchParams
-      return searchProjectsHybrid({
+      return searchProjectsSemantic({
         keyword_query: keywordArgs.keyword,
         semantic_query: keywordArgs.keyword,
         filters: keywordArgs.filters
