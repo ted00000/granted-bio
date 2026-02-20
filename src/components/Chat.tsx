@@ -96,15 +96,22 @@ interface ResultsPanelProps {
   results: ToolResult[]
   searchContext: SearchContext | null
   filteredResults: KeywordSearchResult | null
-  onFilterChange: (filters: { primary_category?: string[]; org_type?: string[] }) => void
+  onFilterChange: (filters: { primary_category?: string[]; org_type?: string[]; quick?: { activeOnly?: boolean; sbirSttrOnly?: boolean; hasPatents?: boolean; hasClinicalTrials?: boolean } }) => void
   // Cross-filtered counts for dynamic chip numbers
   crossFilteredByCategory?: Record<string, number>
   crossFilteredByOrgType?: Record<string, number>
+  // Quick filter counts
+  quickFilterCounts?: {
+    active: number
+    sbirSttr: number
+    patents: number
+    clinicalTrials: number
+  }
   // Navigate to project detail (saves state first)
   onProjectClick?: (applicationId: string) => void
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, onProjectClick }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick }: ResultsPanelProps) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -159,6 +166,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               byOrgType={searchContext.originalResults.by_org_type || {}}
               filteredByCategory={crossFilteredByCategory}
               filteredByOrgType={crossFilteredByOrgType}
+              quickFilterCounts={quickFilterCounts}
               keywordQuery={searchContext.keywordQuery}
               semanticQuery={searchContext.semanticQuery}
               onFilterChange={onFilterChange}
@@ -299,6 +307,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               byOrgType={searchContext.originalResults.by_org_type || {}}
               filteredByCategory={crossFilteredByCategory}
               filteredByOrgType={crossFilteredByOrgType}
+              quickFilterCounts={quickFilterCounts}
               keywordQuery={searchContext.keywordQuery}
               semanticQuery={searchContext.semanticQuery}
               onFilterChange={onFilterChange}
@@ -575,8 +584,16 @@ export function Chat({ persona }: ChatProps) {
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
   const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
-  const [currentFilters, setCurrentFilters] = useState<{ primary_category?: string[]; org_type?: string[] }>({})
-  const [specificity, setSpecificity] = useState<'focused' | 'balanced' | 'broad'>('balanced')
+  const [currentFilters, setCurrentFilters] = useState<{
+    primary_category?: string[]
+    org_type?: string[]
+    quick?: {
+      activeOnly?: boolean
+      sbirSttrOnly?: boolean
+      hasPatents?: boolean
+      hasClinicalTrials?: boolean
+    }
+  }>({})
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -617,22 +634,53 @@ export function Chat({ persona }: ChatProps) {
     router.push(`/project/${applicationId}`)
   }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
 
+  // Helper to check if project is SBIR/STTR
+  const isSbirSttr = (activityCode: string | null | undefined): boolean => {
+    const { isSbir, isSttr } = getSbirSttrStatus(activityCode)
+    return isSbir || isSttr
+  }
+
   // Handle filter changes - filter client-side from stored results
-  const handleFilterChange = useCallback((filters: { primary_category?: string[]; org_type?: string[] }) => {
+  const handleFilterChange = useCallback((filters: {
+    primary_category?: string[]
+    org_type?: string[]
+    quick?: {
+      activeOnly?: boolean
+      sbirSttrOnly?: boolean
+      hasPatents?: boolean
+      hasClinicalTrials?: boolean
+    }
+  }) => {
     setCurrentFilters(filters)
 
     if (!searchContext) return
 
     const allResults = searchContext.originalResults.all_results
+    const quick = filters.quick
 
     // If no filters, clear filtered results and show original
-    if (!filters.primary_category?.length && !filters.org_type?.length) {
+    const hasQuickFilters = quick && Object.values(quick).some(Boolean)
+    if (!filters.primary_category?.length && !filters.org_type?.length && !hasQuickFilters) {
       setFilteredResults(null)
       return
     }
 
     // Filter the full result set client-side
     let filtered = allResults
+
+    // Apply quick filters
+    if (quick?.activeOnly) {
+      filtered = filtered.filter(p => isProjectActive(p.project_end) === true)
+    }
+    if (quick?.sbirSttrOnly) {
+      filtered = filtered.filter(p => isSbirSttr(p.activity_code))
+    }
+    if (quick?.hasPatents) {
+      filtered = filtered.filter(p => (p.patent_count || 0) > 0)
+    }
+    if (quick?.hasClinicalTrials) {
+      filtered = filtered.filter(p => (p.clinical_trial_count || 0) > 0)
+    }
 
     if (filters.primary_category?.length) {
       filtered = filtered.filter(p =>
@@ -698,7 +746,7 @@ export function Chat({ persona }: ChatProps) {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona, specificity })
+        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona })
       })
 
       if (!response.ok) throw new Error('Chat request failed')
@@ -762,7 +810,7 @@ export function Chat({ persona }: ChatProps) {
     } finally {
       setIsLoading(false)
     }
-  }, [isLoading, persona, specificity])
+  }, [isLoading, persona])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -846,6 +894,27 @@ export function Chat({ persona }: ChatProps) {
       crossFilteredByOrgType: hasCategory ? byOrgType : undefined
     }
   }, [searchContext, currentFilters])
+
+  // Compute quick filter counts from original results
+  const quickFilterCounts = useMemo(() => {
+    if (!searchContext) return undefined
+
+    const allResults = searchContext.originalResults.all_results
+    let active = 0
+    let sbirSttr = 0
+    let patents = 0
+    let clinicalTrials = 0
+
+    allResults.forEach(p => {
+      if (isProjectActive(p.project_end) === true) active++
+      const { isSbir, isSttr } = getSbirSttrStatus(p.activity_code)
+      if (isSbir || isSttr) sbirSttr++
+      if ((p.patent_count || 0) > 0) patents++
+      if ((p.clinical_trial_count || 0) > 0) clinicalTrials++
+    })
+
+    return { active, sbirSttr, patents, clinicalTrials }
+  }, [searchContext])
 
   return (
     <div className="h-full bg-white flex overflow-hidden">
@@ -949,24 +1018,6 @@ export function Chat({ persona }: ChatProps) {
               </button>
             </div>
           )}
-          {/* Specificity chips */}
-          <div className="flex items-center gap-2 mb-3">
-            <span className="text-xs text-gray-400">Search scope:</span>
-            {(['focused', 'balanced', 'broad'] as const).map((level) => (
-              <button
-                key={level}
-                type="button"
-                onClick={() => setSpecificity(level)}
-                className={`px-3 py-1 text-xs rounded-full transition-colors ${
-                  specificity === level
-                    ? 'bg-[#E07A5F] text-white'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                {level.charAt(0).toUpperCase() + level.slice(1)}
-              </button>
-            ))}
-          </div>
           <form onSubmit={handleSubmit}>
             <div className="flex items-end space-x-3">
               <div className="flex-1 relative">
@@ -1016,6 +1067,7 @@ export function Chat({ persona }: ChatProps) {
               onFilterChange={handleFilterChange}
               crossFilteredByCategory={crossFilteredByCategory}
               crossFilteredByOrgType={crossFilteredByOrgType}
+              quickFilterCounts={quickFilterCounts}
               onProjectClick={navigateToProject}
             />
           </div>

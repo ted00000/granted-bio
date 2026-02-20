@@ -957,14 +957,13 @@ export async function searchProjectsHybrid(
 // Faster, no timeouts on broad queries, conceptually-aware
 export async function searchProjectsSemantic(
   params: HybridSearchParams,
-  userAccess: UserAccess,
-  specificity: Specificity = 'balanced'
+  userAccess: UserAccess
 ): Promise<KeywordSearchResult> {
   const { semantic_query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
-  const threshold = SPECIFICITY_THRESHOLDS[specificity]
+  const threshold = 0.35 // Fixed semantic similarity threshold
 
-  console.log(`[Semantic Search] Specificity: ${specificity}, Threshold: ${threshold}`)
+  console.log(`[Semantic Search] Threshold: ${threshold}`)
 
   try {
     // Get semantic results only - no keyword search
@@ -1729,26 +1728,16 @@ export async function getPatentDetails(
   }
 }
 
-// Specificity threshold mapping
-const SPECIFICITY_THRESHOLDS = {
-  focused: 0.50,
-  balanced: 0.35,
-  broad: 0.20
-} as const
-
-export type Specificity = keyof typeof SPECIFICITY_THRESHOLDS
-
 // Tool execution dispatcher
 export async function executeTool(
   toolName: string,
   args: Record<string, unknown>,
-  userAccess: UserAccess,
-  specificity: Specificity = 'balanced'
+  userAccess: UserAccess
 ): Promise<unknown> {
   switch (toolName) {
     case 'search_projects':
       // Uses semantic-only search (embedding similarity, no keyword matching)
-      return searchProjectsSemantic(args as unknown as HybridSearchParams, userAccess, specificity)
+      return searchProjectsSemantic(args as unknown as HybridSearchParams, userAccess)
     case 'get_company_profile':
       return getCompanyProfile(args as unknown as GetCompanyProfileParams, userAccess)
     case 'get_pi_profile':
@@ -1767,7 +1756,7 @@ export async function executeTool(
         keyword_query: keywordArgs.keyword,
         semantic_query: keywordArgs.keyword,
         filters: keywordArgs.filters
-      }, userAccess, specificity)
+      }, userAccess)
     default:
       throw new Error(`Unknown tool: ${toolName}`)
   }

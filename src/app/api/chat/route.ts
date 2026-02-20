@@ -38,7 +38,6 @@ async function getUserAccess(userId: string | null): Promise<UserAccess> {
 interface ChatRequestBody {
   messages: Array<{ role: 'user' | 'assistant'; content: string }>
   persona: PersonaType
-  specificity?: 'focused' | 'balanced' | 'broad'
 }
 
 type AnthropicMessage = {
@@ -49,7 +48,7 @@ type AnthropicMessage = {
 export async function POST(request: NextRequest) {
   try {
     const body: ChatRequestBody = await request.json()
-    const { messages, persona, specificity = 'balanced' } = body
+    const { messages, persona } = body
 
     if (!messages || !persona) {
       return new Response(
@@ -209,7 +208,7 @@ export async function POST(request: NextRequest) {
             const toolResultsRaw = await Promise.all(
               toolUseBlocks.map(async (block) => {
                 try {
-                  const result = await executeTool(block.name, block.input, userAccess, specificity)
+                  const result = await executeTool(block.name, block.input, userAccess)
                   return { block, result, error: null }
                 } catch (error) {
                   console.error(`Tool ${block.name} error:`, error)

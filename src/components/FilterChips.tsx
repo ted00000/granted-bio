@@ -2,15 +2,29 @@
 
 import { useState, useEffect } from 'react'
 
+interface QuickFilters {
+  activeOnly?: boolean
+  sbirSttrOnly?: boolean
+  hasPatents?: boolean
+  hasClinicalTrials?: boolean
+}
+
 interface FilterChipsProps {
   byCategory: Record<string, number>
   byOrgType: Record<string, number>
   // Filtered counts (dynamic based on cross-dimension selection)
   filteredByCategory?: Record<string, number>
   filteredByOrgType?: Record<string, number>
+  // Quick filter counts
+  quickFilterCounts?: {
+    active: number
+    sbirSttr: number
+    patents: number
+    clinicalTrials: number
+  }
   keywordQuery: string
   semanticQuery: string
-  onFilterChange: (filters: { primary_category?: string[]; org_type?: string[] }) => void
+  onFilterChange: (filters: { primary_category?: string[]; org_type?: string[]; quick?: QuickFilters }) => void
   isLoading?: boolean
 }
 
@@ -38,6 +52,7 @@ export function FilterChips({
   byOrgType,
   filteredByCategory,
   filteredByOrgType,
+  quickFilterCounts,
   keywordQuery,
   semanticQuery,
   onFilterChange,
@@ -45,20 +60,25 @@ export function FilterChips({
 }: FilterChipsProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedOrgTypes, setSelectedOrgTypes] = useState<string[]>([])
+  const [quickFilters, setQuickFilters] = useState<QuickFilters>({})
 
   // Reset filters when search query changes
   useEffect(() => {
     setSelectedCategories([])
     setSelectedOrgTypes([])
+    setQuickFilters({})
   }, [keywordQuery, semanticQuery])
 
   // Notify parent of filter changes
   useEffect(() => {
-    const filters: { primary_category?: string[]; org_type?: string[] } = {}
+    const filters: { primary_category?: string[]; org_type?: string[]; quick?: QuickFilters } = {}
     if (selectedCategories.length > 0) filters.primary_category = selectedCategories
     if (selectedOrgTypes.length > 0) filters.org_type = selectedOrgTypes
+    if (Object.keys(quickFilters).some(k => quickFilters[k as keyof QuickFilters])) {
+      filters.quick = quickFilters
+    }
     onFilterChange(filters)
-  }, [selectedCategories, selectedOrgTypes, onFilterChange])
+  }, [selectedCategories, selectedOrgTypes, quickFilters, onFilterChange])
 
   const toggleCategory = (category: string) => {
     if (isLoading) return
@@ -78,12 +98,21 @@ export function FilterChips({
     )
   }
 
+  const toggleQuickFilter = (filter: keyof QuickFilters) => {
+    if (isLoading) return
+    setQuickFilters(prev => ({
+      ...prev,
+      [filter]: !prev[filter]
+    }))
+  }
+
   const clearFilters = () => {
     setSelectedCategories([])
     setSelectedOrgTypes([])
+    setQuickFilters({})
   }
 
-  const hasFilters = selectedCategories.length > 0 || selectedOrgTypes.length > 0
+  const hasFilters = selectedCategories.length > 0 || selectedOrgTypes.length > 0 || Object.values(quickFilters).some(Boolean)
 
   // Use original counts for chip list (so all options stay visible)
   // Use filtered counts for display numbers (dynamic based on cross-selection)
@@ -114,6 +143,43 @@ export function FilterChips({
             Clear filters
           </button>
         )}
+      </div>
+
+      {/* Quick filters */}
+      <div className="flex flex-wrap gap-2">
+        {[
+          { key: 'activeOnly' as const, label: 'Active', count: quickFilterCounts?.active },
+          { key: 'sbirSttrOnly' as const, label: 'SBIR/STTR', count: quickFilterCounts?.sbirSttr },
+          { key: 'hasPatents' as const, label: 'Has Patents', count: quickFilterCounts?.patents },
+          { key: 'hasClinicalTrials' as const, label: 'Has Trials', count: quickFilterCounts?.clinicalTrials },
+        ].map(({ key, label, count }) => {
+          const isSelected = quickFilters[key]
+          const isDisabled = isLoading || (!isSelected && count === 0)
+          return (
+            <button
+              key={key}
+              onClick={() => toggleQuickFilter(key)}
+              disabled={isDisabled}
+              className={`
+                px-2.5 py-1 text-xs rounded-full border transition-all
+                ${isSelected
+                  ? 'bg-emerald-500 text-white border-emerald-500'
+                  : count === 0
+                    ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                    : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-400'
+                }
+                ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+              `}
+            >
+              {label}
+              {count !== undefined && (
+                <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                  {count}
+                </span>
+              )}
+            </button>
+          )
+        })}
       </div>
 
       {/* Category filters */}
