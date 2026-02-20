@@ -964,9 +964,12 @@ export async function searchProjectsSemantic(
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
   const threshold = SPECIFICITY_THRESHOLDS[specificity]
 
+  console.log(`[Semantic Search] Specificity: ${specificity}, Threshold: ${threshold}`)
+
   try {
     // Get semantic results only - no keyword search
     const semanticResults = await getSemanticResults(semantic_query, effectiveLimit * 5, threshold)
+    console.log(`[Semantic Search] Results returned: ${semanticResults.length}`)
 
     // Fetch complete project data
     const allIds = semanticResults.map(r => r.application_id)
