@@ -18,49 +18,111 @@ You are classifying NIH-funded research projects into 9 categories. Your task re
 
 ---
 
-## ACTIVITY CODE PRE-FILTER (Check FIRST!)
+## TWO-PASS CLASSIFICATION ARCHITECTURE
 
-Before analyzing content, check the activity_code. Some codes OVERRIDE content analysis:
+### PASS 1: Deterministic (Activity Code Lookup) — CHECK FIRST!
 
-### Always → training (regardless of title/abstract):
+These are binary and should be resolved FIRST, before any content analysis. Projects matching these codes get classified immediately and SKIP Pass 2 entirely.
+
+**Always → training (regardless of title/abstract):**
 - T32, T34, T35, T90, TL1, TL4 → Institutional training grants
 - F30, F31, F32, F33, F99 → Individual fellowships
 - K01, K02, K05, K07, K08, K12, K22, K23, K24, K25, K26, K43, K76, K99, KL2 → Career development
 - D43, D71 → International training
 - R25, R90 → Education/training programs
 
-### Always → infrastructure (regardless of title/abstract):
+**Always → infrastructure (regardless of title/abstract):**
 - P30, P50, P51 → Center grants
 - S10, G20 → Equipment/resource grants
 - U13, R13 → Conference grants
 - U24, U2C → Resource/coordination grants
 
-### Classify by content (normal rules apply):
-- R01, R21, R33, R35, R37 → Research grants
-- R41, R42, R43, R44, SB1 → SBIR/STTR (also set org_type=company)
-- U01, U19, UG3, UH3 → Cooperative agreements
-- DP1, DP2, DP5 → Pioneer/innovator awards
-- P01, U54 → Multi-project grants (classify by content)
-- R00 → Transition awards (classify by content)
-- ZIA → Intramural research (classify by content)
+**If activity code matches above → classify immediately, skip Pass 2.**
+
+### PASS 2: Content Analysis (Remaining 7 Categories)
+
+For all other activity codes (R01, R21, R41-R44, U01, etc.), apply content analysis using the decision tree and disambiguation rules below.
 
 ---
 
-## OUTPUT FORMAT
+## THE CRITICAL DECISION: What is the PRIMARY DELIVERABLE?
 
-For each project row, output a CSV line:
-```
-application_id,primary_category,category_confidence,org_type
-```
+Ask yourself: **"What is the primary deliverable of this project?"**
 
-**Column order matters!** The import script expects: application_id, primary_category, category_confidence, org_type
+| If the deliverable is... | Category |
+|--------------------------|----------|
+| Knowledge, understanding, mechanisms, pathways | basic_research |
+| A new tool/assay/reagent/platform FOR researchers | biotools |
+| A drug, compound, or therapeutic intervention | therapeutics |
+| A clinical test, biomarker panel, or screening method | diagnostics |
+| A physical instrument, implant, or hardware | medical_device |
+| Patient-facing software, app, EHR tool, or telemedicine | digital_health |
+| None of the above | other |
 
-Include the header row first:
-```
-application_id,primary_category,category_confidence,org_type
-```
+---
 
-Then process all data rows. Only output CSV data, no explanations.
+## 8 DISAMBIGUATION RULES (Apply These!)
+
+These rules prevent misclassification. When in doubt, consult this list:
+
+### Rule 1: Assays, Probes, Reagents, Model Systems → biotools NOT basic_research
+
+If the project's aim is to **create, validate, or improve** an assay, probe, animal model, cell line, sequencing method, imaging technique, or computational pipeline intended for use by other researchers — it's **biotools**, even if understanding biology is a secondary aim.
+
+**Signal words:** "develop an assay," "novel probe for," "high-throughput screen," "platform for measuring," "computational tool for," "reference standard"
+
+### Rule 2: Mechanism studies that USE tools ≠ biotools
+
+A project that **uses** single-cell RNA-seq to study tumor microenvironment is **basic_research**.
+A project that **improves** single-cell RNA-seq methodology is **biotools**.
+
+**The verb matters: "uses" vs "develops/optimizes/validates"**
+
+### Rule 3: Biomarker Discovery — Resolve by Intent
+
+| Project Description | Category | Reasoning |
+|---------------------|----------|-----------|
+| "Identify biomarkers associated with disease X" | basic_research | Discovery/understanding |
+| "Develop and validate a clinical biomarker panel for diagnosing X" | diagnostics | Clinical test output |
+| "Build a multiplexed assay platform for biomarker detection" | biotools | Research tool output |
+
+### Rule 4: Drug Mechanism Studies vs. Therapeutics
+
+| Project Description | Category | Reasoning |
+|---------------------|----------|-----------|
+| "Understand how compound X affects pathway Y" | basic_research | Knowledge output |
+| "Optimize compound X for clinical efficacy" | therapeutics | Drug output |
+| "Develop a drug delivery nanoparticle" | therapeutics OR medical_device | Resolve by whether innovation is the drug or the device |
+
+### Rule 5: AI/ML Projects — Classify by APPLICATION, Not Method
+
+| Project Description | Category | Reasoning |
+|---------------------|----------|-----------|
+| ML to predict protein folding | basic_research | Understanding biology |
+| ML pipeline for drug candidate screening | therapeutics | Drug is the goal |
+| ML tool other researchers will use | biotools | Research tool |
+| ML-based diagnostic algorithm for clinicians | diagnostics | Clinical test |
+| ML patient-facing app | digital_health | Patient-deployed |
+
+### Rule 6: digital_health Requires PATIENT-FACING Deployment
+
+- Software built **for researchers** = biotools
+- Software built **for clinicians** making treatment decisions = borderline (lean digital_health)
+- Software **deployed to patients** = definitely digital_health
+
+**Key question:** Does a patient interact with or directly benefit from the software as an end user?
+
+### Rule 7: Combination Projects — Classify by PRIMARY Innovation
+
+Many projects span categories. Classify by the **novel contribution**, not supporting work.
+
+Example: A project that develops a new imaging probe (biotools) and then uses it to study a disease mechanism (basic_research) should be classified by whichever aim is **primary** (usually Specific Aim 1 or the title focus).
+
+### Rule 8: "other" Should Be Genuinely Residual
+
+Examples of true "other": health policy research, health economics, epidemiological surveys, community health interventions, behavioral studies with no tool/drug/device output.
+
+**If you're tempted to use "other", re-read the abstract for hidden deliverables.**
 
 ---
 
@@ -115,8 +177,9 @@ Then process all data rows. Only output CSV data, no explanations.
 - "Understanding how neural circuits develop" → basic_research
 - "Dissecting mechanisms of immune escape in tumors" → basic_research
 - "Characterizing the role of microbiome in disease" → basic_research
+- "Using single-cell RNA-seq to map cell types in the brain" → basic_research (USING a tool)
 
-**NOT basic_research:**
+**NOT basic_research (apply Rule 1):**
 - If they're DEVELOPING a tool to study biology → biotools
 - If they're DEVELOPING a treatment → therapeutics
 
@@ -131,19 +194,19 @@ Then process all data rows. Only output CSV data, no explanations.
 - "Build an imaging system"
 - "Design a computational pipeline"
 - "Establish a database/resource"
+- "Novel probe for..."
+- "High-throughput assay for..."
+- "Reference standard for..."
 
 **The output is a TOOL that other researchers will use.**
 
-**Critical distinction - Tool development vs. Tool application:**
-- "Developing a CRISPR screening platform" → biotools (creating the tool)
-- "Using CRISPR to study gene function" → basic_research (using tool for knowledge)
-- "Using CRISPR to treat sickle cell" → therapeutics (using tool for treatment)
-
 **Examples:**
-- "Development of a high-throughput drug screening platform" → biotools
+- "Development of a high-throughput CRISPR screening platform" → biotools
 - "Creating an AI model to predict protein structures" → biotools
 - "Building a single-cell sequencing method" → biotools
 - "Establishing a biobank for rare diseases" → biotools
+- "Novel imaging probe for visualizing neuroinflammation" → biotools
+- "Computational pipeline for analyzing spatial transcriptomics" → biotools
 
 ---
 
@@ -158,6 +221,7 @@ Then process all data rows. Only output CSV data, no explanations.
 - "Vaccine development"
 - "Drug delivery system"
 - "Clinical trial of..."
+- "Optimize compound for clinical efficacy"
 
 **The output is a TREATMENT for patients.**
 
@@ -186,14 +250,14 @@ Then process all data rows. Only output CSV data, no explanations.
 - "Prognostic biomarker"
 - "Liquid biopsy"
 - "Point-of-care testing"
+- "Validate clinical biomarker panel"
 
 **The output is a CLINICAL DIAGNOSTIC TEST.**
 
-**Critical distinction:**
-- "Biomarker discovery for clinical diagnosis" → diagnostics
-- "Biomarker discovery for basic research" → biotools or basic_research
-- "Imaging method for clinical diagnosis" → diagnostics
-- "Imaging method for research" → biotools
+**Critical distinction (Rule 3):**
+- "Develop and validate a biomarker panel for clinical diagnosis" → diagnostics
+- "Identify biomarkers associated with disease" → basic_research
+- "Build a multiplexed assay platform for biomarker detection" → biotools
 
 ---
 
@@ -206,6 +270,7 @@ Then process all data rows. Only output CSV data, no explanations.
 - "Prosthetic", "orthopedic device"
 - "Surgical tool/instrument"
 - "Therapeutic device"
+- "Bioresorbable implant"
 
 **The output is a PHYSICAL DEVICE for patient treatment.**
 
@@ -219,7 +284,7 @@ Then process all data rows. Only output CSV data, no explanations.
 ---
 
 ### 8. digital_health
-**Definition:** DEPLOYING software, apps, or digital tools for patient care, clinical decision support, or health management.
+**Definition:** DEPLOYING software, apps, or digital tools for patient care, clinical decision support, or health management. **Requires patient-facing or clinician-facing deployment.**
 
 **Key signals:**
 - "Telemedicine platform"
@@ -232,10 +297,10 @@ Then process all data rows. Only output CSV data, no explanations.
 
 **The output is SOFTWARE/DIGITAL TOOL for patient care.**
 
-**Critical distinction:**
-- "Deploying AI in clinic for real-time sepsis detection" → digital_health
-- "Building an ML model to predict drug targets" → biotools
-- "Using AI for drug discovery" → therapeutics (if drug is the goal)
+**Critical distinction (Rule 6):**
+- Software for researchers → biotools
+- Software for clinicians → digital_health (if clinical decision support)
+- Software for patients → digital_health
 
 **NOT digital_health:**
 - Research studies using digital tools → other or basic_research
@@ -245,7 +310,7 @@ Then process all data rows. Only output CSV data, no explanations.
 ---
 
 ### 9. other
-**Definition:** Research that doesn't fit the above 8 categories.
+**Definition:** Research that doesn't fit the above 8 categories. **Should be genuinely residual (Rule 8).**
 
 **Includes:**
 - **Health Services Research:** Health disparities, health equity, implementation science, quality improvement
@@ -260,37 +325,7 @@ Then process all data rows. Only output CSV data, no explanations.
 - "Cohort study of cardiovascular risk factors" → other
 - "Human-robot collaboration in construction" → other
 
----
-
-## CRITICAL DISTINCTIONS
-
-### Tool development vs. Tool application
-| Project | Category | Reasoning |
-|---------|----------|-----------|
-| "Developing a CRISPR screening platform" | biotools | Creating the tool |
-| "Using CRISPR to study gene function" | basic_research | Using tool for knowledge |
-| "Using CRISPR to treat sickle cell disease" | therapeutics | Using tool for treatment |
-
-### Research tool vs. Clinical tool
-| Project | Category | Reasoning |
-|---------|----------|-----------|
-| "Mass spectrometry method for proteomics research" | biotools | Research tool |
-| "Mass spectrometry-based diagnostic test for cancer" | diagnostics | Clinical tool |
-
-### AI/ML Classification
-| Project | Category | Reasoning |
-|---------|----------|-----------|
-| "Building an ML model to predict drug targets" | biotools | Research tool |
-| "Deploying AI in clinic for real-time sepsis detection" | digital_health | Clinical deployment |
-| "Using AI to screen compounds for drug discovery" | therapeutics | Drug is the goal |
-| "Creating a foundation model for biological sequences" | biotools | Enabling technology |
-
-### Understanding vs. Developing
-| Project | Category | Reasoning |
-|---------|----------|-----------|
-| "Understanding mechanisms of drug resistance" | basic_research | Knowledge is output |
-| "Developing drugs to overcome resistance" | therapeutics | Treatment is output |
-| "Developing assay to measure drug resistance" | biotools | Tool is output |
+**Before classifying as "other", re-read the abstract for hidden deliverables!**
 
 ---
 
@@ -340,6 +375,46 @@ Then process all data rows. Only output CSV data, no explanations.
 - **50-69**: Genuinely ambiguous, could reasonably fit multiple categories
 - **Below 50**: Very uncertain, needs human review
 
+**Flag medium/low confidence projects for review.** If ambiguous, lean toward lower confidence rather than overconfident misclassification.
+
+---
+
+## OUTPUT FORMAT
+
+For each project row, output a CSV line:
+```
+application_id,primary_category,category_confidence,org_type
+```
+
+**Column order matters!** The import script expects: application_id, primary_category, category_confidence, org_type
+
+Include the header row first:
+```
+application_id,primary_category,category_confidence,org_type
+```
+
+Then process all data rows. Only output CSV data, no explanations.
+
+---
+
+## CHAIN-OF-THOUGHT PROCESS (Apply This Mentally!)
+
+For each project, reason through this sequence:
+
+1. **Check activity code FIRST** — Does it match training (T/F/K/D/R25/R90) or infrastructure (P30/P50/P51/S10/G20/U13/R13/U24/U2C)? If yes → classify immediately, stop.
+
+2. **Read the title and abstract** — What is the researchers actually doing?
+
+3. **Identify the PRIMARY deliverable** — Is it knowledge, a tool, a drug, a test, a device, or patient-facing software?
+
+4. **Apply disambiguation rules** — Check Rules 1-8 if the category is ambiguous.
+
+5. **Classify org_type** — Based on organizational name (SBIR/STTR → company).
+
+6. **Assign confidence** — Based on clarity of classification.
+
+7. **Output** — CSV line with all fields.
+
 ---
 
 ## EXAMPLES
@@ -363,49 +438,64 @@ Input: "Shared Instrumentation Grant","STANFORD","S10"
 Output: [app_id],infrastructure,95,university
 ```
 
-### Content-based classification
+### Content-based classification (showing reasoning)
 
 ```
 Input: "Development of a High-Throughput CRISPR Screening Platform","BROAD INSTITUTE","R01"
+Reasoning: Creates a tool for other researchers → Rule 1 applies
 Output: [app_id],biotools,95,research_institute
 
+Input: "Using CRISPR to Study Neural Circuit Function","MIT","R01"
+Reasoning: USES tool to understand biology → Rule 2 applies → basic_research
+Output: [app_id],basic_research,85,university
+
 Input: "CAR-T Cell Manufacturing Optimization","NOVARTIS","R44"
+Reasoning: Therapeutic output, SBIR → company
 Output: [app_id],therapeutics,95,company
 
-Input: "Early Detection of Pancreatic Cancer Using Circulating Biomarkers","JOHNS HOPKINS","R21"
+Input: "Identifying Biomarkers Associated with Alzheimer's Disease","JOHNS HOPKINS","R01"
+Reasoning: Discovery/understanding, no clinical test → Rule 3 applies
+Output: [app_id],basic_research,80,university
+
+Input: "Validation of a Blood-Based Biomarker Panel for Early Cancer Detection","JOHNS HOPKINS","R21"
+Reasoning: Clinical diagnostic test output → Rule 3 applies
 Output: [app_id],diagnostics,90,university
 
 Input: "AI-Powered Clinical Decision Support for Sepsis","UCSD HEALTH","R01"
+Reasoning: Clinician-facing software → Rule 6 applies
 Output: [app_id],digital_health,85,hospital
 
-Input: "Bioresorbable Zinc Staples for Surgical Anastomoses","SUNY STONY BROOK","R01"
-Output: [app_id],medical_device,90,university
+Input: "Machine Learning Pipeline for Drug Target Prediction","BROAD INSTITUTE","R01"
+Reasoning: Tool for researchers → Rule 5 applies
+Output: [app_id],biotools,90,research_institute
 
-Input: "Understanding Neural Circuit Development","MIT","R01"
-Output: [app_id],basic_research,85,university
+Input: "ML-Assisted Drug Discovery for Parkinson's Disease","PFIZER","R44"
+Reasoning: Drug is the goal → Rule 5 applies
+Output: [app_id],therapeutics,90,company
 
-Input: "Dissecting mechanisms of immune escape in tumors","FRED HUTCHINSON","R01"
+Input: "Understanding Mechanisms of Drug Resistance in Cancer","FRED HUTCHINSON","R01"
+Reasoning: Knowledge output → Rule 4 applies
 Output: [app_id],basic_research,80,research_institute
 
+Input: "Bioresorbable Zinc Staples for Surgical Anastomoses","SUNY STONY BROOK","R01"
+Reasoning: Physical device for patient treatment
+Output: [app_id],medical_device,90,university
+
 Input: "Reducing Health Disparities in Diabetes Care","JOHNS HOPKINS HOSPITAL","R01"
+Reasoning: Health services research, no tool/drug/device
 Output: [app_id],other,80,hospital
 
 Input: "Behavioral Intervention for Smoking Cessation","YALE","R01"
+Reasoning: Behavioral intervention, no drugs/devices
 Output: [app_id],other,85,university
 ```
 
 ---
 
-## PROCESS
-
-1. **Check activity code FIRST** - Some codes force the category (training, infrastructure)
-2. Read the title, org_name, and abstract carefully
-3. Identify the PRIMARY research output and intent
-4. Consider what the end product will be and who will use it
-5. Classify org_type based on organizational name (SBIR/STTR → company)
-6. Assign confidence based on clarity of classification
-7. Output the CSV line
+## BATCH PROCESSING
 
 **Batch Size:** Process ALL rows in the uploaded file in a single response. Output the complete CSV with all classified rows. Do not stop partway through - complete the entire file.
+
+**Consistency:** Apply rules consistently across all projects. The same type of project should receive the same classification regardless of position in the batch.
 
 Begin processing the uploaded data.

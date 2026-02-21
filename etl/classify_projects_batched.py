@@ -46,7 +46,7 @@ abstracts_map = {a['application_id']: a['abstract_text'] for a in abstracts_resp
 print(f"✓ Loaded {len(abstracts_map):,} abstracts\n", flush=True)
 
 # Prompt template for batch classification
-BATCH_PROMPT = """Classify each of these NIH grants. Return a JSON array with one object per project.
+BATCH_PROMPT = """Classify each NIH grant. Return a JSON array with one object per project.
 
 Projects to classify:
 {projects_json}
@@ -59,47 +59,34 @@ For each project, return:
   "org_type": "company|university|hospital|research_institute|other"
 }}
 
-## ACTIVITY CODE PRE-FILTER (Check FIRST!)
+## PASS 1: ACTIVITY CODE PRE-FILTER (Check FIRST!)
 
-**Always → training (regardless of content):**
-- T32, T34, T35, T90, TL1, TL4 → Training grants
-- F30, F31, F32, F33, F99 → Fellowships
-- K01, K02, K05, K07, K08, K12, K22-K26, K43, K76, K99, KL2 → Career development
-- D43, D71, R25, R90 → Training programs
+**Always → training:** T32, T34, T35, T90, TL1, TL4, F30-F33, F99, K01-K99, D43, D71, R25, R90
+**Always → infrastructure:** P30, P50, P51, S10, G20, U13, R13, U24, U2C
 
-**Always → infrastructure (regardless of content):**
-- P30, P50, P51 → Center grants
-- S10, G20 → Equipment grants
-- U13, R13 → Conference grants
-- U24, U2C → Resource/coordination grants
+If activity code matches above → classify immediately, skip content analysis.
 
-## THE 9 CATEGORIES
+## PASS 2: CONTENT ANALYSIS
 
-1. **training** - Programs for training/education/career development of researchers
-2. **infrastructure** - Core facilities, centers, equipment, coordination grants
-3. **basic_research** - Understanding biology/mechanisms WITHOUT a tool/drug/diagnostic as output. OUTPUT = knowledge.
-4. **biotools** - DEVELOPING research tools, assays, platforms, methods. OUTPUT = tool for researchers.
-5. **therapeutics** - DEVELOPING drugs/treatments for patients. OUTPUT = therapy. NOT behavioral interventions.
-6. **diagnostics** - DEVELOPING clinical tests for disease detection. OUTPUT = diagnostic test.
-7. **medical_device** - DEVELOPING physical devices for patient treatment. Must be MEDICAL.
-8. **digital_health** - DEPLOYING software/apps for patient care. Telemedicine, clinical decision support.
-9. **other** - Health services, behavioral interventions, epidemiology, non-biomedical research.
+Ask: "What is the PRIMARY DELIVERABLE?"
+- Knowledge/understanding → basic_research
+- Tool/assay/platform FOR researchers → biotools
+- Drug/treatment → therapeutics
+- Clinical test → diagnostics
+- Physical device for patients → medical_device
+- Patient-facing software → digital_health
+- None of above → other
 
-## CRITICAL DISTINCTIONS
+## 8 DISAMBIGUATION RULES
 
-**Tool development vs Tool application:**
-- "Developing a CRISPR screening platform" → biotools (creating the tool)
-- "Using CRISPR to study gene function" → basic_research (using tool for knowledge)
-- "Using CRISPR to treat sickle cell" → therapeutics (using tool for treatment)
-
-**Understanding vs Developing:**
-- "Understanding mechanisms of drug resistance" → basic_research
-- "Developing drugs to overcome resistance" → therapeutics
-- "Developing assay to measure resistance" → biotools
-
-**Research tool vs Clinical tool:**
-- "Mass spec method for proteomics research" → biotools
-- "Mass spec diagnostic for cancer" → diagnostics
+1. **Assays/probes/model systems → biotools** NOT basic_research (if DEVELOPING the tool)
+2. **USES vs DEVELOPS:** "Uses RNA-seq to study X" → basic_research. "Improves RNA-seq method" → biotools
+3. **Biomarker intent:** "Identify biomarkers" → basic_research. "Validate clinical panel" → diagnostics. "Build detection platform" → biotools
+4. **Drug studies:** "Understand how drug X works" → basic_research. "Optimize drug X for efficacy" → therapeutics
+5. **AI/ML by application:** ML for protein folding → basic_research. ML drug screening → therapeutics. ML tool for researchers → biotools. ML clinical decision support → digital_health
+6. **digital_health requires patient/clinician deployment:** Software for researchers → biotools
+7. **Combination projects:** Classify by PRIMARY innovation (usually title focus or Aim 1)
+8. **other = genuinely residual:** Re-read abstract for hidden deliverables before using
 
 ## Organization types:
 - company: Inc., LLC, Corp., Therapeutics, Biosciences, SBIR/STTR
