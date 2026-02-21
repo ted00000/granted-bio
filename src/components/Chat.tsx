@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
-import type { PersonaType, KeywordSearchResult } from '@/lib/chat/types'
+import type { PersonaType, KeywordSearchResult, SearchResultProject } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
 
@@ -33,6 +33,20 @@ interface SearchContext {
   keywordQuery: string
   semanticQuery: string
   originalResults: KeywordSearchResult
+}
+
+// Filter state types
+interface QuickFilters {
+  activeOnly?: boolean
+  sbirSttrOnly?: boolean
+  hasPatents?: boolean
+  hasClinicalTrials?: boolean
+}
+
+interface FilterState {
+  primary_category?: string[]
+  org_type?: string[]
+  quick?: QuickFilters
 }
 
 interface ChatProps {
@@ -96,7 +110,7 @@ interface ResultsPanelProps {
   results: ToolResult[]
   searchContext: SearchContext | null
   filteredResults: KeywordSearchResult | null
-  onFilterChange: (filters: { primary_category?: string[]; org_type?: string[]; quick?: { activeOnly?: boolean; sbirSttrOnly?: boolean; hasPatents?: boolean; hasClinicalTrials?: boolean } }) => void
+  onFilterChange: (filters: FilterState) => void
   // Cross-filtered counts for dynamic chip numbers
   crossFilteredByCategory?: Record<string, number>
   crossFilteredByOrgType?: Record<string, number>
@@ -584,16 +598,7 @@ export function Chat({ persona }: ChatProps) {
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
   const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
-  const [currentFilters, setCurrentFilters] = useState<{
-    primary_category?: string[]
-    org_type?: string[]
-    quick?: {
-      activeOnly?: boolean
-      sbirSttrOnly?: boolean
-      hasPatents?: boolean
-      hasClinicalTrials?: boolean
-    }
-  }>({})
+  const [currentFilters, setCurrentFilters] = useState<FilterState>({})
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -641,16 +646,7 @@ export function Chat({ persona }: ChatProps) {
   }
 
   // Handle filter changes - filter client-side from stored results
-  const handleFilterChange = useCallback((filters: {
-    primary_category?: string[]
-    org_type?: string[]
-    quick?: {
-      activeOnly?: boolean
-      sbirSttrOnly?: boolean
-      hasPatents?: boolean
-      hasClinicalTrials?: boolean
-    }
-  }) => {
+  const handleFilterChange = useCallback((filters: FilterState) => {
     setCurrentFilters(filters)
 
     if (!searchContext) return
@@ -848,73 +844,93 @@ export function Chat({ persona }: ChatProps) {
     return lastAssistant?.id === messageId
   }
 
-  // Compute cross-filtered counts for dynamic chip numbers
-  // - crossFilteredByCategory: counts when only org_type filter is applied (for category chips)
-  // - crossFilteredByOrgType: counts when only category filter is applied (for org_type chips)
-  const { crossFilteredByCategory, crossFilteredByOrgType } = useMemo(() => {
-    if (!searchContext) return { crossFilteredByCategory: undefined, crossFilteredByOrgType: undefined }
+  // Helper to apply filters to results (excluding specified filter types for cross-counting)
+  const applyFilters = useCallback((
+    results: SearchResultProject[],
+    filters: FilterState,
+    exclude?: { category?: boolean; orgType?: boolean; quick?: keyof QuickFilters }
+  ): SearchResultProject[] => {
+    let filtered: SearchResultProject[] = results
+
+    // Apply quick filters (unless excluded)
+    const quick = filters.quick
+    if (quick?.activeOnly && exclude?.quick !== 'activeOnly') {
+      filtered = filtered.filter(p => isProjectActive(p.project_end) === true)
+    }
+    if (quick?.sbirSttrOnly && exclude?.quick !== 'sbirSttrOnly') {
+      filtered = filtered.filter(p => isSbirSttr(p.activity_code))
+    }
+    if (quick?.hasPatents && exclude?.quick !== 'hasPatents') {
+      filtered = filtered.filter(p => (p.patent_count || 0) > 0)
+    }
+    if (quick?.hasClinicalTrials && exclude?.quick !== 'hasClinicalTrials') {
+      filtered = filtered.filter(p => (p.clinical_trial_count || 0) > 0)
+    }
+
+    // Apply category filter (unless excluded)
+    if (filters.primary_category?.length && !exclude?.category) {
+      filtered = filtered.filter(p =>
+        p.primary_category && filters.primary_category!.includes(p.primary_category)
+      )
+    }
+
+    // Apply org_type filter (unless excluded)
+    if (filters.org_type?.length && !exclude?.orgType) {
+      filtered = filtered.filter(p =>
+        p.org_type && filters.org_type!.includes(p.org_type)
+      )
+    }
+
+    return filtered
+  }, [isSbirSttr])
+
+  // Compute all cross-filtered counts dynamically
+  const { crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts } = useMemo(() => {
+    if (!searchContext) {
+      return { crossFilteredByCategory: undefined, crossFilteredByOrgType: undefined, quickFilterCounts: undefined }
+    }
 
     const allResults = searchContext.originalResults.all_results
     const hasCategory = currentFilters.primary_category?.length
     const hasOrgType = currentFilters.org_type?.length
+    const hasQuickFilters = currentFilters.quick && Object.values(currentFilters.quick).some(Boolean)
+    const hasAnyFilter = hasCategory || hasOrgType || hasQuickFilters
 
-    // If no filters, return undefined (chips will use original counts)
-    if (!hasCategory && !hasOrgType) {
-      return { crossFilteredByCategory: undefined, crossFilteredByOrgType: undefined }
-    }
-
-    // For category chips: filter by org_type only, then count categories
-    let categoryFiltered = allResults
-    if (hasOrgType) {
-      categoryFiltered = allResults.filter(p =>
-        p.org_type && currentFilters.org_type!.includes(p.org_type)
-      )
-    }
+    // For category chips: apply all filters EXCEPT category
+    const categoryFiltered = applyFilters(allResults, currentFilters, { category: true })
     const byCategory: Record<string, number> = {}
     categoryFiltered.forEach(p => {
       const cat = p.primary_category || 'other'
       byCategory[cat] = (byCategory[cat] || 0) + 1
     })
 
-    // For org_type chips: filter by category only, then count org_types
-    let orgFiltered = allResults
-    if (hasCategory) {
-      orgFiltered = allResults.filter(p =>
-        p.primary_category && currentFilters.primary_category!.includes(p.primary_category)
-      )
-    }
+    // For org_type chips: apply all filters EXCEPT org_type
+    const orgFiltered = applyFilters(allResults, currentFilters, { orgType: true })
     const byOrgType: Record<string, number> = {}
     orgFiltered.forEach(p => {
       const org = p.org_type || 'other'
       byOrgType[org] = (byOrgType[org] || 0) + 1
     })
 
-    return {
-      crossFilteredByCategory: hasOrgType ? byCategory : undefined,
-      crossFilteredByOrgType: hasCategory ? byOrgType : undefined
+    // For quick filter chips: apply all filters EXCEPT the specific quick filter being counted
+    const activeFiltered = applyFilters(allResults, currentFilters, { quick: 'activeOnly' })
+    const sbirFiltered = applyFilters(allResults, currentFilters, { quick: 'sbirSttrOnly' })
+    const patentsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasPatents' })
+    const trialsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasClinicalTrials' })
+
+    const quickCounts = {
+      active: activeFiltered.filter(p => isProjectActive(p.project_end) === true).length,
+      sbirSttr: sbirFiltered.filter(p => isSbirSttr(p.activity_code)).length,
+      patents: patentsFiltered.filter(p => (p.patent_count || 0) > 0).length,
+      clinicalTrials: trialsFiltered.filter(p => (p.clinical_trial_count || 0) > 0).length
     }
-  }, [searchContext, currentFilters])
 
-  // Compute quick filter counts from original results
-  const quickFilterCounts = useMemo(() => {
-    if (!searchContext) return undefined
-
-    const allResults = searchContext.originalResults.all_results
-    let active = 0
-    let sbirSttr = 0
-    let patents = 0
-    let clinicalTrials = 0
-
-    allResults.forEach(p => {
-      if (isProjectActive(p.project_end) === true) active++
-      const { isSbir, isSttr } = getSbirSttrStatus(p.activity_code)
-      if (isSbir || isSttr) sbirSttr++
-      if ((p.patent_count || 0) > 0) patents++
-      if ((p.clinical_trial_count || 0) > 0) clinicalTrials++
-    })
-
-    return { active, sbirSttr, patents, clinicalTrials }
-  }, [searchContext])
+    return {
+      crossFilteredByCategory: hasAnyFilter ? byCategory : undefined,
+      crossFilteredByOrgType: hasAnyFilter ? byOrgType : undefined,
+      quickFilterCounts: quickCounts
+    }
+  }, [searchContext, currentFilters, applyFilters, isSbirSttr])
 
   return (
     <div className="h-full bg-white flex overflow-hidden">
