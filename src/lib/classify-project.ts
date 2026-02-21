@@ -19,10 +19,11 @@ export interface ProjectData {
   abstract?: string
   phr?: string
   terms?: string
+  activity_code?: string
 }
 
 export interface ClassificationResult {
-  primary_category: 'biotools' | 'therapeutics' | 'diagnostics' | 'medical_device' | 'digital_health' | 'other'
+  primary_category: 'training' | 'infrastructure' | 'basic_research' | 'biotools' | 'therapeutics' | 'diagnostics' | 'medical_device' | 'digital_health' | 'other'
   category_confidence: number
   org_type: 'company' | 'university' | 'hospital' | 'research_institute' | 'other'
 }
@@ -35,28 +36,45 @@ Organization: {org_name}
 Abstract: {abstract}
 Public Health Relevance: {phr}
 Keywords: {terms}
+Activity Code: {activity_code}
 
 Return JSON in this exact format:
 {
-  "primary_category": "biotools|therapeutics|diagnostics|medical_device|digital_health|other",
+  "primary_category": "training|infrastructure|basic_research|biotools|therapeutics|diagnostics|medical_device|digital_health|other",
   "category_confidence": 0-100,
   "org_type": "company|university|hospital|research_institute|other"
 }
 
-Category Definitions:
-- biotools: Research tools, instruments, platforms, assays, reagents, enabling technologies for research
-- therapeutics: Drug development, treatments, immunotherapy, gene therapy, therapeutic compounds
-- diagnostics: Disease detection, screening tests, diagnostic assays, biomarker discovery
-- medical_device: Implantable devices, surgical tools, prosthetics, therapeutic devices for patients
-- digital_health: Health apps, telemedicine, AI diagnostics, wearables, digital therapeutics
-- other: Basic research, epidemiology, health services, policy, education
+## ACTIVITY CODE PRE-FILTER (Check FIRST!)
+
+Always → training: T32, T34, T35, T90, TL1, TL4, F30-F33, F99, K01-K99 series, D43, D71, R25, R90
+Always → infrastructure: P30, P50, P51, S10, G20, U13, R13, U24, U2C
+
+## THE 9 CATEGORIES
+
+1. training - Programs for training/education/career development of researchers
+2. infrastructure - Core facilities, centers, equipment, coordination grants
+3. basic_research - Understanding biology/mechanisms WITHOUT a tool/drug/diagnostic. OUTPUT = knowledge
+4. biotools - DEVELOPING research tools, assays, platforms, methods. OUTPUT = tool for researchers
+5. therapeutics - DEVELOPING drugs/treatments for patients. OUTPUT = therapy. NOT behavioral interventions
+6. diagnostics - DEVELOPING clinical tests for disease detection. OUTPUT = diagnostic test
+7. medical_device - DEVELOPING physical devices for patient treatment. Must be MEDICAL
+8. digital_health - DEPLOYING software/apps for patient care. Telemedicine, clinical decision support
+9. other - Health services, behavioral interventions, epidemiology, non-biomedical research
+
+## CRITICAL DISTINCTIONS
+
+Tool development vs Tool application:
+- "Developing a CRISPR screening platform" → biotools
+- "Using CRISPR to study gene function" → basic_research
+- "Using CRISPR to treat sickle cell" → therapeutics
 
 Organization Type Definitions:
-- company: Commercial entities, small businesses, biotech/pharma companies
-- university: Academic institutions, colleges, universities
-- hospital: Medical centers, clinical institutions, healthcare providers
-- research_institute: Independent research organizations, national labs
-- other: Government agencies, non-profits, foundations, unaffiliated`
+- company: Commercial entities (Inc., LLC, SBIR/STTR)
+- university: Academic institutions
+- hospital: Medical centers, health systems
+- research_institute: Independent research organizations (Broad, Scripps)
+- other: Government agencies, non-profits`
 
 export async function classifyProject(project: ProjectData): Promise<ClassificationResult> {
   // Build prompt with project data
@@ -66,6 +84,7 @@ export async function classifyProject(project: ProjectData): Promise<Classificat
     .replace('{abstract}', project.abstract || 'N/A')
     .replace('{phr}', project.phr || 'N/A')
     .replace('{terms}', project.terms || 'N/A')
+    .replace('{activity_code}', project.activity_code || 'N/A')
 
   try {
     const message = await anthropic.messages.create({
@@ -99,7 +118,7 @@ export async function classifyProject(project: ProjectData): Promise<Classificat
     const result = JSON.parse(jsonText) as ClassificationResult
 
     // Validate the result
-    const validCategories = ['biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other']
+    const validCategories = ['training', 'infrastructure', 'basic_research', 'biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other']
     const validOrgTypes = ['company', 'university', 'hospital', 'research_institute', 'other']
 
     if (!validCategories.includes(result.primary_category)) {

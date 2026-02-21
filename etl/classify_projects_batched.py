@@ -54,40 +54,59 @@ Projects to classify:
 For each project, return:
 {{
   "application_id": "the project's application_id",
-  "primary_category": "biotools|therapeutics|diagnostics|medical_device|digital_health|other",
+  "primary_category": "training|infrastructure|basic_research|biotools|therapeutics|diagnostics|medical_device|digital_health|other",
   "category_confidence": 0-100,
   "org_type": "company|university|hospital|research_institute|other"
 }}
 
 ## ACTIVITY CODE PRE-FILTER (Check FIRST!)
-These activity codes ALWAYS = "other" regardless of content:
-- T32, T34, T35, TL1, TL4 (Training), F30-F33, F99 (Fellowships)
-- K01, K02, K05, K07, K08, K12, K22-K26, K43, K76, K99, KL2 (Career dev)
-- P30, P50, P51 (Centers), S10, G20 (Equipment), U13, R13 (Conferences)
 
-## Category definitions:
-- biotools: DEVELOPING research tools, assays, platforms, methods. OUTPUT = a tool for researchers.
-- therapeutics: DEVELOPING drugs/treatments. OUTPUT = therapy for patients. NOT behavioral interventions.
-- diagnostics: DEVELOPING tests for disease detection. OUTPUT = clinical diagnostic.
-- medical_device: DEVELOPING physical devices for patient treatment. Must be MEDICAL.
-- digital_health: DEPLOYING software/apps for patient care. Telemedicine platforms.
-- other: Training grants, basic research, health services, behavioral interventions, epidemiology, infrastructure, non-medical research.
+**Always → training (regardless of content):**
+- T32, T34, T35, T90, TL1, TL4 → Training grants
+- F30, F31, F32, F33, F99 → Fellowships
+- K01, K02, K05, K07, K08, K12, K22-K26, K43, K76, K99, KL2 → Career development
+- D43, D71, R25, R90 → Training programs
 
-## CRITICAL DISTINCTION - Tool development vs Tool application:
+**Always → infrastructure (regardless of content):**
+- P30, P50, P51 → Center grants
+- S10, G20 → Equipment grants
+- U13, R13 → Conference grants
+- U24, U2C → Resource/coordination grants
+
+## THE 9 CATEGORIES
+
+1. **training** - Programs for training/education/career development of researchers
+2. **infrastructure** - Core facilities, centers, equipment, coordination grants
+3. **basic_research** - Understanding biology/mechanisms WITHOUT a tool/drug/diagnostic as output. OUTPUT = knowledge.
+4. **biotools** - DEVELOPING research tools, assays, platforms, methods. OUTPUT = tool for researchers.
+5. **therapeutics** - DEVELOPING drugs/treatments for patients. OUTPUT = therapy. NOT behavioral interventions.
+6. **diagnostics** - DEVELOPING clinical tests for disease detection. OUTPUT = diagnostic test.
+7. **medical_device** - DEVELOPING physical devices for patient treatment. Must be MEDICAL.
+8. **digital_health** - DEPLOYING software/apps for patient care. Telemedicine, clinical decision support.
+9. **other** - Health services, behavioral interventions, epidemiology, non-biomedical research.
+
+## CRITICAL DISTINCTIONS
+
+**Tool development vs Tool application:**
 - "Developing a CRISPR screening platform" → biotools (creating the tool)
-- "Using CRISPR to treat sickle cell disease" → therapeutics (using tool for treatment)
-- "Creating an assay for drug discovery" → biotools (the assay IS the output)
-- "Drug discovery using high-throughput screening" → therapeutics (drug IS the output)
+- "Using CRISPR to study gene function" → basic_research (using tool for knowledge)
+- "Using CRISPR to treat sickle cell" → therapeutics (using tool for treatment)
 
-## What IS vs ISN'T "other":
-USE "other" for: Training/fellowships, basic science ("understanding mechanisms"), behavioral interventions, mental health services, health disparities, epidemiology, cohort studies, recruitment methodologies, non-medical robotics.
+**Understanding vs Developing:**
+- "Understanding mechanisms of drug resistance" → basic_research
+- "Developing drugs to overcome resistance" → therapeutics
+- "Developing assay to measure resistance" → biotools
 
-## Organization type definitions:
-- company: Commercial entities (Inc., LLC, Corp., Therapeutics, Biosciences)
+**Research tool vs Clinical tool:**
+- "Mass spec method for proteomics research" → biotools
+- "Mass spec diagnostic for cancer" → diagnostics
+
+## Organization types:
+- company: Inc., LLC, Corp., Therapeutics, Biosciences, SBIR/STTR
 - university: Academic institutions
-- hospital: Medical centers, health systems, clinics
-- research_institute: Independent research orgs (Broad, Scripps, cancer centers)
-- other: Government agencies, non-profits
+- hospital: Medical centers, health systems
+- research_institute: Broad, Scripps, Fred Hutchinson, etc.
+- other: Government, non-profits
 
 Return ONLY the JSON array, no other text."""
 
@@ -136,7 +155,7 @@ def classify_batch(projects):
 
 def update_database(classifications):
     """Update the database with classification results."""
-    valid_categories = ['biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other']
+    valid_categories = ['training', 'infrastructure', 'basic_research', 'biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other']
     valid_org_types = ['company', 'university', 'hospital', 'research_institute', 'other']
 
     updated = 0
@@ -254,7 +273,7 @@ print(f"Total cost: ${total_cost:.2f}")
 print(f"\n{'='*60}")
 print("FINAL CATEGORY DISTRIBUTION")
 print("=" * 60)
-for cat in ['biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other']:
+for cat in ['training', 'infrastructure', 'basic_research', 'biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other']:
     result = supabase.table('projects').select('application_id', count='exact').eq('primary_category', cat).execute()
     pct = (result.count / total_projects * 100) if total_projects > 0 else 0
     print(f"  {cat:20} {result.count:6,} ({pct:5.1f}%)")

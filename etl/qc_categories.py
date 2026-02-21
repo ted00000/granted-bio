@@ -25,6 +25,24 @@ print("✓ Connected\n")
 
 # Category keyword signals (strong indicators)
 CATEGORY_SIGNALS = {
+    'training': {
+        'strong': ['training program', 'training grant', 'fellowship', 'career development',
+                   'postdoctoral training', 'predoctoral training', 'nrsa', 'ruth l. kirschstein',
+                   'mentor', 'mentee', 'trainee'],
+        'moderate': ['career award', 'training environment', 'research training']
+    },
+    'infrastructure': {
+        'strong': ['core facility', 'shared resource', 'administrative core', 'equipment grant',
+                   'instrumentation', 'coordination center', 'data coordinating center',
+                   'center support grant', 'shared instrumentation'],
+        'moderate': ['center grant', 'resource grant', 'conference grant']
+    },
+    'basic_research': {
+        'strong': ['understanding mechanisms', 'dissecting the role', 'characterizing the function',
+                   'fundamental biology', 'elucidating the pathways', 'molecular basis',
+                   'investigating fundamental'],
+        'moderate': ['understanding mechanism', 'disease mechanism', 'basic science']
+    },
     'therapeutics': {
         'strong': ['treatment', 'therapy', 'therapeutic', 'drug discovery', 'drug development',
                    'clinical trial', 'phase i', 'phase ii', 'phase iii', 'car-t', 'car t',
@@ -56,10 +74,10 @@ CATEGORY_SIGNALS = {
         'moderate': ['ai for clinical', 'machine learning clinical', 'health monitoring']
     },
     'other': {
-        'strong': ['basic science', 'fundamental mechanism', 'epidemiology', 'public health',
-                   'health services', 'health policy', 'training grant', 'career development',
-                   'behavioral intervention', 'health disparities'],
-        'moderate': ['understanding mechanism', 'disease mechanism']
+        'strong': ['epidemiology', 'public health', 'health services', 'health policy',
+                   'behavioral intervention', 'health disparities', 'health equity',
+                   'implementation science', 'cohort study', 'population health'],
+        'moderate': ['quality improvement', 'survey development', 'recruitment methods']
     }
 }
 
