@@ -128,7 +128,10 @@ export default function ProjectPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
-        <div className="text-gray-400">Loading...</div>
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+          <span className="text-sm text-gray-400">Loading project...</span>
+        </div>
       </div>
     )
   }
