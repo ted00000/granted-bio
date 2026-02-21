@@ -59,20 +59,35 @@ For each project, return:
   "org_type": "company|university|hospital|research_institute|other"
 }}
 
-Category definitions:
-- biotools: Research tools, instruments, platforms, assays, reagents, enabling technologies for research
-- therapeutics: Drug development, treatments, immunotherapy, gene therapy, therapeutic compounds
-- diagnostics: Disease detection, screening tests, diagnostic assays, biomarker discovery for diagnosis
-- medical_device: Implantable devices, surgical tools, prosthetics, therapeutic devices for patients
-- digital_health: Health apps, telemedicine, AI diagnostics, wearables, digital therapeutics
-- other: Basic research, epidemiology, health services, policy, education, training
+## ACTIVITY CODE PRE-FILTER (Check FIRST!)
+These activity codes ALWAYS = "other" regardless of content:
+- T32, T34, T35, TL1, TL4 (Training), F30-F33, F99 (Fellowships)
+- K01, K02, K05, K07, K08, K12, K22-K26, K43, K76, K99, KL2 (Career dev)
+- P30, P50, P51 (Centers), S10, G20 (Equipment), U13, R13 (Conferences)
 
-Organization type definitions:
-- company: Commercial entities, small businesses, biotech/pharma companies
-- university: Academic institutions, colleges, universities
-- hospital: Medical centers, clinical institutions, healthcare providers
-- research_institute: Independent research organizations, national labs
-- other: Government agencies, non-profits, foundations
+## Category definitions:
+- biotools: DEVELOPING research tools, assays, platforms, methods. OUTPUT = a tool for researchers.
+- therapeutics: DEVELOPING drugs/treatments. OUTPUT = therapy for patients. NOT behavioral interventions.
+- diagnostics: DEVELOPING tests for disease detection. OUTPUT = clinical diagnostic.
+- medical_device: DEVELOPING physical devices for patient treatment. Must be MEDICAL.
+- digital_health: DEPLOYING software/apps for patient care. Telemedicine platforms.
+- other: Training grants, basic research, health services, behavioral interventions, epidemiology, infrastructure, non-medical research.
+
+## CRITICAL DISTINCTION - Tool development vs Tool application:
+- "Developing a CRISPR screening platform" → biotools (creating the tool)
+- "Using CRISPR to treat sickle cell disease" → therapeutics (using tool for treatment)
+- "Creating an assay for drug discovery" → biotools (the assay IS the output)
+- "Drug discovery using high-throughput screening" → therapeutics (drug IS the output)
+
+## What IS vs ISN'T "other":
+USE "other" for: Training/fellowships, basic science ("understanding mechanisms"), behavioral interventions, mental health services, health disparities, epidemiology, cohort studies, recruitment methodologies, non-medical robotics.
+
+## Organization type definitions:
+- company: Commercial entities (Inc., LLC, Corp., Therapeutics, Biosciences)
+- university: Academic institutions
+- hospital: Medical centers, health systems, clinics
+- research_institute: Independent research orgs (Broad, Scripps, cancer centers)
+- other: Government agencies, non-profits
 
 Return ONLY the JSON array, no other text."""
 

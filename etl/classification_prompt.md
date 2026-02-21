@@ -18,6 +18,27 @@ You are classifying NIH-funded research projects. Your task requires careful rea
 
 ---
 
+## ACTIVITY CODE PRE-FILTER (Check FIRST!)
+
+Before analyzing content, check the activity_code. Some codes OVERRIDE content analysis:
+
+**Always classify as "other" (regardless of title/abstract):**
+- T32, T34, T35, TL1, TL4 → Training grants (institutional)
+- F30, F31, F32, F33, F99 → Individual fellowships
+- K01, K02, K05, K07, K08, K12, K22, K23, K24, K25, K26, K43, K76, K99, KL2 → Career development
+- D43, D71 → International training
+- P30, P50, P51 → Center grants (infrastructure)
+- S10, G20 → Equipment/resource grants
+- U13, R13 → Conference grants
+
+**Classify by content (normal rules apply):**
+- R01, R21, R33, R35, R37 → Research grants
+- R41, R42, R43, R44, SB1 → SBIR/STTR (usually company, classify by content)
+- U01, U19, UG3, UH3 → Cooperative agreements
+- DP1, DP2, DP5 → Pioneer/innovator awards
+
+---
+
 ## OUTPUT FORMAT
 
 For each project row, output a CSV line:
@@ -72,15 +93,40 @@ Then process all data rows. Only output CSV data, no explanations.
 - Electronic health records, health informatics
 - Key signal: Software/digital tool for patient care or health management
 
-**other** - Research not fitting above categories
-- Basic science (understanding mechanisms without clear application)
-- Epidemiology, public health studies
-- Health services research, policy
-- Training grants (T32, K awards focused on training)
-- Behavioral research without technology component
-- Agricultural biotechnology (crop science, plant genomics, food safety)
-- Veterinary research (animal health, zoonotic diseases)
-- Environmental health (toxicology, pollution effects)
+**other** - Research NOT fitting above categories. USE THIS WHEN:
+
+1. **Training/Career Focus** (even if topic is biomedical):
+   - Training grants (T32, K awards, F awards) - ALWAYS other
+   - "Training Program", "Fellowship", "Career Development"
+   - "Mentor", "mentee", "trainee", "postdoc training"
+
+2. **Basic Science** (no clear application):
+   - "Understanding mechanisms of..."
+   - "Dissecting the role of..."
+   - "Characterizing the function of..."
+   - Focus is knowledge, not a tool/treatment/diagnostic
+
+3. **Health Services / Behavioral Research**:
+   - "Health disparities", "health equity"
+   - "Mental health services", "behavioral intervention"
+   - "Quality of life", "patient outcomes"
+   - "Implementation science", "health services research"
+   - Counseling programs, psychotherapy studies
+
+4. **Epidemiology / Public Health**:
+   - "Epidemiology", "cohort study", "population health"
+   - "Surveillance", "disease burden"
+   - Focus is understanding patterns, not treating/diagnosing
+
+5. **Infrastructure / Recruitment**:
+   - Center grants (P30, P50), core facilities
+   - "Recruitment methods", "enrollment strategies"
+   - "All of Us" recruitment, data collection cohorts
+
+6. **Non-biomedical research**:
+   - Agricultural biotechnology, veterinary research
+   - Environmental health, toxicology
+   - Construction robotics, non-medical devices
 
 ### Critical Distinctions
 
@@ -101,6 +147,56 @@ Then process all data rows. Only output CSV data, no explanations.
 - "Creating a foundation model for biological sequence analysis" → biotools (enabling technology)
 
 **When ambiguous:** Consider the PRIMARY output and intent. A project developing a new imaging method that COULD be used for diagnosis but is focused on enabling research → biotools. Same method specifically being validated for clinical diagnosis → diagnostics.
+
+### CRITICAL: What IS vs ISN'T each category
+
+**biotools IS:**
+- CREATING a new assay, platform, method, instrument
+- OUTPUT = a tool that other researchers will use
+- "Develop a screening platform", "Create a sequencing method"
+
+**biotools IS NOT:**
+- USING tools to study disease mechanisms (→ other)
+- USING tools for drug discovery where drug is the goal (→ therapeutics)
+
+**therapeutics IS:**
+- Drug/treatment DEVELOPMENT where therapy is the PRIMARY OUTPUT
+- Gene therapy, cell therapy, immunotherapy for treating patients
+- "Develop a drug for...", "Treat patients with..."
+
+**therapeutics IS NOT:**
+- Behavioral interventions without drugs/devices (→ other)
+- Mental health counseling programs (→ other)
+- Understanding disease mechanisms (→ other)
+
+**diagnostics IS:**
+- Creating a TEST for disease detection/monitoring
+- Biomarker validation for CLINICAL diagnosis
+- "Detect cancer early", "Diagnose disease"
+
+**diagnostics IS NOT:**
+- Biomarker discovery for basic research (→ biotools or other)
+- Training programs in diagnostics (→ other)
+
+**digital_health IS:**
+- Software/apps deployed for PATIENT CARE
+- Telemedicine PLATFORMS for clinical use
+- AI/ML in clinical decision support
+
+**digital_health IS NOT:**
+- Research studies using digital tools (→ other)
+- Cohort data collection (→ other)
+- "All of Us" style recruitment studies (→ other)
+
+**medical_device IS:**
+- Physical device for PATIENT treatment
+- Implants, prosthetics, surgical instruments
+- Must be MEDICAL (not construction, not industrial)
+
+**medical_device IS NOT:**
+- Robots for non-medical use (→ other)
+- Educational programs about devices (→ other)
+- Research tools for labs (→ biotools)
 
 ---
 
@@ -193,6 +289,67 @@ Output: 10432109,digital_health,80,hospital
 Input row: "10321098","Novel Drug Delivery Platform for Cancer Treatment","ACME THERAPEUTICS LLC","R43","We propose to develop a nanoparticle-based drug delivery system..."
 Output: 10321098,therapeutics,90,company
 (Note: R43 is SBIR Phase I - confirms company org_type despite ambiguous name)
+```
+
+### Additional Examples - Edge Cases
+
+**Training grants → other (regardless of topic):**
+```
+Input: "NRSA Hepatology Training Grant","UCSF","T32"
+Output: other,95,university
+(T32 = training grant, ALWAYS other)
+
+Input: "Postdoctoral Training in Cancer Biology","DANA-FARBER","T32"
+Output: other,95,research_institute
+(Training program, not therapeutics)
+
+Input: "Career Development in Neuroscience","MIT","K01"
+Output: other,95,university
+(K award = career development)
+```
+
+**Behavioral/Health Services → other:**
+```
+Input: "Achieving Independence in Schools – RCT for Middle-Schoolers with ASD"
+Output: other,85,hospital
+(Behavioral intervention, no drug/device/tool)
+
+Input: "Pathways to Mental Health Recovery among Black Adults"
+Output: other,85,university
+(Health services research)
+
+Input: "Reducing Health Disparities in Diabetes Care"
+Output: other,80,hospital
+(Health services, not therapeutics)
+```
+
+**Basic research → other:**
+```
+Input: "Dissecting mechanisms of immune escape in tumors"
+Output: other,80,research_institute
+(Understanding biology, no tool/treatment output)
+
+Input: "Characterizing neural circuit development"
+Output: other,85,university
+(Basic neuroscience research)
+```
+
+**Cohort/recruitment → other:**
+```
+Input: "All of Us Southern California Consortium"
+Output: other,90,university
+(Recruitment/cohort study, not digital_health)
+
+Input: "Testing Methods to Recruit Cancer Patients"
+Output: other,85,hospital
+(Methodology research)
+```
+
+**Non-medical → other:**
+```
+Input: "Human-Robot Collaboration in Construction"
+Output: other,95,university
+(NOT medical_device - this is construction!)
 ```
 
 **Remember: column order is application_id,primary_category,category_confidence,org_type**
