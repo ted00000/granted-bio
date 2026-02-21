@@ -413,26 +413,33 @@ export default function ProjectPage() {
           {/* Sidebar */}
           <div className="w-72 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-sm p-5 sticky top-8">
+              {/* Quick Stats */}
               <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">
-                External Links
+                Quick Stats
               </h3>
               <div className="space-y-3">
-                <a
-                  href={`https://reporter.nih.gov/project-details/${project.application_id}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-700 hover:text-[#E07A5F] transition-colors"
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                  </svg>
-                  View on NIH Reporter
-                </a>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Publications</span>
+                  <span className="font-medium text-gray-900">{stats.publicationCount}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Patents</span>
+                  <span className="font-medium text-gray-900">{stats.patentCount}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Clinical Trials</span>
+                  <span className="font-medium text-gray-900">{stats.clinicalStudyCount}</span>
+                </div>
+              </div>
+
+              {/* Related Links */}
+              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mt-8 mb-4">
+                Related
+              </h3>
+              <div className="space-y-3">
                 {project.pi_names && (
                   <a
-                    href={`https://reporter.nih.gov/search/pi/${encodeURIComponent(project.pi_names.split(';')[0]?.trim() || '')}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={`/chat?pi=${encodeURIComponent(project.pi_names.split(';')[0]?.trim() || '')}`}
                     className="flex items-center gap-2 text-sm text-gray-700 hover:text-[#E07A5F] transition-colors"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -451,44 +458,6 @@ export default function ProjectPage() {
                   More from {project.org_name?.split(' ').slice(0, 2).join(' ')}...
                 </a>
               </div>
-
-              {/* Quick Stats */}
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mt-8 mb-4">
-                Quick Stats
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Publications</span>
-                  <span className="font-medium text-gray-900">{stats.publicationCount}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Patents</span>
-                  <span className="font-medium text-gray-900">{stats.patentCount}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Clinical Trials</span>
-                  <span className="font-medium text-gray-900">{stats.clinicalStudyCount}</span>
-                </div>
-              </div>
-
-              {/* Keywords */}
-              {project.terms && (
-                <>
-                  <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mt-8 mb-4">
-                    Keywords
-                  </h3>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.terms.split(';').slice(0, 10).map((term, i) => (
-                      <span
-                        key={i}
-                        className="px-2 py-0.5 bg-gray-50 text-gray-600 text-xs rounded"
-                      >
-                        {term.trim()}
-                      </span>
-                    ))}
-                  </div>
-                </>
-              )}
             </div>
           </div>
         </div>
