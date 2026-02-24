@@ -55,7 +55,16 @@ def classify_org(org_name, activity_code):
         'SCHOOL OF MEDICINE', 'MEDICAL SCHOOL', 'MEDICAL COLLEGE',
         'SCHOOL OF PUBLIC HEALTH',
     ]
-    is_uni = any(s in org for s in uni_signals)
+    # Well-known universities that may not have "UNIVERSITY" in org name
+    known_universities = [
+        'RUTGERS', 'HARVARD', 'STANFORD', 'MIT ', 'CALTECH', 'YALE', 'PRINCETON',
+        'COLUMBIA', 'CORNELL', 'DUKE', 'JOHNS HOPKINS', 'EMORY', 'VANDERBILT',
+        'NORTHWESTERN', 'UCLA', 'UCSD', 'UCSF', 'USC ', 'NYU ', 'BROWN',
+        'DARTMOUTH', 'PENN STATE', 'OHIO STATE', 'MICHIGAN STATE', 'FLORIDA STATE',
+        'TEXAS A&M', 'PURDUE', 'WISCONSIN-',
+        'ICAHN SCHOOL', 'WEILL CORNELL', 'BAYLOR COLLEGE',
+    ]
+    is_uni = any(s in org for s in uni_signals) or any(s in org for s in known_universities)
 
     # Hospital/health system signals
     hosp_signals = [
@@ -63,6 +72,8 @@ def classify_org(org_name, activity_code):
         'MAYO', "CHILDREN'S", 'MEDICAL CTR', 'HEALTH CARE', 'HEALTH SCIENCES CENTER',
         'NATIONAL JEWISH HEALTH', 'BANNER HEALTH', 'MOUNT SINAI',
         'MEMORIAL SLOAN', 'MD ANDERSON', 'CITY OF HOPE',
+        ' HOSP ', 'HOSP ',  # Abbreviation: "CHILDRENS HOSP MED CTR"
+        'CHILDRENS HOSP', "CHILDREN'S HOSP",  # Children's hospitals
     ]
     if any(s in org for s in hosp_signals) and not is_uni:
         return 'hospital'
