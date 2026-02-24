@@ -27,6 +27,8 @@ interface Project {
   activity_code: string | null
   funding_mechanism: string | null
   primary_category: string | null
+  secondary_category: string | null
+  primary_category_confidence: number | null
 }
 
 interface Publication {
@@ -216,10 +218,18 @@ export default function ProjectPage() {
                 {project.primary_category && (
                   <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
                     {project.primary_category.replace(/_/g, ' ')}
+                    {project.primary_category_confidence && (
+                      <span className="ml-1 text-gray-400">({project.primary_category_confidence}%)</span>
+                    )}
+                  </span>
+                )}
+                {project.secondary_category && (
+                  <span className="px-2 py-0.5 text-xs bg-gray-50 text-gray-500 rounded capitalize">
+                    + {project.secondary_category.replace(/_/g, ' ')}
                   </span>
                 )}
                 {project.org_type && (
-                  <span className="px-2 py-0.5 text-xs bg-gray-50 text-gray-500 rounded capitalize">
+                  <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-600 rounded capitalize">
                     {project.org_type.replace(/_/g, ' ')}
                   </span>
                 )}

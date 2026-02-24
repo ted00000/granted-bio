@@ -405,6 +405,8 @@ export async function keywordSearch(
       org_state: string | null
       org_type: string | null
       primary_category: string | null
+      secondary_category: string | null
+      primary_category_confidence: number | null
       total_cost: number | null
       fiscal_year: number | null
       pi_names: string | null
@@ -424,7 +426,7 @@ export async function keywordSearch(
     const batchPromises = idBatches.map(async (idBatch) => {
       let query = supabaseAdmin
         .from('projects')
-        .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
+        .select('application_id, title, org_name, org_state, org_type, primary_category, secondary_category, primary_category_confidence, total_cost, fiscal_year, pi_names, project_number, patent_count, publication_count, clinical_trial_count')
         .in('application_id', idBatch)
 
       // Apply filters
@@ -525,6 +527,8 @@ export async function keywordSearch(
       org_state: p.org_state,
       org_type: p.org_type,
       primary_category: p.primary_category,
+      secondary_category: p.secondary_category,
+      primary_category_confidence: p.primary_category_confidence,
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
@@ -558,6 +562,8 @@ export async function keywordSearch(
       org_state: p.org_state,
       org_type: p.org_type,
       primary_category: p.primary_category,
+      secondary_category: p.secondary_category,
+      primary_category_confidence: p.primary_category_confidence,
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
@@ -893,6 +899,8 @@ export async function searchProjectsHybrid(
       org_state: p.org_state,
       org_type: p.org_type,
       primary_category: p.primary_category,
+      secondary_category: p.secondary_category,
+      primary_category_confidence: p.primary_category_confidence,
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
@@ -913,6 +921,8 @@ export async function searchProjectsHybrid(
       org_state: p.org_state,
       org_type: p.org_type,
       primary_category: p.primary_category,
+      secondary_category: p.secondary_category,
+      primary_category_confidence: p.primary_category_confidence,
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
@@ -1070,6 +1080,8 @@ export async function searchProjectsSemantic(
       org_state: p.org_state,
       org_type: p.org_type,
       primary_category: p.primary_category,
+      secondary_category: p.secondary_category,
+      primary_category_confidence: p.primary_category_confidence,
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
@@ -1090,6 +1102,8 @@ export async function searchProjectsSemantic(
       org_state: p.org_state,
       org_type: p.org_type,
       primary_category: p.primary_category,
+      secondary_category: p.secondary_category,
+      primary_category_confidence: p.primary_category_confidence,
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
@@ -1137,6 +1151,8 @@ interface ProjectWithCounts {
   org_state: string | null
   org_type: string | null
   primary_category: string | null
+  secondary_category: string | null
+  primary_category_confidence: number | null
   total_cost: number | null
   fiscal_year: number | null
   pi_names: string | null
@@ -1246,7 +1262,7 @@ async function fetchProjectsByIds(ids: string[]): Promise<ProjectWithCounts[]> {
     const batch = ids.slice(i, i + 500)
     const { data } = await supabaseAdmin
       .from('projects')
-      .select('application_id, title, org_name, org_state, org_type, primary_category, total_cost, fiscal_year, pi_names, project_number, program_officer, activity_code, project_end, patent_count, publication_count, clinical_trial_count')
+      .select('application_id, title, org_name, org_state, org_type, primary_category, secondary_category, primary_category_confidence, total_cost, fiscal_year, pi_names, project_number, program_officer, activity_code, project_end, patent_count, publication_count, clinical_trial_count')
       .in('application_id', batch)
 
     if (data) {

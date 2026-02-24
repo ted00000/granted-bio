@@ -260,8 +260,13 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         {project.primary_category.replace(/_/g, ' ')}
                       </span>
                     )}
-                    {project.org_type && (
+                    {project.secondary_category && (
                       <span className="px-2 py-0.5 text-xs bg-gray-50 text-gray-500 rounded capitalize">
+                        + {project.secondary_category.replace(/_/g, ' ')}
+                      </span>
+                    )}
+                    {project.org_type && (
+                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-600 rounded capitalize">
                         {project.org_type.replace(/_/g, ' ')}
                       </span>
                     )}
@@ -401,8 +406,13 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         {project.primary_category.replace(/_/g, ' ')}
                       </span>
                     )}
-                    {project.org_type && (
+                    {project.secondary_category && (
                       <span className="px-2 py-0.5 text-xs bg-gray-50 text-gray-500 rounded capitalize">
+                        + {project.secondary_category.replace(/_/g, ' ')}
+                      </span>
+                    )}
+                    {project.org_type && (
+                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-600 rounded capitalize">
                         {project.org_type.replace(/_/g, ' ')}
                       </span>
                     )}

@@ -112,6 +112,8 @@ export interface SearchResultProject {
   org_state: string | null
   org_type: string | null
   primary_category: string | null
+  secondary_category: string | null
+  primary_category_confidence: number | null
   total_cost: number | null
   fiscal_year?: number | null
   pi_names: string | null
