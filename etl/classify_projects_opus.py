@@ -628,43 +628,6 @@ def score_all_categories(title, abstract, phr, activity_code):
             # Don't change scores, let classify_project handle it with early returns
             pass  # Handled by explicit returns in classify_project
 
-    # Rule 27: Research instrumentation/platforms → biotools (not therapeutics)
-    # SBIR/STTR developing imaging/measurement/analysis platforms for research are biotools
-    is_research_platform = any(w in text for w in [
-        'imaging platform', 'imaging system for', 'parallelized imaging',
-        'measurement platform', 'analysis platform', 'screening platform',
-        'actuator and detector', 'detector for', 'sensor platform',
-        'assessment of.*development', 'long-term assessment',
-        'high-throughput platform', 'automated platform',
-        'platform for.*research', 'platform for.*analysis',
-        'platform for.*assessment', 'platform for.*screening',
-    ])
-    # Also check title specifically for strong platform signals
-    is_platform_in_title = any(w in t for w in [
-        'imaging platform', 'platform for', 'actuator', 'detector',
-    ])
-    if is_research_platform or is_platform_in_title:
-        # If this looks like a research tool, boost biotools and reduce therapeutics
-        if scores['therapeutics'] > scores['biotools']:
-            scores['biotools'] += 5
-            scores['therapeutics'] = max(0, scores['therapeutics'] - 3)
-
-    # Rule 28: Assays are biotools (methods/tools), not therapeutics
-    # An assay is fundamentally a tool/method - secondary category captures application
-    is_assay_in_title = 'assay' in t
-    is_assay_development = any(w in text for w in [
-        'develop an assay', 'develop a assay', 'novel assay', 'new assay',
-        'assay development', 'assay platform', 'assay system',
-        'immunoassay', 'bioassay', 'cell-based assay', 'high-throughput assay',
-    ])
-    if is_assay_in_title or is_assay_development:
-        # Assays are tools - boost biotools significantly
-        scores['biotools'] += 4
-        # If currently scoring as therapeutics, this is likely misclassified
-        if scores['therapeutics'] > scores['biotools']:
-            scores['biotools'] += 4
-            scores['therapeutics'] = max(0, scores['therapeutics'] - 3)
-
     return scores
 
 
