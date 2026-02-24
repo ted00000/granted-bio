@@ -649,6 +649,22 @@ def score_all_categories(title, abstract, phr, activity_code):
             scores['biotools'] += 5
             scores['therapeutics'] = max(0, scores['therapeutics'] - 3)
 
+    # Rule 28: Assays are biotools (methods/tools), not therapeutics
+    # An assay is fundamentally a tool/method - secondary category captures application
+    is_assay_in_title = 'assay' in t
+    is_assay_development = any(w in text for w in [
+        'develop an assay', 'develop a assay', 'novel assay', 'new assay',
+        'assay development', 'assay platform', 'assay system',
+        'immunoassay', 'bioassay', 'cell-based assay', 'high-throughput assay',
+    ])
+    if is_assay_in_title or is_assay_development:
+        # Assays are tools - boost biotools significantly
+        scores['biotools'] += 4
+        # If currently scoring as therapeutics, this is likely misclassified
+        if scores['therapeutics'] > scores['biotools']:
+            scores['biotools'] += 4
+            scores['therapeutics'] = max(0, scores['therapeutics'] - 3)
+
     return scores
 
 
