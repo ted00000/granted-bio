@@ -774,11 +774,15 @@ export function Chat({ persona }: ChatProps) {
       return
     }
     // Only scroll if there are messages (skip on initial empty state)
-    if (messages.length > 0 && messagesContainerRef.current) {
-      // Use scrollTop instead of scrollIntoView to avoid Safari smooth scroll bug
-      // Safari 15.4+ has a bug where smooth scrolling blocks subsequent programmatic scrolls
+    // Scroll to messagesEndRef position (NOT absolute bottom) so results panel starts at top
+    if (messages.length > 0 && messagesContainerRef.current && messagesEndRef.current) {
       const container = messagesContainerRef.current
-      const scrollTarget = container.scrollHeight - container.clientHeight
+      const endElement = messagesEndRef.current
+      // Get position relative to scroll container using getBoundingClientRect
+      const containerRect = container.getBoundingClientRect()
+      const endRect = endElement.getBoundingClientRect()
+      // Calculate how much to scroll: current scroll + distance from container top to element
+      const scrollTarget = container.scrollTop + (endRect.top - containerRect.top)
       container.scrollTop = scrollTarget
     }
   }, [messages])
