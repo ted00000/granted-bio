@@ -942,16 +942,55 @@ export function Chat({ persona }: ChatProps) {
     }
   }, [searchContext, currentFilters, applyFilters, isSbirSttr])
 
+  // Input form component to avoid duplication
+  const InputForm = ({ className = '' }: { className?: string }) => (
+    <form onSubmit={handleSubmit} className={className}>
+      <div className="flex items-end space-x-3">
+        <div className="flex-1 relative">
+          <textarea
+            ref={inputRef}
+            value={input}
+            onChange={e => setInput(e.target.value.slice(0, 140))}
+            onKeyDown={handleKeyDown}
+            placeholder={metadata.placeholder || "Ask a question..."}
+            rows={1}
+            maxLength={140}
+            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
+            style={{ maxHeight: '120px' }}
+            disabled={isLoading}
+          />
+          {input.length > 100 && (
+            <span className={`absolute right-3 bottom-2 text-xs ${input.length >= 140 ? 'text-red-400' : 'text-gray-400'}`}>
+              {140 - input.length}
+            </span>
+          )}
+        </div>
+        <button
+          type="submit"
+          disabled={isLoading || !input.trim() || input.length > 140}
+          className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+    </form>
+  )
+
   return (
     <div className="h-full bg-white flex overflow-hidden">
         {/* Left Panel - Chat */}
         <div className="flex flex-col w-full lg:w-[480px] xl:w-[520px] lg:border-r lg:border-gray-100 min-h-0">
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-6 py-8 min-h-0">
-          <div className="space-y-6">
-            {messages.length === 0 && (
-              <div className="text-center py-12">
+        {/* Empty state - centered with input inline */}
+        {messages.length === 0 ? (
+          <div className="flex-1 overflow-y-auto overscroll-contain">
+            <div className="min-h-full flex flex-col px-6 pt-[calc(4rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-8">
+              {/* Top spacer */}
+              <div className="flex-1 min-h-[5vh]" />
+
+              <div className="text-center max-w-md mx-auto w-full">
                 <div className="flex justify-center mb-6">
                   <IconComponent className="w-12 h-12 text-gray-300" strokeWidth={1.5} />
                 </div>
@@ -964,6 +1003,10 @@ export function Chat({ persona }: ChatProps) {
                 <p className="text-gray-400 mb-8 max-w-sm mx-auto text-sm">
                   {metadata.description}
                 </p>
+
+                {/* Input right after content */}
+                <InputForm className="mb-6" />
+
                 {metadata.exampleQueries.length > 0 && (
                   <div className="space-y-3">
                     <p className="text-xs text-gray-400">Try an example</p>
@@ -981,7 +1024,16 @@ export function Chat({ persona }: ChatProps) {
                   </div>
                 )}
               </div>
-            )}
+
+              {/* Bottom spacer */}
+              <div className="flex-[2] min-h-[5vh]" />
+            </div>
+          </div>
+        ) : (
+          <>
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto px-6 py-8 min-h-0">
+          <div className="space-y-6">
 
             {messages.map(message => {
               const showChoices = message.role === 'assistant' && !message.isStreaming && !isLoading && isLastAssistantMessage(message.id)
@@ -1031,52 +1083,20 @@ export function Chat({ persona }: ChatProps) {
           </div>
         </div>
 
-        {/* Input */}
-        <div className="flex-shrink-0 px-6 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t border-gray-100">
-          {/* New search link - appears when there are messages or results */}
-          {(messages.length > 0 || toolResults.length > 0) && (
-            <div className="mb-3">
-              <button
-                onClick={handleNewSearch}
-                className="text-xs text-gray-400 hover:text-[#E07A5F] transition-colors"
-              >
-                New search
-              </button>
-            </div>
-          )}
-          <form onSubmit={handleSubmit}>
-            <div className="flex items-end space-x-3">
-              <div className="flex-1 relative">
-                <textarea
-                  ref={inputRef}
-                  value={input}
-                  onChange={e => setInput(e.target.value.slice(0, 140))}
-                  onKeyDown={handleKeyDown}
-                  placeholder={metadata.placeholder || "Ask a question..."}
-                  rows={1}
-                  maxLength={140}
-                  className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
-                  style={{ maxHeight: '120px' }}
-                  disabled={isLoading}
-                />
-                {input.length > 100 && (
-                  <span className={`absolute right-3 bottom-2 text-xs ${input.length >= 140 ? 'text-red-400' : 'text-gray-400'}`}>
-                    {140 - input.length}
-                  </span>
-                )}
-              </div>
-              <button
-                type="submit"
-                disabled={isLoading || !input.trim() || input.length > 140}
-                className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
-          </form>
+        {/* Input - fixed at bottom when there are messages */}
+        <div className="flex-shrink-0 px-6 pt-4 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-4 border-t border-gray-100">
+          <div className="mb-3">
+            <button
+              onClick={handleNewSearch}
+              className="text-xs text-gray-400 hover:text-[#E07A5F] transition-colors"
+            >
+              New search
+            </button>
+          </div>
+          <InputForm />
         </div>
+          </>
+        )}
       </div>
 
         {/* Right Panel - Results */}
