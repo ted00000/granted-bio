@@ -942,42 +942,6 @@ export function Chat({ persona }: ChatProps) {
     }
   }, [searchContext, currentFilters, applyFilters, isSbirSttr])
 
-  // Input form component to avoid duplication
-  const InputForm = ({ className = '' }: { className?: string }) => (
-    <form onSubmit={handleSubmit} className={className}>
-      <div className="flex items-end space-x-3">
-        <div className="flex-1 relative">
-          <textarea
-            ref={inputRef}
-            value={input}
-            onChange={e => setInput(e.target.value.slice(0, 140))}
-            onKeyDown={handleKeyDown}
-            placeholder={metadata.placeholder || "Ask a question..."}
-            rows={1}
-            maxLength={140}
-            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
-            style={{ maxHeight: '120px' }}
-            disabled={isLoading}
-          />
-          {input.length > 100 && (
-            <span className={`absolute right-3 bottom-2 text-xs ${input.length >= 140 ? 'text-red-400' : 'text-gray-400'}`}>
-              {140 - input.length}
-            </span>
-          )}
-        </div>
-        <button
-          type="submit"
-          disabled={isLoading || !input.trim() || input.length > 140}
-          className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
-    </form>
-  )
-
   return (
     <div className="h-full bg-white flex overflow-hidden">
         {/* Left Panel - Chat */}
@@ -1005,7 +969,38 @@ export function Chat({ persona }: ChatProps) {
                 </p>
 
                 {/* Input right after content */}
-                <InputForm className="mb-6" />
+                <form onSubmit={handleSubmit} className="mb-6">
+                  <div className="flex items-end space-x-3">
+                    <div className="flex-1 relative">
+                      <textarea
+                        ref={inputRef}
+                        value={input}
+                        onChange={e => setInput(e.target.value.slice(0, 140))}
+                        onKeyDown={handleKeyDown}
+                        placeholder={metadata.placeholder || "Ask a question..."}
+                        rows={1}
+                        maxLength={140}
+                        className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
+                        style={{ maxHeight: '120px' }}
+                        disabled={isLoading}
+                      />
+                      {input.length > 100 && (
+                        <span className={`absolute right-3 bottom-2 text-xs ${input.length >= 140 ? 'text-red-400' : 'text-gray-400'}`}>
+                          {140 - input.length}
+                        </span>
+                      )}
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={isLoading || !input.trim() || input.length > 140}
+                      className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                </form>
 
                 {metadata.exampleQueries.length > 0 && (
                   <div className="space-y-3">
@@ -1093,7 +1088,38 @@ export function Chat({ persona }: ChatProps) {
               New search
             </button>
           </div>
-          <InputForm />
+          <form onSubmit={handleSubmit}>
+            <div className="flex items-end space-x-3">
+              <div className="flex-1 relative">
+                <textarea
+                  ref={inputRef}
+                  value={input}
+                  onChange={e => setInput(e.target.value.slice(0, 140))}
+                  onKeyDown={handleKeyDown}
+                  placeholder={metadata.placeholder || "Ask a question..."}
+                  rows={1}
+                  maxLength={140}
+                  className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
+                  style={{ maxHeight: '120px' }}
+                  disabled={isLoading}
+                />
+                {input.length > 100 && (
+                  <span className={`absolute right-3 bottom-2 text-xs ${input.length >= 140 ? 'text-red-400' : 'text-gray-400'}`}>
+                    {140 - input.length}
+                  </span>
+                )}
+              </div>
+              <button
+                type="submit"
+                disabled={isLoading || !input.trim() || input.length > 140}
+                className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </form>
         </div>
           </>
         )}
