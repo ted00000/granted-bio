@@ -12,7 +12,7 @@ interface AppLayoutProps {
 
 export function AppLayout({ children, currentPersona, onPersonaChange, userName }: AppLayoutProps) {
   return (
-    <div className="h-screen flex bg-white">
+    <div className="fixed inset-0 flex bg-white overflow-hidden">
       <Sidebar
         currentPersona={currentPersona}
         onPersonaChange={onPersonaChange}

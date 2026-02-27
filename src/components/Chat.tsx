@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
+import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, TrendingUp, Users, Activity } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject } from '@/lib/chat/types'
@@ -194,16 +194,19 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {data.all_results?.length > 0 && (
           <div className={isMobile ? 'p-4' : 'p-6'}>
             <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Most Relevant</h3>
-            <div className={isMobile ? 'space-y-4' : 'space-y-5'}>
+            <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
-                <div key={project.application_id} className={`${isMobile ? 'pb-3' : 'pb-4'} border-b border-gray-50 last:border-0 last:pb-0`}>
+                <button
+                  key={project.application_id}
+                  onClick={() => onProjectClick?.(project.application_id)}
+                  className={`block w-full text-left ${isMobile
+                    ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:bg-gray-50'
+                    : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0 hover:bg-gray-50/50 -mx-2 px-2 rounded-lg transition-colors'}`}
+                >
                   <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-2`}>
-                    <button
-                      onClick={() => onProjectClick?.(project.application_id)}
-                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors text-left break-words"
-                    >
+                    <span className="text-sm text-gray-900 leading-snug flex-1 break-words">
                       {project.title}
-                    </button>
+                    </span>
                     {project.total_cost && (
                       <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
                         {formatCurrency(project.total_cost)}
@@ -217,29 +220,23 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       const label = active === null ? 'Unknown' : active ? 'Active' : 'Inactive'
                       return (
                         <span
-                          className={`w-2 h-2 rounded-full ${color}`}
+                          className={`w-2 h-2 rounded-full flex-shrink-0 ${color}`}
                           title={label}
                         />
                       )
                     })()}
-                    <span>{project.org_name}</span>
-                    {project.org_state && <span>• {project.org_state}</span>}
-                    {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
+                    <span className="truncate">{project.org_name}</span>
+                    {project.org_state && <span className="flex-shrink-0">• {project.org_state}</span>}
+                    {project.fiscal_year && <span className="flex-shrink-0">• FY{project.fiscal_year}</span>}
                   </div>
                   {(project.pi_names || project.program_officer) && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-gray-500 mt-1.5 truncate">
                       {project.pi_names && <>PI: {project.pi_names.split(';')[0]?.trim()}</>}
                       {project.pi_names && project.program_officer && <span className="mx-1">•</span>}
                       {project.program_officer && <>PO: {project.program_officer}</>}
                     </p>
                   )}
-                  <button
-                    onClick={() => onProjectClick?.(project.application_id)}
-                    className="text-xs text-gray-400 mt-1 hover:text-[#E07A5F] transition-colors inline-block"
-                  >
-                    ID: {project.application_id}
-                  </button>
-                  <div className="flex items-center flex-wrap gap-2 mt-2">
+                  <div className="flex items-center flex-wrap gap-1.5 mt-2">
                     {(() => {
                       const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
                       return (
@@ -262,16 +259,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         {project.primary_category.replace(/_/g, ' ')}
                       </span>
                     )}
-                    {project.secondary_category && (
-                      <span className="px-2 py-0.5 text-xs bg-gray-50 text-gray-500 rounded capitalize">
-                        + {project.secondary_category.replace(/_/g, ' ')}
-                      </span>
-                    )}
-                    {project.org_type && (
-                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-600 rounded capitalize">
-                        {project.org_type.replace(/_/g, ' ')}
-                      </span>
-                    )}
                     {project.patent_count > 0 && (
                       <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
                         {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
@@ -288,7 +275,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       </span>
                     )}
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -340,16 +327,19 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {data.all_results?.length > 0 && (
           <div className={isMobile ? 'p-4' : 'p-6'}>
             <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Most Relevant</h3>
-            <div className={isMobile ? 'space-y-4' : 'space-y-5'}>
+            <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
-                <div key={project.application_id} className={`${isMobile ? 'pb-3' : 'pb-4'} border-b border-gray-50 last:border-0 last:pb-0`}>
+                <button
+                  key={project.application_id}
+                  onClick={() => onProjectClick?.(project.application_id)}
+                  className={`block w-full text-left ${isMobile
+                    ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:bg-gray-50'
+                    : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0 hover:bg-gray-50/50 -mx-2 px-2 rounded-lg transition-colors'}`}
+                >
                   <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-2`}>
-                    <button
-                      onClick={() => onProjectClick?.(project.application_id)}
-                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors text-left break-words"
-                    >
+                    <span className="text-sm text-gray-900 leading-snug flex-1 break-words">
                       {project.title}
-                    </button>
+                    </span>
                     {project.total_cost && (
                       <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
                         {formatCurrency(project.total_cost)}
@@ -363,29 +353,23 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       const label = active === null ? 'Unknown' : active ? 'Active' : 'Inactive'
                       return (
                         <span
-                          className={`w-2 h-2 rounded-full ${color}`}
+                          className={`w-2 h-2 rounded-full flex-shrink-0 ${color}`}
                           title={label}
                         />
                       )
                     })()}
-                    <span>{project.org_name}</span>
-                    {project.org_state && <span>• {project.org_state}</span>}
-                    {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
+                    <span className="truncate">{project.org_name}</span>
+                    {project.org_state && <span className="flex-shrink-0">• {project.org_state}</span>}
+                    {project.fiscal_year && <span className="flex-shrink-0">• FY{project.fiscal_year}</span>}
                   </div>
                   {(project.pi_names || project.program_officer) && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-gray-500 mt-1.5 truncate">
                       {project.pi_names && <>PI: {project.pi_names.split(';')[0]?.trim()}</>}
                       {project.pi_names && project.program_officer && <span className="mx-1">•</span>}
                       {project.program_officer && <>PO: {project.program_officer}</>}
                     </p>
                   )}
-                  <button
-                    onClick={() => onProjectClick?.(project.application_id)}
-                    className="text-xs text-gray-400 mt-1 hover:text-[#E07A5F] transition-colors inline-block"
-                  >
-                    ID: {project.application_id}
-                  </button>
-                  <div className="flex items-center flex-wrap gap-2 mt-2">
+                  <div className="flex items-center flex-wrap gap-1.5 mt-2">
                     {(() => {
                       const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
                       return (
@@ -408,16 +392,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         {project.primary_category.replace(/_/g, ' ')}
                       </span>
                     )}
-                    {project.secondary_category && (
-                      <span className="px-2 py-0.5 text-xs bg-gray-50 text-gray-500 rounded capitalize">
-                        + {project.secondary_category.replace(/_/g, ' ')}
-                      </span>
-                    )}
-                    {project.org_type && (
-                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-600 rounded capitalize">
-                        {project.org_type.replace(/_/g, ' ')}
-                      </span>
-                    )}
                     {project.patent_count > 0 && (
                       <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
                         {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
@@ -434,7 +408,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       </span>
                     )}
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
@@ -611,9 +585,12 @@ export function Chat({ persona }: ChatProps) {
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
   const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
   const [currentFilters, setCurrentFilters] = useState<FilterState>({})
+  const [restoredFromStorage, setRestoredFromStorage] = useState(false)
+  const [showMobileResults, setShowMobileResults] = useState(true)  // Delay mobile results during restoration
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const messagesContainerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
-  const isInitialMount = useRef(true)
+  const isRestoringState = useRef(false)
 
   const router = useRouter()
   const metadata = PERSONA_METADATA[persona]
@@ -621,9 +598,19 @@ export function Chat({ persona }: ChatProps) {
 
   // Restore search state from sessionStorage on mount
   useEffect(() => {
+    // Disable browser's automatic scroll restoration - but NOT on iOS Safari
+    // iOS Safari doesn't handle manual scroll restoration well
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    if (!isIOS && 'scrollRestoration' in history) {
+      history.scrollRestoration = 'manual'
+    }
+
     const saved = sessionStorage.getItem('searchState')
     if (saved) {
       try {
+        isRestoringState.current = true
+        // Hide mobile results initially to prevent scroll-to-bottom
+        setShowMobileResults(false)
         const state = JSON.parse(saved)
         if (state.toolResults) setToolResults(state.toolResults)
         if (state.searchContext) setSearchContext(state.searchContext)
@@ -632,14 +619,66 @@ export function Chat({ persona }: ChatProps) {
         if (state.messages) setMessages(state.messages)
         // Clear after restoring so refresh doesn't restore again
         sessionStorage.removeItem('searchState')
+        // Mark as restored - this triggers useLayoutEffect to scroll
+        setRestoredFromStorage(true)
       } catch (e) {
         console.error('Failed to restore search state:', e)
+        isRestoringState.current = false
+        setShowMobileResults(true)
       }
     }
   }, [])
 
+  // Scroll to top after state restoration
+  // Uses Safari-compatible timing pattern: RAF → setTimeout(0) → scrollTop
+  useLayoutEffect(() => {
+    if (restoredFromStorage && toolResults.length > 0 && messagesContainerRef.current) {
+      const container = messagesContainerRef.current
+
+      // Safari-compatible scroll function using proper timing pattern
+      const scrollToTop = () => {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            container.scrollTop = 0
+          }, 0)
+        })
+      }
+
+      // Scroll immediately
+      container.scrollTop = 0
+      scrollToTop()
+
+      // Show results after a brief delay, then scroll again
+      const showResultsTimer = setTimeout(() => {
+        setShowMobileResults(true)
+        // Scroll after React renders the results
+        scrollToTop()
+      }, 100)
+
+      // Additional scroll attempts after results render
+      const scrollTimers = [150, 200, 300, 500, 1000].map(delay =>
+        setTimeout(() => {
+          container.scrollTop = 0
+          if (delay === 1000) {
+            isRestoringState.current = false
+          }
+        }, delay)
+      )
+
+      return () => {
+        clearTimeout(showResultsTimer)
+        scrollTimers.forEach(t => clearTimeout(t))
+      }
+    }
+  }, [restoredFromStorage, toolResults])
+
   // Save search state and navigate to project
   const navigateToProject = useCallback((applicationId: string) => {
+    // Scroll to top BEFORE navigating so iOS Safari remembers this position
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = 0
+    }
+
     const state = {
       toolResults,
       searchContext,
@@ -730,12 +769,18 @@ export function Chat({ persona }: ChatProps) {
   }, [searchContext])
 
   useEffect(() => {
-    // Don't auto-scroll on initial mount (when restoring from state)
-    if (isInitialMount.current) {
-      isInitialMount.current = false
+    // Don't auto-scroll when restoring state from sessionStorage
+    if (isRestoringState.current) {
       return
     }
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // Only scroll if there are messages (skip on initial empty state)
+    if (messages.length > 0 && messagesContainerRef.current) {
+      // Use scrollTop instead of scrollIntoView to avoid Safari smooth scroll bug
+      // Safari 15.4+ has a bug where smooth scrolling blocks subsequent programmatic scrolls
+      const container = messagesContainerRef.current
+      const scrollTarget = container.scrollHeight - container.clientHeight
+      container.scrollTop = scrollTarget
+    }
   }, [messages])
 
   useEffect(() => {
@@ -957,10 +1002,7 @@ export function Chat({ persona }: ChatProps) {
 
         {/* Empty state - centered with input inline */}
         {messages.length === 0 ? (
-          <div className="flex-1 overflow-y-auto overflow-x-hidden overscroll-contain">
-            <div className="min-h-full flex flex-col px-4 lg:px-6 pt-[calc(4rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-8">
-              {/* Top spacer - pushes content toward center */}
-              <div className="flex-[3] min-h-[2vh]" />
+          <div className="flex-1 flex flex-col justify-center overflow-hidden px-4 lg:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-4 pb-[calc(2rem+env(safe-area-inset-bottom))] lg:pb-8">
 
               <div className="text-center w-full max-w-md mx-auto">
                 <div className="flex justify-center mb-4">
@@ -978,7 +1020,7 @@ export function Chat({ persona }: ChatProps) {
 
                 {/* Input right after content */}
                 <form onSubmit={handleSubmit} className="mb-6">
-                  <div className="flex items-end gap-2">
+                  <div className="flex items-center gap-2">
                     <div className="flex-1 min-w-0 relative">
                       <textarea
                         ref={inputRef}
@@ -1027,15 +1069,19 @@ export function Chat({ persona }: ChatProps) {
                   </div>
                 )}
               </div>
-
-              {/* Bottom spacer - larger to push content up */}
-              <div className="flex-[5] min-h-[2vh]" />
-            </div>
           </div>
         ) : (
           <>
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 lg:px-6 pt-[calc(1.5rem+env(safe-area-inset-top))] lg:pt-8 pb-6 lg:pb-8 min-h-0">
+        <div
+          ref={messagesContainerRef}
+          className="flex-1 overflow-y-auto overflow-x-hidden px-4 lg:px-6 pt-[calc(3.5rem+env(safe-area-inset-top))] lg:pt-8 pb-6 lg:pb-8 min-h-0"
+          style={{
+            overscrollBehavior: 'contain',
+            scrollBehavior: 'auto',
+            WebkitOverflowScrolling: 'touch'
+          }}
+        >
           <div className="space-y-4 lg:space-y-6">
 
             {messages.map(message => {
@@ -1083,8 +1129,11 @@ export function Chat({ persona }: ChatProps) {
               )
             })}
 
+            {/* Scroll target for auto-scroll after new messages - BEFORE results */}
+            <div ref={messagesEndRef} />
+
             {/* Mobile Results Panel - only visible on mobile when there are results */}
-            {toolResults.length > 0 && (
+            {toolResults.length > 0 && showMobileResults && (
               <div className="lg:hidden mt-6 border-t border-gray-100 overflow-hidden">
                 <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
                   <h2 className="text-base font-semibold tracking-tight text-gray-900">Results</h2>
@@ -1103,8 +1152,6 @@ export function Chat({ persona }: ChatProps) {
                 />
               </div>
             )}
-
-            <div ref={messagesEndRef} />
           </div>
         </div>
 
@@ -1119,7 +1166,7 @@ export function Chat({ persona }: ChatProps) {
             </button>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="flex items-end space-x-2 lg:space-x-3">
+            <div className="flex items-center space-x-2 lg:space-x-3">
               <div className="flex-1 relative">
                 <textarea
                   ref={inputRef}

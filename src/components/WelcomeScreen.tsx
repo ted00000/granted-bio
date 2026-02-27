@@ -47,10 +47,8 @@ const PERSONA_OPTIONS: Array<{
 
 export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps) {
   return (
-    <div className="h-full overflow-y-auto overscroll-contain">
-      <div className="min-h-full flex flex-col px-6 lg:px-8 pt-[calc(6rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(16rem+env(safe-area-inset-bottom))] lg:pb-8">
-        {/* Top spacer - pushes content down on larger screens */}
-        <div className="hidden lg:block flex-1 min-h-[10vh]" />
+    <div className="h-full flex flex-col overflow-hidden">
+      <div className="flex-1 flex flex-col justify-center px-6 lg:px-8 pt-[calc(3rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(2rem+env(safe-area-inset-bottom))] lg:pb-8">
         <div className="max-w-2xl w-full mx-auto text-center">
           <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-2">
             {userName ? `Hi ${userName}, what would you like to explore?` : (
@@ -87,8 +85,6 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
             })}
           </div>
         </div>
-        {/* Bottom spacer - only on larger screens */}
-        <div className="hidden lg:block flex-[2] min-h-[10vh]" />
       </div>
     </div>
   )
