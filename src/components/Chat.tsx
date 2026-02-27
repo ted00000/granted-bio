@@ -1074,6 +1074,27 @@ export function Chat({ persona }: ChatProps) {
                 </div>
               )
             })}
+
+            {/* Mobile Results Panel - only visible on mobile when there are results */}
+            {toolResults.length > 0 && (
+              <div className="lg:hidden mt-6 -mx-6 border-t border-gray-100">
+                <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
+                  <h2 className="text-lg font-semibold tracking-tight text-gray-900">Results</h2>
+                  <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER & USPTO PatentsView</p>
+                </div>
+                <ResultsPanel
+                  results={toolResults}
+                  searchContext={searchContext}
+                  filteredResults={filteredResults}
+                  onFilterChange={handleFilterChange}
+                  crossFilteredByCategory={crossFilteredByCategory}
+                  crossFilteredByOrgType={crossFilteredByOrgType}
+                  quickFilterCounts={quickFilterCounts}
+                  onProjectClick={navigateToProject}
+                />
+              </div>
+            )}
+
             <div ref={messagesEndRef} />
           </div>
         </div>

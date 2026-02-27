@@ -484,7 +484,7 @@ export const PERSONA_METADATA: Record<PersonaType, {
     subtitle: 'What science is being funded?',
     icon: 'search',
     description: 'Deep dive research on funded projects',
-    placeholder: 'Enter a topic...',
+    placeholder: 'Enter a research topic...',
     exampleQueries: []
   },
   bd: {
