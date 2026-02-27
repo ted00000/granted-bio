@@ -47,41 +47,43 @@ const PERSONA_OPTIONS: Array<{
 
 export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps) {
   return (
-    <div className="h-full overflow-y-auto flex flex-col items-center justify-center px-8 py-8 pt-[max(2rem,calc(1rem+env(safe-area-inset-top)))] pb-[max(2rem,calc(1rem+env(safe-area-inset-bottom)))]">
-      <div className="max-w-2xl w-full text-center">
-        <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-2">
-          {userName ? `Hi ${userName}, what would you like to explore?` : (
-            <>Welcome to granted<span className="text-[#E07A5F]">.bio</span></>
-          )}
-        </h1>
-        <p className="text-gray-500 mb-10">
-          {userName ? 'Select a mode to get started' : 'Your AI-powered life science intelligence platform'}
-        </p>
+    <div className="h-full overflow-y-auto overscroll-contain">
+      <div className="min-h-full flex flex-col justify-center px-8 pt-[max(2rem,calc(1rem+env(safe-area-inset-top)))] pb-[max(2rem,calc(1rem+env(safe-area-inset-bottom)))]">
+        <div className="max-w-2xl w-full mx-auto text-center">
+          <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-2">
+            {userName ? `Hi ${userName}, what would you like to explore?` : (
+              <>Welcome to granted<span className="text-[#E07A5F]">.bio</span></>
+            )}
+          </h1>
+          <p className="text-gray-500 mb-10">
+            {userName ? 'Select a mode to get started' : 'Your AI-powered life science intelligence platform'}
+          </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {PERSONA_OPTIONS.map(option => {
-            const Icon = option.icon
-            return (
-              <button
-                key={option.id}
-                onClick={() => onSelectPersona(option.id)}
-                className="group p-6 bg-white rounded-xl border border-gray-100 hover:border-[#E07A5F] hover:shadow-lg transition-all text-left"
-              >
-                <div className="text-gray-400 mb-4 group-hover:text-[#E07A5F] transition-colors">
-                  <Icon className="w-8 h-8" strokeWidth={1.5} />
-                </div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                  {option.title}
-                </h3>
-                <p className="text-sm text-[#E07A5F] mb-2">
-                  &ldquo;{option.subtitle}&rdquo;
-                </p>
-                <p className="text-sm text-gray-500">
-                  {option.description}
-                </p>
-              </button>
-            )
-          })}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {PERSONA_OPTIONS.map(option => {
+              const Icon = option.icon
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => onSelectPersona(option.id)}
+                  className="group p-6 bg-white rounded-xl border border-gray-100 hover:border-[#E07A5F] hover:shadow-lg transition-all text-left"
+                >
+                  <div className="text-gray-400 mb-4 group-hover:text-[#E07A5F] transition-colors">
+                    <Icon className="w-8 h-8" strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                    {option.title}
+                  </h3>
+                  <p className="text-sm text-[#E07A5F] mb-2">
+                    &ldquo;{option.subtitle}&rdquo;
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    {option.description}
+                  </p>
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
     </div>
