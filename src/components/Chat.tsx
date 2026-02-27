@@ -123,9 +123,11 @@ interface ResultsPanelProps {
   }
   // Navigate to project detail (saves state first)
   onProjectClick?: (applicationId: string) => void
+  // Mobile-specific styling
+  isMobile?: boolean
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false }: ResultsPanelProps) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -158,15 +160,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
     const isFiltered = filteredResults !== null
 
     return (
-      <div className="h-full overflow-y-auto">
-        <div className="p-6 border-b border-gray-100">
-          <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total_count.toLocaleString()}</div>
+      <div className={`overflow-y-auto ${isMobile ? '' : 'h-full'}`}>
+        <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
+          <div className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-semibold tracking-tight text-gray-900`}>{data.total_count.toLocaleString()}</div>
           <div className="text-sm text-gray-400 mt-1">
             projects found{isCapped && ` · showing top ${data.showing_count}`}
             {isFiltered && ' (filtered)'}
           </div>
           {data.search_query && (
-            <div className="text-xs text-gray-400 mt-2">
+            <div className="text-xs text-gray-400 mt-2 break-words">
               Keyword + semantic search for "{data.search_query}"
             </div>
           )}
@@ -174,7 +176,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
 
         {/* Filter Chips - always show original counts for multi-select */}
         {searchContext && (Object.keys(searchContext.originalResults.by_category || {}).length > 0 || Object.keys(searchContext.originalResults.by_org_type || {}).length > 0) && (
-          <div className="p-6 border-b border-gray-100">
+          <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100 overflow-hidden`}>
             <FilterChips
               byCategory={searchContext.originalResults.by_category || {}}
               byOrgType={searchContext.originalResults.by_org_type || {}}
@@ -190,15 +192,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         )}
 
         {data.all_results?.length > 0 && (
-          <div className="p-6">
+          <div className={isMobile ? 'p-4' : 'p-6'}>
             <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Most Relevant</h3>
-            <div className="space-y-5">
-              {data.all_results.slice(0, 100).map((project) => (
-                <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
-                  <div className="flex items-start justify-between gap-3 mb-2">
+            <div className={isMobile ? 'space-y-4' : 'space-y-5'}>
+              {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
+                <div key={project.application_id} className={`${isMobile ? 'pb-3' : 'pb-4'} border-b border-gray-50 last:border-0 last:pb-0`}>
+                  <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-2`}>
                     <button
                       onClick={() => onProjectClick?.(project.application_id)}
-                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors text-left"
+                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors text-left break-words"
                     >
                       {project.title}
                     </button>
@@ -304,15 +306,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
     const isFiltered = filteredResults !== null
 
     return (
-      <div className="h-full overflow-y-auto">
-        <div className="p-6 border-b border-gray-100">
-          <div className="text-4xl font-semibold tracking-tight text-gray-900">{data.total_count.toLocaleString()}</div>
+      <div className={`overflow-y-auto ${isMobile ? '' : 'h-full'}`}>
+        <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
+          <div className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-semibold tracking-tight text-gray-900`}>{data.total_count.toLocaleString()}</div>
           <div className="text-sm text-gray-400 mt-1">
             projects found{isCapped && ` · showing top ${data.showing_count}`}
             {isFiltered && ' (filtered)'}
           </div>
           {data.search_query && (
-            <div className="text-xs text-gray-400 mt-2">
+            <div className="text-xs text-gray-400 mt-2 break-words">
               Keyword + semantic search for "{data.search_query}"
             </div>
           )}
@@ -320,7 +322,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
 
         {/* Filter Chips - always show original counts for multi-select */}
         {searchContext && (Object.keys(searchContext.originalResults.by_category || {}).length > 0 || Object.keys(searchContext.originalResults.by_org_type || {}).length > 0) && (
-          <div className="p-6 border-b border-gray-100">
+          <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100 overflow-hidden`}>
             <FilterChips
               byCategory={searchContext.originalResults.by_category || {}}
               byOrgType={searchContext.originalResults.by_org_type || {}}
@@ -336,15 +338,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         )}
 
         {data.all_results?.length > 0 && (
-          <div className="p-6">
+          <div className={isMobile ? 'p-4' : 'p-6'}>
             <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Most Relevant</h3>
-            <div className="space-y-5">
-              {data.all_results.slice(0, 100).map((project) => (
-                <div key={project.application_id} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
-                  <div className="flex items-start justify-between gap-3 mb-2">
+            <div className={isMobile ? 'space-y-4' : 'space-y-5'}>
+              {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
+                <div key={project.application_id} className={`${isMobile ? 'pb-3' : 'pb-4'} border-b border-gray-50 last:border-0 last:pb-0`}>
+                  <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-2`}>
                     <button
                       onClick={() => onProjectClick?.(project.application_id)}
-                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors text-left"
+                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors text-left break-words"
                     >
                       {project.title}
                     </button>
@@ -950,7 +952,7 @@ export function Chat({ persona }: ChatProps) {
         {/* Empty state - centered with input inline */}
         {messages.length === 0 ? (
           <div className="flex-1 overflow-y-auto overscroll-contain">
-            <div className="min-h-full flex flex-col px-6 pt-[calc(4rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-8">
+            <div className="min-h-full flex flex-col px-4 lg:px-6 pt-[calc(4rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-8">
               {/* Top spacer */}
               <div className="flex-1 min-h-[5vh]" />
 
@@ -1027,8 +1029,8 @@ export function Chat({ persona }: ChatProps) {
         ) : (
           <>
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-6 py-8 min-h-0">
-          <div className="space-y-6">
+        <div className="flex-1 overflow-y-auto px-4 lg:px-6 py-6 lg:py-8 min-h-0">
+          <div className="space-y-4 lg:space-y-6">
 
             {messages.map(message => {
               const showChoices = message.role === 'assistant' && !message.isStreaming && !isLoading && isLastAssistantMessage(message.id)
@@ -1077,10 +1079,10 @@ export function Chat({ persona }: ChatProps) {
 
             {/* Mobile Results Panel - only visible on mobile when there are results */}
             {toolResults.length > 0 && (
-              <div className="lg:hidden mt-6 -mx-6 border-t border-gray-100">
-                <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
-                  <h2 className="text-lg font-semibold tracking-tight text-gray-900">Results</h2>
-                  <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER & USPTO PatentsView</p>
+              <div className="lg:hidden mt-6 border-t border-gray-100 overflow-hidden">
+                <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+                  <h2 className="text-base font-semibold tracking-tight text-gray-900">Results</h2>
+                  <p className="text-xs text-gray-400">NIH RePORTER & USPTO PatentsView</p>
                 </div>
                 <ResultsPanel
                   results={toolResults}
@@ -1091,6 +1093,7 @@ export function Chat({ persona }: ChatProps) {
                   crossFilteredByOrgType={crossFilteredByOrgType}
                   quickFilterCounts={quickFilterCounts}
                   onProjectClick={navigateToProject}
+                  isMobile={true}
                 />
               </div>
             )}
@@ -1100,8 +1103,8 @@ export function Chat({ persona }: ChatProps) {
         </div>
 
         {/* Input - fixed at bottom when there are messages */}
-        <div className="flex-shrink-0 px-6 pt-4 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-4 border-t border-gray-100">
-          <div className="mb-3">
+        <div className="flex-shrink-0 px-4 lg:px-6 pt-3 lg:pt-4 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-4 border-t border-gray-100">
+          <div className="mb-2 lg:mb-3">
             <button
               onClick={handleNewSearch}
               className="text-xs text-gray-400 hover:text-[#E07A5F] transition-colors"
@@ -1110,7 +1113,7 @@ export function Chat({ persona }: ChatProps) {
             </button>
           </div>
           <form onSubmit={handleSubmit}>
-            <div className="flex items-end space-x-3">
+            <div className="flex items-end space-x-2 lg:space-x-3">
               <div className="flex-1 relative">
                 <textarea
                   ref={inputRef}
