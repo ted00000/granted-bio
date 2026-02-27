@@ -47,7 +47,7 @@ const PERSONA_OPTIONS: Array<{
 
 export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps) {
   return (
-    <div className="h-full flex flex-col items-center justify-center p-8">
+    <div className="h-full overflow-y-auto flex flex-col items-center justify-center px-8 py-8 pt-[max(2rem,calc(1rem+env(safe-area-inset-top)))] pb-[max(2rem,calc(1rem+env(safe-area-inset-bottom)))]">
       <div className="max-w-2xl w-full text-center">
         <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-2">
           {userName ? `Hi ${userName}, what would you like to explore?` : (

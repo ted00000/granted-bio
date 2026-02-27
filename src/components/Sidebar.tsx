@@ -55,7 +55,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
       {/* Mobile menu button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-md border border-gray-100"
+        className="lg:hidden fixed top-[max(1rem,env(safe-area-inset-top))] left-[max(1rem,env(safe-area-inset-left))] z-50 p-2 rounded-lg bg-white shadow-md border border-gray-100"
       >
         {isOpen ? (
           <X className="w-5 h-5 text-gray-600" />
@@ -83,7 +83,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
         `}
       >
         {/* Logo */}
-        <div className="flex-shrink-0 px-5 py-6 text-center">
+        <div className="flex-shrink-0 px-5 pt-[max(1.5rem,env(safe-area-inset-top))] pb-6 text-center">
           <button
             onClick={handleHomeClick}
             className="text-xl font-semibold tracking-tight text-gray-900 hover:opacity-80 transition-opacity"
@@ -129,7 +129,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
         </nav>
 
         {/* Bottom section */}
-        <div className="flex-shrink-0 border-t border-gray-100 p-3 space-y-1">
+        <div className="flex-shrink-0 border-t border-gray-100 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] space-y-1">
           {userName && (
             <div className="px-3 py-2 text-sm text-gray-500 truncate">
               {userName}
