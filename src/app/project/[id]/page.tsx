@@ -173,37 +173,37 @@ export default function ProjectPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
+    <div className="min-h-screen bg-[#FAFAF9] overflow-x-hidden">
       {/* Header */}
-      <header className="bg-white border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <Link href="/" className="text-xl font-semibold text-gray-900">
               granted<span className="text-[#E07A5F]">.bio</span>
             </Link>
-            <Link href={returnUrl} className="text-sm text-gray-500 hover:text-gray-700">
-              ← Back to Search
+            <Link href={returnUrl} className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium">
+              ← Back
             </Link>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div className="flex gap-8">
+      <main className="max-w-7xl mx-auto px-4 pt-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:px-6 lg:px-8 lg:py-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Main Content */}
-          <div className="flex-1">
+          <div className="flex-1 min-w-0">
             {/* Project Header */}
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+            <div className="bg-white rounded-lg shadow-sm p-4 lg:p-6 mb-4 lg:mb-6">
               {/* Status and Badges */}
-              <div className="flex items-center gap-2 mb-3">
+              <div className="flex flex-wrap items-center gap-1.5 lg:gap-2 mb-3">
                 <span
-                  className={`w-2.5 h-2.5 rounded-full ${
+                  className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
                     active === null ? 'bg-gray-300' : active ? 'bg-emerald-400' : 'bg-rose-300'
                   }`}
                   title={active === null ? 'Unknown' : active ? 'Active' : 'Inactive'}
                 />
                 <span className="text-xs text-gray-500">
-                  {active === null ? 'Unknown Status' : active ? 'Active' : 'Inactive'}
+                  {active === null ? 'Unknown' : active ? 'Active' : 'Inactive'}
                 </span>
                 {isSbir && (
                   <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
@@ -218,14 +218,6 @@ export default function ProjectPage() {
                 {project.primary_category && (
                   <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
                     {project.primary_category.replace(/_/g, ' ')}
-                    {project.primary_category_confidence && (
-                      <span className="ml-1 text-gray-400">({project.primary_category_confidence}%)</span>
-                    )}
-                  </span>
-                )}
-                {project.secondary_category && (
-                  <span className="px-2 py-0.5 text-xs bg-gray-50 text-gray-500 rounded capitalize">
-                    + {project.secondary_category.replace(/_/g, ' ')}
                   </span>
                 )}
                 {project.org_type && (
@@ -236,13 +228,13 @@ export default function ProjectPage() {
               </div>
 
               {/* Title */}
-              <h1 className="text-2xl font-semibold text-gray-900 mb-4 leading-tight">
+              <h1 className="text-xl lg:text-2xl font-semibold text-gray-900 mb-4 leading-tight">
                 {project.title}
               </h1>
 
               {/* Funding */}
-              <div className="flex items-center gap-3 text-sm mb-6">
-                <span className="text-2xl font-semibold text-[#E07A5F]">
+              <div className="flex flex-wrap items-center gap-2 lg:gap-3 text-sm mb-4 lg:mb-6">
+                <span className="text-xl lg:text-2xl font-semibold text-[#E07A5F]">
                   {formatCost(project.total_cost)}
                 </span>
                 <span className="text-gray-400">•</span>
@@ -252,7 +244,7 @@ export default function ProjectPage() {
               </div>
 
               {/* Key Info Grid */}
-              <div className="grid grid-cols-2 gap-6 py-4 border-t border-gray-100">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 py-4 border-t border-gray-100">
                 <div>
                   <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Organization</div>
                   <div className="font-medium text-gray-900">{project.org_name}</div>
@@ -287,19 +279,19 @@ export default function ProjectPage() {
 
             {/* Tabs */}
             <div className="bg-white rounded-lg shadow-sm">
-              <div className="border-b border-gray-100">
-                <nav className="flex">
+              <div className="border-b border-gray-100 overflow-x-auto">
+                <nav className="flex min-w-max">
                   {[
                     { key: 'abstract', label: 'Abstract' },
-                    { key: 'phr', label: 'Public Health Relevance' },
-                    { key: 'publications', label: 'Publications', count: stats.publicationCount },
+                    { key: 'phr', label: 'PHR' },
+                    { key: 'publications', label: 'Pubs', count: stats.publicationCount },
                     { key: 'patents', label: 'Patents', count: stats.patentCount },
-                    { key: 'clinical', label: 'Clinical Trials', count: stats.clinicalStudyCount },
+                    { key: 'clinical', label: 'Trials', count: stats.clinicalStudyCount },
                   ].map((tab) => (
                     <button
                       key={tab.key}
                       onClick={() => setActiveTab(tab.key as typeof activeTab)}
-                      className={`px-5 py-3 text-sm font-medium transition-colors ${
+                      className={`px-4 lg:px-5 py-3 text-sm font-medium transition-colors whitespace-nowrap ${
                         activeTab === tab.key
                           ? 'border-b-2 border-[#E07A5F] text-[#E07A5F]'
                           : 'text-gray-500 hover:text-gray-700'
@@ -307,7 +299,7 @@ export default function ProjectPage() {
                     >
                       {tab.label}
                       {tab.count !== undefined && tab.count > 0 && (
-                        <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
+                        <span className="ml-1 lg:ml-1.5 px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
                           {tab.count}
                         </span>
                       )}
@@ -316,7 +308,7 @@ export default function ProjectPage() {
                 </nav>
               </div>
 
-              <div className="p-6">
+              <div className="p-4 lg:p-6">
                 {/* Abstract Tab */}
                 {activeTab === 'abstract' && (
                   <div>
@@ -423,9 +415,9 @@ export default function ProjectPage() {
             </div>
           </div>
 
-          {/* Sidebar */}
-          <div className="w-72 flex-shrink-0">
-            <div className="bg-white rounded-lg shadow-sm p-5 sticky top-8">
+          {/* Sidebar - hidden on mobile, shown on desktop */}
+          <div className="hidden lg:block w-72 flex-shrink-0">
+            <div className="bg-white rounded-lg shadow-sm p-5 sticky top-20">
               {/* Quick Stats */}
               <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">
                 Quick Stats
