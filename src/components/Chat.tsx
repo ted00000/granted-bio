@@ -988,7 +988,7 @@ export function Chat({ persona }: ChatProps) {
                         placeholder={metadata.placeholder || "Ask a question..."}
                         rows={1}
                         maxLength={140}
-                        className="w-full px-3 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
+                        className="w-full px-3 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-base"
                         style={{ maxHeight: '120px' }}
                         disabled={isLoading}
                       />
@@ -1129,7 +1129,7 @@ export function Chat({ persona }: ChatProps) {
                   placeholder={metadata.placeholder || "Ask a question..."}
                   rows={1}
                   maxLength={140}
-                  className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
+                  className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-base"
                   style={{ maxHeight: '120px' }}
                   disabled={isLoading}
                 />
