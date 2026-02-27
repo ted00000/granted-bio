@@ -48,7 +48,7 @@ const PERSONA_OPTIONS: Array<{
 export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps) {
   return (
     <div className="h-full overflow-y-auto overscroll-contain">
-      <div className="min-h-full flex flex-col px-6 lg:px-8 pt-20 lg:pt-8 pb-24 lg:pb-8">
+      <div className="min-h-full flex flex-col px-6 lg:px-8 pt-[calc(4rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-8">
         {/* Top spacer - pushes content down on larger screens */}
         <div className="hidden lg:block flex-1 min-h-[10vh]" />
         <div className="max-w-2xl w-full mx-auto text-center">
