@@ -35,6 +35,8 @@ const CATEGORY_LABELS: Record<string, string> = {
   diagnostics: 'Diagnostics',
   medical_device: 'Medical Devices',
   digital_health: 'Digital Health',
+  basic_research: 'Basic Research',
+  training: 'Training',
   other: 'Other'
 }
 

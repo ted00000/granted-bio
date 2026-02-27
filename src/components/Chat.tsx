@@ -1029,7 +1029,7 @@ export function Chat({ persona }: ChatProps) {
         ) : (
           <>
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 lg:px-6 py-6 lg:py-8 min-h-0">
+        <div className="flex-1 overflow-y-auto px-4 lg:px-6 pt-[calc(1.5rem+env(safe-area-inset-top))] lg:pt-8 pb-6 lg:pb-8 min-h-0">
           <div className="space-y-4 lg:space-y-6">
 
             {messages.map(message => {
