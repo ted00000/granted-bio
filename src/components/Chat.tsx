@@ -952,28 +952,28 @@ export function Chat({ persona }: ChatProps) {
         {/* Empty state - centered with input inline */}
         {messages.length === 0 ? (
           <div className="flex-1 overflow-y-auto overscroll-contain">
-            <div className="min-h-full flex flex-col px-4 lg:px-6 pt-[calc(4rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-8">
-              {/* Top spacer */}
-              <div className="flex-1 min-h-[5vh]" />
+            <div className="min-h-full flex flex-col px-4 lg:px-6 pt-[calc(4rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-8">
+              {/* Top spacer - pushes content toward center */}
+              <div className="flex-[3] min-h-[2vh]" />
 
-              <div className="text-center max-w-md mx-auto w-full">
-                <div className="flex justify-center mb-6">
-                  <IconComponent className="w-12 h-12 text-gray-300" strokeWidth={1.5} />
+              <div className="text-center w-full max-w-md mx-auto">
+                <div className="flex justify-center mb-4">
+                  <IconComponent className="w-10 h-10 text-gray-300" strokeWidth={1.5} />
                 </div>
-                <h2 className="text-2xl font-semibold tracking-tight text-gray-900 mb-2">
+                <h2 className="text-xl lg:text-2xl font-semibold tracking-tight text-gray-900 mb-1">
                   {metadata.title}
                 </h2>
-                <p className="text-sm text-[#E07A5F] mb-2">
+                <p className="text-sm text-[#E07A5F] mb-1">
                   &ldquo;{metadata.subtitle}&rdquo;
                 </p>
-                <p className="text-gray-400 mb-8 max-w-sm mx-auto text-sm">
+                <p className="text-gray-400 mb-6 text-sm px-2">
                   {metadata.description}
                 </p>
 
                 {/* Input right after content */}
                 <form onSubmit={handleSubmit} className="mb-6">
-                  <div className="flex items-end space-x-3">
-                    <div className="flex-1 relative">
+                  <div className="flex items-end gap-2">
+                    <div className="flex-1 min-w-0 relative">
                       <textarea
                         ref={inputRef}
                         value={input}
@@ -982,7 +982,7 @@ export function Chat({ persona }: ChatProps) {
                         placeholder={metadata.placeholder || "Ask a question..."}
                         rows={1}
                         maxLength={140}
-                        className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
+                        className="w-full px-3 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-sm"
                         style={{ maxHeight: '120px' }}
                         disabled={isLoading}
                       />
@@ -995,7 +995,7 @@ export function Chat({ persona }: ChatProps) {
                     <button
                       type="submit"
                       disabled={isLoading || !input.trim() || input.length > 140}
-                      className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
+                      className="flex-shrink-0 p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
                     >
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
@@ -1005,14 +1005,14 @@ export function Chat({ persona }: ChatProps) {
                 </form>
 
                 {metadata.exampleQueries.length > 0 && (
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <p className="text-xs text-gray-400">Try an example</p>
                     <div className="flex flex-wrap justify-center gap-2">
                       {metadata.exampleQueries.slice(0, 3).map((query, index) => (
                         <button
                           key={index}
                           onClick={() => handleExampleClick(query)}
-                          className="px-4 py-2 text-sm bg-white border border-gray-100 rounded-full hover:border-[#E07A5F] hover:shadow-md text-gray-600 transition-all"
+                          className="px-3 py-1.5 text-sm bg-white border border-gray-100 rounded-full hover:border-[#E07A5F] hover:shadow-md text-gray-600 transition-all"
                         >
                           {query}
                         </button>
@@ -1022,8 +1022,8 @@ export function Chat({ persona }: ChatProps) {
                 )}
               </div>
 
-              {/* Bottom spacer */}
-              <div className="flex-[2] min-h-[5vh]" />
+              {/* Bottom spacer - larger to push content up */}
+              <div className="flex-[5] min-h-[2vh]" />
             </div>
           </div>
         ) : (
