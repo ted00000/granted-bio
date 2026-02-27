@@ -613,6 +613,7 @@ export function Chat({ persona }: ChatProps) {
   const [currentFilters, setCurrentFilters] = useState<FilterState>({})
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const isInitialMount = useRef(true)
 
   const router = useRouter()
   const metadata = PERSONA_METADATA[persona]
@@ -729,6 +730,11 @@ export function Chat({ persona }: ChatProps) {
   }, [searchContext])
 
   useEffect(() => {
+    // Don't auto-scroll on initial mount (when restoring from state)
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
@@ -945,13 +951,13 @@ export function Chat({ persona }: ChatProps) {
   }, [searchContext, currentFilters, applyFilters, isSbirSttr])
 
   return (
-    <div className="h-full bg-white flex overflow-hidden">
+    <div className="h-full bg-white flex overflow-hidden max-w-full">
         {/* Left Panel - Chat */}
-        <div className="flex flex-col w-full lg:w-[480px] xl:w-[520px] lg:border-r lg:border-gray-100 min-h-0">
+        <div className="flex flex-col w-full lg:w-[480px] xl:w-[520px] lg:border-r lg:border-gray-100 min-h-0 overflow-x-hidden">
 
         {/* Empty state - centered with input inline */}
         {messages.length === 0 ? (
-          <div className="flex-1 overflow-y-auto overscroll-contain">
+          <div className="flex-1 overflow-y-auto overflow-x-hidden overscroll-contain">
             <div className="min-h-full flex flex-col px-4 lg:px-6 pt-[calc(4rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(4rem+env(safe-area-inset-bottom))] lg:pb-8">
               {/* Top spacer - pushes content toward center */}
               <div className="flex-[3] min-h-[2vh]" />
@@ -1029,7 +1035,7 @@ export function Chat({ persona }: ChatProps) {
         ) : (
           <>
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto px-4 lg:px-6 pt-[calc(1.5rem+env(safe-area-inset-top))] lg:pt-8 pb-6 lg:pb-8 min-h-0">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 lg:px-6 pt-[calc(1.5rem+env(safe-area-inset-top))] lg:pt-8 pb-6 lg:pb-8 min-h-0">
           <div className="space-y-4 lg:space-y-6">
 
             {messages.map(message => {
