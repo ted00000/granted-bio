@@ -1032,7 +1032,7 @@ export function Chat({ persona }: ChatProps) {
         </div>
 
         {/* Input */}
-        <div className="flex-shrink-0 px-6 py-4 border-t border-gray-100">
+        <div className="flex-shrink-0 px-6 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] border-t border-gray-100">
           {/* New search link - appears when there are messages or results */}
           {(messages.length > 0 || toolResults.length > 0) && (
             <div className="mb-3">
