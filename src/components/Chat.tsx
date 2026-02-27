@@ -1103,7 +1103,7 @@ export function Chat({ persona }: ChatProps) {
         </div>
 
         {/* Input - fixed at bottom when there are messages */}
-        <div className="flex-shrink-0 px-4 lg:px-6 pt-3 lg:pt-4 pb-[calc(6rem+env(safe-area-inset-bottom))] lg:pb-4 border-t border-gray-100">
+        <div className="flex-shrink-0 px-4 lg:px-6 pt-3 lg:pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] lg:pb-4 border-t border-gray-100">
           <div className="mb-2 lg:mb-3">
             <button
               onClick={handleNewSearch}
