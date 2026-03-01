@@ -477,22 +477,35 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
       }>
     }
 
+    const actualCount = data.all_results.length
+    const isCapped = data.total_count > actualCount
+
     return (
       <div className={`overflow-y-auto ${isMobile ? '' : 'h-full'}`}>
         <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
-          <div className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-semibold tracking-tight text-gray-900`}>{data.total_count.toLocaleString()}</div>
-          <div className="text-sm text-gray-400 mt-1">clinical trials found</div>
+          <div className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-semibold tracking-tight text-gray-900`}>{actualCount.toLocaleString()}</div>
+          <div className="text-sm text-gray-400 mt-1">
+            clinical trials found{isCapped && ` · ${data.total_count.toLocaleString()} total matches`}
+          </div>
         </div>
 
         {/* Status breakdown - clickable filters */}
-        {Object.keys(data.by_status).length > 0 && (
-          <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Filter by Status</h3>
-            <div className="flex flex-wrap gap-2">
-              {Object.entries(data.by_status)
-                .sort(([, a], [, b]) => b - a)
-                .slice(0, 6)
-                .map(([status, count]) => {
+        {(() => {
+          // Compute counts from all_results to match what's actually available
+          const statusCounts: Record<string, number> = {}
+          data.all_results.forEach(t => {
+            const status = t.study_status || 'UNKNOWN'
+            statusCounts[status] = (statusCounts[status] || 0) + 1
+          })
+          const sortedStatuses = Object.entries(statusCounts).sort(([, a], [, b]) => b - a)
+
+          if (sortedStatuses.length === 0) return null
+
+          return (
+            <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
+              <h3 className="text-xs text-gray-500 mb-2">Trial Status</h3>
+              <div className="flex flex-wrap gap-2">
+                {sortedStatuses.slice(0, 6).map(([status, count]) => {
                   const isSelected = trialStatusFilters.includes(status)
                   return (
                     <button
@@ -506,27 +519,28 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                           }
                         }
                       }}
-                      className={`px-2.5 py-1 text-xs rounded-full transition-all cursor-pointer ${
-                        isSelected
-                          ? 'ring-2 ring-offset-1 ring-[#E07A5F]'
-                          : ''
-                      } ${
-                        status === 'RECRUITING' ? 'bg-green-50 text-green-700' :
-                        status === 'COMPLETED' ? 'bg-blue-50 text-blue-700' :
-                        status === 'ACTIVE_NOT_RECRUITING' ? 'bg-amber-50 text-amber-700' :
-                        'bg-gray-100 text-gray-600'
-                      }`}
+                      className={`
+                        px-3 py-1.5 text-xs rounded-full border transition-all
+                        ${isSelected
+                          ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
+                        }
+                      `}
                     >
-                      {status.replace(/_/g, ' ')}: {count}
+                      <span className="capitalize">{status.replace(/_/g, ' ')}</span>
+                      <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                        {count}
+                      </span>
                     </button>
                   )
                 })}
+              </div>
+              <div className="mt-3 text-xs text-gray-500">
+                {data.by_type.therapeutic} therapeutic · {data.by_type.diagnostic} diagnostic
+              </div>
             </div>
-            <div className="mt-3 text-xs text-gray-500">
-              {data.by_type.therapeutic} therapeutic · {data.by_type.diagnostic} diagnostic
-            </div>
-          </div>
-        )}
+          )
+        })()}
 
         {/* Trial results - filtered by status if filters active */}
         {(() => {
