@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } fr
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Search, TrendingUp, Users, Activity, Bookmark } from 'lucide-react'
-import type { PersonaType, KeywordSearchResult, SearchResultProject } from '@/lib/chat/types'
+import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
 
@@ -470,26 +470,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
   }
 
   if (latestResult.name === 'search_trials') {
-    const data = latestResult.data as {
-      summary: string
-      search_query: string
-      total_count: number
-      by_status: Record<string, number>
-      by_type: { therapeutic: number; diagnostic: number; other: number }
-      all_results: Array<{
-        id: string
-        nct_id: string
-        study_title: string
-        study_status: string | null
-        is_diagnostic_trial: boolean
-        is_therapeutic_trial: boolean
-        project_number: string | null
-        project_title?: string | null
-        org_name?: string | null
-        total_cost?: number | null
-        similarity?: number
-      }>
-    }
+    const data = latestResult.data as TrialSearchResult
 
     const actualCount = data.all_results.length
     const isCapped = data.total_count > actualCount
