@@ -300,17 +300,19 @@ export default function TrialDetailPage() {
 
         {/* Linked NIH Project */}
         {project && (
-          <Link
-            href={`/project/${project.application_id}`}
-            className="block bg-white rounded-lg shadow-sm p-5 hover:shadow-md transition-shadow"
-          >
+          <div className="bg-white rounded-lg shadow-sm p-5">
             <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Building2 className="w-4 h-4 text-[#E07A5F]" />
               Linked NIH Project
             </h2>
             <div className="text-sm">
-              <p className="text-gray-900 font-medium mb-1 group-hover:text-[#E07A5F]">{project.title}</p>
-              <p className="text-gray-600">{project.org_name}</p>
+              <Link
+                href={`/project/${project.application_id}`}
+                className="text-gray-900 font-medium mb-1 hover:text-[#E07A5F] transition-colors"
+              >
+                {project.title}
+              </Link>
+              <p className="text-gray-600 mt-1">{project.org_name}</p>
               {project.pi_names && (
                 <p className="text-gray-500 text-xs mt-1">PI: {project.pi_names}</p>
               )}
@@ -320,7 +322,7 @@ export default function TrialDetailPage() {
                 </p>
               )}
             </div>
-          </Link>
+          </div>
         )}
 
         {/* Last Updated */}
