@@ -774,16 +774,18 @@ export function Chat({ persona }: ChatProps) {
       return
     }
     // Only scroll if there are messages (skip on initial empty state)
-    // Scroll to messagesEndRef position (NOT absolute bottom) so results panel starts at top
+    // Scroll so messagesEndRef is at BOTTOM of viewport - this keeps messages visible
+    // and positions the results panel just below the fold
     if (messages.length > 0 && messagesContainerRef.current && messagesEndRef.current) {
       const container = messagesContainerRef.current
       const endElement = messagesEndRef.current
-      // Get position relative to scroll container using getBoundingClientRect
+      // Get position relative to scroll container
       const containerRect = container.getBoundingClientRect()
       const endRect = endElement.getBoundingClientRect()
-      // Calculate how much to scroll: current scroll + distance from container top to element
-      const scrollTarget = container.scrollTop + (endRect.top - containerRect.top)
-      container.scrollTop = scrollTarget
+      // Calculate scroll to put messagesEndRef at bottom of visible area
+      // (current scroll + element position relative to container - container height)
+      const scrollTarget = container.scrollTop + (endRect.bottom - containerRect.bottom)
+      container.scrollTop = Math.max(0, scrollTarget)
     }
   }, [messages])
 
