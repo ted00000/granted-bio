@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, TrendingUp, Users, Activity } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
@@ -128,9 +128,12 @@ interface ResultsPanelProps {
   // Trial status filters
   trialStatusFilters?: string[]
   onTrialStatusChange?: (statuses: string[]) => void
+  // Trial saving
+  savedTrialIds?: Set<string>
+  onSaveTrial?: (nctId: string) => void
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial }: ResultsPanelProps) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -555,64 +558,84 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 {trialStatusFilters.length > 0 ? `${displayCount} Filtered Trials` : 'Top Trials'}
               </h3>
               <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
-                {filteredTrials.slice(0, isMobile ? 30 : 50).map((trial) => (
-                <div
-                  key={trial.id}
-                  className={`${isMobile
-                    ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100'
-                    : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0'}`}
-                >
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <a
-                      href={`https://clinicaltrials.gov/study/${trial.nct_id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
+                {filteredTrials.slice(0, isMobile ? 30 : 50).map((trial) => {
+                  const isSaved = savedTrialIds.has(trial.nct_id)
+                  return (
+                    <div
+                      key={trial.id}
+                      className={`${isMobile
+                        ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100'
+                        : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0'}`}
                     >
-                      {trial.study_title}
-                    </a>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
-                    <a
-                      href={`https://clinicaltrials.gov/study/${trial.nct_id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#E07A5F] hover:underline font-medium"
-                    >
-                      {trial.nct_id}
-                    </a>
-                    {trial.study_status && (
-                      <>
-                        <span>•</span>
-                        <span className={`px-1.5 py-0.5 rounded text-xs ${
-                          trial.study_status === 'RECRUITING' ? 'bg-green-50 text-green-700' :
-                          trial.study_status === 'COMPLETED' ? 'bg-blue-50 text-blue-700' :
-                          'bg-gray-100 text-gray-600'
-                        }`}>
-                          {trial.study_status.replace(/_/g, ' ')}
-                        </span>
-                      </>
-                    )}
-                  </div>
-                  <div className="flex items-center flex-wrap gap-1.5">
-                    {trial.is_therapeutic_trial && (
-                      <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
-                        Therapeutic
-                      </span>
-                    )}
-                    {trial.is_diagnostic_trial && (
-                      <span className="px-2 py-0.5 text-xs bg-teal-50 text-teal-700 rounded">
-                        Diagnostic
-                      </span>
-                    )}
-                    {trial.org_name && (
-                      <span className="text-xs text-gray-500">
-                        {trial.org_name}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <a
+                          href={`https://clinicaltrials.gov/study/${trial.nct_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
+                        >
+                          {trial.study_title}
+                        </a>
+                        {onSaveTrial && (
+                          <button
+                            onClick={() => onSaveTrial(trial.nct_id)}
+                            className={`p-1.5 rounded-lg transition-colors flex-shrink-0 ${
+                              isSaved
+                                ? 'text-[#E07A5F] bg-orange-50'
+                                : 'text-gray-400 hover:text-[#E07A5F] hover:bg-orange-50'
+                            }`}
+                            title={isSaved ? 'Remove from saved' : 'Save trial'}
+                          >
+                            <Bookmark
+                              className="w-4 h-4"
+                              fill={isSaved ? 'currentColor' : 'none'}
+                              strokeWidth={1.5}
+                            />
+                          </button>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                        <a
+                          href={`https://clinicaltrials.gov/study/${trial.nct_id}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#E07A5F] hover:underline font-medium"
+                        >
+                          {trial.nct_id}
+                        </a>
+                        {trial.study_status && (
+                          <>
+                            <span>•</span>
+                            <span className={`px-1.5 py-0.5 rounded text-xs ${
+                              trial.study_status === 'RECRUITING' ? 'bg-green-50 text-green-700' :
+                              trial.study_status === 'COMPLETED' ? 'bg-blue-50 text-blue-700' :
+                              'bg-gray-100 text-gray-600'
+                            }`}>
+                              {trial.study_status.replace(/_/g, ' ')}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                      <div className="flex items-center flex-wrap gap-1.5">
+                        {trial.is_therapeutic_trial && (
+                          <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                            Therapeutic
+                          </span>
+                        )}
+                        {trial.is_diagnostic_trial && (
+                          <span className="px-2 py-0.5 text-xs bg-teal-50 text-teal-700 rounded">
+                            Diagnostic
+                          </span>
+                        )}
+                        {trial.org_name && (
+                          <span className="text-xs text-gray-500">
+                            {trial.org_name}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
               </div>
             </div>
           )
@@ -751,6 +774,7 @@ export function Chat({ persona }: ChatProps) {
   const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
   const [currentFilters, setCurrentFilters] = useState<FilterState>({})
   const [trialStatusFilters, setTrialStatusFilters] = useState<string[]>([])
+  const [savedTrialIds, setSavedTrialIds] = useState<Set<string>>(new Set())
   const [restoredFromStorage, setRestoredFromStorage] = useState(false)
   const [showMobileResults, setShowMobileResults] = useState(true)  // Delay mobile results during restoration
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -872,6 +896,46 @@ export function Chat({ persona }: ChatProps) {
     sessionStorage.setItem('searchState', JSON.stringify(state))
     router.push(`/project/${applicationId}`)
   }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
+
+  // Save/unsave trial
+  const handleSaveTrial = useCallback(async (nctId: string) => {
+    const isSaved = savedTrialIds.has(nctId)
+
+    // Optimistic update
+    setSavedTrialIds(prev => {
+      const next = new Set(prev)
+      if (isSaved) {
+        next.delete(nctId)
+      } else {
+        next.add(nctId)
+      }
+      return next
+    })
+
+    try {
+      if (isSaved) {
+        await fetch(`/api/saved-trials?nct_id=${nctId}`, { method: 'DELETE' })
+      } else {
+        await fetch('/api/saved-trials', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nct_id: nctId })
+        })
+      }
+    } catch (e) {
+      // Revert on error
+      setSavedTrialIds(prev => {
+        const next = new Set(prev)
+        if (isSaved) {
+          next.add(nctId)
+        } else {
+          next.delete(nctId)
+        }
+        return next
+      })
+      console.error('Error saving trial:', e)
+    }
+  }, [savedTrialIds])
 
   // Helper to check if project is SBIR/STTR
   const isSbirSttr = (activityCode: string | null | undefined): boolean => {
@@ -1339,6 +1403,8 @@ export function Chat({ persona }: ChatProps) {
                   isMobile={true}
                   trialStatusFilters={trialStatusFilters}
                   onTrialStatusChange={setTrialStatusFilters}
+                  savedTrialIds={savedTrialIds}
+                  onSaveTrial={handleSaveTrial}
                 />
               </div>
             )}
@@ -1410,6 +1476,8 @@ export function Chat({ persona }: ChatProps) {
               onProjectClick={navigateToProject}
               trialStatusFilters={trialStatusFilters}
               onTrialStatusChange={setTrialStatusFilters}
+              savedTrialIds={savedTrialIds}
+              onSaveTrial={handleSaveTrial}
             />
           </div>
         </div>
