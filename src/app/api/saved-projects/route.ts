@@ -87,6 +87,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Save the project
+    console.log('Attempting to save project:', { user_id: user.id, application_id })
     const { data, error } = await supabase
       .from('saved_projects')
       .insert({
@@ -98,8 +99,11 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Error saving project:', error)
-      return NextResponse.json({ error: 'Failed to save project' }, { status: 500 })
+      console.error('Error details:', JSON.stringify(error, null, 2))
+      return NextResponse.json({ error: 'Failed to save project', details: error.message }, { status: 500 })
     }
+
+    console.log('Successfully saved project:', data)
 
     return NextResponse.json({ message: 'Saved', id: data.id })
   } catch (error) {

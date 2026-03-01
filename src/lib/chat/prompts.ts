@@ -516,11 +516,6 @@ export const PERSONA_METADATA: Record<PersonaType, {
     subtitle: "What's in development?",
     icon: 'activity',
     description: 'Clinical pipelines, phases, trial tracking',
-    exampleQueries: [
-      "What's in development for ALS?",
-      "CAR-T trials in solid tumors",
-      "Gene therapy pipeline for rare diseases",
-      "Oncology clinical development activity"
-    ]
+    exampleQueries: []
   }
 }
