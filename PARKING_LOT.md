@@ -22,6 +22,16 @@ Ideas and features to explore later.
 
 ---
 
+## Data Enrichment
+
+- [ ] Enrich clinical_studies table with full ClinicalTrials.gov data
+  - Current: only title, status, therapeutic/diagnostic flags
+  - Need: phase, conditions, interventions, enrollment, sponsors, dates, eligibility
+  - ETL script to fetch from ClinicalTrials.gov API and populate DB
+  - Enables internal trial detail page (keep users on site vs linking out)
+
+---
+
 ## Future Ideas
 
 (Add items here as they come up)
