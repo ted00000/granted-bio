@@ -22,7 +22,7 @@ const NAV_ITEMS: Array<{
   { id: 'researcher', label: 'Research', subtitle: 'Topic deep dives', icon: Search },
   { id: 'investor', label: 'Market', subtitle: 'Macro intelligence', icon: TrendingUp },
   { id: 'trials', label: 'Trials', subtitle: 'Clinical pipelines', icon: Activity },
-  { id: 'bd', label: 'Leads', subtitle: 'Find contacts', icon: Users },
+  { id: 'bd', label: 'People', subtitle: 'Find researchers', icon: Users },
 ]
 
 export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarProps) {
