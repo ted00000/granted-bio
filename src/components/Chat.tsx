@@ -125,9 +125,12 @@ interface ResultsPanelProps {
   onProjectClick?: (applicationId: string) => void
   // Mobile-specific styling
   isMobile?: boolean
+  // Trial status filters
+  trialStatusFilters?: string[]
+  onTrialStatusChange?: (statuses: string[]) => void
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange }: ResultsPanelProps) {
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -481,27 +484,43 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           <div className="text-sm text-gray-400 mt-1">clinical trials found</div>
         </div>
 
-        {/* Status breakdown */}
+        {/* Status breakdown - clickable filters */}
         {Object.keys(data.by_status).length > 0 && (
           <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
-            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">By Status</h3>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Filter by Status</h3>
             <div className="flex flex-wrap gap-2">
               {Object.entries(data.by_status)
                 .sort(([, a], [, b]) => b - a)
                 .slice(0, 6)
-                .map(([status, count]) => (
-                  <span
-                    key={status}
-                    className={`px-2.5 py-1 text-xs rounded-full ${
-                      status === 'RECRUITING' ? 'bg-green-50 text-green-700' :
-                      status === 'COMPLETED' ? 'bg-blue-50 text-blue-700' :
-                      status === 'ACTIVE_NOT_RECRUITING' ? 'bg-amber-50 text-amber-700' :
-                      'bg-gray-100 text-gray-600'
-                    }`}
-                  >
-                    {status.replace(/_/g, ' ')}: {count}
-                  </span>
-                ))}
+                .map(([status, count]) => {
+                  const isSelected = trialStatusFilters.includes(status)
+                  return (
+                    <button
+                      key={status}
+                      onClick={() => {
+                        if (onTrialStatusChange) {
+                          if (isSelected) {
+                            onTrialStatusChange(trialStatusFilters.filter(s => s !== status))
+                          } else {
+                            onTrialStatusChange([...trialStatusFilters, status])
+                          }
+                        }
+                      }}
+                      className={`px-2.5 py-1 text-xs rounded-full transition-all cursor-pointer ${
+                        isSelected
+                          ? 'ring-2 ring-offset-1 ring-[#E07A5F]'
+                          : ''
+                      } ${
+                        status === 'RECRUITING' ? 'bg-green-50 text-green-700' :
+                        status === 'COMPLETED' ? 'bg-blue-50 text-blue-700' :
+                        status === 'ACTIVE_NOT_RECRUITING' ? 'bg-amber-50 text-amber-700' :
+                        'bg-gray-100 text-gray-600'
+                      }`}
+                    >
+                      {status.replace(/_/g, ' ')}: {count}
+                    </button>
+                  )
+                })}
             </div>
             <div className="mt-3 text-xs text-gray-500">
               {data.by_type.therapeutic} therapeutic · {data.by_type.diagnostic} diagnostic
@@ -509,12 +528,20 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           </div>
         )}
 
-        {/* Trial results */}
-        {data.all_results?.length > 0 && (
-          <div className={isMobile ? 'p-4' : 'p-6'}>
-            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Top Trials</h3>
-            <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
-              {data.all_results.slice(0, isMobile ? 30 : 50).map((trial) => (
+        {/* Trial results - filtered by status if filters active */}
+        {(() => {
+          const filteredTrials = trialStatusFilters.length > 0
+            ? data.all_results.filter(t => t.study_status && trialStatusFilters.includes(t.study_status))
+            : data.all_results
+          const displayCount = filteredTrials.length
+
+          return filteredTrials.length > 0 && (
+            <div className={isMobile ? 'p-4' : 'p-6'}>
+              <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">
+                {trialStatusFilters.length > 0 ? `${displayCount} Filtered Trials` : 'Top Trials'}
+              </h3>
+              <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
+                {filteredTrials.slice(0, isMobile ? 30 : 50).map((trial) => (
                 <div
                   key={trial.id}
                   className={`${isMobile
@@ -572,9 +599,10 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   </div>
                 </div>
               ))}
+              </div>
             </div>
-          </div>
-        )}
+          )
+        })()}
       </div>
     )
   }
@@ -708,6 +736,7 @@ export function Chat({ persona }: ChatProps) {
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
   const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
   const [currentFilters, setCurrentFilters] = useState<FilterState>({})
+  const [trialStatusFilters, setTrialStatusFilters] = useState<string[]>([])
   const [restoredFromStorage, setRestoredFromStorage] = useState(false)
   const [showMobileResults, setShowMobileResults] = useState(true)  // Delay mobile results during restoration
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -794,6 +823,22 @@ export function Chat({ persona }: ChatProps) {
       }
     }
   }, [restoredFromStorage, toolResults])
+
+  // Reset state when persona changes
+  useEffect(() => {
+    // Clear all search-related state when switching personas
+    setMessages([])
+    setInput('')
+    setToolResults([])
+    setSearchContext(null)
+    setFilteredResults(null)
+    setCurrentFilters({})
+    setTrialStatusFilters([])
+    setRestoredFromStorage(false)
+    setShowMobileResults(true)
+    // Clear sessionStorage to prevent stale state restoration
+    sessionStorage.removeItem('searchState')
+  }, [persona])
 
   // Save search state and navigate to project
   const navigateToProject = useCallback((applicationId: string) => {
@@ -1278,6 +1323,8 @@ export function Chat({ persona }: ChatProps) {
                   quickFilterCounts={quickFilterCounts}
                   onProjectClick={navigateToProject}
                   isMobile={true}
+                  trialStatusFilters={trialStatusFilters}
+                  onTrialStatusChange={setTrialStatusFilters}
                 />
               </div>
             )}
@@ -1347,6 +1394,8 @@ export function Chat({ persona }: ChatProps) {
               crossFilteredByOrgType={crossFilteredByOrgType}
               quickFilterCounts={quickFilterCounts}
               onProjectClick={navigateToProject}
+              trialStatusFilters={trialStatusFilters}
+              onTrialStatusChange={setTrialStatusFilters}
             />
           </div>
         </div>
