@@ -411,12 +411,8 @@ export const PERSONA_METADATA: Record<PersonaType, {
     subtitle: 'Who is working on this?',
     icon: 'users',
     description: 'Find researchers, labs, and organizations',
-    exampleQueries: [
-      "Who is working on mass spectrometry?",
-      "Find researchers in CRISPR gene editing",
-      "Labs doing single-cell RNA sequencing",
-      "Organizations working on protein therapeutics"
-    ]
+    placeholder: 'Enter a research topic...',
+    exampleQueries: []
   },
   investor: {
     title: 'Market',
