@@ -214,6 +214,10 @@ export interface TrialResult {
   is_diagnostic_trial: boolean
   is_therapeutic_trial: boolean
   project_number: string | null
+  // Enriched fields from ClinicalTrials.gov API
+  phase?: string | null
+  enrollment_count?: number | null
+  lead_sponsor?: string | null
   // Linked project info (if available)
   project_title?: string | null
   org_name?: string | null

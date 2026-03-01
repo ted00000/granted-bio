@@ -1,0 +1,329 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useParams } from 'next/navigation'
+import Link from 'next/link'
+import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, ChevronLeft } from 'lucide-react'
+
+interface TrialData {
+  nct_id: string
+  project_number: string | null
+  study_title: string
+  study_status: string | null
+  is_therapeutic_trial: boolean
+  is_diagnostic_trial: boolean
+  phase: string | null
+  conditions: string[] | null
+  interventions: Array<{ name: string; type: string; description?: string }> | null
+  enrollment_count: number | null
+  lead_sponsor: string | null
+  start_date: string | null
+  completion_date: string | null
+  eligibility_criteria: string | null
+  study_type: string | null
+  brief_summary: string | null
+  api_last_updated: string | null
+}
+
+interface ProjectData {
+  application_id: string
+  title: string
+  org_name: string
+  total_cost: number | null
+  pi_names: string | null
+}
+
+function formatDate(dateStr: string | null): string {
+  if (!dateStr) return 'Not specified'
+  try {
+    const date = new Date(dateStr)
+    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+  } catch {
+    return dateStr
+  }
+}
+
+function formatPhase(phase: string | null): string {
+  if (!phase) return 'N/A'
+  return phase.replace('PHASE', 'Phase ').replace('EARLY_PHASE1', 'Early Phase 1').replace('NA', 'N/A')
+}
+
+function formatStatus(status: string | null): { label: string; color: string } {
+  if (!status) return { label: 'Unknown', color: 'bg-gray-100 text-gray-600' }
+
+  const statusMap: Record<string, { label: string; color: string }> = {
+    RECRUITING: { label: 'Recruiting', color: 'bg-green-50 text-green-700' },
+    ACTIVE_NOT_RECRUITING: { label: 'Active, not recruiting', color: 'bg-blue-50 text-blue-700' },
+    COMPLETED: { label: 'Completed', color: 'bg-gray-100 text-gray-600' },
+    ENROLLING_BY_INVITATION: { label: 'Enrolling by invitation', color: 'bg-yellow-50 text-yellow-700' },
+    NOT_YET_RECRUITING: { label: 'Not yet recruiting', color: 'bg-orange-50 text-orange-700' },
+    SUSPENDED: { label: 'Suspended', color: 'bg-red-50 text-red-700' },
+    TERMINATED: { label: 'Terminated', color: 'bg-red-50 text-red-700' },
+    WITHDRAWN: { label: 'Withdrawn', color: 'bg-gray-100 text-gray-500' },
+  }
+
+  return statusMap[status] || { label: status.replace(/_/g, ' '), color: 'bg-gray-100 text-gray-600' }
+}
+
+export default function TrialDetailPage() {
+  const params = useParams()
+  const nctId = params.nctId as string
+
+  const [trial, setTrial] = useState<TrialData | null>(null)
+  const [project, setProject] = useState<ProjectData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    async function fetchTrial() {
+      try {
+        const response = await fetch(`/api/trials/${nctId}`)
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError('Trial not found')
+          } else {
+            setError('Failed to load trial')
+          }
+          return
+        }
+        const data = await response.json()
+        setTrial(data.trial)
+        setProject(data.project)
+      } catch (e) {
+        console.error('Error fetching trial:', e)
+        setError('Failed to load trial')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (nctId) {
+      fetchTrial()
+    }
+  }, [nctId])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+      </div>
+    )
+  }
+
+  if (error || !trial) {
+    return (
+      <div className="min-h-screen bg-[#FAFAF9]">
+        <header className="bg-white border-b border-gray-100">
+          <div className="max-w-4xl mx-auto px-4 py-4">
+            <Link href="/chat?persona=trials" className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1">
+              <ChevronLeft className="w-4 h-4" />
+              Back to Trials Search
+            </Link>
+          </div>
+        </header>
+        <main className="max-w-4xl mx-auto px-4 py-16 text-center">
+          <Activity className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+          <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Trial not found'}</h1>
+          <p className="text-gray-500">The clinical trial {nctId} could not be found.</p>
+        </main>
+      </div>
+    )
+  }
+
+  const status = formatStatus(trial.study_status)
+
+  return (
+    <div className="min-h-screen bg-[#FAFAF9]">
+      {/* Header */}
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
+        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="text-xl font-semibold text-gray-900">
+              granted<span className="text-[#E07A5F]">.bio</span>
+            </Link>
+            <Link href="/chat?persona=trials" className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium flex items-center gap-1">
+              <ChevronLeft className="w-4 h-4" />
+              Back to Search
+            </Link>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto px-4 py-8">
+        {/* Title Section */}
+        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+          <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-[#E07A5F] font-medium text-sm">{trial.nct_id}</span>
+                <span className={`px-2 py-0.5 rounded text-xs font-medium ${status.color}`}>
+                  {status.label}
+                </span>
+                {trial.phase && (
+                  <span className="px-2 py-0.5 bg-purple-50 text-purple-700 rounded text-xs font-medium">
+                    {formatPhase(trial.phase)}
+                  </span>
+                )}
+              </div>
+              <h1 className="text-xl font-semibold text-gray-900 leading-snug">
+                {trial.study_title}
+              </h1>
+            </div>
+            <a
+              href={`https://clinicaltrials.gov/study/${trial.nct_id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#E07A5F] transition-colors flex-shrink-0"
+            >
+              ClinicalTrials.gov
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </div>
+
+          {trial.brief_summary && (
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {trial.brief_summary}
+            </p>
+          )}
+        </div>
+
+        {/* Key Details Grid */}
+        <div className="grid md:grid-cols-2 gap-4 mb-6">
+          {/* Study Info */}
+          <div className="bg-white rounded-lg shadow-sm p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <FlaskConical className="w-4 h-4 text-[#E07A5F]" />
+              Study Details
+            </h2>
+            <dl className="space-y-3 text-sm">
+              <div>
+                <dt className="text-gray-500">Study Type</dt>
+                <dd className="text-gray-900 font-medium">
+                  {trial.study_type?.replace(/_/g, ' ') || 'Not specified'}
+                </dd>
+              </div>
+              {trial.conditions && trial.conditions.length > 0 && (
+                <div>
+                  <dt className="text-gray-500">Conditions</dt>
+                  <dd className="text-gray-900">
+                    {trial.conditions.slice(0, 5).join(', ')}
+                    {trial.conditions.length > 5 && ` +${trial.conditions.length - 5} more`}
+                  </dd>
+                </div>
+              )}
+              {trial.interventions && trial.interventions.length > 0 && (
+                <div>
+                  <dt className="text-gray-500">Interventions</dt>
+                  <dd className="text-gray-900">
+                    {trial.interventions.slice(0, 3).map((i, idx) => (
+                      <div key={idx} className="mb-1">
+                        <span className="font-medium">{i.name}</span>
+                        <span className="text-gray-500 text-xs ml-1">({i.type})</span>
+                      </div>
+                    ))}
+                    {trial.interventions.length > 3 && (
+                      <span className="text-gray-500">+{trial.interventions.length - 3} more</span>
+                    )}
+                  </dd>
+                </div>
+              )}
+            </dl>
+          </div>
+
+          {/* Enrollment & Sponsor */}
+          <div className="bg-white rounded-lg shadow-sm p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Users className="w-4 h-4 text-[#E07A5F]" />
+              Enrollment & Sponsor
+            </h2>
+            <dl className="space-y-3 text-sm">
+              {trial.enrollment_count && (
+                <div>
+                  <dt className="text-gray-500">Target Enrollment</dt>
+                  <dd className="text-gray-900 font-medium">
+                    {trial.enrollment_count.toLocaleString()} participants
+                  </dd>
+                </div>
+              )}
+              {trial.lead_sponsor && (
+                <div>
+                  <dt className="text-gray-500">Lead Sponsor</dt>
+                  <dd className="text-gray-900">{trial.lead_sponsor}</dd>
+                </div>
+              )}
+              <div className="flex gap-2">
+                {trial.is_therapeutic_trial && (
+                  <span className="px-2 py-0.5 bg-purple-50 text-purple-700 rounded text-xs">
+                    Therapeutic
+                  </span>
+                )}
+                {trial.is_diagnostic_trial && (
+                  <span className="px-2 py-0.5 bg-teal-50 text-teal-700 rounded text-xs">
+                    Diagnostic
+                  </span>
+                )}
+              </div>
+            </dl>
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div className="bg-white rounded-lg shadow-sm p-5 mb-6">
+          <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-[#E07A5F]" />
+            Timeline
+          </h2>
+          <div className="flex gap-8 text-sm">
+            <div>
+              <dt className="text-gray-500">Start Date</dt>
+              <dd className="text-gray-900 font-medium">{formatDate(trial.start_date)}</dd>
+            </div>
+            <div>
+              <dt className="text-gray-500">Estimated Completion</dt>
+              <dd className="text-gray-900 font-medium">{formatDate(trial.completion_date)}</dd>
+            </div>
+          </div>
+        </div>
+
+        {/* Eligibility */}
+        {trial.eligibility_criteria && (
+          <div className="bg-white rounded-lg shadow-sm p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-900 mb-4">Eligibility Criteria</h2>
+            <div className="text-sm text-gray-600 whitespace-pre-wrap max-h-64 overflow-y-auto">
+              {trial.eligibility_criteria}
+            </div>
+          </div>
+        )}
+
+        {/* Linked NIH Project */}
+        {project && (
+          <div className="bg-white rounded-lg shadow-sm p-5">
+            <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Building2 className="w-4 h-4 text-[#E07A5F]" />
+              Linked NIH Project
+            </h2>
+            <div className="text-sm">
+              <p className="text-gray-900 font-medium mb-1">{project.title}</p>
+              <p className="text-gray-600">{project.org_name}</p>
+              {project.pi_names && (
+                <p className="text-gray-500 text-xs mt-1">PI: {project.pi_names}</p>
+              )}
+              {project.total_cost && (
+                <p className="text-[#E07A5F] font-medium mt-2">
+                  ${(project.total_cost / 1000000).toFixed(1)}M funding
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Last Updated */}
+        {trial.api_last_updated && (
+          <p className="text-xs text-gray-400 text-center mt-8">
+            Data last updated: {new Date(trial.api_last_updated).toLocaleDateString()}
+          </p>
+        )}
+      </main>
+    </div>
+  )
+}

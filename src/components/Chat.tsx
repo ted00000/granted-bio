@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { Search, TrendingUp, Users, Activity, Bookmark } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
@@ -583,14 +584,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0'}`}
                     >
                       <div className="flex items-start justify-between gap-2 mb-2">
-                        <a
-                          href={`https://clinicaltrials.gov/study/${trial.nct_id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <Link
+                          href={`/trial/${trial.nct_id}`}
                           className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
                         >
                           {trial.study_title}
-                        </a>
+                        </Link>
                         {onSaveTrial && (
                           <button
                             onClick={() => onSaveTrial(trial.nct_id)}
@@ -627,6 +626,22 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                               'bg-gray-100 text-gray-600'
                             }`}>
                               {trial.study_status.replace(/_/g, ' ')}
+                            </span>
+                          </>
+                        )}
+                        {trial.phase && (
+                          <>
+                            <span>•</span>
+                            <span className="px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded">
+                              {trial.phase.replace('PHASE', 'Phase ').replace('EARLY_PHASE1', 'Early Phase 1').replace('NA', 'N/A')}
+                            </span>
+                          </>
+                        )}
+                        {trial.enrollment_count && (
+                          <>
+                            <span>•</span>
+                            <span className="text-gray-500">
+                              {trial.enrollment_count.toLocaleString()} enrolled
                             </span>
                           </>
                         )}

@@ -104,10 +104,8 @@ export default function MyTrialsPage() {
                   key={item.id}
                   className="bg-white rounded-lg shadow-sm p-4 flex items-start gap-4 group"
                 >
-                  <a
-                    href={`https://clinicaltrials.gov/study/${trial.nct_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href={`/trial/${trial.nct_id}`}
                     className="flex-1 min-w-0"
                   >
                     <h3 className="text-sm font-medium text-gray-900 leading-snug mb-2 group-hover:text-[#E07A5F] transition-colors">
@@ -140,7 +138,7 @@ export default function MyTrialsPage() {
                         </span>
                       )}
                     </div>
-                  </a>
+                  </Link>
                   <button
                     onClick={() => removeTrial(trial.nct_id)}
                     disabled={removingId === trial.nct_id}
