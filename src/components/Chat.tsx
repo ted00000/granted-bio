@@ -143,11 +143,17 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
     )
   }
 
+  // Check for trials results first (trials mode should show trials, not projects)
+  const trialsResult = [...results].reverse().find(r => r.name === 'search_trials')
+  if (trialsResult) {
+    // Use trials result directly - don't fall through to project handlers
+  }
+
   // Prioritize project results over patent results when both exist
   // This ensures "find projects with patents" shows projects (with patent badges), not raw patents
   // Use findLast to get the MOST RECENT search result (in case of multiple searches in one response)
   const projectResult = [...results].reverse().find(r => r.name === 'search_projects' || r.name === 'keyword_search')
-  const latestResult = projectResult || results[results.length - 1]
+  const latestResult = trialsResult || projectResult || results[results.length - 1]
 
   // Use filtered results if available, otherwise use original
   const displayData = filteredResults || (projectResult?.data as KeywordSearchResult | undefined)
@@ -167,11 +173,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             projects found{isCapped && ` · showing top ${data.showing_count}`}
             {isFiltered && ' (filtered)'}
           </div>
-          {data.search_query && (
-            <div className="text-xs text-gray-400 mt-2 break-words">
-              Keyword + semantic search for "{data.search_query}"
-            </div>
-          )}
         </div>
 
         {/* Filter Chips - always show original counts for multi-select */}
@@ -300,11 +301,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             projects found{isCapped && ` · showing top ${data.showing_count}`}
             {isFiltered && ' (filtered)'}
           </div>
-          {data.search_query && (
-            <div className="text-xs text-gray-400 mt-2 break-words">
-              Keyword + semantic search for "{data.search_query}"
-            </div>
-          )}
         </div>
 
         {/* Filter Chips - always show original counts for multi-select */}
@@ -452,6 +448,128 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             ))}
           </div>
         </div>
+      </div>
+    )
+  }
+
+  if (latestResult.name === 'search_trials') {
+    const data = latestResult.data as {
+      summary: string
+      search_query: string
+      total_count: number
+      by_status: Record<string, number>
+      by_type: { therapeutic: number; diagnostic: number; other: number }
+      all_results: Array<{
+        id: string
+        nct_id: string
+        study_title: string
+        study_status: string | null
+        is_diagnostic_trial: boolean
+        is_therapeutic_trial: boolean
+        project_number: string | null
+        project_title?: string | null
+        org_name?: string | null
+        total_cost?: number | null
+        similarity?: number
+      }>
+    }
+
+    return (
+      <div className={`overflow-y-auto ${isMobile ? '' : 'h-full'}`}>
+        <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
+          <div className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-semibold tracking-tight text-gray-900`}>{data.total_count.toLocaleString()}</div>
+          <div className="text-sm text-gray-400 mt-1">clinical trials found</div>
+        </div>
+
+        {/* Status breakdown */}
+        {Object.keys(data.by_status).length > 0 && (
+          <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
+            <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">By Status</h3>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(data.by_status)
+                .sort(([, a], [, b]) => b - a)
+                .slice(0, 6)
+                .map(([status, count]) => (
+                  <span
+                    key={status}
+                    className={`px-2.5 py-1 text-xs rounded-full ${
+                      status === 'RECRUITING' ? 'bg-green-50 text-green-700' :
+                      status === 'COMPLETED' ? 'bg-blue-50 text-blue-700' :
+                      status === 'ACTIVE_NOT_RECRUITING' ? 'bg-amber-50 text-amber-700' :
+                      'bg-gray-100 text-gray-600'
+                    }`}
+                  >
+                    {status.replace(/_/g, ' ')}: {count}
+                  </span>
+                ))}
+            </div>
+            <div className="mt-3 text-xs text-gray-500">
+              {data.by_type.therapeutic} therapeutic · {data.by_type.diagnostic} diagnostic
+            </div>
+          </div>
+        )}
+
+        {/* Trial results */}
+        {data.all_results?.length > 0 && (
+          <div className={isMobile ? 'p-4' : 'p-6'}>
+            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">Top Trials</h3>
+            <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
+              {data.all_results.slice(0, isMobile ? 30 : 50).map((trial) => (
+                <div
+                  key={trial.id}
+                  className={`${isMobile
+                    ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100'
+                    : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0'}`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <span className="text-sm text-gray-900 leading-snug flex-1">
+                      {trial.study_title}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
+                    <a
+                      href={`https://clinicaltrials.gov/study/${trial.nct_id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#E07A5F] hover:underline font-medium"
+                    >
+                      {trial.nct_id}
+                    </a>
+                    {trial.study_status && (
+                      <>
+                        <span>•</span>
+                        <span className={`px-1.5 py-0.5 rounded text-xs ${
+                          trial.study_status === 'RECRUITING' ? 'bg-green-50 text-green-700' :
+                          trial.study_status === 'COMPLETED' ? 'bg-blue-50 text-blue-700' :
+                          'bg-gray-100 text-gray-600'
+                        }`}>
+                          {trial.study_status.replace(/_/g, ' ')}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <div className="flex items-center flex-wrap gap-1.5">
+                    {trial.is_therapeutic_trial && (
+                      <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                        Therapeutic
+                      </span>
+                    )}
+                    {trial.is_diagnostic_trial && (
+                      <span className="px-2 py-0.5 text-xs bg-teal-50 text-teal-700 rounded">
+                        Diagnostic
+                      </span>
+                    )}
+                    {trial.org_name && (
+                      <span className="text-xs text-gray-500">
+                        {trial.org_name}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     )
   }

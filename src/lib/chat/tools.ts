@@ -17,7 +17,10 @@ import type {
   PIProfile,
   PatentResult,
   PatentDetails,
-  UserAccess
+  UserAccess,
+  SearchTrialsParams,
+  TrialResult,
+  TrialSearchResult
 } from './types'
 import type { Tool } from '@anthropic-ai/sdk/resources/messages'
 
@@ -158,6 +161,43 @@ export const AGENT_TOOLS: Tool[] = [
         }
       },
       required: ['patent_id']
+    }
+  },
+  {
+    name: 'search_trials',
+    description: 'Search clinical trials by topic or indication. Returns trials linked to NIH-funded projects with status and trial type.',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        query: {
+          type: 'string',
+          description: 'Natural language query for the therapeutic area or indication (e.g., "ALS gene therapy", "CAR-T solid tumors")'
+        },
+        filters: {
+          type: 'object',
+          description: 'Optional filters',
+          properties: {
+            status: {
+              type: 'array',
+              items: { type: 'string' },
+              description: 'Filter by trial status: RECRUITING, COMPLETED, ACTIVE_NOT_RECRUITING, etc.'
+            },
+            is_therapeutic: {
+              type: 'boolean',
+              description: 'Only show therapeutic trials'
+            },
+            is_diagnostic: {
+              type: 'boolean',
+              description: 'Only show diagnostic trials'
+            }
+          }
+        },
+        limit: {
+          type: 'number',
+          description: 'Maximum number of trials to return (default 100)'
+        }
+      },
+      required: ['query']
     }
   }
 ]
@@ -1744,6 +1784,139 @@ export async function getPatentDetails(
   }
 }
 
+// Search clinical trials by semantic similarity
+export async function searchTrials(
+  params: SearchTrialsParams,
+  userAccess: UserAccess
+): Promise<TrialSearchResult> {
+  const { query, filters, limit = 100 } = params
+  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+
+  try {
+    // Generate embedding for semantic search
+    const queryEmbedding = await generateEmbedding(query)
+
+    // Search clinical studies using the RPC function
+    const { data: trials, error } = await supabaseAdmin.rpc('search_clinical_studies', {
+      query_embedding: queryEmbedding,
+      match_threshold: 0.3,
+      match_count: effectiveLimit * 3 // Get more to account for duplicates and filtering
+    })
+
+    if (error) {
+      console.error('Search trials RPC error:', error)
+      throw error
+    }
+
+    let results = (trials || []) as Array<{
+      id: string
+      nct_id: string
+      study_title: string
+      study_status: string | null
+      is_diagnostic_trial: boolean
+      is_therapeutic_trial: boolean
+      project_number: string | null
+      similarity: number
+    }>
+
+    // Deduplicate by nct_id (same trial can be linked to multiple projects)
+    // Keep the first occurrence (highest similarity since results are sorted)
+    const seenNctIds = new Set<string>()
+    results = results.filter(t => {
+      if (seenNctIds.has(t.nct_id)) return false
+      seenNctIds.add(t.nct_id)
+      return true
+    })
+
+    // Apply filters
+    if (filters?.status?.length) {
+      results = results.filter(t => t.study_status && filters.status!.includes(t.study_status))
+    }
+    if (filters?.is_therapeutic === true) {
+      results = results.filter(t => t.is_therapeutic_trial)
+    }
+    if (filters?.is_diagnostic === true) {
+      results = results.filter(t => t.is_diagnostic_trial)
+    }
+
+    // Get linked project info for top results
+    const projectNumbers = [...new Set(results.slice(0, 50).map(t => t.project_number).filter(Boolean))]
+    let projectMap: Record<string, { title: string; org_name: string | null; total_cost: number | null }> = {}
+
+    if (projectNumbers.length > 0) {
+      const { data: projects } = await supabaseAdmin
+        .from('projects')
+        .select('project_number, title, org_name, total_cost')
+        .in('project_number', projectNumbers)
+
+      if (projects) {
+        projects.forEach(p => {
+          projectMap[p.project_number] = {
+            title: p.title,
+            org_name: p.org_name,
+            total_cost: p.total_cost
+          }
+        })
+      }
+    }
+
+    // Aggregate by status and type
+    const byStatus: Record<string, number> = {}
+    let therapeuticCount = 0
+    let diagnosticCount = 0
+    let otherCount = 0
+
+    results.forEach(t => {
+      const status = t.study_status || 'UNKNOWN'
+      byStatus[status] = (byStatus[status] || 0) + 1
+
+      if (t.is_therapeutic_trial) therapeuticCount++
+      else if (t.is_diagnostic_trial) diagnosticCount++
+      else otherCount++
+    })
+
+    // Build result objects
+    const allResults: TrialResult[] = results.slice(0, effectiveLimit).map(t => ({
+      id: t.id,
+      nct_id: t.nct_id,
+      study_title: t.study_title,
+      study_status: t.study_status,
+      is_diagnostic_trial: t.is_diagnostic_trial,
+      is_therapeutic_trial: t.is_therapeutic_trial,
+      project_number: t.project_number,
+      project_title: t.project_number ? projectMap[t.project_number]?.title : null,
+      org_name: t.project_number ? projectMap[t.project_number]?.org_name : null,
+      total_cost: t.project_number ? projectMap[t.project_number]?.total_cost : null,
+      similarity: t.similarity
+    }))
+
+    const sampleResults = allResults.slice(0, 10)
+
+    // Generate summary
+    const statusBreakdown = Object.entries(byStatus)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 5)
+      .map(([status, count]) => `${status}: ${count}`)
+      .join(', ')
+
+    const summary = `Found ${results.length} clinical trials. By status: ${statusBreakdown}. ` +
+      `Types: ${therapeuticCount} therapeutic, ${diagnosticCount} diagnostic, ${otherCount} other.`
+
+    return {
+      summary,
+      search_query: query,
+      total_count: results.length,
+      by_status: byStatus,
+      by_type: { therapeutic: therapeuticCount, diagnostic: diagnosticCount, other: otherCount },
+      all_results: allResults,
+      sample_results: sampleResults
+    }
+  } catch (error) {
+    console.error('Search trials error:', error)
+    throw error
+  }
+}
+
 // Tool execution dispatcher
 export async function executeTool(
   toolName: string,
@@ -1764,6 +1937,8 @@ export async function executeTool(
       return searchPatents(args as unknown as SearchPatentsParams, userAccess)
     case 'get_patent_details':
       return getPatentDetails(args as unknown as GetPatentDetailsParams, userAccess)
+    case 'search_trials':
+      return searchTrials(args as unknown as SearchTrialsParams, userAccess)
     // Legacy support for old tool names
     case 'keyword_search':
       // Redirect to semantic search

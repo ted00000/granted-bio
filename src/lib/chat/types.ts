@@ -196,6 +196,41 @@ export interface GetPatentDetailsParams {
   patent_id: string
 }
 
+export interface SearchTrialsParams {
+  query: string
+  filters?: {
+    status?: string[] // RECRUITING, COMPLETED, etc.
+    is_therapeutic?: boolean
+    is_diagnostic?: boolean
+  }
+  limit?: number
+}
+
+export interface TrialResult {
+  id: string
+  nct_id: string
+  study_title: string
+  study_status: string | null
+  is_diagnostic_trial: boolean
+  is_therapeutic_trial: boolean
+  project_number: string | null
+  // Linked project info (if available)
+  project_title?: string | null
+  org_name?: string | null
+  total_cost?: number | null
+  similarity?: number
+}
+
+export interface TrialSearchResult {
+  summary: string
+  search_query: string
+  total_count: number
+  by_status: Record<string, number>
+  by_type: { therapeutic: number; diagnostic: number; other: number }
+  all_results: TrialResult[]
+  sample_results: TrialResult[]
+}
+
 export interface PatentDetails {
   patent_id: string
   patent_title: string
