@@ -13,6 +13,15 @@ Ideas and features to explore later.
 
 ---
 
+## UI/UX
+
+- [ ] Update Results panel subtitle based on agent mode
+  - Currently shows "NIH RePORTER & USPTO PatentsView" for all modes
+  - Trials mode should show different subtitle (e.g., "ClinicalTrials.gov")
+  - Consider dynamic subtitle per persona
+
+---
+
 ## Future Ideas
 
 (Add items here as they come up)
