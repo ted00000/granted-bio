@@ -179,6 +179,11 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             projects found{isCapped && ` · showing top ${data.showing_count}`}
             {isFiltered && ' (filtered)'}
           </div>
+          {searchContext && (
+            <div className="text-xs text-gray-400 mt-2 truncate" title={`Keyword: ${searchContext.keywordQuery}\nSemantic: ${searchContext.semanticQuery}`}>
+              Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
+            </div>
+          )}
         </div>
 
         {/* Filter Chips - always show original counts for multi-select */}
@@ -307,6 +312,11 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             projects found{isCapped && ` · showing top ${data.showing_count}`}
             {isFiltered && ' (filtered)'}
           </div>
+          {searchContext && (
+            <div className="text-xs text-gray-400 mt-2 truncate" title={`Keyword: ${searchContext.keywordQuery}\nSemantic: ${searchContext.semanticQuery}`}>
+              Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
+            </div>
+          )}
         </div>
 
         {/* Filter Chips - always show original counts for multi-select */}
@@ -490,6 +500,11 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           <div className="text-sm text-gray-400 mt-1">
             clinical trials found{isCapped && ` · ${data.total_count.toLocaleString()} total matches`}
           </div>
+          {data.search_query && (
+            <div className="text-xs text-gray-400 mt-2 truncate" title={data.search_query}>
+              Searched: {data.search_query}
+            </div>
+          )}
         </div>
 
         {/* Status breakdown - clickable filters */}

@@ -166,6 +166,19 @@ export async function POST(request: NextRequest) {
             console.log('[Chat API] Tool use blocks found:', toolUseBlocks.length)
             if (toolUseBlocks.length > 0) {
               console.log('[Chat API] Tools:', toolUseBlocks.map(t => t.name).join(', '))
+              // Log search queries for debugging
+              toolUseBlocks.forEach(t => {
+                if (t.name === 'search_projects') {
+                  const input = t.input as { keyword_query?: string; semantic_query?: string }
+                  console.log('[Chat API] search_projects queries:', {
+                    keyword: input.keyword_query,
+                    semantic: input.semantic_query
+                  })
+                } else if (t.name === 'search_trials') {
+                  const input = t.input as { query?: string }
+                  console.log('[Chat API] search_trials query:', input.query)
+                }
+              })
             }
             if (responseText && toolUseBlocks.length === 0) {
               console.log('[Chat API] Final text response (first 200 chars):', responseText.slice(0, 200))
