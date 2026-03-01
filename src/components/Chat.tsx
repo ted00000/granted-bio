@@ -522,9 +522,14 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0'}`}
                 >
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <span className="text-sm text-gray-900 leading-snug flex-1">
+                    <a
+                      href={`https://clinicaltrials.gov/study/${trial.nct_id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
+                    >
                       {trial.study_title}
-                    </span>
+                    </a>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-400 mb-2">
                     <a
