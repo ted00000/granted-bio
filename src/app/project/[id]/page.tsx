@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import { Bookmark } from 'lucide-react'
 
 interface Project {
   id: string
@@ -92,6 +93,8 @@ export default function ProjectPage() {
   const [error, setError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState<'abstract' | 'phr' | 'publications' | 'patents' | 'clinical'>('abstract')
   const [returnUrl, setReturnUrl] = useState('/chat')
+  const [isSaved, setIsSaved] = useState(false)
+  const [savingProject, setSavingProject] = useState(false)
 
   // Read return URL from sessionStorage
   useEffect(() => {
@@ -107,6 +110,43 @@ export default function ProjectPage() {
       }
     }
   }, [])
+
+  // Check if project is saved
+  useEffect(() => {
+    const checkSaved = async () => {
+      try {
+        const response = await fetch(`/api/saved-projects/check?application_id=${id}`)
+        const data = await response.json()
+        setIsSaved(data.saved)
+      } catch (e) {
+        // Ignore errors
+      }
+    }
+    checkSaved()
+  }, [id])
+
+  const toggleSave = async () => {
+    if (savingProject) return
+    setSavingProject(true)
+
+    try {
+      if (isSaved) {
+        await fetch(`/api/saved-projects?application_id=${id}`, { method: 'DELETE' })
+        setIsSaved(false)
+      } else {
+        await fetch('/api/saved-projects', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ application_id: id })
+        })
+        setIsSaved(true)
+      }
+    } catch (e) {
+      console.error('Error toggling save:', e)
+    } finally {
+      setSavingProject(false)
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -181,9 +221,27 @@ export default function ProjectPage() {
             <Link href="/" className="text-xl font-semibold text-gray-900">
               granted<span className="text-[#E07A5F]">.bio</span>
             </Link>
-            <Link href={returnUrl} className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium">
-              ← Back
-            </Link>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={toggleSave}
+                disabled={savingProject}
+                className={`p-2 rounded-lg transition-colors ${
+                  isSaved
+                    ? 'text-[#E07A5F] bg-[#E07A5F]/10'
+                    : 'text-gray-400 hover:text-[#E07A5F] hover:bg-gray-100'
+                }`}
+                title={isSaved ? 'Remove from saved' : 'Save project'}
+              >
+                <Bookmark
+                  className="w-5 h-5"
+                  fill={isSaved ? 'currentColor' : 'none'}
+                  strokeWidth={1.5}
+                />
+              </button>
+              <Link href={returnUrl} className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium">
+                ← Back
+              </Link>
+            </div>
           </div>
         </div>
       </header>
