@@ -1901,8 +1901,8 @@ export async function searchTrials(
         const queryEmbedding = await generateEmbedding(query)
         const { data: trials, error } = await supabaseAdmin.rpc('search_clinical_studies', {
           query_embedding: queryEmbedding,
-          match_threshold: 0.25,
-          match_count: effectiveLimit * 3
+          match_threshold: 0.40, // Higher threshold for better precision
+          match_count: effectiveLimit * 2
         })
         if (error) {
           console.error('Search trials RPC error:', error)
