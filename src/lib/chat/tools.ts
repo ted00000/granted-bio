@@ -1798,7 +1798,92 @@ export async function getPatentDetails(
   }
 }
 
-// Search clinical trials by semantic similarity
+// Search clinical trial titles for a single word (with variations)
+// Returns matching composite IDs (nct_id|project_number)
+const MAX_TRIAL_RESULTS_PER_WORD = 5000
+
+async function searchTrialTitlesForWord(word: string, originalKeyword: string): Promise<Set<string>> {
+  const variations = generateWordVariations(word, originalKeyword)
+  const matchingIds = new Set<string>()
+
+  const searchPromises = variations.map(async (variation) => {
+    const ids: string[] = []
+    let offset = 0
+    const pageSize = 1000
+    const maxPages = Math.ceil(MAX_TRIAL_RESULTS_PER_WORD / pageSize)
+    let pageCount = 0
+
+    while (pageCount < maxPages) {
+      const { data: titleMatches, error } = await supabaseAdmin
+        .from('clinical_studies')
+        .select('nct_id, project_number')
+        .ilike('study_title', `%${variation}%`)
+        .range(offset, offset + pageSize - 1)
+
+      if (error) {
+        if (error.code === '57014') {
+          console.log(`Trial title search timeout for variation: ${variation}`)
+          break
+        }
+        throw error
+      }
+      if (!titleMatches || titleMatches.length === 0) break
+
+      // Use composite ID since same NCT can have multiple project_numbers
+      ids.push(...titleMatches.map(t => `${t.nct_id}|${t.project_number || ''}`))
+      if (titleMatches.length < pageSize) break
+      offset += pageSize
+      pageCount++
+    }
+
+    return ids
+  })
+
+  const allResults = await Promise.all(searchPromises)
+  allResults.forEach(ids => ids.forEach(id => matchingIds.add(id)))
+
+  return matchingIds
+}
+
+// Get trial IDs matching keyword search (supports pipe-separated synonyms)
+async function getTrialKeywordMatchingIds(query: string): Promise<Set<string>> {
+  const wordGroups = query.toLowerCase().trim().split(/\s+/).filter(g => g.length > 2)
+
+  if (wordGroups.length === 0) return new Set()
+
+  const groupMatchPromises = wordGroups.map(async (group) => {
+    const synonyms = group.split('|').filter(s => s.length > 2)
+
+    if (synonyms.length === 0) return new Set<string>()
+
+    const synonymMatchPromises = synonyms.map(async (synonym) => {
+      return searchTrialTitlesForWord(synonym, query)
+    })
+
+    const synonymResults = await Promise.all(synonymMatchPromises)
+
+    // Union all synonym matches (OR logic)
+    const groupMatches = new Set<string>()
+    for (const matches of synonymResults) {
+      matches.forEach(id => groupMatches.add(id))
+    }
+    return groupMatches
+  })
+
+  const groupMatchResults = await Promise.all(groupMatchPromises)
+
+  // Intersect results across groups (AND logic)
+  if (groupMatchResults.length === 1) return groupMatchResults[0]
+
+  let matchingIds = groupMatchResults[0]
+  for (let i = 1; i < groupMatchResults.length; i++) {
+    matchingIds = new Set([...matchingIds].filter(id => groupMatchResults[i].has(id)))
+  }
+
+  return matchingIds
+}
+
+// Hybrid search clinical trials (keyword + semantic with RRF)
 export async function searchTrials(
   params: SearchTrialsParams,
   userAccess: UserAccess
@@ -1807,22 +1892,39 @@ export async function searchTrials(
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
 
   try {
-    // Generate embedding for semantic search
-    const queryEmbedding = await generateEmbedding(query)
+    // Run keyword and semantic searches in parallel
+    const [keywordIds, semanticResults] = await Promise.all([
+      // Keyword search: get matching trial composite IDs
+      getTrialKeywordMatchingIds(query),
+      // Semantic search: get scored results
+      (async () => {
+        const queryEmbedding = await generateEmbedding(query)
+        const { data: trials, error } = await supabaseAdmin.rpc('search_clinical_studies', {
+          query_embedding: queryEmbedding,
+          match_threshold: 0.25,
+          match_count: effectiveLimit * 3
+        })
+        if (error) {
+          console.error('Search trials RPC error:', error)
+          throw error
+        }
+        return (trials || []) as Array<{
+          id: string
+          nct_id: string
+          study_title: string
+          study_status: string | null
+          is_diagnostic_trial: boolean
+          is_therapeutic_trial: boolean
+          project_number: string | null
+          similarity: number
+        }>
+      })()
+    ])
 
-    // Search clinical studies using the RPC function
-    const { data: trials, error } = await supabaseAdmin.rpc('search_clinical_studies', {
-      query_embedding: queryEmbedding,
-      match_threshold: 0.3,
-      match_count: effectiveLimit * 3 // Get more to account for duplicates and filtering
-    })
-
-    if (error) {
-      console.error('Search trials RPC error:', error)
-      throw error
-    }
-
-    let results = (trials || []) as Array<{
+    // Build RRF (Reciprocal Rank Fusion) scores
+    // RRF formula: score = sum(1 / (k + rank)) where k=60 is standard
+    const K = 60
+    type TrialData = {
       id: string
       nct_id: string
       study_title: string
@@ -1831,16 +1933,69 @@ export async function searchTrials(
       is_therapeutic_trial: boolean
       project_number: string | null
       similarity: number
-    }>
+    }
+    const rrfScores: Map<string, { score: number; data: TrialData | null }> = new Map()
 
-    // Deduplicate by nct_id (same trial can be linked to multiple projects)
-    // Keep the first occurrence (highest similarity since results are sorted)
-    const seenNctIds = new Set<string>()
-    results = results.filter(t => {
-      if (seenNctIds.has(t.nct_id)) return false
-      seenNctIds.add(t.nct_id)
-      return true
-    })
+    // Score keyword matches (use composite ID for matching)
+    let keywordRank = 1
+    for (const compositeId of keywordIds) {
+      const [nctId] = compositeId.split('|')
+      const existing = rrfScores.get(nctId)
+      const keywordScore = 1 / (K + keywordRank)
+      if (existing) {
+        existing.score += keywordScore
+      } else {
+        rrfScores.set(nctId, { score: keywordScore, data: null })
+      }
+      keywordRank++
+    }
+
+    // Score semantic matches (already ranked by similarity)
+    let semanticRank = 1
+    for (const result of semanticResults) {
+      const existing = rrfScores.get(result.nct_id)
+      const semanticScore = 1 / (K + semanticRank)
+      // Boost by similarity score (0-1) for better semantic matches
+      const boostedScore = semanticScore * (1 + (result.similarity || 0))
+      if (existing) {
+        existing.score += boostedScore
+        if (!existing.data) existing.data = result
+      } else {
+        rrfScores.set(result.nct_id, { score: boostedScore, data: result })
+      }
+      semanticRank++
+    }
+
+    // For keyword-only matches, fetch trial data
+    const keywordOnlyNctIds = [...rrfScores.entries()]
+      .filter(([, v]) => v.data === null)
+      .map(([nctId]) => nctId)
+
+    if (keywordOnlyNctIds.length > 0) {
+      const { data: keywordTrials } = await supabaseAdmin
+        .from('clinical_studies')
+        .select('id, nct_id, study_title, study_status, is_diagnostic_trial, is_therapeutic_trial, project_number')
+        .in('nct_id', keywordOnlyNctIds)
+
+      if (keywordTrials) {
+        // Deduplicate by nct_id (keep first)
+        const seen = new Set<string>()
+        for (const t of keywordTrials) {
+          if (seen.has(t.nct_id)) continue
+          seen.add(t.nct_id)
+          const entry = rrfScores.get(t.nct_id)
+          if (entry) {
+            entry.data = { ...t, similarity: 0 }
+          }
+        }
+      }
+    }
+
+    // Convert to array and sort by RRF score
+    let results = [...rrfScores.entries()]
+      .filter(([, v]) => v.data !== null)
+      .map(([, v]) => ({ ...v.data!, rrf_score: v.score }))
+      .sort((a, b) => b.rrf_score - a.rrf_score)
 
     // Apply filters
     if (filters?.status?.length) {
