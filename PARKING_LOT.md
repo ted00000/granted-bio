@@ -28,7 +28,12 @@ Ideas and features to explore later.
   - Migration: `supabase/migrations/20260301_enrich_clinical_studies.sql`
   - ETL script: `etl/enrich_clinical_trials.py`
   - Trial detail page: `/trial/[nctId]`
-  - **Next step**: Run migration in Supabase, then run ETL script
+
+- [ ] Regenerate trial embeddings with richer text
+  - Script: `etl/regenerate_trial_embeddings.py`
+  - Uses: study_title + conditions + brief_summary (vs just title before)
+  - Fixes semantic search missing synonyms (e.g., "scleroderma" ↔ "systemic sclerosis")
+  - **Running**: ~3 hours for 38K trials
 
 ---
 

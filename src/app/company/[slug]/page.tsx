@@ -441,14 +441,12 @@ export default function CompanyPage() {
                 ) : (
                   clinicalStudies.map((study) => (
                     <div key={study.nct_id} className="border-b border-gray-100 pb-4">
-                      <a
-                        href={`https://clinicaltrials.gov/study/${study.nct_id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline font-medium"
+                      <Link
+                        href={`/trial/${study.nct_id}`}
+                        className="text-gray-900 hover:text-[#E07A5F] font-medium"
                       >
                         {study.study_title || study.nct_id}
-                      </a>
+                      </Link>
                       <div className="flex gap-4 mt-1 text-sm text-gray-500">
                         <span>{study.nct_id}</span>
                         <span className="capitalize">{study.study_status?.toLowerCase()}</span>

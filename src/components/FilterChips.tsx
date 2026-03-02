@@ -133,7 +133,7 @@ export function FilterChips({
     <div className="space-y-4">
       {/* Header with clear button */}
       <div className="flex items-center justify-between">
-        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
+        <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
           Filter Results
         </h3>
         {hasFilters && (

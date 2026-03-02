@@ -315,12 +315,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   <button
                     key={project.application_id}
                     onClick={() => onProjectClick?.(project.application_id)}
-                    className={`block w-full text-left ${isMobile
+                    className={`group block w-full text-left ${isMobile
                       ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:bg-gray-50'
                       : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0 hover:bg-gray-50/50 -mx-2 px-2 rounded-lg transition-colors'}`}
                   >
                     <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-2`}>
-                      <span className="text-sm text-gray-900 leading-snug flex-1 break-words">
+                      <span className="text-sm text-gray-900 leading-snug flex-1 break-words group-hover:text-[#E07A5F] transition-colors">
                         {project.title}
                       </span>
                       {project.total_cost && (
@@ -517,12 +517,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   <button
                     key={project.application_id}
                     onClick={() => onProjectClick?.(project.application_id)}
-                    className={`block w-full text-left ${isMobile
+                    className={`group block w-full text-left ${isMobile
                       ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:bg-gray-50'
                       : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0 hover:bg-gray-50/50 -mx-2 px-2 rounded-lg transition-colors'}`}
                   >
                     <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-2`}>
-                      <span className="text-sm text-gray-900 leading-snug flex-1 break-words">
+                      <span className="text-sm text-gray-900 leading-snug flex-1 break-words group-hover:text-[#E07A5F] transition-colors">
                         {project.title}
                       </span>
                       {project.total_cost && (
