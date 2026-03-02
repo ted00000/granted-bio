@@ -139,12 +139,11 @@ interface ResultsPanelProps {
 function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, persona }: ResultsPanelProps) {
   // CSV export for People mode
   const exportToCSV = (projects: SearchResultProject[]) => {
-    const headers = ['Organization', 'State', 'PI Name', 'Email', 'Project Title', 'Funding', 'Category', 'Patents', 'Publications', 'Trials']
+    const headers = ['Organization', 'State', 'PI Name', 'Project Title', 'Funding', 'Category', 'Patents', 'Publications', 'Trials']
     const rows = projects.map(p => [
       p.org_name || '',
       p.org_state || '',
       p.pi_names?.split(';')[0]?.trim() || '',
-      p.pi_email || '',
       p.title || '',
       p.total_cost ? `$${(p.total_cost / 1000000).toFixed(2)}M` : '',
       p.primary_category?.replace(/_/g, ' ') || '',
@@ -278,14 +277,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     {project.pi_names && (
                       <div className="text-sm text-gray-700 mt-1">
                         {project.pi_names.split(';')[0]?.trim()}
-                        {project.pi_email && (
-                          <a
-                            href={`mailto:${project.pi_email}`}
-                            className="ml-2 text-[#E07A5F] hover:underline"
-                          >
-                            {project.pi_email}
-                          </a>
-                        )}
                       </div>
                     )}
                     <button
@@ -488,14 +479,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     {project.pi_names && (
                       <div className="text-sm text-gray-700 mt-1">
                         {project.pi_names.split(';')[0]?.trim()}
-                        {project.pi_email && (
-                          <a
-                            href={`mailto:${project.pi_email}`}
-                            className="ml-2 text-[#E07A5F] hover:underline"
-                          >
-                            {project.pi_email}
-                          </a>
-                        )}
                       </div>
                     )}
                     <button

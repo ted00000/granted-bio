@@ -1,0 +1,1771 @@
+=== Batch 1 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 100 | Errors: 0 | Rate: 15.5/sec | ETA: 1.0 min
+  [200/1,000] Success: 192 | Errors: 8 | Rate: 17.7/sec | ETA: 0.8 min
+  [300/1,000] Success: 276 | Errors: 24 | Rate: 18.5/sec | ETA: 0.6 min
+  [400/1,000] Success: 371 | Errors: 29 | Rate: 18.4/sec | ETA: 0.5 min
+  [500/1,000] Success: 462 | Errors: 38 | Rate: 18.8/sec | ETA: 0.4 min
+  [600/1,000] Success: 558 | Errors: 42 | Rate: 19.1/sec | ETA: 0.3 min
+  [700/1,000] Success: 642 | Errors: 58 | Rate: 19.4/sec | ETA: 0.3 min
+  [800/1,000] Success: 734 | Errors: 66 | Rate: 19.1/sec | ETA: 0.2 min
+  [900/1,000] Success: 816 | Errors: 84 | Rate: 19.2/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 906 | Errors: 94 | Rate: 19.3/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 906
+Errors: 94
+Success rate: 90.6%
+Time elapsed: 0.9 minutes
+Average rate: 19.3 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 36042
+=== Batch 2 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 86 | Errors: 14 | Rate: 16.7/sec | ETA: 0.9 min
+  [200/1,000] Success: 171 | Errors: 29 | Rate: 19.1/sec | ETA: 0.7 min
+  [300/1,000] Success: 260 | Errors: 40 | Rate: 20.0/sec | ETA: 0.6 min
+  [400/1,000] Success: 357 | Errors: 43 | Rate: 20.5/sec | ETA: 0.5 min
+  [500/1,000] Success: 457 | Errors: 43 | Rate: 20.0/sec | ETA: 0.4 min
+  [600/1,000] Success: 557 | Errors: 43 | Rate: 20.4/sec | ETA: 0.3 min
+  [700/1,000] Success: 650 | Errors: 50 | Rate: 20.2/sec | ETA: 0.2 min
+  [800/1,000] Success: 744 | Errors: 56 | Rate: 20.4/sec | ETA: 0.2 min
+  [900/1,000] Success: 834 | Errors: 66 | Rate: 20.3/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 926 | Errors: 74 | Rate: 20.6/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 926
+Errors: 74
+Success rate: 92.6%
+Time elapsed: 0.8 minutes
+Average rate: 20.6 trials/sec
+
+First 20 error messages:
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 35062
+=== Batch 3 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 87 | Errors: 13 | Rate: 15.7/sec | ETA: 1.0 min
+  [200/1,000] Success: 187 | Errors: 13 | Rate: 19.2/sec | ETA: 0.7 min
+  [300/1,000] Success: 287 | Errors: 13 | Rate: 17.4/sec | ETA: 0.7 min
+  [400/1,000] Success: 383 | Errors: 17 | Rate: 18.8/sec | ETA: 0.5 min
+  [500/1,000] Success: 474 | Errors: 26 | Rate: 19.0/sec | ETA: 0.4 min
+  [600/1,000] Success: 561 | Errors: 39 | Rate: 19.0/sec | ETA: 0.4 min
+  [700/1,000] Success: 654 | Errors: 46 | Rate: 19.1/sec | ETA: 0.3 min
+  [800/1,000] Success: 743 | Errors: 57 | Rate: 4.5/sec | ETA: 0.7 min
+  [900/1,000] Success: 843 | Errors: 57 | Rate: 5.0/sec | ETA: 0.3 min
+  [1,000/1,000] Success: 943 | Errors: 57 | Rate: 5.4/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 943
+Errors: 57
+Success rate: 94.3%
+Time elapsed: 3.1 minutes
+Average rate: 5.4 trials/sec
+
+First 20 error messages:
+  - Received pseudo-header in trailer {b':path', b':scheme', b':method', b':authority'}
+  - 169
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+============================================================
+Remaining: 34100
+=== Batch 4 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 70 | Errors: 30 | Rate: 16.8/sec | ETA: 0.9 min
+  [200/1,000] Success: 165 | Errors: 35 | Rate: 18.2/sec | ETA: 0.7 min
+  [300/1,000] Success: 260 | Errors: 40 | Rate: 18.4/sec | ETA: 0.6 min
+  [400/1,000] Success: 351 | Errors: 49 | Rate: 19.9/sec | ETA: 0.5 min
+  [500/1,000] Success: 437 | Errors: 63 | Rate: 19.4/sec | ETA: 0.4 min
+  [600/1,000] Success: 535 | Errors: 65 | Rate: 19.5/sec | ETA: 0.3 min
+  [700/1,000] Success: 632 | Errors: 68 | Rate: 19.2/sec | ETA: 0.3 min
+  [800/1,000] Success: 724 | Errors: 76 | Rate: 19.3/sec | ETA: 0.2 min
+  [900/1,000] Success: 824 | Errors: 76 | Rate: 19.3/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 920 | Errors: 80 | Rate: 19.3/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 920
+Errors: 80
+Success rate: 92.0%
+Time elapsed: 0.9 minutes
+Average rate: 19.3 trials/sec
+
+First 20 error messages:
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 33120
+=== Batch 5 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 71 | Errors: 29 | Rate: 22.5/sec | ETA: 0.7 min
+  [200/1,000] Success: 171 | Errors: 29 | Rate: 22.2/sec | ETA: 0.6 min
+  [300/1,000] Success: 271 | Errors: 29 | Rate: 21.4/sec | ETA: 0.5 min
+  [400/1,000] Success: 361 | Errors: 39 | Rate: 20.6/sec | ETA: 0.5 min
+  [500/1,000] Success: 439 | Errors: 61 | Rate: 20.1/sec | ETA: 0.4 min
+  [600/1,000] Success: 526 | Errors: 74 | Rate: 20.2/sec | ETA: 0.3 min
+  [700/1,000] Success: 626 | Errors: 74 | Rate: 20.3/sec | ETA: 0.2 min
+  [800/1,000] Success: 720 | Errors: 80 | Rate: 20.2/sec | ETA: 0.2 min
+  [900/1,000] Success: 814 | Errors: 86 | Rate: 20.4/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 906 | Errors: 94 | Rate: 20.0/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 906
+Errors: 94
+Success rate: 90.6%
+Time elapsed: 0.8 minutes
+Average rate: 20.0 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 32138
+=== Batch 6 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 96 | Errors: 4 | Rate: 14.6/sec | ETA: 1.0 min
+  [200/1,000] Success: 191 | Errors: 9 | Rate: 16.8/sec | ETA: 0.8 min
+  [300/1,000] Success: 286 | Errors: 14 | Rate: 18.1/sec | ETA: 0.6 min
+  [400/1,000] Success: 386 | Errors: 14 | Rate: 18.0/sec | ETA: 0.6 min
+  [500/1,000] Success: 472 | Errors: 28 | Rate: 18.9/sec | ETA: 0.4 min
+  [600/1,000] Success: 570 | Errors: 30 | Rate: 19.3/sec | ETA: 0.3 min
+  [700/1,000] Success: 670 | Errors: 30 | Rate: 18.6/sec | ETA: 0.3 min
+  [800/1,000] Success: 770 | Errors: 30 | Rate: 19.0/sec | ETA: 0.2 min
+  [900/1,000] Success: 851 | Errors: 49 | Rate: 19.3/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 940 | Errors: 60 | Rate: 19.7/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 940
+Errors: 60
+Success rate: 94.0%
+Time elapsed: 0.8 minutes
+Average rate: 19.7 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 31148
+=== Batch 7 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 100 | Errors: 0 | Rate: 16.3/sec | ETA: 0.9 min
+  [200/1,000] Success: 191 | Errors: 9 | Rate: 18.7/sec | ETA: 0.7 min
+  [300/1,000] Success: 278 | Errors: 22 | Rate: 20.0/sec | ETA: 0.6 min
+  [400/1,000] Success: 370 | Errors: 30 | Rate: 18.8/sec | ETA: 0.5 min
+  [500/1,000] Success: 470 | Errors: 30 | Rate: 18.7/sec | ETA: 0.4 min
+  [600/1,000] Success: 562 | Errors: 38 | Rate: 19.1/sec | ETA: 0.3 min
+  [700/1,000] Success: 662 | Errors: 38 | Rate: 19.4/sec | ETA: 0.3 min
+  [800/1,000] Success: 745 | Errors: 55 | Rate: 19.1/sec | ETA: 0.2 min
+  [900/1,000] Success: 835 | Errors: 65 | Rate: 19.1/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 935 | Errors: 65 | Rate: 19.4/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 935
+Errors: 65
+Success rate: 93.5%
+Time elapsed: 0.9 minutes
+Average rate: 19.4 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 30157
+=== Batch 8 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 86 | Errors: 14 | Rate: 19.9/sec | ETA: 0.8 min
+  [200/1,000] Success: 168 | Errors: 32 | Rate: 21.1/sec | ETA: 0.6 min
+  [300/1,000] Success: 259 | Errors: 41 | Rate: 19.7/sec | ETA: 0.6 min
+  [400/1,000] Success: 359 | Errors: 41 | Rate: 20.0/sec | ETA: 0.5 min
+  [500/1,000] Success: 459 | Errors: 41 | Rate: 19.9/sec | ETA: 0.4 min
+  [600/1,000] Success: 559 | Errors: 41 | Rate: 20.0/sec | ETA: 0.3 min
+  [700/1,000] Success: 643 | Errors: 57 | Rate: 20.0/sec | ETA: 0.3 min
+  [800/1,000] Success: 736 | Errors: 64 | Rate: 19.9/sec | ETA: 0.2 min
+  [900/1,000] Success: 829 | Errors: 71 | Rate: 20.0/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 925 | Errors: 75 | Rate: 19.9/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 925
+Errors: 75
+Success rate: 92.5%
+Time elapsed: 0.8 minutes
+Average rate: 19.9 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - <ConnectionTerminated error_code:1, last_stream_id:109, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:109, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:109, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:109, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:109, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:109, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:109, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:109, additional_data:None>
+============================================================
+Remaining: 29175
+=== Batch 9 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 85 | Errors: 15 | Rate: 18.3/sec | ETA: 0.8 min
+  [200/1,000] Success: 185 | Errors: 15 | Rate: 18.7/sec | ETA: 0.7 min
+  [300/1,000] Success: 279 | Errors: 21 | Rate: 19.2/sec | ETA: 0.6 min
+  [400/1,000] Success: 370 | Errors: 30 | Rate: 19.3/sec | ETA: 0.5 min
+  [500/1,000] Success: 458 | Errors: 42 | Rate: 19.0/sec | ETA: 0.4 min
+  [600/1,000] Success: 540 | Errors: 60 | Rate: 19.7/sec | ETA: 0.3 min
+  [700/1,000] Success: 640 | Errors: 60 | Rate: 19.1/sec | ETA: 0.3 min
+  [800/1,000] Success: 729 | Errors: 71 | Rate: 19.5/sec | ETA: 0.2 min
+  [900/1,000] Success: 828 | Errors: 72 | Rate: 19.3/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 915 | Errors: 85 | Rate: 19.4/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 915
+Errors: 85
+Success rate: 91.5%
+Time elapsed: 0.9 minutes
+Average rate: 19.4 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 28192
+=== Batch 10 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 88 | Errors: 12 | Rate: 20.7/sec | ETA: 0.7 min
+  [200/1,000] Success: 182 | Errors: 18 | Rate: 21.7/sec | ETA: 0.6 min
+  [300/1,000] Success: 282 | Errors: 18 | Rate: 20.5/sec | ETA: 0.6 min
+  [400/1,000] Success: 378 | Errors: 22 | Rate: 20.2/sec | ETA: 0.5 min
+  [500/1,000] Success: 478 | Errors: 22 | Rate: 20.3/sec | ETA: 0.4 min
+  [600/1,000] Success: 564 | Errors: 36 | Rate: 20.1/sec | ETA: 0.3 min
+  [700/1,000] Success: 653 | Errors: 47 | Rate: 20.2/sec | ETA: 0.2 min
+  [800/1,000] Success: 747 | Errors: 53 | Rate: 20.0/sec | ETA: 0.2 min
+  [900/1,000] Success: 830 | Errors: 70 | Rate: 19.5/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 922 | Errors: 78 | Rate: 19.7/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 922
+Errors: 78
+Success rate: 92.2%
+Time elapsed: 0.8 minutes
+Average rate: 19.7 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - <ConnectionTerminated error_code:1, last_stream_id:123, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:123, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:123, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:123, additional_data:None>
+============================================================
+Remaining: 27203
+=== Batch 11 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 85 | Errors: 15 | Rate: 19.1/sec | ETA: 0.8 min
+  [200/1,000] Success: 178 | Errors: 22 | Rate: 18.2/sec | ETA: 0.7 min
+  [300/1,000] Success: 268 | Errors: 32 | Rate: 19.0/sec | ETA: 0.6 min
+  [400/1,000] Success: 358 | Errors: 42 | Rate: 18.9/sec | ETA: 0.5 min
+  [500/1,000] Success: 452 | Errors: 48 | Rate: 19.1/sec | ETA: 0.4 min
+  [600/1,000] Success: 552 | Errors: 48 | Rate: 19.5/sec | ETA: 0.3 min
+  [700/1,000] Success: 652 | Errors: 48 | Rate: 19.5/sec | ETA: 0.3 min
+  [800/1,000] Success: 744 | Errors: 56 | Rate: 19.7/sec | ETA: 0.2 min
+  [900/1,000] Success: 842 | Errors: 58 | Rate: 19.3/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 942 | Errors: 58 | Rate: 19.3/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 942
+Errors: 58
+Success rate: 94.2%
+Time elapsed: 0.9 minutes
+Average rate: 19.3 trials/sec
+
+First 20 error messages:
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 26223
+=== Batch 12 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 84 | Errors: 16 | Rate: 18.0/sec | ETA: 0.8 min
+  [200/1,000] Success: 178 | Errors: 22 | Rate: 17.8/sec | ETA: 0.8 min
+  [300/1,000] Success: 278 | Errors: 22 | Rate: 18.2/sec | ETA: 0.6 min
+  [400/1,000] Success: 370 | Errors: 30 | Rate: 18.4/sec | ETA: 0.5 min
+  [500/1,000] Success: 470 | Errors: 30 | Rate: 19.1/sec | ETA: 0.4 min
+  [600/1,000] Success: 560 | Errors: 40 | Rate: 19.0/sec | ETA: 0.4 min
+  [700/1,000] Success: 652 | Errors: 48 | Rate: 19.3/sec | ETA: 0.3 min
+  [800/1,000] Success: 752 | Errors: 48 | Rate: 19.6/sec | ETA: 0.2 min
+  [900/1,000] Success: 839 | Errors: 61 | Rate: 19.4/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 929 | Errors: 71 | Rate: 19.2/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 929
+Errors: 71
+Success rate: 92.9%
+Time elapsed: 0.9 minutes
+Average rate: 19.2 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 25232
+=== Batch 13 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 88 | Errors: 12 | Rate: 15.8/sec | ETA: 1.0 min
+  [200/1,000] Success: 188 | Errors: 12 | Rate: 18.2/sec | ETA: 0.7 min
+  [300/1,000] Success: 288 | Errors: 12 | Rate: 19.1/sec | ETA: 0.6 min
+  [400/1,000] Success: 388 | Errors: 12 | Rate: 18.3/sec | ETA: 0.5 min
+  [500/1,000] Success: 485 | Errors: 15 | Rate: 18.8/sec | ETA: 0.4 min
+  [600/1,000] Success: 566 | Errors: 34 | Rate: 19.4/sec | ETA: 0.3 min
+  [700/1,000] Success: 661 | Errors: 39 | Rate: 19.8/sec | ETA: 0.3 min
+  [800/1,000] Success: 761 | Errors: 39 | Rate: 18.7/sec | ETA: 0.2 min
+  [900/1,000] Success: 861 | Errors: 39 | Rate: 18.8/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 947 | Errors: 53 | Rate: 18.7/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 947
+Errors: 53
+Success rate: 94.7%
+Time elapsed: 0.9 minutes
+Average rate: 18.7 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 24248
+=== Batch 14 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 100 | Errors: 0 | Rate: 17.1/sec | ETA: 0.9 min
+  [200/1,000] Success: 189 | Errors: 11 | Rate: 19.0/sec | ETA: 0.7 min
+  [300/1,000] Success: 277 | Errors: 23 | Rate: 18.7/sec | ETA: 0.6 min
+  [400/1,000] Success: 366 | Errors: 34 | Rate: 19.3/sec | ETA: 0.5 min
+  [500/1,000] Success: 463 | Errors: 37 | Rate: 18.8/sec | ETA: 0.4 min
+  [600/1,000] Success: 558 | Errors: 42 | Rate: 19.2/sec | ETA: 0.3 min
+  [700/1,000] Success: 654 | Errors: 46 | Rate: 19.3/sec | ETA: 0.3 min
+  [800/1,000] Success: 754 | Errors: 46 | Rate: 19.3/sec | ETA: 0.2 min
+  [900/1,000] Success: 840 | Errors: 60 | Rate: 19.5/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 933 | Errors: 67 | Rate: 19.4/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 933
+Errors: 67
+Success rate: 93.3%
+Time elapsed: 0.9 minutes
+Average rate: 19.4 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 23258
+=== Batch 15 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 97 | Errors: 3 | Rate: 18.6/sec | ETA: 0.8 min
+  [200/1,000] Success: 190 | Errors: 10 | Rate: 19.0/sec | ETA: 0.7 min
+  [300/1,000] Success: 285 | Errors: 15 | Rate: 18.8/sec | ETA: 0.6 min
+  [400/1,000] Success: 380 | Errors: 20 | Rate: 19.3/sec | ETA: 0.5 min
+  [500/1,000] Success: 472 | Errors: 28 | Rate: 19.7/sec | ETA: 0.4 min
+  [600/1,000] Success: 552 | Errors: 48 | Rate: 19.9/sec | ETA: 0.3 min
+  [700/1,000] Success: 618 | Errors: 82 | Rate: 19.2/sec | ETA: 0.3 min
+  [800/1,000] Success: 707 | Errors: 93 | Rate: 19.2/sec | ETA: 0.2 min
+  [900/1,000] Success: 787 | Errors: 113 | Rate: 19.3/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 875 | Errors: 125 | Rate: 19.3/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 875
+Errors: 125
+Success rate: 87.5%
+Time elapsed: 0.9 minutes
+Average rate: 19.3 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 22279
+=== Batch 16 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 93 | Errors: 7 | Rate: 10.3/sec | ETA: 1.5 min
+  [200/1,000] Success: 184 | Errors: 16 | Rate: 13.5/sec | ETA: 1.0 min
+  [300/1,000] Success: 278 | Errors: 22 | Rate: 15.2/sec | ETA: 0.8 min
+  [400/1,000] Success: 370 | Errors: 30 | Rate: 16.2/sec | ETA: 0.6 min
+  [500/1,000] Success: 463 | Errors: 37 | Rate: 16.3/sec | ETA: 0.5 min
+  [600/1,000] Success: 563 | Errors: 37 | Rate: 17.3/sec | ETA: 0.4 min
+  [700/1,000] Success: 632 | Errors: 68 | Rate: 16.8/sec | ETA: 0.3 min
+  [800/1,000] Success: 732 | Errors: 68 | Rate: 17.2/sec | ETA: 0.2 min
+  [900/1,000] Success: 826 | Errors: 74 | Rate: 17.6/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 912 | Errors: 88 | Rate: 17.8/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 912
+Errors: 88
+Success rate: 91.2%
+Time elapsed: 0.9 minutes
+Average rate: 17.8 trials/sec
+
+First 20 error messages:
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 21290
+=== Batch 17 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 100 | Errors: 0 | Rate: 14.5/sec | ETA: 1.0 min
+  [200/1,000] Success: 194 | Errors: 6 | Rate: 15.7/sec | ETA: 0.9 min
+  [300/1,000] Success: 294 | Errors: 6 | Rate: 16.8/sec | ETA: 0.7 min
+  [400/1,000] Success: 375 | Errors: 25 | Rate: 17.6/sec | ETA: 0.6 min
+  [500/1,000] Success: 475 | Errors: 25 | Rate: 17.3/sec | ETA: 0.5 min
+  [600/1,000] Success: 562 | Errors: 38 | Rate: 17.8/sec | ETA: 0.4 min
+  [700/1,000] Success: 662 | Errors: 38 | Rate: 17.8/sec | ETA: 0.3 min
+  [800/1,000] Success: 741 | Errors: 59 | Rate: 17.6/sec | ETA: 0.2 min
+  [900/1,000] Success: 824 | Errors: 76 | Rate: 18.0/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 924 | Errors: 76 | Rate: 18.3/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 924
+Errors: 76
+Success rate: 92.4%
+Time elapsed: 0.9 minutes
+Average rate: 18.3 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 20304
+=== Batch 18 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 89 | Errors: 11 | Rate: 18.3/sec | ETA: 0.8 min
+  [200/1,000] Success: 181 | Errors: 19 | Rate: 19.1/sec | ETA: 0.7 min
+  [300/1,000] Success: 267 | Errors: 33 | Rate: 19.5/sec | ETA: 0.6 min
+  [400/1,000] Success: 341 | Errors: 59 | Rate: 18.7/sec | ETA: 0.5 min
+  [500/1,000] Success: 424 | Errors: 76 | Rate: 19.2/sec | ETA: 0.4 min
+  [600/1,000] Success: 520 | Errors: 80 | Rate: 19.4/sec | ETA: 0.3 min
+  [700/1,000] Success: 599 | Errors: 101 | Rate: 19.8/sec | ETA: 0.3 min
+  [800/1,000] Success: 699 | Errors: 101 | Rate: 19.4/sec | ETA: 0.2 min
+  [900/1,000] Success: 785 | Errors: 115 | Rate: 19.2/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 885 | Errors: 115 | Rate: 19.2/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 885
+Errors: 115
+Success rate: 88.5%
+Time elapsed: 0.9 minutes
+Average rate: 19.2 trials/sec
+
+First 20 error messages:
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 19351
+=== Batch 19 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 71 | Errors: 29 | Rate: 14.4/sec | ETA: 1.0 min
+  [200/1,000] Success: 171 | Errors: 29 | Rate: 16.8/sec | ETA: 0.8 min
+  [300/1,000] Success: 269 | Errors: 31 | Rate: 18.7/sec | ETA: 0.6 min
+  [400/1,000] Success: 366 | Errors: 34 | Rate: 17.6/sec | ETA: 0.6 min
+  [500/1,000] Success: 462 | Errors: 38 | Rate: 18.0/sec | ETA: 0.5 min
+  [600/1,000] Success: 562 | Errors: 38 | Rate: 18.4/sec | ETA: 0.4 min
+  [700/1,000] Success: 653 | Errors: 47 | Rate: 19.2/sec | ETA: 0.3 min
+  [800/1,000] Success: 733 | Errors: 67 | Rate: 18.5/sec | ETA: 0.2 min
+  [900/1,000] Success: 825 | Errors: 75 | Rate: 19.1/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 913 | Errors: 87 | Rate: 19.1/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 913
+Errors: 87
+Success rate: 91.3%
+Time elapsed: 0.9 minutes
+Average rate: 19.1 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - <ConnectionTerminated error_code:9, last_stream_id:19, additional_data:None>
+  - <ConnectionTerminated error_code:9, last_stream_id:19, additional_data:None>
+  - <ConnectionTerminated error_code:9, last_stream_id:19, additional_data:None>
+  - <ConnectionTerminated error_code:9, last_stream_id:19, additional_data:None>
+  - <ConnectionTerminated error_code:9, last_stream_id:19, additional_data:None>
+============================================================
+Remaining: 18360
+=== Batch 20 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 92 | Errors: 8 | Rate: 13.7/sec | ETA: 1.1 min
+  [200/1,000] Success: 186 | Errors: 14 | Rate: 15.4/sec | ETA: 0.9 min
+  [300/1,000] Success: 286 | Errors: 14 | Rate: 17.0/sec | ETA: 0.7 min
+  [400/1,000] Success: 384 | Errors: 16 | Rate: 17.3/sec | ETA: 0.6 min
+  [500/1,000] Success: 484 | Errors: 16 | Rate: 17.3/sec | ETA: 0.5 min
+  [600/1,000] Success: 584 | Errors: 16 | Rate: 17.7/sec | ETA: 0.4 min
+  [700/1,000] Success: 684 | Errors: 16 | Rate: 18.0/sec | ETA: 0.3 min
+  [800/1,000] Success: 784 | Errors: 16 | Rate: 18.4/sec | ETA: 0.2 min
+  [900/1,000] Success: 884 | Errors: 16 | Rate: 18.2/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 972 | Errors: 28 | Rate: 18.3/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 972
+Errors: 28
+Success rate: 97.2%
+Time elapsed: 0.9 minutes
+Average rate: 18.3 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 17366
+=== Batch 21 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 92 | Errors: 8 | Rate: 18.0/sec | ETA: 0.8 min
+  [200/1,000] Success: 186 | Errors: 14 | Rate: 19.8/sec | ETA: 0.7 min
+  [300/1,000] Success: 281 | Errors: 19 | Rate: 19.2/sec | ETA: 0.6 min
+  [400/1,000] Success: 378 | Errors: 22 | Rate: 19.0/sec | ETA: 0.5 min
+  [500/1,000] Success: 478 | Errors: 22 | Rate: 19.2/sec | ETA: 0.4 min
+  [600/1,000] Success: 567 | Errors: 33 | Rate: 18.9/sec | ETA: 0.4 min
+  [700/1,000] Success: 667 | Errors: 33 | Rate: 19.0/sec | ETA: 0.3 min
+  [800/1,000] Success: 767 | Errors: 33 | Rate: 19.1/sec | ETA: 0.2 min
+  [900/1,000] Success: 862 | Errors: 38 | Rate: 19.0/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 958 | Errors: 42 | Rate: 19.1/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 958
+Errors: 42
+Success rate: 95.8%
+Time elapsed: 0.9 minutes
+Average rate: 19.1 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - <ConnectionTerminated error_code:1, last_stream_id:87, additional_data:None>
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 16373
+=== Batch 22 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 89 | Errors: 11 | Rate: 17.3/sec | ETA: 0.9 min
+  [200/1,000] Success: 186 | Errors: 14 | Rate: 17.9/sec | ETA: 0.7 min
+  [300/1,000] Success: 286 | Errors: 14 | Rate: 18.0/sec | ETA: 0.6 min
+  [400/1,000] Success: 386 | Errors: 14 | Rate: 18.3/sec | ETA: 0.5 min
+  [500/1,000] Success: 486 | Errors: 14 | Rate: 18.6/sec | ETA: 0.4 min
+  [600/1,000] Success: 586 | Errors: 14 | Rate: 18.9/sec | ETA: 0.4 min
+  [700/1,000] Success: 678 | Errors: 22 | Rate: 18.9/sec | ETA: 0.3 min
+  [800/1,000] Success: 778 | Errors: 22 | Rate: 18.8/sec | ETA: 0.2 min
+  [900/1,000] Success: 859 | Errors: 41 | Rate: 19.2/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 950 | Errors: 50 | Rate: 19.3/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 950
+Errors: 50
+Success rate: 95.0%
+Time elapsed: 0.9 minutes
+Average rate: 19.3 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 15386
+=== Batch 23 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 77 | Errors: 23 | Rate: 21.7/sec | ETA: 0.7 min
+  [200/1,000] Success: 169 | Errors: 31 | Rate: 20.1/sec | ETA: 0.7 min
+  [300/1,000] Success: 261 | Errors: 39 | Rate: 20.2/sec | ETA: 0.6 min
+  [400/1,000] Success: 361 | Errors: 39 | Rate: 19.6/sec | ETA: 0.5 min
+  [500/1,000] Success: 451 | Errors: 49 | Rate: 19.6/sec | ETA: 0.4 min
+  [600/1,000] Success: 541 | Errors: 59 | Rate: 19.4/sec | ETA: 0.3 min
+  [700/1,000] Success: 624 | Errors: 76 | Rate: 19.7/sec | ETA: 0.3 min
+  [800/1,000] Success: 724 | Errors: 76 | Rate: 19.8/sec | ETA: 0.2 min
+  [900/1,000] Success: 824 | Errors: 76 | Rate: 19.8/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 924 | Errors: 76 | Rate: 19.8/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 924
+Errors: 76
+Success rate: 92.4%
+Time elapsed: 0.8 minutes
+Average rate: 19.8 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 14398
+=== Batch 24 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 100 | Errors: 0 | Rate: 16.6/sec | ETA: 0.9 min
+  [200/1,000] Success: 188 | Errors: 12 | Rate: 18.6/sec | ETA: 0.7 min
+  [300/1,000] Success: 278 | Errors: 22 | Rate: 18.5/sec | ETA: 0.6 min
+  [400/1,000] Success: 378 | Errors: 22 | Rate: 19.7/sec | ETA: 0.5 min
+  [500/1,000] Success: 469 | Errors: 31 | Rate: 18.9/sec | ETA: 0.4 min
+  [600/1,000] Success: 569 | Errors: 31 | Rate: 19.3/sec | ETA: 0.3 min
+  [700/1,000] Success: 669 | Errors: 31 | Rate: 19.2/sec | ETA: 0.3 min
+  [800/1,000] Success: 769 | Errors: 31 | Rate: 18.8/sec | ETA: 0.2 min
+  [900/1,000] Success: 850 | Errors: 50 | Rate: 18.5/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 950 | Errors: 50 | Rate: 18.6/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 950
+Errors: 50
+Success rate: 95.0%
+Time elapsed: 0.9 minutes
+Average rate: 18.6 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 13405
+=== Batch 25 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 100 | Errors: 0 | Rate: 18.3/sec | ETA: 0.8 min
+  [200/1,000] Success: 192 | Errors: 8 | Rate: 18.9/sec | ETA: 0.7 min
+  [300/1,000] Success: 288 | Errors: 12 | Rate: 18.0/sec | ETA: 0.6 min
+  [400/1,000] Success: 381 | Errors: 19 | Rate: 18.3/sec | ETA: 0.5 min
+  [500/1,000] Success: 469 | Errors: 31 | Rate: 18.6/sec | ETA: 0.4 min
+  [600/1,000] Success: 558 | Errors: 42 | Rate: 19.2/sec | ETA: 0.3 min
+  [700/1,000] Success: 640 | Errors: 60 | Rate: 18.9/sec | ETA: 0.3 min
+  [800/1,000] Success: 740 | Errors: 60 | Rate: 19.0/sec | ETA: 0.2 min
+  [900/1,000] Success: 835 | Errors: 65 | Rate: 19.2/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 928 | Errors: 72 | Rate: 19.5/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 928
+Errors: 72
+Success rate: 92.8%
+Time elapsed: 0.9 minutes
+Average rate: 19.5 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 12415
+=== Batch 26 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 87 | Errors: 13 | Rate: 16.4/sec | ETA: 0.9 min
+  [200/1,000] Success: 178 | Errors: 22 | Rate: 17.4/sec | ETA: 0.8 min
+  [300/1,000] Success: 278 | Errors: 22 | Rate: 17.5/sec | ETA: 0.7 min
+  [400/1,000] Success: 378 | Errors: 22 | Rate: 17.7/sec | ETA: 0.6 min
+  [500/1,000] Success: 476 | Errors: 24 | Rate: 3.4/sec | ETA: 2.5 min
+  [600/1,000] Success: 571 | Errors: 29 | Rate: 3.9/sec | ETA: 1.7 min
+  [700/1,000] Success: 666 | Errors: 34 | Rate: 4.4/sec | ETA: 1.1 min
+  [800/1,000] Success: 764 | Errors: 36 | Rate: 4.9/sec | ETA: 0.7 min
+  [900/1,000] Success: 860 | Errors: 40 | Rate: 5.3/sec | ETA: 0.3 min
+  [1,000/1,000] Success: 945 | Errors: 55 | Rate: 5.8/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 945
+Errors: 55
+Success rate: 94.5%
+Time elapsed: 2.9 minutes
+Average rate: 5.8 trials/sec
+
+First 20 error messages:
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 11426
+=== Batch 27 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 91 | Errors: 9 | Rate: 16.5/sec | ETA: 0.9 min
+  [200/1,000] Success: 178 | Errors: 22 | Rate: 19.5/sec | ETA: 0.7 min
+  [300/1,000] Success: 264 | Errors: 36 | Rate: 19.8/sec | ETA: 0.6 min
+  [400/1,000] Success: 356 | Errors: 44 | Rate: 19.2/sec | ETA: 0.5 min
+  [500/1,000] Success: 450 | Errors: 50 | Rate: 19.9/sec | ETA: 0.4 min
+  [600/1,000] Success: 527 | Errors: 73 | Rate: 19.3/sec | ETA: 0.3 min
+  [700/1,000] Success: 614 | Errors: 86 | Rate: 19.1/sec | ETA: 0.3 min
+  [800/1,000] Success: 709 | Errors: 91 | Rate: 19.0/sec | ETA: 0.2 min
+  [900/1,000] Success: 803 | Errors: 97 | Rate: 19.2/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 881 | Errors: 119 | Rate: 19.6/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 881
+Errors: 119
+Success rate: 88.1%
+Time elapsed: 0.9 minutes
+Average rate: 19.6 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+============================================================
+Remaining: 10447
+=== Batch 28 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 95 | Errors: 5 | Rate: 20.5/sec | ETA: 0.7 min
+  [200/1,000] Success: 191 | Errors: 9 | Rate: 19.4/sec | ETA: 0.7 min
+  [300/1,000] Success: 289 | Errors: 11 | Rate: 19.1/sec | ETA: 0.6 min
+  [400/1,000] Success: 382 | Errors: 18 | Rate: 19.0/sec | ETA: 0.5 min
+  [500/1,000] Success: 477 | Errors: 23 | Rate: 19.6/sec | ETA: 0.4 min
+  [600/1,000] Success: 577 | Errors: 23 | Rate: 19.7/sec | ETA: 0.3 min
+  [700/1,000] Success: 677 | Errors: 23 | Rate: 19.5/sec | ETA: 0.3 min
+  [800/1,000] Success: 762 | Errors: 38 | Rate: 19.9/sec | ETA: 0.2 min
+  [900/1,000] Success: 858 | Errors: 42 | Rate: 19.6/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 955 | Errors: 45 | Rate: 20.0/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 955
+Errors: 45
+Success rate: 95.5%
+Time elapsed: 0.8 minutes
+Average rate: 20.0 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - {'message': 'JSON could not be generated', 'code': 400, 'hint': 'Refer to full message for details',
+  - <ConnectionTerminated error_code:1, last_stream_id:157, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:157, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:157, additional_data:None>
+  - <ConnectionTerminated error_code:1, last_stream_id:399, additional_data:None>
+============================================================
+Remaining: 9456
+=== Batch 29 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 70 | Errors: 30 | Rate: 18.7/sec | ETA: 0.8 min
+  [200/1,000] Success: 156 | Errors: 44 | Rate: 18.7/sec | ETA: 0.7 min
+  [300/1,000] Success: 247 | Errors: 53 | Rate: 19.3/sec | ETA: 0.6 min
+  [400/1,000] Success: 334 | Errors: 66 | Rate: 20.1/sec | ETA: 0.5 min
+  [500/1,000] Success: 424 | Errors: 76 | Rate: 19.5/sec | ETA: 0.4 min
+  [600/1,000] Success: 516 | Errors: 84 | Rate: 19.4/sec | ETA: 0.3 min
+  [700/1,000] Success: 606 | Errors: 94 | Rate: 19.4/sec | ETA: 0.3 min
+  [800/1,000] Success: 706 | Errors: 94 | Rate: 19.2/sec | ETA: 0.2 min
+  [900/1,000] Success: 790 | Errors: 110 | Rate: 19.5/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 880 | Errors: 120 | Rate: 19.5/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 880
+Errors: 120
+Success rate: 88.0%
+Time elapsed: 0.9 minutes
+Average rate: 19.5 trials/sec
+
+First 20 error messages:
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 8484
+=== Batch 30 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 89 | Errors: 11 | Rate: 17.4/sec | ETA: 0.9 min
+  [200/1,000] Success: 189 | Errors: 11 | Rate: 19.2/sec | ETA: 0.7 min
+  [300/1,000] Success: 277 | Errors: 23 | Rate: 18.7/sec | ETA: 0.6 min
+  [400/1,000] Success: 362 | Errors: 38 | Rate: 18.8/sec | ETA: 0.5 min
+  [500/1,000] Success: 457 | Errors: 43 | Rate: 18.8/sec | ETA: 0.4 min
+  [600/1,000] Success: 557 | Errors: 43 | Rate: 19.1/sec | ETA: 0.3 min
+  [700/1,000] Success: 650 | Errors: 50 | Rate: 19.4/sec | ETA: 0.3 min
+  [800/1,000] Success: 744 | Errors: 56 | Rate: 19.3/sec | ETA: 0.2 min
+  [900/1,000] Success: 833 | Errors: 67 | Rate: 5.4/sec | ETA: 0.3 min
+  [1,000/1,000] Success: 914 | Errors: 86 | Rate: 5.8/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 914
+Errors: 86
+Success rate: 91.4%
+Time elapsed: 2.9 minutes
+Average rate: 5.8 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 7507
+=== Batch 31 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 92 | Errors: 8 | Rate: 15.3/sec | ETA: 1.0 min
+  [200/1,000] Success: 174 | Errors: 26 | Rate: 18.0/sec | ETA: 0.7 min
+  [300/1,000] Success: 262 | Errors: 38 | Rate: 18.9/sec | ETA: 0.6 min
+  [400/1,000] Success: 357 | Errors: 43 | Rate: 19.9/sec | ETA: 0.5 min
+  [500/1,000] Success: 451 | Errors: 49 | Rate: 18.7/sec | ETA: 0.4 min
+  [600/1,000] Success: 545 | Errors: 55 | Rate: 19.0/sec | ETA: 0.4 min
+  [700/1,000] Success: 628 | Errors: 72 | Rate: 19.3/sec | ETA: 0.3 min
+  [800/1,000] Success: 715 | Errors: 85 | Rate: 19.5/sec | ETA: 0.2 min
+  [900/1,000] Success: 800 | Errors: 100 | Rate: 19.4/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 889 | Errors: 111 | Rate: 19.5/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 889
+Errors: 111
+Success rate: 88.9%
+Time elapsed: 0.9 minutes
+Average rate: 19.5 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 6546
+=== Batch 32 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 71 | Errors: 29 | Rate: 19.2/sec | ETA: 0.8 min
+  [200/1,000] Success: 167 | Errors: 33 | Rate: 19.9/sec | ETA: 0.7 min
+  [300/1,000] Success: 264 | Errors: 36 | Rate: 20.0/sec | ETA: 0.6 min
+  [400/1,000] Success: 357 | Errors: 43 | Rate: 19.9/sec | ETA: 0.5 min
+  [500/1,000] Success: 433 | Errors: 67 | Rate: 20.1/sec | ETA: 0.4 min
+  [600/1,000] Success: 531 | Errors: 69 | Rate: 20.1/sec | ETA: 0.3 min
+  [700/1,000] Success: 613 | Errors: 87 | Rate: 20.7/sec | ETA: 0.2 min
+  [800/1,000] Success: 700 | Errors: 100 | Rate: 19.8/sec | ETA: 0.2 min
+  [900/1,000] Success: 794 | Errors: 106 | Rate: 19.9/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 883 | Errors: 117 | Rate: 20.1/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 883
+Errors: 117
+Success rate: 88.3%
+Time elapsed: 0.8 minutes
+Average rate: 20.1 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 5564
+=== Batch 33 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 87 | Errors: 13 | Rate: 18.4/sec | ETA: 0.8 min
+  [200/1,000] Success: 184 | Errors: 16 | Rate: 21.4/sec | ETA: 0.6 min
+  [300/1,000] Success: 282 | Errors: 18 | Rate: 20.0/sec | ETA: 0.6 min
+  [400/1,000] Success: 380 | Errors: 20 | Rate: 20.6/sec | ETA: 0.5 min
+  [500/1,000] Success: 471 | Errors: 29 | Rate: 19.8/sec | ETA: 0.4 min
+  [600/1,000] Success: 553 | Errors: 47 | Rate: 19.7/sec | ETA: 0.3 min
+  [700/1,000] Success: 653 | Errors: 47 | Rate: 19.8/sec | ETA: 0.3 min
+  [800/1,000] Success: 753 | Errors: 47 | Rate: 20.2/sec | ETA: 0.2 min
+  [900/1,000] Success: 853 | Errors: 47 | Rate: 19.6/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 948 | Errors: 52 | Rate: 20.0/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 948
+Errors: 52
+Success rate: 94.8%
+Time elapsed: 0.8 minutes
+Average rate: 20.0 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - <ConnectionTerminated error_code:1, last_stream_id:153, additional_data:None>
+============================================================
+Remaining: 4578
+=== Batch 34 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 100 | Errors: 0 | Rate: 19.4/sec | ETA: 0.8 min
+  [200/1,000] Success: 191 | Errors: 9 | Rate: 19.7/sec | ETA: 0.7 min
+  [300/1,000] Success: 291 | Errors: 9 | Rate: 19.9/sec | ETA: 0.6 min
+  [400/1,000] Success: 385 | Errors: 15 | Rate: 19.9/sec | ETA: 0.5 min
+  [500/1,000] Success: 480 | Errors: 20 | Rate: 19.4/sec | ETA: 0.4 min
+  [600/1,000] Success: 579 | Errors: 21 | Rate: 19.6/sec | ETA: 0.3 min
+  [700/1,000] Success: 677 | Errors: 23 | Rate: 19.7/sec | ETA: 0.3 min
+  [800/1,000] Success: 777 | Errors: 23 | Rate: 19.8/sec | ETA: 0.2 min
+  [900/1,000] Success: 869 | Errors: 31 | Rate: 19.9/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 961 | Errors: 39 | Rate: 19.8/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 961
+Errors: 39
+Success rate: 96.1%
+Time elapsed: 0.8 minutes
+Average rate: 19.8 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 3584
+=== Batch 35 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 97 | Errors: 3 | Rate: 18.1/sec | ETA: 0.8 min
+  [200/1,000] Success: 192 | Errors: 8 | Rate: 17.6/sec | ETA: 0.8 min
+  [300/1,000] Success: 292 | Errors: 8 | Rate: 19.1/sec | ETA: 0.6 min
+  [400/1,000] Success: 387 | Errors: 13 | Rate: 19.8/sec | ETA: 0.5 min
+  [500/1,000] Success: 479 | Errors: 21 | Rate: 18.8/sec | ETA: 0.4 min
+  [600/1,000] Success: 579 | Errors: 21 | Rate: 18.8/sec | ETA: 0.4 min
+  [700/1,000] Success: 671 | Errors: 29 | Rate: 19.1/sec | ETA: 0.3 min
+  [800/1,000] Success: 751 | Errors: 49 | Rate: 19.0/sec | ETA: 0.2 min
+  [900/1,000] Success: 833 | Errors: 67 | Rate: 19.0/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 933 | Errors: 67 | Rate: 18.7/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 933
+Errors: 67
+Success rate: 93.3%
+Time elapsed: 0.9 minutes
+Average rate: 18.7 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 2591
+=== Batch 36 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 84 | Errors: 16 | Rate: 17.7/sec | ETA: 0.8 min
+  [200/1,000] Success: 184 | Errors: 16 | Rate: 18.3/sec | ETA: 0.7 min
+  [300/1,000] Success: 280 | Errors: 20 | Rate: 19.1/sec | ETA: 0.6 min
+  [400/1,000] Success: 376 | Errors: 24 | Rate: 18.7/sec | ETA: 0.5 min
+  [500/1,000] Success: 466 | Errors: 34 | Rate: 19.0/sec | ETA: 0.4 min
+  [600/1,000] Success: 566 | Errors: 34 | Rate: 19.3/sec | ETA: 0.3 min
+  [700/1,000] Success: 654 | Errors: 46 | Rate: 19.0/sec | ETA: 0.3 min
+  [800/1,000] Success: 754 | Errors: 46 | Rate: 19.4/sec | ETA: 0.2 min
+  [900/1,000] Success: 849 | Errors: 51 | Rate: 19.3/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 949 | Errors: 51 | Rate: 19.4/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 949
+Errors: 51
+Success rate: 94.9%
+Time elapsed: 0.9 minutes
+Average rate: 19.4 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+============================================================
+Remaining: 1598
+=== Batch 37 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 80 | Errors: 20 | Rate: 18.2/sec | ETA: 0.8 min
+  [200/1,000] Success: 173 | Errors: 27 | Rate: 18.7/sec | ETA: 0.7 min
+  [300/1,000] Success: 271 | Errors: 29 | Rate: 19.3/sec | ETA: 0.6 min
+  [400/1,000] Success: 368 | Errors: 32 | Rate: 19.3/sec | ETA: 0.5 min
+  [500/1,000] Success: 455 | Errors: 45 | Rate: 19.2/sec | ETA: 0.4 min
+  [600/1,000] Success: 549 | Errors: 51 | Rate: 20.2/sec | ETA: 0.3 min
+  [700/1,000] Success: 645 | Errors: 55 | Rate: 20.5/sec | ETA: 0.2 min
+  [800/1,000] Success: 741 | Errors: 59 | Rate: 19.9/sec | ETA: 0.2 min
+  [900/1,000] Success: 832 | Errors: 68 | Rate: 19.8/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 921 | Errors: 79 | Rate: 19.9/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 921
+Errors: 79
+Success rate: 92.1%
+Time elapsed: 0.8 minutes
+Average rate: 19.9 trials/sec
+
+First 20 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 617
+=== Batch 38 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 617 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/617] Success: 100 | Errors: 0 | Rate: 16.7/sec | ETA: 0.5 min
+  [200/617] Success: 200 | Errors: 0 | Rate: 17.8/sec | ETA: 0.4 min
+  [300/617] Success: 294 | Errors: 6 | Rate: 18.7/sec | ETA: 0.3 min
+  [400/617] Success: 388 | Errors: 12 | Rate: 18.9/sec | ETA: 0.2 min
+  [500/617] Success: 488 | Errors: 12 | Rate: 18.4/sec | ETA: 0.1 min
+  [600/617] Success: 583 | Errors: 17 | Rate: 19.1/sec | ETA: 0.0 min
+  [617/617] Success: 600 | Errors: 17 | Rate: 19.2/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 617
+Successful: 600
+Errors: 17
+Success rate: 97.2%
+Time elapsed: 0.5 minutes
+Average rate: 19.2 trials/sec
+
+First 17 error messages:
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
+Remaining: 2
+=== Batch 39 ===
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 2 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [2/2] Success: 2 | Errors: 0 | Rate: 7.0/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 2
+Successful: 2
+Errors: 0
+Success rate: 100.0%
+Time elapsed: 0.0 minutes
+Average rate: 7.0 trials/sec
+============================================================
+Remaining: 0
+All done\!

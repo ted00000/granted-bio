@@ -1,0 +1,44 @@
+============================================================
+CLINICAL TRIALS ENRICHMENT FROM CLINICALTRIALS.GOV
+============================================================
+✓ Connected to Supabase
+
+Fetching clinical studies to enrich...
+✓ Found 1,000 clinical studies to enrich
+
+Starting enrichment with 10 workers...
+API endpoint: https://clinicaltrials.gov/api/v2/studies
+============================================================
+  [100/1,000] Success: 90 | Errors: 10 | Rate: 17.4/sec | ETA: 0.9 min
+  [200/1,000] Success: 190 | Errors: 10 | Rate: 20.9/sec | ETA: 0.6 min
+  [300/1,000] Success: 270 | Errors: 30 | Rate: 19.7/sec | ETA: 0.6 min
+  [400/1,000] Success: 362 | Errors: 38 | Rate: 20.0/sec | ETA: 0.5 min
+  [500/1,000] Success: 456 | Errors: 44 | Rate: 20.3/sec | ETA: 0.4 min
+  [600/1,000] Success: 550 | Errors: 50 | Rate: 20.4/sec | ETA: 0.3 min
+  [700/1,000] Success: 644 | Errors: 56 | Rate: 20.2/sec | ETA: 0.2 min
+  [800/1,000] Success: 739 | Errors: 61 | Rate: 20.2/sec | ETA: 0.2 min
+  [900/1,000] Success: 839 | Errors: 61 | Rate: 19.7/sec | ETA: 0.1 min
+  [1,000/1,000] Success: 930 | Errors: 70 | Rate: 19.7/sec | ETA: 0.0 min
+
+============================================================
+ENRICHMENT COMPLETE
+============================================================
+Total processed: 1,000
+Successful: 930
+Errors: 70
+Success rate: 93.0%
+Time elapsed: 0.8 minutes
+Average rate: 19.7 trials/sec
+
+First 20 error messages:
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - EOF occurred in violation of protocol (_ssl.c:2406)
+  - Server disconnected
+  - Server disconnected
+  - Server disconnected
+============================================================
