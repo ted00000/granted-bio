@@ -1845,9 +1845,21 @@ async function searchTrialTitlesForWord(word: string, originalKeyword: string): 
   return matchingIds
 }
 
+// Generic words to skip in trial keyword search (these dilute results)
+const TRIAL_SKIP_WORDS = new Set([
+  'treatment', 'therapy', 'clinical', 'trial', 'trials', 'disease', 'diseases',
+  'study', 'studies', 'research', 'patients', 'patient', 'condition', 'conditions',
+  'disorder', 'disorders', 'syndrome', 'syndromes', 'testing', 'test', 'phase',
+  'drug', 'drugs', 'medicine', 'medical', 'health', 'healthcare', 'intervention',
+  'interventions', 'outcome', 'outcomes', 'efficacy', 'safety', 'randomized',
+  'placebo', 'controlled', 'double', 'blind', 'open', 'label', 'arm', 'arms'
+])
+
 // Get trial IDs matching keyword search (supports pipe-separated synonyms)
 async function getTrialKeywordMatchingIds(query: string): Promise<Set<string>> {
-  const wordGroups = query.toLowerCase().trim().split(/\s+/).filter(g => g.length > 2)
+  const wordGroups = query.toLowerCase().trim().split(/\s+/)
+    .filter(g => g.length > 2)
+    .filter(g => !TRIAL_SKIP_WORDS.has(g)) // Skip generic medical words
 
   if (wordGroups.length === 0) return new Set()
 
