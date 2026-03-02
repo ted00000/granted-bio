@@ -526,37 +526,38 @@ export async function keywordSearch(
       .sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
       .slice(0, 10)
 
-    // Get PI emails for sample results via publications
-    const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean)
+    // Get PI emails for ALL results (not just top 10)
+    const allProjectNumbers = allProjects.map(p => p.project_number).filter(Boolean)
     let piEmails: Record<string, string> = {}
 
-    if (projectNumbers.length > 0 && userAccess.canSeeEmails) {
-      // Get pmids linked to these projects
-      const { data: pubLinks } = await supabaseAdmin
-        .from('project_publications')
-        .select('project_number, pmid')
-        .in('project_number', projectNumbers)
+    if (allProjectNumbers.length > 0 && userAccess.canSeeEmails) {
+      // Batch in chunks of 500 to avoid query limits
+      for (let i = 0; i < allProjectNumbers.length; i += 500) {
+        const batch = allProjectNumbers.slice(i, i + 500)
+        const { data: pubLinks } = await supabaseAdmin
+          .from('project_publications')
+          .select('project_number, pmid')
+          .in('project_number', batch)
 
-      if (pubLinks?.length) {
-        const pmids = pubLinks.map(pl => pl.pmid)
-        // Get emails from publications
-        const { data: pubs } = await supabaseAdmin
-          .from('publications')
-          .select('pmid, pi_email')
-          .in('pmid', pmids)
-          .not('pi_email', 'is', null)
-          .neq('pi_email', '')
+        if (pubLinks?.length) {
+          const pmids = pubLinks.map(pl => pl.pmid)
+          const { data: pubs } = await supabaseAdmin
+            .from('publications')
+            .select('pmid, pi_email')
+            .in('pmid', pmids)
+            .not('pi_email', 'is', null)
+            .neq('pi_email', '')
 
-        // Map project_number to email
-        const pmidToEmail: Record<string, string> = {}
-        pubs?.forEach(p => {
-          if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
-        })
-        pubLinks?.forEach(pl => {
-          if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
-            piEmails[pl.project_number] = pmidToEmail[pl.pmid]
-          }
-        })
+          const pmidToEmail: Record<string, string> = {}
+          pubs?.forEach(p => {
+            if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
+          })
+          pubLinks?.forEach(pl => {
+            if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
+              piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+            }
+          })
+        }
       }
     }
 
@@ -594,7 +595,7 @@ export async function keywordSearch(
       `By category: ${categoryBreakdown}. ` +
       `By org_type: ${orgTypeBreakdown}.`
 
-    // All results for client-side filtering
+    // All results for client-side filtering (now with emails)
     const allResults = allProjects.map(p => ({
       application_id: p.application_id,
       title: p.title,
@@ -607,6 +608,7 @@ export async function keywordSearch(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
       clinical_trial_count: p.clinical_trial_count || 0
@@ -900,34 +902,38 @@ export async function searchProjectsHybrid(
     // Get top 10 for Claude's sample_results
     const topProjects = allProjects.slice(0, 10)
 
-    // Get PI emails for sample results only
-    const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean) as string[]
+    // Get PI emails for ALL results (not just top 10)
+    const allProjectNumbers = allProjects.map(p => p.project_number).filter(Boolean) as string[]
     let piEmails: Record<string, string> = {}
 
-    if (projectNumbers.length > 0 && userAccess.canSeeEmails) {
-      const { data: pubLinks } = await supabaseAdmin
-        .from('project_publications')
-        .select('project_number, pmid')
-        .in('project_number', projectNumbers)
+    if (allProjectNumbers.length > 0 && userAccess.canSeeEmails) {
+      // Batch in chunks of 500 to avoid query limits
+      for (let i = 0; i < allProjectNumbers.length; i += 500) {
+        const batch = allProjectNumbers.slice(i, i + 500)
+        const { data: pubLinks } = await supabaseAdmin
+          .from('project_publications')
+          .select('project_number, pmid')
+          .in('project_number', batch)
 
-      if (pubLinks?.length) {
-        const pmids = pubLinks.map(pl => pl.pmid)
-        const { data: pubs } = await supabaseAdmin
-          .from('publications')
-          .select('pmid, pi_email')
-          .in('pmid', pmids)
-          .not('pi_email', 'is', null)
-          .neq('pi_email', '')
+        if (pubLinks?.length) {
+          const pmids = pubLinks.map(pl => pl.pmid)
+          const { data: pubs } = await supabaseAdmin
+            .from('publications')
+            .select('pmid, pi_email')
+            .in('pmid', pmids)
+            .not('pi_email', 'is', null)
+            .neq('pi_email', '')
 
-        const pmidToEmail: Record<string, string> = {}
-        pubs?.forEach(p => {
-          if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
-        })
-        pubLinks?.forEach(pl => {
-          if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
-            piEmails[pl.project_number] = pmidToEmail[pl.pmid]
-          }
-        })
+          const pmidToEmail: Record<string, string> = {}
+          pubs?.forEach(p => {
+            if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
+          })
+          pubLinks?.forEach(pl => {
+            if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
+              piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+            }
+          })
+        }
       }
     }
 
@@ -953,7 +959,7 @@ export async function searchProjectsHybrid(
       clinical_trial_count: p.clinical_trial_count || 0
     }))
 
-    // All results for client-side filtering
+    // All results for client-side filtering (now with emails)
     const allResults = allProjects.map(p => ({
       application_id: p.application_id,
       title: p.title,
@@ -966,6 +972,7 @@ export async function searchProjectsHybrid(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       project_end: p.project_end || null,
@@ -1083,33 +1090,39 @@ export async function searchProjectsSemantic(
 
     // Get top 10 for sample_results
     const topProjects = allProjects.slice(0, 10)
-    const projectNumbers = topProjects.map(p => p.project_number).filter(Boolean) as string[]
+
+    // Get PI emails for ALL results (not just top 10)
+    const allProjectNumbers = allProjects.map(p => p.project_number).filter(Boolean) as string[]
     let piEmails: Record<string, string> = {}
 
-    if (projectNumbers.length > 0 && userAccess.canSeeEmails) {
-      const { data: pubLinks } = await supabaseAdmin
-        .from('project_publications')
-        .select('project_number, pmid')
-        .in('project_number', projectNumbers)
+    if (allProjectNumbers.length > 0 && userAccess.canSeeEmails) {
+      // Batch in chunks of 500 to avoid query limits
+      for (let i = 0; i < allProjectNumbers.length; i += 500) {
+        const batch = allProjectNumbers.slice(i, i + 500)
+        const { data: pubLinks } = await supabaseAdmin
+          .from('project_publications')
+          .select('project_number, pmid')
+          .in('project_number', batch)
 
-      if (pubLinks?.length) {
-        const pmids = pubLinks.map(pl => pl.pmid)
-        const { data: pubs } = await supabaseAdmin
-          .from('publications')
-          .select('pmid, pi_email')
-          .in('pmid', pmids)
-          .not('pi_email', 'is', null)
+        if (pubLinks?.length) {
+          const pmids = pubLinks.map(pl => pl.pmid)
+          const { data: pubs } = await supabaseAdmin
+            .from('publications')
+            .select('pmid, pi_email')
+            .in('pmid', pmids)
+            .not('pi_email', 'is', null)
 
-        const pmidToEmail: Record<string, string> = {}
-        pubs?.forEach(pub => {
-          if (pub.pi_email) pmidToEmail[pub.pmid] = pub.pi_email
-        })
+          const pmidToEmail: Record<string, string> = {}
+          pubs?.forEach(pub => {
+            if (pub.pi_email) pmidToEmail[pub.pmid] = pub.pi_email
+          })
 
-        pubLinks.forEach(pl => {
-          if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
-            piEmails[pl.project_number] = pmidToEmail[pl.pmid]
-          }
-        })
+          pubLinks.forEach(pl => {
+            if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
+              piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+            }
+          })
+        }
       }
     }
 
@@ -1134,7 +1147,7 @@ export async function searchProjectsSemantic(
       clinical_trial_count: p.clinical_trial_count || 0
     }))
 
-    // All results for client-side filtering
+    // All results for client-side filtering (now with emails)
     const allResults = allProjects.map(p => ({
       application_id: p.application_id,
       title: p.title,
@@ -1147,6 +1160,7 @@ export async function searchProjectsSemantic(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       project_end: p.project_end || null,
