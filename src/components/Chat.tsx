@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Search, TrendingUp, Users, Activity, Bookmark } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark, Download } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
@@ -137,6 +137,38 @@ interface ResultsPanelProps {
 }
 
 function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, persona }: ResultsPanelProps) {
+  // CSV export for People mode
+  const exportToCSV = (projects: SearchResultProject[]) => {
+    const headers = ['Organization', 'State', 'PI Name', 'Email', 'Project Title', 'Funding', 'Category', 'Patents', 'Publications', 'Trials']
+    const rows = projects.map(p => [
+      p.org_name || '',
+      p.org_state || '',
+      p.pi_names?.split(';')[0]?.trim() || '',
+      p.pi_email || '',
+      p.title || '',
+      p.total_cost ? `$${(p.total_cost / 1000000).toFixed(2)}M` : '',
+      p.primary_category?.replace(/_/g, ' ') || '',
+      String(p.patent_count || 0),
+      String(p.publication_count || 0),
+      String(p.clinical_trial_count || 0)
+    ])
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+    ].join('\n')
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `contacts_${new Date().toISOString().split('T')[0]}.csv`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
   if (results.length === 0) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -208,9 +240,21 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
 
         {data.all_results?.length > 0 && (
           <div className={isMobile ? 'p-4' : 'p-6'}>
-            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">
-              {persona === 'bd' ? 'Contacts' : 'Most Relevant'}
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
+                {persona === 'bd' ? 'Contacts' : 'Most Relevant'}
+              </h3>
+              {persona === 'bd' && (
+                <button
+                  onClick={() => exportToCSV(data.all_results)}
+                  className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-500 hover:text-[#E07A5F] hover:bg-gray-50 rounded transition-colors"
+                  title="Export contacts to CSV"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Export CSV
+                </button>
+              )}
+            </div>
             <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
                 <button
@@ -402,9 +446,21 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
 
         {data.all_results?.length > 0 && (
           <div className={isMobile ? 'p-4' : 'p-6'}>
-            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">
-              {persona === 'bd' ? 'Contacts' : 'Most Relevant'}
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
+                {persona === 'bd' ? 'Contacts' : 'Most Relevant'}
+              </h3>
+              {persona === 'bd' && (
+                <button
+                  onClick={() => exportToCSV(data.all_results)}
+                  className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-500 hover:text-[#E07A5F] hover:bg-gray-50 rounded transition-colors"
+                  title="Export contacts to CSV"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Export CSV
+                </button>
+              )}
+            </div>
             <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
                 <button
