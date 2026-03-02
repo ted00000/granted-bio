@@ -132,11 +132,13 @@ interface ResultsPanelProps {
   // Trial saving
   savedTrialIds?: Set<string>
   onSaveTrial?: (nctId: string) => void
+  // Navigate to trial detail (saves state first)
+  onTrialClick?: (nctId: string) => void
   // Persona for mode-specific rendering
   persona?: PersonaType
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, persona }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona }: ResultsPanelProps) {
   // CSV export for People mode
   const exportToCSV = (projects: SearchResultProject[]) => {
     const headers = ['Organization', 'State', 'PI Name', 'Project Title', 'Funding', 'Category', 'Patents', 'Publications', 'Trials']
@@ -736,12 +738,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0'}`}
                     >
                       <div className="flex items-start justify-between gap-2 mb-2">
-                        <Link
-                          href={`/trial/${trial.nct_id}`}
-                          className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors"
+                        <button
+                          onClick={() => onTrialClick?.(trial.nct_id)}
+                          className="text-sm text-gray-900 leading-snug flex-1 hover:text-[#E07A5F] transition-colors text-left"
                         >
                           {trial.study_title}
-                        </Link>
+                        </button>
                         {onSaveTrial && (
                           <button
                             onClick={() => onSaveTrial(trial.nct_id)}
@@ -1088,6 +1090,25 @@ export function Chat({ persona }: ChatProps) {
     }
     sessionStorage.setItem('searchState', JSON.stringify(state))
     router.push(`/project/${applicationId}`)
+  }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
+
+  // Save search state and navigate to trial
+  const navigateToTrial = useCallback((nctId: string) => {
+    // Scroll to top BEFORE navigating so iOS Safari remembers this position
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = 0
+    }
+
+    const state = {
+      toolResults,
+      searchContext,
+      filteredResults,
+      currentFilters,
+      messages,
+      returnUrl: window.location.href
+    }
+    sessionStorage.setItem('searchState', JSON.stringify(state))
+    router.push(`/trial/${nctId}`)
   }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
 
   // Save/unsave trial
@@ -1593,6 +1614,7 @@ export function Chat({ persona }: ChatProps) {
                   crossFilteredByOrgType={crossFilteredByOrgType}
                   quickFilterCounts={quickFilterCounts}
                   onProjectClick={navigateToProject}
+                  onTrialClick={navigateToTrial}
                   isMobile={true}
                   trialStatusFilters={trialStatusFilters}
                   onTrialStatusChange={setTrialStatusFilters}
@@ -1668,6 +1690,7 @@ export function Chat({ persona }: ChatProps) {
               crossFilteredByOrgType={crossFilteredByOrgType}
               quickFilterCounts={quickFilterCounts}
               onProjectClick={navigateToProject}
+              onTrialClick={navigateToTrial}
               trialStatusFilters={trialStatusFilters}
               onTrialStatusChange={setTrialStatusFilters}
               savedTrialIds={savedTrialIds}
