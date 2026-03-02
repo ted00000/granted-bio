@@ -1949,11 +1949,13 @@ export async function searchTrials(
     const rrfScores: Map<string, { score: number; data: TrialData | null }> = new Map()
 
     // Score keyword matches (use composite ID for matching)
+    // Keyword matches get a 3x boost since exact term matches are more valuable
+    const KEYWORD_BOOST = 3
     let keywordRank = 1
     for (const compositeId of keywordIds) {
       const [nctId] = compositeId.split('|')
       const existing = rrfScores.get(nctId)
-      const keywordScore = 1 / (K + keywordRank)
+      const keywordScore = KEYWORD_BOOST / (K + keywordRank)
       if (existing) {
         existing.score += keywordScore
       } else {
