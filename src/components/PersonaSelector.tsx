@@ -84,7 +84,7 @@ const searchIntents: {
     id: 'trials',
     label: 'How',
     title: 'Trials',
-    question: 'How is it progressing?',
+    question: 'How is it being applied?',
     description: 'Clinical pipelines, phases, trial tracking',
     icon: <Activity className="w-5 h-5" strokeWidth={1.5} />,
   },

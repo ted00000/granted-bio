@@ -28,7 +28,7 @@ const SEARCH_OPTIONS: Array<{
     id: 'trials',
     label: 'How',
     title: 'Trials',
-    subtitle: 'How is it progressing?',
+    subtitle: 'How is it being applied?',
     description: 'Clinical pipelines, phases, trial tracking',
     icon: Activity
   },
