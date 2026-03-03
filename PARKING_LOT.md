@@ -37,9 +37,15 @@ Ideas and features to explore later.
 
 ---
 
-## Custom Reports (Future)
+## Custom Reports (Premium Feature)
 
 Goal: Agent-generated reports on research topics, companies, or therapeutic areas.
+
+**Architecture decision:**
+- **Search modes** (free): Research, Trials, People — query → results list
+- **Reports mode** (premium): Synthesis using data from all search agents
+- UI should visually separate these (e.g., two sections on persona selector)
+- Current "Market" mode becomes "Reports" with different interaction pattern
 
 **Data architecture decisions:**
 
