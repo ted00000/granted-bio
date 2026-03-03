@@ -43,12 +43,15 @@ Goal: Agent-generated reports on research topics, companies, or therapeutic area
 
 **Data architecture decisions:**
 
-- **Patents (46K)**: Internalize key fields (title, abstract, claims summary, inventors, assignees, dates)
+- **Patents (46K)**: Internalize key fields (title, abstract, inventors, assignees, dates)
   - Static data, manageable size, better UX for browsing
   - Agent has instant access for reports
   - **BLOCKED**: PatentsView API registration suspended (March 2026)
-  - Alternatives: USPTO bulk data, scraping, or wait for API access
   - Internal patent detail pages ready at `/patent/[id]` (local data only for now)
+  - **Option**: USPTO bulk data (`g_patent_abstract.tsv`, 1.6 GB zip → 5.8 GB TSV, 9.3M rows)
+    - Stream through file, match 46K IDs, extract abstracts
+    - One-time ETL, ~30 min effort
+    - Decide later if abstracts needed for reports
 
 - **Publications (203K linked)**: On-demand fetch from PubMed
   - Keep our `publications` table (PMIDs, basic metadata)
