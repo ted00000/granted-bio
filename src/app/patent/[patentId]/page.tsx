@@ -159,12 +159,12 @@ export default function PatentDetailPage() {
               </h1>
             </div>
             <a
-              href={`https://patents.google.com/patent/US${patent.patent_id}`}
+              href={`https://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&s1=${patent.patent_id}.PN.`}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#E07A5F] transition-colors flex-shrink-0"
             >
-              Google Patents
+              USPTO
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
@@ -276,24 +276,15 @@ export default function PatentDetailPage() {
           </div>
         )}
 
-        {/* External Links */}
-        <div className="flex gap-4 mt-8 justify-center">
-          <a
-            href={`https://patents.google.com/patent/US${patent.patent_id}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors flex items-center gap-1"
-          >
-            View on Google Patents
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+        {/* External Link */}
+        <div className="mt-8 text-center">
           <a
             href={`https://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&s1=${patent.patent_id}.PN.`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors flex items-center gap-1"
+            className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors inline-flex items-center gap-1"
           >
-            View on USPTO
+            View full patent on USPTO
             <ExternalLink className="w-3.5 h-3.5" />
           </a>
         </div>
