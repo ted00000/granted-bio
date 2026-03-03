@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Search, TrendingUp, Users, Activity, Menu, X, LogOut, Bookmark } from 'lucide-react'
+import { Search, Users, Activity, Menu, X, LogOut, Bookmark, FileText, Lock } from 'lucide-react'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import type { PersonaType } from '@/lib/chat/types'
 
@@ -13,14 +13,13 @@ interface SidebarProps {
   userName?: string | null
 }
 
-const NAV_ITEMS: Array<{
+const SEARCH_ITEMS: Array<{
   id: PersonaType
   label: string
   subtitle: string
   icon: typeof Search
 }> = [
   { id: 'researcher', label: 'Research', subtitle: 'Topic deep dives', icon: Search },
-  { id: 'investor', label: 'Market', subtitle: 'Macro intelligence', icon: TrendingUp },
   { id: 'trials', label: 'Trials', subtitle: 'Clinical pipelines', icon: Activity },
   { id: 'bd', label: 'People', subtitle: 'Find researchers', icon: Users },
 ]
@@ -93,42 +92,87 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
-          {NAV_ITEMS.map(item => {
-            const isActive = currentPersona === item.id
-            const Icon = item.icon
+        <nav className="flex-1 px-3 py-2 overflow-y-auto">
+          {/* Search Section */}
+          <div className="mb-4">
+            <div className="px-3 pb-2">
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">Search</span>
+            </div>
+            <div className="space-y-1">
+              {SEARCH_ITEMS.map(item => {
+                const isActive = currentPersona === item.id
+                const Icon = item.icon
 
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`
-                  w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
-                  transition-all duration-150
-                  ${isActive
-                    ? 'bg-gray-50 text-gray-900'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                  }
-                `}
-              >
-                <Icon
-                  className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-[#E07A5F]' : 'text-gray-400'}`}
-                  strokeWidth={isActive ? 2 : 1.5}
-                />
-                <div className="min-w-0">
-                  <div className={`text-sm font-medium ${isActive ? 'text-gray-900' : ''}`}>
-                    {item.label}
-                  </div>
-                  <div className="text-xs text-gray-400 truncate">
-                    {item.subtitle}
-                  </div>
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`
+                      w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                      transition-all duration-150
+                      ${isActive
+                        ? 'bg-gray-50 text-gray-900'
+                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                      }
+                    `}
+                  >
+                    <Icon
+                      className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                      strokeWidth={isActive ? 2 : 1.5}
+                    />
+                    <div className="min-w-0">
+                      <div className={`text-sm font-medium ${isActive ? 'text-gray-900' : ''}`}>
+                        {item.label}
+                      </div>
+                      <div className="text-xs text-gray-400 truncate">
+                        {item.subtitle}
+                      </div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Analyze Section */}
+          <div className="mb-4">
+            <div className="px-3 pb-2">
+              <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">Analyze</span>
+            </div>
+            <button
+              onClick={() => handleNavClick('investor')}
+              className={`
+                w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                transition-all duration-150
+                ${currentPersona === 'investor'
+                  ? 'bg-gray-50 text-gray-900'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }
+              `}
+            >
+              <FileText
+                className={`w-5 h-5 flex-shrink-0 ${currentPersona === 'investor' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                strokeWidth={currentPersona === 'investor' ? 2 : 1.5}
+              />
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className={`text-sm font-medium ${currentPersona === 'investor' ? 'text-gray-900' : ''}`}>
+                    Reports
+                  </span>
+                  <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">
+                    <Lock className="w-2.5 h-2.5" />
+                    Pro
+                  </span>
                 </div>
-              </button>
-            )
-          })}
+                <div className="text-xs text-gray-400 truncate">
+                  Intelligence reports
+                </div>
+              </div>
+            </button>
+          </div>
 
           {/* Divider */}
-          <div className="pt-4 pb-2">
+          <div className="py-2">
             <div className="border-t border-gray-100" />
           </div>
 
