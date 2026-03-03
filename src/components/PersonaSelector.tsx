@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import type { IntentType, PersonaType } from '@/lib/chat/types'
 import { INTENT_TO_PERSONA } from '@/lib/chat/types'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
-import { Search, TrendingUp, Users, Activity } from 'lucide-react'
+import { Search, Users, Activity, FileText, Lock } from 'lucide-react'
 
 interface PersonaSelectorProps {
   onSelect: (persona: PersonaType) => void
@@ -64,8 +64,9 @@ function getGreeting(name: string | null): string {
   return GREETINGS[index].replace('{name}', firstName)
 }
 
-const intents: {
+const searchIntents: {
   id: IntentType
+  label: string
   title: string
   question: string
   description: string
@@ -73,31 +74,27 @@ const intents: {
 }[] = [
   {
     id: 'research',
+    label: 'What',
     title: 'Research',
     question: 'What science is being funded?',
     description: 'Topic deep dives, funded projects, publications',
-    icon: <Search className="w-6 h-6" strokeWidth={1.5} />,
-  },
-  {
-    id: 'market',
-    title: 'Market',
-    question: 'How big is the opportunity?',
-    description: 'Market size, funding trends, competitive landscape',
-    icon: <TrendingUp className="w-6 h-6" strokeWidth={1.5} />,
-  },
-  {
-    id: 'leads',
-    title: 'People',
-    question: 'Who is working on this?',
-    description: 'Find researchers, PIs, institutions',
-    icon: <Users className="w-6 h-6" strokeWidth={1.5} />,
+    icon: <Search className="w-5 h-5" strokeWidth={1.5} />,
   },
   {
     id: 'trials',
+    label: 'How',
     title: 'Trials',
-    question: "What's in development?",
+    question: 'How is it progressing?',
     description: 'Clinical pipelines, phases, trial tracking',
-    icon: <Activity className="w-6 h-6" strokeWidth={1.5} />,
+    icon: <Activity className="w-5 h-5" strokeWidth={1.5} />,
+  },
+  {
+    id: 'leads',
+    label: 'Who',
+    title: 'People',
+    question: 'Who is working on this?',
+    description: 'Find researchers, PIs, institutions',
+    icon: <Users className="w-5 h-5" strokeWidth={1.5} />,
   },
 ]
 
@@ -269,27 +266,62 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {intents.map(intent => (
-              <button
-                key={intent.id}
-                onClick={() => handleSelect(intent.id)}
-                className="group p-5 bg-white rounded-xl border border-gray-100 hover:border-[#E07A5F] hover:shadow-md transition-all text-left"
-              >
-                <div className="text-gray-400 mb-3 group-hover:text-[#E07A5F] transition-colors">
-                  {intent.icon}
+              {/* Search Modes */}
+              <div className="mb-8">
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Search</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {searchIntents.map(intent => (
+                    <button
+                      key={intent.id}
+                      onClick={() => handleSelect(intent.id)}
+                      className="group p-5 bg-white rounded-xl border border-gray-100 hover:border-[#E07A5F] hover:shadow-md transition-all text-left"
+                    >
+                      <div className="flex items-center gap-2 mb-3">
+                        <div className="text-gray-400 group-hover:text-[#E07A5F] transition-colors">
+                          {intent.icon}
+                        </div>
+                        <span className="text-xs font-medium text-gray-400 uppercase">{intent.label}</span>
+                      </div>
+                      <h2 className="text-base font-medium text-gray-900 mb-1">
+                        {intent.title}
+                      </h2>
+                      <p className="text-sm text-[#E07A5F] mb-2">
+                        &ldquo;{intent.question}&rdquo;
+                      </p>
+                      <p className="text-xs text-gray-400 leading-relaxed">
+                        {intent.description}
+                      </p>
+                    </button>
+                  ))}
                 </div>
-                <h2 className="text-base font-medium text-gray-900 mb-1">
-                  {intent.title}
-                </h2>
-                <p className="text-sm text-[#E07A5F] mb-2">
-                  &ldquo;{intent.question}&rdquo;
-                </p>
-                <p className="text-xs text-gray-400 leading-relaxed">
-                  {intent.description}
-                </p>
-              </button>
-            ))}
+              </div>
+
+              {/* Intelligence Reports - Premium */}
+              <div>
+                <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Analyze</p>
+                <button
+                  onClick={() => handleSelect('market')}
+                  className="group w-full p-5 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-200 hover:border-[#E07A5F] hover:shadow-md transition-all text-left"
+                >
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="text-gray-400 group-hover:text-[#E07A5F] transition-colors">
+                      <FileText className="w-5 h-5" strokeWidth={1.5} />
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
+                      <Lock className="w-3 h-3" />
+                      Premium
+                    </span>
+                  </div>
+                  <h2 className="text-base font-medium text-gray-900 mb-1">
+                    Intelligence Reports
+                  </h2>
+                  <p className="text-sm text-[#E07A5F] mb-2">
+                    &ldquo;Generate a landscape analysis&rdquo;
+                  </p>
+                  <p className="text-xs text-gray-400 leading-relaxed">
+                    Synthesize funding, patents, trials, and publications into comprehensive reports
+                  </p>
+                </button>
               </div>
             </>
           )}

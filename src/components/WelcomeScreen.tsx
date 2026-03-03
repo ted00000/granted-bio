@@ -1,6 +1,6 @@
 'use client'
 
-import { Search, TrendingUp, Users, Activity } from 'lucide-react'
+import { Search, Activity, Users, FileText, Lock } from 'lucide-react'
 import type { PersonaType } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
@@ -8,8 +8,9 @@ interface WelcomeScreenProps {
   userName?: string | null
 }
 
-const PERSONA_OPTIONS: Array<{
+const SEARCH_OPTIONS: Array<{
   id: PersonaType
+  label: string
   title: string
   subtitle: string
   description: string
@@ -17,27 +18,23 @@ const PERSONA_OPTIONS: Array<{
 }> = [
   {
     id: 'researcher',
+    label: 'What',
     title: 'Research',
     subtitle: 'What science is being funded?',
     description: 'Topic deep dives, funded projects, publications',
     icon: Search
   },
   {
-    id: 'investor',
-    title: 'Market',
-    subtitle: 'How big is the opportunity?',
-    description: 'Macro intelligence, funding trends, competitive analysis',
-    icon: TrendingUp
-  },
-  {
     id: 'trials',
+    label: 'How',
     title: 'Trials',
-    subtitle: "What's in development?",
+    subtitle: 'How is it progressing?',
     description: 'Clinical pipelines, phases, trial tracking',
     icon: Activity
   },
   {
     id: 'bd',
+    label: 'Who',
     title: 'People',
     subtitle: 'Who is working on this?',
     description: 'Find researchers, PIs, institutions',
@@ -59,30 +56,69 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
             {userName ? 'Select a mode to get started' : 'Your AI-powered life science intelligence platform'}
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {PERSONA_OPTIONS.map(option => {
-              const Icon = option.icon
-              return (
-                <button
-                  key={option.id}
-                  onClick={() => onSelectPersona(option.id)}
-                  className="group p-6 bg-white rounded-xl border border-gray-100 hover:border-[#E07A5F] hover:shadow-lg transition-all text-left"
-                >
-                  <div className="text-gray-400 mb-4 group-hover:text-[#E07A5F] transition-colors">
-                    <Icon className="w-8 h-8" strokeWidth={1.5} />
+          {/* Search Modes */}
+          <div className="mb-8">
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Search</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {SEARCH_OPTIONS.map(option => {
+                const Icon = option.icon
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => onSelectPersona(option.id)}
+                    className="group p-5 bg-white rounded-xl border border-gray-100 hover:border-[#E07A5F] hover:shadow-lg transition-all text-left"
+                  >
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="text-gray-400 group-hover:text-[#E07A5F] transition-colors">
+                        <Icon className="w-6 h-6" strokeWidth={1.5} />
+                      </div>
+                      <span className="text-xs font-medium text-gray-400 uppercase">{option.label}</span>
+                    </div>
+                    <h3 className="text-base font-semibold text-gray-900 mb-1">
+                      {option.title}
+                    </h3>
+                    <p className="text-sm text-[#E07A5F] mb-1">
+                      &ldquo;{option.subtitle}&rdquo;
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {option.description}
+                    </p>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Intelligence Reports - Premium */}
+          <div>
+            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Analyze</p>
+            <button
+              onClick={() => onSelectPersona('investor')}
+              className="group w-full p-5 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-200 hover:border-[#E07A5F] hover:shadow-lg transition-all text-left relative"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="text-gray-400 group-hover:text-[#E07A5F] transition-colors">
+                      <FileText className="w-6 h-6" strokeWidth={1.5} />
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
+                      <Lock className="w-3 h-3" />
+                      Premium
+                    </span>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                    {option.title}
+                  <h3 className="text-base font-semibold text-gray-900 mb-1">
+                    Intelligence Reports
                   </h3>
-                  <p className="text-sm text-[#E07A5F] mb-2">
-                    &ldquo;{option.subtitle}&rdquo;
+                  <p className="text-sm text-[#E07A5F] mb-1">
+                    &ldquo;Generate a landscape analysis&rdquo;
                   </p>
-                  <p className="text-sm text-gray-500">
-                    {option.description}
+                  <p className="text-xs text-gray-500">
+                    Synthesize funding, patents, trials, and publications into comprehensive reports
                   </p>
-                </button>
-              )
-            })}
+                </div>
+              </div>
+            </button>
           </div>
         </div>
       </div>
