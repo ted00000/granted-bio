@@ -1694,7 +1694,8 @@ export async function searchPatents(
   }
 }
 
-// Get detailed patent info from USPTO PatentsView API
+// Get detailed patent info from local database
+// Note: External API enrichment pending - returns local data only
 export async function getPatentDetails(
   params: GetPatentDetailsParams,
   userAccess: UserAccess
@@ -1704,91 +1705,30 @@ export async function getPatentDetails(
   // Clean up patent ID - remove US prefix if present
   const cleanPatentId = patent_id.replace(/^US/i, '').replace(/[^0-9]/g, '')
 
-  const apiKey = process.env.USPTO_API_KEY
-  if (!apiKey) {
-    console.error('USPTO_API_KEY not configured')
-    throw new Error('USPTO API not configured')
-  }
-
   try {
-    // Query PatentsView API
-    const query = encodeURIComponent(JSON.stringify({ patent_id: cleanPatentId }))
-    const fields = encodeURIComponent(JSON.stringify([
-      'patent_id',
-      'patent_title',
-      'patent_abstract',
-      'patent_date',
-      'patent_type',
-      'assignees.assignee_organization',
-      'inventors.inventor_name_first',
-      'inventors.inventor_name_last',
-      'cpcs.cpc_group_id',
-      'pct_data.us_371c124_date'
-    ]))
-
-    const url = `https://search.patentsview.org/api/v1/patent/?q=${query}&f=${fields}`
-
-    const response = await fetch(url, {
-      headers: {
-        'X-Api-Key': apiKey,
-        'Content-Type': 'application/json'
-      }
-    })
-
-    if (!response.ok) {
-      if (response.status === 429) {
-        throw new Error('USPTO API rate limit exceeded. Try again in a minute.')
-      }
-      throw new Error(`USPTO API error: ${response.status}`)
-    }
-
-    const data = await response.json()
-
-    if (!data.patents || data.patents.length === 0) {
-      return null
-    }
-
-    const patent = data.patents[0]
-
-    // Get citation count with a separate query
-    let citedByCount = 0
-    try {
-      const citQuery = encodeURIComponent(JSON.stringify({
-        _and: [{ cited_patent_id: cleanPatentId }]
-      }))
-      const citUrl = `https://search.patentsview.org/api/v1/patent/?q=${citQuery}&o={"size":0}`
-      const citResponse = await fetch(citUrl, {
-        headers: { 'X-Api-Key': apiKey }
-      })
-      if (citResponse.ok) {
-        const citData = await citResponse.json()
-        citedByCount = citData.total_hits || 0
-      }
-    } catch {
-      // Citation count is optional, continue without it
-    }
-
-    // Check if we have this patent linked to an NIH project
+    // Get patent from local database
     const { data: localPatent } = await supabaseAdmin
       .from('patents')
-      .select('project_number')
+      .select('patent_id, patent_title, project_number')
       .eq('patent_id', cleanPatentId)
       .single()
 
+    if (!localPatent) {
+      return null
+    }
+
     const result: PatentDetails = {
-      patent_id: patent.patent_id,
-      patent_title: patent.patent_title || null,
-      patent_abstract: patent.patent_abstract || null,
-      patent_date: patent.patent_date || null,
-      patent_type: patent.patent_type || null,
-      assignees: patent.assignees?.map((a: { assignee_organization: string }) => a.assignee_organization).filter(Boolean) || [],
-      inventors: patent.inventors?.map((i: { inventor_name_first: string; inventor_name_last: string }) =>
-        `${i.inventor_name_first} ${i.inventor_name_last}`.trim()
-      ).filter(Boolean) || [],
-      cpc_codes: patent.cpcs?.map((c: { cpc_group_id: string }) => c.cpc_group_id).filter(Boolean).slice(0, 5) || [],
-      cited_by_count: citedByCount,
-      claims_count: 0, // Not readily available from API
-      linked_project_number: localPatent?.project_number || null
+      patent_id: localPatent.patent_id,
+      patent_title: localPatent.patent_title || null,
+      patent_abstract: null,
+      patent_date: null,
+      patent_type: null,
+      assignees: [],
+      inventors: [],
+      cpc_codes: [],
+      cited_by_count: 0,
+      claims_count: 0,
+      linked_project_number: localPatent.project_number || null
     }
 
     return result

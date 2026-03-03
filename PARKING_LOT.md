@@ -16,7 +16,7 @@ Ideas and features to explore later.
 ## UI/UX
 
 - [ ] Update Results panel subtitle based on agent mode
-  - Currently shows "NIH RePORTER & USPTO PatentsView" for all modes
+  - Currently shows "NIH RePORTER & USPTO" for all modes
   - Trials mode should show different subtitle (e.g., "ClinicalTrials.gov")
   - Consider dynamic subtitle per persona
 
@@ -46,6 +46,9 @@ Goal: Agent-generated reports on research topics, companies, or therapeutic area
 - **Patents (46K)**: Internalize key fields (title, abstract, claims summary, inventors, assignees, dates)
   - Static data, manageable size, better UX for browsing
   - Agent has instant access for reports
+  - **BLOCKED**: PatentsView API registration suspended (March 2026)
+  - Alternatives: USPTO bulk data, scraping, or wait for API access
+  - Internal patent detail pages ready at `/patent/[id]` (local data only for now)
 
 - **Publications (203K linked)**: On-demand fetch from PubMed
   - Keep our `publications` table (PMIDs, basic metadata)
