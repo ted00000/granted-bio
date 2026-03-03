@@ -38,9 +38,9 @@ const PERSONA_OPTIONS: Array<{
   },
   {
     id: 'bd',
-    title: 'Leads',
-    subtitle: 'Who should I talk to?',
-    description: 'Find companies, contacts, partnership targets',
+    title: 'People',
+    subtitle: 'Who is working on this?',
+    description: 'Find researchers, PIs, institutions',
     icon: Users
   }
 ]
