@@ -415,9 +415,12 @@ export default function CompanyPage() {
                 ) : (
                   patents.map((patent) => (
                     <div key={patent.patent_id} className="border-b border-gray-100 pb-4">
-                      <div className="font-medium text-gray-900">
+                      <Link
+                        href={`/patent/${patent.patent_id}`}
+                        className="font-medium text-gray-900 hover:text-[#E07A5F]"
+                      >
                         {patent.patent_title || `Patent ID: ${patent.patent_id}`}
-                      </div>
+                      </Link>
                       <div className="flex gap-4 mt-1 text-sm text-gray-500">
                         <span>Patent #{patent.patent_id}</span>
                         {patent.is_device_patent && (

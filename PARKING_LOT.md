@@ -29,11 +29,34 @@ Ideas and features to explore later.
   - ETL script: `etl/enrich_clinical_trials.py`
   - Trial detail page: `/trial/[nctId]`
 
-- [ ] Regenerate trial embeddings with richer text
+- [x] Regenerate trial embeddings with richer text
   - Script: `etl/regenerate_trial_embeddings.py`
   - Uses: study_title + conditions + brief_summary (vs just title before)
   - Fixes semantic search missing synonyms (e.g., "scleroderma" ↔ "systemic sclerosis")
-  - **Running**: ~3 hours for 38K trials
+  - **Done**: 38,138 embeddings, $0.11 total cost
+
+---
+
+## Custom Reports (Future)
+
+Goal: Agent-generated reports on research topics, companies, or therapeutic areas.
+
+**Data architecture decisions:**
+
+- **Patents (46K)**: Internalize key fields (title, abstract, claims summary, inventors, assignees, dates)
+  - Static data, manageable size, better UX for browsing
+  - Agent has instant access for reports
+
+- **Publications (203K linked)**: On-demand fetch from PubMed
+  - Keep our `publications` table (PMIDs, basic metadata)
+  - Agent can only fetch details for PMIDs in our DB (constrained to NIH-linked corpus)
+  - No free roaming — prevents rabbit holes, keeps reports focused
+  - Lean storage, on-demand enrichment when needed for reports
+
+**Report flow:**
+1. Agent queries our DB → projects, patents, trials
+2. Agent fetches publication details from PubMed for specific PMIDs as needed
+3. Agent synthesizes into custom report
 
 ---
 
