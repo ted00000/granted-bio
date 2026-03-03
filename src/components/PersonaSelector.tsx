@@ -87,9 +87,9 @@ const intents: {
   },
   {
     id: 'leads',
-    title: 'Leads',
-    question: 'Who should I talk to?',
-    description: 'Find companies, contacts, partnership targets',
+    title: 'People',
+    question: 'Who is working on this?',
+    description: 'Find researchers, PIs, institutions',
     icon: <Users className="w-6 h-6" strokeWidth={1.5} />,
   },
   {
