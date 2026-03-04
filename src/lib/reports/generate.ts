@@ -26,7 +26,7 @@ export async function checkProjectCount(topic: string): Promise<number> {
   // Use semantic search to get approximate count
   const { data, error } = await supabaseAdmin.rpc('search_projects', {
     query_embedding: await getEmbedding(topic),
-    similarity_threshold: 0.3,
+    match_threshold: 0.25,
     match_count: 100,
   })
 
