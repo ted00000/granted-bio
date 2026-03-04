@@ -55,8 +55,19 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
  * Process raw search results into agent output
  */
 function processResults(rawResults: RawProjectResult[]): ProjectsAgentOutput {
+  // Deduplicate by project_number - keep most recent fiscal year
+  const seenProjects = new Map<string, RawProjectResult>()
+  for (const project of rawResults) {
+    const key = project.project_number || project.application_id
+    const existing = seenProjects.get(key)
+    if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+      seenProjects.set(key, project)
+    }
+  }
+  const dedupedResults = Array.from(seenProjects.values())
+
   // Map to ProjectItem format
-  const items: ProjectItem[] = rawResults.map((p) => ({
+  const items: ProjectItem[] = dedupedResults.map((p) => ({
     application_id: p.application_id,
     title: p.title,
     abstract: p.abstract || null,
@@ -110,7 +121,7 @@ function processResults(rawResults: RawProjectResult[]): ProjectsAgentOutput {
     .sort((a, b) => b.funding - a.funding)
     .slice(0, 15)
 
-  console.log(`[Projects Agent] Found ${items.length} projects, $${(totalFunding / 1e6).toFixed(1)}M total`)
+  console.log(`[Projects Agent] Found ${items.length} unique projects (${rawResults.length} total rows), $${(totalFunding / 1e6).toFixed(1)}M total`)
 
   return {
     items,
@@ -152,6 +163,7 @@ async function generateEmbedding(text: string): Promise<number[]> {
 // Type for raw database results
 interface RawProjectResult {
   application_id: string
+  project_number?: string
   title: string
   abstract?: string
   pi_names?: string

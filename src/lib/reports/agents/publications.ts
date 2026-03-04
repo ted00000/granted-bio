@@ -1,81 +1,159 @@
 // Publications Agent
 // Searches publications linked to NIH projects
-// Enriches data from PubMed if needed
+// Uses hybrid approach: keyword search + project-linked search
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { PublicationsAgentOutput, PublicationItem } from '../types'
 
+const UNIFIED_THRESHOLD = 0.35
+
 /**
  * Run the Publications Agent to gather publication data for a topic
+ * Uses hybrid approach: keyword search + project-linked search
  */
 export async function runPublicationsAgent(topic: string): Promise<PublicationsAgentOutput> {
   console.log(`[Publications Agent] Searching for "${topic}"`)
 
-  // First, find relevant projects for the topic
   const queryEmbedding = await generateEmbedding(topic)
 
-  const { data: projects } = await supabaseAdmin.rpc('search_projects_filtered', {
-    query_embedding: queryEmbedding,
-    match_threshold: 0.25,
-    match_count: 50,
-    min_biotools_confidence: 0,
-    filter_fiscal_years: null,
-    filter_categories: null,
-    filter_org_types: null,
-    filter_states: null,
-    filter_min_funding: null,
-    filter_max_funding: null,
-  })
+  // Try two approaches in parallel:
+  // 1. Direct semantic search on publications table
+  // 2. Project-linked search via project_publications
 
-  if (!projects || projects.length === 0) {
-    console.log('[Publications Agent] No projects found')
-    return emptyOutput()
+  // Extract keywords for fallback search - use most specific terms
+  const queryWords = topic
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((w) => w.length > 3)
+    .filter((w) => !['cell', 'cells', 'therapy', 'treatment'].includes(w)) // Remove generic terms
+
+  // Build a more specific search - require primary term
+  const primaryTerm = topic.split(/\s+/)[0] // e.g., "CAR-T" or "CRISPR"
+
+  const [keywordResult, linkedResult] = await Promise.all([
+    // Keyword search on publications table - use primary term for specificity
+    supabaseAdmin
+      .from('publications')
+      .select('pmid, pub_title, journal_title, pub_date, author_list, abstract')
+      .ilike('pub_title', `%${primaryTerm}%`)
+      .order('pub_date', { ascending: false })
+      .limit(30),
+
+    // Project-linked approach: get PMIDs then fetch publication details
+    (async () => {
+      const { data: projects } = await supabaseAdmin.rpc('search_projects_filtered', {
+        query_embedding: queryEmbedding,
+        match_threshold: UNIFIED_THRESHOLD,
+        match_count: 30,
+        min_biotools_confidence: 0,
+        filter_fiscal_years: null,
+        filter_categories: null,
+        filter_org_types: null,
+        filter_states: null,
+        filter_min_funding: null,
+        filter_max_funding: null,
+      })
+
+      if (!projects || projects.length === 0) {
+        return { data: null, error: null }
+      }
+
+      const projectNumbers = projects
+        .map((p: { project_number: string }) => p.project_number)
+        .filter(Boolean)
+
+      if (projectNumbers.length === 0) {
+        return { data: null, error: null }
+      }
+
+      // Get PMIDs from linking table
+      const { data: links } = await supabaseAdmin
+        .from('project_publications')
+        .select('pmid')
+        .in('project_number', projectNumbers)
+        .limit(50)
+
+      if (!links || links.length === 0) {
+        return { data: null, error: null }
+      }
+
+      const pmids = links.map((l) => l.pmid)
+
+      // Fetch full publication details
+      return supabaseAdmin
+        .from('publications')
+        .select('pmid, pub_title, journal_title, pub_date, author_list, abstract')
+        .in('pmid', pmids)
+        .order('pub_date', { ascending: false })
+        .limit(30)
+    })(),
+  ])
+
+  // Merge results, prioritizing keyword matches (more specific) over linked
+  const seenPmids = new Set<string>()
+  const mergedResults: RawPublicationResult[] = []
+
+  // Add keyword search results first (most specific/relevant)
+  if (keywordResult.data) {
+    for (const pub of keywordResult.data) {
+      if (!seenPmids.has(pub.pmid)) {
+        seenPmids.add(pub.pmid)
+        mergedResults.push({
+          pmid: pub.pmid,
+          publication_title: pub.pub_title,
+          journal: pub.journal_title,
+          publication_date: pub.pub_date,
+          authors: pub.author_list,
+          abstract: pub.abstract,
+        })
+      }
+    }
   }
 
-  // Get project numbers to find linked publications
-  const projectNumbers = projects
-    .map((p: { project_number: string }) => p.project_number)
-    .filter(Boolean)
-
-  if (projectNumbers.length === 0) {
-    console.log('[Publications Agent] No project numbers found')
-    return emptyOutput()
+  // Add linked publications that weren't already included
+  if (linkedResult.data) {
+    for (const pub of linkedResult.data) {
+      if (!seenPmids.has(pub.pmid)) {
+        seenPmids.add(pub.pmid)
+        mergedResults.push({
+          pmid: pub.pmid,
+          publication_title: pub.pub_title,
+          journal: pub.journal_title,
+          publication_date: pub.pub_date,
+          authors: pub.author_list,
+          abstract: pub.abstract,
+        })
+      }
+    }
   }
 
-  // Fetch publications linked to these projects
-  const { data: publications, error } = await supabaseAdmin
-    .from('project_publications')
-    .select('pmid, publication_title, journal, publication_date, authors, abstract')
-    .in('project_number', projectNumbers)
-    .order('publication_date', { ascending: false })
-    .limit(30)
-
-  if (error) {
-    console.error('[Publications Agent] Query error:', error)
-    return emptyOutput()
-  }
-
-  // Check for publications that need enrichment
-  const needsEnrichment = (publications || []).filter(
-    (p) => !p.journal || !p.authors
+  console.log(
+    `[Publications Agent] Found ${mergedResults.length} publications ` +
+      `(${linkedResult.data?.length || 0} linked, ${keywordResult.data?.length || 0} keyword)`
   )
 
-  if (needsEnrichment.length > 0 && needsEnrichment.length <= 10) {
-    console.log(`[Publications Agent] ${needsEnrichment.length} publications need enrichment`)
-    await enrichPublications(needsEnrichment.map((p) => p.pmid))
-
-    // Refetch with enriched data
-    const { data: refreshed } = await supabaseAdmin
-      .from('project_publications')
-      .select('pmid, publication_title, journal, publication_date, authors, abstract')
-      .in('project_number', projectNumbers)
-      .order('publication_date', { ascending: false })
-      .limit(30)
-
-    return processResults(refreshed || [])
+  if (mergedResults.length === 0) {
+    return emptyOutput()
   }
 
-  return processResults(publications || [])
+  // Limit to 30 results
+  const limitedResults = mergedResults.slice(0, 30)
+
+  // Check for missing abstracts and enrich from PubMed (up to 30)
+  const needsEnrichment = limitedResults.filter((p) => !p.abstract)
+  if (needsEnrichment.length > 0) {
+    console.log(`[Publications Agent] ${needsEnrichment.length} publications need abstract enrichment`)
+    const enriched = await enrichPublicationAbstracts(needsEnrichment.map((p) => p.pmid))
+
+    // Update results with fetched abstracts
+    for (const pub of limitedResults) {
+      if (!pub.abstract && enriched[pub.pmid]) {
+        pub.abstract = enriched[pub.pmid]
+      }
+    }
+  }
+
+  return processResults(limitedResults)
 }
 
 /**
@@ -97,6 +175,7 @@ function processResults(rawResults: RawPublicationResult[]): PublicationsAgentOu
     journal: p.journal || null,
     publication_date: p.publication_date || null,
     authors: p.authors || null,
+    abstract: p.abstract || null,
   }))
 
   // Group by journal
@@ -132,66 +211,68 @@ function processResults(rawResults: RawPublicationResult[]): PublicationsAgentOu
 }
 
 /**
- * Enrich publications by fetching from PubMed API
+ * Fetch abstracts from PubMed API and save to database
+ * Returns map of pmid -> abstract for immediate use
  */
-async function enrichPublications(pmids: string[]): Promise<void> {
-  console.log(`[Publications Agent] Enriching ${pmids.length} publications from PubMed`)
+async function enrichPublicationAbstracts(pmids: string[]): Promise<Record<string, string>> {
+  console.log(`[Publications Agent] Fetching ${pmids.length} abstracts from PubMed`)
 
-  // PubMed E-utilities API
+  const abstracts: Record<string, string> = {}
+
+  // PubMed E-utilities efetch API
   // https://www.ncbi.nlm.nih.gov/books/NBK25499/
-  const efetchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${pmids.join(',')}&retmode=xml`
+  const efetchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${pmids.join(',')}&rettype=abstract&retmode=xml`
 
   try {
     const response = await fetch(efetchUrl)
     if (!response.ok) {
       console.warn(`[Publications Agent] PubMed fetch failed: ${response.status}`)
-      return
+      return abstracts
     }
 
     const xml = await response.text()
 
-    // Parse XML and extract data (basic parsing)
-    // For production, use a proper XML parser
-    for (const pmid of pmids) {
-      try {
-        // Extract journal title
-        const journalMatch = xml.match(
-          new RegExp(`<PMID[^>]*>${pmid}</PMID>[\\s\\S]*?<Title>([^<]+)</Title>`)
-        )
-        const journal = journalMatch?.[1] || null
+    // Parse each article's abstract
+    // PubMed XML structure: <PubmedArticle>...<Abstract><AbstractText>...</AbstractText></Abstract>...</PubmedArticle>
+    const articleMatches = xml.matchAll(/<PubmedArticle[\s\S]*?<\/PubmedArticle>/g)
 
-        // Extract authors (first author)
-        const authorsMatch = xml.match(
-          new RegExp(
-            `<PMID[^>]*>${pmid}</PMID>[\\s\\S]*?<AuthorList[^>]*>([\\s\\S]*?)</AuthorList>`
-          )
-        )
-        let authors = null
-        if (authorsMatch) {
-          const lastNameMatch = authorsMatch[1].match(/<LastName>([^<]+)<\/LastName>/)
-          const initialsMatch = authorsMatch[1].match(/<Initials>([^<]+)<\/Initials>/)
-          if (lastNameMatch) {
-            authors = `${lastNameMatch[1]} ${initialsMatch?.[1] || ''} et al.`
-          }
-        }
+    for (const match of articleMatches) {
+      const articleXml = match[0]
 
-        // Update database
-        if (journal || authors) {
+      // Extract PMID
+      const pmidMatch = articleXml.match(/<PMID[^>]*>(\d+)<\/PMID>/)
+      if (!pmidMatch) continue
+      const pmid = pmidMatch[1]
+
+      // Extract abstract text (may have multiple AbstractText elements)
+      const abstractTexts: string[] = []
+      const abstractMatches = articleXml.matchAll(/<AbstractText[^>]*>([^<]+)<\/AbstractText>/g)
+      for (const absMatch of abstractMatches) {
+        abstractTexts.push(absMatch[1])
+      }
+
+      if (abstractTexts.length > 0) {
+        const abstract = abstractTexts.join(' ')
+        abstracts[pmid] = abstract
+
+        // Save to database
+        try {
           await supabaseAdmin
-            .from('project_publications')
-            .update({
-              journal: journal || undefined,
-              authors: authors || undefined,
-            })
+            .from('publications')
+            .update({ abstract })
             .eq('pmid', pmid)
+        } catch (dbError) {
+          console.warn(`[Publications Agent] Error saving abstract for PMID ${pmid}:`, dbError)
         }
-      } catch (parseError) {
-        console.warn(`[Publications Agent] Error parsing PMID ${pmid}:`, parseError)
       }
     }
+
+    console.log(`[Publications Agent] Fetched ${Object.keys(abstracts).length} abstracts`)
   } catch (error) {
     console.warn('[Publications Agent] PubMed enrichment failed:', error)
   }
+
+  return abstracts
 }
 
 /**

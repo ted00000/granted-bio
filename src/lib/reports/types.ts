@@ -63,6 +63,7 @@ export interface PublicationItem {
   journal: string | null
   publication_date: string | null
   authors: string | null
+  abstract: string | null
 }
 
 export interface OrgStats {

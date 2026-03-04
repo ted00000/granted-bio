@@ -21,6 +21,13 @@ interface SynthesisContext {
   dataLimited?: boolean
 }
 
+interface SectionInsights {
+  funding: string
+  clinicalPipeline: string
+  patents: string
+  publications: string
+}
+
 /**
  * Synthesize all agent outputs into a complete report
  */
@@ -31,11 +38,14 @@ export async function synthesizeReport(
 ): Promise<ReportData> {
   console.log(`[Synthesis Agent] Generating report for "${topic}"`)
 
-  // Generate executive summary using LLM
-  const executiveSummary = await generateExecutiveSummary(topic, agentOutputs, context)
+  // Generate executive summary and section insights in parallel
+  const [executiveSummary, sectionInsights] = await Promise.all([
+    generateExecutiveSummary(topic, agentOutputs, context),
+    generateSectionInsights(topic, agentOutputs, context),
+  ])
 
   // Assemble markdown report
-  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary)
+  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights)
 
   return {
     executiveSummary,
@@ -120,13 +130,135 @@ Be specific with numbers. Focus on insights, not just data summary. Write in a p
 }
 
 /**
+ * Generate insights for each major section
+ */
+async function generateSectionInsights(
+  topic: string,
+  agentOutputs: AllAgentOutputs,
+  context: SynthesisContext
+): Promise<SectionInsights> {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
+
+  // Prepare project abstracts summary for context
+  const projectAbstracts = agentOutputs.projects.items
+    .slice(0, 5)
+    .map((p) => p.abstract?.substring(0, 200))
+    .filter(Boolean)
+    .join('\n---\n')
+
+  // Prepare patent abstracts summary
+  const patentAbstracts = agentOutputs.patents.items
+    .slice(0, 5)
+    .map((p) => p.patent_abstract?.substring(0, 150))
+    .filter(Boolean)
+    .join('\n---\n')
+
+  // Prepare publication abstracts summary
+  const pubAbstracts = agentOutputs.publications.items
+    .slice(0, 5)
+    .map((p) => p.abstract?.substring(0, 150))
+    .filter(Boolean)
+    .join('\n---\n')
+
+  const prompt = `You are analyzing research data for "${topic}" to generate section-specific insights for a research intelligence report.
+
+**FUNDING DATA:**
+- Total: ${formatCurrency(context.fundingStats.total)}
+- Projects: ${context.fundingStats.projectCount}
+- Organizations: ${context.fundingStats.orgCount}
+- PIs: ${context.fundingStats.piCount}
+- By Year: ${JSON.stringify(context.fundingStats.byYear.slice(0, 5))}
+- By Category: ${JSON.stringify(context.fundingStats.byCategory.slice(0, 5))}
+- Top Orgs: ${context.fundingStats.byOrg.slice(0, 5).map((o) => `${o.org}: ${formatCurrency(o.funding)}`).join(', ')}
+
+Sample Project Abstracts:
+${projectAbstracts || 'None available'}
+
+**CLINICAL TRIALS:**
+- Total: ${agentOutputs.trials.items.length}
+- By Phase: ${JSON.stringify(agentOutputs.trials.byPhase)}
+- By Status: ${JSON.stringify(agentOutputs.trials.byStatus)}
+- Top Sponsors: ${agentOutputs.trials.items.slice(0, 5).map((t) => t.lead_sponsor).filter(Boolean).join(', ')}
+
+**PATENTS:**
+- Total: ${agentOutputs.patents.items.length}
+- Recent (2yr): ${agentOutputs.patents.recentCount}
+- Top Assignees: ${agentOutputs.patents.byAssignee.slice(0, 5).map((a) => `${a.assignee} (${a.count})`).join(', ')}
+
+Sample Patent Abstracts:
+${patentAbstracts || 'None available'}
+
+**PUBLICATIONS:**
+- Total: ${agentOutputs.publications.items.length}
+- By Journal: ${JSON.stringify(agentOutputs.publications.byJournal.slice(0, 5))}
+- By Year: ${JSON.stringify(agentOutputs.publications.byYear.slice(0, 5))}
+
+Sample Publication Abstracts:
+${pubAbstracts || 'None available'}
+
+Generate a JSON object with analytical insights for each section. Each insight should be 2-3 sentences that interpret the data strategically.
+
+IMPORTANT CONTEXT: This data represents NIH-funded research linked to federal grants - it captures publicly-funded academic and institutional research with high confidence, but does not include privately-funded industry R&D or international research. Frame insights accordingly.
+
+Focus on:
+- What the numbers mean, not just what they are
+- Trends over time or across categories
+- Notable concentrations or gaps in federally-funded research
+- Strategic implications for the field
+
+{
+  "funding": "2-3 sentences analyzing the funding landscape, trends, and what they indicate about research priorities",
+  "clinicalPipeline": "2-3 sentences analyzing the clinical development landscape, pipeline health, and advancement patterns",
+  "patents": "2-3 sentences analyzing the IP landscape, assignee patterns, and innovation trends",
+  "publications": "2-3 sentences analyzing research output, journal patterns, and academic momentum"
+}
+
+Return ONLY valid JSON, no markdown formatting.`
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const textContent = response.content.find((c) => c.type === 'text')
+    if (!textContent || textContent.type !== 'text') {
+      return defaultInsights()
+    }
+
+    const parsed = JSON.parse(textContent.text)
+    return {
+      funding: parsed.funding || '',
+      clinicalPipeline: parsed.clinicalPipeline || '',
+      patents: parsed.patents || '',
+      publications: parsed.publications || '',
+    }
+  } catch (error) {
+    console.warn('[Synthesis Agent] Failed to generate section insights:', error)
+    return defaultInsights()
+  }
+}
+
+function defaultInsights(): SectionInsights {
+  return {
+    funding: '',
+    clinicalPipeline: '',
+    patents: '',
+    publications: '',
+  }
+}
+
+/**
  * Assemble the full markdown report
  */
 function assembleMarkdown(
   topic: string,
   agentOutputs: AllAgentOutputs,
   context: SynthesisContext,
-  executiveSummary: string
+  executiveSummary: string,
+  insights: SectionInsights
 ): string {
   const now = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
@@ -156,7 +288,7 @@ ${renderMarketContext(agentOutputs.market.context)}
 
 ## NIH Funding Landscape
 
-${renderFundingLandscape(context.fundingStats)}
+${renderFundingLandscape(context.fundingStats, insights.funding)}
 
 ---
 
@@ -168,19 +300,19 @@ ${renderProjects(agentOutputs.projects.items.slice(0, 10))}
 
 ## Clinical Pipeline
 
-${renderClinicalPipeline(agentOutputs.trials)}
+${renderClinicalPipeline(agentOutputs.trials, insights.clinicalPipeline)}
 
 ---
 
 ## Patent Activity
 
-${renderPatents(agentOutputs.patents)}
+${renderPatents(agentOutputs.patents, insights.patents)}
 
 ---
 
 ## Publication Trends
 
-${renderPublications(agentOutputs.publications)}
+${renderPublications(agentOutputs.publications, insights.publications)}
 
 ---
 
@@ -245,8 +377,12 @@ function renderMarketContext(market: MarketContext): string {
   return md
 }
 
-function renderFundingLandscape(stats: FundingStats): string {
-  let md = '### Funding Summary\n\n'
+function renderFundingLandscape(stats: FundingStats, insight: string): string {
+  let md = ''
+  if (insight) {
+    md += insight + '\n\n'
+  }
+  md += '### Funding Summary\n\n'
   md += '| Metric | Value |\n'
   md += '|--------|-------|\n'
   md += `| Total Funding | ${formatCurrency(stats.total)} |\n`
@@ -299,18 +435,22 @@ function renderProjects(projects: ProjectItem[]): string {
       const excerpt = p.abstract.substring(0, 300) + (p.abstract.length > 300 ? '...' : '')
       md += `\n> ${excerpt}\n`
     }
-    md += `\n[View Project →](/project/${p.application_id})\n\n`
+    md += `\n[View Project ->](/project/${p.application_id})\n\n`
   })
 
   return md
 }
 
-function renderClinicalPipeline(trials: AllAgentOutputs['trials']): string {
+function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: string): string {
   if (trials.items.length === 0) {
     return 'No clinical trials found for this topic in our database.\n'
   }
 
-  let md = '### Trial Summary\n\n'
+  let md = ''
+  if (insight) {
+    md += insight + '\n\n'
+  }
+  md += '### Trial Summary\n\n'
   md += '| Phase | Count |\n'
   md += '|-------|-------|\n'
   Object.entries(trials.byPhase)
@@ -338,12 +478,16 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials']): string {
   return md
 }
 
-function renderPatents(patents: AllAgentOutputs['patents']): string {
+function renderPatents(patents: AllAgentOutputs['patents'], insight: string): string {
   if (patents.items.length === 0) {
     return 'No patents found for this topic in our database.\n'
   }
 
-  let md = '### Patent Summary\n\n'
+  let md = ''
+  if (insight) {
+    md += insight + '\n\n'
+  }
+  md += '### Patent Summary\n\n'
   md += '| Metric | Value |\n'
   md += '|--------|-------|\n'
   md += `| Total Patents | ${patents.items.length} |\n`
@@ -366,12 +510,16 @@ function renderPatents(patents: AllAgentOutputs['patents']): string {
   return md
 }
 
-function renderPublications(pubs: AllAgentOutputs['publications']): string {
+function renderPublications(pubs: AllAgentOutputs['publications'], insight: string): string {
   if (pubs.items.length === 0) {
     return 'No publications found for this topic in our database.\n'
   }
 
-  let md = '### Publication Summary\n\n'
+  let md = ''
+  if (insight) {
+    md += insight + '\n\n'
+  }
+  md += '### Publication Summary\n\n'
   md += '| Metric | Value |\n'
   md += '|--------|-------|\n'
   md += `| Total Publications | ${pubs.items.length} |\n`

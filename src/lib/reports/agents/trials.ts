@@ -1,50 +1,124 @@
 // Trials Agent
-// Searches clinical trials and enriches data from ClinicalTrials.gov if needed
+// Searches clinical trials linked to NIH projects
+// Enriches data from ClinicalTrials.gov if needed
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { TrialsAgentOutput, TrialItem } from '../types'
 
+const UNIFIED_THRESHOLD = 0.35
+
 /**
  * Run the Trials Agent to gather clinical trial data for a topic
+ * Uses hybrid approach: keyword search + project-linked search
  */
 export async function runTrialsAgent(topic: string): Promise<TrialsAgentOutput> {
   console.log(`[Trials Agent] Searching for "${topic}"`)
 
-  // Generate embedding for semantic search
   const queryEmbedding = await generateEmbedding(topic)
 
-  // Search for trials using semantic similarity
-  const { data, error } = await supabaseAdmin.rpc('search_clinical_studies', {
-    query_embedding: queryEmbedding,
-    match_threshold: 0.30, // Lower threshold for broader results
-    match_count: 30,
-  })
+  // Extract primary term for keyword search
+  const primaryTerm = topic.split(/\s+/)[0] // e.g., "CAR-T" or "CRISPR"
 
-  if (error) {
-    console.error('[Trials Agent] Search error:', error)
+  const [keywordResult, linkedResult] = await Promise.all([
+    // Keyword search on trial titles
+    supabaseAdmin
+      .from('clinical_studies')
+      .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
+      .ilike('study_title', `%${primaryTerm}%`)
+      .order('start_date', { ascending: false })
+      .limit(30),
+
+    // Project-linked approach: find projects, get their linked trials
+    (async () => {
+      const { data: projects } = await supabaseAdmin.rpc('search_projects_filtered', {
+        query_embedding: queryEmbedding,
+        match_threshold: UNIFIED_THRESHOLD,
+        match_count: 30,
+        min_biotools_confidence: 0,
+        filter_fiscal_years: null,
+        filter_categories: null,
+        filter_org_types: null,
+        filter_states: null,
+        filter_min_funding: null,
+        filter_max_funding: null,
+      })
+
+      if (!projects || projects.length === 0) {
+        return { data: null, error: null }
+      }
+
+      const projectNumbers = projects
+        .map((p: { project_number: string }) => p.project_number)
+        .filter(Boolean)
+
+      if (projectNumbers.length === 0) {
+        return { data: null, error: null }
+      }
+
+      // Get trials linked to these projects
+      return supabaseAdmin
+        .from('clinical_studies')
+        .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
+        .in('project_number', projectNumbers)
+        .order('start_date', { ascending: false })
+        .limit(30)
+    })(),
+  ])
+
+  // Merge results, prioritizing keyword matches (more specific)
+  const seenTrials = new Map<string, RawTrialResult>()
+
+  // Add keyword results first
+  if (keywordResult.data) {
+    for (const trial of keywordResult.data) {
+      if (!seenTrials.has(trial.nct_id)) {
+        seenTrials.set(trial.nct_id, trial)
+      }
+    }
+  }
+
+  // Add linked trials that weren't already included
+  if (linkedResult.data) {
+    for (const trial of linkedResult.data) {
+      if (!seenTrials.has(trial.nct_id)) {
+        seenTrials.set(trial.nct_id, trial)
+      }
+    }
+  }
+
+  const mergedResults = Array.from(seenTrials.values())
+
+  console.log(
+    `[Trials Agent] Found ${mergedResults.length} trials ` +
+      `(${keywordResult.data?.length || 0} keyword, ${linkedResult.data?.length || 0} linked)`
+  )
+
+  if (mergedResults.length === 0) {
     return emptyOutput()
   }
 
-  const rawResults = (data || []) as RawTrialResult[]
-
-  // Check if any trials need enrichment (missing phase or conditions)
-  const needsEnrichment = rawResults.filter(
+  // Check if any trials need enrichment
+  const needsEnrichment = mergedResults.filter(
     (t) => !t.phase || !t.enrollment_count || !t.lead_sponsor
   )
 
-  if (needsEnrichment.length > 0) {
+  if (needsEnrichment.length > 0 && needsEnrichment.length <= 10) {
     console.log(`[Trials Agent] ${needsEnrichment.length} trials need enrichment`)
     await enrichTrials(needsEnrichment.map((t) => t.nct_id))
+
+    // Refetch enriched data
+    const nctIds = mergedResults.map((t) => t.nct_id)
+    const { data: refreshed } = await supabaseAdmin
+      .from('clinical_studies')
+      .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
+      .in('nct_id', nctIds)
+
+    if (refreshed) {
+      return processResults(refreshed)
+    }
   }
 
-  // Fetch full trial data with conditions
-  const nctIds = rawResults.map((t) => t.nct_id)
-  const { data: fullTrials } = await supabaseAdmin
-    .from('clinical_studies')
-    .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions')
-    .in('nct_id', nctIds)
-
-  return processResults(fullTrials || rawResults)
+  return processResults(mergedResults.slice(0, 30))
 }
 
 /**
@@ -76,7 +150,7 @@ function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
     byStatus[status] = (byStatus[status] || 0) + 1
   })
 
-  console.log(`[Trials Agent] Found ${items.length} trials`)
+  console.log(`[Trials Agent] Processed ${items.length} trials`)
   console.log(`  - By phase:`, byPhase)
 
   return {
@@ -105,11 +179,11 @@ function normalizePhase(phase: string | null): string {
 
 /**
  * Enrich trials by fetching from ClinicalTrials.gov API
+ * Saves enriched data back to DB for future use
  */
 async function enrichTrials(nctIds: string[]): Promise<void> {
   console.log(`[Trials Agent] Enriching ${nctIds.length} trials from ClinicalTrials.gov`)
 
-  // Fetch in parallel with rate limiting (10 req/sec soft limit)
   const batchSize = 5
   for (let i = 0; i < nctIds.length; i += batchSize) {
     const batch = nctIds.slice(i, i + batchSize)
@@ -132,12 +206,11 @@ async function enrichTrials(nctIds: string[]): Promise<void> {
           // Extract fields
           const phase = protocol?.designModule?.phases?.[0] || null
           const enrollmentCount = protocol?.designModule?.enrollmentInfo?.count || null
-          const leadSponsor =
-            protocol?.sponsorCollaboratorsModule?.leadSponsor?.name || null
+          const leadSponsor = protocol?.sponsorCollaboratorsModule?.leadSponsor?.name || null
           const conditions = protocol?.conditionsModule?.conditions || null
           const briefSummary = protocol?.descriptionModule?.briefSummary || null
 
-          // Update database
+          // Save to database
           await supabaseAdmin
             .from('clinical_studies')
             .update({
@@ -155,16 +228,13 @@ async function enrichTrials(nctIds: string[]): Promise<void> {
       })
     )
 
-    // Rate limiting pause between batches
+    // Rate limiting
     if (i + batchSize < nctIds.length) {
       await new Promise((resolve) => setTimeout(resolve, 500))
     }
   }
 }
 
-/**
- * Return empty output when search fails
- */
 function emptyOutput(): TrialsAgentOutput {
   return {
     items: [],
@@ -173,9 +243,6 @@ function emptyOutput(): TrialsAgentOutput {
   }
 }
 
-/**
- * Generate embedding using OpenAI
- */
 async function generateEmbedding(text: string): Promise<number[]> {
   const { default: OpenAI } = await import('openai')
   const openai = new OpenAI()
@@ -188,7 +255,6 @@ async function generateEmbedding(text: string): Promise<number[]> {
   return response.data[0].embedding
 }
 
-// Type for raw database results
 interface RawTrialResult {
   nct_id: string
   study_title: string
@@ -197,4 +263,5 @@ interface RawTrialResult {
   enrollment_count?: number | null
   lead_sponsor?: string | null
   conditions?: string[] | null
+  brief_summary?: string | null
 }
