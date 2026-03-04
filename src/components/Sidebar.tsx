@@ -139,24 +139,25 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
             <div className="px-3 pb-2">
               <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">Analyze</span>
             </div>
-            <button
-              onClick={() => handleNavClick('investor')}
+            <Link
+              href="/reports"
+              onClick={() => setIsOpen(false)}
               className={`
                 w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
                 transition-all duration-150
-                ${currentPersona === 'investor'
+                ${pathname === '/reports' || pathname.startsWith('/reports/')
                   ? 'bg-gray-50 text-gray-900'
                   : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }
               `}
             >
               <FileText
-                className={`w-5 h-5 flex-shrink-0 ${currentPersona === 'investor' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
-                strokeWidth={currentPersona === 'investor' ? 2 : 1.5}
+                className={`w-5 h-5 flex-shrink-0 ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                strokeWidth={pathname === '/reports' || pathname.startsWith('/reports/') ? 2 : 1.5}
               />
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <span className={`text-sm font-medium ${currentPersona === 'investor' ? 'text-gray-900' : ''}`}>
+                  <span className={`text-sm font-medium ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-gray-900' : ''}`}>
                     Reports
                   </span>
                   <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">
@@ -168,7 +169,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
                   Intelligence reports
                 </div>
               </div>
-            </button>
+            </Link>
           </div>
 
           {/* Divider */}
