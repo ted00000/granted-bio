@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { User, ChevronLeft, DollarSign, FileText, FlaskConical, Activity, Building2 } from 'lucide-react'
 
@@ -51,6 +51,7 @@ function isProjectActive(endDate: string | null): boolean | null {
 
 export default function ResearcherPage() {
   const params = useParams()
+  const router = useRouter()
   const name = params.name as string
 
   const [data, setData] = useState<ResearcherData | null>(null)
@@ -100,10 +101,10 @@ export default function ResearcherPage() {
       <div className="min-h-screen bg-[#FAFAF9]">
         <header className="bg-white border-b border-gray-100">
           <div className="max-w-5xl mx-auto px-4 py-4">
-            <Link href="/chat?persona=bd" className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1">
+            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1">
               <ChevronLeft className="w-4 h-4" />
-              Back to Search
-            </Link>
+              Back
+            </button>
           </div>
         </header>
         <main className="max-w-5xl mx-auto px-4 py-16 text-center">
@@ -124,10 +125,10 @@ export default function ResearcherPage() {
             <Link href="/" className="text-xl font-semibold text-gray-900">
               granted<span className="text-[#E07A5F]">.bio</span>
             </Link>
-            <Link href="/chat?persona=bd" className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium flex items-center gap-1">
+            <button onClick={() => router.back()} className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium flex items-center gap-1">
               <ChevronLeft className="w-4 h-4" />
-              Back to Search
-            </Link>
+              Back
+            </button>
           </div>
         </div>
       </header>
