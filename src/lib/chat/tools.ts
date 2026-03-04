@@ -1889,8 +1889,8 @@ export async function searchTrials(
     const rrfScores: Map<string, { score: number; data: TrialData | null }> = new Map()
 
     // Score keyword matches (use composite ID for matching)
-    // Keyword matches get a 3x boost since exact term matches are more valuable
-    const KEYWORD_BOOST = 3
+    // Balanced RRF now that embeddings include conditions + brief_summary
+    const KEYWORD_BOOST = 1
     let keywordRank = 1
     for (const compositeId of keywordIds) {
       const [nctId] = compositeId.split('|')
