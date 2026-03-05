@@ -111,7 +111,7 @@ Write the executive summary with:
 Be specific with numbers. Focus on insights, not just data summary. Write in a professional, analytical tone.`
 
   const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
+    model: 'claude-opus-4-20250514',
     max_tokens: 1500,
     messages: [
       {
@@ -218,7 +218,7 @@ Return ONLY valid JSON, no markdown formatting.`
 
   try {
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-opus-4-20250514',
       max_tokens: 1000,
       messages: [{ role: 'user', content: prompt }],
     })
