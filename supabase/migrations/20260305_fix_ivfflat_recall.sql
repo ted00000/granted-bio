@@ -1,11 +1,8 @@
--- CRITICAL FIX: IVFFlat with probes=50 only returns ~43-46 results regardless of threshold
--- Diagnostic showed keyword search finds 200-400 CAR-T projects, but semantic search only returns ~43
--- The IVFFlat index clusters are not exploring enough vectors
---
--- Setting probes=100 (equal to lists) effectively does a sequential scan but ensures maximum recall
--- For 128k projects this is still performant (< 500ms)
+-- Fix vector search recall by using correct index settings
+-- projects.abstract_embedding uses HNSW index (not IVFFlat)
+-- clinical_studies.study_embedding uses IVFFlat index
 
--- Update search_projects function with maximum probes
+-- Update search_projects function (HNSW index)
 DROP FUNCTION IF EXISTS search_projects(vector, float, int, int);
 
 CREATE OR REPLACE FUNCTION search_projects(
@@ -36,30 +33,15 @@ RETURNS TABLE (
   similarity FLOAT
 ) AS $$
 BEGIN
-  -- Set probes=100 (equal to lists) for maximum recall
-  -- This effectively does a full scan but ensures we don't miss relevant results
-  SET LOCAL ivfflat.probes = 100;
-
+  -- HNSW index uses ef_search for recall control
+  SET LOCAL hnsw.ef_search = 200;
   RETURN QUERY
   SELECT
-    p.id,
-    p.application_id,
-    p.project_number,
-    p.title,
-    p.phr,
-    p.org_name,
-    p.org_type,
-    p.org_city,
-    p.org_state,
-    p.total_cost,
-    p.fiscal_year,
-    p.funding_mechanism,
-    p.primary_category,
-    p.biotools_confidence,
-    p.biotools_reasoning,
-    p.pi_names,
-    p.is_supplement,
-    p.supplement_number,
+    p.id, p.application_id, p.project_number, p.title, p.phr,
+    p.org_name, p.org_type, p.org_city, p.org_state, p.total_cost,
+    p.fiscal_year, p.funding_mechanism, p.primary_category,
+    p.biotools_confidence, p.biotools_reasoning, p.pi_names,
+    p.is_supplement, p.supplement_number,
     (1 - (p.abstract_embedding <=> query_embedding))::FLOAT as similarity
   FROM projects p
   WHERE p.abstract_embedding IS NOT NULL
@@ -71,7 +53,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Update search_projects_filtered with maximum probes
+-- Update search_projects_filtered function (HNSW index)
 DROP FUNCTION IF EXISTS search_projects_filtered(vector, float, int, int, int[], text[], text[], text[], numeric, numeric);
 
 CREATE OR REPLACE FUNCTION search_projects_filtered(
@@ -108,29 +90,15 @@ RETURNS TABLE (
   similarity FLOAT
 ) AS $$
 BEGIN
-  -- Set probes=100 (equal to lists) for maximum recall
-  SET LOCAL ivfflat.probes = 100;
-
+  -- HNSW index uses ef_search for recall control
+  SET LOCAL hnsw.ef_search = 200;
   RETURN QUERY
   SELECT
-    p.id,
-    p.application_id,
-    p.project_number,
-    p.title,
-    p.phr,
-    p.org_name,
-    p.org_type,
-    p.org_city,
-    p.org_state,
-    p.total_cost,
-    p.fiscal_year,
-    p.funding_mechanism,
-    p.primary_category,
-    p.biotools_confidence,
-    p.biotools_reasoning,
-    p.pi_names,
-    p.is_supplement,
-    p.supplement_number,
+    p.id, p.application_id, p.project_number, p.title, p.phr,
+    p.org_name, p.org_type, p.org_city, p.org_state, p.total_cost,
+    p.fiscal_year, p.funding_mechanism, p.primary_category,
+    p.biotools_confidence, p.biotools_reasoning, p.pi_names,
+    p.is_supplement, p.supplement_number,
     (1 - (p.abstract_embedding <=> query_embedding))::FLOAT as similarity
   FROM projects p
   WHERE p.abstract_embedding IS NOT NULL
@@ -148,7 +116,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Update clinical studies search function with maximum probes
+-- Update search_clinical_studies function (IVFFlat index)
 DROP FUNCTION IF EXISTS search_clinical_studies(VECTOR(1536), FLOAT, INT);
 
 CREATE OR REPLACE FUNCTION search_clinical_studies(
@@ -167,18 +135,12 @@ RETURNS TABLE (
   similarity DOUBLE PRECISION
 ) AS $$
 BEGIN
-  -- Set probes=100 for maximum recall
+  -- IVFFlat index uses probes for recall control
   SET LOCAL ivfflat.probes = 100;
-
   RETURN QUERY
   SELECT
-    cs.id,
-    cs.nct_id,
-    cs.study_title,
-    cs.study_status,
-    cs.is_diagnostic_trial,
-    cs.is_therapeutic_trial,
-    cs.project_number,
+    cs.id, cs.nct_id, cs.study_title, cs.study_status,
+    cs.is_diagnostic_trial, cs.is_therapeutic_trial, cs.project_number,
     (1 - (cs.study_embedding <=> query_embedding))::DOUBLE PRECISION as similarity
   FROM clinical_studies cs
   WHERE cs.study_embedding IS NOT NULL
@@ -188,6 +150,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-COMMENT ON FUNCTION search_projects IS 'Semantic search with full recall (probes=100)';
-COMMENT ON FUNCTION search_projects_filtered IS 'Filtered semantic search with full recall (probes=100)';
-COMMENT ON FUNCTION search_clinical_studies IS 'Clinical trials semantic search with full recall (probes=100)';
+COMMENT ON FUNCTION search_projects IS 'Semantic search with HNSW ef_search=200';
+COMMENT ON FUNCTION search_projects_filtered IS 'Filtered semantic search with HNSW ef_search=200';
+COMMENT ON FUNCTION search_clinical_studies IS 'Clinical trials search with IVFFlat probes=100';
