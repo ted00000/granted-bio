@@ -45,11 +45,11 @@ interface QuickFilters {
   precision?: 'low' | 'med' | 'high'
 }
 
-// Precision threshold mappings
+// Precision threshold mappings (similarity scores typically range 0.45-0.75 for good matches)
 const PRECISION_THRESHOLDS = {
-  low: 0.20,
-  med: 0.35,
-  high: 0.50
+  low: 0.50,
+  med: 0.60,
+  high: 0.70
 } as const
 
 interface FilterState {
