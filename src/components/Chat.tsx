@@ -147,9 +147,13 @@ interface ResultsPanelProps {
   onTrialClick?: (nctId: string) => void
   // Persona for mode-specific rendering
   persona?: PersonaType
+  // Precision filter
+  precision?: 'low' | 'med' | 'high'
+  onPrecisionChange?: (precision: 'low' | 'med' | 'high') => void
+  precisionCounts?: { low: number; med: number; high: number }
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts }: ResultsPanelProps) {
   // CSV export for People mode
   const exportToCSV = (projects: SearchResultProject[]) => {
     const headers = ['Organization', 'State', 'PI Name', 'Project Title', 'Funding', 'Category', 'Patents', 'Publications', 'Trials']
@@ -229,6 +233,41 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           {searchContext && (
             <div className="text-xs text-gray-400 mt-2 truncate" title={`Keyword: ${searchContext.keywordQuery}\nSemantic: ${searchContext.semanticQuery}`}>
               Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
+            </div>
+          )}
+          {/* Precision filter - match quality */}
+          {onPrecisionChange && (
+            <div className="mt-3">
+              <div className="text-xs text-gray-500 mb-1.5">Match quality</div>
+              <div className="flex gap-1.5">
+                {[
+                  { level: 'low' as const, label: 'Broad', count: precisionCounts?.low },
+                  { level: 'med' as const, label: 'Balanced', count: precisionCounts?.med },
+                  { level: 'high' as const, label: 'Precise', count: precisionCounts?.high },
+                ].map(({ level, label, count }) => {
+                  const isSelected = precision === level
+                  return (
+                    <button
+                      key={level}
+                      onClick={() => onPrecisionChange(level)}
+                      className={`
+                        px-2.5 py-1 text-xs rounded-full border transition-all
+                        ${isSelected
+                          ? 'bg-indigo-500 text-white border-indigo-500'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
+                        }
+                      `}
+                    >
+                      {label}
+                      {count !== undefined && (
+                        <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                          {count}
+                        </span>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
           )}
         </div>
@@ -443,6 +482,41 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           {searchContext && (
             <div className="text-xs text-gray-400 mt-2 truncate" title={`Keyword: ${searchContext.keywordQuery}\nSemantic: ${searchContext.semanticQuery}`}>
               Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
+            </div>
+          )}
+          {/* Precision filter - match quality */}
+          {onPrecisionChange && (
+            <div className="mt-3">
+              <div className="text-xs text-gray-500 mb-1.5">Match quality</div>
+              <div className="flex gap-1.5">
+                {[
+                  { level: 'low' as const, label: 'Broad', count: precisionCounts?.low },
+                  { level: 'med' as const, label: 'Balanced', count: precisionCounts?.med },
+                  { level: 'high' as const, label: 'Precise', count: precisionCounts?.high },
+                ].map(({ level, label, count }) => {
+                  const isSelected = precision === level
+                  return (
+                    <button
+                      key={level}
+                      onClick={() => onPrecisionChange(level)}
+                      className={`
+                        px-2.5 py-1 text-xs rounded-full border transition-all
+                        ${isSelected
+                          ? 'bg-indigo-500 text-white border-indigo-500'
+                          : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
+                        }
+                      `}
+                    >
+                      {label}
+                      {count !== undefined && (
+                        <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                          {count}
+                        </span>
+                      )}
+                    </button>
+                  )
+                })}
+              </div>
             </div>
           )}
         </div>
@@ -994,6 +1068,7 @@ export function Chat({ persona }: ChatProps) {
   const [currentFilters, setCurrentFilters] = useState<FilterState>({})
   const [trialStatusFilters, setTrialStatusFilters] = useState<string[]>([])
   const [savedTrialIds, setSavedTrialIds] = useState<Set<string>>(new Set())
+  const [precision, setPrecision] = useState<'low' | 'med' | 'high'>('low')
   const [restoredFromStorage, setRestoredFromStorage] = useState(false)
   const [showMobileResults, setShowMobileResults] = useState(true)  // Delay mobile results during restoration
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -1267,6 +1342,77 @@ export function Chat({ persona }: ChatProps) {
     }
 
     setFilteredResults(filteredData)
+  }, [searchContext])
+
+  // Apply precision filtering when precision changes
+  useEffect(() => {
+    if (!searchContext) return
+
+    const allResults = searchContext.originalResults.all_results
+    const threshold = PRECISION_THRESHOLDS[precision]
+
+    // Filter by precision threshold
+    let filtered = allResults.filter(p => (p.similarity || 0) >= threshold)
+
+    // Also apply any existing category/org_type filters
+    if (currentFilters.primary_category?.length) {
+      filtered = filtered.filter(p =>
+        p.primary_category && currentFilters.primary_category!.includes(p.primary_category)
+      )
+    }
+    if (currentFilters.org_type?.length) {
+      filtered = filtered.filter(p =>
+        p.org_type && currentFilters.org_type!.includes(p.org_type)
+      )
+    }
+    // Apply quick filters
+    const quick = currentFilters.quick
+    if (quick?.activeOnly) {
+      filtered = filtered.filter(p => isProjectActive(p.project_end) === true)
+    }
+    if (quick?.sbirSttrOnly) {
+      filtered = filtered.filter(p => isSbirSttr(p.activity_code))
+    }
+    if (quick?.hasPatents) {
+      filtered = filtered.filter(p => (p.patent_count || 0) > 0)
+    }
+    if (quick?.hasClinicalTrials) {
+      filtered = filtered.filter(p => (p.clinical_trial_count || 0) > 0)
+    }
+
+    // Recalculate counts
+    const byCategory: Record<string, number> = {}
+    const byOrgType: Record<string, number> = {}
+    filtered.forEach(p => {
+      const cat = p.primary_category || 'other'
+      const org = p.org_type || 'other'
+      byCategory[cat] = (byCategory[cat] || 0) + 1
+      byOrgType[org] = (byOrgType[org] || 0) + 1
+    })
+
+    const filteredData: KeywordSearchResult = {
+      summary: `Found ${filtered.length} projects.`,
+      search_query: searchContext.originalResults.search_query,
+      total_count: filtered.length,
+      showing_count: Math.min(filtered.length, 100),
+      by_category: byCategory,
+      by_org_type: byOrgType,
+      all_results: filtered,
+      sample_results: filtered.slice(0, 10)
+    }
+
+    setFilteredResults(filteredData)
+  }, [precision, searchContext, currentFilters, isSbirSttr])
+
+  // Compute precision counts from original results
+  const precisionCounts = useMemo(() => {
+    if (!searchContext) return undefined
+    const allResults = searchContext.originalResults.all_results
+    return {
+      low: allResults.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.low).length,
+      med: allResults.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.med).length,
+      high: allResults.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.high).length
+    }
   }, [searchContext])
 
   useEffect(() => {
@@ -1673,6 +1819,9 @@ export function Chat({ persona }: ChatProps) {
                   savedTrialIds={savedTrialIds}
                   onSaveTrial={handleSaveTrial}
                   persona={persona}
+                  precision={precision}
+                  onPrecisionChange={setPrecision}
+                  precisionCounts={precisionCounts}
                 />
               </div>
             )}
@@ -1748,6 +1897,9 @@ export function Chat({ persona }: ChatProps) {
               savedTrialIds={savedTrialIds}
               onSaveTrial={handleSaveTrial}
               persona={persona}
+              precision={precision}
+              onPrecisionChange={setPrecision}
+              precisionCounts={precisionCounts}
             />
           </div>
         </div>
