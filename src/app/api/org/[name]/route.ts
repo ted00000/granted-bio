@@ -48,15 +48,26 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
     }
 
-    // Calculate summary stats
-    const totalFunding = projects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
-    const totalPatents = projects.reduce((sum, p) => sum + (p.patent_count || 0), 0)
-    const totalPublications = projects.reduce((sum, p) => sum + (p.publication_count || 0), 0)
-    const totalTrials = projects.reduce((sum, p) => sum + (p.clinical_trial_count || 0), 0)
+    // Deduplicate by project_number - keep most recent fiscal year
+    const seenProjects = new Map<string, typeof projects[0]>()
+    for (const project of projects) {
+      const key = project.project_number || project.application_id
+      const existing = seenProjects.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(key, project)
+      }
+    }
+    const dedupedProjects = Array.from(seenProjects.values())
+
+    // Calculate summary stats from deduplicated projects
+    const totalFunding = dedupedProjects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
+    const totalPatents = dedupedProjects.reduce((sum, p) => sum + (p.patent_count || 0), 0)
+    const totalPublications = dedupedProjects.reduce((sum, p) => sum + (p.publication_count || 0), 0)
+    const totalTrials = dedupedProjects.reduce((sum, p) => sum + (p.clinical_trial_count || 0), 0)
 
     // Get unique PIs
     const uniquePIs = new Set<string>()
-    projects.forEach(p => {
+    dedupedProjects.forEach(p => {
       if (p.pi_names) {
         p.pi_names.split(';').forEach((name: string) => {
           const trimmed = name.trim()
@@ -67,18 +78,18 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     return NextResponse.json({
       org_name: orgName,
-      org_state: projects[0]?.org_state,
-      org_city: projects[0]?.org_city,
-      org_type: projects[0]?.org_type,
+      org_state: dedupedProjects[0]?.org_state,
+      org_city: dedupedProjects[0]?.org_city,
+      org_type: dedupedProjects[0]?.org_type,
       stats: {
-        project_count: projects.length,
+        project_count: dedupedProjects.length,
         total_funding: totalFunding,
         patent_count: totalPatents,
         publication_count: totalPublications,
         clinical_trial_count: totalTrials,
         pi_count: uniquePIs.size,
       },
-      projects,
+      projects: dedupedProjects,
     })
   } catch (error) {
     console.error('Error in org API:', error)

@@ -48,21 +48,32 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Researcher not found' }, { status: 404 })
     }
 
-    // Calculate summary stats
-    const totalFunding = projects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
-    const totalPatents = projects.reduce((sum, p) => sum + (p.patent_count || 0), 0)
-    const totalPublications = projects.reduce((sum, p) => sum + (p.publication_count || 0), 0)
-    const totalTrials = projects.reduce((sum, p) => sum + (p.clinical_trial_count || 0), 0)
+    // Deduplicate by project_number - keep most recent fiscal year
+    const seenProjects = new Map<string, typeof projects[0]>()
+    for (const project of projects) {
+      const key = project.project_number || project.application_id
+      const existing = seenProjects.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(key, project)
+      }
+    }
+    const dedupedProjects = Array.from(seenProjects.values())
+
+    // Calculate summary stats from deduplicated projects
+    const totalFunding = dedupedProjects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
+    const totalPatents = dedupedProjects.reduce((sum, p) => sum + (p.patent_count || 0), 0)
+    const totalPublications = dedupedProjects.reduce((sum, p) => sum + (p.publication_count || 0), 0)
+    const totalTrials = dedupedProjects.reduce((sum, p) => sum + (p.clinical_trial_count || 0), 0)
 
     // Get unique organizations
     const uniqueOrgs = new Set<string>()
-    projects.forEach(p => {
+    dedupedProjects.forEach(p => {
       if (p.org_name) uniqueOrgs.add(p.org_name)
     })
 
     // Determine primary organization (most projects)
     const orgCounts = new Map<string, number>()
-    projects.forEach(p => {
+    dedupedProjects.forEach(p => {
       if (p.org_name) {
         orgCounts.set(p.org_name, (orgCounts.get(p.org_name) || 0) + 1)
       }
@@ -77,21 +88,21 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     })
 
     // Get state from most recent project
-    const primaryState = projects.find(p => p.org_name === primaryOrg)?.org_state
+    const primaryState = dedupedProjects.find(p => p.org_name === primaryOrg)?.org_state
 
     return NextResponse.json({
       pi_name: piName,
       primary_org: primaryOrg,
       org_state: primaryState,
       stats: {
-        project_count: projects.length,
+        project_count: dedupedProjects.length,
         total_funding: totalFunding,
         patent_count: totalPatents,
         publication_count: totalPublications,
         clinical_trial_count: totalTrials,
         org_count: uniqueOrgs.size,
       },
-      projects,
+      projects: dedupedProjects,
     })
   } catch (error) {
     console.error('Error in researcher API:', error)
