@@ -1614,19 +1614,27 @@ export function Chat({ persona }: ChatProps) {
     return filtered
   }, [isSbirSttr])
 
-  // Compute all cross-filtered counts dynamically
+  // Compute all cross-filtered counts dynamically (respects precision filter)
   const { crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts } = useMemo(() => {
     if (!searchContext) {
       return { crossFilteredByCategory: undefined, crossFilteredByOrgType: undefined, quickFilterCounts: undefined }
     }
 
-    const allResults = searchContext.originalResults.all_results
+    const originalResults = searchContext.originalResults.all_results
+
+    // First apply precision filter to get the base set
+    const percentile = PRECISION_PERCENTILES[precision]
+    const sorted = [...originalResults].sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
+    const precisionCount = Math.max(1, Math.ceil(sorted.length * percentile))
+    const allResults = sorted.slice(0, precisionCount)
+
     const hasCategory = currentFilters.primary_category?.length
     const hasOrgType = currentFilters.org_type?.length
     const hasQuickFilters = currentFilters.quick && Object.values(currentFilters.quick).some(Boolean)
-    const hasAnyFilter = hasCategory || hasOrgType || hasQuickFilters
+    const hasPrecision = precision !== 'low'  // 'low' = all results, so not a filter
+    const hasAnyFilter = hasCategory || hasOrgType || hasQuickFilters || hasPrecision
 
-    // For category chips: apply all filters EXCEPT category
+    // For category chips: apply all filters EXCEPT category (on precision-filtered set)
     const categoryFiltered = applyFilters(allResults, currentFilters, { category: true })
     const byCategory: Record<string, number> = {}
     categoryFiltered.forEach(p => {
@@ -1634,7 +1642,7 @@ export function Chat({ persona }: ChatProps) {
       byCategory[cat] = (byCategory[cat] || 0) + 1
     })
 
-    // For org_type chips: apply all filters EXCEPT org_type
+    // For org_type chips: apply all filters EXCEPT org_type (on precision-filtered set)
     const orgFiltered = applyFilters(allResults, currentFilters, { orgType: true })
     const byOrgType: Record<string, number> = {}
     orgFiltered.forEach(p => {
@@ -1642,14 +1650,14 @@ export function Chat({ persona }: ChatProps) {
       byOrgType[org] = (byOrgType[org] || 0) + 1
     })
 
-    // For quick filter chips: apply all filters EXCEPT the specific quick filter being counted
+    // For quick filter chips: apply all filters EXCEPT the specific quick filter (on precision-filtered set)
     const activeFiltered = applyFilters(allResults, currentFilters, { quick: 'activeOnly' })
     const sbirFiltered = applyFilters(allResults, currentFilters, { quick: 'sbirSttrOnly' })
     const patentsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasPatents' })
     const trialsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasClinicalTrials' })
-    const precisionFiltered = applyFilters(allResults, currentFilters, { quick: 'precision' })
 
-    const precisionTotal = precisionFiltered.length
+    // Precision counts are based on original results (not the filtered set)
+    const precisionTotal = originalResults.length
     const quickCounts = {
       active: activeFiltered.filter(p => isProjectActive(p.project_end) === true).length,
       sbirSttr: sbirFiltered.filter(p => isSbirSttr(p.activity_code)).length,
@@ -1665,7 +1673,7 @@ export function Chat({ persona }: ChatProps) {
       crossFilteredByOrgType: hasAnyFilter ? byOrgType : undefined,
       quickFilterCounts: quickCounts
     }
-  }, [searchContext, currentFilters, applyFilters, isSbirSttr])
+  }, [searchContext, currentFilters, applyFilters, isSbirSttr, precision])
 
   return (
     <div className="h-full bg-white flex overflow-hidden max-w-full">
