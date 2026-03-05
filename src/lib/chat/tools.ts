@@ -1018,13 +1018,16 @@ export async function searchProjectsSemantic(
 ): Promise<KeywordSearchResult> {
   const { semantic_query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
-  const threshold = 0.25 // Low threshold - UI filters by precision (similarity)
+  // Very low threshold to maximize recall - UI filters by precision (similarity)
+  // Client-side filtering will apply stricter thresholds (Low: >0.20, Med: >0.35, High: >0.50)
+  const threshold = 0.15
 
   console.log(`[Semantic Search] Threshold: ${threshold}`)
 
   try {
     // Get semantic results only - no keyword search
-    const semanticResults = await getSemanticResults(semantic_query, effectiveLimit * 5, threshold)
+    // Request 10x limit to ensure enough results after deduplication and filtering
+    const semanticResults = await getSemanticResults(semantic_query, effectiveLimit * 10, threshold)
     console.log(`[Semantic Search] Results returned: ${semanticResults.length}`)
 
     // Fetch complete project data
@@ -1844,7 +1847,9 @@ export async function searchTrials(
 ): Promise<TrialSearchResult> {
   const { query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
-  const threshold = 0.25 // Low threshold - UI filters by precision (similarity)
+  // Very low threshold to maximize recall - UI filters by precision (similarity)
+  // Client-side filtering will apply stricter thresholds (Low: >0.20, Med: >0.35, High: >0.50)
+  const threshold = 0.15
 
   try {
     // Semantic search only - no keyword search
@@ -1852,7 +1857,7 @@ export async function searchTrials(
     const { data: semanticResults, error } = await supabaseAdmin.rpc('search_clinical_studies', {
       query_embedding: queryEmbedding,
       match_threshold: threshold,
-      match_count: effectiveLimit * 5 // Get more results for filtering
+      match_count: effectiveLimit * 10 // Get 10x results for client-side filtering
     })
 
     if (error) {
