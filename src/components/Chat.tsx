@@ -45,11 +45,12 @@ interface QuickFilters {
   precision?: 'low' | 'med' | 'high'
 }
 
-// Precision threshold mappings (similarity scores typically range 0.45-0.75 for good matches)
-const PRECISION_THRESHOLDS = {
-  low: 0.50,
-  med: 0.60,
-  high: 0.70
+// Precision filtering uses percentiles (not fixed thresholds) for consistent differentiation
+// Low: All results, Med: Top 50%, High: Top 20%
+const PRECISION_PERCENTILES = {
+  low: 1.0,    // 100% - all results
+  med: 0.5,    // 50% - top half
+  high: 0.2    // 20% - top fifth
 } as const
 
 interface FilterState {
@@ -1286,10 +1287,12 @@ export function Chat({ persona }: ChatProps) {
     // Filter the full result set client-side
     let filtered = allResults
 
-    // Apply precision filter (similarity threshold)
+    // Apply precision filter (percentile-based: top N% by similarity)
     if (quick?.precision) {
-      const threshold = PRECISION_THRESHOLDS[quick.precision]
-      filtered = filtered.filter(p => (p.similarity || 0) >= threshold)
+      const percentile = PRECISION_PERCENTILES[quick.precision]
+      const sorted = [...filtered].sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
+      const count = Math.max(1, Math.ceil(sorted.length * percentile))
+      filtered = sorted.slice(0, count)
     }
 
     // Apply quick filters
@@ -1349,10 +1352,12 @@ export function Chat({ persona }: ChatProps) {
     if (!searchContext) return
 
     const allResults = searchContext.originalResults.all_results
-    const threshold = PRECISION_THRESHOLDS[precision]
+    const percentile = PRECISION_PERCENTILES[precision]
 
-    // Filter by precision threshold
-    let filtered = allResults.filter(p => (p.similarity || 0) >= threshold)
+    // Filter by percentile (top N% by similarity)
+    const sorted = [...allResults].sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
+    const count = Math.max(1, Math.ceil(sorted.length * percentile))
+    let filtered = sorted.slice(0, count)
 
     // Also apply any existing category/org_type filters
     if (currentFilters.primary_category?.length) {
@@ -1404,14 +1409,14 @@ export function Chat({ persona }: ChatProps) {
     setFilteredResults(filteredData)
   }, [precision, searchContext, currentFilters, isSbirSttr])
 
-  // Compute precision counts from original results
+  // Compute precision counts from original results (percentile-based)
   const precisionCounts = useMemo(() => {
     if (!searchContext) return undefined
-    const allResults = searchContext.originalResults.all_results
+    const total = searchContext.originalResults.all_results.length
     return {
-      low: allResults.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.low).length,
-      med: allResults.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.med).length,
-      high: allResults.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.high).length
+      low: total,  // 100% - all results
+      med: Math.max(1, Math.ceil(total * PRECISION_PERCENTILES.med)),   // Top 50%
+      high: Math.max(1, Math.ceil(total * PRECISION_PERCENTILES.high))  // Top 20%
     }
   }, [searchContext])
 
@@ -1571,10 +1576,12 @@ export function Chat({ persona }: ChatProps) {
     // Apply quick filters (unless excluded)
     const quick = filters.quick
 
-    // Apply precision filter (unless excluded)
+    // Apply precision filter (percentile-based, unless excluded)
     if (quick?.precision && exclude?.quick !== 'precision') {
-      const threshold = PRECISION_THRESHOLDS[quick.precision]
-      filtered = filtered.filter(p => (p.similarity || 0) >= threshold)
+      const percentile = PRECISION_PERCENTILES[quick.precision]
+      const sorted = [...filtered].sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
+      const count = Math.max(1, Math.ceil(sorted.length * percentile))
+      filtered = sorted.slice(0, count)
     }
 
     if (quick?.activeOnly && exclude?.quick !== 'activeOnly') {
@@ -1642,14 +1649,15 @@ export function Chat({ persona }: ChatProps) {
     const trialsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasClinicalTrials' })
     const precisionFiltered = applyFilters(allResults, currentFilters, { quick: 'precision' })
 
+    const precisionTotal = precisionFiltered.length
     const quickCounts = {
       active: activeFiltered.filter(p => isProjectActive(p.project_end) === true).length,
       sbirSttr: sbirFiltered.filter(p => isSbirSttr(p.activity_code)).length,
       patents: patentsFiltered.filter(p => (p.patent_count || 0) > 0).length,
       clinicalTrials: trialsFiltered.filter(p => (p.clinical_trial_count || 0) > 0).length,
-      precisionLow: precisionFiltered.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.low).length,
-      precisionMed: precisionFiltered.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.med).length,
-      precisionHigh: precisionFiltered.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.high).length
+      precisionLow: precisionTotal,  // 100% - all results
+      precisionMed: Math.max(1, Math.ceil(precisionTotal * PRECISION_PERCENTILES.med)),   // Top 50%
+      precisionHigh: Math.max(1, Math.ceil(precisionTotal * PRECISION_PERCENTILES.high))  // Top 20%
     }
 
     return {
