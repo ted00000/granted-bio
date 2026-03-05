@@ -1016,78 +1016,29 @@ export async function searchProjectsSemantic(
   params: HybridSearchParams,
   userAccess: UserAccess
 ): Promise<KeywordSearchResult> {
-  const { keyword_query, semantic_query, filters, limit = 100 } = params
+  const { semantic_query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
-  // Very low threshold to maximize recall - UI filters by precision (similarity)
-  // Client-side filtering will apply stricter thresholds (Low: >0.20, Med: >0.35, High: >0.50)
+  // Low threshold - with probes=100, semantic search should have good recall
+  // Client-side can filter by similarity for precision (Low: >0.20, Med: >0.35, High: >0.50)
   const threshold = 0.15
-  // Baseline similarity for keyword-only matches (counts as "Low" precision)
-  const KEYWORD_BASELINE_SIMILARITY = 0.20
 
-  console.log(`[Semantic Search] Threshold: ${threshold}`)
+  console.log(`[Semantic Search] Query: "${semantic_query}", Threshold: ${threshold}`)
 
   try {
-    // Extract primary keyword for fallback search (first significant term)
-    const keywordForFallback = keyword_query || semantic_query.split(/\s+/)[0]
-    const searchVariations = [keywordForFallback]
-    if (keywordForFallback.includes('-')) {
-      searchVariations.push(keywordForFallback.replace('-', ' '))
-      searchVariations.push(keywordForFallback.replace('-', ''))
-    }
+    // Semantic search only - relies on probes=100 for full index coverage
+    const semanticResults = await getSemanticResults(semantic_query, effectiveLimit * 10, threshold)
+    console.log(`[Semantic Search] Results: ${semanticResults.length}`)
 
-    // Run semantic and keyword searches in parallel
-    const [semanticResults, keywordTitleResult, keywordPhrResult, keywordAbstractResult] = await Promise.all([
-      // Semantic search
-      getSemanticResults(semantic_query, effectiveLimit * 10, threshold),
-      // Keyword fallback on title
-      supabaseAdmin
-        .from('projects')
-        .select('application_id, project_number, title, org_name, org_state, org_type, primary_category, secondary_category, primary_category_confidence, total_cost, fiscal_year, pi_names, program_officer, activity_code, project_end, patent_count, publication_count, clinical_trial_count')
-        .or(searchVariations.map(v => `title.ilike.%${v}%`).join(','))
-        .order('fiscal_year', { ascending: false })
-        .limit(300),
-      // Keyword fallback on PHR
-      supabaseAdmin
-        .from('projects')
-        .select('application_id, project_number, title, org_name, org_state, org_type, primary_category, secondary_category, primary_category_confidence, total_cost, fiscal_year, pi_names, program_officer, activity_code, project_end, patent_count, publication_count, clinical_trial_count')
-        .or(searchVariations.map(v => `phr.ilike.%${v}%`).join(','))
-        .order('fiscal_year', { ascending: false })
-        .limit(300),
-      // Keyword fallback on abstract text (separate table)
-      supabaseAdmin
-        .from('abstracts')
-        .select('application_id')
-        .or(searchVariations.map(v => `abstract_text.ilike.%${v}%`).join(','))
-        .limit(500)
-    ])
-
-    console.log(`[Semantic Search] Semantic: ${semanticResults.length}, Title: ${keywordTitleResult.data?.length || 0}, PHR: ${keywordPhrResult.data?.length || 0}, Abstract: ${keywordAbstractResult.data?.length || 0}`)
-
-    // Build map of semantic results with their similarity scores
-    const semanticMap = new Map<string, number>()
-    for (const r of semanticResults) {
-      semanticMap.set(r.application_id, r.similarity || 0)
-    }
-
-    // Collect all unique IDs from all search methods
-    const allIds = new Set<string>()
-    semanticResults.forEach(r => allIds.add(r.application_id))
-    keywordTitleResult.data?.forEach(r => allIds.add(r.application_id))
-    keywordPhrResult.data?.forEach(r => allIds.add(r.application_id))
-    keywordAbstractResult.data?.forEach(r => allIds.add(r.application_id))
-
-    // Fetch complete project data for all IDs
-    const allProjectsData = await fetchProjectsByIds([...allIds])
+    // Fetch complete project data
+    const allIds = semanticResults.map(r => r.application_id)
+    const allProjectsData = await fetchProjectsByIds(allIds)
     const projectMap = new Map(allProjectsData.map(p => [p.application_id, p]))
 
-    // Merge results: semantic score if available, else baseline for keyword matches
-    let allProjects = [...allIds]
-      .map(id => {
-        const fullProject = projectMap.get(id)
-        if (!fullProject) return null
-        // Use semantic similarity if available, otherwise use baseline for keyword matches
-        const similarity = semanticMap.get(id) ?? KEYWORD_BASELINE_SIMILARITY
-        return { ...fullProject, similarity }
+    // Merge semantic scores with full project data
+    let allProjects = semanticResults
+      .map(r => {
+        const fullProject = projectMap.get(r.application_id)
+        return fullProject ? { ...fullProject, similarity: r.similarity || 0 } : null
       })
       .filter((p): p is ProjectWithCounts & { similarity: number } => p !== null)
       .sort((a, b) => b.similarity - a.similarity)
