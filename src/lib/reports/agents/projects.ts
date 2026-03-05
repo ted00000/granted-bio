@@ -1,11 +1,16 @@
 // Projects Agent
 // Searches NIH projects and aggregates funding data
+// Uses hybrid approach: keyword search + semantic search
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { ProjectsAgentOutput, ProjectItem } from '../types'
 
+const UNIFIED_THRESHOLD = 0.35 // Same threshold as other agents
+const MAX_RESULTS = 200 // Max unique projects to include
+
 /**
  * Run the Projects Agent to gather project data for a topic
+ * Uses hybrid approach: keyword search (title + PHR) + semantic search
  */
 export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutput> {
   console.log(`[Projects Agent] Searching for "${topic}"`)
@@ -13,64 +18,105 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
   // Generate embedding for semantic search
   const queryEmbedding = await generateEmbedding(topic)
 
-  // Search for projects using semantic similarity
-  const { data, error } = await supabaseAdmin.rpc('search_projects_filtered', {
-    query_embedding: queryEmbedding,
-    match_threshold: 0.25, // Lower threshold for broader results
-    match_count: 50,
-    min_biotools_confidence: 0,
-    filter_fiscal_years: null,
-    filter_categories: null,
-    filter_org_types: null,
-    filter_states: null,
-    filter_min_funding: null,
-    filter_max_funding: null,
-  })
+  // Extract primary search term (most specific part of query)
+  const primaryTerm = topic.split(/\s+/)[0] // e.g., "CAR-T" from "CAR-T cell therapy"
 
-  if (error) {
-    console.error('[Projects Agent] Search error:', error)
-    // Try fallback to basic search
-    const { data: fallbackData, error: fallbackError } = await supabaseAdmin.rpc(
-      'search_projects',
-      {
-        query_embedding: queryEmbedding,
-        match_threshold: 0.25,
-        match_count: 50,
-        min_biotools_confidence: 0,
-      }
-    )
-
-    if (fallbackError) {
-      console.error('[Projects Agent] Fallback search failed:', fallbackError)
-      return emptyOutput()
-    }
-
-    return processResults(fallbackData || [])
+  // Build keyword search conditions for multiple term variations
+  const searchVariations = [primaryTerm]
+  if (primaryTerm.includes('-')) {
+    searchVariations.push(primaryTerm.replace('-', ' ')) // CAR-T -> CAR T
   }
 
-  return processResults(data || [])
+  // Run three searches in parallel
+  const [keywordTitleResult, keywordPhrResult, semanticResult] = await Promise.all([
+    // 1. Keyword search on title
+    supabaseAdmin
+      .from('projects')
+      .select(
+        'application_id, project_number, title, phr, pi_names, org_name, total_cost, fiscal_year, primary_category'
+      )
+      .or(searchVariations.map((v) => `title.ilike.%${v}%`).join(','))
+      .order('fiscal_year', { ascending: false })
+      .order('total_cost', { ascending: false })
+      .limit(300),
+
+    // 2. Keyword search on PHR (abstract equivalent)
+    supabaseAdmin
+      .from('projects')
+      .select(
+        'application_id, project_number, title, phr, pi_names, org_name, total_cost, fiscal_year, primary_category'
+      )
+      .or(searchVariations.map((v) => `phr.ilike.%${v}%`).join(','))
+      .order('fiscal_year', { ascending: false })
+      .order('total_cost', { ascending: false })
+      .limit(300),
+
+    // 3. Semantic search
+    supabaseAdmin.rpc('search_projects_filtered', {
+      query_embedding: queryEmbedding,
+      match_threshold: UNIFIED_THRESHOLD,
+      match_count: 200,
+      min_biotools_confidence: 0,
+      filter_fiscal_years: null,
+      filter_categories: null,
+      filter_org_types: null,
+      filter_states: null,
+      filter_min_funding: null,
+      filter_max_funding: null,
+    }),
+  ])
+
+  // Merge results, deduplicating by project_number
+  const seenProjects = new Map<string, RawProjectResult>()
+
+  // Helper to add results, keeping most recent fiscal year per project_number
+  const addResults = (results: RawProjectResult[] | null) => {
+    if (!results) return
+    for (const project of results) {
+      const key = project.project_number || project.application_id
+      const existing = seenProjects.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(key, project)
+      }
+    }
+  }
+
+  // Add keyword results first (most specific), then semantic
+  addResults(keywordTitleResult.data)
+  addResults(keywordPhrResult.data)
+  addResults(semanticResult.data)
+
+  const mergedResults = Array.from(seenProjects.values())
+
+  console.log(
+    `[Projects Agent] Found ${mergedResults.length} unique projects ` +
+      `(${keywordTitleResult.data?.length || 0} title, ${keywordPhrResult.data?.length || 0} phr, ` +
+      `${semanticResult.data?.length || 0} semantic)`
+  )
+
+  if (mergedResults.length === 0) {
+    return emptyOutput()
+  }
+
+  // Sort by funding and limit
+  const sortedResults = mergedResults
+    .sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
+    .slice(0, MAX_RESULTS)
+
+  return processResults(sortedResults)
 }
 
 /**
  * Process raw search results into agent output
+ * Note: Deduplication is already done in runProjectsAgent
  */
 function processResults(rawResults: RawProjectResult[]): ProjectsAgentOutput {
-  // Deduplicate by project_number - keep most recent fiscal year
-  const seenProjects = new Map<string, RawProjectResult>()
-  for (const project of rawResults) {
-    const key = project.project_number || project.application_id
-    const existing = seenProjects.get(key)
-    if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
-      seenProjects.set(key, project)
-    }
-  }
-  const dedupedResults = Array.from(seenProjects.values())
-
   // Map to ProjectItem format
-  const items: ProjectItem[] = dedupedResults.map((p) => ({
+  // Note: 'phr' field is the public health relevance (abstract equivalent)
+  const items: ProjectItem[] = rawResults.map((p) => ({
     application_id: p.application_id,
     title: p.title,
-    abstract: p.abstract || null,
+    abstract: p.phr || null, // PHR is the abstract equivalent in NIH data
     pi_names: p.pi_names || null,
     org_name: p.org_name || null,
     total_cost: p.total_cost || null,
@@ -121,7 +167,7 @@ function processResults(rawResults: RawProjectResult[]): ProjectsAgentOutput {
     .sort((a, b) => b.funding - a.funding)
     .slice(0, 15)
 
-  console.log(`[Projects Agent] Found ${items.length} unique projects (${rawResults.length} total rows), $${(totalFunding / 1e6).toFixed(1)}M total`)
+  console.log(`[Projects Agent] Processed ${items.length} unique projects, $${(totalFunding / 1e6).toFixed(1)}M total funding`)
 
   return {
     items,
@@ -165,7 +211,7 @@ interface RawProjectResult {
   application_id: string
   project_number?: string
   title: string
-  abstract?: string
+  phr?: string // Public Health Relevance - the abstract equivalent
   pi_names?: string
   org_name?: string
   total_cost?: number
