@@ -42,7 +42,15 @@ interface QuickFilters {
   sbirSttrOnly?: boolean
   hasPatents?: boolean
   hasClinicalTrials?: boolean
+  precision?: 'low' | 'med' | 'high'
 }
+
+// Precision threshold mappings
+const PRECISION_THRESHOLDS = {
+  low: 0.20,
+  med: 0.35,
+  high: 0.50
+} as const
 
 interface FilterState {
   primary_category?: string[]
@@ -121,6 +129,9 @@ interface ResultsPanelProps {
     sbirSttr: number
     patents: number
     clinicalTrials: number
+    precisionLow: number
+    precisionMed: number
+    precisionHigh: number
   }
   // Navigate to project detail (saves state first)
   onProjectClick?: (applicationId: string) => void
@@ -222,8 +233,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           )}
         </div>
 
-        {/* Filter Chips - always show original counts for multi-select */}
-        {searchContext && (Object.keys(searchContext.originalResults.by_category || {}).length > 0 || Object.keys(searchContext.originalResults.by_org_type || {}).length > 0) && (
+        {/* Filter Chips - show when there are results (for precision filter) or category/org_type data */}
+        {searchContext && data.all_results?.length > 0 && (
           <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100 overflow-hidden`}>
             <FilterChips
               byCategory={searchContext.originalResults.by_category || {}}
@@ -436,8 +447,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           )}
         </div>
 
-        {/* Filter Chips - always show original counts for multi-select */}
-        {searchContext && (Object.keys(searchContext.originalResults.by_category || {}).length > 0 || Object.keys(searchContext.originalResults.by_org_type || {}).length > 0) && (
+        {/* Filter Chips - show when there are results (for precision filter) or category/org_type data */}
+        {searchContext && data.all_results?.length > 0 && (
           <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100 overflow-hidden`}>
             <FilterChips
               byCategory={searchContext.originalResults.by_category || {}}
@@ -1191,7 +1202,7 @@ export function Chat({ persona }: ChatProps) {
     const quick = filters.quick
 
     // If no filters, clear filtered results and show original
-    const hasQuickFilters = quick && Object.values(quick).some(Boolean)
+    const hasQuickFilters = quick && (quick.activeOnly || quick.sbirSttrOnly || quick.hasPatents || quick.hasClinicalTrials || quick.precision)
     if (!filters.primary_category?.length && !filters.org_type?.length && !hasQuickFilters) {
       setFilteredResults(null)
       return
@@ -1199,6 +1210,12 @@ export function Chat({ persona }: ChatProps) {
 
     // Filter the full result set client-side
     let filtered = allResults
+
+    // Apply precision filter (similarity threshold)
+    if (quick?.precision) {
+      const threshold = PRECISION_THRESHOLDS[quick.precision]
+      filtered = filtered.filter(p => (p.similarity || 0) >= threshold)
+    }
 
     // Apply quick filters
     if (quick?.activeOnly) {
@@ -1407,6 +1424,13 @@ export function Chat({ persona }: ChatProps) {
 
     // Apply quick filters (unless excluded)
     const quick = filters.quick
+
+    // Apply precision filter (unless excluded)
+    if (quick?.precision && exclude?.quick !== 'precision') {
+      const threshold = PRECISION_THRESHOLDS[quick.precision]
+      filtered = filtered.filter(p => (p.similarity || 0) >= threshold)
+    }
+
     if (quick?.activeOnly && exclude?.quick !== 'activeOnly') {
       filtered = filtered.filter(p => isProjectActive(p.project_end) === true)
     }
@@ -1470,12 +1494,16 @@ export function Chat({ persona }: ChatProps) {
     const sbirFiltered = applyFilters(allResults, currentFilters, { quick: 'sbirSttrOnly' })
     const patentsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasPatents' })
     const trialsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasClinicalTrials' })
+    const precisionFiltered = applyFilters(allResults, currentFilters, { quick: 'precision' })
 
     const quickCounts = {
       active: activeFiltered.filter(p => isProjectActive(p.project_end) === true).length,
       sbirSttr: sbirFiltered.filter(p => isSbirSttr(p.activity_code)).length,
       patents: patentsFiltered.filter(p => (p.patent_count || 0) > 0).length,
-      clinicalTrials: trialsFiltered.filter(p => (p.clinical_trial_count || 0) > 0).length
+      clinicalTrials: trialsFiltered.filter(p => (p.clinical_trial_count || 0) > 0).length,
+      precisionLow: precisionFiltered.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.low).length,
+      precisionMed: precisionFiltered.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.med).length,
+      precisionHigh: precisionFiltered.filter(p => (p.similarity || 0) >= PRECISION_THRESHOLDS.high).length
     }
 
     return {

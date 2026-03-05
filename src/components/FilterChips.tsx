@@ -7,6 +7,7 @@ interface QuickFilters {
   sbirSttrOnly?: boolean
   hasPatents?: boolean
   hasClinicalTrials?: boolean
+  precision?: 'low' | 'med' | 'high'
 }
 
 interface FilterChipsProps {
@@ -21,6 +22,9 @@ interface FilterChipsProps {
     sbirSttr: number
     patents: number
     clinicalTrials: number
+    precisionLow: number
+    precisionMed: number
+    precisionHigh: number
   }
   keywordQuery: string
   semanticQuery: string
@@ -108,6 +112,14 @@ export function FilterChips({
     }))
   }
 
+  const setPrecision = (level: 'low' | 'med' | 'high' | undefined) => {
+    if (isLoading) return
+    setQuickFilters(prev => ({
+      ...prev,
+      precision: prev.precision === level ? undefined : level
+    }))
+  }
+
   const clearFilters = () => {
     setSelectedCategories([])
     setSelectedOrgTypes([])
@@ -125,7 +137,9 @@ export function FilterChips({
   const sortedCategories = Object.entries(byCategory).sort(([, a], [, b]) => b - a)
   const sortedOrgTypes = Object.entries(byOrgType).sort(([, a], [, b]) => b - a)
 
-  if (sortedCategories.length === 0 && sortedOrgTypes.length === 0) {
+  // Always render if we have precision counts (semantic search results) or category/org type data
+  const hasPrecisionData = quickFilterCounts && (quickFilterCounts.precisionLow > 0 || quickFilterCounts.precisionMed > 0 || quickFilterCounts.precisionHigh > 0)
+  if (sortedCategories.length === 0 && sortedOrgTypes.length === 0 && !hasPrecisionData) {
     return null
   }
 
@@ -145,6 +159,45 @@ export function FilterChips({
             Clear filters
           </button>
         )}
+      </div>
+
+      {/* Precision filter - similarity thresholds */}
+      <div>
+        <h4 className="text-xs text-gray-500 mb-2">Match Precision</h4>
+        <div className="flex flex-wrap gap-2">
+          {[
+            { level: 'low' as const, label: 'Low', threshold: 0.20, count: quickFilterCounts?.precisionLow },
+            { level: 'med' as const, label: 'Medium', threshold: 0.35, count: quickFilterCounts?.precisionMed },
+            { level: 'high' as const, label: 'High', threshold: 0.50, count: quickFilterCounts?.precisionHigh },
+          ].map(({ level, label, count }) => {
+            const isSelected = quickFilters.precision === level
+            const isDisabled = isLoading || (!isSelected && count === 0)
+            return (
+              <button
+                key={level}
+                onClick={() => setPrecision(level)}
+                disabled={isDisabled}
+                className={`
+                  px-2.5 py-1 text-xs rounded-full border transition-all
+                  ${isSelected
+                    ? 'bg-indigo-500 text-white border-indigo-500'
+                    : count === 0
+                      ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                      : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
+                  }
+                  ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+                `}
+              >
+                {label}
+                {count !== undefined && (
+                  <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                    {count}
+                  </span>
+                )}
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {/* Quick filters */}

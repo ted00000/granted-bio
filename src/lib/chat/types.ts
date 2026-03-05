@@ -125,6 +125,8 @@ export interface SearchResultProject {
   patent_count: number
   publication_count: number
   clinical_trial_count: number
+  // Semantic search similarity score (0-1)
+  similarity?: number
 }
 
 export interface KeywordSearchResult {
