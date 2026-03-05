@@ -125,7 +125,7 @@ export default async function AdminDashboard() {
         </Link>
 
         <Link
-          href="/search"
+          href="/chat"
           className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow"
         >
           <div className="flex items-center space-x-4">

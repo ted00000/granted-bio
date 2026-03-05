@@ -119,7 +119,7 @@ export default function CompanyPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Project Not Found</h1>
           <p className="text-gray-500 mb-4">{error}</p>
-          <Link href="/search" className="text-blue-600 hover:underline">
+          <Link href="/chat" className="text-blue-600 hover:underline">
             Back to Search
           </Link>
         </div>
@@ -163,7 +163,7 @@ export default function CompanyPage() {
             <Link href="/" className="text-2xl font-bold text-blue-600">
               granted.bio
             </Link>
-            <Link href="/search" className="text-sm text-gray-500 hover:text-gray-700">
+            <Link href="/chat" className="text-sm text-gray-500 hover:text-gray-700">
               Back to Search
             </Link>
           </div>
