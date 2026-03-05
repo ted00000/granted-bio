@@ -1018,7 +1018,7 @@ export async function searchProjectsSemantic(
 ): Promise<KeywordSearchResult> {
   const { semantic_query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
-  const threshold = 0.35 // Fixed semantic similarity threshold
+  const threshold = 0.25 // Low threshold - UI filters by precision (similarity)
 
   console.log(`[Semantic Search] Threshold: ${threshold}`)
 
@@ -1144,10 +1144,11 @@ export async function searchProjectsSemantic(
       project_end: p.project_end || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
-      clinical_trial_count: p.clinical_trial_count || 0
+      clinical_trial_count: p.clinical_trial_count || 0,
+      similarity: p.similarity
     }))
 
-    // All results for client-side filtering (now with emails)
+    // All results for client-side filtering (includes similarity for precision filtering)
     const allResults = allProjects.map(p => ({
       application_id: p.application_id,
       title: p.title,
@@ -1166,7 +1167,8 @@ export async function searchProjectsSemantic(
       project_end: p.project_end || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
-      clinical_trial_count: p.clinical_trial_count || 0
+      clinical_trial_count: p.clinical_trial_count || 0,
+      similarity: p.similarity
     }))
 
     const categoryBreakdown = Object.entries(byCategory)
@@ -1835,47 +1837,29 @@ async function getTrialKeywordMatchingIds(query: string): Promise<Set<string>> {
   return matchingIds
 }
 
-// Hybrid search clinical trials (keyword + semantic with RRF)
+// Semantic-only search for clinical trials with similarity scores for client-side precision filtering
 export async function searchTrials(
   params: SearchTrialsParams,
   userAccess: UserAccess
 ): Promise<TrialSearchResult> {
   const { query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+  const threshold = 0.25 // Low threshold - UI filters by precision (similarity)
 
   try {
-    // Run keyword and semantic searches in parallel
-    const [keywordIds, semanticResults] = await Promise.all([
-      // Keyword search: get matching trial composite IDs
-      getTrialKeywordMatchingIds(query),
-      // Semantic search: get scored results
-      (async () => {
-        const queryEmbedding = await generateEmbedding(query)
-        const { data: trials, error } = await supabaseAdmin.rpc('search_clinical_studies', {
-          query_embedding: queryEmbedding,
-          match_threshold: 0.40, // Higher threshold for better precision
-          match_count: effectiveLimit * 2
-        })
-        if (error) {
-          console.error('Search trials RPC error:', error)
-          throw error
-        }
-        return (trials || []) as Array<{
-          id: string
-          nct_id: string
-          study_title: string
-          study_status: string | null
-          is_diagnostic_trial: boolean
-          is_therapeutic_trial: boolean
-          project_number: string | null
-          similarity: number
-        }>
-      })()
-    ])
+    // Semantic search only - no keyword search
+    const queryEmbedding = await generateEmbedding(query)
+    const { data: semanticResults, error } = await supabaseAdmin.rpc('search_clinical_studies', {
+      query_embedding: queryEmbedding,
+      match_threshold: threshold,
+      match_count: effectiveLimit * 5 // Get more results for filtering
+    })
 
-    // Build RRF (Reciprocal Rank Fusion) scores
-    // RRF formula: score = sum(1 / (k + rank)) where k=60 is standard
-    const K = 60
+    if (error) {
+      console.error('Search trials RPC error:', error)
+      throw error
+    }
+
     type TrialData = {
       id: string
       nct_id: string
@@ -1886,70 +1870,10 @@ export async function searchTrials(
       project_number: string | null
       similarity: number
     }
-    const rrfScores: Map<string, { score: number; data: TrialData | null }> = new Map()
 
-    // Score keyword matches (use composite ID for matching)
-    // Balanced RRF now that embeddings include conditions + brief_summary
-    const KEYWORD_BOOST = 1
-    let keywordRank = 1
-    for (const compositeId of keywordIds) {
-      const [nctId] = compositeId.split('|')
-      const existing = rrfScores.get(nctId)
-      const keywordScore = KEYWORD_BOOST / (K + keywordRank)
-      if (existing) {
-        existing.score += keywordScore
-      } else {
-        rrfScores.set(nctId, { score: keywordScore, data: null })
-      }
-      keywordRank++
-    }
-
-    // Score semantic matches (already ranked by similarity)
-    let semanticRank = 1
-    for (const result of semanticResults) {
-      const existing = rrfScores.get(result.nct_id)
-      const semanticScore = 1 / (K + semanticRank)
-      // Boost by similarity score (0-1) for better semantic matches
-      const boostedScore = semanticScore * (1 + (result.similarity || 0))
-      if (existing) {
-        existing.score += boostedScore
-        if (!existing.data) existing.data = result
-      } else {
-        rrfScores.set(result.nct_id, { score: boostedScore, data: result })
-      }
-      semanticRank++
-    }
-
-    // For keyword-only matches, fetch trial data
-    const keywordOnlyNctIds = [...rrfScores.entries()]
-      .filter(([, v]) => v.data === null)
-      .map(([nctId]) => nctId)
-
-    if (keywordOnlyNctIds.length > 0) {
-      const { data: keywordTrials } = await supabaseAdmin
-        .from('clinical_studies')
-        .select('id, nct_id, study_title, study_status, is_diagnostic_trial, is_therapeutic_trial, project_number')
-        .in('nct_id', keywordOnlyNctIds)
-
-      if (keywordTrials) {
-        // Deduplicate by nct_id (keep first)
-        const seen = new Set<string>()
-        for (const t of keywordTrials) {
-          if (seen.has(t.nct_id)) continue
-          seen.add(t.nct_id)
-          const entry = rrfScores.get(t.nct_id)
-          if (entry) {
-            entry.data = { ...t, similarity: 0 }
-          }
-        }
-      }
-    }
-
-    // Convert to array and sort by RRF score
-    let results = [...rrfScores.entries()]
-      .filter(([, v]) => v.data !== null)
-      .map(([, v]) => ({ ...v.data!, rrf_score: v.score }))
-      .sort((a, b) => b.rrf_score - a.rrf_score)
+    // Sort by similarity (semantic relevance)
+    let results = ((semanticResults || []) as TrialData[])
+      .sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
 
     // Apply filters
     if (filters?.status?.length) {
@@ -2048,8 +1972,8 @@ export async function executeTool(
 ): Promise<unknown> {
   switch (toolName) {
     case 'search_projects':
-      // Uses RRF hybrid search (keyword + semantic fusion)
-      return searchProjectsHybrid(args as unknown as HybridSearchParams, userAccess)
+      // Uses semantic-only search with similarity scores for client-side precision filtering
+      return searchProjectsSemantic(args as unknown as HybridSearchParams, userAccess)
     case 'get_company_profile':
       return getCompanyProfile(args as unknown as GetCompanyProfileParams, userAccess)
     case 'get_pi_profile':
