@@ -2048,8 +2048,8 @@ export async function executeTool(
 ): Promise<unknown> {
   switch (toolName) {
     case 'search_projects':
-      // Uses semantic-only search (embedding similarity, no keyword matching)
-      return searchProjectsSemantic(args as unknown as HybridSearchParams, userAccess)
+      // Uses RRF hybrid search (keyword + semantic fusion)
+      return searchProjectsHybrid(args as unknown as HybridSearchParams, userAccess)
     case 'get_company_profile':
       return getCompanyProfile(args as unknown as GetCompanyProfileParams, userAccess)
     case 'get_pi_profile':
