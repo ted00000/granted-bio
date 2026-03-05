@@ -1036,7 +1036,7 @@ export async function searchProjectsSemantic(
     }
 
     // Run semantic and keyword searches in parallel
-    const [semanticResults, keywordTitleResult, keywordPhrResult] = await Promise.all([
+    const [semanticResults, keywordTitleResult, keywordPhrResult, keywordAbstractResult] = await Promise.all([
       // Semantic search
       getSemanticResults(semantic_query, effectiveLimit * 10, threshold),
       // Keyword fallback on title
@@ -1052,10 +1052,16 @@ export async function searchProjectsSemantic(
         .select('application_id, project_number, title, org_name, org_state, org_type, primary_category, secondary_category, primary_category_confidence, total_cost, fiscal_year, pi_names, program_officer, activity_code, project_end, patent_count, publication_count, clinical_trial_count')
         .or(searchVariations.map(v => `phr.ilike.%${v}%`).join(','))
         .order('fiscal_year', { ascending: false })
-        .limit(300)
+        .limit(300),
+      // Keyword fallback on abstract text (separate table)
+      supabaseAdmin
+        .from('abstracts')
+        .select('application_id')
+        .or(searchVariations.map(v => `abstract_text.ilike.%${v}%`).join(','))
+        .limit(500)
     ])
 
-    console.log(`[Semantic Search] Semantic: ${semanticResults.length}, Keyword title: ${keywordTitleResult.data?.length || 0}, Keyword PHR: ${keywordPhrResult.data?.length || 0}`)
+    console.log(`[Semantic Search] Semantic: ${semanticResults.length}, Title: ${keywordTitleResult.data?.length || 0}, PHR: ${keywordPhrResult.data?.length || 0}, Abstract: ${keywordAbstractResult.data?.length || 0}`)
 
     // Build map of semantic results with their similarity scores
     const semanticMap = new Map<string, number>()
@@ -1063,11 +1069,12 @@ export async function searchProjectsSemantic(
       semanticMap.set(r.application_id, r.similarity || 0)
     }
 
-    // Collect all unique IDs
+    // Collect all unique IDs from all search methods
     const allIds = new Set<string>()
     semanticResults.forEach(r => allIds.add(r.application_id))
     keywordTitleResult.data?.forEach(r => allIds.add(r.application_id))
     keywordPhrResult.data?.forEach(r => allIds.add(r.application_id))
+    keywordAbstractResult.data?.forEach(r => allIds.add(r.application_id))
 
     // Fetch complete project data for all IDs
     const allProjectsData = await fetchProjectsByIds([...allIds])
