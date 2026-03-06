@@ -72,50 +72,55 @@ async function generateExecutiveSummary(
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
 
+  // Prepare substantive research content from abstracts
+  const projectAbstracts = agentOutputs.projects.items
+    .slice(0, 25) // Use more abstracts for deeper analysis
+    .map((p, i) => `[${i + 1}] ${p.title}\nPI: ${p.pi_names?.split(';')[0] || 'N/A'} | Org: ${p.org_name || 'N/A'} | ${formatCurrency(p.total_cost || 0)}\n${p.abstract || 'No abstract available'}`)
+    .join('\n\n---\n\n')
+
+  const trialSummaries = agentOutputs.trials.items
+    .slice(0, 10)
+    .map((t) => `- ${t.study_title} (${t.phase || 'Phase N/A'}, ${t.study_status || 'Status N/A'}) - ${t.lead_sponsor || 'Sponsor N/A'}`)
+    .join('\n')
+
   const prompt = `You are writing an executive summary for a research intelligence report on "${topic}".
 
-CRITICAL FRAMING: This data represents a CURATED SAMPLE of the most relevant NIH-funded research, not the complete population. You must use sample-appropriate language throughout.
+CRITICAL FRAMING: This data represents a CURATED SAMPLE of ${context.fundingStats.projectCount} high-confidence NIH-funded projects, not the complete population. Use sample-appropriate language.
 
-**Sample Data (from our analysis):**
-- Projects Analyzed: ${context.fundingStats.projectCount} high-confidence matches
-- Total Funding in Sample: ${formatCurrency(context.fundingStats.total)}
-- Organizations Represented: ${context.fundingStats.orgCount}
-- Principal Investigators: ${context.fundingStats.piCount}
-- Top Categories: ${context.fundingStats.byCategory.slice(0, 3).map(c => c.category).join(', ')}
+## RESEARCH CONTENT (analyze these abstracts for substantive insights)
 
-**Linked Clinical Trials:**
-- Trials Identified: ${agentOutputs.trials.items.length}
-- By Phase: ${JSON.stringify(agentOutputs.trials.byPhase)}
+${projectAbstracts}
 
-**Linked Patents:**
-- Patents Found: ${agentOutputs.patents.items.length}
-- Recent (2 years): ${agentOutputs.patents.recentCount}
-- Top Assignees: ${agentOutputs.patents.byAssignee.slice(0, 3).map(a => a.assignee).join(', ') || 'N/A'}
+## SAMPLE STATISTICS
+- Projects: ${context.fundingStats.projectCount} | Funding: ${formatCurrency(context.fundingStats.total)}
+- Organizations: ${context.fundingStats.orgCount} | PIs: ${context.fundingStats.piCount}
+- Categories: ${context.fundingStats.byCategory.slice(0, 5).map(c => `${c.category} (${c.projects})`).join(', ')}
 
-**Linked Publications:**
-- Publications Found: ${agentOutputs.publications.items.length}
-- Top Journals: ${agentOutputs.publications.byJournal.slice(0, 3).map(j => j.journal).join(', ') || 'N/A'}
+## CLINICAL PIPELINE (${agentOutputs.trials.items.length} trials identified)
+${trialSummaries || 'No trials identified'}
 
-**Market Context (population-level perspective):**
+## MARKET CONTEXT (population-level, from external research)
 ${agentOutputs.market.context.overview}
 
-${context.dataLimited ? '\nNote: This report has limited data available for this topic.' : ''}
+${context.dataLimited ? '\nNote: Limited data available for this topic.' : ''}
+
+## YOUR TASK
+
+Analyze the ACTUAL RESEARCH CONTENT above to write a substantive executive summary. Focus on:
+
+1. **What researchers are actually working on**: Key scientific approaches, methodologies, therapeutic targets, mechanisms being explored
+2. **Innovation themes**: Novel approaches, emerging techniques, differentiated strategies observed across the projects
+3. **Translational potential**: How basic research is progressing toward clinical application, gaps between research and trials
+4. **Key players and their focus areas**: Which institutions are leading, what are they specifically contributing
+5. **Transformational opportunities**: Where the sample suggests breakthrough potential or unmet needs
 
 LANGUAGE REQUIREMENTS:
-- Use phrases like "our analysis identified", "among the projects analyzed", "within this sample", "the examined projects reveal"
-- For market context, you CAN speak in population-level terms (this comes from external research)
-- For sample data (projects, trials, patents, pubs), always frame as findings from the analysis
-- AVOID language that implies exhaustive coverage like "the field has X projects" or "there are X PIs in the field"
-- DO use comparative insights: "the concentration of funding suggests...", "the distribution indicates..."
+- Use "our analysis reveals", "among the examined projects", "the research content shows"
+- For market context, you CAN use population-level language
+- For sample data, frame as findings from analysis
+- Be SPECIFIC about what you learned from the abstracts - don't just restate numbers
 
-Write the executive summary (3-5 paragraphs):
-1. Opening: Market opportunity and therapeutic context (population-level from market context)
-2. Sample Insights: What our analysis of ${context.fundingStats.projectCount} high-confidence projects reveals about research priorities, funding patterns, and key players
-3. Clinical Development: Pipeline observations from linked trials
-4. Innovation Landscape: Patent and publication patterns observed
-5. Strategic Implications: What the sample suggests about field trajectory
-
-Focus on insights and patterns, not just restating numbers. Write in a professional, analytical tone.`
+Write 4-5 substantive paragraphs with real insights from the research content. Professional, analytical tone.`
 
   const response = await client.messages.create({
     model: 'claude-opus-4-20250514',
@@ -138,6 +143,7 @@ Focus on insights and patterns, not just restating numbers. Write in a professio
 
 /**
  * Generate insights for each major section
+ * Analyzes actual research content from abstracts for substantive insights
  */
 async function generateSectionInsights(
   topic: string,
@@ -147,79 +153,116 @@ async function generateSectionInsights(
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
 
-  // Prepare project abstracts summary for context
+  // Prepare FULL project abstracts for substantive analysis (not truncated)
   const projectAbstracts = agentOutputs.projects.items
-    .slice(0, 5)
-    .map((p) => p.abstract?.substring(0, 200))
-    .filter(Boolean)
-    .join('\n---\n')
+    .slice(0, 15)
+    .map((p, i) => {
+      const pi = p.pi_names?.split(';')[0] || 'N/A'
+      const org = p.org_name || 'N/A'
+      const category = p.primary_category?.replace(/_/g, ' ') || 'N/A'
+      return `[${i + 1}] "${p.title}" (${pi}, ${org})\nCategory: ${category} | Funding: ${formatCurrency(p.total_cost || 0)}\n${p.abstract || 'No abstract'}`
+    })
+    .join('\n\n---\n\n')
 
-  // Prepare patent abstracts summary
+  // Prepare FULL patent abstracts for substantive analysis
   const patentAbstracts = agentOutputs.patents.items
-    .slice(0, 5)
-    .map((p) => p.patent_abstract?.substring(0, 150))
-    .filter(Boolean)
-    .join('\n---\n')
+    .slice(0, 10)
+    .map((p, i) => {
+      return `[${i + 1}] "${p.patent_title}" (${p.assignee || 'Unknown assignee'})\nDate: ${p.patent_date || 'N/A'}\n${p.patent_abstract || 'No abstract available'}`
+    })
+    .join('\n\n---\n\n')
 
-  // Prepare publication abstracts summary
+  // Prepare FULL publication abstracts for substantive analysis
   const pubAbstracts = agentOutputs.publications.items
-    .slice(0, 5)
-    .map((p) => p.abstract?.substring(0, 150))
-    .filter(Boolean)
-    .join('\n---\n')
+    .slice(0, 10)
+    .map((p, i) => {
+      const year = p.publication_date ? new Date(p.publication_date).getFullYear() : 'N/A'
+      return `[${i + 1}] "${p.publication_title}" (${p.journal || 'Unknown journal'}, ${year})\n${p.abstract || 'No abstract available'}`
+    })
+    .join('\n\n---\n\n')
 
-  const prompt = `You are analyzing research data for "${topic}" to generate section-specific insights for a research intelligence report.
+  // Prepare trial details for clinical insights
+  const trialDetails = agentOutputs.trials.items
+    .slice(0, 10)
+    .map((t, i) => {
+      const conditions = t.conditions?.join(', ') || 'N/A'
+      return `[${i + 1}] "${t.study_title}"\nPhase: ${t.phase || 'N/A'} | Status: ${t.study_status || 'N/A'} | Sponsor: ${t.lead_sponsor || 'N/A'}\nConditions: ${conditions} | Enrollment: ${t.enrollment_count?.toLocaleString() || 'N/A'}`
+    })
+    .join('\n\n')
 
-CRITICAL: This data represents a CURATED SAMPLE of the most relevant NIH-funded research, NOT the complete population. Use sample-appropriate language.
+  const prompt = `You are analyzing research data for "${topic}" to generate substantive section insights for a research intelligence report.
 
-**SAMPLE FUNDING DATA (from ${context.fundingStats.projectCount} analyzed projects):**
+CRITICAL FRAMING: This data represents a CURATED SAMPLE of ${context.fundingStats.projectCount} high-confidence NIH-funded projects, not the complete population. Use sample-appropriate language.
+
+---
+
+## PROJECT ABSTRACTS (analyze for funding insight)
+
+${projectAbstracts || 'No project abstracts available'}
+
+**Sample Statistics:**
 - Total Funding in Sample: ${formatCurrency(context.fundingStats.total)}
-- Organizations Represented: ${context.fundingStats.orgCount}
-- PIs Represented: ${context.fundingStats.piCount}
-- By Year: ${JSON.stringify(context.fundingStats.byYear.slice(0, 5))}
-- By Category: ${JSON.stringify(context.fundingStats.byCategory.slice(0, 5))}
-- Top Orgs in Sample: ${context.fundingStats.byOrg.slice(0, 5).map((o) => `${o.org}: ${formatCurrency(o.funding)}`).join(', ')}
+- Organizations: ${context.fundingStats.orgCount} | PIs: ${context.fundingStats.piCount}
+- Top Categories: ${context.fundingStats.byCategory.slice(0, 3).map(c => `${c.category.replace(/_/g, ' ')} (${c.projects})`).join(', ')}
+- Top Orgs: ${context.fundingStats.byOrg.slice(0, 3).map((o) => `${o.org}: ${formatCurrency(o.funding)}`).join(', ')}
 
-Sample Project Abstracts:
-${projectAbstracts || 'None available'}
+---
 
-**LINKED CLINICAL TRIALS (${agentOutputs.trials.items.length} identified):**
+## CLINICAL TRIALS (analyze for pipeline insight)
+
+${trialDetails || 'No trials identified'}
+
+**Trial Distribution:**
 - By Phase: ${JSON.stringify(agentOutputs.trials.byPhase)}
 - By Status: ${JSON.stringify(agentOutputs.trials.byStatus)}
-- Top Sponsors: ${agentOutputs.trials.items.slice(0, 5).map((t) => t.lead_sponsor).filter(Boolean).join(', ')}
 
-**LINKED PATENTS (${agentOutputs.patents.items.length} identified):**
-- Recent (2yr): ${agentOutputs.patents.recentCount}
-- Top Assignees: ${agentOutputs.patents.byAssignee.slice(0, 5).map((a) => `${a.assignee} (${a.count})`).join(', ')}
+---
 
-Sample Patent Abstracts:
-${patentAbstracts || 'None available'}
+## PATENT ABSTRACTS (analyze for IP insight)
 
-**LINKED PUBLICATIONS (${agentOutputs.publications.items.length} identified):**
-- By Journal: ${JSON.stringify(agentOutputs.publications.byJournal.slice(0, 5))}
-- By Year: ${JSON.stringify(agentOutputs.publications.byYear.slice(0, 5))}
+${patentAbstracts || 'No patents identified'}
 
-Sample Publication Abstracts:
-${pubAbstracts || 'None available'}
+**Patent Statistics:**
+- Total: ${agentOutputs.patents.items.length} | Recent (2yr): ${agentOutputs.patents.recentCount}
+- Top Assignees: ${agentOutputs.patents.byAssignee.slice(0, 3).map((a) => `${a.assignee} (${a.count})`).join(', ') || 'N/A'}
 
-Generate a JSON object with analytical insights for each section. Each insight should be 2-3 sentences.
+---
+
+## PUBLICATION ABSTRACTS (analyze for academic insight)
+
+${pubAbstracts || 'No publications identified'}
+
+**Publication Statistics:**
+- Total: ${agentOutputs.publications.items.length}
+- Top Journals: ${agentOutputs.publications.byJournal.slice(0, 3).map(j => `${j.journal} (${j.count})`).join(', ') || 'N/A'}
+
+---
+
+## YOUR TASK
+
+Generate substantive insights for each section by analyzing the ACTUAL CONTENT above. Focus on:
+
+1. **Funding**: What scientific approaches and methodologies are being funded? What therapeutic targets or mechanisms dominate? What does the research focus reveal about priorities?
+
+2. **Clinical Pipeline**: What conditions are being targeted? What's the progression from early to late phase? What sponsors are advancing what types of interventions?
+
+3. **Patents**: What innovations are being protected? What technical areas are generating IP? What does patent activity suggest about commercialization potential?
+
+4. **Publications**: What scientific questions are being addressed? What methodological advances are being published? What journals suggest the field's maturity?
 
 LANGUAGE REQUIREMENTS:
-- Use "among the analyzed projects", "within this sample", "the examined data reveals", "our analysis identified"
-- AVOID "the field has X", "there are X in total", or other population-level claims
-- Focus on patterns, concentrations, and what the sample suggests about the broader landscape
-- Frame comparative observations: "the concentration suggests...", "the distribution indicates..."
+- Use "our analysis reveals", "among the examined projects", "the research content shows"
+- AVOID "the field has X total" or other population-level claims
+- Be SPECIFIC about what you learned from the abstracts - cite actual approaches, targets, methods observed
+- Each insight should be 3-4 sentences with real substance
 
-CONTEXT: This sample captures publicly-funded academic research with high confidence. It does not include privately-funded industry R&D or international research outside NIH grants.
-
+Return JSON only, no markdown:
 {
-  "funding": "2-3 sentences on funding patterns observed in the sample and what they suggest about research priorities",
-  "clinicalPipeline": "2-3 sentences on clinical development patterns among linked trials",
-  "patents": "2-3 sentences on IP patterns among linked patents and what they indicate",
-  "publications": "2-3 sentences on publication patterns and academic focus areas observed"
-}
-
-Return ONLY valid JSON, no markdown formatting.`
+  "funding": "3-4 sentences analyzing what researchers are actually working on and what the funding patterns reveal about scientific priorities",
+  "clinicalPipeline": "3-4 sentences on what conditions are being targeted, intervention types, and progression through clinical development",
+  "patents": "3-4 sentences on what innovations are being protected and what this indicates about translational potential",
+  "publications": "3-4 sentences on what scientific questions are being addressed and methodological advances observed"
+}`
 
   try {
     const response = await client.messages.create({
