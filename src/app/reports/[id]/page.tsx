@@ -2,8 +2,45 @@
 
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
-import { FileText, ArrowLeft, Download, Loader2, AlertCircle } from 'lucide-react'
+import { FileText, ArrowLeft, Download, Loader2, AlertCircle, FileDown } from 'lucide-react'
 import { MarkdownRenderer } from './MarkdownRenderer'
+import { FundingByYearChart, TrialsByPhaseChart, CategoryDistributionChart } from './charts'
+
+interface FundingByYear {
+  year: number
+  funding: number
+  projects: number
+}
+
+interface CategoryData {
+  category: string
+  projects: number
+  funding: number
+}
+
+interface FundingStats {
+  total: number
+  projectCount: number
+  orgCount: number
+  piCount: number
+  byYear: FundingByYear[]
+  byCategory: CategoryData[]
+  byOrg: Array<{ org: string; projects: number; funding: number }>
+}
+
+interface TrialsAgentOutput {
+  items: unknown[]
+  byPhase: Record<string, number>
+  byStatus: Record<string, number>
+}
+
+interface AgentOutputs {
+  projects: unknown
+  trials: TrialsAgentOutput
+  patents: unknown
+  publications: unknown
+  market: unknown
+}
 
 interface Report {
   id: string
@@ -18,6 +55,9 @@ interface Report {
   error_message: string | null
   created_at: string
   updated_at: string
+  // Chart data
+  funding_stats: FundingStats | null
+  agent_outputs: AgentOutputs | null
 }
 
 function formatDate(dateString: string): string {
@@ -69,6 +109,8 @@ export default function ReportDetailPage({
     }
   }
 
+  const [downloadingPdf, setDownloadingPdf] = useState(false)
+
   const downloadMarkdown = () => {
     if (!report?.markdown_content) return
 
@@ -81,6 +123,75 @@ export default function ReportDetailPage({
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
+  }
+
+  const downloadPdf = async () => {
+    if (!report?.markdown_content) return
+
+    setDownloadingPdf(true)
+    try {
+      // Dynamically import to avoid SSR issues
+      const html2canvas = (await import('html2canvas')).default
+      const { jsPDF } = await import('jspdf')
+
+      // Get the report content element
+      const reportContent = document.getElementById('report-content')
+      if (!reportContent) {
+        throw new Error('Report content not found')
+      }
+
+      // Create canvas from the report content
+      const canvas = await html2canvas(reportContent, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+      })
+
+      // Calculate dimensions for A4 paper
+      const imgWidth = 210 // A4 width in mm
+      const pageHeight = 297 // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width
+
+      // Create PDF
+      const pdf = new jsPDF('p', 'mm', 'a4')
+      let heightLeft = imgHeight
+      let position = 0
+
+      // Add first page
+      pdf.addImage(
+        canvas.toDataURL('image/png'),
+        'PNG',
+        0,
+        position,
+        imgWidth,
+        imgHeight
+      )
+      heightLeft -= pageHeight
+
+      // Add additional pages if needed
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight
+        pdf.addPage()
+        pdf.addImage(
+          canvas.toDataURL('image/png'),
+          'PNG',
+          0,
+          position,
+          imgWidth,
+          imgHeight
+        )
+        heightLeft -= pageHeight
+      }
+
+      // Download
+      pdf.save(`${report.title.replace(/[^a-z0-9]/gi, '_')}.pdf`)
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+      alert('Failed to generate PDF. Please try again.')
+    } finally {
+      setDownloadingPdf(false)
+    }
   }
 
   if (loading) {
@@ -171,13 +282,27 @@ export default function ReportDetailPage({
               </div>
             </div>
             {report.status === 'complete' && report.markdown_content && (
-              <button
-                onClick={downloadMarkdown}
-                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
-              >
-                <Download className="w-4 h-4" />
-                Download
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={downloadPdf}
+                  disabled={downloadingPdf}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-[#E07A5F] hover:bg-[#C96A4F] rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {downloadingPdf ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <FileDown className="w-4 h-4" />
+                  )}
+                  {downloadingPdf ? 'Generating...' : 'Download PDF'}
+                </button>
+                <button
+                  onClick={downloadMarkdown}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <Download className="w-4 h-4" />
+                  Markdown
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -220,8 +345,55 @@ export default function ReportDetailPage({
         )}
 
         {report.status === 'complete' && report.markdown_content && (
-          <div className="bg-white rounded-lg shadow-sm">
-            <MarkdownRenderer content={report.markdown_content} />
+          <div id="report-content">
+            {/* Charts Section */}
+            {(report.funding_stats || report.agent_outputs) && (
+              <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-6">Visual Summary</h2>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  {/* Funding by Year Chart */}
+                  {report.funding_stats?.byYear && report.funding_stats.byYear.length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-700 mb-3">
+                        Funding by Year
+                      </h3>
+                      <FundingByYearChart data={report.funding_stats.byYear} height={250} />
+                    </div>
+                  )}
+
+                  {/* Trials by Phase Chart */}
+                  {report.agent_outputs?.trials?.byPhase &&
+                   Object.keys(report.agent_outputs.trials.byPhase).length > 0 && (
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-700 mb-3">
+                        Clinical Trials by Phase
+                      </h3>
+                      <TrialsByPhaseChart data={report.agent_outputs.trials.byPhase} height={250} />
+                    </div>
+                  )}
+
+                  {/* Category Distribution Chart */}
+                  {report.funding_stats?.byCategory && report.funding_stats.byCategory.length > 0 && (
+                    <div className="lg:col-span-2">
+                      <h3 className="text-sm font-medium text-gray-700 mb-3">
+                        Funding by Research Category
+                      </h3>
+                      <CategoryDistributionChart
+                        data={report.funding_stats.byCategory}
+                        height={300}
+                        showFunding={true}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Full Report Content */}
+            <div className="bg-white rounded-lg shadow-sm">
+              <MarkdownRenderer content={report.markdown_content} />
+            </div>
           </div>
         )}
       </main>
