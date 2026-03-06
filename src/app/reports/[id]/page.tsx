@@ -130,8 +130,7 @@ export default function ReportDetailPage({
     setDownloadingPdf(true)
     try {
       // Dynamically import to avoid SSR issues
-      const html2canvas = (await import('html2canvas')).default
-      const { jsPDF } = await import('jspdf')
+      const html2pdf = (await import('html2pdf.js')).default
 
       // Get the report content element
       const reportContent = document.getElementById('report-content')
@@ -139,52 +138,30 @@ export default function ReportDetailPage({
         throw new Error('Report content not found')
       }
 
-      // Create canvas from the report content
-      const canvas = await html2canvas(reportContent, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: '#ffffff',
-      })
+      const filename = `${report.title.replace(/[^a-z0-9]/gi, '_')}.pdf`
 
-      // Calculate dimensions for A4 paper
-      const imgWidth = 210 // A4 width in mm
-      const pageHeight = 297 // A4 height in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width
-
-      // Create PDF
-      const pdf = new jsPDF('p', 'mm', 'a4')
-      let heightLeft = imgHeight
-      let position = 0
-
-      // Add first page
-      pdf.addImage(
-        canvas.toDataURL('image/png'),
-        'PNG',
-        0,
-        position,
-        imgWidth,
-        imgHeight
-      )
-      heightLeft -= pageHeight
-
-      // Add additional pages if needed
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight
-        pdf.addPage()
-        pdf.addImage(
-          canvas.toDataURL('image/png'),
-          'PNG',
-          0,
-          position,
-          imgWidth,
-          imgHeight
-        )
-        heightLeft -= pageHeight
-      }
-
-      // Download
-      pdf.save(`${report.title.replace(/[^a-z0-9]/gi, '_')}.pdf`)
+      // Configure and generate PDF with proper pagination
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (html2pdf() as any)
+        .set({
+          margin: [15, 15, 15, 15],
+          filename,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: {
+            scale: 2,
+            useCORS: true,
+            logging: false,
+            letterRendering: true,
+          },
+          jsPDF: {
+            unit: 'mm',
+            format: 'a4',
+            orientation: 'portrait',
+          },
+          pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+        })
+        .from(reportContent)
+        .save()
     } catch (error) {
       console.error('Error generating PDF:', error)
       alert('Failed to generate PDF. Please try again.')
