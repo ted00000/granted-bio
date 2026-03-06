@@ -72,14 +72,14 @@ async function generateExecutiveSummary(
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
 
-  // Prepare substantive research content from abstracts
+  // Prepare substantive research content from abstracts - use all projects (up to 100) for deep analysis
   const projectAbstracts = agentOutputs.projects.items
-    .slice(0, 25) // Use more abstracts for deeper analysis
+    .slice(0, 100)
     .map((p, i) => `[${i + 1}] ${p.title}\nPI: ${p.pi_names?.split(';')[0] || 'N/A'} | Org: ${p.org_name || 'N/A'} | ${formatCurrency(p.total_cost || 0)}\n${p.abstract || 'No abstract available'}`)
     .join('\n\n---\n\n')
 
   const trialSummaries = agentOutputs.trials.items
-    .slice(0, 10)
+    .slice(0, 25)
     .map((t) => `- ${t.study_title} (${t.phase || 'Phase N/A'}, ${t.study_status || 'Status N/A'}) - ${t.lead_sponsor || 'Sponsor N/A'}`)
     .join('\n')
 
@@ -124,7 +124,7 @@ Write 4-5 substantive paragraphs with real insights from the research content. P
 
   const response = await client.messages.create({
     model: 'claude-opus-4-20250514',
-    max_tokens: 1500,
+    max_tokens: 2500, // Increased for deeper analysis of 50 projects
     messages: [
       {
         role: 'user',
@@ -153,9 +153,9 @@ async function generateSectionInsights(
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
 
-  // Prepare FULL project abstracts for substantive analysis (not truncated)
+  // Prepare ALL project abstracts for substantive analysis (up to 100)
   const projectAbstracts = agentOutputs.projects.items
-    .slice(0, 15)
+    .slice(0, 100)
     .map((p, i) => {
       const pi = p.pi_names?.split(';')[0] || 'N/A'
       const org = p.org_name || 'N/A'
@@ -164,26 +164,26 @@ async function generateSectionInsights(
     })
     .join('\n\n---\n\n')
 
-  // Prepare FULL patent abstracts for substantive analysis
+  // Prepare ALL patent abstracts for substantive analysis (full throttle: 25)
   const patentAbstracts = agentOutputs.patents.items
-    .slice(0, 10)
+    .slice(0, 25)
     .map((p, i) => {
       return `[${i + 1}] "${p.patent_title}" (${p.assignee || 'Unknown assignee'})\nDate: ${p.patent_date || 'N/A'}\n${p.patent_abstract || 'No abstract available'}`
     })
     .join('\n\n---\n\n')
 
-  // Prepare FULL publication abstracts for substantive analysis
+  // Prepare ALL publication abstracts for substantive analysis (full throttle: 25)
   const pubAbstracts = agentOutputs.publications.items
-    .slice(0, 10)
+    .slice(0, 25)
     .map((p, i) => {
       const year = p.publication_date ? new Date(p.publication_date).getFullYear() : 'N/A'
       return `[${i + 1}] "${p.publication_title}" (${p.journal || 'Unknown journal'}, ${year})\n${p.abstract || 'No abstract available'}`
     })
     .join('\n\n---\n\n')
 
-  // Prepare trial details for clinical insights
+  // Prepare ALL trial details for clinical insights (full throttle: 25)
   const trialDetails = agentOutputs.trials.items
-    .slice(0, 10)
+    .slice(0, 25)
     .map((t, i) => {
       const conditions = t.conditions?.join(', ') || 'N/A'
       return `[${i + 1}] "${t.study_title}"\nPhase: ${t.phase || 'N/A'} | Status: ${t.study_status || 'N/A'} | Sponsor: ${t.lead_sponsor || 'N/A'}\nConditions: ${conditions} | Enrollment: ${t.enrollment_count?.toLocaleString() || 'N/A'}`
@@ -267,7 +267,7 @@ Return JSON only, no markdown:
   try {
     const response = await client.messages.create({
       model: 'claude-opus-4-20250514',
-      max_tokens: 1000,
+      max_tokens: 1500, // Increased for richer section insights
       messages: [{ role: 'user', content: prompt }],
     })
 
@@ -342,7 +342,7 @@ ${renderFundingLandscape(context.fundingStats, insights.funding)}
 
 ## Key Research Projects
 
-${renderProjects(agentOutputs.projects.items.slice(0, 10))}
+${renderProjects(agentOutputs.projects.items.slice(0, 15))}
 
 ---
 
@@ -539,7 +539,7 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
   md += '\n'
 
   md += '### Active Trials\n\n'
-  trials.items.slice(0, 10).forEach((t) => {
+  trials.items.slice(0, 15).forEach((t) => {
     md += `#### ${t.study_title}\n`
     md += `- **NCT ID:** [${t.nct_id}](/trial/${t.nct_id})\n`
     if (t.phase) md += `- **Phase:** ${t.phase}\n`
@@ -570,7 +570,7 @@ function renderPatents(patents: AllAgentOutputs['patents'], insight: string): st
   md += `| Recent (2 years) | ${patents.recentCount} |\n\n`
 
   md += '### Key Patents\n\n'
-  patents.items.slice(0, 10).forEach((p) => {
+  patents.items.slice(0, 15).forEach((p) => {
     md += `#### ${p.patent_title || 'Untitled Patent'}\n`
     md += `- **Patent #:** [${p.patent_id}](/patent/${p.patent_id})\n`
     if (p.assignee) md += `- **Assignee:** ${p.assignee}\n`
@@ -611,7 +611,7 @@ function renderPublications(pubs: AllAgentOutputs['publications'], insight: stri
   }
 
   md += '### Recent Publications\n\n'
-  pubs.items.slice(0, 10).forEach((p) => {
+  pubs.items.slice(0, 15).forEach((p) => {
     md += `#### ${p.publication_title || 'Untitled'}\n`
     md += `- **PMID:** [${p.pmid}](https://pubmed.ncbi.nlm.nih.gov/${p.pmid})\n`
     if (p.journal) md += `- **Journal:** ${p.journal}\n`

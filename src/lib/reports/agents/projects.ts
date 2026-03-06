@@ -1,22 +1,18 @@
 // Projects Agent
-// Searches NIH projects and aggregates funding data
-// Uses hybrid approach: keyword search + semantic search
-// Applies percentile-based filtering for high-confidence results
+// Searches NIH projects using pure semantic search (aligned with UI)
+// Returns up to 100 projects sorted by relevance
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { ProjectsAgentOutput, ProjectItem } from '../types'
 
-// Low threshold to maximize recall - quality comes from percentile filtering
-const SEMANTIC_THRESHOLD = 0.15
-// Target ~75 projects (top 40% of ~200 candidates)
-const TARGET_PERCENTILE = 0.40
-const MIN_PROJECTS = 50
+// Aligned with UI search threshold
+const SEMANTIC_THRESHOLD = 0.2
 const MAX_PROJECTS = 100
 
 /**
  * Run the Projects Agent to gather project data for a topic
- * Uses hybrid approach: keyword search (title + PHR) + semantic search
- * Applies percentile-based filtering for high-confidence results
+ * Uses pure semantic search aligned with UI for consistency
+ * Returns up to 100 projects sorted by similarity (most relevant first)
  */
 export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutput> {
   console.log(`[Projects Agent] Searching for "${topic}"`)
@@ -24,130 +20,63 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
   // Generate embedding for semantic search
   const queryEmbedding = await generateEmbedding(topic)
 
-  // Extract primary search term (most specific part of query)
-  const primaryTerm = topic.split(/\s+/)[0] // e.g., "CAR-T" from "CAR-T cell therapy"
+  // Pure semantic search - aligned with UI approach
+  const { data: semanticResults, error } = await supabaseAdmin.rpc('search_projects_filtered', {
+    query_embedding: queryEmbedding,
+    match_threshold: SEMANTIC_THRESHOLD,
+    match_count: MAX_PROJECTS,
+    min_biotools_confidence: 0,
+    filter_fiscal_years: null,
+    filter_categories: null,
+    filter_org_types: null,
+    filter_states: null,
+    filter_min_funding: null,
+    filter_max_funding: null,
+  })
 
-  // Build keyword search conditions for multiple term variations
-  const searchVariations = [primaryTerm]
-  if (primaryTerm.includes('-')) {
-    searchVariations.push(primaryTerm.replace('-', ' ')) // CAR-T -> CAR T
-  }
-
-  // Run three searches in parallel
-  const [keywordTitleResult, keywordPhrResult, semanticResult] = await Promise.all([
-    // 1. Keyword search on title
-    supabaseAdmin
-      .from('projects')
-      .select(
-        'application_id, project_number, title, phr, pi_names, org_name, total_cost, fiscal_year, primary_category'
-      )
-      .or(searchVariations.map((v) => `title.ilike.%${v}%`).join(','))
-      .order('fiscal_year', { ascending: false })
-      .order('total_cost', { ascending: false })
-      .limit(300),
-
-    // 2. Keyword search on PHR (abstract equivalent)
-    supabaseAdmin
-      .from('projects')
-      .select(
-        'application_id, project_number, title, phr, pi_names, org_name, total_cost, fiscal_year, primary_category'
-      )
-      .or(searchVariations.map((v) => `phr.ilike.%${v}%`).join(','))
-      .order('fiscal_year', { ascending: false })
-      .order('total_cost', { ascending: false })
-      .limit(300),
-
-    // 3. Semantic search with low threshold - captures similarity scores
-    supabaseAdmin.rpc('search_projects_filtered', {
-      query_embedding: queryEmbedding,
-      match_threshold: SEMANTIC_THRESHOLD,
-      match_count: 500, // Get more candidates for percentile filtering
-      min_biotools_confidence: 0,
-      filter_fiscal_years: null,
-      filter_categories: null,
-      filter_org_types: null,
-      filter_states: null,
-      filter_min_funding: null,
-      filter_max_funding: null,
-    }),
-  ])
-
-  // Build similarity map from semantic results
-  const similarityMap = new Map<string, number>()
-  if (semanticResult.data) {
-    for (const project of semanticResult.data as Array<RawProjectResult & { similarity?: number }>) {
-      if (project.similarity !== undefined) {
-        similarityMap.set(project.application_id, project.similarity)
-      }
-    }
-  }
-
-  // Merge results, deduplicating by project_number
-  const seenProjects = new Map<string, RawProjectResult & { similarity?: number }>()
-
-  // Helper to add results, keeping most recent fiscal year per project_number
-  const addResults = (results: RawProjectResult[] | null, addSimilarity: boolean = false) => {
-    if (!results) return
-    for (const project of results) {
-      const key = project.project_number || project.application_id
-      const existing = seenProjects.get(key)
-      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
-        const similarity = addSimilarity
-          ? (project as RawProjectResult & { similarity?: number }).similarity
-          : similarityMap.get(project.application_id)
-        seenProjects.set(key, { ...project, similarity })
-      }
-    }
-  }
-
-  // Add keyword results first (most specific), then semantic (with similarity)
-  addResults(keywordTitleResult.data)
-  addResults(keywordPhrResult.data)
-  addResults(semanticResult.data, true)
-
-  const mergedResults = Array.from(seenProjects.values())
-
-  console.log(
-    `[Projects Agent] Found ${mergedResults.length} unique projects ` +
-      `(${keywordTitleResult.data?.length || 0} title, ${keywordPhrResult.data?.length || 0} phr, ` +
-      `${semanticResult.data?.length || 0} semantic)`
-  )
-
-  if (mergedResults.length === 0) {
+  if (error) {
+    console.error('[Projects Agent] Search error:', error)
     return emptyOutput()
   }
 
-  // Apply percentile-based filtering for high-confidence results
-  // Sort by similarity (highest first), then by funding as tiebreaker
-  const sortedBySimilarity = mergedResults
-    .sort((a, b) => {
-      const simDiff = (b.similarity || 0) - (a.similarity || 0)
-      if (Math.abs(simDiff) > 0.01) return simDiff
-      return (b.total_cost || 0) - (a.total_cost || 0)
-    })
+  if (!semanticResults || semanticResults.length === 0) {
+    console.log('[Projects Agent] No results found')
+    return emptyOutput()
+  }
 
-  // Calculate percentile cutoff
-  const percentileCutoff = Math.ceil(sortedBySimilarity.length * TARGET_PERCENTILE)
-  const targetCount = Math.min(Math.max(percentileCutoff, MIN_PROJECTS), MAX_PROJECTS)
-  const filteredResults = sortedBySimilarity.slice(0, targetCount)
+  // Results come back sorted by similarity (highest first)
+  const rawResults = semanticResults as Array<RawProjectResult & { similarity?: number }>
 
-  // Log similarity score distribution
-  const similarities = filteredResults.map(p => p.similarity || 0)
+  // Deduplicate by project_number, keeping most recent fiscal year
+  const seenProjects = new Map<string, RawProjectResult & { similarity?: number }>()
+  for (const project of rawResults) {
+    const key = project.project_number || project.application_id
+    const existing = seenProjects.get(key)
+    if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+      seenProjects.set(key, project)
+    }
+  }
+
+  const uniqueResults = Array.from(seenProjects.values())
+    // Re-sort by similarity after deduplication
+    .sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
+
+  // Log similarity distribution
+  const similarities = uniqueResults.map(p => p.similarity || 0)
   const minSim = Math.min(...similarities)
   const maxSim = Math.max(...similarities)
   const avgSim = similarities.reduce((a, b) => a + b, 0) / similarities.length
 
   console.log(
-    `[Projects Agent] Applied percentile filter: ${mergedResults.length} → ${filteredResults.length} projects ` +
-      `(similarity range: ${minSim.toFixed(3)} - ${maxSim.toFixed(3)}, avg: ${avgSim.toFixed(3)})`
+    `[Projects Agent] Found ${uniqueResults.length} unique projects ` +
+      `(similarity: ${minSim.toFixed(3)} - ${maxSim.toFixed(3)}, avg: ${avgSim.toFixed(3)})`
   )
 
-  return processResults(filteredResults)
+  return processResults(uniqueResults)
 }
 
 /**
  * Process raw search results into agent output
- * Note: Deduplication and percentile filtering already done in runProjectsAgent
  */
 function processResults(rawResults: Array<RawProjectResult & { similarity?: number }>): ProjectsAgentOutput {
   // Map to ProjectItem format
@@ -211,7 +140,7 @@ function processResults(rawResults: Array<RawProjectResult & { similarity?: numb
   const avgSimilarity = rawResults.reduce((sum, p) => sum + (p.similarity || 0), 0) / rawResults.length
 
   console.log(
-    `[Projects Agent] Processed ${items.length} high-confidence projects, ` +
+    `[Projects Agent] Processed ${items.length} projects, ` +
       `$${(totalFunding / 1e6).toFixed(1)}M total funding, ` +
       `avg similarity: ${avgSimilarity.toFixed(3)}`
   )
