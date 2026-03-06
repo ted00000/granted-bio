@@ -62,8 +62,8 @@ export function FundingByYearChart({ data, height = 300 }: FundingByYearChartPro
             width={60}
           />
           <Tooltip
-            formatter={(value: number) => [formatFunding(value), 'Funding']}
-            labelFormatter={(label) => `FY ${label}`}
+            formatter={(value) => [formatFunding(typeof value === 'number' ? value : 0), 'Funding']}
+            labelFormatter={(label) => `FY ${String(label)}`}
             contentStyle={{
               backgroundColor: 'white',
               border: '1px solid #E5E5E5',

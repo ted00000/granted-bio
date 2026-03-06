@@ -77,7 +77,7 @@ export function TrialsByPhaseChart({ data, height = 250 }: TrialsByPhaseChartPro
             width={75}
           />
           <Tooltip
-            formatter={(value: number) => [value, 'Trials']}
+            formatter={(value) => [typeof value === 'number' ? value : 0, 'Trials']}
             contentStyle={{
               backgroundColor: 'white',
               border: '1px solid #E5E5E5',

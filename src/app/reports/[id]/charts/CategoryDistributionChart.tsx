@@ -94,11 +94,12 @@ export function CategoryDistributionChart({
             width={95}
           />
           <Tooltip
-            formatter={(value: number, name: string) => {
-              if (name === 'funding') return [formatFunding(value), 'Funding']
-              return [value, 'Projects']
+            formatter={(value, name) => {
+              const numValue = typeof value === 'number' ? value : 0
+              if (name === 'funding') return [formatFunding(numValue), 'Funding']
+              return [numValue, 'Projects']
             }}
-            labelFormatter={(label) => label}
+            labelFormatter={(label) => String(label)}
             contentStyle={{
               backgroundColor: 'white',
               border: '1px solid #E5E5E5',
