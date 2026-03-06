@@ -1199,7 +1199,13 @@ export function Chat({ persona }: ChatProps) {
       messages,
       returnUrl: window.location.href
     }
-    sessionStorage.setItem('searchState', JSON.stringify(state))
+    try {
+      sessionStorage.setItem('searchState', JSON.stringify(state))
+    } catch (e) {
+      // Storage quota exceeded - clear and skip saving
+      console.warn('Failed to save search state:', e)
+      sessionStorage.removeItem('searchState')
+    }
     router.push(`/project/${applicationId}`)
   }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
 
@@ -1218,7 +1224,13 @@ export function Chat({ persona }: ChatProps) {
       messages,
       returnUrl: window.location.href
     }
-    sessionStorage.setItem('searchState', JSON.stringify(state))
+    try {
+      sessionStorage.setItem('searchState', JSON.stringify(state))
+    } catch (e) {
+      // Storage quota exceeded - clear and skip saving
+      console.warn('Failed to save search state:', e)
+      sessionStorage.removeItem('searchState')
+    }
     router.push(`/trial/${nctId}`)
   }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
 
