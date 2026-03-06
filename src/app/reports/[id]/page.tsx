@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
-import { FileText, ArrowLeft, Download, Loader2, AlertCircle, FileDown } from 'lucide-react'
+import { FileText, ArrowLeft, Download, AlertCircle, FileDown, Loader2 } from 'lucide-react'
 import { MarkdownRenderer } from './MarkdownRenderer'
 
 interface FundingByYear {
@@ -108,8 +108,6 @@ export default function ReportDetailPage({
     }
   }
 
-  const [downloadingPdf, setDownloadingPdf] = useState(false)
-
   const downloadMarkdown = () => {
     if (!report?.markdown_content) return
 
@@ -124,50 +122,77 @@ export default function ReportDetailPage({
     URL.revokeObjectURL(url)
   }
 
-  const downloadPdf = async () => {
+  const downloadPdf = () => {
     if (!report?.markdown_content) return
 
-    setDownloadingPdf(true)
-    try {
-      // Dynamically import to avoid SSR issues
-      const html2pdf = (await import('html2pdf.js')).default
-
-      // Get the report content element
-      const reportContent = document.getElementById('report-content')
-      if (!reportContent) {
-        throw new Error('Report content not found')
-      }
-
-      const filename = `${report.title.replace(/[^a-z0-9]/gi, '_')}.pdf`
-
-      // Configure and generate PDF with proper pagination
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (html2pdf() as any)
-        .set({
-          margin: [15, 15, 15, 15],
-          filename,
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: {
-            scale: 2,
-            useCORS: true,
-            logging: false,
-            letterRendering: true,
-          },
-          jsPDF: {
-            unit: 'mm',
-            format: 'a4',
-            orientation: 'portrait',
-          },
-          pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
-        })
-        .from(reportContent)
-        .save()
-    } catch (error) {
-      console.error('Error generating PDF:', error)
-      alert('Failed to generate PDF. Please try again.')
-    } finally {
-      setDownloadingPdf(false)
+    // Create a new window with just the report content for printing
+    const printWindow = window.open('', '_blank')
+    if (!printWindow) {
+      alert('Please allow popups to download PDF')
+      return
     }
+
+    const reportContent = document.getElementById('report-content')
+    if (!reportContent) {
+      printWindow.close()
+      return
+    }
+
+    // Write the content with print-optimized styles
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>${report.title}</title>
+          <style>
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              font-size: 11pt;
+              line-height: 1.5;
+              color: #1a1a1a;
+              padding: 40px;
+              max-width: 100%;
+            }
+            h1 { font-size: 20pt; font-weight: bold; margin: 24px 0 12px; }
+            h2 { font-size: 16pt; font-weight: 600; margin: 20px 0 10px; padding-top: 16px; border-top: 1px solid #ddd; }
+            h3 { font-size: 13pt; font-weight: 600; margin: 16px 0 8px; }
+            h4 { font-size: 11pt; font-weight: 600; margin: 12px 0 6px; }
+            p { margin-bottom: 8px; }
+            table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 10pt; }
+            th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid #ddd; }
+            th { background: #f5f5f5; font-weight: 600; }
+            blockquote { border-left: 3px solid #E07A5F; padding-left: 12px; margin: 12px 0; color: #555; font-style: italic; }
+            ul { margin: 8px 0; padding-left: 24px; }
+            li { margin: 4px 0; }
+            a { color: #E07A5F; text-decoration: none; }
+            hr { border: none; border-top: 1px solid #ddd; margin: 20px 0; }
+            @media print {
+              body { padding: 0; }
+              h2 { page-break-before: auto; }
+              table, blockquote { page-break-inside: avoid; }
+            }
+          </style>
+        </head>
+        <body>
+          ${reportContent.innerHTML}
+        </body>
+      </html>
+    `)
+    printWindow.document.close()
+
+    // Wait for content to load, then trigger print
+    printWindow.onload = () => {
+      printWindow.print()
+    }
+    // Fallback for browsers that don't fire onload
+    setTimeout(() => {
+      printWindow.print()
+    }, 500)
   }
 
   if (loading) {
@@ -261,15 +286,10 @@ export default function ReportDetailPage({
               <div className="flex items-center gap-2">
                 <button
                   onClick={downloadPdf}
-                  disabled={downloadingPdf}
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-[#E07A5F] hover:bg-[#C96A4F] rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-[#E07A5F] hover:bg-[#C96A4F] rounded-lg transition-colors"
                 >
-                  {downloadingPdf ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <FileDown className="w-4 h-4" />
-                  )}
-                  {downloadingPdf ? 'Generating...' : 'Download PDF'}
+                  <FileDown className="w-4 h-4" />
+                  Save as PDF
                 </button>
                 <button
                   onClick={downloadMarkdown}
