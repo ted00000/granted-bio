@@ -286,12 +286,14 @@ function aggregateOrganizations(
     orgMap.set(p.assignee, existing)
   })
 
-  // Sort by total activity (projects + trials + patents)
+  // Sort by funding (primary), with activity as tiebreaker
   return Array.from(orgMap.values())
     .sort((a, b) => {
-      const scoreA = a.projects * 2 + a.trials + a.patents + a.funding / 1000000
-      const scoreB = b.projects * 2 + b.trials + b.patents + b.funding / 1000000
-      return scoreB - scoreA
+      // Primary sort: funding
+      const fundingDiff = b.funding - a.funding
+      if (fundingDiff !== 0) return fundingDiff
+      // Tiebreaker: total activity
+      return (b.projects + b.trials + b.patents) - (a.projects + a.trials + a.patents)
     })
     .slice(0, 15)
 }
