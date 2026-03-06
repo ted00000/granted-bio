@@ -4,7 +4,6 @@ import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { FileText, ArrowLeft, Download, Loader2, AlertCircle, FileDown } from 'lucide-react'
 import { MarkdownRenderer } from './MarkdownRenderer'
-import { FundingByYearChart, TrialsByPhaseChart, CategoryDistributionChart } from './charts'
 
 interface FundingByYear {
   year: number
@@ -345,55 +344,8 @@ export default function ReportDetailPage({
         )}
 
         {report.status === 'complete' && report.markdown_content && (
-          <div id="report-content">
-            {/* Charts Section */}
-            {(report.funding_stats || report.agent_outputs) && (
-              <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-6">Visual Summary</h2>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                  {/* Funding by Year Chart */}
-                  {report.funding_stats?.byYear && report.funding_stats.byYear.length > 0 && (
-                    <div>
-                      <h3 className="text-sm font-medium text-gray-700 mb-3">
-                        Funding by Year
-                      </h3>
-                      <FundingByYearChart data={report.funding_stats.byYear} height={250} />
-                    </div>
-                  )}
-
-                  {/* Trials by Phase Chart */}
-                  {report.agent_outputs?.trials?.byPhase &&
-                   Object.keys(report.agent_outputs.trials.byPhase).length > 0 && (
-                    <div>
-                      <h3 className="text-sm font-medium text-gray-700 mb-3">
-                        Clinical Trials by Phase
-                      </h3>
-                      <TrialsByPhaseChart data={report.agent_outputs.trials.byPhase} height={250} />
-                    </div>
-                  )}
-
-                  {/* Category Distribution Chart */}
-                  {report.funding_stats?.byCategory && report.funding_stats.byCategory.length > 0 && (
-                    <div className="lg:col-span-2">
-                      <h3 className="text-sm font-medium text-gray-700 mb-3">
-                        Funding by Research Category
-                      </h3>
-                      <CategoryDistributionChart
-                        data={report.funding_stats.byCategory}
-                        height={300}
-                        showFunding={true}
-                      />
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Full Report Content */}
-            <div className="bg-white rounded-lg shadow-sm">
-              <MarkdownRenderer content={report.markdown_content} />
-            </div>
+          <div id="report-content" className="bg-white rounded-lg shadow-sm">
+            <MarkdownRenderer content={report.markdown_content} />
           </div>
         )}
       </main>
