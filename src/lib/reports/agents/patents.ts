@@ -1,11 +1,14 @@
 // Patents Agent
 // Searches patents linked to NIH projects
 // Uses hybrid approach: keyword search + project-linked search
+// Uses low threshold for better recall via project linkage
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { PatentsAgentOutput, PatentItem } from '../types'
 
-const UNIFIED_THRESHOLD = 0.35
+// Low threshold to maximize recall - quality comes from project relevance
+const SEMANTIC_THRESHOLD = 0.15
+const MAX_PATENTS = 30
 
 /**
  * Run the Patents Agent to gather patent data for a topic
@@ -39,8 +42,8 @@ export async function runPatentsAgent(topic: string): Promise<PatentsAgentOutput
     (async () => {
       const { data: projects } = await supabaseAdmin.rpc('search_projects_filtered', {
         query_embedding: queryEmbedding,
-        match_threshold: UNIFIED_THRESHOLD,
-        match_count: 30,
+        match_threshold: SEMANTIC_THRESHOLD,
+        match_count: 100, // Get more candidates for better patent coverage
         min_biotools_confidence: 0,
         filter_fiscal_years: null,
         filter_categories: null,

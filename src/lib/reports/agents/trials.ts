@@ -1,11 +1,15 @@
 // Trials Agent
 // Searches clinical trials linked to NIH projects
 // Enriches data from ClinicalTrials.gov if needed
+// Uses low threshold + percentile filtering for high-confidence results
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { TrialsAgentOutput, TrialItem } from '../types'
 
-const UNIFIED_THRESHOLD = 0.35
+// Low threshold to maximize recall - quality comes from percentile filtering
+const SEMANTIC_THRESHOLD = 0.15
+const TARGET_PERCENTILE = 0.50 // Top 50% by relevance
+const MAX_TRIALS = 30
 
 /**
  * Run the Trials Agent to gather clinical trial data for a topic
@@ -26,14 +30,14 @@ export async function runTrialsAgent(topic: string): Promise<TrialsAgentOutput> 
       .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
       .ilike('study_title', `%${primaryTerm}%`)
       .order('start_date', { ascending: false })
-      .limit(30),
+      .limit(50),
 
     // Project-linked approach: find projects, get their linked trials
     (async () => {
       const { data: projects } = await supabaseAdmin.rpc('search_projects_filtered', {
         query_embedding: queryEmbedding,
-        match_threshold: UNIFIED_THRESHOLD,
-        match_count: 30,
+        match_threshold: SEMANTIC_THRESHOLD,
+        match_count: 100, // Get more candidates for better trial coverage
         min_biotools_confidence: 0,
         filter_fiscal_years: null,
         filter_categories: null,
@@ -61,7 +65,7 @@ export async function runTrialsAgent(topic: string): Promise<TrialsAgentOutput> 
         .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
         .in('project_number', projectNumbers)
         .order('start_date', { ascending: false })
-        .limit(30)
+        .limit(50)
     })(),
   ])
 

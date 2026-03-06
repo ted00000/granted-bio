@@ -328,16 +328,43 @@ ${renderResearchers(context.topResearchers)}
 
 ---
 
-## Methodology
+## About This Report
 
-This report was generated using:
-- **NIH RePORTER** data for funded research projects
-- **ClinicalTrials.gov** for clinical trial information
-- **USPTO** for patent filings linked to NIH projects
-- **PubMed** for publications linked to NIH projects
-- **AI synthesis** for market context and executive summary
+### Methodology
 
-Data current as of ${now}.
+This report analyzes a curated subset of NIH-funded research projects most relevant to **${topic}**. Projects were identified using semantic search (AI-based conceptual matching) combined with keyword search, then filtered to include only high-confidence matches based on similarity scoring.
+
+**Sample Composition:**
+
+| Metric | Value |
+|--------|-------|
+| Projects Analyzed | ${context.fundingStats.projectCount.toLocaleString()} |
+| Total Funding | ${formatCurrency(context.fundingStats.total)} |
+| Organizations | ${context.fundingStats.orgCount.toLocaleString()} |
+| Principal Investigators | ${context.fundingStats.piCount.toLocaleString()} |
+| Clinical Trials | ${agentOutputs.trials.items.length} |
+| Patents | ${agentOutputs.patents.items.length} |
+| Publications | ${agentOutputs.publications.items.length} |
+
+**Data Sources:**
+
+- **NIH RePORTER** — Funded research projects (FY2015-2025)
+- **ClinicalTrials.gov** — Clinical studies linked to NIH projects
+- **USPTO** — Patents linked to NIH projects
+- **PubMed** — Publications linked to NIH projects
+- **AI Synthesis** — Market context and executive summary
+
+### Limitations
+
+This analysis focuses on **depth over breadth**. It represents a statistically meaningful sample of the most relevant NIH-funded research, providing detailed insights rather than exhaustive coverage. The data captures publicly-funded academic and institutional research with high confidence, but does not include:
+
+- Privately-funded industry R&D
+- International research outside NIH grants
+- Projects not semantically related to the search topic
+
+For comprehensive population-level data, consult [NIH RePORTER](https://reporter.nih.gov) directly.
+
+*Data current as of ${now}.*
 `
 
   return md

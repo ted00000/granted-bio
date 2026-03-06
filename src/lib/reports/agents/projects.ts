@@ -1,16 +1,22 @@
 // Projects Agent
 // Searches NIH projects and aggregates funding data
 // Uses hybrid approach: keyword search + semantic search
+// Applies percentile-based filtering for high-confidence results
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { ProjectsAgentOutput, ProjectItem } from '../types'
 
-const UNIFIED_THRESHOLD = 0.35 // Same threshold as other agents
-const MAX_RESULTS = 200 // Max unique projects to include
+// Low threshold to maximize recall - quality comes from percentile filtering
+const SEMANTIC_THRESHOLD = 0.15
+// Target ~75 projects (top 40% of ~200 candidates)
+const TARGET_PERCENTILE = 0.40
+const MIN_PROJECTS = 50
+const MAX_PROJECTS = 100
 
 /**
  * Run the Projects Agent to gather project data for a topic
  * Uses hybrid approach: keyword search (title + PHR) + semantic search
+ * Applies percentile-based filtering for high-confidence results
  */
 export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutput> {
   console.log(`[Projects Agent] Searching for "${topic}"`)
@@ -51,11 +57,11 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
       .order('total_cost', { ascending: false })
       .limit(300),
 
-    // 3. Semantic search
+    // 3. Semantic search with low threshold - captures similarity scores
     supabaseAdmin.rpc('search_projects_filtered', {
       query_embedding: queryEmbedding,
-      match_threshold: UNIFIED_THRESHOLD,
-      match_count: 200,
+      match_threshold: SEMANTIC_THRESHOLD,
+      match_count: 500, // Get more candidates for percentile filtering
       min_biotools_confidence: 0,
       filter_fiscal_years: null,
       filter_categories: null,
@@ -66,25 +72,38 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
     }),
   ])
 
+  // Build similarity map from semantic results
+  const similarityMap = new Map<string, number>()
+  if (semanticResult.data) {
+    for (const project of semanticResult.data as Array<RawProjectResult & { similarity?: number }>) {
+      if (project.similarity !== undefined) {
+        similarityMap.set(project.application_id, project.similarity)
+      }
+    }
+  }
+
   // Merge results, deduplicating by project_number
-  const seenProjects = new Map<string, RawProjectResult>()
+  const seenProjects = new Map<string, RawProjectResult & { similarity?: number }>()
 
   // Helper to add results, keeping most recent fiscal year per project_number
-  const addResults = (results: RawProjectResult[] | null) => {
+  const addResults = (results: RawProjectResult[] | null, addSimilarity: boolean = false) => {
     if (!results) return
     for (const project of results) {
       const key = project.project_number || project.application_id
       const existing = seenProjects.get(key)
       if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
-        seenProjects.set(key, project)
+        const similarity = addSimilarity
+          ? (project as RawProjectResult & { similarity?: number }).similarity
+          : similarityMap.get(project.application_id)
+        seenProjects.set(key, { ...project, similarity })
       }
     }
   }
 
-  // Add keyword results first (most specific), then semantic
+  // Add keyword results first (most specific), then semantic (with similarity)
   addResults(keywordTitleResult.data)
   addResults(keywordPhrResult.data)
-  addResults(semanticResult.data)
+  addResults(semanticResult.data, true)
 
   const mergedResults = Array.from(seenProjects.values())
 
@@ -98,19 +117,39 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
     return emptyOutput()
   }
 
-  // Sort by funding and limit
-  const sortedResults = mergedResults
-    .sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
-    .slice(0, MAX_RESULTS)
+  // Apply percentile-based filtering for high-confidence results
+  // Sort by similarity (highest first), then by funding as tiebreaker
+  const sortedBySimilarity = mergedResults
+    .sort((a, b) => {
+      const simDiff = (b.similarity || 0) - (a.similarity || 0)
+      if (Math.abs(simDiff) > 0.01) return simDiff
+      return (b.total_cost || 0) - (a.total_cost || 0)
+    })
 
-  return processResults(sortedResults)
+  // Calculate percentile cutoff
+  const percentileCutoff = Math.ceil(sortedBySimilarity.length * TARGET_PERCENTILE)
+  const targetCount = Math.min(Math.max(percentileCutoff, MIN_PROJECTS), MAX_PROJECTS)
+  const filteredResults = sortedBySimilarity.slice(0, targetCount)
+
+  // Log similarity score distribution
+  const similarities = filteredResults.map(p => p.similarity || 0)
+  const minSim = Math.min(...similarities)
+  const maxSim = Math.max(...similarities)
+  const avgSim = similarities.reduce((a, b) => a + b, 0) / similarities.length
+
+  console.log(
+    `[Projects Agent] Applied percentile filter: ${mergedResults.length} → ${filteredResults.length} projects ` +
+      `(similarity range: ${minSim.toFixed(3)} - ${maxSim.toFixed(3)}, avg: ${avgSim.toFixed(3)})`
+  )
+
+  return processResults(filteredResults)
 }
 
 /**
  * Process raw search results into agent output
- * Note: Deduplication is already done in runProjectsAgent
+ * Note: Deduplication and percentile filtering already done in runProjectsAgent
  */
-function processResults(rawResults: RawProjectResult[]): ProjectsAgentOutput {
+function processResults(rawResults: Array<RawProjectResult & { similarity?: number }>): ProjectsAgentOutput {
   // Map to ProjectItem format
   // Note: 'phr' field is the public health relevance (abstract equivalent)
   const items: ProjectItem[] = rawResults.map((p) => ({
@@ -167,7 +206,14 @@ function processResults(rawResults: RawProjectResult[]): ProjectsAgentOutput {
     .sort((a, b) => b.funding - a.funding)
     .slice(0, 15)
 
-  console.log(`[Projects Agent] Processed ${items.length} unique projects, $${(totalFunding / 1e6).toFixed(1)}M total funding`)
+  // Calculate average similarity for quality reporting
+  const avgSimilarity = rawResults.reduce((sum, p) => sum + (p.similarity || 0), 0) / rawResults.length
+
+  console.log(
+    `[Projects Agent] Processed ${items.length} high-confidence projects, ` +
+      `$${(totalFunding / 1e6).toFixed(1)}M total funding, ` +
+      `avg similarity: ${avgSimilarity.toFixed(3)}`
+  )
 
   return {
     items,
