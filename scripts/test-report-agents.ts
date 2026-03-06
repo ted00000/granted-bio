@@ -18,9 +18,10 @@ async function testAgents() {
   console.log(`Testing report agents for: "${TOPIC}"`)
   console.log(`${'='.repeat(60)}\n`)
 
-  // Test Projects Agent
+  // Test Projects Agent (runs first - other agents depend on project numbers)
   console.log('📊 PROJECTS AGENT')
   console.log('-'.repeat(40))
+  let projectNumbers: string[] = []
   try {
     const projects = await runProjectsAgent(TOPIC)
     console.log(`  Total projects: ${projects.items.length}`)
@@ -31,17 +32,23 @@ async function testAgents() {
     projects.items.slice(0, 3).forEach((p, i) => {
       console.log(`    ${i + 1}. ${p.title?.substring(0, 60)}...`)
     })
+
+    // Extract project numbers for dependent agents
+    projectNumbers = projects.items
+      .map((p) => p.project_number)
+      .filter((pn): pn is string => pn !== null && pn !== undefined)
+    console.log(`  Project numbers extracted: ${projectNumbers.length}`)
   } catch (error) {
     console.error('  ERROR:', error)
   }
 
   console.log()
 
-  // Test Trials Agent
-  console.log('🏥 TRIALS AGENT')
+  // Test Trials Agent (depends on project numbers)
+  console.log('🏥 TRIALS AGENT (linked to projects)')
   console.log('-'.repeat(40))
   try {
-    const trials = await runTrialsAgent(TOPIC)
+    const trials = await runTrialsAgent(projectNumbers)
     console.log(`  Total trials: ${trials.items.length}`)
     console.log(`  By phase:`, Object.entries(trials.byPhase).map(([p, c]) => `${p}: ${c}`).join(', '))
     console.log(`  Sample titles:`)
@@ -54,11 +61,11 @@ async function testAgents() {
 
   console.log()
 
-  // Test Patents Agent
-  console.log('📜 PATENTS AGENT')
+  // Test Patents Agent (depends on project numbers)
+  console.log('📜 PATENTS AGENT (linked to projects)')
   console.log('-'.repeat(40))
   try {
-    const patents = await runPatentsAgent(TOPIC)
+    const patents = await runPatentsAgent(projectNumbers)
     console.log(`  Total patents: ${patents.items.length}`)
     console.log(`  Recent (2yr): ${patents.recentCount}`)
     console.log(`  Top assignees:`, patents.byAssignee.slice(0, 3).map(a => a.assignee).join(', ') || 'None')
@@ -72,11 +79,11 @@ async function testAgents() {
 
   console.log()
 
-  // Test Publications Agent
-  console.log('📚 PUBLICATIONS AGENT')
+  // Test Publications Agent (depends on project numbers)
+  console.log('📚 PUBLICATIONS AGENT (linked to projects)')
   console.log('-'.repeat(40))
   try {
-    const pubs = await runPublicationsAgent(TOPIC)
+    const pubs = await runPublicationsAgent(projectNumbers)
     console.log(`  Total publications: ${pubs.items.length}`)
     console.log(`  Top journals:`, pubs.byJournal.slice(0, 3).map(j => j.journal).join(', ') || 'None')
     console.log(`  Sample titles:`)

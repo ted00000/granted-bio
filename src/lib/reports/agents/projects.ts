@@ -154,6 +154,7 @@ function processResults(rawResults: Array<RawProjectResult & { similarity?: numb
   // Note: 'phr' field is the public health relevance (abstract equivalent)
   const items: ProjectItem[] = rawResults.map((p) => ({
     application_id: p.application_id,
+    project_number: p.project_number || null,
     title: p.title,
     abstract: p.phr || null, // PHR is the abstract equivalent in NIH data
     pi_names: p.pi_names || null,

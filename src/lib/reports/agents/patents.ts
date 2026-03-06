@@ -1,129 +1,64 @@
 // Patents Agent
-// Searches patents linked to NIH projects
-// Uses hybrid approach: keyword search + project-linked search
-// Uses low threshold for better recall via project linkage
+// Fetches patents linked to specific projects
+// Enriches abstracts from Google Patents if needed
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { PatentsAgentOutput, PatentItem } from '../types'
 
-// Low threshold to maximize recall - quality comes from project relevance
-const SEMANTIC_THRESHOLD = 0.15
-const MAX_PATENTS = 30
-
 /**
- * Run the Patents Agent to gather patent data for a topic
- * Uses hybrid approach: keyword search + project-linked search
+ * Run the Patents Agent to gather patent data linked to specific projects
+ * Only returns patents that are directly linked to the provided project numbers
  */
-export async function runPatentsAgent(topic: string): Promise<PatentsAgentOutput> {
-  console.log(`[Patents Agent] Searching for "${topic}"`)
+export async function runPatentsAgent(projectNumbers: string[]): Promise<PatentsAgentOutput> {
+  console.log(`[Patents Agent] Fetching patents for ${projectNumbers.length} projects`)
 
-  const queryEmbedding = await generateEmbedding(topic)
-
-  // Extract search terms for keyword search
-  // Use all significant terms (3+ chars) from topic
-  const searchTerms = topic
-    .split(/\s+/)
-    .filter((w) => w.length >= 3)
-    .filter((w) => !['the', 'and', 'for', 'with'].includes(w.toLowerCase()))
-
-  // Build OR filter for keyword search
-  const keywordFilter = searchTerms.map((term) => `patent_title.ilike.%${term}%`).join(',')
-
-  const [keywordResult, linkedResult] = await Promise.all([
-    // Keyword search on patent titles - match any term
-    supabaseAdmin
-      .from('patents')
-      .select('patent_id, patent_title, patent_org, issue_date, filing_date, project_number, abstract')
-      .or(keywordFilter)
-      .order('issue_date', { ascending: false, nullsFirst: false })
-      .limit(30),
-
-    // Project-linked approach: find projects, get their linked patents
-    (async () => {
-      const { data: projects } = await supabaseAdmin.rpc('search_projects_filtered', {
-        query_embedding: queryEmbedding,
-        match_threshold: SEMANTIC_THRESHOLD,
-        match_count: 100, // Get more candidates for better patent coverage
-        min_biotools_confidence: 0,
-        filter_fiscal_years: null,
-        filter_categories: null,
-        filter_org_types: null,
-        filter_states: null,
-        filter_min_funding: null,
-        filter_max_funding: null,
-      })
-
-      if (!projects || projects.length === 0) {
-        return { data: null, error: null }
-      }
-
-      const projectNumbers = projects
-        .map((p: { project_number: string }) => p.project_number)
-        .filter(Boolean)
-
-      if (projectNumbers.length === 0) {
-        return { data: null, error: null }
-      }
-
-      // Get patents linked to these projects
-      return supabaseAdmin
-        .from('patents')
-        .select('patent_id, patent_title, patent_org, issue_date, filing_date, project_number, abstract')
-        .in('project_number', projectNumbers)
-        .order('issue_date', { ascending: false, nullsFirst: false })
-        .limit(30)
-    })(),
-  ])
-
-  // Merge results, prioritizing linked matches (from semantically relevant projects)
-  const seenPatents = new Map<string, RawPatentResult>()
-
-  // Add linked patents first (more specific to topic via project linkage)
-  if (linkedResult.data) {
-    for (const patent of linkedResult.data) {
-      if (!seenPatents.has(patent.patent_id)) {
-        seenPatents.set(patent.patent_id, patent)
-      }
-    }
-  }
-
-  // Add keyword results that weren't already included
-  if (keywordResult.data) {
-    for (const patent of keywordResult.data) {
-      if (!seenPatents.has(patent.patent_id)) {
-        seenPatents.set(patent.patent_id, patent)
-      }
-    }
-  }
-
-  const mergedResults = Array.from(seenPatents.values())
-
-  console.log(
-    `[Patents Agent] Found ${mergedResults.length} patents ` +
-      `(${keywordResult.data?.length || 0} keyword, ${linkedResult.data?.length || 0} linked)`
-  )
-
-  if (mergedResults.length === 0) {
+  if (projectNumbers.length === 0) {
     return emptyOutput()
   }
 
-  const limitedResults = mergedResults.slice(0, 30)
+  // Get patents linked to these specific projects
+  const { data: linkedPatents, error } = await supabaseAdmin
+    .from('patents')
+    .select('patent_id, patent_title, patent_org, issue_date, filing_date, project_number, abstract')
+    .in('project_number', projectNumbers)
+    .order('issue_date', { ascending: false, nullsFirst: false })
+
+  if (error) {
+    console.error('[Patents Agent] Error fetching patents:', error)
+    return emptyOutput()
+  }
+
+  if (!linkedPatents || linkedPatents.length === 0) {
+    console.log('[Patents Agent] No patents found for these projects')
+    return emptyOutput()
+  }
+
+  // Deduplicate by patent_id (a patent may be linked to multiple projects)
+  const seenPatents = new Map<string, RawPatentResult>()
+  for (const patent of linkedPatents) {
+    if (!seenPatents.has(patent.patent_id)) {
+      seenPatents.set(patent.patent_id, patent)
+    }
+  }
+
+  const uniquePatents = Array.from(seenPatents.values())
+  console.log(`[Patents Agent] Found ${uniquePatents.length} unique patents (from ${linkedPatents.length} linked)`)
 
   // Check for missing abstracts and enrich from Google Patents (limit to 15 due to scraping)
-  const needsEnrichment = limitedResults.filter((p) => !p.abstract).slice(0, 15)
+  const needsEnrichment = uniquePatents.filter((p) => !p.abstract).slice(0, 15)
   if (needsEnrichment.length > 0) {
     console.log(`[Patents Agent] ${needsEnrichment.length} patents need abstract enrichment`)
     const enriched = await enrichPatentAbstracts(needsEnrichment.map((p) => p.patent_id))
 
     // Update results with fetched abstracts
-    for (const patent of limitedResults) {
+    for (const patent of uniquePatents) {
       if (!patent.abstract && enriched[patent.patent_id]) {
         patent.abstract = enriched[patent.patent_id]
       }
     }
   }
 
-  return processResults(limitedResults)
+  return processResults(uniquePatents)
 }
 
 /**
@@ -178,21 +113,6 @@ function emptyOutput(): PatentsAgentOutput {
     byAssignee: [],
     recentCount: 0,
   }
-}
-
-/**
- * Generate embedding using OpenAI
- */
-async function generateEmbedding(text: string): Promise<number[]> {
-  const { default: OpenAI } = await import('openai')
-  const openai = new OpenAI()
-
-  const response = await openai.embeddings.create({
-    model: 'text-embedding-3-small',
-    input: text,
-  })
-
-  return response.data[0].embedding
 }
 
 /**

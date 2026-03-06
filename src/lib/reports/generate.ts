@@ -68,17 +68,27 @@ export async function generateTopicReport(
   const reportId = report.id
 
   try {
-    // Phase 1: Parallel agent data gathering
+    // Phase 1a: Get projects first (other agents depend on project numbers)
     console.log(`[Report ${reportId}] Starting agent data gathering for "${topic}"`)
 
-    const [projectsOutput, trialsOutput, patentsOutput, publicationsOutput, marketOutput] =
-      await Promise.all([
-        runProjectsAgent(topic),
-        runTrialsAgent(topic),
-        runPatentsAgent(topic),
-        runPublicationsAgent(topic),
-        runMarketAgent(topic),
-      ])
+    const projectsOutput = await runProjectsAgent(topic)
+    console.log(`[Report ${reportId}] Projects agent complete: ${projectsOutput.items.length} projects`)
+
+    // Extract project numbers for dependent agents
+    const projectNumbers = projectsOutput.items
+      .map((p) => p.project_number)
+      .filter((pn): pn is string => pn !== null && pn !== undefined)
+
+    console.log(`[Report ${reportId}] Found ${projectNumbers.length} project numbers for linked data`)
+
+    // Phase 1b: Run dependent agents in parallel (they all use project numbers)
+    // Market agent runs independently (doesn't need project numbers)
+    const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
+      runTrialsAgent(projectNumbers),
+      runPatentsAgent(projectNumbers),
+      runPublicationsAgent(projectNumbers),
+      runMarketAgent(topic),
+    ])
 
     const agentOutputs: AllAgentOutputs = {
       projects: projectsOutput,
@@ -90,9 +100,9 @@ export async function generateTopicReport(
 
     console.log(`[Report ${reportId}] Agent data gathering complete`)
     console.log(`  - Projects: ${projectsOutput.items.length}`)
-    console.log(`  - Trials: ${trialsOutput.items.length}`)
-    console.log(`  - Patents: ${patentsOutput.items.length}`)
-    console.log(`  - Publications: ${publicationsOutput.items.length}`)
+    console.log(`  - Trials: ${trialsOutput.items.length} (linked to ${projectNumbers.length} projects)`)
+    console.log(`  - Patents: ${patentsOutput.items.length} (linked to ${projectNumbers.length} projects)`)
+    console.log(`  - Publications: ${publicationsOutput.items.length} (linked to ${projectNumbers.length} projects)`)
 
     // Phase 2: Aggregation
     const fundingStats = calculateFundingStats(projectsOutput)

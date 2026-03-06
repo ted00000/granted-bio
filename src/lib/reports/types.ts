@@ -29,6 +29,7 @@ export interface FundingStats {
 
 export interface ProjectItem {
   application_id: string
+  project_number: string | null
   title: string
   abstract: string | null
   pi_names: string | null

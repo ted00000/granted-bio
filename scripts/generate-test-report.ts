@@ -19,18 +19,28 @@ const topic = process.argv[2] || 'CAR-T cell therapy'
 async function main() {
   console.log(`\n=== Generating Test Report for "${topic}" ===\n`)
 
-  // Phase 1: Parallel agent data gathering
-  console.log('Phase 1: Running data agents in parallel...')
   const startTime = Date.now()
 
-  const [projectsOutput, trialsOutput, patentsOutput, publicationsOutput, marketOutput] =
-    await Promise.all([
-      runProjectsAgent(topic),
-      runTrialsAgent(topic),
-      runPatentsAgent(topic),
-      runPublicationsAgent(topic),
-      runMarketAgent(topic),
-    ])
+  // Phase 1a: Get projects first (other agents depend on project numbers)
+  console.log('Phase 1a: Running projects agent...')
+  const projectsOutput = await runProjectsAgent(topic)
+  console.log(`  - Projects: ${projectsOutput.items.length}`)
+
+  // Extract project numbers for dependent agents
+  const projectNumbers = projectsOutput.items
+    .map((p) => p.project_number)
+    .filter((pn): pn is string => pn !== null && pn !== undefined)
+
+  console.log(`  - Project numbers for linked data: ${projectNumbers.length}`)
+
+  // Phase 1b: Run dependent agents in parallel
+  console.log('\nPhase 1b: Running linked data agents in parallel...')
+  const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
+    runTrialsAgent(projectNumbers),
+    runPatentsAgent(projectNumbers),
+    runPublicationsAgent(projectNumbers),
+    runMarketAgent(topic),
+  ])
 
   const agentOutputs: AllAgentOutputs = {
     projects: projectsOutput,
@@ -42,9 +52,9 @@ async function main() {
 
   console.log(`\nAgent data gathering complete (${((Date.now() - startTime) / 1000).toFixed(1)}s)`)
   console.log(`  - Projects: ${projectsOutput.items.length}`)
-  console.log(`  - Trials: ${trialsOutput.items.length}`)
-  console.log(`  - Patents: ${patentsOutput.items.length}`)
-  console.log(`  - Publications: ${publicationsOutput.items.length}`)
+  console.log(`  - Trials: ${trialsOutput.items.length} (linked)`)
+  console.log(`  - Patents: ${patentsOutput.items.length} (linked)`)
+  console.log(`  - Publications: ${publicationsOutput.items.length} (linked)`)
 
   // Phase 2: Aggregation
   console.log('\nPhase 2: Aggregating statistics...')
