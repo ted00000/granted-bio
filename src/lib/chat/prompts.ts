@@ -266,16 +266,16 @@ INPUT: Natural language query describing the therapeutic area, indication, or tr
 OUTPUT: Clinical trials with NCT IDs, status, trial type, and linked NIH project info
 
 === QUERY OPTIMIZATION ===
-Use pipes (|) for synonyms that should be ORed together. Keep queries focused on core disease terms.
+Write natural language queries that describe the therapeutic area or indication. The search uses semantic similarity (embeddings), so descriptive phrases work best.
 
 Examples:
-- User: "ALS trials" → query: "ALS|amyotrophic lateral sclerosis|motor neuron disease"
-- User: "CAR-T solid tumors" → query: "CAR-T|CAR T cell|chimeric antigen receptor solid tumor|tumors"
-- User: "gene therapy rare diseases" → query: "gene therapy|gene editing rare disease|orphan disease"
-- User: "Alzheimer's" → query: "Alzheimer|Alzheimers|dementia"
-- User: "scleroderma" → query: "scleroderma|systemic sclerosis"
+- User: "ALS trials" → query: "amyotrophic lateral sclerosis motor neuron disease treatments"
+- User: "CAR-T solid tumors" → query: "CAR-T cell therapy for solid tumor cancers"
+- User: "gene therapy rare diseases" → query: "gene therapy approaches for rare and orphan diseases"
+- User: "Alzheimer's" → query: "Alzheimer's disease and dementia treatments"
+- User: "scleroderma" → query: "scleroderma systemic sclerosis autoimmune disease"
 
-IMPORTANT: Do NOT add generic words like "clinical trial", "treatment", "therapy", "disease" - these are automatically filtered out. Focus on the specific condition/intervention terms.
+Focus on the specific condition/intervention - avoid generic filler words.
 
 === RESPONSE STYLE ===
 After search completes, respond with exactly this format (one sentence):
