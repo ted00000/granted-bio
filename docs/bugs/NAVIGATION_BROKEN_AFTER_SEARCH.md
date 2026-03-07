@@ -1,6 +1,12 @@
 # Bug: Navigation Broken After Search
 
-## Status: UNRESOLVED - Root cause unknown
+## Status: RESOLVED
+
+## Root Cause
+The `isSbirSttr` helper function in Chat.tsx was defined without `useCallback`, but was used as a dependency in a `useEffect`. This caused an infinite re-render loop after search results arrived, blocking all click events.
+
+**Introduced in:** Commit 7e3762e (March 5) - "Move precision filter to results header"
+**Fixed in:** Commit c289e00 - Wrapped `isSbirSttr` in `useCallback`
 
 ## Symptoms
 
