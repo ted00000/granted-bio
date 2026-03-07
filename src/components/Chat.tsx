@@ -1262,11 +1262,11 @@ export function Chat({ persona }: ChatProps) {
     }
   }, [savedTrialIds])
 
-  // Helper to check if project is SBIR/STTR
-  const isSbirSttr = (activityCode: string | null | undefined): boolean => {
+  // Helper to check if project is SBIR/STTR (memoized to prevent infinite re-renders)
+  const isSbirSttr = useCallback((activityCode: string | null | undefined): boolean => {
     const { isSbir, isSttr } = getSbirSttrStatus(activityCode)
     return isSbir || isSttr
-  }
+  }, [])
 
   // Handle filter changes - filter client-side from stored results
   const handleFilterChange = useCallback((filters: FilterState) => {
