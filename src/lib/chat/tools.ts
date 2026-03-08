@@ -1846,9 +1846,8 @@ export async function searchTrials(
 ): Promise<TrialSearchResult> {
   const { query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
-  // Very low threshold to maximize recall - UI filters by precision (similarity)
-  // Client-side filtering will apply stricter thresholds (Low: >0.20, Med: >0.35, High: >0.50)
-  const threshold = 0.15
+  // Higher threshold for trials since there's no precision filter UI
+  const threshold = 0.35
 
   try {
     // Semantic search only - no keyword search
@@ -1856,7 +1855,7 @@ export async function searchTrials(
     const { data: semanticResults, error } = await supabaseAdmin.rpc('search_clinical_studies', {
       query_embedding: queryEmbedding,
       match_threshold: threshold,
-      match_count: effectiveLimit * 10 // Get 10x results for client-side filtering
+      match_count: effectiveLimit * 2 // Get 2x for status filtering
     })
 
     if (error) {
