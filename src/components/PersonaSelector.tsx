@@ -332,7 +332,7 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
       <footer className="px-6 py-8 border-t border-gray-100">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <p className="text-sm text-gray-400">
-            Data from NIH RePORTER & USPTO
+            Data from NIH RePORTER, ClinicalTrials.gov, USPTO & PubMed
           </p>
           <div className="flex items-center gap-6 text-sm text-gray-400">
             <a href="mailto:hello@granted.bio" className="hover:text-gray-600 transition-colors">

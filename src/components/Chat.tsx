@@ -1894,7 +1894,7 @@ export function Chat({ persona }: ChatProps) {
               <div className="lg:hidden mt-6 border-t border-gray-100 overflow-hidden">
                 <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
                   <h2 className="text-base font-semibold tracking-tight text-gray-900">Results</h2>
-                  <p className="text-xs text-gray-400">NIH RePORTER & USPTO</p>
+                  <p className="text-xs text-gray-400">NIH RePORTER, ClinicalTrials.gov, USPTO & PubMed</p>
                 </div>
                 <ResultsPanel
                   results={toolResults}
@@ -2017,7 +2017,7 @@ export function Chat({ persona }: ChatProps) {
         <div className="hidden lg:flex flex-col flex-1">
           <div className="px-6 py-4 border-b border-gray-100">
             <h2 className="text-lg font-semibold tracking-tight text-gray-900">Results</h2>
-            <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER & USPTO</p>
+            <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER, ClinicalTrials.gov, USPTO & PubMed</p>
           </div>
           <div className="flex-1 overflow-hidden">
             <ResultsPanel
