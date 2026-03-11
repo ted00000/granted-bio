@@ -6,7 +6,11 @@ Processes projects in batches of 1000 (Supabase row limit).
 import os
 import sys
 from dotenv import load_dotenv
-load_dotenv('.env.local')
+
+# Load .env.local from project root
+script_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(script_dir)
+load_dotenv(os.path.join(project_root, '.env.local'))
 
 import openai
 from supabase import create_client
@@ -35,10 +39,22 @@ count_result = supabase.table('projects').select('application_id', count='exact'
 total_remaining = count_result.count
 print(f"✓ Found {total_remaining:,} total projects needing embeddings\n", flush=True)
 
-# Fetch all abstracts once (more efficient than repeated queries)
-print("Fetching all abstracts...", flush=True)
-abstract_response = supabase.table('abstracts').select('application_id, abstract_text').limit(50000).execute()
-abstracts_map = {a['application_id']: a['abstract_text'] for a in abstract_response.data}
+# Fetch all abstracts using pagination (Supabase has 1000 row limit per query)
+print("Fetching all abstracts (paginated)...", flush=True)
+abstracts_map = {}
+offset = 0
+page_size = 1000
+while True:
+    abstract_response = supabase.table('abstracts').select('application_id, abstract_text').range(offset, offset + page_size - 1).execute()
+    if not abstract_response.data:
+        break
+    for a in abstract_response.data:
+        abstracts_map[a['application_id']] = a['abstract_text']
+    if len(abstract_response.data) < page_size:
+        break
+    offset += page_size
+    if offset % 10000 == 0:
+        print(f"  Loaded {len(abstracts_map):,} abstracts so far...", flush=True)
 print(f"✓ Loaded {len(abstracts_map):,} abstracts\n", flush=True)
 
 # Statistics

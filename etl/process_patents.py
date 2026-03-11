@@ -47,7 +47,7 @@ def classify_patent(patent_title: str) -> Dict[str, bool]:
     }
 
 
-def process_patents_csv(filepath: str, limit: Optional[int] = None) -> Generator[Dict[str, Any], None, None]:
+def process_patents_csv(filepath: str, limit: Optional[int] = None) -> tuple[list[Dict[str, Any]], list[Dict[str, str]]]:
     """
     Process the NIH RePORTER patents CSV file.
 
@@ -55,11 +55,15 @@ def process_patents_csv(filepath: str, limit: Optional[int] = None) -> Generator
         filepath: Path to the CSV file
         limit: Optional limit on number of rows to process
 
-    Yields:
-        Processed patent dictionaries ready for database insertion
+    Returns:
+        Tuple of (patents list, patent_links list)
+        - patents: unique patent records (metadata only)
+        - patent_links: project_number -> patent_id mappings
     """
     count = 0
-    seen_patents: set = set()
+    patents_dict: Dict[str, Dict[str, Any]] = {}
+    patent_links: list[Dict[str, str]] = []
+    seen_links: set = set()
 
     with open(filepath, 'r', encoding='utf-8', errors='replace') as f:
         reader = csv.DictReader(f)
@@ -68,64 +72,69 @@ def process_patents_csv(filepath: str, limit: Optional[int] = None) -> Generator
             count += 1
 
             patent_id = row.get('PATENT_ID')
-            if not patent_id or patent_id in seen_patents:
+            project_number = row.get('PROJECT_ID')
+
+            if not patent_id:
                 continue
 
-            seen_patents.add(patent_id)
+            # Track unique patents (metadata only, no project_number)
+            if patent_id not in patents_dict:
+                patent_title = row.get('PATENT_TITLE', '')
+                classification = classify_patent(patent_title)
 
-            patent_title = row.get('PATENT_TITLE', '')
+                patents_dict[patent_id] = {
+                    'patent_id': patent_id,
+                    'patent_title': patent_title,
+                    'patent_org': row.get('PATENT_ORG_NAME'),
+                    **classification,
+                }
 
-            # Classify patent
-            classification = classify_patent(patent_title)
+            # Track patent-project links (many-to-many)
+            if project_number:
+                link_key = (project_number, patent_id)
+                if link_key not in seen_links:
+                    seen_links.add(link_key)
+                    patent_links.append({
+                        'project_number': project_number,
+                        'patent_id': patent_id,
+                    })
 
-            patent = {
-                'patent_id': patent_id,
-                'patent_title': patent_title,
-                'project_number': row.get('PROJECT_ID'),
-                'patent_org': row.get('PATENT_ORG_NAME'),
-                **classification,
-            }
-
-            yield patent
-
-            if limit and len(seen_patents) >= limit:
+            if limit and len(patents_dict) >= limit:
                 break
 
-    print(f"Processed {count} rows, {len(seen_patents)} unique patents")
+    patents = list(patents_dict.values())
+    print(f"Processed {count} rows, {len(patents)} unique patents, {len(patent_links)} links")
+    return patents, patent_links
 
 
-def load_patents(data_dir: str = 'data/raw', limit: Optional[int] = None) -> list:
+def load_patents(data_dir: str = 'data/raw', limit: Optional[int] = None) -> tuple[list, list]:
     """
     Load and process all patents from the CSV file.
 
     Returns:
-        List of processed patent dictionaries
+        Tuple of (patents, patent_links)
+        - patents: unique patent records (metadata only)
+        - patent_links: project_number -> patent_id mappings for junction table
     """
     filepath = os.path.join(data_dir, 'Patents.csv')
 
     if not os.path.exists(filepath):
         print(f"Warning: Patents file not found: {filepath}")
-        return []
+        return [], []
 
-    patents = list(process_patents_csv(filepath, limit))
+    patents, patent_links = process_patents_csv(filepath, limit)
 
-    # Build project to patents mapping
-    project_patents: Dict[str, list] = {}
-    for patent in patents:
-        proj_num = patent.get('project_number')
-        if proj_num:
-            if proj_num not in project_patents:
-                project_patents[proj_num] = []
-            project_patents[proj_num].append(patent)
+    # Count unique projects
+    unique_projects = set(link['project_number'] for link in patent_links)
 
-    print(f"Loaded {len(patents)} patents for {len(project_patents)} projects")
+    print(f"Loaded {len(patents)} patents linked to {len(unique_projects)} projects")
 
-    return patents
+    return patents, patent_links
 
 
 if __name__ == '__main__':
     # Test with a small sample
-    patents = load_patents(limit=500)
+    patents, patent_links = load_patents(limit=500)
 
     # Count patent classifications
     device_count = sum(1 for p in patents if p['is_device_patent'])
@@ -139,6 +148,12 @@ if __name__ == '__main__':
 
     # Print sample patent
     if patents:
-        print("\nSample patent:")
+        print("\nSample patent (metadata only):")
         for key, value in patents[0].items():
+            print(f"  {key}: {value}")
+
+    # Print sample link
+    if patent_links:
+        print("\nSample patent link:")
+        for key, value in patent_links[0].items():
             print(f"  {key}: {value}")
