@@ -150,22 +150,86 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     // No deduplication for paginated results - return as-is
     const projects = topProjects || []
 
-    // Fetch distinct categories and years for this researcher
-    const [categoriesResult, yearsResult] = await Promise.all([
-      supabaseAdmin
+    // Calculate counts per filter option for this researcher
+    // Build base query conditions excluding each filter dimension
+    const buildFilteredQuery = (excludeDimension: 'category' | 'year' | 'status' | 'none') => {
+      let q = supabaseAdmin
         .from('projects')
-        .select('primary_category')
+        .select('project_number, primary_category, fiscal_year, project_end')
         .ilike('pi_names', `%${piName}%`)
-        .not('primary_category', 'is', null),
-      supabaseAdmin
-        .from('projects')
-        .select('fiscal_year')
-        .ilike('pi_names', `%${piName}%`)
-        .not('fiscal_year', 'is', null),
+
+      if (search) {
+        q = q.or(`title.ilike.%${search}%,org_name.ilike.%${search}%`)
+      }
+      if (category && excludeDimension !== 'category') {
+        q = q.eq('primary_category', category)
+      }
+      if (year && excludeDimension !== 'year') {
+        q = q.eq('fiscal_year', parseInt(year, 10))
+      }
+      if (status === 'active' && excludeDimension !== 'status') {
+        q = q.gte('project_end', new Date().toISOString().split('T')[0])
+      } else if (status === 'completed' && excludeDimension !== 'status') {
+        q = q.lt('project_end', new Date().toISOString().split('T')[0])
+      }
+
+      return q
+    }
+
+    // Fetch all filtered projects for counting (excluding respective dimensions)
+    const [categoryData, yearData, statusData] = await Promise.all([
+      buildFilteredQuery('category'),
+      buildFilteredQuery('year'),
+      buildFilteredQuery('status'),
     ])
 
-    const availableCategories = [...new Set((categoriesResult.data || []).map(p => p.primary_category))].filter(Boolean).sort()
-    const availableYears = [...new Set((yearsResult.data || []).map(p => p.fiscal_year))].filter(Boolean).sort((a, b) => b - a)
+    // Calculate counts per category (deduplicated by project_number)
+    const categoryProjects = categoryData.data || []
+    const categoryProjectMap = new Map<string, Set<string>>()
+    for (const p of categoryProjects) {
+      if (!p.project_number || !p.primary_category) continue
+      if (!categoryProjectMap.has(p.primary_category)) {
+        categoryProjectMap.set(p.primary_category, new Set())
+      }
+      categoryProjectMap.get(p.primary_category)!.add(p.project_number)
+    }
+    const byCategory: Record<string, number> = {}
+    for (const [cat, projects] of categoryProjectMap) {
+      byCategory[cat] = projects.size
+    }
+
+    // Calculate counts per year (deduplicated by project_number)
+    const yearProjects = yearData.data || []
+    const yearProjectMap = new Map<number, Set<string>>()
+    for (const p of yearProjects) {
+      if (!p.project_number || !p.fiscal_year) continue
+      if (!yearProjectMap.has(p.fiscal_year)) {
+        yearProjectMap.set(p.fiscal_year, new Set())
+      }
+      yearProjectMap.get(p.fiscal_year)!.add(p.project_number)
+    }
+    const byYear: Record<number, number> = {}
+    for (const [yr, projects] of yearProjectMap) {
+      byYear[yr] = projects.size
+    }
+
+    // Calculate counts per status (deduplicated by project_number)
+    const statusProjects = statusData.data || []
+    const today = new Date().toISOString().split('T')[0]
+    const activeProjects = new Set<string>()
+    const completedProjects = new Set<string>()
+    for (const p of statusProjects) {
+      if (!p.project_number) continue
+      if (p.project_end && p.project_end >= today) {
+        activeProjects.add(p.project_number)
+      } else if (p.project_end && p.project_end < today) {
+        completedProjects.add(p.project_number)
+      }
+    }
+    const byStatus = {
+      active: activeProjects.size,
+      completed: completedProjects.size,
+    }
 
     // Calculate total pages
     const totalFiltered = filteredCount || 0
@@ -193,8 +257,9 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         hasPrev: page > 1,
       },
       filters: {
-        categories: availableCategories,
-        years: availableYears,
+        byCategory,
+        byYear,
+        byStatus,
       },
     })
   } catch (error) {

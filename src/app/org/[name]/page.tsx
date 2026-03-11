@@ -5,6 +5,18 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Building2, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Users, Search, X } from 'lucide-react'
 
+// Display names for categories
+const CATEGORY_LABELS: Record<string, string> = {
+  biotools: 'Research Tools',
+  therapeutics: 'Therapeutics',
+  diagnostics: 'Diagnostics',
+  medical_device: 'Medical Devices',
+  digital_health: 'Digital Health',
+  basic_research: 'Basic Research',
+  training: 'Training',
+  other: 'Other'
+}
+
 interface Project {
   application_id: string
   project_number: string
@@ -29,8 +41,9 @@ interface Pagination {
 }
 
 interface Filters {
-  categories: string[]
-  years: number[]
+  byCategory: Record<string, number>
+  byYear: Record<number, number>
+  byStatus: { active: number; completed: number }
 }
 
 interface OrgData {
@@ -269,11 +282,11 @@ export default function OrgPage() {
           <div className="px-6 py-4 border-b border-gray-100">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900">Projects</h2>
-              {data.pagination && (
-                <span className="text-sm text-gray-500">
-                  {data.pagination.total.toLocaleString()} project{data.pagination.total !== 1 ? 's' : ''}
-                </span>
-              )}
+              <span className="text-sm text-gray-500">
+                {hasActiveFilters
+                  ? `${data.pagination.total.toLocaleString()} matching`
+                  : `${data.stats.project_count.toLocaleString()} projects`}
+              </span>
             </div>
 
             {/* Search */}
@@ -299,50 +312,124 @@ export default function OrgPage() {
               </div>
             </form>
 
-            {/* Filters */}
-            <div className="flex flex-wrap gap-2">
-              {data.filters?.categories && data.filters.categories.length > 0 && (
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/20 focus:border-[#E07A5F]"
-                >
-                  <option value="">All Categories</option>
-                  {data.filters.categories.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                    </option>
-                  ))}
-                </select>
+            {/* Filter Chips */}
+            <div className="space-y-3">
+              {/* Status filters */}
+              {data.filters?.byStatus && (
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { key: 'active', label: 'Active', count: data.filters.byStatus.active },
+                    { key: 'completed', label: 'Completed', count: data.filters.byStatus.completed },
+                  ].map(({ key, label, count }) => {
+                    const isSelected = selectedStatus === key
+                    const isDisabled = loading || (!isSelected && count === 0)
+                    return (
+                      <button
+                        key={key}
+                        onClick={() => setSelectedStatus(isSelected ? '' : key)}
+                        disabled={isDisabled}
+                        className={`
+                          px-2.5 py-1 text-xs rounded-full border transition-all
+                          ${isSelected
+                            ? 'bg-emerald-500 text-white border-emerald-500'
+                            : count === 0
+                              ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                              : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-400'
+                          }
+                          ${loading ? 'opacity-50 cursor-not-allowed' : ''}
+                        `}
+                      >
+                        {label}
+                        <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                          {count.toLocaleString()}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
               )}
 
-              {data.filters?.years && data.filters.years.length > 0 && (
-                <select
-                  value={selectedYear}
-                  onChange={(e) => setSelectedYear(e.target.value)}
-                  className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/20 focus:border-[#E07A5F]"
-                >
-                  <option value="">All Years</option>
-                  {data.filters.years.map((year) => (
-                    <option key={year} value={year}>FY{year}</option>
-                  ))}
-                </select>
+              {/* Category filters */}
+              {data.filters?.byCategory && Object.keys(data.filters.byCategory).length > 0 && (
+                <div>
+                  <h4 className="text-xs text-gray-500 mb-2">Category</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(data.filters.byCategory)
+                      .sort(([, a], [, b]) => b - a)
+                      .map(([cat, count]) => {
+                        const isSelected = selectedCategory === cat
+                        const isDisabled = loading || (!isSelected && count === 0)
+                        const label = CATEGORY_LABELS[cat] || cat.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+                        return (
+                          <button
+                            key={cat}
+                            onClick={() => setSelectedCategory(isSelected ? '' : cat)}
+                            disabled={isDisabled}
+                            className={`
+                              px-3 py-1.5 text-xs rounded-full border transition-all
+                              ${isSelected
+                                ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
+                                : count === 0
+                                  ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                                  : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
+                              }
+                              ${loading ? 'opacity-50 cursor-not-allowed' : ''}
+                            `}
+                          >
+                            {label}
+                            <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                              {count.toLocaleString()}
+                            </span>
+                          </button>
+                        )
+                      })}
+                  </div>
+                </div>
               )}
 
-              <select
-                value={selectedStatus}
-                onChange={(e) => setSelectedStatus(e.target.value)}
-                className="px-3 py-1.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/20 focus:border-[#E07A5F]"
-              >
-                <option value="">All Status</option>
-                <option value="active">Active</option>
-                <option value="completed">Completed</option>
-              </select>
+              {/* Year filters */}
+              {data.filters?.byYear && Object.keys(data.filters.byYear).length > 0 && (
+                <div>
+                  <h4 className="text-xs text-gray-500 mb-2">Fiscal Year</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {Object.entries(data.filters.byYear)
+                      .sort(([a], [b]) => Number(b) - Number(a))
+                      .map(([yr, count]) => {
+                        const isSelected = selectedYear === yr
+                        const isDisabled = loading || (!isSelected && count === 0)
+                        return (
+                          <button
+                            key={yr}
+                            onClick={() => setSelectedYear(isSelected ? '' : yr)}
+                            disabled={isDisabled}
+                            className={`
+                              px-3 py-1.5 text-xs rounded-full border transition-all
+                              ${isSelected
+                                ? 'bg-gray-800 text-white border-gray-800'
+                                : count === 0
+                                  ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                                  : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
+                              }
+                              ${loading ? 'opacity-50 cursor-not-allowed' : ''}
+                            `}
+                          >
+                            FY{yr}
+                            <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                              {count.toLocaleString()}
+                            </span>
+                          </button>
+                        )
+                      })}
+                  </div>
+                </div>
+              )}
 
+              {/* Clear filters button */}
               {hasActiveFilters && (
                 <button
                   onClick={clearFilters}
-                  className="px-3 py-1.5 text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium"
+                  className="text-xs text-[#E07A5F] hover:text-[#C96A4F] font-medium"
+                  disabled={loading}
                 >
                   Clear filters
                 </button>
