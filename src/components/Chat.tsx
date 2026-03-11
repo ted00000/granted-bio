@@ -2019,13 +2019,6 @@ export function Chat({ persona }: ChatProps) {
             <h2 className="text-lg font-semibold tracking-tight text-gray-900">Results</h2>
             <p className="text-xs text-gray-400 mt-0.5">NIH RePORTER, ClinicalTrials.gov, USPTO & PubMed</p>
           </div>
-          {/* Loading state when searching but no results yet */}
-          {isSearching && toolResults.length === 0 ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-gray-400">
-              <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin mb-3" />
-              <span className="text-sm">Searching databases...</span>
-            </div>
-          ) : (
           <div className="flex-1 overflow-hidden">
             <ResultsPanel
               results={toolResults}
@@ -2048,7 +2041,6 @@ export function Chat({ persona }: ChatProps) {
               stickyFilters={true}
             />
           </div>
-          )}
         </div>
     </div>
   )
