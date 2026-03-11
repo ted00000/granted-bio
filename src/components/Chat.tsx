@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Search, TrendingUp, Users, Activity, Bookmark, Download } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark, Download, FileText, RefreshCw, Lock } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
@@ -1844,48 +1844,94 @@ export function Chat({ persona }: ChatProps) {
           </div>
         </div>
 
-        {/* Input - fixed at bottom when there are messages */}
+        {/* Action buttons or Input - fixed at bottom */}
         <div className="flex-shrink-0 px-4 lg:px-6 pt-3 lg:pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] lg:pb-4 border-t border-gray-100">
-          <div className="mb-2 lg:mb-3">
-            <button
-              onClick={handleNewSearch}
-              className="text-xs text-gray-400 hover:text-[#E07A5F] transition-colors"
-            >
-              New search
-            </button>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="flex items-center space-x-2 lg:space-x-3">
-              <div className="flex-1 relative">
-                <textarea
-                  ref={inputRef}
-                  value={input}
-                  onChange={e => setInput(e.target.value.slice(0, 140))}
-                  onKeyDown={handleKeyDown}
-                  placeholder={metadata.placeholder || "Ask a question..."}
-                  rows={1}
-                  maxLength={140}
-                  className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-base"
-                  style={{ maxHeight: '120px' }}
-                  disabled={isLoading}
-                />
-                {input.length > 100 && (
-                  <span className={`absolute right-3 bottom-2 text-xs ${input.length >= 140 ? 'text-red-400' : 'text-gray-400'}`}>
-                    {140 - input.length}
-                  </span>
-                )}
-              </div>
+          {toolResults.length > 0 ? (
+            /* Action buttons when results exist */
+            <div className="flex items-center justify-center gap-3">
               <button
-                type="submit"
-                disabled={isLoading || !input.trim() || input.length > 140}
-                className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
+                onClick={handleNewSearch}
+                className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
+                <RefreshCw className="w-4 h-4" />
+                New Search
+              </button>
+              <Link
+                href={`/reports?topic=${encodeURIComponent(searchContext?.keywordQuery || searchContext?.semanticQuery || '')}`}
+                className="flex items-center gap-2 px-4 py-2.5 text-sm text-white bg-[#E07A5F] hover:bg-[#C96A4F] rounded-xl transition-colors"
+              >
+                <Lock className="w-3.5 h-3.5" />
+                Generate Report
+                <span className="text-[10px] font-medium bg-white/20 px-1.5 py-0.5 rounded">Premium</span>
+              </Link>
+              <button
+                onClick={() => {
+                  const results = filteredResults?.all_results || searchContext?.originalResults?.all_results || []
+                  if (results.length === 0) return
+                  const headers = ['Organization', 'State', 'PI Name', 'Project Title', 'Funding', 'Category']
+                  const rows = results.map((p: SearchResultProject) => [
+                    p.org_name || '',
+                    p.org_state || '',
+                    p.pi_names?.split(';')[0]?.trim() || '',
+                    p.title || '',
+                    p.total_cost ? `$${(p.total_cost / 1000000).toFixed(2)}M` : '',
+                    p.primary_category?.replace(/_/g, ' ') || ''
+                  ])
+                  const csvContent = [
+                    headers.join(','),
+                    ...rows.map((row: string[]) => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+                  ].join('\n')
+                  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+                  const url = URL.createObjectURL(blob)
+                  const link = document.createElement('a')
+                  link.href = url
+                  link.download = `nih_projects_${new Date().toISOString().split('T')[0]}.csv`
+                  document.body.appendChild(link)
+                  link.click()
+                  document.body.removeChild(link)
+                  URL.revokeObjectURL(url)
+                }}
+                className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors"
+              >
+                <Download className="w-4 h-4" />
+                Export
               </button>
             </div>
-          </form>
+          ) : (
+            /* Text input when no results */
+            <form onSubmit={handleSubmit}>
+              <div className="flex items-center space-x-2 lg:space-x-3">
+                <div className="flex-1 relative">
+                  <textarea
+                    ref={inputRef}
+                    value={input}
+                    onChange={e => setInput(e.target.value.slice(0, 140))}
+                    onKeyDown={handleKeyDown}
+                    placeholder={metadata.placeholder || "Ask a question..."}
+                    rows={1}
+                    maxLength={140}
+                    className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-base"
+                    style={{ maxHeight: '120px' }}
+                    disabled={isLoading}
+                  />
+                  {input.length > 100 && (
+                    <span className={`absolute right-3 bottom-2 text-xs ${input.length >= 140 ? 'text-red-400' : 'text-gray-400'}`}>
+                      {140 - input.length}
+                    </span>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  disabled={isLoading || !input.trim() || input.length > 140}
+                  className="p-3 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+          )}
         </div>
           </>
         )}
