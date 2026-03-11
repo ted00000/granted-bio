@@ -13,67 +13,46 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const { name } = await params
     const piName = decodeURIComponent(name)
 
-    // Fetch all projects where pi_names contains this name
-    // Use ilike for case-insensitive partial matching
-    const { data: projects, error } = await supabaseAdmin
+    // Get all projects for this researcher (for accurate stats)
+    const { data: allProjects, error: allError } = await supabaseAdmin
       .from('projects')
-      .select(`
-        application_id,
-        project_number,
-        title,
-        org_name,
-        org_state,
-        org_city,
-        total_cost,
-        fiscal_year,
-        pi_names,
-        primary_category,
-        project_start,
-        project_end,
-        patent_count,
-        publication_count,
-        clinical_trial_count
-      `)
+      .select('project_number, org_name, org_state, total_cost, fiscal_year')
       .ilike('pi_names', `%${piName}%`)
-      .order('fiscal_year', { ascending: false })
-      .order('total_cost', { ascending: false, nullsFirst: false })
-      .limit(100)
 
-    if (error) {
-      console.error('Error fetching researcher projects:', error)
+    if (allError) {
+      console.error('Error fetching researcher projects:', allError)
       return NextResponse.json({ error: 'Failed to fetch researcher data' }, { status: 500 })
     }
 
-    if (!projects || projects.length === 0) {
+    if (!allProjects || allProjects.length === 0) {
       return NextResponse.json({ error: 'Researcher not found' }, { status: 404 })
     }
 
-    // Deduplicate by project_number - keep most recent fiscal year
-    const seenProjects = new Map<string, typeof projects[0]>()
-    for (const project of projects) {
-      const key = project.project_number || project.application_id
-      const existing = seenProjects.get(key)
+    // Deduplicate all projects by project_number for accurate counts
+    const allSeenProjects = new Map<string, typeof allProjects[0]>()
+    for (const project of allProjects) {
+      const key = project.project_number || ''
+      if (!key) continue
+      const existing = allSeenProjects.get(key)
       if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
-        seenProjects.set(key, project)
+        allSeenProjects.set(key, project)
       }
     }
-    const dedupedProjects = Array.from(seenProjects.values())
+    const allDedupedProjects = Array.from(allSeenProjects.values())
+    const allProjectNumbers = Array.from(allSeenProjects.keys()).filter(k => k)
 
-    // Calculate summary stats from deduplicated projects
-    const totalFunding = dedupedProjects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
-    const totalPatents = dedupedProjects.reduce((sum, p) => sum + (p.patent_count || 0), 0)
-    const totalPublications = dedupedProjects.reduce((sum, p) => sum + (p.publication_count || 0), 0)
-    const totalTrials = dedupedProjects.reduce((sum, p) => sum + (p.clinical_trial_count || 0), 0)
+    // Calculate accurate stats from ALL projects
+    const totalFunding = allDedupedProjects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
 
     // Get unique organizations
     const uniqueOrgs = new Set<string>()
-    dedupedProjects.forEach(p => {
+    allDedupedProjects.forEach(p => {
       if (p.org_name) uniqueOrgs.add(p.org_name)
     })
 
     // Determine primary organization (most projects)
     const orgCounts = new Map<string, number>()
-    dedupedProjects.forEach(p => {
+    allDedupedProjects.forEach(p => {
       if (p.org_name) {
         orgCounts.set(p.org_name, (orgCounts.get(p.org_name) || 0) + 1)
       }
@@ -87,22 +66,77 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       }
     })
 
-    // Get state from most recent project
-    const primaryState = dedupedProjects.find(p => p.org_name === primaryOrg)?.org_state
+    // Get state from most recent project at primary org
+    const primaryState = allDedupedProjects.find(p => p.org_name === primaryOrg)?.org_state
+
+    // Query linked tables for accurate counts (in parallel)
+    const [patentsResult, pubsResult, trialsResult] = await Promise.all([
+      supabaseAdmin
+        .from('project_patents')
+        .select('project_number', { count: 'exact', head: true })
+        .in('project_number', allProjectNumbers),
+      supabaseAdmin
+        .from('project_publications')
+        .select('project_number', { count: 'exact', head: true })
+        .in('project_number', allProjectNumbers),
+      supabaseAdmin
+        .from('clinical_studies')
+        .select('project_number', { count: 'exact', head: true })
+        .in('project_number', allProjectNumbers),
+    ])
+
+    // Now fetch top 100 projects for display
+    const { data: topProjects, error: topError } = await supabaseAdmin
+      .from('projects')
+      .select(`
+        application_id,
+        project_number,
+        title,
+        org_name,
+        org_state,
+        org_city,
+        total_cost,
+        fiscal_year,
+        pi_names,
+        primary_category,
+        project_start,
+        project_end
+      `)
+      .ilike('pi_names', `%${piName}%`)
+      .order('fiscal_year', { ascending: false })
+      .order('total_cost', { ascending: false, nullsFirst: false })
+      .limit(100)
+
+    if (topError) {
+      console.error('Error fetching top projects:', topError)
+      return NextResponse.json({ error: 'Failed to fetch researcher data' }, { status: 500 })
+    }
+
+    // Deduplicate display projects
+    const seenProjects = new Map<string, typeof topProjects[0]>()
+    for (const project of topProjects || []) {
+      const key = project.project_number || project.application_id
+      const existing = seenProjects.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(key, project)
+      }
+    }
+    const dedupedProjects = Array.from(seenProjects.values())
 
     return NextResponse.json({
       pi_name: piName,
       primary_org: primaryOrg,
       org_state: primaryState,
       stats: {
-        project_count: dedupedProjects.length,
+        project_count: allDedupedProjects.length,
         total_funding: totalFunding,
-        patent_count: totalPatents,
-        publication_count: totalPublications,
-        clinical_trial_count: totalTrials,
+        patent_count: patentsResult.count || 0,
+        publication_count: pubsResult.count || 0,
+        clinical_trial_count: trialsResult.count || 0,
         org_count: uniqueOrgs.size,
       },
       projects: dedupedProjects,
+      has_more: allDedupedProjects.length > dedupedProjects.length,
     })
   } catch (error) {
     console.error('Error in researcher API:', error)
