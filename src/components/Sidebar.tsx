@@ -162,7 +162,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
                   </span>
                   <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">
                     <Lock className="w-2.5 h-2.5" />
-                    Pro
+                    Premium
                   </span>
                 </div>
                 <div className="text-xs text-gray-400 truncate">
