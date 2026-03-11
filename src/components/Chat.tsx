@@ -1921,7 +1921,8 @@ export function Chat({ persona }: ChatProps) {
           </div>
         </div>
 
-        {/* Action buttons or Input - fixed at bottom */}
+        {/* Action buttons or Input - fixed at bottom (hidden while loading) */}
+        {!isLoading && (
         <div className="flex-shrink-0 px-4 lg:px-6 pt-3 lg:pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] lg:pb-4 border-t border-gray-100">
           {toolResults.length > 0 ? (
             /* Action buttons when results exist */
@@ -2009,6 +2010,7 @@ export function Chat({ persona }: ChatProps) {
             </form>
           )}
         </div>
+        )}
           </>
         )}
       </div>
