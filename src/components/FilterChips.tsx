@@ -30,6 +30,7 @@ interface FilterChipsProps {
   semanticQuery: string
   onFilterChange: (filters: { primary_category?: string[]; org_type?: string[]; quick?: QuickFilters }) => void
   isLoading?: boolean
+  hideHeader?: boolean
 }
 
 // Display names for categories
@@ -62,7 +63,8 @@ export function FilterChips({
   keywordQuery,
   semanticQuery,
   onFilterChange,
-  isLoading = false
+  isLoading = false,
+  hideHeader = false
 }: FilterChipsProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedOrgTypes, setSelectedOrgTypes] = useState<string[]>([])
@@ -146,20 +148,22 @@ export function FilterChips({
   return (
     <div className="space-y-4">
       {/* Header with clear button */}
-      <div className="flex items-center justify-between">
-        <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
-          Filter Results
-        </h3>
-        {hasFilters && (
-          <button
-            onClick={clearFilters}
-            className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
-            disabled={isLoading}
-          >
-            Clear filters
-          </button>
-        )}
-      </div>
+      {!hideHeader && (
+        <div className="flex items-center justify-between">
+          <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
+            Filter Results
+          </h3>
+          {hasFilters && (
+            <button
+              onClick={clearFilters}
+              className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
+              disabled={isLoading}
+            >
+              Clear filters
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Quick filters */}
       <div className="flex flex-wrap gap-2">

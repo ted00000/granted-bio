@@ -306,6 +306,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 semanticQuery={searchContext.semanticQuery}
                 onFilterChange={onFilterChange}
                 isLoading={false}
+                hideHeader={stickyFilters}
               />
             )}
           </div>
@@ -573,6 +574,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 semanticQuery={searchContext.semanticQuery}
                 onFilterChange={onFilterChange}
                 isLoading={false}
+                hideHeader={stickyFilters}
               />
             )}
           </div>
