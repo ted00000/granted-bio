@@ -8,6 +8,10 @@ Key principles:
 3. SBIR/STTR = product development, never basic_research
 4. Behavioral interventions without drugs = other
 5. Primary deliverable drives classification, not keywords
+6. Keywords indicate, semantic confirms:
+   - Keywords like "inhibitor", "vaccine" INDICATE possible therapeutics
+   - Research framing ("This research", "Our study") CONFIRMS basic_research
+   - "Studying inhibitor X" != "Developing inhibitor X"
 """
 
 import pandas as pd
@@ -125,6 +129,26 @@ def is_behavioral_intervention(title, abstract):
     return has_behavioral and not has_drug
 
 
+def is_research_framed(title, abstract):
+    """
+    Check if the project is FRAMED as research/study (strong basic_research signal).
+    These phrases indicate the project is investigating/studying, not developing.
+    """
+    text = (title + ' ' + abstract).lower()
+
+    # Strong research-framing phrases - these indicate studying, not developing
+    research_framing = [
+        'this research', 'this study', 'our study', 'the present study',
+        'our research', 'in this study', 'this project will study',
+        'this proposal aims to study', 'this application proposes to study',
+        'we will study', 'we aim to study', 'we propose to study',
+        'the proposed research', 'the proposed study', 'proposed studies',
+        'studies proposed', 'research proposed', 'research project',
+    ]
+
+    return any(term in text for term in research_framing)
+
+
 def is_knowledge_focused(title, abstract):
     """
     Check if the primary deliverable is KNOWLEDGE (basic_research).
@@ -201,38 +225,65 @@ def is_tool_development(title, abstract):
     return any(term in text for term in develop_terms)
 
 
-def is_drug_development(title, abstract):
+def is_drug_development(title, abstract, return_strength=False):
     """
     Check for actual drug/therapy DEVELOPMENT (therapeutics).
     Must be developing treatments, not just studying mechanisms.
+
+    Returns: bool or (bool, strength) if return_strength=True
+    Strength: 'strong' = explicit development, 'weak' = keyword-based
     """
     text = (title + ' ' + abstract).lower()
     title_lower = title.lower()
 
-    # Strong therapeutics signals - actual development
-    therapeutics_title = [
-        'therapy for', 'treatment of', 'therapeutic', 'drug development',
+    # STRONG signals - explicit development intent (these should NOT be overridden)
+    strong_title_terms = [
+        'therapy for', 'treatment of', 'drug development',
         'clinical trial', 'phase i', 'phase ii', 'phase 1', 'phase 2',
-        'inhibitor', 'vaccine', 'car-t', 'gene therapy', 'cell therapy'
+        'car-t', 'gene therapy for', 'cell therapy for'
     ]
 
-    title_therapeutics = any(term in title_lower for term in therapeutics_title)
-
-    # Development-focused therapeutics terms (not just mentioning therapy context)
-    development_terms = [
+    strong_development_terms = [
         'drug discovery', 'drug development', 'drug candidate', 'lead compound',
         'lead optimization', 'hit-to-lead', 'clinical trial', 'phase i trial',
         'phase ii trial', 'phase iii trial', 'phase 1 trial', 'phase 2 trial',
         'preclinical development', 'ind-enabling', 'first-in-human',
         'clinical efficacy', 'clinical development', 'therapeutic development',
-        'optimize the drug', 'optimize the compound', 'drug delivery system',
-        'vaccine development', 'vaccine candidate', 'immunization strategy',
+        'optimize the drug', 'optimize the compound',
+        'vaccine development', 'vaccine candidate',
         'gene therapy development', 'cell therapy development', 'car-t therapy',
         'develop a therapy', 'develop a treatment', 'novel therapy',
         'repurpose', 'drug repurposing'
     ]
 
-    return title_therapeutics or any(term in text for term in development_terms)
+    has_strong_title = any(term in title_lower for term in strong_title_terms)
+    has_strong_abstract = any(term in text for term in strong_development_terms)
+
+    if has_strong_title or has_strong_abstract:
+        if return_strength:
+            return True, 'strong'
+        return True
+
+    # WEAK signals - keywords that INDICATE but don't CONFIRM (can be overridden by research framing)
+    weak_title_terms = [
+        'inhibitor', 'vaccine', 'therapeutic', 'immunotherapy'
+    ]
+
+    weak_abstract_terms = [
+        'drug delivery system', 'immunization strategy'
+    ]
+
+    has_weak_title = any(term in title_lower for term in weak_title_terms)
+    has_weak_abstract = any(term in text for term in weak_abstract_terms)
+
+    if has_weak_title or has_weak_abstract:
+        if return_strength:
+            return True, 'weak'
+        return True
+
+    if return_strength:
+        return False, None
+    return False
 
 
 def is_diagnostic_development(title, abstract):
@@ -433,17 +484,24 @@ def classify_project(row):
     # ============================================
     # STEP 7: Content-based classification
     # Check knowledge vs development focus
+    # Key principle: keywords indicate, semantic confirms
     # ============================================
 
     knowledge_focused = is_knowledge_focused(title, abstract)
+    research_framed = is_research_framed(title, abstract)
     develops_tools = is_tool_development(title, abstract)
-    develops_drugs = is_drug_development(title, abstract)
+    develops_drugs, drug_strength = is_drug_development(title, abstract, return_strength=True)
     develops_diagnostics = is_diagnostic_development(title, abstract)
     develops_devices = is_device_development(title, abstract)
     develops_digital = is_digital_health(title, abstract)
     is_epi_hsr = is_health_services_or_epi(title, abstract)
 
-    # Count development signals
+    # Key insight: research-framing overrides WEAK drug signals
+    # "This research studies inhibitor X" != "We develop inhibitor X"
+    if develops_drugs and drug_strength == 'weak' and (research_framed or knowledge_focused):
+        develops_drugs = False  # Override: this is studying, not developing
+
+    # Count development signals (after potential override)
     dev_count = sum([develops_tools, develops_drugs, develops_diagnostics,
                      develops_devices, develops_digital])
 
@@ -451,13 +509,17 @@ def classify_project(row):
     if knowledge_focused and dev_count == 0:
         return 'basic_research', 85, '', org_type, 'Knowledge-focused: understanding mechanisms/biology'
 
+    # If research-framed and no development -> basic_research
+    if research_framed and dev_count == 0:
+        return 'basic_research', 82, '', org_type, 'Research-framed study without product development'
+
     # If develops tools as primary focus
     if develops_tools and not any([develops_drugs, develops_diagnostics, develops_devices, develops_digital]):
         if knowledge_focused:
             return 'biotools', 80, 'basic_research', org_type, 'Develops tools while studying biology'
         return 'biotools', 85, '', org_type, 'Tool/platform/method development'
 
-    # Clear drug development
+    # Clear drug development (only if strong signal or no research framing)
     if develops_drugs and not any([develops_tools, develops_diagnostics, develops_devices, develops_digital]):
         return 'therapeutics', 85, '', org_type, 'Drug/therapy development'
 
