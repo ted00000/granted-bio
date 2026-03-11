@@ -290,7 +290,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 </button>
               </div>
             )}
-            {(!stickyFilters || !filtersCollapsed) && (
+            <div className={stickyFilters && filtersCollapsed ? 'hidden' : ''}>
               <FilterChips
                 byCategory={searchContext.originalResults.by_category || {}}
                 byOrgType={searchContext.originalResults.by_org_type || {}}
@@ -303,7 +303,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 isLoading={false}
                 hideHeader={stickyFilters}
               />
-            )}
+            </div>
           </div>
         )}
 
@@ -553,7 +553,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 </button>
               </div>
             )}
-            {(!stickyFilters || !filtersCollapsed) && (
+            <div className={stickyFilters && filtersCollapsed ? 'hidden' : ''}>
               <FilterChips
                 byCategory={searchContext.originalResults.by_category || {}}
                 byOrgType={searchContext.originalResults.by_org_type || {}}
@@ -566,7 +566,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 isLoading={false}
                 hideHeader={stickyFilters}
               />
-            )}
+            </div>
           </div>
         )}
 
