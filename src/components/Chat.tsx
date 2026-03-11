@@ -152,11 +152,12 @@ interface ResultsPanelProps {
   precision?: 'low' | 'med' | 'high'
   onPrecisionChange?: (precision: 'low' | 'med' | 'high') => void
   precisionCounts?: { low: number; med: number; high: number }
-  // Hide filters (when they're shown elsewhere)
-  hideFilters?: boolean
+  // Sticky collapsible filters (for right panel on desktop)
+  stickyFilters?: boolean
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, hideFilters = false }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false }: ResultsPanelProps) {
+  const [filtersCollapsed, setFiltersCollapsed] = useState(false)
   // CSV export for People mode
   const exportToCSV = (projects: SearchResultProject[]) => {
     const headers = ['Organization', 'State', 'PI Name', 'Project Title', 'Funding', 'Category', 'Patents', 'Publications', 'Trials']
@@ -238,8 +239,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
             </div>
           )}
-          {/* Precision filter - match quality (hidden when filters shown elsewhere) */}
-          {!hideFilters && onPrecisionChange && (
+          {/* Precision filter - hidden on desktop when shown in middle column */}
+          {!stickyFilters && onPrecisionChange && (
             <div className="mt-3">
               <div className="text-xs text-gray-500 mb-1.5">Match quality</div>
               <div className="flex gap-1.5">
@@ -275,20 +276,38 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           )}
         </div>
 
-        {/* Filter Chips - hidden when filters shown elsewhere */}
-        {!hideFilters && searchContext && data.all_results?.length > 0 && (
-          <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100 overflow-hidden`}>
-            <FilterChips
-              byCategory={searchContext.originalResults.by_category || {}}
-              byOrgType={searchContext.originalResults.by_org_type || {}}
-              filteredByCategory={crossFilteredByCategory}
-              filteredByOrgType={crossFilteredByOrgType}
-              quickFilterCounts={quickFilterCounts}
-              keywordQuery={searchContext.keywordQuery}
-              semanticQuery={searchContext.semanticQuery}
-              onFilterChange={onFilterChange}
-              isLoading={false}
-            />
+        {/* Filter Chips - sticky and collapsible on desktop */}
+        {searchContext && data.all_results?.length > 0 && (
+          <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
+            {stickyFilters && (
+              <button
+                onClick={() => setFiltersCollapsed(!filtersCollapsed)}
+                className="flex items-center justify-between w-full text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-2"
+              >
+                <span>Filter Results</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${filtersCollapsed ? '' : 'rotate-180'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            )}
+            {(!stickyFilters || !filtersCollapsed) && (
+              <FilterChips
+                byCategory={searchContext.originalResults.by_category || {}}
+                byOrgType={searchContext.originalResults.by_org_type || {}}
+                filteredByCategory={crossFilteredByCategory}
+                filteredByOrgType={crossFilteredByOrgType}
+                quickFilterCounts={quickFilterCounts}
+                keywordQuery={searchContext.keywordQuery}
+                semanticQuery={searchContext.semanticQuery}
+                onFilterChange={onFilterChange}
+                isLoading={false}
+              />
+            )}
           </div>
         )}
 
@@ -487,8 +506,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
             </div>
           )}
-          {/* Precision filter - match quality (hidden when filters shown elsewhere) */}
-          {!hideFilters && onPrecisionChange && (
+          {/* Precision filter - hidden on desktop when shown in middle column */}
+          {!stickyFilters && onPrecisionChange && (
             <div className="mt-3">
               <div className="text-xs text-gray-500 mb-1.5">Match quality</div>
               <div className="flex gap-1.5">
@@ -524,20 +543,38 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           )}
         </div>
 
-        {/* Filter Chips - hidden when filters shown elsewhere */}
-        {!hideFilters && searchContext && data.all_results?.length > 0 && (
-          <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100 overflow-hidden`}>
-            <FilterChips
-              byCategory={searchContext.originalResults.by_category || {}}
-              byOrgType={searchContext.originalResults.by_org_type || {}}
-              filteredByCategory={crossFilteredByCategory}
-              filteredByOrgType={crossFilteredByOrgType}
-              quickFilterCounts={quickFilterCounts}
-              keywordQuery={searchContext.keywordQuery}
-              semanticQuery={searchContext.semanticQuery}
-              onFilterChange={onFilterChange}
-              isLoading={false}
-            />
+        {/* Filter Chips - sticky and collapsible on desktop */}
+        {searchContext && data.all_results?.length > 0 && (
+          <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
+            {stickyFilters && (
+              <button
+                onClick={() => setFiltersCollapsed(!filtersCollapsed)}
+                className="flex items-center justify-between w-full text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-2"
+              >
+                <span>Filter Results</span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${filtersCollapsed ? '' : 'rotate-180'}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+            )}
+            {(!stickyFilters || !filtersCollapsed) && (
+              <FilterChips
+                byCategory={searchContext.originalResults.by_category || {}}
+                byOrgType={searchContext.originalResults.by_org_type || {}}
+                filteredByCategory={crossFilteredByCategory}
+                filteredByOrgType={crossFilteredByOrgType}
+                quickFilterCounts={quickFilterCounts}
+                keywordQuery={searchContext.keywordQuery}
+                semanticQuery={searchContext.semanticQuery}
+                onFilterChange={onFilterChange}
+                isLoading={false}
+              />
+            )}
           </div>
         )}
 
@@ -1814,54 +1851,39 @@ export function Chat({ persona }: ChatProps) {
             {/* Scroll target for auto-scroll after new messages - BEFORE results */}
             <div ref={messagesEndRef} />
 
-            {/* Desktop Filters - shown in middle column under Claude's response */}
+            {/* Desktop Precision Filter - shown in middle column under Claude's response */}
             {toolResults.length > 0 && searchContext && (
               <div className="hidden lg:block mt-6 pt-4 border-t border-gray-100">
-                {/* Precision filter */}
-                <div className="mb-4">
-                  <div className="text-xs text-gray-500 mb-2">Match quality</div>
-                  <div className="flex gap-1.5">
-                    {[
-                      { level: 'low' as const, label: 'Broad', count: precisionCounts?.low },
-                      { level: 'med' as const, label: 'Balanced', count: precisionCounts?.med },
-                      { level: 'high' as const, label: 'Precise', count: precisionCounts?.high },
-                    ].map(({ level, label, count }) => {
-                      const isSelected = precision === level
-                      return (
-                        <button
-                          key={level}
-                          onClick={() => setPrecision(level)}
-                          className={`
-                            px-2.5 py-1 text-xs rounded-full border transition-all
-                            ${isSelected
-                              ? 'bg-indigo-500 text-white border-indigo-500'
-                              : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
-                            }
-                          `}
-                        >
-                          {label}
-                          {count !== undefined && (
-                            <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                              {count}
-                            </span>
-                          )}
-                        </button>
-                      )
-                    })}
-                  </div>
+                <div className="text-xs text-gray-500 mb-2">Match quality</div>
+                <div className="flex gap-1.5">
+                  {[
+                    { level: 'low' as const, label: 'Broad', count: precisionCounts?.low },
+                    { level: 'med' as const, label: 'Balanced', count: precisionCounts?.med },
+                    { level: 'high' as const, label: 'Precise', count: precisionCounts?.high },
+                  ].map(({ level, label, count }) => {
+                    const isSelected = precision === level
+                    return (
+                      <button
+                        key={level}
+                        onClick={() => setPrecision(level)}
+                        className={`
+                          px-2.5 py-1 text-xs rounded-full border transition-all
+                          ${isSelected
+                            ? 'bg-indigo-500 text-white border-indigo-500'
+                            : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
+                          }
+                        `}
+                      >
+                        {label}
+                        {count !== undefined && (
+                          <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                            {count}
+                          </span>
+                        )}
+                      </button>
+                    )
+                  })}
                 </div>
-                {/* Filter chips */}
-                <FilterChips
-                  byCategory={searchContext.originalResults.by_category || {}}
-                  byOrgType={searchContext.originalResults.by_org_type || {}}
-                  filteredByCategory={crossFilteredByCategory}
-                  filteredByOrgType={crossFilteredByOrgType}
-                  quickFilterCounts={quickFilterCounts}
-                  keywordQuery={searchContext.keywordQuery}
-                  semanticQuery={searchContext.semanticQuery}
-                  onFilterChange={handleFilterChange}
-                  isLoading={false}
-                />
               </div>
             )}
 
@@ -2014,7 +2036,7 @@ export function Chat({ persona }: ChatProps) {
               precision={precision}
               onPrecisionChange={setPrecision}
               precisionCounts={precisionCounts}
-              hideFilters={true}
+              stickyFilters={true}
             />
           </div>
         </div>
