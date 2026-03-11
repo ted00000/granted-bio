@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Search, TrendingUp, Users, Activity, Bookmark, Download, FileText, RefreshCw, Lock } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark, Download, FileText, RefreshCw } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
@@ -1858,11 +1858,10 @@ export function Chat({ persona }: ChatProps) {
               </button>
               <Link
                 href={`/reports?topic=${encodeURIComponent(searchContext?.keywordQuery || searchContext?.semanticQuery || '')}`}
-                className="flex items-center gap-2 px-4 py-2.5 text-sm text-white bg-[#E07A5F] hover:bg-[#C96A4F] rounded-xl transition-colors"
+                className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors"
               >
-                <Lock className="w-3.5 h-3.5" />
+                <FileText className="w-4 h-4" />
                 Generate Report
-                <span className="text-[10px] font-medium bg-white/20 px-1.5 py-0.5 rounded">Premium</span>
               </Link>
               <button
                 onClick={() => {
