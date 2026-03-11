@@ -280,20 +280,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {searchContext && data.all_results?.length > 0 && (
           <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
             {stickyFilters && (
-              <button
-                onClick={() => setFiltersCollapsed(!filtersCollapsed)}
-                className="flex items-center justify-between w-full text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-2"
-              >
-                <span>Filter Results</span>
-                <svg
-                  className={`w-4 h-4 transition-transform ${filtersCollapsed ? '' : 'rotate-180'}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+                <button
+                  onClick={() => setFiltersCollapsed(!filtersCollapsed)}
+                  className={`relative w-9 h-5 rounded-full transition-colors ${filtersCollapsed ? 'bg-gray-200' : 'bg-[#E07A5F]'}`}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
+                  <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${filtersCollapsed ? '' : 'translate-x-4'}`} />
+                </button>
+              </div>
             )}
             {(!stickyFilters || !filtersCollapsed) && (
               <FilterChips
@@ -548,20 +543,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {searchContext && data.all_results?.length > 0 && (
           <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
             {stickyFilters && (
-              <button
-                onClick={() => setFiltersCollapsed(!filtersCollapsed)}
-                className="flex items-center justify-between w-full text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-2"
-              >
-                <span>Filter Results</span>
-                <svg
-                  className={`w-4 h-4 transition-transform ${filtersCollapsed ? '' : 'rotate-180'}`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+                <button
+                  onClick={() => setFiltersCollapsed(!filtersCollapsed)}
+                  className={`relative w-9 h-5 rounded-full transition-colors ${filtersCollapsed ? 'bg-gray-200' : 'bg-[#E07A5F]'}`}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
+                  <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${filtersCollapsed ? '' : 'translate-x-4'}`} />
+                </button>
+              </div>
             )}
             {(!stickyFilters || !filtersCollapsed) && (
               <FilterChips
