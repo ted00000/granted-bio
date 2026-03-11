@@ -13,10 +13,20 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const { name } = await params
     const orgName = decodeURIComponent(name)
 
+    // Parse query parameters
+    const searchParams = request.nextUrl.searchParams
+    const search = searchParams.get('search') || ''
+    const category = searchParams.get('category') || ''
+    const year = searchParams.get('year') || ''
+    const status = searchParams.get('status') || '' // 'active' or 'completed'
+    const page = parseInt(searchParams.get('page') || '1', 10)
+    const limit = parseInt(searchParams.get('limit') || '20', 10)
+    const offset = (page - 1) * limit
+
     // Get accurate total count and all project numbers for this org
     const { data: allProjects, error: allError } = await supabaseAdmin
       .from('projects')
-      .select('project_number, pi_names, total_cost, fiscal_year')
+      .select('project_number, pi_names, total_cost, fiscal_year, org_state, org_city, org_type')
       .eq('org_name', orgName)
 
     if (allError) {
@@ -71,8 +81,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         .in('project_number', allProjectNumbers),
     ])
 
-    // Now fetch top 100 projects for display
-    const { data: topProjects, error: topError } = await supabaseAdmin
+    // Build filtered query for display projects
+    let query = supabaseAdmin
       .from('projects')
       .select(`
         application_id,
@@ -88,33 +98,78 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         primary_category,
         project_start,
         project_end
-      `)
+      `, { count: 'exact' })
       .eq('org_name', orgName)
+
+    // Apply search filter
+    if (search) {
+      query = query.or(`title.ilike.%${search}%,pi_names.ilike.%${search}%`)
+    }
+
+    // Apply category filter
+    if (category) {
+      query = query.eq('primary_category', category)
+    }
+
+    // Apply year filter
+    if (year) {
+      query = query.eq('fiscal_year', parseInt(year, 10))
+    }
+
+    // Apply status filter
+    if (status === 'active') {
+      query = query.gte('project_end', new Date().toISOString().split('T')[0])
+    } else if (status === 'completed') {
+      query = query.lt('project_end', new Date().toISOString().split('T')[0])
+    }
+
+    // Get filtered projects with pagination
+    const { data: topProjects, error: topError, count: filteredCount } = await query
       .order('fiscal_year', { ascending: false })
       .order('total_cost', { ascending: false, nullsFirst: false })
-      .limit(100)
+      .range(offset, offset + limit - 1)
 
     if (topError) {
       console.error('Error fetching top projects:', topError)
       return NextResponse.json({ error: 'Failed to fetch organization data' }, { status: 500 })
     }
 
-    // Deduplicate display projects
-    const seenProjects = new Map<string, typeof topProjects[0]>()
-    for (const project of topProjects || []) {
-      const key = project.project_number || project.application_id
-      const existing = seenProjects.get(key)
-      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
-        seenProjects.set(key, project)
-      }
-    }
-    const dedupedProjects = Array.from(seenProjects.values())
+    // No deduplication for paginated results - return as-is
+    const projects = topProjects || []
+
+    // Get available filter options from all projects
+    const categories = new Set<string>()
+    const years = new Set<number>()
+    allDedupedProjects.forEach(p => {
+      // We need to get categories from the full dataset
+    })
+
+    // Fetch distinct categories and years for this org
+    const [categoriesResult, yearsResult] = await Promise.all([
+      supabaseAdmin
+        .from('projects')
+        .select('primary_category')
+        .eq('org_name', orgName)
+        .not('primary_category', 'is', null),
+      supabaseAdmin
+        .from('projects')
+        .select('fiscal_year')
+        .eq('org_name', orgName)
+        .not('fiscal_year', 'is', null),
+    ])
+
+    const availableCategories = [...new Set((categoriesResult.data || []).map(p => p.primary_category))].filter(Boolean).sort()
+    const availableYears = [...new Set((yearsResult.data || []).map(p => p.fiscal_year))].filter(Boolean).sort((a, b) => b - a)
+
+    // Calculate total pages
+    const totalFiltered = filteredCount || 0
+    const totalPages = Math.ceil(totalFiltered / limit)
 
     return NextResponse.json({
       org_name: orgName,
-      org_state: dedupedProjects[0]?.org_state,
-      org_city: dedupedProjects[0]?.org_city,
-      org_type: dedupedProjects[0]?.org_type,
+      org_state: projects[0]?.org_state || allDedupedProjects[0]?.org_state,
+      org_city: projects[0]?.org_city,
+      org_type: projects[0]?.org_type,
       stats: {
         project_count: allDedupedProjects.length,
         total_funding: totalFunding,
@@ -123,8 +178,19 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         clinical_trial_count: trialsResult.count || 0,
         pi_count: uniquePIs.size,
       },
-      projects: dedupedProjects,
-      has_more: allDedupedProjects.length > dedupedProjects.length,
+      projects,
+      pagination: {
+        page,
+        limit,
+        total: totalFiltered,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1,
+      },
+      filters: {
+        categories: availableCategories,
+        years: availableYears,
+      },
     })
   } catch (error) {
     console.error('Error in org API:', error)
