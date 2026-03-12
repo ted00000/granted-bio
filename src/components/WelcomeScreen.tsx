@@ -39,7 +39,7 @@ const SEARCH_TIPS: Record<PersonaType, {
     title: 'Search People',
     description: 'Find researchers, labs, and organizations working in specific areas',
     examples: [
-      { label: 'Researcher names', queries: ['Jennifer Doudna', 'David Liu'] },
+      { label: 'Researcher names', queries: ['Jane Doe', 'John Doe'] },
       { label: 'Institutions', queries: ['Stanford University', 'MIT', 'Johns Hopkins'] },
       { label: 'Companies', queries: ['Genentech', 'Moderna', 'Illumina'] },
       { label: 'Research areas', queries: ['immunotherapy researchers', 'CRISPR labs'] },
