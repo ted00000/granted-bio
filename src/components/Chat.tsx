@@ -154,10 +154,17 @@ interface ResultsPanelProps {
   precisionCounts?: { low: number; med: number; high: number }
   // Sticky collapsible filters (for right panel on desktop)
   stickyFilters?: boolean
+  // Current filter state for showing active count
+  currentFilters?: FilterState
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {} }: ResultsPanelProps) {
   const [filtersCollapsed, setFiltersCollapsed] = useState(false)
+
+  // Count active filters for collapsed state display
+  const activeFilterCount = (currentFilters.primary_category?.length || 0) +
+    (currentFilters.org_type?.length || 0) +
+    (currentFilters.quick ? Object.values(currentFilters.quick).filter(Boolean).length : 0)
   // CSV export for People mode
   const exportToCSV = (projects: SearchResultProject[]) => {
     const headers = ['Organization', 'State', 'PI Name', 'Project Title', 'Funding', 'Category', 'Patents', 'Publications', 'Trials']
@@ -289,6 +296,11 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 </button>
                 <span className="text-gray-300">·</span>
                 <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+                {filtersCollapsed && activeFilterCount > 0 && (
+                  <span className="text-xs text-gray-500">
+                    ({activeFilterCount} active)
+                  </span>
+                )}
               </div>
             )}
             <div className={stickyFilters && filtersCollapsed ? 'hidden' : ''}>
@@ -553,6 +565,11 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 </button>
                 <span className="text-gray-300">·</span>
                 <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+                {filtersCollapsed && activeFilterCount > 0 && (
+                  <span className="text-xs text-gray-500">
+                    ({activeFilterCount} active)
+                  </span>
+                )}
               </div>
             )}
             <div className={stickyFilters && filtersCollapsed ? 'hidden' : ''}>
@@ -2033,6 +2050,7 @@ export function Chat({ persona }: ChatProps) {
               onPrecisionChange={setPrecision}
               precisionCounts={precisionCounts}
               stickyFilters={true}
+              currentFilters={currentFilters}
             />
           </div>
         </div>
