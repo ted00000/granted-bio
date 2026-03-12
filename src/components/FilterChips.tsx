@@ -35,7 +35,7 @@ interface FilterChipsProps {
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
-  biotools: 'Research Tools',
+  biotools: 'Biotools',
   therapeutics: 'Therapeutics',
   diagnostics: 'Diagnostics',
   medical_device: 'Medical Devices',
@@ -69,6 +69,7 @@ export function FilterChips({
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedOrgTypes, setSelectedOrgTypes] = useState<string[]>([])
   const [quickFilters, setQuickFilters] = useState<QuickFilters>({})
+  const [isExpanded, setIsExpanded] = useState(true)
 
   // Reset filters when search query changes
   useEffect(() => {
@@ -145,14 +146,32 @@ export function FilterChips({
     return null
   }
 
+  // Count active filters for collapsed state display
+  const activeFilterCount = selectedCategories.length + selectedOrgTypes.length +
+    Object.values(quickFilters).filter(Boolean).length
+
   return (
     <div className="space-y-4">
-      {/* Header with clear button */}
+      {/* Header with show/hide toggle and clear button */}
       {!hideHeader && (
         <div className="flex items-center justify-between">
-          <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
-            Filter Results
-          </h3>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              {isExpanded ? 'Hide' : 'Show'}
+            </button>
+            <span className="text-gray-300">·</span>
+            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
+              Filter Results
+            </h3>
+            {!isExpanded && activeFilterCount > 0 && (
+              <span className="text-xs text-gray-500">
+                ({activeFilterCount} active)
+              </span>
+            )}
+          </div>
           {hasFilters && (
             <button
               onClick={clearFilters}
@@ -166,6 +185,7 @@ export function FilterChips({
       )}
 
       {/* Quick filters */}
+      {isExpanded && (
       <div className="flex flex-wrap gap-2">
         {[
           { key: 'activeOnly' as const, label: 'Active', count: quickFilterCounts?.active },
@@ -201,9 +221,10 @@ export function FilterChips({
           )
         })}
       </div>
+      )}
 
       {/* Category filters */}
-      {sortedCategories.length > 0 && (
+      {isExpanded && sortedCategories.length > 0 && (
         <div>
           <h4 className="text-xs text-gray-500 mb-2">Life Science Area</h4>
           <div className="flex flex-wrap gap-2">
@@ -240,7 +261,7 @@ export function FilterChips({
       )}
 
       {/* Org type filters */}
-      {sortedOrgTypes.length > 0 && (
+      {isExpanded && sortedOrgTypes.length > 0 && (
         <div>
           <h4 className="text-xs text-gray-500 mb-2">Organization Type</h4>
           <div className="flex flex-wrap gap-2">
@@ -277,7 +298,7 @@ export function FilterChips({
       )}
 
       {/* Loading indicator */}
-      {isLoading && (
+      {isExpanded && isLoading && (
         <div className="flex items-center gap-2 text-xs text-gray-400">
           <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
           <span>Filtering...</span>

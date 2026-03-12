@@ -7,7 +7,7 @@ import { Building2, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConica
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
-  biotools: 'Research Tools',
+  biotools: 'Biotools',
   therapeutics: 'Therapeutics',
   diagnostics: 'Diagnostics',
   medical_device: 'Medical Devices',
