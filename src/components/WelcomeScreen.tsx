@@ -98,7 +98,7 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
               )}
             </h1>
             <p className="text-gray-500 mb-8">
-              {userName ? 'Search NIH-funded research' : 'Your AI-powered life science intelligence platform'}
+              {userName ? 'AI-powered natural language search across NIH-funded research' : 'Your AI-powered life science intelligence platform'}
             </p>
 
             {/* Search Input */}
