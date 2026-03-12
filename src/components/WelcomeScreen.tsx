@@ -211,7 +211,7 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
                       Intelligence Reports
                     </h3>
                     <p className="text-xs text-gray-500 mt-1">
-                      Synthesize funding, patents, trials, and publications into comprehensive reports
+                      Create comprehensive topic-focused intelligence reports synthesizing research activity, funding, clinical trials, patents, and publications
                     </p>
                   </div>
                 </div>
