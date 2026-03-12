@@ -4,6 +4,21 @@ import { supabaseAdmin } from '@/lib/supabase'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
+/**
+ * Extract core project number for deduplication.
+ * NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project.
+ * This strips the leading digit (support type) and suffix (budget period).
+ * Example: "5R44MH136894-02" → "R44MH136894"
+ */
+function getCoreProjectNumber(projectNumber: string): string {
+  if (!projectNumber) return ''
+  // Remove leading digit (1-9) if present
+  let core = projectNumber.replace(/^[1-9]/, '')
+  // Remove suffix after hyphen (-01, -02, etc.)
+  core = core.replace(/-\d+$/, '')
+  return core
+}
+
 interface RouteParams {
   params: Promise<{ name: string }>
 }
@@ -38,18 +53,20 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Organization not found' }, { status: 404 })
     }
 
-    // Deduplicate all projects by project_number for accurate counts
+    // Deduplicate all projects by CORE project number for accurate counts
+    // This ensures "5R44MH136894-02" and "1R44MH136894-01" are treated as same project
     const allSeenProjects = new Map<string, typeof allProjects[0]>()
     for (const project of allProjects) {
-      const key = project.project_number || ''
-      if (!key) continue
-      const existing = allSeenProjects.get(key)
+      const coreKey = getCoreProjectNumber(project.project_number || '')
+      if (!coreKey) continue
+      const existing = allSeenProjects.get(coreKey)
       if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
-        allSeenProjects.set(key, project)
+        allSeenProjects.set(coreKey, project)
       }
     }
     const allDedupedProjects = Array.from(allSeenProjects.values())
-    const allProjectNumbers = Array.from(allSeenProjects.keys()).filter(k => k)
+    // Keep actual project_numbers for linked table queries (they use full project_number)
+    const allProjectNumbers = allDedupedProjects.map(p => p.project_number).filter(k => k) as string[]
 
     // Calculate accurate stats from ALL projects
     const totalFunding = allDedupedProjects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
@@ -134,14 +151,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Failed to fetch organization data' }, { status: 500 })
     }
 
-    // Deduplicate display results by project_number (keep most recent fiscal year)
+    // Deduplicate display results by CORE project number (keep most recent fiscal year)
     const seenProjectNumbers = new Map<string, typeof topProjects[0]>()
     for (const project of topProjects || []) {
-      const key = project.project_number || ''
-      if (!key) continue
-      const existing = seenProjectNumbers.get(key)
+      const coreKey = getCoreProjectNumber(project.project_number || '')
+      if (!coreKey) continue
+      const existing = seenProjectNumbers.get(coreKey)
       if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
-        seenProjectNumbers.set(key, project)
+        seenProjectNumbers.set(coreKey, project)
       }
     }
     const projects = Array.from(seenProjectNumbers.values())
@@ -188,47 +205,50 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       buildFilteredQuery('status'),
     ])
 
-    // Calculate counts per category (deduplicated by project_number)
+    // Calculate counts per category (deduplicated by CORE project number)
     const categoryProjects = categoryData.data || []
     const categoryProjectMap = new Map<string, Set<string>>()
     for (const p of categoryProjects) {
-      if (!p.project_number || !p.primary_category) continue
+      const coreKey = getCoreProjectNumber(p.project_number || '')
+      if (!coreKey || !p.primary_category) continue
       if (!categoryProjectMap.has(p.primary_category)) {
         categoryProjectMap.set(p.primary_category, new Set())
       }
-      categoryProjectMap.get(p.primary_category)!.add(p.project_number)
+      categoryProjectMap.get(p.primary_category)!.add(coreKey)
     }
     const byCategory: Record<string, number> = {}
     for (const [cat, projects] of categoryProjectMap) {
       byCategory[cat] = projects.size
     }
 
-    // Calculate counts per year (deduplicated by project_number)
+    // Calculate counts per year (deduplicated by CORE project number)
     const yearProjects = yearData.data || []
     const yearProjectMap = new Map<number, Set<string>>()
     for (const p of yearProjects) {
-      if (!p.project_number || !p.fiscal_year) continue
+      const coreKey = getCoreProjectNumber(p.project_number || '')
+      if (!coreKey || !p.fiscal_year) continue
       if (!yearProjectMap.has(p.fiscal_year)) {
         yearProjectMap.set(p.fiscal_year, new Set())
       }
-      yearProjectMap.get(p.fiscal_year)!.add(p.project_number)
+      yearProjectMap.get(p.fiscal_year)!.add(coreKey)
     }
     const byYear: Record<number, number> = {}
     for (const [yr, projects] of yearProjectMap) {
       byYear[yr] = projects.size
     }
 
-    // Calculate counts per status (deduplicated by project_number)
+    // Calculate counts per status (deduplicated by CORE project number)
     const statusProjects = statusData.data || []
     const today = new Date().toISOString().split('T')[0]
     const activeProjects = new Set<string>()
     const completedProjects = new Set<string>()
     for (const p of statusProjects) {
-      if (!p.project_number) continue
+      const coreKey = getCoreProjectNumber(p.project_number || '')
+      if (!coreKey) continue
       if (p.project_end && p.project_end >= today) {
-        activeProjects.add(p.project_number)
+        activeProjects.add(coreKey)
       } else if (p.project_end && p.project_end < today) {
-        completedProjects.add(p.project_number)
+        completedProjects.add(coreKey)
       }
     }
     const byStatus = {
