@@ -110,7 +110,7 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
                     value={searchInput}
                     onChange={e => setSearchInput(e.target.value.slice(0, 140))}
                     onKeyDown={handleKeyDown}
-                    placeholder="Search for a research topic..."
+                    placeholder="Begin your search here..."
                     rows={1}
                     maxLength={140}
                     className="w-full px-4 py-3.5 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-base"
@@ -210,10 +210,7 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
                     <h3 className="text-base font-semibold text-gray-900 mb-1">
                       Intelligence Reports
                     </h3>
-                    <p className="text-sm text-[#E07A5F] mb-1">
-                      &ldquo;Generate a landscape analysis&rdquo;
-                    </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-gray-500 mt-1">
                       Synthesize funding, patents, trials, and publications into comprehensive reports
                     </p>
                   </div>
