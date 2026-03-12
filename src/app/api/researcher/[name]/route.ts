@@ -147,8 +147,17 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Failed to fetch researcher data' }, { status: 500 })
     }
 
-    // No deduplication for paginated results - return as-is
-    const projects = topProjects || []
+    // Deduplicate display results by project_number (keep most recent fiscal year)
+    const seenProjectNumbers = new Map<string, typeof topProjects[0]>()
+    for (const project of topProjects || []) {
+      const key = project.project_number || ''
+      if (!key) continue
+      const existing = seenProjectNumbers.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjectNumbers.set(key, project)
+      }
+    }
+    const projects = Array.from(seenProjectNumbers.values())
 
     // Calculate counts per filter option for this researcher
     // Build base query conditions excluding each filter dimension
