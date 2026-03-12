@@ -110,7 +110,7 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
                     value={searchInput}
                     onChange={e => setSearchInput(e.target.value.slice(0, 140))}
                     onKeyDown={handleKeyDown}
-                    placeholder="Begin your search here..."
+                    placeholder={`Begin your ${LENS_CONFIG.find(l => l.id === selectedLens)?.label.toLowerCase() || 'research'} search here...`}
                     rows={1}
                     maxLength={140}
                     className="w-full px-4 py-3.5 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-base"
