@@ -81,11 +81,6 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
     }
   }
 
-  const handleExampleClick = (query: string) => {
-    setSearchInput(query)
-    inputRef.current?.focus()
-  }
-
   const currentTips = SEARCH_TIPS[selectedLens]
 
   return (
@@ -186,13 +181,12 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
                         </p>
                         <div className="flex flex-wrap gap-1.5">
                           {example.queries.map((query, qIdx) => (
-                            <button
+                            <span
                               key={qIdx}
-                              onClick={() => handleExampleClick(query)}
-                              className="px-2.5 py-1 text-xs bg-white border border-gray-200 rounded-full hover:border-[#E07A5F] hover:text-[#E07A5F] text-gray-600 transition-all"
+                              className="px-2.5 py-1 text-xs bg-white border border-gray-200 rounded-full text-gray-600"
                             >
                               {query}
-                            </button>
+                            </span>
                           ))}
                         </div>
                       </div>
@@ -249,13 +243,12 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
                     </p>
                     <div className="flex flex-wrap gap-1.5">
                       {example.queries.map((query, qIdx) => (
-                        <button
+                        <span
                           key={qIdx}
-                          onClick={() => handleExampleClick(query)}
-                          className="px-2.5 py-1 text-xs bg-gray-50 border border-gray-100 rounded-full hover:border-[#E07A5F] hover:bg-white text-gray-600 transition-all"
+                          className="px-2.5 py-1 text-xs bg-gray-50 border border-gray-100 rounded-full text-gray-600"
                         >
                           {query}
-                        </button>
+                        </span>
                       ))}
                     </div>
                   </div>
