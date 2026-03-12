@@ -96,15 +96,16 @@ function formatCurrency(amount: number): string {
 }
 
 // Determine SBIR/STTR status from activity code
-function getSbirSttrStatus(activityCode: string | null | undefined): { isSbir: boolean; isSttr: boolean } {
-  if (!activityCode) return { isSbir: false, isSttr: false }
+function getSbirSttrStatus(activityCode: string | null | undefined): { isSbir: boolean; isSttr: boolean; phase: 1 | 2 | null } {
+  if (!activityCode) return { isSbir: false, isSttr: false, phase: null }
   const code = activityCode.toUpperCase()
   // R41, R42 = SBIR Phase I/II
   // R43, R44 = STTR Phase I/II
   // SB1 = SBIR/STTR (we'll call it SBIR for display)
   const isSbir = code === 'R41' || code === 'R42' || code === 'SB1'
   const isSttr = code === 'R43' || code === 'R44'
-  return { isSbir, isSttr }
+  const phase = (code === 'R41' || code === 'R43') ? 1 : (code === 'R42' || code === 'R44') ? 2 : null
+  return { isSbir, isSttr, phase }
 }
 
 // Determine if project is active based on end date
@@ -447,17 +448,17 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     )}
                     <div className="flex items-center flex-wrap gap-1.5 mt-2">
                       {(() => {
-                        const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
+                        const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
                         return (
                           <>
                             {isSbir && (
                               <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
-                                SBIR
+                                SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
                               </span>
                             )}
                             {isSttr && (
                               <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
-                                STTR
+                                STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
                               </span>
                             )}
                           </>
@@ -716,17 +717,17 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     )}
                     <div className="flex items-center flex-wrap gap-1.5 mt-2">
                       {(() => {
-                        const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
+                        const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
                         return (
                           <>
                             {isSbir && (
                               <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
-                                SBIR
+                                SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
                               </span>
                             )}
                             {isSttr && (
                               <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
-                                STTR
+                                STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
                               </span>
                             )}
                           </>

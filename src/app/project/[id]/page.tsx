@@ -76,12 +76,13 @@ function isProjectActive(projectEnd: string | null): boolean | null {
   return endDate >= today
 }
 
-function getSbirSttrStatus(activityCode: string | null): { isSbir: boolean; isSttr: boolean } {
-  if (!activityCode) return { isSbir: false, isSttr: false }
+function getSbirSttrStatus(activityCode: string | null): { isSbir: boolean; isSttr: boolean; phase: 1 | 2 | null } {
+  if (!activityCode) return { isSbir: false, isSttr: false, phase: null }
   const code = activityCode.toUpperCase()
   const isSbir = code === 'R41' || code === 'R42' || code === 'SB1'
   const isSttr = code === 'R43' || code === 'R44'
-  return { isSbir, isSttr }
+  const phase = (code === 'R41' || code === 'R43') ? 1 : (code === 'R42' || code === 'R44') ? 2 : null
+  return { isSbir, isSttr, phase }
 }
 
 export default function ProjectPage() {
@@ -194,7 +195,7 @@ export default function ProjectPage() {
 
   const { project, abstract, publications, patents, clinicalStudies, stats } = data
   const active = isProjectActive(project.project_end)
-  const { isSbir, isSttr } = getSbirSttrStatus(project.activity_code)
+  const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
 
   const formatCost = (cost: number | null) => {
     if (!cost) return 'N/A'
@@ -265,12 +266,12 @@ export default function ProjectPage() {
                 </span>
                 {isSbir && (
                   <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
-                    SBIR
+                    SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
                   </span>
                 )}
                 {isSttr && (
                   <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
-                    STTR
+                    STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
                   </span>
                 )}
                 {project.primary_category && (
