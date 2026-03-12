@@ -80,22 +80,64 @@ def classify_org_type(org_name, activity_code):
 
 
 def is_core_or_facility(title, abstract):
-    """Check if this is a core facility within a multi-component grant."""
-    text = (title + ' ' + abstract).lower()
+    """
+    Check if this is a core facility.
+    Returns 'infrastructure', 'training', or None.
 
-    core_terms = ['administrative core', 'resource core', 'shared facility',
-                  'data core', 'biostatistics core', 'imaging core',
-                  'service core', 'support core', 'core facility',
-                  'shared resource', 'core a:', 'core b:', 'core c:', 'core d:']
+    Updated 2026-03: Improved detection for core facilities.
+    """
+    title_lower = title.lower()
+    abstract_lower = (abstract or '').lower()
+    text = title_lower + ' ' + abstract_lower
 
-    for term in core_terms:
-        if term in text:
-            return 'infrastructure'
+    # False positives - words containing "core" that aren't core facilities
+    not_core_patterns = [
+        'coreceptor', 'co-receptor', 'score', 'encore', 'hardcore',
+        'core of', 'core domain', 'core protein', 'core region',
+        'core sequence', 'core element', 'core structure', 'core complex',
+        'catalytic core', 'ribosomal core', 'nucleocapsid core', 'viral core',
+        'promoter core', 'enhancer core', 'transcriptional core',
+    ]
+    if any(fp in title_lower for fp in not_core_patterns):
+        return None
 
-    mentoring_terms = ['mentoring core', 'career development core', 'training core']
-    for term in mentoring_terms:
-        if term in text:
-            return 'training'
+    # Core facility patterns in title
+    core_title_patterns = [
+        ' core', 'core:', 'core -', 'core a', 'core b', 'core c', 'core d',
+        'core e', 'core f', 'shared resource', 'shared facility',
+    ]
+    has_core_pattern = any(p in title_lower for p in core_title_patterns)
+
+    if not has_core_pattern:
+        return None
+
+    # Training core types
+    training_terms = [
+        'training', 'mentoring', 'career development', 'education',
+        'research experience', 'professional development', 'trainee',
+        'investigator development', 'fellow',
+    ]
+    if any(t in text for t in training_terms):
+        return 'training'
+
+    # Infrastructure core types (most cores are infrastructure)
+    infrastructure_terms = [
+        'administrative', 'admin', 'coordination', 'data science', 'data core',
+        'bioinformatics', 'biostatistics', 'statistics', 'imaging', 'microscopy',
+        'genomics', 'sequencing', 'proteomics', 'metabolomics', 'histopathology',
+        'flow cytometry', 'biospecimen', 'biobank', 'tissue', 'animal', 'mouse',
+        'mass spectrometry', 'structural biology', 'crystallography', 'cryo-em',
+        'medicinal chemistry', 'chemistry core', 'assay development', 'screening',
+        'bioassay', 'molecular biology', 'viral vector', 'vector core', 'antibody',
+        'cell culture', 'pharmacology', 'analytical', 'metabolism', 'immunology',
+        'technology', 'tech core', 'resource', 'shared', 'sample', 'clinical',
+    ]
+    if any(t in text for t in infrastructure_terms):
+        return 'infrastructure'
+
+    # Generic core without specific type - assume infrastructure
+    if has_core_pattern:
+        return 'infrastructure'
 
     return None
 
@@ -393,13 +435,15 @@ def classify_project(row):
         return 'infrastructure', 95, '', org_type, f'Activity code {activity_code} is deterministic infrastructure'
 
     # ============================================
-    # STEP 2: Check for cores in multi-component grants
+    # STEP 2: Check for core facilities
+    # Core facilities can appear in multi-component grants or any grant with "core" in title
     # ============================================
-    if activity_code in MULTI_COMPONENT_CODES:
+    title_lower = title.lower()
+    if activity_code in MULTI_COMPONENT_CODES or ' core' in title_lower or 'core:' in title_lower or 'core -' in title_lower:
         core_type = is_core_or_facility(title, abstract)
         if core_type:
             conf = 85 if core_type == 'training' else 82
-            return core_type, conf, '', org_type, f'{activity_code} grant with {core_type} core indicators'
+            return core_type, conf, '', org_type, f'Core facility detected ({core_type})'
 
     # SEER registries
     if 'SEER' in title.upper() or 'SEER' in abstract.upper():
@@ -475,9 +519,17 @@ def classify_project(row):
     if any(term in title_lower for term in strong_digital_title):
         return 'digital_health', 85, '', org_type, 'Title indicates digital health product'
 
-    # Very strong biotools signals in title
+    # Very strong biotools signals in title (software/computational tools)
+    very_strong_biotools = ['software tool', 'computational tool', 'computational tools',
+                            'bioinformatics tool', 'machine learning tool', 'ai tool',
+                            'analysis software', 'open-source software', 'open source software']
+    if any(term in title_lower for term in very_strong_biotools):
+        return 'biotools', 90, '', org_type, 'Title indicates software/computational tool'
+
+    # Strong biotools signals in title
     strong_biotools_title = ['platform for', 'pipeline for', 'tool for', 'method for',
-                             'database of', 'resource for', 'assay for']
+                             'database of', 'resource for', 'assay for', 'toolkit for',
+                             'software for', 'software to', 'tools for', 'methods for']
     if any(term in title_lower for term in strong_biotools_title):
         return 'biotools', 85, '', org_type, 'Title indicates tool/platform development'
 

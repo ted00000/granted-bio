@@ -1583,8 +1583,11 @@ export function Chat({ persona, initialQuery }: ChatProps) {
   }, [isLoading, persona])
 
   // Auto-submit initial query from welcome screen
+  // Don't re-search if we're restoring state from sessionStorage (back button navigation)
   useEffect(() => {
-    if (initialQuery && !initialQueryProcessed && !isLoading && messages.length === 0) {
+    // Use ref check (isRestoringState) instead of state because refs update immediately
+    // This prevents re-searching when navigating back from a project detail page
+    if (initialQuery && !initialQueryProcessed && !isLoading && messages.length === 0 && !isRestoringState.current) {
       setInitialQueryProcessed(true)
       sendMessage(initialQuery, [])
     }

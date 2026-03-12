@@ -1,6 +1,21 @@
 // Tool definitions and implementations for Claude function calling
 
 import { supabaseAdmin } from '@/lib/supabase'
+
+/**
+ * Extract core project number for deduplication.
+ * NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project.
+ * This strips the leading digit (support type) and suffix (budget period).
+ * Example: "5R44MH136894-02" → "R44MH136894"
+ */
+function getCoreProjectNumber(projectNumber: string | null): string {
+  if (!projectNumber) return ''
+  // Remove leading digit (1-9) if present
+  let core = projectNumber.replace(/^[1-9]/, '')
+  // Remove suffix after hyphen (-01, -02, etc.)
+  core = core.replace(/-\d+$/, '')
+  return core
+}
 import { generateEmbedding } from '@/lib/openai'
 import type {
   SearchProjectsParams,
@@ -873,11 +888,13 @@ export async function searchProjectsHybrid(
       allProjects = allProjects.filter(p => (p.clinical_trial_count || 0) > 0)
     }
 
-    // Deduplicate by project_number, keeping the most recent fiscal year
+    // Deduplicate by CORE project_number, keeping the most recent fiscal year
     // This prevents the same project from appearing multiple times across fiscal years
+    // NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project
     const seenProjects = new Map<string, typeof allProjects[0]>()
     for (const project of allProjects) {
-      const key = project.project_number || project.application_id // fallback to application_id if no project_number
+      const coreKey = getCoreProjectNumber(project.project_number)
+      const key = coreKey || String(project.application_id) // fallback to application_id if no project_number
       const existing = seenProjects.get(key)
       if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
         seenProjects.set(key, project)
@@ -1066,10 +1083,12 @@ export async function searchProjectsSemantic(
       allProjects = allProjects.filter(p => (p.clinical_trial_count || 0) > 0)
     }
 
-    // Deduplicate by project_number, keeping the most recent fiscal year
+    // Deduplicate by CORE project_number, keeping the most recent fiscal year
+    // NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project
     const seenProjects = new Map<string, typeof allProjects[0]>()
     for (const project of allProjects) {
-      const key = project.project_number || project.application_id
+      const coreKey = getCoreProjectNumber(project.project_number)
+      const key = coreKey || String(project.application_id)
       const existing = seenProjects.get(key)
       if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
         seenProjects.set(key, project)
