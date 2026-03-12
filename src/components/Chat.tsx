@@ -280,14 +280,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {searchContext && data.all_results?.length > 0 && (
           <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
             {stickyFilters && (
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+              <div className="flex items-center gap-2 mb-2">
                 <button
                   onClick={() => setFiltersCollapsed(!filtersCollapsed)}
-                  className={`relative w-9 h-5 rounded-full transition-colors ${filtersCollapsed ? 'bg-gray-200' : 'bg-[#E07A5F]'}`}
+                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
                 >
-                  <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${filtersCollapsed ? '' : 'translate-x-4'}`} />
+                  {filtersCollapsed ? 'Show' : 'Hide'}
                 </button>
+                <span className="text-gray-300">·</span>
+                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
               </div>
             )}
             <div className={stickyFilters && filtersCollapsed ? 'hidden' : ''}>
@@ -543,14 +544,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {searchContext && data.all_results?.length > 0 && (
           <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
             {stickyFilters && (
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+              <div className="flex items-center gap-2 mb-2">
                 <button
                   onClick={() => setFiltersCollapsed(!filtersCollapsed)}
-                  className={`relative w-9 h-5 rounded-full transition-colors ${filtersCollapsed ? 'bg-gray-200' : 'bg-[#E07A5F]'}`}
+                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
                 >
-                  <span className={`absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform ${filtersCollapsed ? '' : 'translate-x-4'}`} />
+                  {filtersCollapsed ? 'Show' : 'Hide'}
                 </button>
+                <span className="text-gray-300">·</span>
+                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
               </div>
             )}
             <div className={stickyFilters && filtersCollapsed ? 'hidden' : ''}>
