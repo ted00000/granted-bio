@@ -1,88 +1,110 @@
 'use client'
 
+import { useState, useRef, KeyboardEvent } from 'react'
 import { Search, Activity, Users, FileText, Lock } from 'lucide-react'
 import type { PersonaType } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
-  onSelectPersona: (persona: PersonaType) => void
+  onSelectPersona: (persona: PersonaType, initialQuery?: string) => void
   userName?: string | null
 }
 
-const SEARCH_OPTIONS: Array<{
+// Lens configuration - horizontal pills below search
+const LENS_CONFIG: Array<{
   id: PersonaType
   label: string
-  title: string
-  subtitle: string
-  description: string
   icon: typeof Search
 }> = [
-  {
-    id: 'researcher',
-    label: 'What',
-    title: 'Research',
-    subtitle: 'What science is being funded?',
-    description: 'Topic deep dives, funded projects, publications',
-    icon: Search
-  },
-  {
-    id: 'trials',
-    label: 'How',
-    title: 'Trials',
-    subtitle: 'How is it being applied?',
-    description: 'Clinical pipelines, phases, trial tracking',
-    icon: Activity
-  },
-  {
-    id: 'bd',
-    label: 'Who',
-    title: 'People',
-    subtitle: 'Who is working on this?',
-    description: 'Find researchers, PIs, institutions',
-    icon: Users
-  }
+  { id: 'researcher', label: 'Projects', icon: Search },
+  { id: 'bd', label: 'People', icon: Users },
+  { id: 'trials', label: 'Trials', icon: Activity },
 ]
 
 export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps) {
+  const [selectedLens, setSelectedLens] = useState<PersonaType>('researcher')
+  const [searchInput, setSearchInput] = useState('')
+  const inputRef = useRef<HTMLTextAreaElement>(null)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchInput.trim()) {
+      onSelectPersona(selectedLens, searchInput.trim())
+    }
+  }
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSubmit(e)
+    }
+  }
+
   return (
     <div className="h-full flex flex-col overflow-y-auto">
       <div className="flex-1 flex flex-col justify-center px-6 lg:px-8 pt-[calc(4.5rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(2rem+env(safe-area-inset-bottom))] lg:pb-8 min-h-min">
-        <div className="max-w-2xl w-full mx-auto text-center">
+        <div className="max-w-xl w-full mx-auto text-center">
           <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-2">
             {userName ? `Hi ${userName}, what would you like to explore?` : (
               <>Welcome to granted<span className="text-[#E07A5F]">.bio</span></>
             )}
           </h1>
-          <p className="text-gray-500 mb-10">
-            {userName ? 'Select a mode to get started' : 'Your AI-powered life science intelligence platform'}
+          <p className="text-gray-500 mb-8">
+            {userName ? 'Search NIH-funded research' : 'Your AI-powered life science intelligence platform'}
           </p>
 
-          {/* Search Modes */}
-          <div className="mb-8">
-            <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Search</p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {SEARCH_OPTIONS.map(option => {
-                const Icon = option.icon
+          {/* Search Input */}
+          <form onSubmit={handleSubmit} className="mb-4">
+            <div className="flex items-center gap-2">
+              <div className="flex-1 min-w-0 relative">
+                <textarea
+                  ref={inputRef}
+                  value={searchInput}
+                  onChange={e => setSearchInput(e.target.value.slice(0, 140))}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Search for a research topic..."
+                  rows={1}
+                  maxLength={140}
+                  className="w-full px-4 py-3.5 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-base"
+                  style={{ maxHeight: '120px' }}
+                />
+                {searchInput.length > 100 && (
+                  <span className={`absolute right-3 bottom-2 text-xs ${searchInput.length >= 140 ? 'text-red-400' : 'text-gray-400'}`}>
+                    {140 - searchInput.length}
+                  </span>
+                )}
+              </div>
+              <button
+                type="submit"
+                disabled={!searchInput.trim() || searchInput.length > 140}
+                className="flex-shrink-0 p-3.5 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </form>
+
+          {/* Lens Bar */}
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full">
+              {LENS_CONFIG.map(lens => {
+                const isSelected = selectedLens === lens.id
+                const Icon = lens.icon
                 return (
                   <button
-                    key={option.id}
-                    onClick={() => onSelectPersona(option.id)}
-                    className="group p-5 bg-white rounded-xl border border-gray-100 hover:border-[#E07A5F] hover:shadow-lg transition-all text-left"
+                    key={lens.id}
+                    onClick={() => setSelectedLens(lens.id)}
+                    className={`
+                      flex items-center gap-1.5 px-4 py-2 text-sm rounded-full transition-all
+                      ${isSelected
+                        ? 'bg-white text-gray-900 shadow-sm'
+                        : 'text-gray-500 hover:text-gray-700'
+                      }
+                    `}
                   >
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="text-gray-400 group-hover:text-[#E07A5F] transition-colors">
-                        <Icon className="w-6 h-6" strokeWidth={1.5} />
-                      </div>
-                      <span className="text-xs font-medium text-gray-400 uppercase">{option.label}</span>
-                    </div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-1">
-                      {option.title}
-                    </h3>
-                    <p className="text-sm text-[#E07A5F] mb-1">
-                      &ldquo;{option.subtitle}&rdquo;
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {option.description}
-                    </p>
+                    <Icon className="w-4 h-4" strokeWidth={isSelected ? 2 : 1.5} />
+                    <span className={isSelected ? 'font-medium' : ''}>{lens.label}</span>
                   </button>
                 )
               })}

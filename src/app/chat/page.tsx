@@ -18,6 +18,7 @@ function ChatContent() {
   const supabase = createBrowserSupabaseClient()
 
   const personaParam = searchParams.get('persona')
+  const queryParam = searchParams.get('q')
   const selectedPersona = VALID_PERSONAS.includes(personaParam as PersonaType)
     ? (personaParam as PersonaType)
     : null
@@ -41,8 +42,12 @@ function ChatContent() {
     fetchUser()
   }, [supabase])
 
-  const handlePersonaChange = (persona: PersonaType) => {
-    router.push(`/chat?persona=${persona}`)
+  const handlePersonaChange = (persona: PersonaType, initialQuery?: string) => {
+    if (initialQuery) {
+      router.push(`/chat?persona=${persona}&q=${encodeURIComponent(initialQuery)}`)
+    } else {
+      router.push(`/chat?persona=${persona}`)
+    }
   }
 
   return (
@@ -52,7 +57,7 @@ function ChatContent() {
       userName={userName}
     >
       {selectedPersona ? (
-        <Chat persona={selectedPersona} onPersonaChange={handlePersonaChange} />
+        <Chat persona={selectedPersona} initialQuery={queryParam || undefined} />
       ) : isLoading ? (
         <div className="h-full flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
