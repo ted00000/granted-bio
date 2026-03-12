@@ -152,7 +152,7 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
                         }
                       `}
                     >
-                      <Icon className="w-4 h-4" strokeWidth={isSelected ? 2 : 1.5} />
+                      <Icon className={`w-4 h-4 ${isSelected ? 'text-[#E07A5F]' : ''}`} strokeWidth={isSelected ? 2 : 1.5} />
                       <span className={isSelected ? 'font-medium' : ''}>{lens.label}</span>
                     </button>
                   )
@@ -179,16 +179,9 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
                         <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1.5">
                           {example.label}
                         </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {example.queries.map((query, qIdx) => (
-                            <span
-                              key={qIdx}
-                              className="px-2.5 py-1 text-xs bg-white border border-gray-200 rounded-full text-gray-600"
-                            >
-                              {query}
-                            </span>
-                          ))}
-                        </div>
+                        <p className="text-xs text-gray-600">
+                          {example.queries.join(', ')}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -241,16 +234,9 @@ export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps)
                     <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
                       {example.label}
                     </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {example.queries.map((query, qIdx) => (
-                        <span
-                          key={qIdx}
-                          className="px-2.5 py-1 text-xs bg-gray-50 border border-gray-100 rounded-full text-gray-600"
-                        >
-                          {query}
-                        </span>
-                      ))}
-                    </div>
+                    <p className="text-xs text-gray-600">
+                      {example.queries.join(', ')}
+                    </p>
                   </div>
                 ))}
               </div>
