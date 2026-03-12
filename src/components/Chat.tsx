@@ -15,6 +15,60 @@ const ICONS = {
   activity: Activity,
 } as const
 
+// Lens configuration - LinkedIn-style horizontal pills below search
+const LENS_CONFIG: Array<{
+  id: PersonaType
+  label: string
+  icon: keyof typeof ICONS
+}> = [
+  { id: 'researcher', label: 'Research', icon: 'search' },
+  { id: 'bd', label: 'People', icon: 'users' },
+  { id: 'trials', label: 'Trials', icon: 'activity' },
+]
+
+interface LensBarProps {
+  selectedLens: PersonaType
+  onLensChange: (lens: PersonaType) => void
+  resultCount?: number
+  disabled?: boolean
+}
+
+function LensBar({ selectedLens, onLensChange, resultCount, disabled }: LensBarProps) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center gap-1">
+        {LENS_CONFIG.map(lens => {
+          const isSelected = selectedLens === lens.id
+          const Icon = ICONS[lens.icon]
+          return (
+            <button
+              key={lens.id}
+              onClick={() => !disabled && onLensChange(lens.id)}
+              disabled={disabled}
+              className={`
+                flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-full transition-all
+                ${isSelected
+                  ? 'bg-gray-900 text-white'
+                  : 'text-gray-500 hover:bg-gray-100'
+                }
+                ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+              `}
+            >
+              <Icon className="w-3.5 h-3.5" strokeWidth={isSelected ? 2 : 1.5} />
+              <span className={isSelected ? 'font-medium' : ''}>{lens.label}</span>
+            </button>
+          )
+        })}
+      </div>
+      {resultCount !== undefined && resultCount > 0 && (
+        <span className="text-xs text-gray-400">
+          {resultCount.toLocaleString()} results
+        </span>
+      )}
+    </div>
+  )
+}
+
 interface Message {
   id: string
   role: 'user' | 'assistant'
@@ -61,6 +115,7 @@ interface FilterState {
 
 interface ChatProps {
   persona: PersonaType
+  onPersonaChange?: (persona: PersonaType) => void
 }
 
 // Parse message content to extract choices (bullet points at the end)
@@ -1109,7 +1164,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
   )
 }
 
-export function Chat({ persona }: ChatProps) {
+export function Chat({ persona, onPersonaChange }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -1132,6 +1187,31 @@ export function Chat({ persona }: ChatProps) {
   const router = useRouter()
   const metadata = PERSONA_METADATA[persona]
   const IconComponent = ICONS[metadata.icon]
+
+  // Handle lens change - clears state and notifies parent
+  const handleLensChange = useCallback((newPersona: PersonaType) => {
+    if (newPersona !== persona && onPersonaChange) {
+      onPersonaChange(newPersona)
+    }
+  }, [persona, onPersonaChange])
+
+  // Get result count from current search
+  const resultCount = useMemo(() => {
+    if (filteredResults) {
+      return filteredResults.total_count
+    }
+    const projectResult = [...toolResults].reverse().find(r => r.name === 'search_projects' || r.name === 'keyword_search')
+    if (projectResult) {
+      const data = projectResult.data as KeywordSearchResult
+      return data?.total_count
+    }
+    const trialsResult = [...toolResults].reverse().find(r => r.name === 'search_trials')
+    if (trialsResult) {
+      const data = trialsResult.data as TrialSearchResult
+      return data?.total_count
+    }
+    return undefined
+  }, [toolResults, filteredResults])
 
   // Restore search state from sessionStorage on mount
   useEffect(() => {
@@ -1750,7 +1830,7 @@ export function Chat({ persona }: ChatProps) {
                 </p>
 
                 {/* Input right after content */}
-                <form onSubmit={handleSubmit} className="mb-6">
+                <form onSubmit={handleSubmit} className="mb-4">
                   <div className="flex items-center gap-2">
                     <div className="flex-1 min-w-0 relative">
                       <textarea
@@ -1783,6 +1863,17 @@ export function Chat({ persona }: ChatProps) {
                   </div>
                 </form>
 
+                {/* Lens Bar - context selector */}
+                {onPersonaChange && (
+                  <div className="mb-6 flex justify-center">
+                    <LensBar
+                      selectedLens={persona}
+                      onLensChange={handleLensChange}
+                      disabled={isLoading}
+                    />
+                  </div>
+                )}
+
                 {metadata.exampleQueries.length > 0 && (
                   <div className="space-y-2">
                     <p className="text-xs text-gray-400">Try an example</p>
@@ -1803,10 +1894,22 @@ export function Chat({ persona }: ChatProps) {
           </div>
         ) : (
           <>
+        {/* Sticky Lens Bar Header - visible when there are results */}
+        {onPersonaChange && toolResults.length > 0 && (
+          <div className="flex-shrink-0 sticky top-0 z-20 bg-white border-b border-gray-100 px-4 lg:px-6 py-2">
+            <LensBar
+              selectedLens={persona}
+              onLensChange={handleLensChange}
+              resultCount={resultCount}
+              disabled={isLoading}
+            />
+          </div>
+        )}
+
         {/* Messages */}
         <div
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto overflow-x-hidden px-4 lg:px-6 pt-[calc(3.5rem+env(safe-area-inset-top))] lg:pt-8 pb-6 lg:pb-8 min-h-0"
+          className={`flex-1 overflow-y-auto overflow-x-hidden px-4 lg:px-6 ${toolResults.length > 0 && onPersonaChange ? 'pt-4' : 'pt-[calc(3.5rem+env(safe-area-inset-top))]'} lg:pt-8 pb-6 lg:pb-8 min-h-0`}
           style={{
             overscrollBehavior: 'contain',
             scrollBehavior: 'auto',

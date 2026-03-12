@@ -52,7 +52,7 @@ function ChatContent() {
       userName={userName}
     >
       {selectedPersona ? (
-        <Chat persona={selectedPersona} />
+        <Chat persona={selectedPersona} onPersonaChange={handlePersonaChange} />
       ) : isLoading ? (
         <div className="h-full flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
