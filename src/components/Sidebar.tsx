@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Beaker, Activity, Menu, X, LogOut, FolderKanban, FileText, Lock, Users } from 'lucide-react'
+import { Search, Activity, Menu, X, LogOut, Beaker, FileText, Lock, Users } from 'lucide-react'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import type { PersonaType } from '@/lib/chat/types'
 
@@ -96,7 +96,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
               }
             `}
           >
-            <Beaker
+            <Search
               className={`w-5 h-5 flex-shrink-0 ${pathname === '/chat' || currentPersona ? 'text-[#E07A5F]' : 'text-gray-400'}`}
               strokeWidth={pathname === '/chat' || currentPersona ? 2 : 1.5}
             />
@@ -153,7 +153,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
               }
             `}
           >
-            <FolderKanban
+            <Beaker
               className={`w-5 h-5 flex-shrink-0 ${pathname === '/projects' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
               strokeWidth={pathname === '/projects' ? 2 : 1.5}
             />
