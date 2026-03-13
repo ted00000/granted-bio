@@ -347,6 +347,53 @@ Based on validated FY2024-2025 data:
 
 ---
 
+## SBIR-Specific Disambiguation Rules
+
+SBIR/STTR projects are never basic_research, but they require careful disambiguation between therapeutics, biotools, diagnostics, and medical_device. Common misclassification patterns:
+
+### "Development of..." Title Pattern
+
+**DO NOT auto-classify as biotools based on "Development of" alone.** Check WHAT is being developed:
+
+| Pattern | Category | Example |
+|---------|----------|---------|
+| Development of [antibody/monoclonal] for X | therapeutics | "Development of highly potent human monoclonal for RSV immunoprophylaxis" |
+| Development of [inhibitor/compound/drug] for X | therapeutics | "Development of a Growth Hormone Receptor antagonist for ADRD" |
+| Development of [assay/platform/system] for researchers | biotools | "Development of a high-throughput screening platform for drug discovery" |
+| Development of [test/assay] for clinical detection | diagnostics | "Development of a Point-of-Care Test for Rapid Diagnosis of Valley Fever" |
+| Development of [device/implant] for patients | medical_device | "Development of implantable cardiac monitor" |
+
+**Key signal:** The OBJECT of development determines category, not the word "development".
+
+### "System" and "Platform" Words
+
+These words appear in both therapeutics and biotools - check context:
+
+| Context | Category | Example |
+|---------|----------|---------|
+| delivery system (for drugs/genes) | therapeutics | "Gene delivery system for treating muscular dystrophy" |
+| monitoring system for patients | medical_device or digital_health | "Remote monitoring system for heart failure patients" |
+| robotic/assistive platform for patients | therapeutics or medical_device | "Robotic neurorehabilitation platform for stroke patients" |
+| screening/analysis platform for researchers | biotools | "High-throughput proteomics platform" |
+| data analysis/computational platform | biotools | "Cloud-based genomics analysis platform" |
+
+**Disambiguation question:** Who uses the system/platform?
+- Researchers → biotools
+- Patients/clinicians → therapeutics, diagnostics, medical_device, or digital_health
+
+### SBIR Therapeutics Red Flags
+
+Projects with these patterns are almost always therapeutics, NOT biotools:
+- Antibody/monoclonal development
+- Small molecule optimization
+- Gene therapy/cell therapy
+- Drug delivery
+- Vaccination/immunization
+- IND filing, FDA pathway language
+- Patient populations mentioned prominently
+
+---
+
 ## Known Edge Cases
 
 ### 1. "Develops method to study X"
@@ -432,5 +479,6 @@ docs/
 
 | Date | Change |
 |------|--------|
+| 2026-03-12 | Added SBIR-specific disambiguation rules for "Development of" and "system/platform" patterns |
 | 2026-03-09 | Created comprehensive workflow from FY2024-2026 lessons |
 | 2026-03-09 | Added database-integrated classification script |

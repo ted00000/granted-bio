@@ -245,12 +245,41 @@ def is_tool_development(title, abstract):
     # Strong biotools signals in title
     tool_title_terms = [
         'platform for', 'pipeline for', 'tool for', 'assay for', 'method for',
-        'development of', 'novel assay', 'novel platform', 'novel method',
+        'novel assay', 'novel platform', 'novel method',
         'high-throughput', 'database of', 'resource for'
     ]
 
     if any(term in title_lower for term in tool_title_terms):
         return True
+
+    # "Development of" requires checking WHAT is being developed
+    # "Development of a platform/tool/assay" = biotools
+    # "Development of antibody/drug/therapy" = therapeutics (NOT biotools)
+    if 'development of' in title_lower:
+        biotools_objects = [
+            'development of a platform', 'development of an assay',
+            'development of a tool', 'development of a method',
+            'development of a computational', 'development of a database',
+            'development of a pipeline', 'development of software',
+            'development of a screening platform', 'development of a detection platform'
+        ]
+        therapeutics_objects = [
+            'development of antibod', 'development of monoclonal',
+            'development of inhibitor', 'development of a drug',
+            'development of a therapy', 'development of a treatment',
+            'development of a vaccine', 'development of a compound',
+            'development of a biologic', 'development of an antagonist',
+            'development of a receptor', 'development of a small molecule',
+            'development of anticoagulant', 'development of anti-'
+        ]
+        # If it looks like therapeutics, don't classify as biotools
+        if any(obj in title_lower for obj in therapeutics_objects):
+            return False
+        # If it looks like biotools, classify as biotools
+        if any(obj in title_lower for obj in biotools_objects):
+            return True
+        # Ambiguous - don't auto-classify as biotools based on "development of" alone
+        # Fall through to check other signals
 
     # Tool development phrases
     develop_terms = [
@@ -282,20 +311,27 @@ def is_drug_development(title, abstract, return_strength=False):
     strong_title_terms = [
         'therapy for', 'treatment of', 'drug development',
         'clinical trial', 'phase i', 'phase ii', 'phase 1', 'phase 2',
-        'car-t', 'gene therapy for', 'cell therapy for'
+        'car-t', 'gene therapy for', 'cell therapy for',
+        # "Development of [therapeutic]" patterns
+        'development of antibod', 'development of monoclonal',
+        'development of inhibitor', 'development of a vaccine',
+        'development of anticoagulant', 'development of anti-',
+        'development of a drug', 'development of a therapy',
+        'development of a small molecule', 'development of an antagonist'
     ]
 
     strong_development_terms = [
         'drug discovery', 'drug development', 'drug candidate', 'lead compound',
         'lead optimization', 'hit-to-lead', 'clinical trial', 'phase i trial',
         'phase ii trial', 'phase iii trial', 'phase 1 trial', 'phase 2 trial',
-        'preclinical development', 'ind-enabling', 'first-in-human',
+        'preclinical development', 'ind-enabling', 'first-in-human', 'ind filing',
         'clinical efficacy', 'clinical development', 'therapeutic development',
         'optimize the drug', 'optimize the compound',
         'vaccine development', 'vaccine candidate',
         'gene therapy development', 'cell therapy development', 'car-t therapy',
         'develop a therapy', 'develop a treatment', 'novel therapy',
-        'repurpose', 'drug repurposing'
+        'repurpose', 'drug repurposing',
+        'immunoprophylaxis', 'immunotherapy for', 'antibody therapy'
     ]
 
     has_strong_title = any(term in title_lower for term in strong_title_terms)
@@ -308,7 +344,8 @@ def is_drug_development(title, abstract, return_strength=False):
 
     # WEAK signals - keywords that INDICATE but don't CONFIRM (can be overridden by research framing)
     weak_title_terms = [
-        'inhibitor', 'vaccine', 'therapeutic', 'immunotherapy'
+        'inhibitor', 'vaccine', 'therapeutic', 'immunotherapy',
+        'antagonist', 'agonist', 'antibody for', 'monoclonal for'
     ]
 
     weak_abstract_terms = [
@@ -526,12 +563,26 @@ def classify_project(row):
     if any(term in title_lower for term in very_strong_biotools):
         return 'biotools', 90, '', org_type, 'Title indicates software/computational tool'
 
-    # Strong biotools signals in title
+    # Strong biotools signals in title - BUT check context
     strong_biotools_title = ['platform for', 'pipeline for', 'tool for', 'method for',
                              'database of', 'resource for', 'assay for', 'toolkit for',
                              'software for', 'software to', 'tools for', 'methods for']
+
+    # Patient-focused platforms should NOT be biotools - they're therapeutics/medical_device
+    # E.g., "neurorehabilitation platform for stroke patients" = therapeutics, not biotools
+    patient_context_terms = [
+        'patients', 'patient', 'clinical care', 'treatment of', 'therapy for',
+        'stroke', 'cancer', 'alzheimer', 'parkinson', 'dementia', 'disease',
+        'neurorehabilitation', 'rehabilitation', 'assistive', 'prosthetic'
+    ]
+    has_patient_context = any(term in title_lower for term in patient_context_terms)
+
     if any(term in title_lower for term in strong_biotools_title):
-        return 'biotools', 85, '', org_type, 'Title indicates tool/platform development'
+        # If platform is for patients/clinical use, it's NOT biotools
+        if has_patient_context:
+            pass  # Don't return biotools, continue to other classification logic
+        else:
+            return 'biotools', 85, '', org_type, 'Title indicates tool/platform development'
 
     # ============================================
     # STEP 7: Content-based classification
