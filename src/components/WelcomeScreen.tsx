@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, KeyboardEvent } from 'react'
-import { Search, Activity, Users, FileText, Lock, ChevronDown, ChevronUp } from 'lucide-react'
+import { Beaker, Activity, Users, FileText, Lock, ChevronDown, ChevronUp } from 'lucide-react'
 import type { PersonaType } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
@@ -13,9 +13,9 @@ interface WelcomeScreenProps {
 const LENS_CONFIG: Array<{
   id: PersonaType
   label: string
-  icon: typeof Search
+  icon: typeof Beaker
 }> = [
-  { id: 'researcher', label: 'Projects', icon: Search },
+  { id: 'researcher', label: 'Projects', icon: Beaker },
   { id: 'bd', label: 'People', icon: Users },
   { id: 'trials', label: 'Trials', icon: Activity },
 ]

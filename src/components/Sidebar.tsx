@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Search, Activity, Menu, X, LogOut, Bookmark, FileText, Lock } from 'lucide-react'
+import { Beaker, Activity, Menu, X, LogOut, FolderKanban, FileText, Lock, Users } from 'lucide-react'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import type { PersonaType } from '@/lib/chat/types'
 
@@ -96,7 +96,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
               }
             `}
           >
-            <Search
+            <Beaker
               className={`w-5 h-5 flex-shrink-0 ${pathname === '/chat' || currentPersona ? 'text-[#E07A5F]' : 'text-gray-400'}`}
               strokeWidth={pathname === '/chat' || currentPersona ? 2 : 1.5}
             />
@@ -153,7 +153,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
               }
             `}
           >
-            <Bookmark
+            <FolderKanban
               className={`w-5 h-5 flex-shrink-0 ${pathname === '/projects' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
               strokeWidth={pathname === '/projects' ? 2 : 1.5}
             />
@@ -163,6 +163,33 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
               </div>
               <div className="text-xs text-gray-400 truncate">
                 Saved projects
+              </div>
+            </div>
+          </Link>
+
+          {/* My People Link */}
+          <Link
+            href="/people"
+            onClick={() => setIsOpen(false)}
+            className={`
+              w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+              transition-all duration-150
+              ${pathname === '/people'
+                ? 'bg-gray-50 text-gray-900'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+              }
+            `}
+          >
+            <Users
+              className={`w-5 h-5 flex-shrink-0 ${pathname === '/people' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+              strokeWidth={pathname === '/people' ? 2 : 1.5}
+            />
+            <div className="min-w-0">
+              <div className={`text-sm font-medium ${pathname === '/people' ? 'text-gray-900' : ''}`}>
+                My People
+              </div>
+              <div className="text-xs text-gray-400 truncate">
+                Saved researchers
               </div>
             </div>
           </Link>
