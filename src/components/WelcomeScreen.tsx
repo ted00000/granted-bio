@@ -150,15 +150,15 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens }: Welcom
           </div>
 
           {/* Search Tips */}
-          <div className="text-left">
+          <div className="text-center">
             <p className="text-sm text-gray-500 mb-4">{currentTips.description}</p>
-            <div className="flex flex-wrap gap-x-6 gap-y-3">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {currentTips.examples.map((example, idx) => (
-                <div key={idx}>
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">
+                <div key={idx} className="p-3 bg-gray-50 rounded-lg text-left">
+                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1.5">
                     {example.label}
                   </p>
-                  <p className="text-xs text-gray-600">
+                  <p className="text-xs text-gray-600 leading-relaxed">
                     {example.queries.join(', ')}
                   </p>
                 </div>
