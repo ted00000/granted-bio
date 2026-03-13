@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Building2, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Users, Search, X, Bookmark } from 'lucide-react'
+import { AppLayout } from '@/components/AppLayout'
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
@@ -198,71 +199,64 @@ export default function OrgPage() {
   // Show full-page loading only on initial load
   if (loading && !data) {
     return (
-      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-          <span className="text-sm text-gray-400">Loading organization...</span>
+      <AppLayout>
+        <div className="h-full flex items-center justify-center bg-[#FAFAF9]">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+            <span className="text-sm text-gray-400">Loading organization...</span>
+          </div>
         </div>
-      </div>
+      </AppLayout>
     )
   }
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-[#FAFAF9]">
-        <header className="bg-white border-b border-gray-100">
-          <div className="max-w-5xl mx-auto px-4 py-4">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1">
+      <AppLayout>
+        <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+          <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-8">
+            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 mb-8">
               <ChevronLeft className="w-4 h-4" />
               Back
             </button>
+            <div className="text-center py-8">
+              <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Organization not found'}</h1>
+              <p className="text-gray-500">The organization "{decodeURIComponent(name)}" could not be found.</p>
+            </div>
           </div>
-        </header>
-        <main className="max-w-5xl mx-auto px-4 py-16 text-center">
-          <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Organization not found'}</h1>
-          <p className="text-gray-500">The organization "{decodeURIComponent(name)}" could not be found.</p>
-        </main>
-      </div>
+        </div>
+      </AppLayout>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-xl font-semibold text-gray-900">
-              granted<span className="text-[#E07A5F]">.bio</span>
-            </Link>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={toggleSaveOrg}
-                disabled={savingOrg}
-                className={`p-2 rounded-lg transition-colors ${
-                  isSaved
-                    ? 'text-[#E07A5F] bg-[#E07A5F]/10'
-                    : 'text-gray-400 hover:text-[#E07A5F] hover:bg-gray-100'
-                }`}
-                title={isSaved ? 'Remove from saved' : 'Save organization'}
-              >
-                <Bookmark
-                  className="w-5 h-5"
-                  fill={isSaved ? 'currentColor' : 'none'}
-                  strokeWidth={1.5}
-                />
-              </button>
-              <button onClick={() => router.back()} className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium flex items-center gap-1">
-                <ChevronLeft className="w-4 h-4" />
-                Back
-              </button>
-            </div>
+    <AppLayout>
+      <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+        <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-8">
+          {/* Back button and bookmark */}
+          <div className="flex items-center justify-between mb-6">
+            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1">
+              <ChevronLeft className="w-4 h-4" />
+              Back
+            </button>
+            <button
+              onClick={toggleSaveOrg}
+              disabled={savingOrg}
+              className={`p-2 rounded-lg transition-colors ${
+                isSaved
+                  ? 'text-[#E07A5F] bg-[#E07A5F]/10'
+                  : 'text-gray-400 hover:text-[#E07A5F] hover:bg-gray-100'
+              }`}
+              title={isSaved ? 'Remove from saved' : 'Save organization'}
+            >
+              <Bookmark
+                className="w-5 h-5"
+                fill={isSaved ? 'currentColor' : 'none'}
+                strokeWidth={1.5}
+              />
+            </button>
           </div>
-        </div>
-      </header>
-
-      <main className="max-w-5xl mx-auto px-4 py-8">
         {/* Org Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-start gap-4">
@@ -579,7 +573,8 @@ export default function OrgPage() {
             )}
           </div>
         </div>
-      </main>
-    </div>
+        </div>
+      </div>
+    </AppLayout>
   )
 }
