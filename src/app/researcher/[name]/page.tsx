@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { User, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Building2, Search, X } from 'lucide-react'
+import { User, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Building2, Search, X, Bookmark } from 'lucide-react'
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
@@ -91,6 +91,50 @@ export default function ResearcherPage() {
   const [selectedYear, setSelectedYear] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+
+  // Bookmark state
+  const [isSaved, setIsSaved] = useState(false)
+  const [savingResearcher, setSavingResearcher] = useState(false)
+
+  // Check if researcher is saved
+  useEffect(() => {
+    const checkSaved = async () => {
+      try {
+        const researcherName = decodeURIComponent(name)
+        const response = await fetch(`/api/saved-people/check?person_name=${encodeURIComponent(researcherName)}&person_type=researcher`)
+        const data = await response.json()
+        setIsSaved(data.saved)
+      } catch {
+        // Ignore errors
+      }
+    }
+    checkSaved()
+  }, [name])
+
+  const toggleSaveResearcher = async () => {
+    if (savingResearcher) return
+    setSavingResearcher(true)
+
+    const researcherName = decodeURIComponent(name)
+
+    try {
+      if (isSaved) {
+        await fetch(`/api/saved-people?person_name=${encodeURIComponent(researcherName)}&person_type=researcher`, { method: 'DELETE' })
+        setIsSaved(false)
+      } else {
+        await fetch('/api/saved-people', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ person_name: researcherName, person_type: 'researcher' })
+        })
+        setIsSaved(true)
+      }
+    } catch {
+      // Ignore errors
+    } finally {
+      setSavingResearcher(false)
+    }
+  }
 
   const fetchData = useCallback(async () => {
     setLoading(true)
@@ -191,10 +235,28 @@ export default function ResearcherPage() {
             <Link href="/" className="text-xl font-semibold text-gray-900">
               granted<span className="text-[#E07A5F]">.bio</span>
             </Link>
-            <button onClick={() => router.back()} className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium flex items-center gap-1">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={toggleSaveResearcher}
+                disabled={savingResearcher}
+                className={`p-2 rounded-lg transition-colors ${
+                  isSaved
+                    ? 'text-[#E07A5F] bg-[#E07A5F]/10'
+                    : 'text-gray-400 hover:text-[#E07A5F] hover:bg-gray-100'
+                }`}
+                title={isSaved ? 'Remove from saved' : 'Save researcher'}
+              >
+                <Bookmark
+                  className="w-5 h-5"
+                  fill={isSaved ? 'currentColor' : 'none'}
+                  strokeWidth={1.5}
+                />
+              </button>
+              <button onClick={() => router.back()} className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium flex items-center gap-1">
+                <ChevronLeft className="w-4 h-4" />
+                Back
+              </button>
+            </div>
           </div>
         </div>
       </header>

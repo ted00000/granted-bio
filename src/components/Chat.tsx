@@ -351,12 +351,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   >
                     <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-1`}>
                       {project.org_name ? (
-                        <Link
-                          href={`/org/${encodeURIComponent(project.org_name)}`}
-                          className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words hover:text-[#E07A5F] transition-colors"
+                        <button
+                          onClick={() => navigateToOrg(project.org_name!)}
+                          className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words hover:text-[#E07A5F] transition-colors text-left"
                         >
                           {project.org_name}
-                        </Link>
+                        </button>
                       ) : (
                         <span className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words">
                           Unknown Organization
@@ -369,12 +369,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       )}
                     </div>
                     {project.pi_names && (
-                      <Link
-                        href={`/researcher/${encodeURIComponent(project.pi_names.split(';')[0]?.trim() || '')}`}
-                        className="text-sm text-gray-700 mt-1 block hover:text-[#E07A5F] transition-colors"
+                      <button
+                        onClick={() => navigateToResearcher(project.pi_names!.split(';')[0]?.trim() || '')}
+                        className="text-sm text-gray-700 mt-1 block hover:text-[#E07A5F] transition-colors text-left"
                       >
                         {project.pi_names.split(';')[0]?.trim()}
-                      </Link>
+                      </button>
                     )}
                     <button
                       onClick={() => onProjectClick?.(project.application_id)}
@@ -620,12 +620,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                   >
                     <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-1`}>
                       {project.org_name ? (
-                        <Link
-                          href={`/org/${encodeURIComponent(project.org_name)}`}
-                          className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words hover:text-[#E07A5F] transition-colors"
+                        <button
+                          onClick={() => navigateToOrg(project.org_name!)}
+                          className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words hover:text-[#E07A5F] transition-colors text-left"
                         >
                           {project.org_name}
-                        </Link>
+                        </button>
                       ) : (
                         <span className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words">
                           Unknown Organization
@@ -638,12 +638,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       )}
                     </div>
                     {project.pi_names && (
-                      <Link
-                        href={`/researcher/${encodeURIComponent(project.pi_names.split(';')[0]?.trim() || '')}`}
-                        className="text-sm text-gray-700 mt-1 block hover:text-[#E07A5F] transition-colors"
+                      <button
+                        onClick={() => navigateToResearcher(project.pi_names!.split(';')[0]?.trim() || '')}
+                        className="text-sm text-gray-700 mt-1 block hover:text-[#E07A5F] transition-colors text-left"
                       >
                         {project.pi_names.split(';')[0]?.trim()}
-                      </Link>
+                      </button>
                     )}
                     <button
                       onClick={() => onProjectClick?.(project.application_id)}
@@ -1273,6 +1273,42 @@ export function Chat({ persona, initialQuery }: ChatProps) {
     }
     sessionStorage.setItem('searchState', JSON.stringify(state))
     router.push(`/trial/${nctId}`)
+  }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
+
+  // Save search state and navigate to organization
+  const navigateToOrg = useCallback((orgName: string) => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = 0
+    }
+
+    const state = {
+      toolResults,
+      searchContext,
+      filteredResults,
+      currentFilters,
+      messages,
+      returnUrl: window.location.href
+    }
+    sessionStorage.setItem('searchState', JSON.stringify(state))
+    router.push(`/org/${encodeURIComponent(orgName)}`)
+  }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
+
+  // Save search state and navigate to researcher
+  const navigateToResearcher = useCallback((researcherName: string) => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = 0
+    }
+
+    const state = {
+      toolResults,
+      searchContext,
+      filteredResults,
+      currentFilters,
+      messages,
+      returnUrl: window.location.href
+    }
+    sessionStorage.setItem('searchState', JSON.stringify(state))
+    router.push(`/researcher/${encodeURIComponent(researcherName)}`)
   }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
 
   // Save/unsave trial
