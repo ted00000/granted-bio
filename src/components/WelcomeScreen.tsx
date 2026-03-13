@@ -93,14 +93,11 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens }: Welcom
 
           {/* Left column - Search */}
           <div className="flex-1 max-w-xl text-center lg:text-left">
-            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-2">
+            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-8">
               {userName ? `Hi ${userName}, what would you like to explore?` : (
                 <>Welcome to granted<span className="text-[#E07A5F]">.bio</span></>
               )}
             </h1>
-            <p className="text-gray-500 mb-8">
-              {userName ? 'AI-powered natural language search across NIH-funded research' : 'Your AI-powered life science intelligence platform'}
-            </p>
 
             {/* Search Input */}
             <form onSubmit={handleSubmit} className="mb-4">
