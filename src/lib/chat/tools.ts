@@ -10,10 +10,14 @@ import { supabaseAdmin } from '@/lib/supabase'
  */
 function getCoreProjectNumber(projectNumber: string | null): string {
   if (!projectNumber) return ''
-  // Remove leading digit (1-9) if present
-  let core = projectNumber.replace(/^[1-9]/, '')
-  // Remove suffix after hyphen (-01, -02, etc.)
+  // Normalize: trim whitespace and uppercase for consistent matching
+  let core = projectNumber.trim().toUpperCase()
+  // Remove leading digit (0-9) if present (support type indicator)
+  core = core.replace(/^[0-9]/, '')
+  // Remove suffix after hyphen (-01, -02, etc.) - budget period indicator
   core = core.replace(/-\d+$/, '')
+  // Also handle alternative suffix formats like -S1, -A1
+  core = core.replace(/-[A-Z]\d+$/, '')
   return core
 }
 import { generateEmbedding } from '@/lib/openai'
@@ -525,24 +529,36 @@ export async function keywordSearch(
       }
     }
 
-    // Step 3: Aggregate by category and org_type
+    // Step 3: Deduplicate by CORE project_number, keeping the most recent fiscal year
+    const seenProjects = new Map<string, typeof allProjects[0]>()
+    for (const project of allProjects) {
+      const coreKey = getCoreProjectNumber(project.project_number)
+      const key = coreKey || String(project.application_id)
+      const existing = seenProjects.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(key, project)
+      }
+    }
+    const dedupedProjects = [...seenProjects.values()]
+
+    // Step 4: Aggregate by category and org_type
     const byCategory: Record<string, number> = {}
     const byOrgType: Record<string, number> = {}
 
-    allProjects.forEach(p => {
+    dedupedProjects.forEach(p => {
       const cat = p.primary_category || 'other'
       const org = p.org_type || 'other'
       byCategory[cat] = (byCategory[cat] || 0) + 1
       byOrgType[org] = (byOrgType[org] || 0) + 1
     })
 
-    // Step 4: Get sample results (top 10 by funding) with PI emails
-    const topProjects = [...allProjects]
+    // Step 5: Get sample results (top 10 by funding) with PI emails
+    const topProjects = [...dedupedProjects]
       .sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
       .slice(0, 10)
 
     // Get PI emails for ALL results (not just top 10)
-    const allProjectNumbers = allProjects.map(p => p.project_number).filter(Boolean)
+    const allProjectNumbers = dedupedProjects.map(p => p.project_number).filter(Boolean)
     let piEmails: Record<string, string> = {}
 
     if (allProjectNumbers.length > 0 && userAccess.canSeeEmails) {
@@ -606,12 +622,12 @@ export async function keywordSearch(
       .map(([org, count]) => `${org}: ${count}`)
       .join(', ')
 
-    const summary = `Found ${allProjects.length} projects. ` +
+    const summary = `Found ${dedupedProjects.length} projects. ` +
       `By category: ${categoryBreakdown}. ` +
       `By org_type: ${orgTypeBreakdown}.`
 
     // All results for client-side filtering (now with emails)
-    const allResults = allProjects.map(p => ({
+    const allResults = dedupedProjects.map(p => ({
       application_id: p.application_id,
       title: p.title,
       org_name: p.org_name,
@@ -632,8 +648,8 @@ export async function keywordSearch(
     return {
       summary,
       search_query: keyword,
-      total_count: allProjects.length,
-      showing_count: Math.min(allProjects.length, 100),
+      total_count: dedupedProjects.length,
+      showing_count: Math.min(dedupedProjects.length, 100),
       by_category: byCategory,
       by_org_type: byOrgType,
       all_results: allResults,

@@ -12,10 +12,14 @@ export const dynamic = 'force-dynamic'
  */
 function getCoreProjectNumber(projectNumber: string): string {
   if (!projectNumber) return ''
-  // Remove leading digit (1-9) if present
-  let core = projectNumber.replace(/^[1-9]/, '')
-  // Remove suffix after hyphen (-01, -02, etc.)
+  // Normalize: trim whitespace and uppercase for consistent matching
+  let core = projectNumber.trim().toUpperCase()
+  // Remove leading digit (0-9) if present (support type indicator)
+  core = core.replace(/^[0-9]/, '')
+  // Remove suffix after hyphen (-01, -02, etc.) - budget period indicator
   core = core.replace(/-\d+$/, '')
+  // Also handle alternative suffix formats like -S1, -A1
+  core = core.replace(/-[A-Z]\d+$/, '')
   return core
 }
 

@@ -138,6 +138,10 @@ interface ResultsPanelProps {
   }
   // Navigate to project detail (saves state first)
   onProjectClick?: (applicationId: string) => void
+  // Navigate to org detail (saves state first)
+  onOrgClick?: (orgName: string) => void
+  // Navigate to researcher detail (saves state first)
+  onResearcherClick?: (researcherName: string) => void
   // Mobile-specific styling
   isMobile?: boolean
   // Trial status filters
@@ -160,7 +164,7 @@ interface ResultsPanelProps {
   currentFilters?: FilterState
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {} }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {} }: ResultsPanelProps) {
   const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
   // Count active filters for collapsed state display
@@ -352,7 +356,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-1`}>
                       {project.org_name ? (
                         <button
-                          onClick={() => navigateToOrg(project.org_name!)}
+                          onClick={() => onOrgClick?.(project.org_name!)}
                           className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words hover:text-[#E07A5F] transition-colors text-left"
                         >
                           {project.org_name}
@@ -370,7 +374,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     </div>
                     {project.pi_names && (
                       <button
-                        onClick={() => navigateToResearcher(project.pi_names!.split(';')[0]?.trim() || '')}
+                        onClick={() => onResearcherClick?.(project.pi_names!.split(';')[0]?.trim() || '')}
                         className="text-sm text-gray-700 mt-1 block hover:text-[#E07A5F] transition-colors text-left"
                       >
                         {project.pi_names.split(';')[0]?.trim()}
@@ -621,7 +625,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-1`}>
                       {project.org_name ? (
                         <button
-                          onClick={() => navigateToOrg(project.org_name!)}
+                          onClick={() => onOrgClick?.(project.org_name!)}
                           className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words hover:text-[#E07A5F] transition-colors text-left"
                         >
                           {project.org_name}
@@ -639,7 +643,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     </div>
                     {project.pi_names && (
                       <button
-                        onClick={() => navigateToResearcher(project.pi_names!.split(';')[0]?.trim() || '')}
+                        onClick={() => onResearcherClick?.(project.pi_names!.split(';')[0]?.trim() || '')}
                         className="text-sm text-gray-700 mt-1 block hover:text-[#E07A5F] transition-colors text-left"
                       >
                         {project.pi_names.split(';')[0]?.trim()}
@@ -1954,6 +1958,8 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                   crossFilteredByOrgType={crossFilteredByOrgType}
                   quickFilterCounts={quickFilterCounts}
                   onProjectClick={navigateToProject}
+                  onOrgClick={navigateToOrg}
+                  onResearcherClick={navigateToResearcher}
                   onTrialClick={navigateToTrial}
                   isMobile={true}
                   trialStatusFilters={trialStatusFilters}
@@ -2073,6 +2079,8 @@ export function Chat({ persona, initialQuery }: ChatProps) {
               crossFilteredByOrgType={crossFilteredByOrgType}
               quickFilterCounts={quickFilterCounts}
               onProjectClick={navigateToProject}
+              onOrgClick={navigateToOrg}
+              onResearcherClick={navigateToResearcher}
               onTrialClick={navigateToTrial}
               trialStatusFilters={trialStatusFilters}
               onTrialStatusChange={setTrialStatusFilters}
