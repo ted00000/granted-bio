@@ -104,6 +104,9 @@ export function GenerateReportDialog({
         <div className="px-6 py-4">
           {step === 'input' && (
             <>
+              <p className="text-sm text-gray-600 mb-4">
+                Create comprehensive topic-focused intelligence reports synthesizing research activity, funding, clinical trials, patents, and publications.
+              </p>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Research Topic
               </label>
@@ -117,10 +120,6 @@ export function GenerateReportDialog({
                   if (e.key === 'Enter') checkTopic()
                 }}
               />
-              <p className="mt-2 text-xs text-gray-500">
-                Enter a research topic to generate a comprehensive landscape report
-                including funding data, clinical trials, patents, and publications.
-              </p>
               {error && (
                 <p className="mt-2 text-sm text-rose-600">{error}</p>
               )}

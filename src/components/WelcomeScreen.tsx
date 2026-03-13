@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, KeyboardEvent } from 'react'
-import { Beaker, Activity, Users, FileText, Lock, ChevronDown, ChevronUp } from 'lucide-react'
+import { Beaker, Activity, Users, ChevronDown, ChevronUp } from 'lucide-react'
 import type { PersonaType } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
@@ -162,7 +162,7 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens }: Welcom
             </div>
 
             {/* Mobile: Collapsible search tips */}
-            <div className="lg:hidden mb-8">
+            <div className="lg:hidden">
               <button
                 onClick={() => setShowTips(!showTips)}
                 className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors mx-auto"
@@ -188,35 +188,6 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens }: Welcom
                   </div>
                 </div>
               )}
-            </div>
-
-            {/* Intelligence Reports - Premium */}
-            <div>
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Analyze</p>
-              <button
-                onClick={() => onSelectPersona('investor')}
-                className="group w-full p-5 bg-gradient-to-r from-gray-50 to-white rounded-xl border border-gray-200 hover:border-[#E07A5F] hover:shadow-lg transition-all text-left relative"
-              >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="text-gray-400 group-hover:text-[#E07A5F] transition-colors">
-                        <FileText className="w-6 h-6" strokeWidth={1.5} />
-                      </div>
-                      <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
-                        <Lock className="w-3 h-3" />
-                        Premium
-                      </span>
-                    </div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-1">
-                      Intelligence Reports
-                    </h3>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Create comprehensive topic-focused intelligence reports synthesizing research activity, funding, clinical trials, patents, and publications
-                    </p>
-                  </div>
-                </div>
-              </button>
             </div>
           </div>
 
