@@ -76,7 +76,7 @@ export default function MyTrialsPage() {
                 Save clinical trials while browsing to track ones you're interested in.
               </p>
               <Link
-                href="/chat?persona=trials"
+                href="/chat?lens=trials"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg hover:bg-[#C96A4F] transition-colors"
               >
                 Search Trials

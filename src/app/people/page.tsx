@@ -86,7 +86,7 @@ export default function MyPeoplePage() {
                 Save researchers and organizations while browsing to track them.
               </p>
               <Link
-                href="/chat?persona=bd"
+                href="/chat?lens=bd"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg hover:bg-[#C96A4F] transition-colors"
               >
                 Search People

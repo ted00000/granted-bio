@@ -7,6 +7,7 @@ import type { PersonaType } from '@/lib/chat/types'
 interface WelcomeScreenProps {
   onSelectPersona: (persona: PersonaType, initialQuery?: string) => void
   userName?: string | null
+  initialLens?: PersonaType
 }
 
 // Lens configuration - horizontal pills below search
@@ -61,8 +62,8 @@ const SEARCH_TIPS: Record<PersonaType, {
   }
 }
 
-export function WelcomeScreen({ onSelectPersona, userName }: WelcomeScreenProps) {
-  const [selectedLens, setSelectedLens] = useState<PersonaType>('researcher')
+export function WelcomeScreen({ onSelectPersona, userName, initialLens }: WelcomeScreenProps) {
+  const [selectedLens, setSelectedLens] = useState<PersonaType>(initialLens || 'researcher')
   const [searchInput, setSearchInput] = useState('')
   const [showTips, setShowTips] = useState(false)
   const inputRef = useRef<HTMLTextAreaElement>(null)

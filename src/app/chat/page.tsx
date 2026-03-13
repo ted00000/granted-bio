@@ -19,9 +19,13 @@ function ChatContent() {
 
   const personaParam = searchParams.get('persona')
   const queryParam = searchParams.get('q')
+  const lensParam = searchParams.get('lens')
   const selectedPersona = VALID_PERSONAS.includes(personaParam as PersonaType)
     ? (personaParam as PersonaType)
     : null
+  const initialLens = VALID_PERSONAS.includes(lensParam as PersonaType)
+    ? (lensParam as PersonaType)
+    : undefined
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -63,7 +67,7 @@ function ChatContent() {
           <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
         </div>
       ) : (
-        <WelcomeScreen onSelectPersona={handlePersonaChange} userName={userName} />
+        <WelcomeScreen onSelectPersona={handlePersonaChange} userName={userName} initialLens={initialLens} />
       )}
     </AppLayout>
   )
