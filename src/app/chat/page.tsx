@@ -20,9 +20,19 @@ function ChatContent() {
   const personaParam = searchParams.get('persona')
   const queryParam = searchParams.get('q')
   const lensParam = searchParams.get('lens')
-  const selectedPersona = VALID_PERSONAS.includes(personaParam as PersonaType)
-    ? (personaParam as PersonaType)
-    : null
+  const piParam = searchParams.get('pi')
+  const orgParam = searchParams.get('org')
+
+  // If pi or org param is provided, automatically use 'bd' persona with that as the query
+  const hasPeopleSearch = piParam || orgParam
+  const selectedPersona = hasPeopleSearch
+    ? 'bd'
+    : VALID_PERSONAS.includes(personaParam as PersonaType)
+      ? (personaParam as PersonaType)
+      : null
+  const initialQuery = hasPeopleSearch
+    ? (piParam || orgParam || undefined)
+    : (queryParam || undefined)
   const initialLens = VALID_PERSONAS.includes(lensParam as PersonaType)
     ? (lensParam as PersonaType)
     : undefined
@@ -61,7 +71,7 @@ function ChatContent() {
       userName={userName}
     >
       {selectedPersona ? (
-        <Chat persona={selectedPersona} initialQuery={queryParam || undefined} />
+        <Chat persona={selectedPersona} initialQuery={initialQuery} />
       ) : isLoading ? (
         <div className="h-full flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
