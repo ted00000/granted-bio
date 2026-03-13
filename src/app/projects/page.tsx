@@ -91,10 +91,10 @@ export default function MyProjectsPage() {
                 Save projects while browsing to keep track of interesting research.
               </p>
               <Link
-                href="/chat"
+                href="/chat?persona=researcher"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg hover:bg-[#C96A4F] transition-colors"
               >
-                Start Searching
+                Search Projects
               </Link>
             </div>
           ) : (
