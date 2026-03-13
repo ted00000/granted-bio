@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Search, TrendingUp, Users, Activity, Bookmark, Download, FileText, RefreshCw } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark, Download, RefreshCw } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
@@ -1614,16 +1614,6 @@ export function Chat({ persona, initialQuery }: ChatProps) {
     if (!isLoading) sendMessage(choice, messages)
   }
 
-  const handleNewSearch = () => {
-    setMessages([])
-    setToolResults([])
-    setSearchContext(null)
-    setFilteredResults(null)
-    setCurrentFilters({})
-    setInput('')
-    inputRef.current?.focus()
-  }
-
   const isLastAssistantMessage = (messageId: string) => {
     const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant')
     return lastAssistant?.id === messageId
@@ -1950,19 +1940,12 @@ export function Chat({ persona, initialQuery }: ChatProps) {
           {toolResults.length > 0 ? (
             /* Action buttons when results exist */
             <div className="flex items-center justify-center gap-3">
-              <button
-                onClick={handleNewSearch}
+              <Link
+                href="/chat"
                 className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors"
               >
                 <RefreshCw className="w-4 h-4" />
                 New Search
-              </button>
-              <Link
-                href={`/reports?topic=${encodeURIComponent(searchContext?.keywordQuery || searchContext?.semanticQuery || '')}`}
-                className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors"
-              >
-                <FileText className="w-4 h-4" />
-                Generate Report
               </Link>
               <button
                 onClick={() => {
