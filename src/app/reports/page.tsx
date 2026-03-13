@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { FileText, Trash2, Plus, AlertCircle, Loader2, CheckCircle } from 'lucide-react'
+import { AppLayout } from '@/components/AppLayout'
 import { GenerateReportDialog } from './GenerateReportDialog'
 
 interface Report {
@@ -102,25 +103,9 @@ export default function ReportsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-xl font-semibold text-gray-900">
-              granted<span className="text-[#E07A5F]">.bio</span>
-            </Link>
-            <Link
-              href="/chat"
-              className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium"
-            >
-              ← Back to Search
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-4xl mx-auto px-4 py-8 sm:px-6">
+    <AppLayout>
+      <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+        <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
             <FileText className="w-6 h-6 text-[#E07A5F]" strokeWidth={1.5} />
@@ -217,14 +202,15 @@ export default function ReportsPage() {
             ))}
           </div>
         )}
-      </main>
 
-      {showGenerateDialog && (
-        <GenerateReportDialog
-          onClose={() => setShowGenerateDialog(false)}
-          onGenerated={handleReportGenerated}
-        />
-      )}
-    </div>
+        {showGenerateDialog && (
+          <GenerateReportDialog
+            onClose={() => setShowGenerateDialog(false)}
+            onGenerated={handleReportGenerated}
+          />
+        )}
+        </div>
+      </div>
+    </AppLayout>
   )
 }
