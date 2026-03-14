@@ -1931,7 +1931,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                             px-3 py-1.5 text-xs rounded-full border transition-all
                             ${isActive
                               ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
-                              : 'bg-white text-[#E07A5F] border-[#E07A5F] hover:bg-[#E07A5F]/10'
+                              : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
                             }
                           `}
                         >
