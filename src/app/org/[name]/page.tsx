@@ -336,7 +336,7 @@ export default function OrgPage() {
 
         {/* Projects List */}
         <div className="bg-white rounded-lg shadow-sm">
-          <div className="px-6 py-4 border-b border-gray-100">
+          <div className="sticky top-0 z-10 bg-white px-6 py-4 border-b border-gray-100 rounded-t-lg">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-900">Projects</h2>
               <span className="text-sm text-gray-500">
