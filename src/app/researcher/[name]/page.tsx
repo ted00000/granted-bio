@@ -214,7 +214,7 @@ export default function ResearcherPage() {
     return (
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
-          <div className="max-w-5xl mx-auto px-3 py-6 sm:px-4 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
+          <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 mb-8">
               <ChevronLeft className="w-4 h-4" />
               Back
@@ -233,7 +233,7 @@ export default function ResearcherPage() {
   return (
     <AppLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
-        <div className="max-w-5xl mx-auto px-3 py-6 sm:px-4 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
+        <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
           {/* Back button and bookmark */}
           <div className="flex items-center justify-between mb-6">
             <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1">
