@@ -346,7 +346,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           <div className={isMobile ? 'p-4' : 'p-6'}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
-                {persona === 'bd' ? 'Contacts' : 'Most Relevant'}
+                {persona === 'bd' ? 'People Results by Relevancy' : persona === 'trials' ? 'Trial Results by Relevancy' : 'Project Results by Relevancy'}
               </h3>
               <button
                 onClick={() => exportToCSV(data.all_results)}
@@ -626,7 +626,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           <div className={isMobile ? 'p-4' : 'p-6'}>
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
-                {persona === 'bd' ? 'Contacts' : 'Most Relevant'}
+                {persona === 'bd' ? 'People Results by Relevancy' : persona === 'trials' ? 'Trial Results by Relevancy' : 'Project Results by Relevancy'}
               </h3>
               <button
                 onClick={() => exportToCSV(data.all_results)}
