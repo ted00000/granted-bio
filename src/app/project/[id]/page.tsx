@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Bookmark } from 'lucide-react'
+import { Bookmark, ChevronLeft } from 'lucide-react'
+import { AppLayout } from '@/components/AppLayout'
 
 interface Project {
   id: string
@@ -87,6 +88,7 @@ function getSbirSttrStatus(activityCode: string | null): { isSbir: boolean; isSt
 
 export default function ProjectPage() {
   const params = useParams()
+  const router = useRouter()
   const id = params.id as string
 
   const [data, setData] = useState<ProjectData | null>(null)
@@ -170,26 +172,33 @@ export default function ProjectPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-          <span className="text-sm text-gray-400">Loading project...</span>
+      <AppLayout>
+        <div className="h-full flex items-center justify-center bg-[#FAFAF9]">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+            <span className="text-sm text-gray-400">Loading project...</span>
+          </div>
         </div>
-      </div>
+      </AppLayout>
     )
   }
 
   if (error || !data) {
     return (
-      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Project Not Found</h1>
-          <p className="text-gray-500 mb-4">{error}</p>
-          <Link href={returnUrl} className="text-[#E07A5F] hover:underline">
-            Back to Search
-          </Link>
+      <AppLayout>
+        <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+          <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-8">
+            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 mb-8">
+              <ChevronLeft className="w-4 h-4" />
+              Back
+            </button>
+            <div className="text-center py-8">
+              <h1 className="text-2xl font-bold text-gray-900 mb-2">Project Not Found</h1>
+              <p className="text-gray-500">{error}</p>
+            </div>
+          </div>
         </div>
-      </div>
+      </AppLayout>
     )
   }
 
@@ -214,40 +223,32 @@ export default function ProjectPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9] overflow-x-hidden">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-xl font-semibold text-gray-900">
-              granted<span className="text-[#E07A5F]">.bio</span>
-            </Link>
-            <div className="flex items-center gap-4">
-              <button
-                onClick={toggleSave}
-                disabled={savingProject}
-                className={`p-2 rounded-lg transition-colors ${
-                  isSaved
-                    ? 'text-[#E07A5F] bg-[#E07A5F]/10'
-                    : 'text-gray-400 hover:text-[#E07A5F] hover:bg-gray-100'
-                }`}
-                title={isSaved ? 'Remove from saved' : 'Save project'}
-              >
-                <Bookmark
-                  className="w-5 h-5"
-                  fill={isSaved ? 'currentColor' : 'none'}
-                  strokeWidth={1.5}
-                />
-              </button>
-              <Link href={returnUrl} className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium">
-                ← Back
-              </Link>
-            </div>
+    <AppLayout>
+      <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+        <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-8">
+          {/* Back button and bookmark */}
+          <div className="flex items-center justify-between mb-6">
+            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1">
+              <ChevronLeft className="w-4 h-4" />
+              Back
+            </button>
+            <button
+              onClick={toggleSave}
+              disabled={savingProject}
+              className={`p-2 rounded-lg transition-colors ${
+                isSaved
+                  ? 'text-[#E07A5F] bg-[#E07A5F]/10'
+                  : 'text-gray-400 hover:text-[#E07A5F] hover:bg-gray-100'
+              }`}
+              title={isSaved ? 'Remove from saved' : 'Save project'}
+            >
+              <Bookmark
+                className="w-5 h-5"
+                fill={isSaved ? 'currentColor' : 'none'}
+                strokeWidth={1.5}
+              />
+            </button>
           </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 pt-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))] sm:px-6 lg:px-8 lg:py-8">
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Main Content */}
           <div className="flex-1 min-w-0">
@@ -526,7 +527,8 @@ export default function ProjectPage() {
             </div>
           </div>
         </div>
-      </main>
-    </div>
+        </div>
+      </div>
+    </AppLayout>
   )
 }
