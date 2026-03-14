@@ -1876,6 +1876,12 @@ export function Chat({ persona, initialQuery }: ChatProps) {
             {/* Left column - Search context, stats, filters */}
             <div className="w-80 lg:w-96 flex-shrink-0 border-r border-gray-100 overflow-y-auto bg-[#FAFAF9]">
               <div className="p-5 space-y-4">
+                {/* User query */}
+                <div className="flex items-start gap-2">
+                  <Search className="w-4 h-4 text-[#E07A5F] flex-shrink-0 mt-0.5" />
+                  <span className="text-sm font-medium text-gray-900">{userQuery}</span>
+                </div>
+
                 {/* Stats section with match quality */}
                 {toolResults.length > 0 && searchContext ? (
                   <div className="pb-4 border-b border-gray-200">
