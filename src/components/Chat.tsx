@@ -1259,6 +1259,8 @@ export function Chat({ persona, initialQuery }: ChatProps) {
       setTrialStatusFilters([])
       setRestoredFromStorage(false)
       setShowMobileResults(true)
+      // Reset initialQueryProcessed so auto-submit will re-trigger with new persona
+      setInitialQueryProcessed(false)
       // Clear sessionStorage to prevent stale state restoration
       sessionStorage.removeItem('searchState')
     }
