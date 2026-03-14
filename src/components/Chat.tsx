@@ -839,20 +839,23 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
 
     return (
       <div className={`overflow-y-auto ${isMobile ? '' : 'h-full'}`}>
-        <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
-          <div className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-semibold tracking-tight text-gray-900`}>{actualCount.toLocaleString()}</div>
-          <div className="text-sm text-gray-400 mt-1">
-            clinical trials found{isCapped && ` · ${data.total_count.toLocaleString()} total matches`}
-          </div>
-          {data.search_query && (
-            <div className="text-xs text-gray-400 mt-2 truncate" title={data.search_query}>
-              Searched: {data.search_query}
+        {/* Stats section - hidden when displayed in left column */}
+        {!hideStatsAndFilters && (
+          <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
+            <div className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-semibold tracking-tight text-gray-900`}>{actualCount.toLocaleString()}</div>
+            <div className="text-sm text-gray-400 mt-1">
+              clinical trials found{isCapped && ` · ${data.total_count.toLocaleString()} total matches`}
             </div>
-          )}
-        </div>
+            {data.search_query && (
+              <div className="text-xs text-gray-400 mt-2 truncate" title={data.search_query}>
+                Searched: {data.search_query}
+              </div>
+            )}
+          </div>
+        )}
 
-        {/* Status breakdown - clickable filters */}
-        {(() => {
+        {/* Status breakdown - clickable filters (hidden when displayed in left column) */}
+        {!hideStatsAndFilters && (() => {
           // Compute counts from all_results to match what's actually available
           const statusCounts: Record<string, number> = {}
           data.all_results.forEach(t => {
@@ -1970,19 +1973,94 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                   </div>
                 ) : null}
 
-                {/* Filter chips */}
+                {/* Filter chips - different for trials vs projects */}
                 {toolResults.length > 0 && searchContext && searchContext.originalResults.all_results?.length > 0 && (
-                  <FilterChips
-                    byCategory={searchContext.originalResults.by_category || {}}
-                    byOrgType={searchContext.originalResults.by_org_type || {}}
-                    filteredByCategory={crossFilteredByCategory}
-                    filteredByOrgType={crossFilteredByOrgType}
-                    quickFilterCounts={quickFilterCounts}
-                    keywordQuery={searchContext.keywordQuery}
-                    semanticQuery={searchContext.semanticQuery}
-                    onFilterChange={handleFilterChange}
-                    isLoading={false}
-                  />
+                  persona === 'trials' ? (
+                    // Trial status filters
+                    (() => {
+                      const byStatus = searchContext.originalResults.by_status || {}
+                      const byType = searchContext.originalResults.by_type || {}
+                      const sortedStatuses = Object.entries(byStatus).sort(([, a], [, b]) => (b as number) - (a as number))
+                      const hasActiveFilters = trialStatusFilters.length > 0
+
+                      if (sortedStatuses.length === 0) return null
+
+                      return (
+                        <div className="space-y-4">
+                          {/* Header with clear button */}
+                          <div className="flex items-center justify-between">
+                            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
+                              Filter Results
+                            </h3>
+                            {hasActiveFilters && (
+                              <button
+                                onClick={() => setTrialStatusFilters([])}
+                                className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
+                              >
+                                Clear filters
+                              </button>
+                            )}
+                          </div>
+
+                          {/* Trial status chips */}
+                          <div>
+                            <h4 className="text-xs text-gray-500 mb-2">Trial Status</h4>
+                            <div className="flex flex-wrap gap-2">
+                              {sortedStatuses.slice(0, 8).map(([status, count]) => {
+                                const isSelected = trialStatusFilters.includes(status)
+                                return (
+                                  <button
+                                    key={status}
+                                    onClick={() => {
+                                      if (isSelected) {
+                                        setTrialStatusFilters(trialStatusFilters.filter(s => s !== status))
+                                      } else {
+                                        setTrialStatusFilters([...trialStatusFilters, status])
+                                      }
+                                    }}
+                                    className={`
+                                      px-3 py-1.5 text-xs rounded-full border transition-all
+                                      ${isSelected
+                                        ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
+                                        : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
+                                      }
+                                    `}
+                                  >
+                                    <span className="capitalize">{status.replace(/_/g, ' ')}</span>
+                                    <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                                      {(count as number).toLocaleString()}
+                                    </span>
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          </div>
+
+                          {/* Trial type summary */}
+                          {(byType.therapeutic || byType.diagnostic) && (
+                            <div className="text-xs text-gray-500 pt-2 border-t border-gray-100">
+                              {byType.therapeutic ? `${byType.therapeutic} therapeutic` : ''}
+                              {byType.therapeutic && byType.diagnostic ? ' · ' : ''}
+                              {byType.diagnostic ? `${byType.diagnostic} diagnostic` : ''}
+                            </div>
+                          )}
+                        </div>
+                      )
+                    })()
+                  ) : (
+                    // Project/People filters
+                    <FilterChips
+                      byCategory={searchContext.originalResults.by_category || {}}
+                      byOrgType={searchContext.originalResults.by_org_type || {}}
+                      filteredByCategory={crossFilteredByCategory}
+                      filteredByOrgType={crossFilteredByOrgType}
+                      quickFilterCounts={quickFilterCounts}
+                      keywordQuery={searchContext.keywordQuery}
+                      semanticQuery={searchContext.semanticQuery}
+                      onFilterChange={handleFilterChange}
+                      isLoading={false}
+                    />
+                  )
                 )}
               </div>
             </div>
