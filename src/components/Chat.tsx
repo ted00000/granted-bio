@@ -927,7 +927,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           return filteredTrials.length > 0 && (
             <div className={isMobile ? 'p-4' : 'p-6'}>
               <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">
-                {(trialStatusFilters.length > 0 || trialTypeFilter) ? `${displayCount} Filtered Trials` : 'Top Trials'}
+                {(trialStatusFilters.length > 0 || trialTypeFilter) ? `${displayCount} Filtered Trials` : 'Trial Results by Relevancy'}
               </h3>
               <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
                 {filteredTrials.slice(0, isMobile ? 30 : 50).map((trial) => {
