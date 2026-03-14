@@ -161,9 +161,11 @@ interface ResultsPanelProps {
   stickyFilters?: boolean
   // Current filter state for showing active count
   currentFilters?: FilterState
+  // Hide stats and filters (for two-column layout where filters are in sidebar)
+  hideStatsAndFilters?: boolean
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {} }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {}, hideStatsAndFilters = false }: ResultsPanelProps) {
   const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
   // Count active filters for collapsed state display
@@ -240,6 +242,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
 
     return (
       <div className={`overflow-y-auto ${isMobile ? '' : 'h-full'}`}>
+        {/* Stats section - hidden in two-column mode */}
+        {!hideStatsAndFilters && (
         <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
           <div className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-semibold tracking-tight text-gray-900`}>{data.total_count.toLocaleString()}</div>
           <div className="text-sm text-gray-400 mt-1">
@@ -287,9 +291,10 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             </div>
           )}
         </div>
+        )}
 
-        {/* Filter Chips - sticky and collapsible on desktop */}
-        {searchContext && data.all_results?.length > 0 && (
+        {/* Filter Chips - sticky and collapsible on desktop - hidden in two-column mode */}
+        {!hideStatsAndFilters && searchContext && data.all_results?.length > 0 && (
           <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
             {stickyFilters && (
               <div className="flex items-center justify-between mb-2">
@@ -517,6 +522,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
 
     return (
       <div className={`overflow-y-auto ${isMobile ? '' : 'h-full'}`}>
+        {/* Stats section - hidden in two-column mode */}
+        {!hideStatsAndFilters && (
         <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
           <div className={`${isMobile ? 'text-3xl' : 'text-4xl'} font-semibold tracking-tight text-gray-900`}>{data.total_count.toLocaleString()}</div>
           <div className="text-sm text-gray-400 mt-1">
@@ -564,9 +571,10 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             </div>
           )}
         </div>
+        )}
 
-        {/* Filter Chips - sticky and collapsible on desktop */}
-        {searchContext && data.all_results?.length > 0 && (
+        {/* Filter Chips - sticky and collapsible on desktop - hidden in two-column mode */}
+        {!hideStatsAndFilters && searchContext && data.all_results?.length > 0 && (
           <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
             {stickyFilters && (
               <div className="flex items-center justify-between mb-2">
@@ -1861,101 +1869,134 @@ export function Chat({ persona, initialQuery }: ChatProps) {
         </div>
       ) : (
         <>
-          {/* Search Context Header - compact summary */}
-          <div className="flex-shrink-0 border-b border-gray-100 bg-[#FAFAF9]">
-            <div className="max-w-5xl mx-auto px-4 lg:px-6 py-4">
-              {/* Query row */}
-              <div className="mb-3">
-                <div className="flex items-center gap-2 mb-1">
-                  <Search className="w-4 h-4 text-[#E07A5F] flex-shrink-0" />
-                  <span className="text-sm font-medium text-gray-900 truncate">{userQuery}</span>
+          {/* Two-column layout: Left (filters) + Right (results) */}
+          <div className="flex-1 flex overflow-hidden" ref={messagesContainerRef}>
+            <div ref={messagesEndRef} />
+
+            {/* Left column - Search context, stats, filters */}
+            <div className="w-80 lg:w-96 flex-shrink-0 border-r border-gray-100 overflow-y-auto bg-[#FAFAF9]">
+              <div className="p-5 space-y-5">
+                {/* Search query and summary */}
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                    <Search className="w-4 h-4 text-[#E07A5F] flex-shrink-0" />
+                    <span className="text-sm font-medium text-gray-900">{userQuery}</span>
+                  </div>
+                  {lastAssistantMsg && !isLoading && (
+                    <p className="text-sm text-gray-500 leading-relaxed">
+                      {lastAssistantMsg.content}
+                    </p>
+                  )}
+                  {isLoading && (
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+                      <span>Searching...</span>
+                    </div>
+                  )}
                 </div>
-                {lastAssistantMsg && !isLoading && (
-                  <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
-                    {lastAssistantMsg.content}
-                  </p>
-                )}
-                {isLoading && (
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
-                    <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-                    <span>Searching...</span>
+
+                {/* Stats section */}
+                {toolResults.length > 0 && searchContext && (
+                  <div className="pb-4 border-b border-gray-200">
+                    <div className="text-3xl font-semibold tracking-tight text-gray-900">
+                      {(filteredResults || searchContext.originalResults).total_count.toLocaleString()}
+                    </div>
+                    <div className="text-sm text-gray-400 mt-1">
+                      {persona === 'trials' ? 'trials' : 'projects'} found
+                      {filteredResults && ' (filtered)'}
+                    </div>
                   </div>
                 )}
-              </div>
 
-              {/* Match quality chips - inline with header */}
-              {toolResults.length > 0 && searchContext && (
-                <div className="flex items-center gap-3">
-                  <span className="text-xs text-gray-400">Match quality</span>
-                  <div className="flex gap-1.5">
-                    {[
-                      { level: 'low' as const, label: 'Broad', count: precisionCounts?.low },
-                      { level: 'med' as const, label: 'Balanced', count: precisionCounts?.med },
-                      { level: 'high' as const, label: 'Precise', count: precisionCounts?.high },
-                    ].map(({ level, label, count }) => {
-                      const isSelected = precision === level
-                      return (
-                        <button
-                          key={level}
-                          onClick={() => setPrecision(level)}
-                          className={`
-                            px-2.5 py-1 text-xs rounded-full border transition-all
-                            ${isSelected
-                              ? 'bg-indigo-500 text-white border-indigo-500'
-                              : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
-                            }
-                          `}
-                        >
-                          {label}
-                          {count !== undefined && (
-                            <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                              {count}
-                            </span>
-                          )}
-                        </button>
-                      )
-                    })}
+                {/* Match quality chips */}
+                {toolResults.length > 0 && searchContext && (
+                  <div>
+                    <h4 className="text-xs text-gray-500 mb-2">Match Quality</h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {[
+                        { level: 'low' as const, label: 'Broad', count: precisionCounts?.low },
+                        { level: 'med' as const, label: 'Balanced', count: precisionCounts?.med },
+                        { level: 'high' as const, label: 'Precise', count: precisionCounts?.high },
+                      ].map(({ level, label, count }) => {
+                        const isSelected = precision === level
+                        return (
+                          <button
+                            key={level}
+                            onClick={() => setPrecision(level)}
+                            className={`
+                              px-2.5 py-1 text-xs rounded-full border transition-all
+                              ${isSelected
+                                ? 'bg-indigo-500 text-white border-indigo-500'
+                                : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
+                              }
+                            `}
+                          >
+                            {label}
+                            {count !== undefined && (
+                              <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                                {count}
+                              </span>
+                            )}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Filter chips */}
+                {toolResults.length > 0 && searchContext && searchContext.originalResults.all_results?.length > 0 && (
+                  <FilterChips
+                    byCategory={searchContext.originalResults.by_category || {}}
+                    byOrgType={searchContext.originalResults.by_org_type || {}}
+                    filteredByCategory={crossFilteredByCategory}
+                    filteredByOrgType={crossFilteredByOrgType}
+                    quickFilterCounts={quickFilterCounts}
+                    keywordQuery={searchContext.keywordQuery}
+                    semanticQuery={searchContext.semanticQuery}
+                    onFilterChange={handleFilterChange}
+                    isLoading={false}
+                  />
+                )}
+              </div>
+            </div>
+
+            {/* Right column - Results only */}
+            <div className="flex-1 overflow-hidden">
+              {toolResults.length > 0 && showMobileResults ? (
+                <ResultsPanel
+                  results={toolResults}
+                  searchContext={searchContext}
+                  filteredResults={filteredResults}
+                  onFilterChange={handleFilterChange}
+                  crossFilteredByCategory={crossFilteredByCategory}
+                  crossFilteredByOrgType={crossFilteredByOrgType}
+                  quickFilterCounts={quickFilterCounts}
+                  onProjectClick={navigateToProject}
+                  onOrgClick={navigateToOrg}
+                  onResearcherClick={navigateToResearcher}
+                  onTrialClick={navigateToTrial}
+                  trialStatusFilters={trialStatusFilters}
+                  onTrialStatusChange={setTrialStatusFilters}
+                  savedTrialIds={savedTrialIds}
+                  onSaveTrial={handleSaveTrial}
+                  persona={persona}
+                  precision={precision}
+                  onPrecisionChange={setPrecision}
+                  precisionCounts={precisionCounts}
+                  stickyFilters={false}
+                  currentFilters={currentFilters}
+                  hideStatsAndFilters={true}
+                />
+              ) : (
+                <div className="h-full flex items-center justify-center">
+                  <div className="text-center text-gray-400">
+                    <IconComponent className="w-12 h-12 mx-auto mb-3 opacity-30" strokeWidth={1} />
+                    <p className="text-sm">Results will appear here</p>
                   </div>
                 </div>
               )}
             </div>
-          </div>
-
-          {/* Results Panel - main scrolling content */}
-          <div className="flex-1 overflow-hidden" ref={messagesContainerRef}>
-            <div ref={messagesEndRef} />
-            {toolResults.length > 0 && showMobileResults ? (
-              <ResultsPanel
-                results={toolResults}
-                searchContext={searchContext}
-                filteredResults={filteredResults}
-                onFilterChange={handleFilterChange}
-                crossFilteredByCategory={crossFilteredByCategory}
-                crossFilteredByOrgType={crossFilteredByOrgType}
-                quickFilterCounts={quickFilterCounts}
-                onProjectClick={navigateToProject}
-                onOrgClick={navigateToOrg}
-                onResearcherClick={navigateToResearcher}
-                onTrialClick={navigateToTrial}
-                trialStatusFilters={trialStatusFilters}
-                onTrialStatusChange={setTrialStatusFilters}
-                savedTrialIds={savedTrialIds}
-                onSaveTrial={handleSaveTrial}
-                persona={persona}
-                precision={precision}
-                onPrecisionChange={setPrecision}
-                precisionCounts={precisionCounts}
-                stickyFilters={true}
-                currentFilters={currentFilters}
-              />
-            ) : (
-              <div className="h-full flex items-center justify-center">
-                <div className="text-center text-gray-400">
-                  <IconComponent className="w-12 h-12 mx-auto mb-3 opacity-30" strokeWidth={1} />
-                  <p className="text-sm">Results will appear here</p>
-                </div>
-              </div>
-            )}
           </div>
         </>
       )}
