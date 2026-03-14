@@ -370,19 +370,29 @@ export default function OrgPage() {
             </form>
 
             {/* Filter Header */}
-            <div className="flex items-center gap-2 mb-3">
-              <button
-                onClick={() => setFiltersCollapsed(!filtersCollapsed)}
-                className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
-              >
-                {filtersCollapsed ? 'Show' : 'Hide'}
-              </button>
-              <span className="text-gray-300">·</span>
-              <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
-              {filtersCollapsed && hasActiveFilters && (
-                <span className="text-xs text-gray-500">
-                  ({(selectedStatus ? 1 : 0) + (selectedCategory ? 1 : 0) + (selectedYear ? 1 : 0)} active)
-                </span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setFiltersCollapsed(!filtersCollapsed)}
+                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  {filtersCollapsed ? 'Show' : 'Hide'}
+                </button>
+                <span className="text-gray-300">·</span>
+                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+                {filtersCollapsed && hasActiveFilters && (
+                  <span className="text-xs text-gray-500">
+                    ({(selectedStatus ? 1 : 0) + (selectedCategory ? 1 : 0) + (selectedYear ? 1 : 0)} active)
+                  </span>
+                )}
+              </div>
+              {hasActiveFilters && (
+                <button
+                  onClick={clearFilters}
+                  className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
+                >
+                  Clear filters
+                </button>
               )}
             </div>
 
