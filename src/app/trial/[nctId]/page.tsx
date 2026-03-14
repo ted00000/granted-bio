@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, ChevronLeft } from 'lucide-react'
+import { AppLayout } from '@/components/AppLayout'
 
 interface TrialData {
   nct_id: string
@@ -67,6 +68,7 @@ function formatStatus(status: string | null): { label: string; color: string } {
 
 export default function TrialDetailPage() {
   const params = useParams()
+  const router = useRouter()
   const nctId = params.nctId as string
 
   const [trial, setTrial] = useState<TrialData | null>(null)
@@ -104,55 +106,48 @@ export default function TrialDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-          <span className="text-sm text-gray-400">Loading trial...</span>
+      <AppLayout>
+        <div className="h-full flex items-center justify-center bg-[#FAFAF9]">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+            <span className="text-sm text-gray-400">Loading trial...</span>
+          </div>
         </div>
-      </div>
+      </AppLayout>
     )
   }
 
   if (error || !trial) {
     return (
-      <div className="min-h-screen bg-[#FAFAF9]">
-        <header className="bg-white border-b border-gray-100">
-          <div className="max-w-4xl mx-auto px-4 py-4">
-            <Link href="/chat?persona=trials" className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1">
+      <AppLayout>
+        <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+          <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
+            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 mb-8">
               <ChevronLeft className="w-4 h-4" />
-              Back to Trials Search
-            </Link>
+              Back
+            </button>
+            <div className="text-center py-8">
+              <Activity className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Trial not found'}</h1>
+              <p className="text-gray-500">The clinical trial {nctId} could not be found.</p>
+            </div>
           </div>
-        </header>
-        <main className="max-w-4xl mx-auto px-4 py-16 text-center">
-          <Activity className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-          <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Trial not found'}</h1>
-          <p className="text-gray-500">The clinical trial {nctId} could not be found.</p>
-        </main>
-      </div>
+        </div>
+      </AppLayout>
     )
   }
 
   const status = formatStatus(trial.study_status)
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-xl font-semibold text-gray-900">
-              granted<span className="text-[#E07A5F]">.bio</span>
-            </Link>
-            <Link href="/chat?persona=trials" className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium flex items-center gap-1">
-              <ChevronLeft className="w-4 h-4" />
-              Back to Search
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-4xl mx-auto px-4 py-8">
+    <AppLayout>
+      <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+        <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
+          {/* Back button */}
+          <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm mb-6">
+            <ChevronLeft className="w-4 h-4" />
+            Back
+          </button>
         {/* Title Section */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-start justify-between gap-4 mb-4">
@@ -331,7 +326,8 @@ export default function TrialDetailPage() {
             Data last updated: {new Date(trial.api_last_updated).toLocaleDateString()}
           </p>
         )}
-      </main>
-    </div>
+        </div>
+      </div>
+    </AppLayout>
   )
 }
