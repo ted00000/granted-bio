@@ -341,16 +341,14 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
                 {persona === 'bd' ? 'Contacts' : 'Most Relevant'}
               </h3>
-              {persona === 'bd' && (
-                <button
-                  onClick={() => exportToCSV(data.all_results)}
-                  className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-500 hover:text-[#E07A5F] hover:bg-gray-50 rounded transition-colors"
-                  title="Export contacts to CSV"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  Export CSV
-                </button>
-              )}
+              <button
+                onClick={() => exportToCSV(data.all_results)}
+                className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-500 hover:text-[#E07A5F] hover:bg-gray-50 rounded transition-colors"
+                title="Export to CSV"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Export CSV
+              </button>
             </div>
             <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
@@ -620,16 +618,14 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
                 {persona === 'bd' ? 'Contacts' : 'Most Relevant'}
               </h3>
-              {persona === 'bd' && (
-                <button
-                  onClick={() => exportToCSV(data.all_results)}
-                  className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-500 hover:text-[#E07A5F] hover:bg-gray-50 rounded transition-colors"
-                  title="Export contacts to CSV"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  Export CSV
-                </button>
-              )}
+              <button
+                onClick={() => exportToCSV(data.all_results)}
+                className="flex items-center gap-1.5 px-2.5 py-1 text-xs text-gray-500 hover:text-[#E07A5F] hover:bg-gray-50 rounded transition-colors"
+                title="Export to CSV"
+              >
+                <Download className="w-3.5 h-3.5" />
+                Export CSV
+              </button>
             </div>
             <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
