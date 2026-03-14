@@ -1978,8 +1978,9 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                   persona === 'trials' ? (
                     // Trial status filters
                     (() => {
-                      const byStatus = searchContext.originalResults.by_status || {}
-                      const byType = searchContext.originalResults.by_type || {}
+                      const trialResults = searchContext.originalResults as unknown as TrialSearchResult
+                      const byStatus = trialResults.by_status || {}
+                      const byType = trialResults.by_type || {}
                       const sortedStatuses = Object.entries(byStatus).sort(([, a], [, b]) => (b as number) - (a as number))
                       const hasActiveFilters = trialStatusFilters.length > 0
 
