@@ -1998,11 +1998,30 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                 {/* Filter chips - different for trials vs projects */}
                 {toolResults.length > 0 && searchContext && searchContext.originalResults.all_results?.length > 0 && (
                   persona === 'trials' ? (
-                    // Trial status filters
+                    // Trial status filters - calculate counts from precision-filtered results
                     (() => {
                       const trialResults = searchContext.originalResults as unknown as TrialSearchResult
-                      const byStatus = trialResults.by_status || {}
-                      const byType = trialResults.by_type || {}
+                      const allTrials = trialResults.all_results || []
+
+                      // Apply precision filter to get the actual displayable set
+                      const percentile = PRECISION_PERCENTILES[precision]
+                      const sorted = [...allTrials].sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
+                      const precisionCount = Math.max(1, Math.ceil(sorted.length * percentile))
+                      const precisionFiltered = sorted.slice(0, precisionCount)
+
+                      // Calculate counts from precision-filtered results
+                      const byStatus: Record<string, number> = {}
+                      let therapeuticCount = 0
+                      let diagnosticCount = 0
+
+                      precisionFiltered.forEach(t => {
+                        const status = t.study_status || 'UNKNOWN'
+                        byStatus[status] = (byStatus[status] || 0) + 1
+                        if (t.is_therapeutic_trial) therapeuticCount++
+                        if (t.is_diagnostic_trial) diagnosticCount++
+                      })
+
+                      const byType = { therapeutic: therapeuticCount, diagnostic: diagnosticCount }
                       const sortedStatuses = Object.entries(byStatus).sort(([, a], [, b]) => (b as number) - (a as number))
                       const hasActiveFilters = trialStatusFilters.length > 0 || trialTypeFilter !== null
 

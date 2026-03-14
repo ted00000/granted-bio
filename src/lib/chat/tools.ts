@@ -1945,7 +1945,9 @@ export async function searchTrials(
       }
     }
 
-    // Aggregate by status and type
+    // Return ALL results (like projects) - no cap
+    // Client-side precision filtering will handle display limits
+    // Counts are calculated from full result set
     const byStatus: Record<string, number> = {}
     let therapeuticCount = 0
     let diagnosticCount = 0
@@ -1960,8 +1962,8 @@ export async function searchTrials(
       else otherCount++
     })
 
-    // Build result objects
-    const allResults: TrialResult[] = results.slice(0, effectiveLimit).map(t => ({
+    // Build result objects - return ALL results
+    const allResults: TrialResult[] = results.map(t => ({
       id: t.id,
       nct_id: t.nct_id,
       study_title: t.study_title,
