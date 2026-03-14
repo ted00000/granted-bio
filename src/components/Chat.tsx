@@ -1161,6 +1161,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
   const [currentFilters, setCurrentFilters] = useState<FilterState>({})
   const [trialStatusFilters, setTrialStatusFilters] = useState<string[]>([])
   const [trialTypeFilter, setTrialTypeFilter] = useState<'therapeutic' | 'diagnostic' | null>(null)
+  const [trialFiltersExpanded, setTrialFiltersExpanded] = useState(true)
   const [savedTrialIds, setSavedTrialIds] = useState<Set<string>>(new Set())
   const [precision, setPrecision] = useState<'low' | 'med' | 'high'>('low')
   const [restoredFromStorage, setRestoredFromStorage] = useState(false)
@@ -2027,13 +2028,29 @@ export function Chat({ persona, initialQuery }: ChatProps) {
 
                       if (sortedStatuses.length === 0 && !byType.therapeutic && !byType.diagnostic) return null
 
+                      const activeFilterCount = trialStatusFilters.length + (trialTypeFilter ? 1 : 0)
+
                       return (
                         <div className="space-y-4">
-                          {/* Header with clear button */}
+                          {/* Header with show/hide toggle and clear button */}
                           <div className="flex items-center justify-between">
-                            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
-                              Filter Results
-                            </h3>
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => setTrialFiltersExpanded(!trialFiltersExpanded)}
+                                className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                              >
+                                {trialFiltersExpanded ? 'Hide' : 'Show'}
+                              </button>
+                              <span className="text-gray-300">·</span>
+                              <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
+                                Filter Results
+                              </h3>
+                              {!trialFiltersExpanded && activeFilterCount > 0 && (
+                                <span className="text-xs text-gray-500">
+                                  ({activeFilterCount} active)
+                                </span>
+                              )}
+                            </div>
                             {hasActiveFilters && (
                               <button
                                 onClick={() => {
@@ -2047,6 +2064,9 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                             )}
                           </div>
 
+                          {/* Filter content - collapsible */}
+                          {trialFiltersExpanded && (
+                          <>
                           {/* Trial status chips */}
                           <div>
                             <h4 className="text-xs text-gray-500 mb-2">Trial Status</h4>
@@ -2112,6 +2132,8 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                                 })}
                               </div>
                             </div>
+                          )}
+                          </>
                           )}
                         </div>
                       )
