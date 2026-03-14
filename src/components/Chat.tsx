@@ -1882,6 +1882,38 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                   <span className="text-sm font-medium text-gray-900">{userQuery}</span>
                 </div>
 
+                {/* Persona switching chips - only show after results load */}
+                {toolResults.length > 0 && userQuery && (
+                  <div className="flex gap-1.5">
+                    {[
+                      { key: 'researcher' as const, label: 'Projects' },
+                      { key: 'bd' as const, label: 'People' },
+                      { key: 'trials' as const, label: 'Trials' },
+                    ].map(({ key, label }) => {
+                      const isActive = persona === key
+                      return (
+                        <button
+                          key={key}
+                          onClick={() => {
+                            if (!isActive) {
+                              router.push(`/chat?persona=${key}&q=${encodeURIComponent(userQuery)}`)
+                            }
+                          }}
+                          className={`
+                            px-3 py-1.5 text-xs rounded-full border transition-all
+                            ${isActive
+                              ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
+                              : 'bg-white text-[#E07A5F] border-[#E07A5F] hover:bg-[#E07A5F]/10'
+                            }
+                          `}
+                        >
+                          {label}
+                        </button>
+                      )
+                    })}
+                  </div>
+                )}
+
                 {/* Stats section with match quality */}
                 {toolResults.length > 0 && searchContext ? (
                   <div className="pb-4 border-b border-gray-200">
