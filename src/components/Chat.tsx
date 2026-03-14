@@ -2,8 +2,7 @@
 
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
-import { Search, TrendingUp, Users, Activity, Bookmark, Download, RefreshCw } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark, Download } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
@@ -1867,69 +1866,23 @@ export function Chat({ persona, initialQuery }: ChatProps) {
       ) : (
         <>
           {/* Search Context Header - compact summary at top */}
-          <div className="flex-shrink-0 border-b border-gray-100 bg-[#FAFAF9]">
-            <div className="max-w-5xl mx-auto px-4 lg:px-6 py-4">
-              {/* Query and actions row */}
-              <div className="flex items-start justify-between gap-4 mb-3">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Search className="w-4 h-4 text-[#E07A5F] flex-shrink-0" />
-                    <span className="text-sm font-medium text-gray-900 truncate">{userQuery}</span>
-                  </div>
-                  {lastAssistantMsg && !isLoading && (
-                    <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
-                      {lastAssistantMsg.content}
-                    </p>
-                  )}
-                  {isLoading && (
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-                      <span>Searching...</span>
-                    </div>
-                  )}
+          <div className="flex-shrink-0 border-b border-gray-100 bg-[#FAFAF9] pt-4 lg:pt-6">
+            <div className="max-w-5xl mx-auto px-4 lg:px-6 pb-4">
+              {/* Query row */}
+              <div className="mb-3">
+                <div className="flex items-center gap-2 mb-1">
+                  <Search className="w-4 h-4 text-[#E07A5F] flex-shrink-0" />
+                  <span className="text-sm font-medium text-gray-900 truncate">{userQuery}</span>
                 </div>
-                {/* Action buttons */}
-                {toolResults.length > 0 && !isLoading && (
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <Link
-                      href="/chat"
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-600 bg-white border border-gray-200 hover:border-gray-300 rounded-lg transition-colors"
-                    >
-                      <RefreshCw className="w-3.5 h-3.5" />
-                      New
-                    </Link>
-                    <button
-                      onClick={() => {
-                        const results = filteredResults?.all_results || searchContext?.originalResults?.all_results || []
-                        if (results.length === 0) return
-                        const headers = ['Organization', 'State', 'PI Name', 'Project Title', 'Funding', 'Category']
-                        const rows = results.map((p: SearchResultProject) => [
-                          p.org_name || '',
-                          p.org_state || '',
-                          p.pi_names?.split(';')[0]?.trim() || '',
-                          p.title || '',
-                          p.total_cost ? `$${(p.total_cost / 1000000).toFixed(2)}M` : '',
-                          p.primary_category?.replace(/_/g, ' ') || ''
-                        ])
-                        const csvContent = [
-                          headers.join(','),
-                          ...rows.map((row: string[]) => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
-                        ].join('\n')
-                        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-                        const url = URL.createObjectURL(blob)
-                        const link = document.createElement('a')
-                        link.href = url
-                        link.download = `nih_projects_${new Date().toISOString().split('T')[0]}.csv`
-                        document.body.appendChild(link)
-                        link.click()
-                        document.body.removeChild(link)
-                        URL.revokeObjectURL(url)
-                      }}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs text-gray-600 bg-white border border-gray-200 hover:border-gray-300 rounded-lg transition-colors"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      Export
-                    </button>
+                {lastAssistantMsg && !isLoading && (
+                  <p className="text-sm text-gray-500 leading-relaxed line-clamp-2">
+                    {lastAssistantMsg.content}
+                  </p>
+                )}
+                {isLoading && (
+                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                    <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+                    <span>Searching...</span>
                   </div>
                 )}
               </div>
