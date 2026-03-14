@@ -146,6 +146,8 @@ interface ResultsPanelProps {
   // Trial status filters
   trialStatusFilters?: string[]
   onTrialStatusChange?: (statuses: string[]) => void
+  // Trial type filter
+  trialTypeFilter?: 'therapeutic' | 'diagnostic' | null
   // Trial saving
   savedTrialIds?: Set<string>
   onSaveTrial?: (nctId: string) => void
@@ -165,7 +167,7 @@ interface ResultsPanelProps {
   hideStatsAndFilters?: boolean
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {}, hideStatsAndFilters = false }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, trialTypeFilter = null, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {}, hideStatsAndFilters = false }: ResultsPanelProps) {
   const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
   // Count active filters for collapsed state display
@@ -907,17 +909,25 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           )
         })()}
 
-        {/* Trial results - filtered by status if filters active */}
+        {/* Trial results - filtered by status and type if filters active */}
         {(() => {
-          const filteredTrials = trialStatusFilters.length > 0
-            ? data.all_results.filter(t => t.study_status && trialStatusFilters.includes(t.study_status))
-            : data.all_results
+          let filteredTrials = data.all_results
+          // Apply status filter
+          if (trialStatusFilters.length > 0) {
+            filteredTrials = filteredTrials.filter(t => t.study_status && trialStatusFilters.includes(t.study_status))
+          }
+          // Apply type filter
+          if (trialTypeFilter === 'therapeutic') {
+            filteredTrials = filteredTrials.filter(t => t.is_therapeutic_trial)
+          } else if (trialTypeFilter === 'diagnostic') {
+            filteredTrials = filteredTrials.filter(t => t.is_diagnostic_trial)
+          }
           const displayCount = filteredTrials.length
 
           return filteredTrials.length > 0 && (
             <div className={isMobile ? 'p-4' : 'p-6'}>
               <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">
-                {trialStatusFilters.length > 0 ? `${displayCount} Filtered Trials` : 'Top Trials'}
+                {(trialStatusFilters.length > 0 || trialTypeFilter) ? `${displayCount} Filtered Trials` : 'Top Trials'}
               </h3>
               <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
                 {filteredTrials.slice(0, isMobile ? 30 : 50).map((trial) => {
@@ -1150,6 +1160,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
   const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
   const [currentFilters, setCurrentFilters] = useState<FilterState>({})
   const [trialStatusFilters, setTrialStatusFilters] = useState<string[]>([])
+  const [trialTypeFilter, setTrialTypeFilter] = useState<'therapeutic' | 'diagnostic' | null>(null)
   const [savedTrialIds, setSavedTrialIds] = useState<Set<string>>(new Set())
   const [precision, setPrecision] = useState<'low' | 'med' | 'high'>('low')
   const [restoredFromStorage, setRestoredFromStorage] = useState(false)
@@ -1260,6 +1271,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
       setFilteredResults(null)
       setCurrentFilters({})
       setTrialStatusFilters([])
+      setTrialTypeFilter(null)
       setRestoredFromStorage(false)
       setShowMobileResults(true)
       // Reset initialQueryProcessed so auto-submit will re-trigger with new persona
@@ -1639,6 +1651,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                     originalResults: resultData as unknown as KeywordSearchResult
                   })
                   setTrialStatusFilters([]) // Clear any previous trial filters
+                  setTrialTypeFilter(null)
                 }
               } else if (parsed.type === 'tool_complete') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: false } : m))
@@ -1991,9 +2004,9 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                       const byStatus = trialResults.by_status || {}
                       const byType = trialResults.by_type || {}
                       const sortedStatuses = Object.entries(byStatus).sort(([, a], [, b]) => (b as number) - (a as number))
-                      const hasActiveFilters = trialStatusFilters.length > 0
+                      const hasActiveFilters = trialStatusFilters.length > 0 || trialTypeFilter !== null
 
-                      if (sortedStatuses.length === 0) return null
+                      if (sortedStatuses.length === 0 && !byType.therapeutic && !byType.diagnostic) return null
 
                       return (
                         <div className="space-y-4">
@@ -2004,7 +2017,10 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                             </h3>
                             {hasActiveFilters && (
                               <button
-                                onClick={() => setTrialStatusFilters([])}
+                                onClick={() => {
+                                  setTrialStatusFilters([])
+                                  setTrialTypeFilter(null)
+                                }}
                                 className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
                               >
                                 Clear filters
@@ -2046,12 +2062,36 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                             </div>
                           </div>
 
-                          {/* Trial type summary */}
-                          {(byType.therapeutic || byType.diagnostic) && (
-                            <div className="text-xs text-gray-500 pt-2 border-t border-gray-100">
-                              {byType.therapeutic ? `${byType.therapeutic} therapeutic` : ''}
-                              {byType.therapeutic && byType.diagnostic ? ' · ' : ''}
-                              {byType.diagnostic ? `${byType.diagnostic} diagnostic` : ''}
+                          {/* Trial type filters */}
+                          {(byType.therapeutic > 0 || byType.diagnostic > 0) && (
+                            <div>
+                              <h4 className="text-xs text-gray-500 mb-2">Trial Type</h4>
+                              <div className="flex flex-wrap gap-2">
+                                {[
+                                  { key: 'therapeutic' as const, label: 'Therapeutic', count: byType.therapeutic },
+                                  { key: 'diagnostic' as const, label: 'Diagnostic', count: byType.diagnostic },
+                                ].filter(({ count }) => count > 0).map(({ key, label, count }) => {
+                                  const isSelected = trialTypeFilter === key
+                                  return (
+                                    <button
+                                      key={key}
+                                      onClick={() => setTrialTypeFilter(isSelected ? null : key)}
+                                      className={`
+                                        px-3 py-1.5 text-xs rounded-full border transition-all
+                                        ${isSelected
+                                          ? 'bg-emerald-500 text-white border-emerald-500'
+                                          : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-400'
+                                        }
+                                      `}
+                                    >
+                                      {label}
+                                      <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                                        {count}
+                                      </span>
+                                    </button>
+                                  )
+                                })}
+                              </div>
                             </div>
                           )}
                         </div>
@@ -2092,6 +2132,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                   onTrialClick={navigateToTrial}
                   trialStatusFilters={trialStatusFilters}
                   onTrialStatusChange={setTrialStatusFilters}
+                  trialTypeFilter={trialTypeFilter}
                   savedTrialIds={savedTrialIds}
                   onSaveTrial={handleSaveTrial}
                   persona={persona}
