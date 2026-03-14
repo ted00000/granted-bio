@@ -1861,9 +1861,9 @@ export function Chat({ persona, initialQuery }: ChatProps) {
         </div>
       ) : (
         <>
-          {/* Search Context Header - compact summary at top */}
-          <div className="flex-shrink-0 border-b border-gray-100 bg-[#FAFAF9] pt-4 lg:pt-6">
-            <div className="max-w-5xl mx-auto px-4 lg:px-6 pb-4">
+          {/* Search Context Header - compact summary */}
+          <div className="flex-shrink-0 border-b border-gray-100 bg-[#FAFAF9]">
+            <div className="max-w-5xl mx-auto px-4 lg:px-6 py-4">
               {/* Query row */}
               <div className="mb-3">
                 <div className="flex items-center gap-2 mb-1">
