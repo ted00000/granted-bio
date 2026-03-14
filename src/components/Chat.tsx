@@ -1630,6 +1630,15 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                     originalResults: resultData
                   })
                   setFilteredResults(null) // Clear any previous filters
+                } else if (parsed.name === 'search_trials') {
+                  // Cast trial results to KeywordSearchResult for searchContext compatibility
+                  const resultData = parsed.data as TrialSearchResult
+                  setSearchContext({
+                    keywordQuery: resultData.search_query || '',
+                    semanticQuery: resultData.search_query || '',
+                    originalResults: resultData as unknown as KeywordSearchResult
+                  })
+                  setTrialStatusFilters([]) // Clear any previous trial filters
                 }
               } else if (parsed.type === 'tool_complete') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: false } : m))
