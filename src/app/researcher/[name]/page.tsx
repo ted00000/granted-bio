@@ -236,25 +236,26 @@ export default function ResearcherPage() {
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
           {/* Back button and bookmark */}
           <div className="flex items-center justify-between mb-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1">
+            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm">
               <ChevronLeft className="w-4 h-4" />
               Back
             </button>
             <button
               onClick={toggleSaveResearcher}
               disabled={savingResearcher}
-              className={`p-2 rounded-lg transition-colors ${
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
                 isSaved
-                  ? 'text-[#E07A5F] bg-[#E07A5F]/10'
-                  : 'text-gray-400 hover:text-[#E07A5F] hover:bg-gray-100'
+                  ? 'bg-[#E07A5F]/10'
+                  : 'hover:bg-[#E07A5F]/10'
               }`}
               title={isSaved ? 'Remove from saved' : 'Save researcher'}
             >
               <Bookmark
-                className="w-5 h-5"
+                className="w-4 h-4"
                 fill={isSaved ? 'currentColor' : 'none'}
                 strokeWidth={1.5}
               />
+              <span className="text-sm">Save</span>
             </button>
           </div>
         {/* Researcher Header */}
