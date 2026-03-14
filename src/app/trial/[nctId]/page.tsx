@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, ChevronLeft } from 'lucide-react'
+import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, ChevronLeft, Bookmark } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 
 interface TrialData {
@@ -75,6 +75,62 @@ export default function TrialDetailPage() {
   const [project, setProject] = useState<ProjectData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isSaved, setIsSaved] = useState(false)
+  const [savingTrial, setSavingTrial] = useState(false)
+
+  // Check if trial is saved
+  useEffect(() => {
+    const checkSaved = async () => {
+      try {
+        const response = await fetch(`/api/saved-trials/check?nct_id=${nctId}`)
+        if (response.ok) {
+          const data = await response.json()
+          setIsSaved(data.isSaved)
+        }
+      } catch (e) {
+        console.error('Error checking saved status:', e)
+      }
+    }
+    if (nctId) {
+      checkSaved()
+    }
+  }, [nctId])
+
+  const toggleSaveTrial = async () => {
+    if (savingTrial || !trial) return
+    setSavingTrial(true)
+    try {
+      if (isSaved) {
+        const response = await fetch('/api/saved-trials', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nct_id: trial.nct_id })
+        })
+        if (response.ok) {
+          setIsSaved(false)
+        }
+      } else {
+        const response = await fetch('/api/saved-trials', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nct_id: trial.nct_id,
+            study_title: trial.study_title,
+            study_status: trial.study_status,
+            phase: trial.phase,
+            lead_sponsor: trial.lead_sponsor
+          })
+        })
+        if (response.ok) {
+          setIsSaved(true)
+        }
+      }
+    } catch (e) {
+      console.error('Error toggling save:', e)
+    } finally {
+      setSavingTrial(false)
+    }
+  }
 
   useEffect(() => {
     async function fetchTrial() {
@@ -143,11 +199,30 @@ export default function TrialDetailPage() {
     <AppLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Back button */}
-          <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm mb-6">
-            <ChevronLeft className="w-4 h-4" />
-            Back
-          </button>
+          {/* Back button and save */}
+          <div className="flex items-center justify-between mb-6">
+            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm">
+              <ChevronLeft className="w-4 h-4" />
+              Back
+            </button>
+            <button
+              onClick={toggleSaveTrial}
+              disabled={savingTrial}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
+                isSaved
+                  ? 'bg-[#E07A5F]/10'
+                  : 'hover:bg-[#E07A5F]/10'
+              }`}
+              title={isSaved ? 'Remove from saved' : 'Save trial'}
+            >
+              <Bookmark
+                className="w-4 h-4"
+                fill={isSaved ? 'currentColor' : 'none'}
+                strokeWidth={1.5}
+              />
+              <span className="text-sm">Save</span>
+            </button>
+          </div>
         {/* Title Section */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-start justify-between gap-4 mb-4">
