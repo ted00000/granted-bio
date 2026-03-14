@@ -293,19 +293,29 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {searchContext && data.all_results?.length > 0 && (
           <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
             {stickyFilters && (
-              <div className="flex items-center gap-2 mb-2">
-                <button
-                  onClick={() => setFiltersCollapsed(!filtersCollapsed)}
-                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
-                >
-                  {filtersCollapsed ? 'Show' : 'Hide'}
-                </button>
-                <span className="text-gray-300">·</span>
-                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
-                {filtersCollapsed && activeFilterCount > 0 && (
-                  <span className="text-xs text-gray-500">
-                    ({activeFilterCount} active)
-                  </span>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setFiltersCollapsed(!filtersCollapsed)}
+                    className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                  >
+                    {filtersCollapsed ? 'Show' : 'Hide'}
+                  </button>
+                  <span className="text-gray-300">·</span>
+                  <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+                  {filtersCollapsed && activeFilterCount > 0 && (
+                    <span className="text-xs text-gray-500">
+                      ({activeFilterCount} active)
+                    </span>
+                  )}
+                </div>
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={() => onFilterChange({})}
+                    className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
+                  >
+                    Clear filters
+                  </button>
                 )}
               </div>
             )}
@@ -562,19 +572,29 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {searchContext && data.all_results?.length > 0 && (
           <div className={`${stickyFilters ? 'sticky top-0 z-10 bg-white shadow-sm' : ''} ${isMobile ? 'p-4' : 'p-4'} border-b border-gray-100`}>
             {stickyFilters && (
-              <div className="flex items-center gap-2 mb-2">
-                <button
-                  onClick={() => setFiltersCollapsed(!filtersCollapsed)}
-                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
-                >
-                  {filtersCollapsed ? 'Show' : 'Hide'}
-                </button>
-                <span className="text-gray-300">·</span>
-                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
-                {filtersCollapsed && activeFilterCount > 0 && (
-                  <span className="text-xs text-gray-500">
-                    ({activeFilterCount} active)
-                  </span>
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setFiltersCollapsed(!filtersCollapsed)}
+                    className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                  >
+                    {filtersCollapsed ? 'Show' : 'Hide'}
+                  </button>
+                  <span className="text-gray-300">·</span>
+                  <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+                  {filtersCollapsed && activeFilterCount > 0 && (
+                    <span className="text-xs text-gray-500">
+                      ({activeFilterCount} active)
+                    </span>
+                  )}
+                </div>
+                {activeFilterCount > 0 && (
+                  <button
+                    onClick={() => onFilterChange({})}
+                    className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
+                  >
+                    Clear filters
+                  </button>
                 )}
               </div>
             )}

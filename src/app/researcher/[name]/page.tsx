@@ -92,6 +92,7 @@ export default function ResearcherPage() {
   const [selectedYear, setSelectedYear] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
+  const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
   // Bookmark state
   const [isSaved, setIsSaved] = useState(false)
@@ -372,8 +373,25 @@ export default function ResearcherPage() {
               </div>
             </form>
 
-            {/* Filter Chips */}
-            <div className="space-y-3">
+            {/* Filter Header */}
+            <div className="flex items-center gap-2 mb-3">
+              <button
+                onClick={() => setFiltersCollapsed(!filtersCollapsed)}
+                className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                {filtersCollapsed ? 'Show' : 'Hide'}
+              </button>
+              <span className="text-gray-300">·</span>
+              <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+              {filtersCollapsed && hasActiveFilters && (
+                <span className="text-xs text-gray-500">
+                  ({(selectedStatus ? 1 : 0) + (selectedCategory ? 1 : 0) + (selectedYear ? 1 : 0)} active)
+                </span>
+              )}
+            </div>
+
+            {/* Filter Chips - collapsible */}
+            <div className={filtersCollapsed ? 'hidden' : 'space-y-3'}>
               {/* Status filters */}
               {data.filters?.byStatus && (
                 <div className="flex flex-wrap gap-2">
