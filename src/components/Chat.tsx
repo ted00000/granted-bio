@@ -1905,12 +1905,15 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                       {persona === 'trials' ? 'trials' : 'projects'} found
                       {filteredResults && ' (filtered)'}
                     </div>
+                    <div className="text-xs text-gray-400 mt-2 truncate" title={`Searched: ${searchContext.semanticQuery || searchContext.keywordQuery}`}>
+                      Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
+                    </div>
                   </div>
                 )}
 
                 {/* Match quality chips */}
                 {toolResults.length > 0 && searchContext && (
-                  <div>
+                  <div className="pb-4 border-b border-gray-200">
                     <h4 className="text-xs text-gray-500 mb-2">Match Quality</h4>
                     <div className="flex flex-wrap gap-1.5">
                       {[
