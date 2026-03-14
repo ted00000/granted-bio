@@ -1875,28 +1875,9 @@ export function Chat({ persona, initialQuery }: ChatProps) {
 
             {/* Left column - Search context, stats, filters */}
             <div className="w-80 lg:w-96 flex-shrink-0 border-r border-gray-100 overflow-y-auto bg-[#FAFAF9]">
-              <div className="p-5 space-y-5">
-                {/* Search query and summary */}
-                <div>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Search className="w-4 h-4 text-[#E07A5F] flex-shrink-0" />
-                    <span className="text-sm font-medium text-gray-900">{userQuery}</span>
-                  </div>
-                  {lastAssistantMsg && !isLoading && (
-                    <p className="text-sm text-gray-500 leading-relaxed">
-                      {lastAssistantMsg.content}
-                    </p>
-                  )}
-                  {isLoading && (
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-                      <span>Searching...</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Stats section */}
-                {toolResults.length > 0 && searchContext && (
+              <div className="p-5 space-y-4">
+                {/* Stats section with match quality */}
+                {toolResults.length > 0 && searchContext ? (
                   <div className="pb-4 border-b border-gray-200">
                     <div className="text-3xl font-semibold tracking-tight text-gray-900">
                       {(filteredResults || searchContext.originalResults).total_count.toLocaleString()}
@@ -1905,47 +1886,49 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                       {persona === 'trials' ? 'trials' : 'projects'} found
                       {filteredResults && ' (filtered)'}
                     </div>
-                    <div className="text-xs text-gray-400 mt-2 truncate" title={`Searched: ${searchContext.semanticQuery || searchContext.keywordQuery}`}>
+                    <div className="text-xs text-gray-400 mt-2">
                       Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
                     </div>
-                  </div>
-                )}
-
-                {/* Match quality chips */}
-                {toolResults.length > 0 && searchContext && (
-                  <div className="pb-4 border-b border-gray-200">
-                    <h4 className="text-xs text-gray-500 mb-2">Match Quality</h4>
-                    <div className="flex flex-wrap gap-1.5">
-                      {[
-                        { level: 'low' as const, label: 'Broad', count: precisionCounts?.low },
-                        { level: 'med' as const, label: 'Balanced', count: precisionCounts?.med },
-                        { level: 'high' as const, label: 'Precise', count: precisionCounts?.high },
-                      ].map(({ level, label, count }) => {
-                        const isSelected = precision === level
-                        return (
-                          <button
-                            key={level}
-                            onClick={() => setPrecision(level)}
-                            className={`
-                              px-2.5 py-1 text-xs rounded-full border transition-all
-                              ${isSelected
-                                ? 'bg-indigo-500 text-white border-indigo-500'
-                                : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
-                              }
-                            `}
-                          >
-                            {label}
-                            {count !== undefined && (
-                              <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                                {count}
-                              </span>
-                            )}
-                          </button>
-                        )
-                      })}
+                    {/* Match quality chips */}
+                    <div className="mt-3">
+                      <h4 className="text-xs text-gray-500 mb-1.5">Match Quality</h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[
+                          { level: 'low' as const, label: 'Broad', count: precisionCounts?.low },
+                          { level: 'med' as const, label: 'Balanced', count: precisionCounts?.med },
+                          { level: 'high' as const, label: 'Precise', count: precisionCounts?.high },
+                        ].map(({ level, label, count }) => {
+                          const isSelected = precision === level
+                          return (
+                            <button
+                              key={level}
+                              onClick={() => setPrecision(level)}
+                              className={`
+                                px-2.5 py-1 text-xs rounded-full border transition-all
+                                ${isSelected
+                                  ? 'bg-indigo-500 text-white border-indigo-500'
+                                  : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
+                                }
+                              `}
+                            >
+                              {label}
+                              {count !== undefined && (
+                                <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                                  {count}
+                                </span>
+                              )}
+                            </button>
+                          )
+                        })}
+                      </div>
                     </div>
                   </div>
-                )}
+                ) : isLoading ? (
+                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                    <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+                    <span>Searching...</span>
+                  </div>
+                ) : null}
 
                 {/* Filter chips */}
                 {toolResults.length > 0 && searchContext && searchContext.originalResults.all_results?.length > 0 && (
