@@ -545,10 +545,10 @@ export default function ResearcherPage() {
                     <Link
                       key={project.application_id}
                       href={`/project/${project.application_id}`}
-                      className="block px-6 py-4 hover:bg-gray-50 transition-colors"
+                      className="group block px-6 py-4 hover:bg-gray-50/50 transition-colors"
                     >
                       <div className="flex items-start justify-between gap-4 mb-2">
-                        <h3 className="text-sm font-medium text-gray-900 leading-snug flex-1">
+                        <h3 className="text-sm font-medium text-gray-900 leading-snug flex-1 group-hover:text-[#E07A5F] transition-colors">
                           {project.title}
                         </h3>
                         {project.total_cost && (
