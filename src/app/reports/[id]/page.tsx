@@ -113,6 +113,45 @@ export default function ReportDetailPage({
 
   const [exporting, setExporting] = useState<'pdf' | 'docx' | null>(null)
 
+  // Convert modern CSS color functions (lab, oklch, etc.) to hex for html2canvas compatibility
+  const convertColorsToHex = (element: HTMLElement) => {
+    const colorProps = ['color', 'backgroundColor', 'borderColor', 'borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor']
+
+    const processElement = (el: HTMLElement) => {
+      const computed = window.getComputedStyle(el)
+
+      colorProps.forEach(prop => {
+        const value = computed.getPropertyValue(prop.replace(/([A-Z])/g, '-$1').toLowerCase())
+        if (value && (value.includes('lab(') || value.includes('oklch(') || value.includes('oklab('))) {
+          // Create a temporary element to compute the color as rgb
+          const temp = document.createElement('div')
+          temp.style.color = value
+          document.body.appendChild(temp)
+          const rgbValue = window.getComputedStyle(temp).color
+          document.body.removeChild(temp)
+
+          // Apply the rgb value
+          if (prop === 'color') el.style.color = rgbValue
+          else if (prop === 'backgroundColor') el.style.backgroundColor = rgbValue
+          else if (prop === 'borderColor') el.style.borderColor = rgbValue
+          else if (prop === 'borderTopColor') el.style.borderTopColor = rgbValue
+          else if (prop === 'borderRightColor') el.style.borderRightColor = rgbValue
+          else if (prop === 'borderBottomColor') el.style.borderBottomColor = rgbValue
+          else if (prop === 'borderLeftColor') el.style.borderLeftColor = rgbValue
+        }
+      })
+
+      // Process children
+      Array.from(el.children).forEach(child => {
+        if (child instanceof HTMLElement) {
+          processElement(child)
+        }
+      })
+    }
+
+    processElement(element)
+  }
+
   const downloadPdf = async () => {
     if (!report?.markdown_content) return
 
@@ -123,6 +162,17 @@ export default function ReportDetailPage({
 
     try {
       const filename = `${report.title.replace(/[^a-z0-9]/gi, '_')}.pdf`
+
+      // Clone the content to avoid modifying the original
+      const clone = reportContent.cloneNode(true) as HTMLElement
+      clone.style.position = 'absolute'
+      clone.style.left = '-9999px'
+      clone.style.top = '0'
+      clone.style.width = reportContent.offsetWidth + 'px'
+      document.body.appendChild(clone)
+
+      // Convert modern color functions to rgb for html2canvas compatibility
+      convertColorsToHex(clone)
 
       const opt = {
         margin: [0.75, 0.75, 0.75, 0.75] as [number, number, number, number],
@@ -141,7 +191,10 @@ export default function ReportDetailPage({
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       }
 
-      await html2pdf().set(opt).from(reportContent).save()
+      await html2pdf().set(opt).from(clone).save()
+
+      // Clean up clone
+      document.body.removeChild(clone)
     } catch (e) {
       console.error('Error generating PDF:', e)
       alert('Failed to generate PDF. Please try again.')
