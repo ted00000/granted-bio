@@ -2,8 +2,11 @@
 
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
-import { FileText, ArrowLeft, Download, AlertCircle, FileDown, Loader2 } from 'lucide-react'
+import { FileText, ArrowLeft, AlertCircle, FileDown, Loader2, FileType } from 'lucide-react'
 import { MarkdownRenderer } from './MarkdownRenderer'
+import html2pdf from 'html2pdf.js'
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, AlignmentType } from 'docx'
+import { saveAs } from 'file-saver'
 
 interface FundingByYear {
   year: number
@@ -108,91 +111,282 @@ export default function ReportDetailPage({
     }
   }
 
-  const downloadMarkdown = () => {
+  const [exporting, setExporting] = useState<'pdf' | 'docx' | null>(null)
+
+  const downloadPdf = async () => {
     if (!report?.markdown_content) return
-
-    const blob = new Blob([report.markdown_content], { type: 'text/markdown' })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${report.title.replace(/[^a-z0-9]/gi, '_')}.md`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  }
-
-  const downloadPdf = () => {
-    if (!report?.markdown_content) return
-
-    // Create a new window with just the report content for printing
-    const printWindow = window.open('', '_blank')
-    if (!printWindow) {
-      alert('Please allow popups to download PDF')
-      return
-    }
 
     const reportContent = document.getElementById('report-content')
-    if (!reportContent) {
-      printWindow.close()
-      return
-    }
+    if (!reportContent) return
 
-    // Write the content with print-optimized styles
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>${report.title}</title>
-          <style>
-            * {
-              margin: 0;
-              padding: 0;
-              box-sizing: border-box;
-            }
-            body {
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              font-size: 11pt;
-              line-height: 1.5;
-              color: #1a1a1a;
-              padding: 40px;
-              max-width: 100%;
-            }
-            h1 { font-size: 20pt; font-weight: bold; margin: 24px 0 12px; }
-            h2 { font-size: 16pt; font-weight: 600; margin: 20px 0 10px; padding-top: 16px; border-top: 1px solid #ddd; }
-            h3 { font-size: 13pt; font-weight: 600; margin: 16px 0 8px; }
-            h4 { font-size: 11pt; font-weight: 600; margin: 12px 0 6px; }
-            p { margin-bottom: 8px; }
-            table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 10pt; }
-            th, td { padding: 6px 8px; text-align: left; border-bottom: 1px solid #ddd; }
-            th { background: #f5f5f5; font-weight: 600; }
-            blockquote { border-left: 3px solid #E07A5F; padding-left: 12px; margin: 12px 0; color: #555; font-style: italic; }
-            ul { margin: 8px 0; padding-left: 24px; }
-            li { margin: 4px 0; }
-            a { color: #E07A5F; text-decoration: none; }
-            hr { border: none; border-top: 1px solid #ddd; margin: 20px 0; }
-            @media print {
-              body { padding: 0; }
-              h2 { page-break-before: auto; }
-              table, blockquote { page-break-inside: avoid; }
-            }
-          </style>
-        </head>
-        <body>
-          ${reportContent.innerHTML}
-        </body>
-      </html>
-    `)
-    printWindow.document.close()
+    setExporting('pdf')
 
-    // Wait for content to load, then trigger print
-    printWindow.onload = () => {
-      printWindow.print()
+    try {
+      const filename = `${report.title.replace(/[^a-z0-9]/gi, '_')}.pdf`
+
+      const opt = {
+        margin: [0.75, 0.75, 0.75, 0.75] as [number, number, number, number],
+        filename,
+        image: { type: 'jpeg' as const, quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+        },
+        jsPDF: {
+          unit: 'in' as const,
+          format: 'letter' as const,
+          orientation: 'portrait' as const
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      }
+
+      await html2pdf().set(opt).from(reportContent).save()
+    } catch (e) {
+      console.error('Error generating PDF:', e)
+      alert('Failed to generate PDF. Please try again.')
+    } finally {
+      setExporting(null)
     }
-    // Fallback for browsers that don't fire onload
-    setTimeout(() => {
-      printWindow.print()
-    }, 500)
+  }
+
+  const downloadWord = async () => {
+    if (!report?.markdown_content) return
+
+    setExporting('docx')
+
+    try {
+      const filename = `${report.title.replace(/[^a-z0-9]/gi, '_')}.docx`
+      const children: (Paragraph | Table)[] = []
+
+      // Parse markdown content into Word document elements
+      const lines = report.markdown_content.split('\n')
+      let inTable = false
+      let tableRows: string[][] = []
+      let inBlockquote = false
+      let blockquoteLines: string[] = []
+
+      const flushBlockquote = () => {
+        if (blockquoteLines.length > 0) {
+          children.push(
+            new Paragraph({
+              children: [
+                new TextRun({
+                  text: blockquoteLines.join(' '),
+                  italics: true,
+                  color: '555555',
+                }),
+              ],
+              indent: { left: 720 },
+              border: {
+                left: {
+                  color: 'E07A5F',
+                  size: 24,
+                  style: BorderStyle.SINGLE,
+                  space: 10,
+                },
+              },
+              spacing: { before: 120, after: 120 },
+            })
+          )
+          blockquoteLines = []
+        }
+        inBlockquote = false
+      }
+
+      const flushTable = () => {
+        if (tableRows.length > 0) {
+          const table = new Table({
+            width: { size: 100, type: WidthType.PERCENTAGE },
+            rows: tableRows.map((row, rowIndex) =>
+              new TableRow({
+                children: row.map(
+                  (cell) =>
+                    new TableCell({
+                      children: [
+                        new Paragraph({
+                          children: [
+                            new TextRun({
+                              text: cell.trim(),
+                              bold: rowIndex === 0,
+                            }),
+                          ],
+                        }),
+                      ],
+                      shading: rowIndex === 0 ? { fill: 'F5F5F5' } : undefined,
+                    })
+                ),
+              })
+            ),
+          })
+          children.push(table)
+          children.push(new Paragraph({ text: '' })) // spacing after table
+          tableRows = []
+        }
+        inTable = false
+      }
+
+      for (const line of lines) {
+        const trimmed = line.trim()
+
+        // Handle tables
+        if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+          flushBlockquote()
+          // Skip separator rows (|---|---|)
+          if (trimmed.match(/^\|[\s\-:|]+\|$/)) {
+            continue
+          }
+          inTable = true
+          const cells = trimmed
+            .split('|')
+            .slice(1, -1)
+            .map((c) => c.trim())
+          tableRows.push(cells)
+          continue
+        } else if (inTable) {
+          flushTable()
+        }
+
+        // Handle blockquotes
+        if (trimmed.startsWith('>')) {
+          inBlockquote = true
+          blockquoteLines.push(trimmed.slice(1).trim())
+          continue
+        } else if (inBlockquote) {
+          flushBlockquote()
+        }
+
+        // Handle headings
+        if (trimmed.startsWith('# ')) {
+          children.push(
+            new Paragraph({
+              text: trimmed.slice(2),
+              heading: HeadingLevel.HEADING_1,
+              spacing: { before: 400, after: 200 },
+            })
+          )
+        } else if (trimmed.startsWith('## ')) {
+          children.push(
+            new Paragraph({
+              text: trimmed.slice(3),
+              heading: HeadingLevel.HEADING_2,
+              spacing: { before: 300, after: 150 },
+            })
+          )
+        } else if (trimmed.startsWith('### ')) {
+          children.push(
+            new Paragraph({
+              text: trimmed.slice(4),
+              heading: HeadingLevel.HEADING_3,
+              spacing: { before: 200, after: 100 },
+            })
+          )
+        } else if (trimmed.startsWith('#### ')) {
+          children.push(
+            new Paragraph({
+              text: trimmed.slice(5),
+              heading: HeadingLevel.HEADING_4,
+              spacing: { before: 150, after: 80 },
+            })
+          )
+        } else if (trimmed.startsWith('---')) {
+          // Horizontal rule - add some spacing
+          children.push(
+            new Paragraph({
+              text: '',
+              border: {
+                bottom: {
+                  color: 'DDDDDD',
+                  size: 6,
+                  style: BorderStyle.SINGLE,
+                  space: 10,
+                },
+              },
+              spacing: { before: 200, after: 200 },
+            })
+          )
+        } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
+          // Bullet points
+          const bulletText = trimmed.slice(2)
+          // Handle bold text within bullets
+          const parts = bulletText.split(/\*\*([^*]+)\*\*/)
+          const runs: TextRun[] = []
+          parts.forEach((part, index) => {
+            if (index % 2 === 1) {
+              runs.push(new TextRun({ text: part, bold: true }))
+            } else if (part) {
+              runs.push(new TextRun({ text: part }))
+            }
+          })
+          children.push(
+            new Paragraph({
+              children: runs,
+              bullet: { level: 0 },
+              spacing: { before: 60, after: 60 },
+            })
+          )
+        } else if (trimmed === '') {
+          // Empty line
+          children.push(new Paragraph({ text: '' }))
+        } else {
+          // Regular paragraph - handle bold and links
+          const parts = trimmed.split(/\*\*([^*]+)\*\*|\[([^\]]+)\]\([^)]+\)/)
+          const runs: TextRun[] = []
+          let plainIndex = 0
+
+          // Simple approach: just handle bold for now
+          const boldParts = trimmed.split(/\*\*([^*]+)\*\*/)
+          boldParts.forEach((part, index) => {
+            if (index % 2 === 1) {
+              runs.push(new TextRun({ text: part, bold: true }))
+            } else if (part) {
+              // Remove markdown links but keep text
+              const cleanText = part.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+              runs.push(new TextRun({ text: cleanText }))
+            }
+          })
+
+          if (runs.length > 0) {
+            children.push(
+              new Paragraph({
+                children: runs,
+                spacing: { before: 60, after: 60 },
+              })
+            )
+          }
+        }
+      }
+
+      // Flush any remaining content
+      flushBlockquote()
+      flushTable()
+
+      const doc = new Document({
+        sections: [
+          {
+            properties: {
+              page: {
+                margin: {
+                  top: 1440, // 1 inch in twips
+                  right: 1440,
+                  bottom: 1440,
+                  left: 1440,
+                },
+              },
+            },
+            children,
+          },
+        ],
+      })
+
+      const blob = await Packer.toBlob(doc)
+      saveAs(blob, filename)
+    } catch (e) {
+      console.error('Error generating Word document:', e)
+      alert('Failed to generate Word document. Please try again.')
+    } finally {
+      setExporting(null)
+    }
   }
 
   if (loading) {
@@ -286,17 +480,27 @@ export default function ReportDetailPage({
               <div className="flex items-center gap-2">
                 <button
                   onClick={downloadPdf}
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-[#E07A5F] hover:bg-[#C96A4F] rounded-lg transition-colors"
+                  disabled={exporting !== null}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-[#E07A5F] hover:bg-[#C96A4F] rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <FileDown className="w-4 h-4" />
-                  Save as PDF
+                  {exporting === 'pdf' ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <FileDown className="w-4 h-4" />
+                  )}
+                  {exporting === 'pdf' ? 'Generating...' : 'Download PDF'}
                 </button>
                 <button
-                  onClick={downloadMarkdown}
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                  onClick={downloadWord}
+                  disabled={exporting !== null}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  <Download className="w-4 h-4" />
-                  Markdown
+                  {exporting === 'docx' ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <FileType className="w-4 h-4" />
+                  )}
+                  {exporting === 'docx' ? 'Generating...' : 'Download Word'}
                 </button>
               </div>
             )}
