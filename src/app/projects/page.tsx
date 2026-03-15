@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { Beaker, Trash2 } from 'lucide-react'
+import { FlaskConical, Trash2 } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 
 interface SavedProject {
@@ -75,7 +75,7 @@ export default function MyProjectsPage() {
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-8">
           <div className="flex items-center gap-3 mb-8">
-            <Beaker className="w-6 h-6 text-[#E07A5F]" strokeWidth={1.5} />
+            <FlaskConical className="w-6 h-6 text-[#E07A5F]" strokeWidth={1.5} />
             <h1 className="text-2xl font-semibold text-gray-900">My Projects</h1>
           </div>
 
@@ -85,7 +85,7 @@ export default function MyProjectsPage() {
             </div>
           ) : projects.length === 0 ? (
             <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <Beaker className="w-12 h-12 text-gray-300 mx-auto mb-4" strokeWidth={1.5} />
+              <FlaskConical className="w-12 h-12 text-gray-300 mx-auto mb-4" strokeWidth={1.5} />
               <h2 className="text-lg font-medium text-gray-900 mb-2">No saved projects yet</h2>
               <p className="text-gray-500 mb-6">
                 Save projects while browsing to keep track of interesting research.

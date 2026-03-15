@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, KeyboardEvent } from 'react'
-import { Beaker, Activity, Users } from 'lucide-react'
+import { FlaskConical, Activity, Users } from 'lucide-react'
 import type { PersonaType } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
@@ -14,9 +14,9 @@ interface WelcomeScreenProps {
 const LENS_CONFIG: Array<{
   id: PersonaType
   label: string
-  icon: typeof Beaker
+  icon: typeof FlaskConical
 }> = [
-  { id: 'researcher', label: 'Projects', icon: Beaker },
+  { id: 'researcher', label: 'Projects', icon: FlaskConical },
   { id: 'bd', label: 'People', icon: Users },
   { id: 'trials', label: 'Trials', icon: Activity },
 ]
