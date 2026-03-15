@@ -2,6 +2,22 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { supabaseAdmin } from '@/lib/supabase'
 
+// Only include recent fiscal years (2024+) - matches detail pages
+const MIN_FISCAL_YEAR = 2024
+
+/**
+ * Extract core project number for deduplication.
+ * NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project.
+ */
+function getCoreProjectNumber(projectNumber: string | null): string {
+  if (!projectNumber) return ''
+  let core = projectNumber.trim().toUpperCase()
+  core = core.replace(/^[0-9]/, '')
+  core = core.replace(/-\d+$/, '')
+  core = core.replace(/-[A-Z]\d+$/, '')
+  return core
+}
+
 // GET - List saved people for current user
 export async function GET() {
   try {
@@ -30,19 +46,32 @@ export async function GET() {
     }
 
     // Get stats for each person (project count, total funding)
+    // Uses same logic as detail pages: fiscal year filter + deduplication
     const peopleWithStats = await Promise.all(
       savedPeople.map(async (sp) => {
         if (sp.person_type === 'researcher') {
-          // Get researcher stats
-          const { data: projects } = await supabaseAdmin
+          // Get researcher stats - matches /api/researcher/[name] logic
+          const { data: allProjects } = await supabaseAdmin
             .from('projects')
-            .select('application_id, total_cost, org_name')
+            .select('project_number, total_cost, org_name, fiscal_year')
             .ilike('pi_names', `%${sp.person_name}%`)
-            .limit(100)
+            .gte('fiscal_year', MIN_FISCAL_YEAR)
 
-          const projectCount = projects?.length || 0
-          const totalFunding = projects?.reduce((sum, p) => sum + (p.total_cost || 0), 0) || 0
-          const orgs = [...new Set(projects?.map(p => p.org_name).filter(Boolean))]
+          // Deduplicate by core project number, keeping most recent fiscal year
+          const seenProjects = new Map<string, typeof allProjects extends (infer T)[] | null ? T : never>()
+          for (const project of allProjects || []) {
+            const coreKey = getCoreProjectNumber(project.project_number)
+            if (!coreKey) continue
+            const existing = seenProjects.get(coreKey)
+            if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+              seenProjects.set(coreKey, project)
+            }
+          }
+          const dedupedProjects = Array.from(seenProjects.values())
+
+          const projectCount = dedupedProjects.length
+          const totalFunding = dedupedProjects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
+          const orgs = [...new Set(dedupedProjects.map(p => p.org_name).filter(Boolean))]
 
           return {
             id: sp.id,
@@ -56,15 +85,27 @@ export async function GET() {
             }
           }
         } else {
-          // Get organization stats
-          const { data: projects } = await supabaseAdmin
+          // Get organization stats - matches /api/org/[name] logic
+          const { data: allProjects } = await supabaseAdmin
             .from('projects')
-            .select('application_id, total_cost, pi_names')
+            .select('project_number, total_cost, pi_names, fiscal_year')
             .eq('org_name', sp.person_name)
-            .limit(100)
+            .gte('fiscal_year', MIN_FISCAL_YEAR)
 
-          const projectCount = projects?.length || 0
-          const totalFunding = projects?.reduce((sum, p) => sum + (p.total_cost || 0), 0) || 0
+          // Deduplicate by core project number, keeping most recent fiscal year
+          const seenProjects = new Map<string, typeof allProjects extends (infer T)[] | null ? T : never>()
+          for (const project of allProjects || []) {
+            const coreKey = getCoreProjectNumber(project.project_number)
+            if (!coreKey) continue
+            const existing = seenProjects.get(coreKey)
+            if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+              seenProjects.set(coreKey, project)
+            }
+          }
+          const dedupedProjects = Array.from(seenProjects.values())
+
+          const projectCount = dedupedProjects.length
+          const totalFunding = dedupedProjects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
 
           return {
             id: sp.id,
