@@ -1444,6 +1444,9 @@ export function Chat({ persona, initialQuery }: ChatProps) {
     if (quick?.hasClinicalTrials) {
       filtered = filtered.filter(p => (p.clinical_trial_count || 0) > 0)
     }
+    if (quick?.hasPublications) {
+      filtered = filtered.filter(p => (p.publication_count || 0) > 0)
+    }
 
     if (filters.primary_category?.length) {
       filtered = filtered.filter(p =>
@@ -1519,6 +1522,9 @@ export function Chat({ persona, initialQuery }: ChatProps) {
     }
     if (quick?.hasClinicalTrials) {
       filtered = filtered.filter(p => (p.clinical_trial_count || 0) > 0)
+    }
+    if (quick?.hasPublications) {
+      filtered = filtered.filter(p => (p.publication_count || 0) > 0)
     }
 
     // Recalculate counts
