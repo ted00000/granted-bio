@@ -39,7 +39,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const year = searchParams.get('year') || ''
     const status = searchParams.get('status') || '' // 'active' or 'completed'
     const page = parseInt(searchParams.get('page') || '1', 10)
-    const limit = parseInt(searchParams.get('limit') || '20', 10)
+    const limit = parseInt(searchParams.get('limit') || '50', 10)
     const offset = (page - 1) * limit
 
     // Only include recent fiscal years (2024+)

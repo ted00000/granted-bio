@@ -147,7 +147,7 @@ export default function ResearcherPage() {
       if (selectedYear) queryParams.set('year', selectedYear)
       if (selectedStatus) queryParams.set('status', selectedStatus)
       queryParams.set('page', currentPage.toString())
-      queryParams.set('limit', '25')
+      queryParams.set('limit', '50')
 
       const url = `/api/researcher/${encodeURIComponent(name)}?${queryParams.toString()}`
       const response = await fetch(url)
