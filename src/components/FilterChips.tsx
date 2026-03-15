@@ -7,6 +7,7 @@ interface QuickFilters {
   sbirSttrOnly?: boolean
   hasPatents?: boolean
   hasClinicalTrials?: boolean
+  hasPublications?: boolean
   precision?: 'low' | 'med' | 'high'
 }
 
@@ -22,6 +23,7 @@ interface FilterChipsProps {
     sbirSttr: number
     patents: number
     clinicalTrials: number
+    publications: number
     precisionLow: number
     precisionMed: number
     precisionHigh: number
@@ -193,6 +195,7 @@ export function FilterChips({
             { key: 'sbirSttrOnly' as const, label: 'SBIR/STTR', count: quickFilterCounts?.sbirSttr },
             { key: 'hasPatents' as const, label: 'Has Patents', count: quickFilterCounts?.patents },
             { key: 'hasClinicalTrials' as const, label: 'Has Trials', count: quickFilterCounts?.clinicalTrials },
+            { key: 'hasPublications' as const, label: 'Has Pubs', count: quickFilterCounts?.publications },
           ].map(({ key, label, count }) => {
             const isSelected = quickFilters[key]
             const isDisabled = isLoading || (!isSelected && count === 0)

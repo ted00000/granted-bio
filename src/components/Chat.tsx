@@ -41,6 +41,7 @@ interface QuickFilters {
   sbirSttrOnly?: boolean
   hasPatents?: boolean
   hasClinicalTrials?: boolean
+  hasPublications?: boolean
   precision?: 'low' | 'med' | 'high'
 }
 
@@ -131,6 +132,7 @@ interface ResultsPanelProps {
     sbirSttr: number
     patents: number
     clinicalTrials: number
+    publications: number
     precisionLow: number
     precisionMed: number
     precisionHigh: number
@@ -1741,6 +1743,9 @@ export function Chat({ persona, initialQuery }: ChatProps) {
     if (quick?.hasClinicalTrials && exclude?.quick !== 'hasClinicalTrials') {
       filtered = filtered.filter(p => (p.clinical_trial_count || 0) > 0)
     }
+    if (quick?.hasPublications && exclude?.quick !== 'hasPublications') {
+      filtered = filtered.filter(p => (p.publication_count || 0) > 0)
+    }
 
     // Apply category filter (unless excluded)
     if (filters.primary_category?.length && !exclude?.category) {
@@ -1800,6 +1805,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
     const sbirFiltered = applyFilters(allResults, currentFilters, { quick: 'sbirSttrOnly' })
     const patentsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasPatents' })
     const trialsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasClinicalTrials' })
+    const pubsFiltered = applyFilters(allResults, currentFilters, { quick: 'hasPublications' })
 
     // Precision counts are based on original results (not the filtered set)
     const precisionTotal = originalResults.length
@@ -1808,6 +1814,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
       sbirSttr: sbirFiltered.filter(p => isSbirSttr(p.activity_code)).length,
       patents: patentsFiltered.filter(p => (p.patent_count || 0) > 0).length,
       clinicalTrials: trialsFiltered.filter(p => (p.clinical_trial_count || 0) > 0).length,
+      publications: pubsFiltered.filter(p => (p.publication_count || 0) > 0).length,
       precisionLow: precisionTotal,  // 100% - all results
       precisionMed: Math.max(1, Math.ceil(precisionTotal * PRECISION_PERCENTILES.med)),   // Top 50%
       precisionHigh: Math.max(1, Math.ceil(precisionTotal * PRECISION_PERCENTILES.high))  // Top 20%
