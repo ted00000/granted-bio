@@ -45,6 +45,7 @@ interface Filters {
   byCategory: Record<string, number>
   byYear: Record<number, number>
   byStatus: { active: number; completed: number }
+  byQuickFilter?: { hasPatents: number; hasPubs: number; hasTrials: number }
 }
 
 interface ResearcherData {
@@ -91,6 +92,9 @@ export default function ResearcherPage() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('')
+  const [hasPatentsFilter, setHasPatentsFilter] = useState(false)
+  const [hasPubsFilter, setHasPubsFilter] = useState(false)
+  const [hasTrialsFilter, setHasTrialsFilter] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
@@ -146,6 +150,9 @@ export default function ResearcherPage() {
       if (selectedCategory) queryParams.set('category', selectedCategory)
       if (selectedYear) queryParams.set('year', selectedYear)
       if (selectedStatus) queryParams.set('status', selectedStatus)
+      if (hasPatentsFilter) queryParams.set('hasPatents', 'true')
+      if (hasPubsFilter) queryParams.set('hasPubs', 'true')
+      if (hasTrialsFilter) queryParams.set('hasTrials', 'true')
       queryParams.set('page', currentPage.toString())
       queryParams.set('limit', '50')
 
@@ -167,7 +174,7 @@ export default function ResearcherPage() {
     } finally {
       setLoading(false)
     }
-  }, [name, searchQuery, selectedCategory, selectedYear, selectedStatus, currentPage])
+  }, [name, searchQuery, selectedCategory, selectedYear, selectedStatus, hasPatentsFilter, hasPubsFilter, hasTrialsFilter, currentPage])
 
   useEffect(() => {
     if (name) {
@@ -178,7 +185,7 @@ export default function ResearcherPage() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1)
-  }, [searchQuery, selectedCategory, selectedYear, selectedStatus])
+  }, [searchQuery, selectedCategory, selectedYear, selectedStatus, hasPatentsFilter, hasPubsFilter, hasTrialsFilter])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -191,10 +198,13 @@ export default function ResearcherPage() {
     setSelectedCategory('')
     setSelectedYear('')
     setSelectedStatus('')
+    setHasPatentsFilter(false)
+    setHasPubsFilter(false)
+    setHasTrialsFilter(false)
     setCurrentPage(1)
   }
 
-  const hasActiveFilters = searchQuery || selectedCategory || selectedYear || selectedStatus
+  const hasActiveFilters = searchQuery || selectedCategory || selectedYear || selectedStatus || hasPatentsFilter || hasPubsFilter || hasTrialsFilter
 
   // Show full-page loading only on initial load
   if (loading && !data) {
@@ -335,7 +345,7 @@ export default function ResearcherPage() {
                   <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filters</span>
                   {filtersCollapsed && hasActiveFilters && (
                     <span className="text-xs text-gray-500">
-                      ({(selectedStatus ? 1 : 0) + (selectedCategory ? 1 : 0) + (selectedYear ? 1 : 0)} active)
+                      ({(selectedStatus ? 1 : 0) + (selectedCategory ? 1 : 0) + (selectedYear ? 1 : 0) + (hasPatentsFilter ? 1 : 0) + (hasPubsFilter ? 1 : 0) + (hasTrialsFilter ? 1 : 0)} active)
                     </span>
                   )}
                 </div>
@@ -352,42 +362,71 @@ export default function ResearcherPage() {
               {/* Filter Chips */}
               {!filtersCollapsed && (
                 <div className="space-y-3">
-                  {/* Status filters */}
-                  {data.filters?.byStatus && (
-                    <div className="bg-gray-50 rounded-lg p-3">
-                      <div className="flex flex-wrap gap-1.5">
-                        {[
-                          { key: 'active', label: 'Active', count: data.filters.byStatus.active },
-                          { key: 'completed', label: 'Completed', count: data.filters.byStatus.completed },
-                        ].map(({ key, label, count }) => {
-                          const isSelected = selectedStatus === key
-                          const isDisabled = loading || (!isSelected && count === 0)
-                          return (
-                            <button
-                              key={key}
-                              onClick={() => setSelectedStatus(isSelected ? '' : key)}
-                              disabled={isDisabled}
-                              className={`
-                                px-2 py-1 text-xs rounded-md border transition-all
-                                ${isSelected
-                                  ? 'bg-emerald-500 text-white border-emerald-500'
-                                  : count === 0
-                                    ? 'bg-white/50 text-gray-300 border-gray-100 cursor-not-allowed'
-                                    : 'bg-white text-gray-600 border-gray-300 hover:border-emerald-400'
-                                }
-                                ${loading ? 'opacity-50 cursor-not-allowed' : ''}
-                              `}
-                            >
-                              {label}
-                              <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                                {count.toLocaleString()}
-                              </span>
-                            </button>
-                          )
-                        })}
-                      </div>
+                  {/* Status and quick filters */}
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {/* Status filters */}
+                      {data.filters?.byStatus && [
+                        { key: 'active', label: 'Active', count: data.filters.byStatus.active },
+                        { key: 'completed', label: 'Completed', count: data.filters.byStatus.completed },
+                      ].map(({ key, label, count }) => {
+                        const isSelected = selectedStatus === key
+                        const isDisabled = loading || (!isSelected && count === 0)
+                        return (
+                          <button
+                            key={key}
+                            onClick={() => setSelectedStatus(isSelected ? '' : key)}
+                            disabled={isDisabled}
+                            className={`
+                              px-2 py-1 text-xs rounded-md border transition-all
+                              ${isSelected
+                                ? 'bg-emerald-500 text-white border-emerald-500'
+                                : count === 0
+                                  ? 'bg-white/50 text-gray-300 border-gray-100 cursor-not-allowed'
+                                  : 'bg-white text-gray-600 border-gray-300 hover:border-emerald-400'
+                              }
+                              ${loading ? 'opacity-50 cursor-not-allowed' : ''}
+                            `}
+                          >
+                            {label}
+                            <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                              {count.toLocaleString()}
+                            </span>
+                          </button>
+                        )
+                      })}
+                      {/* Quick filters */}
+                      {data.filters?.byQuickFilter && [
+                        { key: 'hasPatents', label: 'Has Patents', count: data.filters.byQuickFilter.hasPatents, state: hasPatentsFilter, setState: setHasPatentsFilter },
+                        { key: 'hasPubs', label: 'Has Pubs', count: data.filters.byQuickFilter.hasPubs, state: hasPubsFilter, setState: setHasPubsFilter },
+                        { key: 'hasTrials', label: 'Has Trials', count: data.filters.byQuickFilter.hasTrials, state: hasTrialsFilter, setState: setHasTrialsFilter },
+                      ].map(({ key, label, count, state, setState }) => {
+                        const isDisabled = loading || (!state && count === 0)
+                        return (
+                          <button
+                            key={key}
+                            onClick={() => setState(!state)}
+                            disabled={isDisabled}
+                            className={`
+                              px-2 py-1 text-xs rounded-md border transition-all
+                              ${state
+                                ? 'bg-emerald-500 text-white border-emerald-500'
+                                : count === 0
+                                  ? 'bg-white/50 text-gray-300 border-gray-100 cursor-not-allowed'
+                                  : 'bg-white text-gray-600 border-gray-300 hover:border-emerald-400'
+                              }
+                              ${loading ? 'opacity-50 cursor-not-allowed' : ''}
+                            `}
+                          >
+                            {label}
+                            <span className={`ml-1 ${state ? 'text-white/80' : 'text-gray-400'}`}>
+                              {count.toLocaleString()}
+                            </span>
+                          </button>
+                        )
+                      })}
                     </div>
-                  )}
+                  </div>
 
                   {/* Category filters */}
                   {data.filters?.byCategory && Object.keys(data.filters.byCategory).length > 0 && (

@@ -38,6 +38,9 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const category = searchParams.get('category') || ''
     const year = searchParams.get('year') || ''
     const status = searchParams.get('status') || '' // 'active' or 'completed'
+    const hasPatents = searchParams.get('hasPatents') === 'true'
+    const hasPubs = searchParams.get('hasPubs') === 'true'
+    const hasTrials = searchParams.get('hasTrials') === 'true'
     const page = parseInt(searchParams.get('page') || '1', 10)
     const limit = parseInt(searchParams.get('limit') || '50', 10)
     const offset = (page - 1) * limit
@@ -104,8 +107,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     // Get state from most recent project at primary org
     const primaryState = allDedupedProjects.find(p => p.org_name === primaryOrg)?.org_state
 
-    // Query linked tables for accurate counts (in parallel)
-    const [patentsResult, pubsResult, trialsResult] = await Promise.all([
+    // Query linked tables for accurate counts AND project numbers that have each type (in parallel)
+    const [patentsResult, pubsResult, trialsResult, patentProjects, pubProjects, trialProjects] = await Promise.all([
       supabaseAdmin
         .from('project_patents')
         .select('project_number', { count: 'exact', head: true })
@@ -118,7 +121,49 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         .from('clinical_studies')
         .select('project_number', { count: 'exact', head: true })
         .in('project_number', allProjectNumbers),
+      // Get project numbers that have patents
+      supabaseAdmin
+        .from('project_patents')
+        .select('project_number')
+        .in('project_number', allProjectNumbers),
+      // Get project numbers that have publications
+      supabaseAdmin
+        .from('project_publications')
+        .select('project_number')
+        .in('project_number', allProjectNumbers),
+      // Get project numbers that have trials
+      supabaseAdmin
+        .from('clinical_studies')
+        .select('project_number')
+        .in('project_number', allProjectNumbers),
     ])
+
+    // Build sets of project numbers with patents/pubs/trials
+    const projectsWithPatents = new Set((patentProjects.data || []).map(p => p.project_number))
+    const projectsWithPubs = new Set((pubProjects.data || []).map(p => p.project_number))
+    const projectsWithTrials = new Set((trialProjects.data || []).map(p => p.project_number))
+
+    // Count deduplicated projects with each type
+    let patentsCount = 0
+    let pubsCount = 0
+    let trialsCount = 0
+    for (const p of allDedupedProjects) {
+      if (p.project_number && projectsWithPatents.has(p.project_number)) patentsCount++
+      if (p.project_number && projectsWithPubs.has(p.project_number)) pubsCount++
+      if (p.project_number && projectsWithTrials.has(p.project_number)) trialsCount++
+    }
+
+    // Build set of project numbers to filter by (if quick filters are active)
+    let filteredProjectNumbers = allProjectNumbers
+    if (hasPatents) {
+      filteredProjectNumbers = filteredProjectNumbers.filter(pn => projectsWithPatents.has(pn))
+    }
+    if (hasPubs) {
+      filteredProjectNumbers = filteredProjectNumbers.filter(pn => projectsWithPubs.has(pn))
+    }
+    if (hasTrials) {
+      filteredProjectNumbers = filteredProjectNumbers.filter(pn => projectsWithTrials.has(pn))
+    }
 
     // Build filtered query for display projects
     let query = supabaseAdmin
@@ -160,6 +205,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       query = query.gte('project_end', new Date().toISOString().split('T')[0])
     } else if (status === 'completed') {
       query = query.lt('project_end', new Date().toISOString().split('T')[0])
+    }
+
+    // Apply quick filters (hasPatents, hasPubs, hasTrials)
+    if (hasPatents || hasPubs || hasTrials) {
+      query = query.in('project_number', filteredProjectNumbers)
     }
 
     // Get filtered projects with pagination
@@ -251,6 +301,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         byCategory,
         byYear,
         byStatus,
+        byQuickFilter: {
+          hasPatents: patentsCount,
+          hasPubs: pubsCount,
+          hasTrials: trialsCount,
+        },
       },
     })
   } catch (error) {

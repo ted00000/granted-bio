@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Building2, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Users, Search, X, Bookmark } from 'lucide-react'
+import { Building2, ChevronLeft, ChevronRight, FlaskConical, Search, X, Bookmark } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 
 // Display names for categories
@@ -45,6 +45,7 @@ interface Filters {
   byCategory: Record<string, number>
   byYear: Record<number, number>
   byStatus: { active: number; completed: number }
+  byQuickFilter?: { hasPatents: number; hasPubs: number; hasTrials: number }
 }
 
 interface OrgData {
@@ -92,6 +93,9 @@ export default function OrgPage() {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [selectedYear, setSelectedYear] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('')
+  const [hasPatentsFilter, setHasPatentsFilter] = useState(false)
+  const [hasPubsFilter, setHasPubsFilter] = useState(false)
+  const [hasTrialsFilter, setHasTrialsFilter] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
@@ -147,8 +151,11 @@ export default function OrgPage() {
       if (selectedCategory) queryParams.set('category', selectedCategory)
       if (selectedYear) queryParams.set('year', selectedYear)
       if (selectedStatus) queryParams.set('status', selectedStatus)
+      if (hasPatentsFilter) queryParams.set('hasPatents', 'true')
+      if (hasPubsFilter) queryParams.set('hasPubs', 'true')
+      if (hasTrialsFilter) queryParams.set('hasTrials', 'true')
       queryParams.set('page', currentPage.toString())
-      queryParams.set('limit', '20')
+      queryParams.set('limit', '50')
 
       const url = `/api/org/${encodeURIComponent(name)}?${queryParams.toString()}`
       const response = await fetch(url)
@@ -168,7 +175,7 @@ export default function OrgPage() {
     } finally {
       setLoading(false)
     }
-  }, [name, searchQuery, selectedCategory, selectedYear, selectedStatus, currentPage])
+  }, [name, searchQuery, selectedCategory, selectedYear, selectedStatus, hasPatentsFilter, hasPubsFilter, hasTrialsFilter, currentPage])
 
   useEffect(() => {
     if (name) {
@@ -179,7 +186,7 @@ export default function OrgPage() {
   // Reset to page 1 when filters change
   useEffect(() => {
     setCurrentPage(1)
-  }, [searchQuery, selectedCategory, selectedYear, selectedStatus])
+  }, [searchQuery, selectedCategory, selectedYear, selectedStatus, hasPatentsFilter, hasPubsFilter, hasTrialsFilter])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -192,10 +199,13 @@ export default function OrgPage() {
     setSelectedCategory('')
     setSelectedYear('')
     setSelectedStatus('')
+    setHasPatentsFilter(false)
+    setHasPubsFilter(false)
+    setHasTrialsFilter(false)
     setCurrentPage(1)
   }
 
-  const hasActiveFilters = searchQuery || selectedCategory || selectedYear || selectedStatus
+  const hasActiveFilters = searchQuery || selectedCategory || selectedYear || selectedStatus || hasPatentsFilter || hasPubsFilter || hasTrialsFilter
 
   // Show full-page loading only on initial load
   if (loading && !data) {
@@ -233,375 +243,373 @@ export default function OrgPage() {
 
   return (
     <AppLayout>
-      <div className="h-full overflow-y-auto bg-[#FAFAF9]">
-        <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Back button and bookmark */}
-          <div className="flex items-center justify-between mb-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
-            <button
-              onClick={toggleSaveOrg}
-              disabled={savingOrg}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
-                isSaved
-                  ? 'bg-[#E07A5F]/10'
-                  : 'hover:bg-[#E07A5F]/10'
-              }`}
-              title={isSaved ? 'Remove from saved' : 'Save organization'}
-            >
-              <Bookmark
-                className="w-4 h-4"
-                fill={isSaved ? 'currentColor' : 'none'}
-                strokeWidth={1.5}
-              />
-              <span className="text-sm">Save</span>
-            </button>
-          </div>
-        {/* Org Header */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex items-start gap-4">
-            <div className="p-3 bg-gray-100 rounded-lg">
-              <Building2 className="w-8 h-8 text-gray-600" />
-            </div>
-            <div className="flex-1">
-              <h1 className="text-2xl font-semibold text-gray-900 mb-1">
-                {data.org_name}
-              </h1>
-              <p className="text-gray-500">
-                {data.org_city && `${data.org_city}, `}{data.org_state}
-                {data.org_type && ` • ${data.org_type}`}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center gap-2 text-gray-400 mb-1">
-              <DollarSign className="w-4 h-4" />
-              <span className="text-xs uppercase tracking-wider">Funding</span>
-            </div>
-            <div className="text-xl font-semibold text-[#E07A5F]">
-              {formatCurrency(data.stats.total_funding)}
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center gap-2 text-gray-400 mb-1">
-              <FlaskConical className="w-4 h-4" />
-              <span className="text-xs uppercase tracking-wider">Projects</span>
-            </div>
-            <div className="text-xl font-semibold text-gray-900">
-              {data.stats.project_count}
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center gap-2 text-gray-400 mb-1">
-              <Users className="w-4 h-4" />
-              <span className="text-xs uppercase tracking-wider">PIs</span>
-            </div>
-            <div className="text-xl font-semibold text-gray-900">
-              {data.stats.pi_count}
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center gap-2 text-gray-400 mb-1">
-              <FileText className="w-4 h-4" />
-              <span className="text-xs uppercase tracking-wider">Patents</span>
-            </div>
-            <div className="text-xl font-semibold text-gray-900">
-              {data.stats.patent_count}
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center gap-2 text-gray-400 mb-1">
-              <FileText className="w-4 h-4" />
-              <span className="text-xs uppercase tracking-wider">Pubs</span>
-            </div>
-            <div className="text-xl font-semibold text-gray-900">
-              {data.stats.publication_count}
-            </div>
-          </div>
-          <div className="bg-white rounded-lg shadow-sm p-4">
-            <div className="flex items-center gap-2 text-gray-400 mb-1">
-              <Activity className="w-4 h-4" />
-              <span className="text-xs uppercase tracking-wider">Trials</span>
-            </div>
-            <div className="text-xl font-semibold text-gray-900">
-              {data.stats.clinical_trial_count}
-            </div>
-          </div>
-        </div>
-
-        {/* Projects List */}
-        <div className="bg-white rounded-lg shadow-sm">
-          <div className="sticky top-0 z-10 bg-white px-6 py-4 border-b border-gray-100 rounded-t-lg">
+      <div className="h-full flex flex-col bg-[#FAFAF9]">
+        {/* Top header with back button, org info, and bookmark */}
+        <div className="flex-shrink-0 border-b border-gray-100 bg-white">
+          <div className="px-5 py-4">
+            {/* Back button and bookmark */}
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900">Projects</h2>
-              <span className="text-sm text-gray-500">
-                {hasActiveFilters
-                  ? `${data.pagination.total.toLocaleString()} matching`
-                  : `${data.stats.project_count.toLocaleString()} projects`}
-              </span>
-            </div>
-
-            {/* Search */}
-            <form onSubmit={handleSearch} className="mb-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="text"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  placeholder="Search projects by title or PI..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/20 focus:border-[#E07A5F]"
+              <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm">
+                <ChevronLeft className="w-4 h-4" />
+                Back
+              </button>
+              <button
+                onClick={toggleSaveOrg}
+                disabled={savingOrg}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
+                  isSaved
+                    ? 'bg-[#E07A5F]/10'
+                    : 'hover:bg-[#E07A5F]/10'
+                }`}
+                title={isSaved ? 'Remove from saved' : 'Save organization'}
+              >
+                <Bookmark
+                  className="w-4 h-4"
+                  fill={isSaved ? 'currentColor' : 'none'}
+                  strokeWidth={1.5}
                 />
-                {searchInput && (
+                <span className="text-sm">Save</span>
+              </button>
+            </div>
+            {/* Org info */}
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-gray-100 rounded-full">
+                <Building2 className="w-6 h-6 text-gray-600" />
+              </div>
+              <div>
+                <h1 className="text-lg font-semibold text-gray-900">
+                  {data.org_name}
+                </h1>
+                <p className="text-sm text-gray-500">
+                  {data.org_city && `${data.org_city}, `}{data.org_state}
+                  {data.org_type && ` • ${data.org_type}`}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Two-column layout */}
+        <div className="flex-1 flex overflow-hidden">
+          {/* Left column - Stats and filters */}
+          <div className="w-80 lg:w-96 flex-shrink-0 border-r border-gray-100 overflow-y-auto bg-[#FAFAF9]">
+            <div className="p-5 space-y-4">
+              {/* Stats card */}
+              <div className="bg-white rounded-lg border border-gray-100 p-4">
+                <div className="flex items-baseline gap-2 mb-3">
+                  <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                    {hasActiveFilters ? data.pagination.total : data.stats.project_count}
+                  </span>
+                  <span className="text-sm text-gray-400">
+                    projects{hasActiveFilters && ' (filtered)'}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-gray-100">
+                  <div>
+                    <div className="text-xs text-gray-400 mb-0.5">Total Funding</div>
+                    <div className="text-sm font-semibold text-[#E07A5F]">{formatCurrency(data.stats.total_funding)}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-400 mb-0.5">Researchers</div>
+                    <div className="text-sm font-semibold text-gray-900">{data.stats.pi_count}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-400 mb-0.5">Patents</div>
+                    <div className="text-sm font-semibold text-gray-900">{data.stats.patent_count}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-400 mb-0.5">Publications</div>
+                    <div className="text-sm font-semibold text-gray-900">{data.stats.publication_count}</div>
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-400 mb-0.5">Clinical Trials</div>
+                    <div className="text-sm font-semibold text-gray-900">{data.stats.clinical_trial_count}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Filter Header */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
                   <button
-                    type="button"
-                    onClick={() => { setSearchInput(''); setSearchQuery('') }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    onClick={() => setFiltersCollapsed(!filtersCollapsed)}
+                    className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
                   >
-                    <X className="w-4 h-4" />
+                    {filtersCollapsed ? 'Show' : 'Hide'}
+                  </button>
+                  <span className="text-gray-300">·</span>
+                  <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filters</span>
+                  {filtersCollapsed && hasActiveFilters && (
+                    <span className="text-xs text-gray-500">
+                      ({(selectedStatus ? 1 : 0) + (selectedCategory ? 1 : 0) + (selectedYear ? 1 : 0) + (hasPatentsFilter ? 1 : 0) + (hasPubsFilter ? 1 : 0) + (hasTrialsFilter ? 1 : 0)} active)
+                    </span>
+                  )}
+                </div>
+                {hasActiveFilters && (
+                  <button
+                    onClick={clearFilters}
+                    className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
+                  >
+                    Clear
                   </button>
                 )}
               </div>
-            </form>
 
-            {/* Filter Header */}
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setFiltersCollapsed(!filtersCollapsed)}
-                  className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
-                >
-                  {filtersCollapsed ? 'Show' : 'Hide'}
-                </button>
-                <span className="text-gray-300">·</span>
-                <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
-                {filtersCollapsed && hasActiveFilters && (
-                  <span className="text-xs text-gray-500">
-                    ({(selectedStatus ? 1 : 0) + (selectedCategory ? 1 : 0) + (selectedYear ? 1 : 0)} active)
-                  </span>
-                )}
-              </div>
-              {hasActiveFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
-                >
-                  Clear filters
-                </button>
-              )}
-            </div>
-
-            {/* Filter Chips - collapsible */}
-            <div className={filtersCollapsed ? 'hidden' : 'space-y-3'}>
-              {/* Status filters */}
-              {data.filters?.byStatus && (
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    { key: 'active', label: 'Active', count: data.filters.byStatus.active },
-                    { key: 'completed', label: 'Completed', count: data.filters.byStatus.completed },
-                  ].map(({ key, label, count }) => {
-                    const isSelected = selectedStatus === key
-                    const isDisabled = loading || (!isSelected && count === 0)
-                    return (
-                      <button
-                        key={key}
-                        onClick={() => setSelectedStatus(isSelected ? '' : key)}
-                        disabled={isDisabled}
-                        className={`
-                          px-2.5 py-1 text-xs rounded-full border transition-all
-                          ${isSelected
-                            ? 'bg-emerald-500 text-white border-emerald-500'
-                            : count === 0
-                              ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
-                              : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-400'
-                          }
-                          ${loading ? 'opacity-50 cursor-not-allowed' : ''}
-                        `}
-                      >
-                        {label}
-                        <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                          {count.toLocaleString()}
-                        </span>
-                      </button>
-                    )
-                  })}
-                </div>
-              )}
-
-              {/* Category filters */}
-              {data.filters?.byCategory && Object.keys(data.filters.byCategory).length > 0 && (
-                <div>
-                  <h4 className="text-xs text-gray-500 mb-2">Category</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(data.filters.byCategory)
-                      .sort(([, a], [, b]) => b - a)
-                      .map(([cat, count]) => {
-                        const isSelected = selectedCategory === cat
+              {/* Filter Chips */}
+              {!filtersCollapsed && (
+                <div className="space-y-3">
+                  {/* Status and quick filters */}
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <div className="flex flex-wrap gap-1.5">
+                      {/* Status filters */}
+                      {data.filters?.byStatus && [
+                        { key: 'active', label: 'Active', count: data.filters.byStatus.active },
+                        { key: 'completed', label: 'Completed', count: data.filters.byStatus.completed },
+                      ].map(({ key, label, count }) => {
+                        const isSelected = selectedStatus === key
                         const isDisabled = loading || (!isSelected && count === 0)
-                        const label = CATEGORY_LABELS[cat] || cat.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
                         return (
                           <button
-                            key={cat}
-                            onClick={() => setSelectedCategory(isSelected ? '' : cat)}
+                            key={key}
+                            onClick={() => setSelectedStatus(isSelected ? '' : key)}
                             disabled={isDisabled}
                             className={`
-                              px-3 py-1.5 text-xs rounded-full border transition-all
+                              px-2 py-1 text-xs rounded-md border transition-all
                               ${isSelected
-                                ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
+                                ? 'bg-emerald-500 text-white border-emerald-500'
                                 : count === 0
-                                  ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
-                                  : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
+                                  ? 'bg-white/50 text-gray-300 border-gray-100 cursor-not-allowed'
+                                  : 'bg-white text-gray-600 border-gray-300 hover:border-emerald-400'
                               }
                               ${loading ? 'opacity-50 cursor-not-allowed' : ''}
                             `}
                           >
                             {label}
-                            <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                            <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
                               {count.toLocaleString()}
                             </span>
                           </button>
                         )
                       })}
-                  </div>
-                </div>
-              )}
-
-              {/* Year filters */}
-              {data.filters?.byYear && Object.keys(data.filters.byYear).length > 0 && (
-                <div>
-                  <h4 className="text-xs text-gray-500 mb-2">Fiscal Year</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(data.filters.byYear)
-                      .sort(([a], [b]) => Number(b) - Number(a))
-                      .map(([yr, count]) => {
-                        const isSelected = selectedYear === yr
-                        const isDisabled = loading || (!isSelected && count === 0)
+                      {/* Quick filters */}
+                      {data.filters?.byQuickFilter && [
+                        { key: 'hasPatents', label: 'Has Patents', count: data.filters.byQuickFilter.hasPatents, state: hasPatentsFilter, setState: setHasPatentsFilter },
+                        { key: 'hasPubs', label: 'Has Pubs', count: data.filters.byQuickFilter.hasPubs, state: hasPubsFilter, setState: setHasPubsFilter },
+                        { key: 'hasTrials', label: 'Has Trials', count: data.filters.byQuickFilter.hasTrials, state: hasTrialsFilter, setState: setHasTrialsFilter },
+                      ].map(({ key, label, count, state, setState }) => {
+                        const isDisabled = loading || (!state && count === 0)
                         return (
                           <button
-                            key={yr}
-                            onClick={() => setSelectedYear(isSelected ? '' : yr)}
+                            key={key}
+                            onClick={() => setState(!state)}
                             disabled={isDisabled}
                             className={`
-                              px-3 py-1.5 text-xs rounded-full border transition-all
-                              ${isSelected
-                                ? 'bg-gray-800 text-white border-gray-800'
+                              px-2 py-1 text-xs rounded-md border transition-all
+                              ${state
+                                ? 'bg-emerald-500 text-white border-emerald-500'
                                 : count === 0
-                                  ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
-                                  : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
+                                  ? 'bg-white/50 text-gray-300 border-gray-100 cursor-not-allowed'
+                                  : 'bg-white text-gray-600 border-gray-300 hover:border-emerald-400'
                               }
                               ${loading ? 'opacity-50 cursor-not-allowed' : ''}
                             `}
                           >
-                            FY{yr}
-                            <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                            {label}
+                            <span className={`ml-1 ${state ? 'text-white/80' : 'text-gray-400'}`}>
                               {count.toLocaleString()}
                             </span>
                           </button>
                         )
                       })}
+                    </div>
                   </div>
-                </div>
-              )}
 
-              {/* Clear filters button */}
-              {hasActiveFilters && (
-                <button
-                  onClick={clearFilters}
-                  className="text-xs text-[#E07A5F] hover:text-[#C96A4F] font-medium"
-                  disabled={loading}
-                >
-                  Clear filters
-                </button>
+                  {/* Category filters */}
+                  {data.filters?.byCategory && Object.keys(data.filters.byCategory).length > 0 && (
+                    <div>
+                      <h4 className="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">Life Science Area</h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {Object.entries(data.filters.byCategory)
+                          .sort(([, a], [, b]) => b - a)
+                          .map(([cat, count]) => {
+                            const isSelected = selectedCategory === cat
+                            const isDisabled = loading || (!isSelected && count === 0)
+                            const label = CATEGORY_LABELS[cat] || cat.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
+                            return (
+                              <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(isSelected ? '' : cat)}
+                                disabled={isDisabled}
+                                className={`
+                                  px-2 py-1 text-xs rounded-md border transition-all
+                                  ${isSelected
+                                    ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
+                                    : count === 0
+                                      ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                                      : 'bg-white text-gray-600 border-gray-300 hover:border-[#E07A5F]'
+                                  }
+                                  ${loading ? 'opacity-50 cursor-not-allowed' : ''}
+                                `}
+                              >
+                                {label}
+                                <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                                  {count.toLocaleString()}
+                                </span>
+                              </button>
+                            )
+                          })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Year filters */}
+                  {data.filters?.byYear && Object.keys(data.filters.byYear).length > 0 && (
+                    <div>
+                      <h4 className="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">Fiscal Year</h4>
+                      <div className="flex flex-wrap gap-1.5">
+                        {Object.entries(data.filters.byYear)
+                          .sort(([a], [b]) => Number(b) - Number(a))
+                          .map(([yr, count]) => {
+                            const isSelected = selectedYear === yr
+                            const isDisabled = loading || (!isSelected && count === 0)
+                            return (
+                              <button
+                                key={yr}
+                                onClick={() => setSelectedYear(isSelected ? '' : yr)}
+                                disabled={isDisabled}
+                                className={`
+                                  px-2 py-1 text-xs rounded-md border transition-all
+                                  ${isSelected
+                                    ? 'bg-gray-800 text-white border-gray-800'
+                                    : count === 0
+                                      ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
+                                      : 'bg-white text-gray-600 border-gray-300 hover:border-gray-500'
+                                  }
+                                  ${loading ? 'opacity-50 cursor-not-allowed' : ''}
+                                `}
+                              >
+                                FY{yr}
+                                <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                                  {count.toLocaleString()}
+                                </span>
+                              </button>
+                            )
+                          })}
+                      </div>
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </div>
 
-          {/* Loading overlay for filter changes */}
-          <div className={`relative ${loading ? 'opacity-50' : ''}`}>
-            <div className="divide-y divide-gray-50">
-            {data.projects.map((project) => {
-              const active = isProjectActive(project.project_end)
-              const statusColor = active === null ? 'bg-gray-300' : active ? 'bg-emerald-400' : 'bg-rose-300'
-
-              return (
-                <Link
-                  key={project.application_id}
-                  href={`/project/${project.application_id}`}
-                  className="block px-6 py-4 hover:bg-gray-50 transition-colors"
-                >
-                  <div className="flex items-start justify-between gap-4 mb-2">
-                    <h3 className="text-sm font-medium text-gray-900 leading-snug flex-1">
-                      {project.title}
-                    </h3>
-                    {project.total_cost && (
-                      <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
-                        {formatCurrency(project.total_cost)}
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <span className={`w-2 h-2 rounded-full ${statusColor}`} />
-                    {project.pi_names && (
-                      <span className="truncate">PI: {project.pi_names.split(';')[0]?.trim()}</span>
-                    )}
-                    {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
-                    {project.primary_category && (
-                      <span className="capitalize">• {project.primary_category.replace(/_/g, ' ')}</span>
-                    )}
-                  </div>
-                </Link>
-              )
-            })}
+          {/* Right column - Projects list */}
+          <div className="flex-1 overflow-y-auto bg-white">
+            {/* Search bar - sticky at top */}
+            <div className="sticky top-0 z-10 bg-white px-6 py-4 border-b border-gray-100">
+              <form onSubmit={handleSearch}>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <input
+                    type="text"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    placeholder="Search projects by title or PI..."
+                    className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/20 focus:border-[#E07A5F]"
+                  />
+                  {searchInput && (
+                    <button
+                      type="button"
+                      onClick={() => { setSearchInput(''); setSearchQuery('') }}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              </form>
             </div>
 
-            {/* Empty state */}
-            {data.projects.length === 0 && (
-              <div className="px-6 py-12 text-center">
-                <FlaskConical className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500">No projects match your filters</p>
-                {hasActiveFilters && (
-                  <button
-                    onClick={clearFilters}
-                    className="mt-2 text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium"
-                  >
-                    Clear filters
-                  </button>
-                )}
-              </div>
-            )}
+            {/* Project list */}
+            <div className={`relative ${loading ? 'opacity-50' : ''}`}>
+              <div className="divide-y divide-gray-50">
+                {data.projects.map((project) => {
+                  const active = isProjectActive(project.project_end)
+                  const statusColor = active === null ? 'bg-gray-300' : active ? 'bg-emerald-400' : 'bg-rose-300'
 
-            {/* Pagination */}
-            {data.pagination && data.pagination.totalPages > 1 && (
-              <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
-                <div className="text-sm text-gray-500">
-                  Page {data.pagination.page} of {data.pagination.totalPages}
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                    disabled={!data.pagination.hasPrev || loading}
-                    className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => setCurrentPage(p => p + 1)}
-                    disabled={!data.pagination.hasNext || loading}
-                    className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
+                  return (
+                    <Link
+                      key={project.application_id}
+                      href={`/project/${project.application_id}`}
+                      className="block px-6 py-4 hover:bg-gray-50 transition-colors"
+                    >
+                      <div className="flex items-start justify-between gap-4 mb-2">
+                        <h3 className="text-sm font-medium text-gray-900 leading-snug flex-1">
+                          {project.title}
+                        </h3>
+                        {project.total_cost && (
+                          <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
+                            {formatCurrency(project.total_cost)}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400">
+                        <span className={`w-2 h-2 rounded-full ${statusColor}`} />
+                        {project.pi_names && (
+                          <span className="truncate">PI: {project.pi_names.split(';')[0]?.trim()}</span>
+                        )}
+                        {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
+                        {project.primary_category && (
+                          <span className="capitalize">• {project.primary_category.replace(/_/g, ' ')}</span>
+                        )}
+                      </div>
+                    </Link>
+                  )
+                })}
               </div>
-            )}
+
+              {/* Empty state */}
+              {data.projects.length === 0 && (
+                <div className="px-6 py-12 text-center">
+                  <FlaskConical className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">No projects match your filters</p>
+                  {hasActiveFilters && (
+                    <button
+                      onClick={clearFilters}
+                      className="mt-2 text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium"
+                    >
+                      Clear filters
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Pagination */}
+              {data.pagination && data.pagination.totalPages > 1 && (
+                <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
+                  <div className="text-sm text-gray-500">
+                    Page {data.pagination.page} of {data.pagination.totalPages}
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                      disabled={!data.pagination.hasPrev || loading}
+                      className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setCurrentPage(p => p + 1)}
+                      disabled={!data.pagination.hasNext || loading}
+                      className="p-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </AppLayout>
