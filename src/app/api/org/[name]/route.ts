@@ -42,11 +42,15 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const limit = parseInt(searchParams.get('limit') || '20', 10)
     const offset = (page - 1) * limit
 
+    // Only include recent fiscal years (2024+)
+    const MIN_FISCAL_YEAR = 2024
+
     // Get accurate total count and all project numbers for this org
     const { data: allProjects, error: allError } = await supabaseAdmin
       .from('projects')
       .select('project_number, pi_names, total_cost, fiscal_year, org_state, org_city, org_type')
       .eq('org_name', orgName)
+      .gte('fiscal_year', MIN_FISCAL_YEAR)
 
     if (allError) {
       console.error('Error fetching org projects:', allError)
@@ -121,6 +125,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         project_end
       `, { count: 'exact' })
       .eq('org_name', orgName)
+      .gte('fiscal_year', MIN_FISCAL_YEAR)
 
     // Apply search filter
     if (search) {
@@ -183,6 +188,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         .from('projects')
         .select('project_number, primary_category, fiscal_year, project_end')
         .eq('org_name', orgName)
+        .gte('fiscal_year', MIN_FISCAL_YEAR)
 
       if (search) {
         q = q.or(`title.ilike.%${search}%,pi_names.ilike.%${search}%`)
