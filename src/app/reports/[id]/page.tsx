@@ -4,8 +4,8 @@ import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { FileText, ArrowLeft, AlertCircle, FileDown, Loader2, FileType } from 'lucide-react'
 import { MarkdownRenderer } from './MarkdownRenderer'
-import html2pdf from 'html2pdf.js'
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, AlignmentType } from 'docx'
+import { jsPDF } from 'jspdf'
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle } from 'docx'
 import { saveAs } from 'file-saver'
 
 interface FundingByYear {
@@ -113,88 +113,165 @@ export default function ReportDetailPage({
 
   const [exporting, setExporting] = useState<'pdf' | 'docx' | null>(null)
 
-  // Convert modern CSS color functions (lab, oklch, etc.) to hex for html2canvas compatibility
-  const convertColorsToHex = (element: HTMLElement) => {
-    const colorProps = ['color', 'backgroundColor', 'borderColor', 'borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor']
-
-    const processElement = (el: HTMLElement) => {
-      const computed = window.getComputedStyle(el)
-
-      colorProps.forEach(prop => {
-        const value = computed.getPropertyValue(prop.replace(/([A-Z])/g, '-$1').toLowerCase())
-        if (value && (value.includes('lab(') || value.includes('oklch(') || value.includes('oklab('))) {
-          // Create a temporary element to compute the color as rgb
-          const temp = document.createElement('div')
-          temp.style.color = value
-          document.body.appendChild(temp)
-          const rgbValue = window.getComputedStyle(temp).color
-          document.body.removeChild(temp)
-
-          // Apply the rgb value
-          if (prop === 'color') el.style.color = rgbValue
-          else if (prop === 'backgroundColor') el.style.backgroundColor = rgbValue
-          else if (prop === 'borderColor') el.style.borderColor = rgbValue
-          else if (prop === 'borderTopColor') el.style.borderTopColor = rgbValue
-          else if (prop === 'borderRightColor') el.style.borderRightColor = rgbValue
-          else if (prop === 'borderBottomColor') el.style.borderBottomColor = rgbValue
-          else if (prop === 'borderLeftColor') el.style.borderLeftColor = rgbValue
-        }
-      })
-
-      // Process children
-      Array.from(el.children).forEach(child => {
-        if (child instanceof HTMLElement) {
-          processElement(child)
-        }
-      })
-    }
-
-    processElement(element)
-  }
-
   const downloadPdf = async () => {
     if (!report?.markdown_content) return
-
-    const reportContent = document.getElementById('report-content')
-    if (!reportContent) return
 
     setExporting('pdf')
 
     try {
       const filename = `${report.title.replace(/[^a-z0-9]/gi, '_')}.pdf`
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'pt',
+        format: 'letter'
+      })
 
-      // Clone the content to avoid modifying the original
-      const clone = reportContent.cloneNode(true) as HTMLElement
-      clone.style.position = 'absolute'
-      clone.style.left = '-9999px'
-      clone.style.top = '0'
-      clone.style.width = reportContent.offsetWidth + 'px'
-      document.body.appendChild(clone)
+      const pageWidth = doc.internal.pageSize.getWidth()
+      const pageHeight = doc.internal.pageSize.getHeight()
+      const margin = 50
+      const maxWidth = pageWidth - margin * 2
+      let y = margin
 
-      // Convert modern color functions to rgb for html2canvas compatibility
-      convertColorsToHex(clone)
-
-      const opt = {
-        margin: [0.75, 0.75, 0.75, 0.75] as [number, number, number, number],
-        filename,
-        image: { type: 'jpeg' as const, quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          logging: false,
-        },
-        jsPDF: {
-          unit: 'in' as const,
-          format: 'letter' as const,
-          orientation: 'portrait' as const
-        },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      const cleanText = (text: string): string => {
+        return text
+          .replace(/\*\*([^*]+)\*\*/g, '$1')
+          .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+          .replace(/`([^`]+)`/g, '$1')
       }
 
-      await html2pdf().set(opt).from(clone).save()
+      const addNewPageIfNeeded = (height: number) => {
+        if (y + height > pageHeight - margin) {
+          doc.addPage()
+          y = margin
+        }
+      }
 
-      // Clean up clone
-      document.body.removeChild(clone)
+      const lines = report.markdown_content.split('\n')
+
+      for (const line of lines) {
+        const trimmed = line.trim()
+
+        if (!trimmed) {
+          y += 8
+          continue
+        }
+
+        // Skip table separator rows
+        if (trimmed.match(/^\|[-:| ]+\|$/)) {
+          continue
+        }
+
+        // Headers
+        if (trimmed.startsWith('# ')) {
+          addNewPageIfNeeded(30)
+          doc.setFontSize(18)
+          doc.setFont('helvetica', 'bold')
+          const text = cleanText(trimmed.slice(2))
+          const splitText = doc.splitTextToSize(text, maxWidth)
+          doc.text(splitText, margin, y)
+          y += splitText.length * 22 + 12
+          continue
+        }
+        if (trimmed.startsWith('## ')) {
+          addNewPageIfNeeded(26)
+          y += 10
+          doc.setDrawColor(200, 200, 200)
+          doc.line(margin, y - 6, pageWidth - margin, y - 6)
+          doc.setFontSize(14)
+          doc.setFont('helvetica', 'bold')
+          const text = cleanText(trimmed.slice(3))
+          const splitText = doc.splitTextToSize(text, maxWidth)
+          doc.text(splitText, margin, y)
+          y += splitText.length * 18 + 10
+          continue
+        }
+        if (trimmed.startsWith('### ')) {
+          addNewPageIfNeeded(22)
+          doc.setFontSize(12)
+          doc.setFont('helvetica', 'bold')
+          const text = cleanText(trimmed.slice(4))
+          const splitText = doc.splitTextToSize(text, maxWidth)
+          doc.text(splitText, margin, y)
+          y += splitText.length * 16 + 8
+          continue
+        }
+        if (trimmed.startsWith('#### ')) {
+          addNewPageIfNeeded(18)
+          doc.setFontSize(11)
+          doc.setFont('helvetica', 'bold')
+          const text = cleanText(trimmed.slice(5))
+          const splitText = doc.splitTextToSize(text, maxWidth)
+          doc.text(splitText, margin, y)
+          y += splitText.length * 14 + 6
+          continue
+        }
+
+        // Horizontal rule
+        if (trimmed.match(/^---+$/)) {
+          y += 10
+          doc.setDrawColor(200, 200, 200)
+          doc.line(margin, y, pageWidth - margin, y)
+          y += 15
+          continue
+        }
+
+        // Blockquote
+        if (trimmed.startsWith('> ')) {
+          addNewPageIfNeeded(20)
+          doc.setFontSize(10)
+          doc.setFont('helvetica', 'italic')
+          doc.setTextColor(100, 100, 100)
+          const text = cleanText(trimmed.slice(2))
+          const splitText = doc.splitTextToSize(text, maxWidth - 20)
+          doc.setDrawColor(224, 122, 95)
+          doc.setLineWidth(2)
+          doc.line(margin, y - 4, margin, y + splitText.length * 14)
+          doc.text(splitText, margin + 12, y)
+          y += splitText.length * 14 + 8
+          doc.setTextColor(0, 0, 0)
+          doc.setLineWidth(0.5)
+          continue
+        }
+
+        // Table row
+        if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+          const cells = trimmed.split('|').slice(1, -1).map(c => cleanText(c.trim()))
+          addNewPageIfNeeded(18)
+          doc.setFontSize(9)
+          doc.setFont('helvetica', 'normal')
+          const cellWidth = maxWidth / cells.length
+          cells.forEach((cell, i) => {
+            const cellText = doc.splitTextToSize(cell, cellWidth - 8)
+            doc.text(cellText, margin + i * cellWidth + 4, y)
+          })
+          y += 14
+          continue
+        }
+
+        // List item
+        if (trimmed.match(/^[-*] /)) {
+          addNewPageIfNeeded(16)
+          doc.setFontSize(10)
+          doc.setFont('helvetica', 'normal')
+          const text = cleanText(trimmed.slice(2))
+          const splitText = doc.splitTextToSize(text, maxWidth - 15)
+          doc.text('•', margin, y)
+          doc.text(splitText, margin + 15, y)
+          y += splitText.length * 14 + 4
+          continue
+        }
+
+        // Regular paragraph
+        addNewPageIfNeeded(16)
+        doc.setFontSize(10)
+        doc.setFont('helvetica', 'normal')
+        const text = cleanText(trimmed)
+        const splitText = doc.splitTextToSize(text, maxWidth)
+        doc.text(splitText, margin, y)
+        y += splitText.length * 14 + 6
+      }
+
+      doc.save(filename)
     } catch (e) {
       console.error('Error generating PDF:', e)
       alert('Failed to generate PDF. Please try again.')
