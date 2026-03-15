@@ -51,7 +51,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     // Get accurate total count and all project numbers for this org
     const { data: allProjects, error: allError } = await supabaseAdmin
       .from('projects')
-      .select('project_number, pi_names, total_cost, fiscal_year, org_state, org_city, org_type, primary_category, project_end')
+      .select('project_number, pi_names, total_cost, fiscal_year, org_state, org_city, org_type, primary_category, project_end, title')
       .eq('org_name', orgName)
       .gte('fiscal_year', MIN_FISCAL_YEAR)
 
@@ -259,8 +259,64 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       completed: completedCount,
     }
 
-    // Calculate total pages
-    const totalFiltered = filteredCount || 0
+    // Calculate accurate filtered count from deduplicated data
+    // The database count includes duplicate rows for different fiscal years
+    let filteredDedupedProjects = allDedupedProjects
+
+    // Apply search filter to deduplicated projects
+    if (search) {
+      const searchLower = search.toLowerCase()
+      filteredDedupedProjects = filteredDedupedProjects.filter(p =>
+        (p as { title?: string }).title?.toLowerCase().includes(searchLower) ||
+        p.pi_names?.toLowerCase().includes(searchLower)
+      )
+    }
+
+    // Apply category filter
+    if (category) {
+      filteredDedupedProjects = filteredDedupedProjects.filter(p =>
+        (p as { primary_category?: string }).primary_category === category
+      )
+    }
+
+    // Apply year filter
+    if (year) {
+      const yearNum = parseInt(year, 10)
+      filteredDedupedProjects = filteredDedupedProjects.filter(p => p.fiscal_year === yearNum)
+    }
+
+    // Apply status filter
+    if (status === 'active') {
+      filteredDedupedProjects = filteredDedupedProjects.filter(p => {
+        const projectEnd = (p as { project_end?: string }).project_end
+        return projectEnd && projectEnd >= today
+      })
+    } else if (status === 'completed') {
+      filteredDedupedProjects = filteredDedupedProjects.filter(p => {
+        const projectEnd = (p as { project_end?: string }).project_end
+        return projectEnd && projectEnd < today
+      })
+    }
+
+    // Apply quick filters
+    if (hasPatents) {
+      filteredDedupedProjects = filteredDedupedProjects.filter(p =>
+        p.project_number && projectsWithPatents.has(p.project_number)
+      )
+    }
+    if (hasPubs) {
+      filteredDedupedProjects = filteredDedupedProjects.filter(p =>
+        p.project_number && projectsWithPubs.has(p.project_number)
+      )
+    }
+    if (hasTrials) {
+      filteredDedupedProjects = filteredDedupedProjects.filter(p =>
+        p.project_number && projectsWithTrials.has(p.project_number)
+      )
+    }
+
+    // Calculate total pages from deduplicated filtered count
+    const totalFiltered = filteredDedupedProjects.length
     const totalPages = Math.ceil(totalFiltered / limit)
 
     return NextResponse.json({
