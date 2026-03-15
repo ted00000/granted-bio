@@ -151,7 +151,7 @@ export function FilterChips({
     Object.values(quickFilters).filter(Boolean).length
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Header with show/hide toggle and clear button */}
       {!hideHeader && (
         <div className="flex items-center justify-between">
@@ -164,7 +164,7 @@ export function FilterChips({
             </button>
             <span className="text-gray-300">·</span>
             <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
-              Filter Results
+              Filters
             </h3>
             {!isExpanded && activeFilterCount > 0 && (
               <span className="text-xs text-gray-500">
@@ -178,56 +178,58 @@ export function FilterChips({
               className="text-xs text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
               disabled={isLoading}
             >
-              Clear filters
+              Clear
             </button>
           )}
         </div>
       )}
 
-      {/* Quick filters */}
+      {/* Quick filters - toggles in a subtle card */}
       {isExpanded && (
-      <div className="flex flex-wrap gap-2">
-        {[
-          { key: 'activeOnly' as const, label: 'Active', count: quickFilterCounts?.active },
-          { key: 'sbirSttrOnly' as const, label: 'SBIR/STTR', count: quickFilterCounts?.sbirSttr },
-          { key: 'hasPatents' as const, label: 'Has Patents', count: quickFilterCounts?.patents },
-          { key: 'hasClinicalTrials' as const, label: 'Has Trials', count: quickFilterCounts?.clinicalTrials },
-        ].map(({ key, label, count }) => {
-          const isSelected = quickFilters[key]
-          const isDisabled = isLoading || (!isSelected && count === 0)
-          return (
-            <button
-              key={key}
-              onClick={() => toggleQuickFilter(key)}
-              disabled={isDisabled}
-              className={`
-                px-2.5 py-1 text-xs rounded-full border transition-all
-                ${isSelected
-                  ? 'bg-emerald-500 text-white border-emerald-500'
-                  : count === 0
-                    ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-400'
-                }
-                ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
-              `}
-            >
-              {label}
-              {count !== undefined && (
-                <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
-                  {count}
-                </span>
-              )}
-            </button>
-          )
-        })}
+      <div className="bg-gray-50 rounded-lg p-3">
+        <div className="flex flex-wrap gap-1.5">
+          {[
+            { key: 'activeOnly' as const, label: 'Active', count: quickFilterCounts?.active },
+            { key: 'sbirSttrOnly' as const, label: 'SBIR/STTR', count: quickFilterCounts?.sbirSttr },
+            { key: 'hasPatents' as const, label: 'Has Patents', count: quickFilterCounts?.patents },
+            { key: 'hasClinicalTrials' as const, label: 'Has Trials', count: quickFilterCounts?.clinicalTrials },
+          ].map(({ key, label, count }) => {
+            const isSelected = quickFilters[key]
+            const isDisabled = isLoading || (!isSelected && count === 0)
+            return (
+              <button
+                key={key}
+                onClick={() => toggleQuickFilter(key)}
+                disabled={isDisabled}
+                className={`
+                  px-2 py-1 text-xs rounded-md transition-all
+                  ${isSelected
+                    ? 'bg-emerald-500 text-white'
+                    : count === 0
+                      ? 'bg-white/50 text-gray-300 cursor-not-allowed'
+                      : 'bg-white text-gray-600 hover:bg-emerald-50'
+                  }
+                  ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
+                `}
+              >
+                {label}
+                {count !== undefined && (
+                  <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                    {count}
+                  </span>
+                )}
+              </button>
+            )
+          })}
+        </div>
       </div>
       )}
 
       {/* Category filters */}
       {isExpanded && sortedCategories.length > 0 && (
         <div>
-          <h4 className="text-xs text-gray-500 mb-2">Life Science Area</h4>
-          <div className="flex flex-wrap gap-2">
+          <h4 className="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">Life Science Area</h4>
+          <div className="flex flex-wrap gap-1.5">
             {sortedCategories.map(([category]) => {
               const isSelected = selectedCategories.includes(category)
               const label = CATEGORY_LABELS[category] || category.replace(/_/g, ' ')
@@ -239,7 +241,7 @@ export function FilterChips({
                   onClick={() => toggleCategory(category)}
                   disabled={isDisabled}
                   className={`
-                    px-3 py-1.5 text-xs rounded-full border transition-all
+                    px-2 py-1 text-xs rounded-md border transition-all
                     ${isSelected
                       ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
                       : displayCount === 0
@@ -250,7 +252,7 @@ export function FilterChips({
                   `}
                 >
                   <span className="capitalize">{label}</span>
-                  <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                  <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
                     {displayCount.toLocaleString()}
                   </span>
                 </button>
@@ -263,8 +265,8 @@ export function FilterChips({
       {/* Org type filters */}
       {isExpanded && sortedOrgTypes.length > 0 && (
         <div>
-          <h4 className="text-xs text-gray-500 mb-2">Organization Type</h4>
-          <div className="flex flex-wrap gap-2">
+          <h4 className="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">Organization Type</h4>
+          <div className="flex flex-wrap gap-1.5">
             {sortedOrgTypes.map(([orgType]) => {
               const isSelected = selectedOrgTypes.includes(orgType)
               const label = ORG_TYPE_LABELS[orgType] || orgType.replace(/_/g, ' ')
@@ -276,7 +278,7 @@ export function FilterChips({
                   onClick={() => toggleOrgType(orgType)}
                   disabled={isDisabled}
                   className={`
-                    px-3 py-1.5 text-xs rounded-full border transition-all
+                    px-2 py-1 text-xs rounded-md border transition-all
                     ${isSelected
                       ? 'bg-gray-800 text-white border-gray-800'
                       : displayCount === 0
@@ -287,7 +289,7 @@ export function FilterChips({
                   `}
                 >
                   <span className="capitalize">{label}</span>
-                  <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
+                  <span className={`ml-1 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
                     {displayCount.toLocaleString()}
                   </span>
                 </button>

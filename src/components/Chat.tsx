@@ -1942,23 +1942,22 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                   </div>
                 )}
 
-                {/* Stats section with match quality */}
+                {/* Stats card with count and match quality */}
                 {toolResults.length > 0 && searchContext ? (
-                  <div className="pb-4 border-b border-gray-200">
-                    <div className="text-3xl font-semibold tracking-tight text-gray-900">
-                      {(filteredResults || searchContext.originalResults).total_count.toLocaleString()}
+                  <div className="bg-white rounded-lg border border-gray-100 p-4 mb-4">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-semibold tracking-tight text-gray-900">
+                        {(filteredResults || searchContext.originalResults).total_count.toLocaleString()}
+                      </span>
+                      <span className="text-sm text-gray-400">
+                        {persona === 'trials' ? 'trials' : 'projects'}
+                        {filteredResults && ' (filtered)'}
+                      </span>
                     </div>
-                    <div className="text-sm text-gray-400 mt-1">
-                      {persona === 'trials' ? 'trials' : 'projects'} found
-                      {filteredResults && ' (filtered)'}
-                    </div>
-                    <div className="text-xs text-gray-400 mt-2">
-                      Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
-                    </div>
-                    {/* Match quality chips */}
-                    <div className="mt-3">
-                      <h4 className="text-xs text-gray-500 mb-1.5">Match Quality</h4>
-                      <div className="flex flex-wrap gap-1.5">
+                    {/* Match quality - inline selector */}
+                    <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+                      <span className="text-xs text-gray-500">Match:</span>
+                      <div className="flex gap-1">
                         {[
                           { level: 'low' as const, label: 'Broad', count: precisionCounts?.low },
                           { level: 'med' as const, label: 'Balanced', count: precisionCounts?.med },
@@ -1970,10 +1969,10 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                               key={level}
                               onClick={() => setPrecision(level)}
                               className={`
-                                px-2.5 py-1 text-xs rounded-full border transition-all
+                                px-2 py-0.5 text-xs rounded transition-all
                                 ${isSelected
-                                  ? 'bg-indigo-500 text-white border-indigo-500'
-                                  : 'bg-white text-gray-600 border-gray-200 hover:border-indigo-400'
+                                  ? 'bg-indigo-500 text-white'
+                                  : 'text-gray-500 hover:bg-gray-100'
                                 }
                               `}
                             >
@@ -1990,7 +1989,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                     </div>
                   </div>
                 ) : isLoading ? (
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <div className="flex items-center gap-2 text-sm text-gray-400 py-4">
                     <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
                     <span>Searching...</span>
                   </div>
