@@ -976,7 +976,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         {trial.study_status && (
                           <>
                             <span>•</span>
-                            <span className={`px-1.5 py-0.5 rounded text-xs capitalize ${
+                            <span className={`px-1.5 py-0.5 rounded-md text-xs capitalize ${
                               trial.study_status === 'RECRUITING' ? 'bg-green-50 text-green-700' :
                               trial.study_status === 'COMPLETED' ? 'bg-blue-50 text-blue-700' :
                               'bg-gray-100 text-gray-600'
@@ -988,7 +988,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         {trial.phase && (
                           <>
                             <span>•</span>
-                            <span className="px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded">
+                            <span className="px-1.5 py-0.5 bg-purple-50 text-purple-700 rounded-md text-xs">
                               {trial.phase.replace('PHASE', 'Phase ').replace('EARLY_PHASE1', 'Early Phase 1').replace('NA', 'N/A')}
                             </span>
                           </>
@@ -1004,12 +1004,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       </div>
                       <div className="flex items-center flex-wrap gap-1.5">
                         {trial.is_therapeutic_trial && (
-                          <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                          <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded-md">
                             Therapeutic
                           </span>
                         )}
                         {trial.is_diagnostic_trial && (
-                          <span className="px-2 py-0.5 text-xs bg-teal-50 text-teal-700 rounded">
+                          <span className="px-2 py-0.5 text-xs bg-teal-50 text-teal-700 rounded-md">
                             Diagnostic
                           </span>
                         )}
