@@ -202,12 +202,12 @@ export function FilterChips({
                 onClick={() => toggleQuickFilter(key)}
                 disabled={isDisabled}
                 className={`
-                  px-2 py-1 text-xs rounded-md transition-all
+                  px-2 py-1 text-xs rounded-md border transition-all
                   ${isSelected
-                    ? 'bg-emerald-500 text-white'
+                    ? 'bg-emerald-500 text-white border-emerald-500'
                     : count === 0
-                      ? 'bg-white/50 text-gray-300 cursor-not-allowed'
-                      : 'bg-white text-gray-600 hover:bg-emerald-50'
+                      ? 'bg-white/50 text-gray-300 border-gray-100 cursor-not-allowed'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-emerald-400'
                   }
                   ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
                 `}
@@ -246,7 +246,7 @@ export function FilterChips({
                       ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
                       : displayCount === 0
                         ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
-                        : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
+                        : 'bg-white text-gray-600 border-gray-300 hover:border-[#E07A5F]'
                     }
                     ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
                   `}
@@ -283,7 +283,7 @@ export function FilterChips({
                       ? 'bg-gray-800 text-white border-gray-800'
                       : displayCount === 0
                         ? 'bg-gray-50 text-gray-300 border-gray-100 cursor-not-allowed'
-                        : 'bg-white text-gray-600 border-gray-200 hover:border-gray-400'
+                        : 'bg-white text-gray-600 border-gray-300 hover:border-gray-500'
                     }
                     ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}
                   `}
