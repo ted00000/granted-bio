@@ -20,6 +20,20 @@ function getCoreProjectNumber(projectNumber: string | null): string {
   core = core.replace(/-[A-Z]\d+$/, '')
   return core
 }
+
+/**
+ * Generate a deduplication key for a project.
+ * Uses core project number when available, otherwise falls back to title + org_name.
+ * This ensures projects without project_numbers can still be deduplicated across fiscal years.
+ */
+function getProjectDedupeKey(project: { project_number: string | null; title: string; org_name: string | null }): string {
+  const coreKey = getCoreProjectNumber(project.project_number)
+  if (coreKey) return coreKey
+  // Fallback: use normalized title + org_name (same project across fiscal years has same title/org)
+  const titleKey = (project.title || '').toLowerCase().trim()
+  const orgKey = (project.org_name || '').toLowerCase().trim()
+  return `${titleKey}|${orgKey}`
+}
 import { generateEmbedding } from '@/lib/openai'
 import type {
   SearchProjectsParams,
@@ -529,11 +543,10 @@ export async function keywordSearch(
       }
     }
 
-    // Step 3: Deduplicate by CORE project_number, keeping the most recent fiscal year
+    // Step 3: Deduplicate by CORE project_number (or title+org fallback), keeping the most recent fiscal year
     const seenProjects = new Map<string, typeof allProjects[0]>()
     for (const project of allProjects) {
-      const coreKey = getCoreProjectNumber(project.project_number)
-      const key = coreKey || String(project.application_id)
+      const key = getProjectDedupeKey(project)
       const existing = seenProjects.get(key)
       if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
         seenProjects.set(key, project)
@@ -904,13 +917,12 @@ export async function searchProjectsHybrid(
       allProjects = allProjects.filter(p => (p.clinical_trial_count || 0) > 0)
     }
 
-    // Deduplicate by CORE project_number, keeping the most recent fiscal year
+    // Deduplicate by CORE project_number (or title+org fallback), keeping the most recent fiscal year
     // This prevents the same project from appearing multiple times across fiscal years
     // NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project
     const seenProjects = new Map<string, typeof allProjects[0]>()
     for (const project of allProjects) {
-      const coreKey = getCoreProjectNumber(project.project_number)
-      const key = coreKey || String(project.application_id) // fallback to application_id if no project_number
+      const key = getProjectDedupeKey(project)
       const existing = seenProjects.get(key)
       if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
         seenProjects.set(key, project)
@@ -1099,12 +1111,11 @@ export async function searchProjectsSemantic(
       allProjects = allProjects.filter(p => (p.clinical_trial_count || 0) > 0)
     }
 
-    // Deduplicate by CORE project_number, keeping the most recent fiscal year
+    // Deduplicate by CORE project_number (or title+org fallback), keeping the most recent fiscal year
     // NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project
     const seenProjects = new Map<string, typeof allProjects[0]>()
     for (const project of allProjects) {
-      const coreKey = getCoreProjectNumber(project.project_number)
-      const key = coreKey || String(project.application_id)
+      const key = getProjectDedupeKey(project)
       const existing = seenProjects.get(key)
       if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
         seenProjects.set(key, project)
