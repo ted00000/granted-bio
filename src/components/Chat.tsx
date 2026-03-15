@@ -894,7 +894,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         }
                       `}
                     >
-                      <span className="capitalize">{status.replace(/_/g, ' ')}</span>
+                      <span className="capitalize">{status.toLowerCase().replace(/_/g, ' ')}</span>
                       <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
                         {count}
                       </span>
@@ -976,12 +976,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         {trial.study_status && (
                           <>
                             <span>•</span>
-                            <span className={`px-1.5 py-0.5 rounded text-xs ${
+                            <span className={`px-1.5 py-0.5 rounded text-xs capitalize ${
                               trial.study_status === 'RECRUITING' ? 'bg-green-50 text-green-700' :
                               trial.study_status === 'COMPLETED' ? 'bg-blue-50 text-blue-700' :
                               'bg-gray-100 text-gray-600'
                             }`}>
-                              {trial.study_status.replace(/_/g, ' ')}
+                              {trial.study_status.toLowerCase().replace(/_/g, ' ')}
                             </span>
                           </>
                         )}
@@ -2091,7 +2091,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                                       }
                                     `}
                                   >
-                                    <span className="capitalize">{status.replace(/_/g, ' ')}</span>
+                                    <span className="capitalize">{status.toLowerCase().replace(/_/g, ' ')}</span>
                                     <span className={`ml-1.5 ${isSelected ? 'text-white/80' : 'text-gray-400'}`}>
                                       {(count as number).toLocaleString()}
                                     </span>
