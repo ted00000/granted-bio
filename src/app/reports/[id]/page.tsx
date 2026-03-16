@@ -138,6 +138,12 @@ export default function ReportDetailPage({
           .replace(/\*\*([^*]+)\*\*/g, '$1')
           .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
           .replace(/`([^`]+)`/g, '$1')
+          // Replace problematic Unicode characters that cause jsPDF letter-spacing issues
+          .replace(/[""]/g, '"')
+          .replace(/['']/g, "'")
+          .replace(/[–—]/g, '-')
+          .replace(/[±]/g, '+/-')
+          .replace(/[…]/g, '...')
       }
 
       const addNewPageIfNeeded = (height: number) => {
@@ -187,19 +193,15 @@ export default function ReportDetailPage({
 
         // H2 Header
         if (trimmed.startsWith('## ')) {
-          y += 12
-          addNewPageIfNeeded(20)
-          doc.setDrawColor(229, 231, 235)
-          doc.setLineWidth(0.5)
-          doc.line(margin, y - 4, pageWidth - margin, y - 4)
-          y += 4
+          y += 16
+          addNewPageIfNeeded(24)
           doc.setFontSize(13)
           doc.setFont('helvetica', 'bold')
           doc.setTextColor(17, 24, 39)
           const text = cleanText(trimmed.slice(3))
           const splitText = doc.splitTextToSize(text, maxWidth)
           doc.text(splitText, margin, y)
-          y += splitText.length * 16 + 8
+          y += splitText.length * 16 + 6
           isFirstElement = false
           i++
           continue
@@ -251,17 +253,17 @@ export default function ReportDetailPage({
         // Blockquote
         if (trimmed.startsWith('> ')) {
           addNewPageIfNeeded(18)
-          doc.setFontSize(9.5)
-          doc.setFont('helvetica', 'italic')
+          doc.setFontSize(9)
+          doc.setFont('helvetica', 'normal')
           doc.setTextColor(107, 114, 128)
           const text = cleanText(trimmed.slice(2))
-          const splitText = doc.splitTextToSize(text, maxWidth - 16)
-          const blockHeight = splitText.length * 12 + 4
+          const splitText = doc.splitTextToSize(text, maxWidth - 14)
+          const blockHeight = splitText.length * 11 + 2
           doc.setDrawColor(224, 122, 95)
           doc.setLineWidth(2)
-          doc.line(margin, y - 2, margin, y + blockHeight - 4)
-          doc.text(splitText, margin + 10, y)
-          y += blockHeight + 4
+          doc.line(margin, y - 2, margin, y + blockHeight - 2)
+          doc.text(splitText, margin + 8, y)
+          y += blockHeight + 6
           doc.setTextColor(0, 0, 0)
           doc.setLineWidth(0.5)
           isFirstElement = false
