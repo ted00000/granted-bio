@@ -124,6 +124,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 
     // Fetch patents for this project via junction table (using all related project numbers)
+    // This aggregates across fiscal years to show all patents for the core project
     const { data: patentLinks } = await supabaseAdmin
       .from('project_patents')
       .select('patent_id')

@@ -14,11 +14,12 @@ interface WelcomeScreenProps {
 const LENS_CONFIG: Array<{
   id: PersonaType
   label: string
+  searchLabel: string
   icon: typeof FlaskConical
 }> = [
-  { id: 'researcher', label: 'Projects', icon: FlaskConical },
-  { id: 'bd', label: 'People', icon: Users },
-  { id: 'trials', label: 'Trials', icon: Activity },
+  { id: 'researcher', label: 'Projects', searchLabel: 'project', icon: FlaskConical },
+  { id: 'bd', label: 'People', searchLabel: 'people', icon: Users },
+  { id: 'trials', label: 'Trials', searchLabel: 'trial', icon: Activity },
 ]
 
 // Search tips for each lens
@@ -99,7 +100,7 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens }: Welcom
                   value={searchInput}
                   onChange={e => setSearchInput(e.target.value.slice(0, 140))}
                   onKeyDown={handleKeyDown}
-                  placeholder={`Begin your ${LENS_CONFIG.find(l => l.id === selectedLens)?.label.toLowerCase() || 'research'} search here...`}
+                  placeholder={`Begin your ${LENS_CONFIG.find(l => l.id === selectedLens)?.searchLabel || 'research'} search here...`}
                   rows={1}
                   maxLength={140}
                   className="w-full px-4 py-3.5 bg-gray-50 border-0 rounded-xl resize-none text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-base"
