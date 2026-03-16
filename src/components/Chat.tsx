@@ -310,7 +310,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     {filtersCollapsed ? 'Show' : 'Hide'}
                   </button>
                   <span className="text-gray-300">·</span>
-                  <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+                  <span className="text-sm font-medium text-gray-500">Filter Results</span>
                   {filtersCollapsed && activeFilterCount > 0 && (
                     <span className="text-xs text-gray-500">
                       ({activeFilterCount} active)
@@ -347,8 +347,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {data.all_results?.length > 0 && (
           <div className={isMobile ? 'p-4' : 'p-6'}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
-                {persona === 'bd' ? 'People Results by Relevancy' : persona === 'trials' ? 'Trial Results by Relevancy' : 'Project Results by Relevancy'}
+              <h3 className="text-sm font-medium text-gray-500">
+                {persona === 'bd' ? 'People' : persona === 'trials' ? 'Trials' : 'Projects'}
               </h3>
               <button
                 onClick={() => exportToCSV(data.all_results)}
@@ -590,7 +590,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     {filtersCollapsed ? 'Show' : 'Hide'}
                   </button>
                   <span className="text-gray-300">·</span>
-                  <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filter Results</span>
+                  <span className="text-sm font-medium text-gray-500">Filter Results</span>
                   {filtersCollapsed && activeFilterCount > 0 && (
                     <span className="text-xs text-gray-500">
                       ({activeFilterCount} active)
@@ -627,8 +627,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {data.all_results?.length > 0 && (
           <div className={isMobile ? 'p-4' : 'p-6'}>
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
-                {persona === 'bd' ? 'People Results by Relevancy' : persona === 'trials' ? 'Trial Results by Relevancy' : 'Project Results by Relevancy'}
+              <h3 className="text-sm font-medium text-gray-500">
+                {persona === 'bd' ? 'People' : persona === 'trials' ? 'Trials' : 'Projects'}
               </h3>
               <button
                 onClick={() => exportToCSV(data.all_results)}
@@ -928,8 +928,8 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
 
           return filteredTrials.length > 0 && (
             <div className={isMobile ? 'p-4' : 'p-6'}>
-              <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider mb-4">
-                {(trialStatusFilters.length > 0 || trialTypeFilter) ? `${displayCount} Filtered Trials` : 'Trial Results by Relevancy'}
+              <h3 className="text-sm font-medium text-gray-500 mb-4">
+                {(trialStatusFilters.length > 0 || trialTypeFilter) ? `${displayCount} Filtered` : 'Trials'}
               </h3>
               <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
                 {filteredTrials.slice(0, isMobile ? 30 : 50).map((trial) => {
@@ -2055,7 +2055,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                                 {trialFiltersExpanded ? 'Hide' : 'Show'}
                               </button>
                               <span className="text-gray-300">·</span>
-                              <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
+                              <h3 className="text-sm font-medium text-gray-500">
                                 Filter Results
                               </h3>
                               {!trialFiltersExpanded && activeFilterCount > 0 && (

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Bookmark, ChevronLeft } from 'lucide-react'
+import { Bookmark, ChevronLeft, FileText, Heart, BookOpen, Lightbulb, Activity } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 
 interface Project {
@@ -340,32 +340,37 @@ export default function ProjectPage() {
 
             {/* Tabs */}
             <div className="bg-white rounded-lg shadow-sm">
-              <div className="border-b border-gray-100 overflow-x-auto">
-                <nav className="flex min-w-max">
+              <div className="p-3 lg:p-4 overflow-x-auto">
+                <nav className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full">
                   {[
-                    { key: 'abstract', label: 'Abstract' },
-                    { key: 'phr', label: 'PHR' },
-                    { key: 'publications', label: 'Pubs', count: stats.publicationCount },
-                    { key: 'patents', label: 'Patents', count: stats.patentCount },
-                    { key: 'clinical', label: 'Trials', count: stats.clinicalStudyCount },
-                  ].map((tab) => (
-                    <button
-                      key={tab.key}
-                      onClick={() => setActiveTab(tab.key as typeof activeTab)}
-                      className={`px-4 lg:px-5 py-3 text-sm font-medium transition-colors whitespace-nowrap ${
-                        activeTab === tab.key
-                          ? 'border-b-2 border-[#E07A5F] text-[#E07A5F]'
-                          : 'text-gray-500 hover:text-gray-700'
-                      }`}
-                    >
-                      {tab.label}
-                      {tab.count !== undefined && tab.count > 0 && (
-                        <span className="ml-1 lg:ml-1.5 px-1.5 py-0.5 text-xs bg-gray-100 text-gray-600 rounded">
-                          {tab.count}
-                        </span>
-                      )}
-                    </button>
-                  ))}
+                    { key: 'abstract', label: 'Abstract', icon: FileText },
+                    { key: 'phr', label: 'PHR', icon: Heart },
+                    { key: 'publications', label: 'Pubs', icon: BookOpen, count: stats.publicationCount },
+                    { key: 'patents', label: 'Patents', icon: Lightbulb, count: stats.patentCount },
+                    { key: 'clinical', label: 'Trials', icon: Activity, count: stats.clinicalStudyCount },
+                  ].map((tab) => {
+                    const Icon = tab.icon
+                    const isActive = activeTab === tab.key
+                    return (
+                      <button
+                        key={tab.key}
+                        onClick={() => setActiveTab(tab.key as typeof activeTab)}
+                        className={`flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-full transition-all whitespace-nowrap ${
+                          isActive
+                            ? 'bg-white text-gray-900 shadow-sm'
+                            : 'text-gray-500 hover:text-gray-700'
+                        }`}
+                      >
+                        <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#E07A5F]' : ''}`} strokeWidth={isActive ? 2 : 1.5} />
+                        <span className={isActive ? 'font-medium' : ''}>{tab.label}</span>
+                        {tab.count !== undefined && tab.count > 0 && (
+                          <span className={`px-1.5 py-0.5 text-xs rounded ${isActive ? 'bg-gray-100 text-gray-600' : 'bg-gray-200/50 text-gray-500'}`}>
+                            {tab.count}
+                          </span>
+                        )}
+                      </button>
+                    )
+                  })}
                 </nav>
               </div>
 
@@ -480,27 +485,8 @@ export default function ProjectPage() {
           {/* Sidebar - hidden on mobile, shown on desktop */}
           <div className="hidden lg:block w-72 flex-shrink-0">
             <div className="bg-white rounded-lg shadow-sm p-5 sticky top-20">
-              {/* Quick Stats */}
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">
-                Quick Stats
-              </h3>
-              <div className="space-y-3">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Publications</span>
-                  <span className="font-medium text-gray-900">{stats.publicationCount}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Patents</span>
-                  <span className="font-medium text-gray-900">{stats.patentCount}</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Clinical Trials</span>
-                  <span className="font-medium text-gray-900">{stats.clinicalStudyCount}</span>
-                </div>
-              </div>
-
               {/* Related Links */}
-              <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wide mt-8 mb-4">
+              <h3 className="text-sm font-medium text-gray-500 mb-4">
                 Related
               </h3>
               <div className="space-y-3">

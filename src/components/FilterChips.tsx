@@ -165,7 +165,7 @@ export function FilterChips({
               {isExpanded ? 'Hide' : 'Show'}
             </button>
             <span className="text-gray-300">·</span>
-            <h3 className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">
+            <h3 className="text-sm font-medium text-gray-500">
               Filters
             </h3>
             {!isExpanded && activeFilterCount > 0 && (

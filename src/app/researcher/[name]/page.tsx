@@ -271,24 +271,19 @@ export default function ResearcherPage() {
               </button>
             </div>
             {/* Researcher info */}
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gray-100 rounded-full">
-                <User className="w-6 h-6 text-gray-600" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-gray-900">
-                  {data.pi_name}
-                </h1>
-                {data.primary_org && (
-                  <Link
-                    href={`/org/${encodeURIComponent(data.primary_org)}`}
-                    className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors"
-                  >
-                    {data.primary_org}
-                    {data.org_state && `, ${data.org_state}`}
-                  </Link>
-                )}
-              </div>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900">
+                {data.pi_name}
+              </h1>
+              {data.primary_org && (
+                <Link
+                  href={`/org/${encodeURIComponent(data.primary_org)}`}
+                  className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors"
+                >
+                  {data.primary_org}
+                  {data.org_state && `, ${data.org_state}`}
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -342,7 +337,7 @@ export default function ResearcherPage() {
                     {filtersCollapsed ? 'Show' : 'Hide'}
                   </button>
                   <span className="text-gray-300">·</span>
-                  <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filters</span>
+                  <span className="text-sm font-medium text-gray-500">Filters</span>
                   {filtersCollapsed && hasActiveFilters && (
                     <span className="text-xs text-gray-500">
                       ({(selectedStatus ? 1 : 0) + (selectedCategory ? 1 : 0) + (selectedYear ? 1 : 0) + (hasPatentsFilter ? 1 : 0) + (hasPubsFilter ? 1 : 0) + (hasTrialsFilter ? 1 : 0)} active)

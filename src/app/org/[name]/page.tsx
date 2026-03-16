@@ -272,19 +272,14 @@ export default function OrgPage() {
               </button>
             </div>
             {/* Org info */}
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-gray-100 rounded-full">
-                <Building2 className="w-6 h-6 text-gray-600" />
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-gray-900">
-                  {data.org_name}
-                </h1>
-                <p className="text-sm text-gray-500">
-                  {data.org_city && `${data.org_city}, `}{data.org_state}
-                  {data.org_type && ` • ${data.org_type}`}
-                </p>
-              </div>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900">
+                {data.org_name}
+              </h1>
+              <p className="text-sm text-gray-500">
+                {data.org_city && `${data.org_city}, `}{data.org_state}
+                {data.org_type && ` • ${data.org_type}`}
+              </p>
             </div>
           </div>
         </div>
@@ -338,7 +333,7 @@ export default function OrgPage() {
                     {filtersCollapsed ? 'Show' : 'Hide'}
                   </button>
                   <span className="text-gray-300">·</span>
-                  <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wider">Filters</span>
+                  <span className="text-sm font-medium text-gray-500">Filters</span>
                   {filtersCollapsed && hasActiveFilters && (
                     <span className="text-xs text-gray-500">
                       ({(selectedStatus ? 1 : 0) + (selectedCategory ? 1 : 0) + (selectedYear ? 1 : 0) + (hasPatentsFilter ? 1 : 0) + (hasPubsFilter ? 1 : 0) + (hasTrialsFilter ? 1 : 0)} active)
