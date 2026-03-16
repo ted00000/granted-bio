@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { FileText, Calendar, Users, Building2, Tag, ExternalLink, ChevronLeft, Quote, Bookmark, Download } from 'lucide-react'
+import { FileText, Calendar, Users, Building2, Tag, ExternalLink, ChevronLeft, Quote, Bookmark } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 
 interface PatentData {
@@ -237,8 +237,8 @@ export default function PatentDetailPage() {
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#E07A5F] transition-colors flex-shrink-0"
               >
-                <Download className="w-3.5 h-3.5" />
-                USPTO PDF
+                <ExternalLink className="w-3.5 h-3.5" />
+                View on USPTO
               </a>
             </div>
 
@@ -290,7 +290,7 @@ export default function PatentDetailPage() {
               </h2>
               <dl className="space-y-3 text-sm">
                 <div>
-                  <dt className="text-gray-500">Grant Date</dt>
+                  <dt className="text-gray-500">Issue Date</dt>
                   <dd className="text-gray-900 font-medium">{formatDate(patent.patent_date)}</dd>
                 </div>
                 {patent.cpc_codes.length > 0 && (
@@ -341,8 +341,8 @@ export default function PatentDetailPage() {
               rel="noopener noreferrer"
               className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors inline-flex items-center gap-1"
             >
-              <Download className="w-3.5 h-3.5" />
-              Download full patent from USPTO
+              <ExternalLink className="w-3.5 h-3.5" />
+              View full patent on USPTO
             </a>
           </div>
         </div>
