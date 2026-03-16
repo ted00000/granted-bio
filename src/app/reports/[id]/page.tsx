@@ -134,16 +134,77 @@ export default function ReportDetailPage({
       let isFirstElement = true
 
       const cleanText = (text: string): string => {
-        return text
+        let result = text
+          // Remove markdown formatting
           .replace(/\*\*([^*]+)\*\*/g, '$1')
           .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
           .replace(/`([^`]+)`/g, '$1')
-          // Replace problematic Unicode characters that cause jsPDF letter-spacing issues
+          // Replace smart quotes and dashes
           .replace(/[""]/g, '"')
           .replace(/['']/g, "'")
           .replace(/[–—]/g, '-')
-          .replace(/[±]/g, '+/-')
           .replace(/[…]/g, '...')
+          // Replace mathematical and scientific symbols
+          .replace(/[±]/g, '+/-')
+          .replace(/[×]/g, 'x')
+          .replace(/[÷]/g, '/')
+          .replace(/[≤]/g, '<=')
+          .replace(/[≥]/g, '>=')
+          .replace(/[≈]/g, '~')
+          .replace(/[≠]/g, '!=')
+          .replace(/[°]/g, ' deg')
+          .replace(/[µμ]/g, 'u')
+          // Replace Greek letters with names
+          .replace(/[αΑ]/g, 'alpha')
+          .replace(/[βΒ]/g, 'beta')
+          .replace(/[γΓ]/g, 'gamma')
+          .replace(/[δΔ]/g, 'delta')
+          .replace(/[εΕ]/g, 'epsilon')
+          .replace(/[ζΖ]/g, 'zeta')
+          .replace(/[ηΗ]/g, 'eta')
+          .replace(/[θΘ]/g, 'theta')
+          .replace(/[ιΙ]/g, 'iota')
+          .replace(/[κΚ]/g, 'kappa')
+          .replace(/[λΛ]/g, 'lambda')
+          .replace(/[νΝ]/g, 'nu')
+          .replace(/[ξΞ]/g, 'xi')
+          .replace(/[οΟ]/g, 'omicron')
+          .replace(/[πΠ]/g, 'pi')
+          .replace(/[ρΡ]/g, 'rho')
+          .replace(/[σΣς]/g, 'sigma')
+          .replace(/[τΤ]/g, 'tau')
+          .replace(/[υΥ]/g, 'upsilon')
+          .replace(/[φΦ]/g, 'phi')
+          .replace(/[χΧ]/g, 'chi')
+          .replace(/[ψΨ]/g, 'psi')
+          .replace(/[ωΩ]/g, 'omega')
+          // Replace superscripts and subscripts
+          .replace(/[⁰]/g, '0')
+          .replace(/[¹]/g, '1')
+          .replace(/[²]/g, '2')
+          .replace(/[³]/g, '3')
+          .replace(/[⁴]/g, '4')
+          .replace(/[⁵]/g, '5')
+          .replace(/[⁶]/g, '6')
+          .replace(/[⁷]/g, '7')
+          .replace(/[⁸]/g, '8')
+          .replace(/[⁹]/g, '9')
+          .replace(/[₀]/g, '0')
+          .replace(/[₁]/g, '1')
+          .replace(/[₂]/g, '2')
+          .replace(/[₃]/g, '3')
+          .replace(/[₄]/g, '4')
+          .replace(/[₅]/g, '5')
+          .replace(/[₆]/g, '6')
+          .replace(/[₇]/g, '7')
+          .replace(/[₈]/g, '8')
+          .replace(/[₉]/g, '9')
+
+        // Strip any remaining non-ASCII characters that could cause rendering issues
+        // Keep only printable ASCII (32-126) plus newlines and tabs
+        result = result.replace(/[^\x20-\x7E\n\t]/g, '')
+
+        return result
       }
 
       const addNewPageIfNeeded = (height: number) => {
