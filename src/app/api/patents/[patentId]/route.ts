@@ -7,6 +7,7 @@ interface PatentDetails {
   patent_abstract: string | null
   patent_date: string | null
   patent_type: string | null
+  patent_org: string | null  // Assignee
   assignees: string[]
   inventors: string[]
   cpc_codes: string[]
@@ -21,8 +22,6 @@ interface PatentDetails {
 }
 
 // GET - Fetch patent details by patent ID
-// Returns local data only - external USPTO APIs are discontinued
-// Users can click through to Google Patents for full details
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ patentId: string }> }
@@ -34,10 +33,10 @@ export async function GET(
     // Clean up patent ID - remove US prefix and non-numeric chars
     const cleanPatentId = patentId.replace(/^US/i, '').replace(/[^0-9]/g, '')
 
-    // Check if we have this patent in our database (use maybeSingle to avoid errors)
+    // Fetch patent with all available fields
     const { data: localPatent } = await supabase
       .from('patents')
-      .select('patent_id, patent_title')
+      .select('patent_id, patent_title, abstract, patent_org, issue_date, patent_type')
       .eq('patent_id', cleanPatentId)
       .maybeSingle()
 
@@ -60,10 +59,11 @@ export async function GET(
     const result: PatentDetails = {
       patent_id: cleanPatentId,
       patent_title: localPatent?.patent_title || null,
-      patent_abstract: null,
-      patent_date: null,
-      patent_type: null,
-      assignees: [],
+      patent_abstract: localPatent?.abstract || null,
+      patent_date: localPatent?.issue_date || null,
+      patent_type: localPatent?.patent_type || null,
+      patent_org: localPatent?.patent_org || null,
+      assignees: localPatent?.patent_org ? [localPatent.patent_org] : [],
       inventors: [],
       cpc_codes: [],
       cited_by_count: 0,

@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { FileText, Calendar, Users, Building2, Tag, ExternalLink, ChevronLeft, Quote, Bookmark } from 'lucide-react'
+import { FileText, Calendar, Users, Building2, Tag, ExternalLink, ChevronLeft, Quote, Bookmark, Download } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 
 interface PatentData {
@@ -12,6 +12,7 @@ interface PatentData {
   patent_abstract: string | null
   patent_date: string | null
   patent_type: string | null
+  patent_org: string | null
   assignees: string[]
   inventors: string[]
   cpc_codes: string[]
@@ -27,10 +28,8 @@ interface PatentData {
 
 interface ApiResponse {
   patent: PatentData
-  source: 'local' | 'uspto' | 'linked_only'
+  source: 'local' | 'linked_only'
 }
-
-type DataSource = 'local' | 'uspto' | 'linked_only'
 
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return 'Not specified'
@@ -53,6 +52,11 @@ function formatPatentType(type: string | null): string {
   return typeMap[type.toLowerCase()] || type
 }
 
+// USPTO PDF download URL
+function getUSPTOUrl(patentId: string): string {
+  return `https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/${patentId}`
+}
+
 export default function PatentDetailPage() {
   const params = useParams()
   const router = useRouter()
@@ -61,7 +65,6 @@ export default function PatentDetailPage() {
   const [patent, setPatent] = useState<PatentData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [dataSource, setDataSource] = useState<DataSource>('local')
   const [isSaved, setIsSaved] = useState(false)
   const [savingPatent, setSavingPatent] = useState(false)
 
@@ -123,8 +126,6 @@ export default function PatentDetailPage() {
         if (!response.ok) {
           if (response.status === 404) {
             setError('Patent not found')
-          } else if (response.status === 429) {
-            setError('USPTO API rate limited. Please try again later.')
           } else {
             setError('Failed to load patent')
           }
@@ -132,7 +133,6 @@ export default function PatentDetailPage() {
         }
         const data: ApiResponse = await response.json()
         setPatent(data.patent)
-        setDataSource(data.source)
       } catch (e) {
         console.error('Error fetching patent:', e)
         setError('Failed to load patent')
@@ -227,33 +227,20 @@ export default function PatentDetailPage() {
                 <h1 className="text-xl font-semibold text-gray-900 leading-snug">
                   {patent.patent_title || `Patent US${patent.patent_id}`}
                 </h1>
+                {patent.patent_org && (
+                  <p className="text-gray-600 mt-2">{patent.patent_org}</p>
+                )}
               </div>
               <a
-                href={`https://patents.google.com/patent/US${patent.patent_id}`}
+                href={getUSPTOUrl(patent.patent_id)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#E07A5F] transition-colors flex-shrink-0"
               >
-                Google Patents
-                <ExternalLink className="w-3.5 h-3.5" />
+                <Download className="w-3.5 h-3.5" />
+                USPTO PDF
               </a>
             </div>
-
-            {(dataSource === 'linked_only' || dataSource === 'local') && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
-                <p className="text-blue-800 text-sm">
-                  For full patent details including abstract, claims, inventors, and citations, visit{' '}
-                  <a
-                    href={`https://patents.google.com/patent/US${patent.patent_id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline font-medium hover:text-blue-900"
-                  >
-                    Google Patents
-                  </a>.
-                </p>
-              </div>
-            )}
 
             {patent.patent_abstract && (
               <div className="text-gray-600 text-sm leading-relaxed">
@@ -265,39 +252,37 @@ export default function PatentDetailPage() {
 
           {/* Details Grid */}
           <div className="grid md:grid-cols-2 gap-4 mb-6">
-            {/* Inventors & Assignees */}
+            {/* Assignee */}
             <div className="bg-white rounded-lg shadow-sm p-5">
               <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Users className="w-4 h-4 text-[#E07A5F]" />
-                Inventors & Assignees
+                Assignee
               </h2>
               <dl className="space-y-3 text-sm">
-                {patent.inventors.length > 0 && (
+                {patent.assignees.length > 0 ? (
                   <div>
-                    <dt className="text-gray-500">Inventors</dt>
-                    <dd className="text-gray-900">
-                      {patent.inventors.slice(0, 5).join(', ')}
-                      {patent.inventors.length > 5 && ` +${patent.inventors.length - 5} more`}
-                    </dd>
-                  </div>
-                )}
-                {patent.assignees.length > 0 && (
-                  <div>
-                    <dt className="text-gray-500">Assignees</dt>
                     <dd className="text-gray-900">
                       {patent.assignees.map((assignee, idx) => (
                         <div key={idx} className="font-medium">{assignee}</div>
                       ))}
                     </dd>
                   </div>
+                ) : (
+                  <p className="text-gray-500 italic">View full patent on USPTO for assignee details</p>
                 )}
-                {patent.inventors.length === 0 && patent.assignees.length === 0 && (
-                  <p className="text-gray-500 italic">No inventor or assignee data available</p>
+                {patent.inventors.length > 0 && (
+                  <div className="pt-2 border-t border-gray-100">
+                    <dt className="text-gray-500 mb-1">Inventors</dt>
+                    <dd className="text-gray-900">
+                      {patent.inventors.slice(0, 5).join(', ')}
+                      {patent.inventors.length > 5 && ` +${patent.inventors.length - 5} more`}
+                    </dd>
+                  </div>
                 )}
               </dl>
             </div>
 
-            {/* Classification & Date */}
+            {/* Details */}
             <div className="bg-white rounded-lg shadow-sm p-5">
               <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-[#E07A5F]" />
@@ -351,13 +336,13 @@ export default function PatentDetailPage() {
           {/* External Link */}
           <div className="text-center">
             <a
-              href={`https://patents.google.com/patent/US${patent.patent_id}`}
+              href={getUSPTOUrl(patent.patent_id)}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors inline-flex items-center gap-1"
             >
-              View full patent on Google Patents
-              <ExternalLink className="w-3.5 h-3.5" />
+              <Download className="w-3.5 h-3.5" />
+              Download full patent from USPTO
             </a>
           </div>
         </div>
