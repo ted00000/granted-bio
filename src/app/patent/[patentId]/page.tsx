@@ -26,7 +26,7 @@ interface PatentData {
 
 interface ApiResponse {
   patent: PatentData
-  source: 'local' | 'uspto'
+  source: 'local' | 'uspto' | 'linked_only'
 }
 
 function formatDate(dateStr: string | null): string {
@@ -75,7 +75,7 @@ export default function PatentDetailPage() {
         }
         const data: ApiResponse = await response.json()
         setPatent(data.patent)
-        setIsLocalOnly(data.source === 'local')
+        setIsLocalOnly(data.source === 'local' || data.source === 'linked_only')
       } catch (e) {
         console.error('Error fetching patent:', e)
         setError('Failed to load patent')

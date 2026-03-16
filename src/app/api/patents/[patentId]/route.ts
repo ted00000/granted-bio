@@ -41,11 +41,48 @@ export async function GET(
       .limit(1)
       .single()
 
+    // If not in patents table, check if it exists in project_patents junction
     if (!localPatent) {
-      return NextResponse.json(
-        { error: 'Patent not found in database' },
-        { status: 404 }
-      )
+      const { data: linkedPatent } = await supabase
+        .from('project_patents')
+        .select('patent_id, project_number')
+        .eq('patent_id', cleanPatentId)
+        .limit(1)
+        .single()
+
+      if (!linkedPatent) {
+        return NextResponse.json(
+          { error: 'Patent not found in database' },
+          { status: 404 }
+        )
+      }
+
+      // Patent exists in linkage but no detail record - return basic info
+      const result: PatentDetails = {
+        patent_id: linkedPatent.patent_id,
+        patent_title: null,
+        patent_abstract: null,
+        patent_date: null,
+        patent_type: null,
+        assignees: [],
+        inventors: [],
+        cpc_codes: [],
+        cited_by_count: 0,
+        linked_project: null
+      }
+
+      // Get linked project
+      if (linkedPatent.project_number) {
+        const { data: project } = await supabase
+          .from('projects')
+          .select('project_number, application_id, title, org_name, total_cost')
+          .eq('project_number', linkedPatent.project_number)
+          .limit(1)
+          .single()
+        result.linked_project = project
+      }
+
+      return NextResponse.json({ patent: result, source: 'linked_only' })
     }
 
     const result: PatentDetails = {

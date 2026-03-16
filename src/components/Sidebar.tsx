@@ -88,19 +88,17 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
             className={`
               w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left mb-1
               transition-all duration-150
-              ${pathname === '/chat' && !currentPersona
+              ${pathname === '/chat' || pathname?.startsWith('/chat')
                 ? 'bg-gray-50 text-gray-900'
-                : currentPersona
-                  ? 'bg-gray-50 text-gray-900'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }
             `}
           >
             <Search
-              className={`w-5 h-5 flex-shrink-0 ${pathname === '/chat' || currentPersona ? 'text-[#E07A5F]' : 'text-gray-400'}`}
-              strokeWidth={pathname === '/chat' || currentPersona ? 2 : 1.5}
+              className={`w-5 h-5 flex-shrink-0 ${pathname === '/chat' || pathname?.startsWith('/chat') ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+              strokeWidth={pathname === '/chat' || pathname?.startsWith('/chat') ? 2 : 1.5}
             />
-            <span className={`text-sm font-medium ${pathname === '/chat' || currentPersona ? 'text-gray-900' : ''}`}>
+            <span className={`text-sm font-medium ${pathname === '/chat' || pathname?.startsWith('/chat') ? 'text-gray-900' : ''}`}>
               Search
             </span>
           </button>
