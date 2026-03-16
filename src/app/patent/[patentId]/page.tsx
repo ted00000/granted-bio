@@ -239,19 +239,18 @@ export default function PatentDetailPage() {
               </a>
             </div>
 
-            {dataSource === 'linked_only' && (
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
-                <p className="text-amber-800 text-sm">
-                  Limited data available. Visit{' '}
+            {(dataSource === 'linked_only' || dataSource === 'local') && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                <p className="text-blue-800 text-sm">
+                  For full patent details including abstract, claims, inventors, and citations, visit{' '}
                   <a
                     href={`https://patents.google.com/patent/US${patent.patent_id}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline font-medium hover:text-amber-900"
+                    className="underline font-medium hover:text-blue-900"
                   >
                     Google Patents
-                  </a>
-                  {' '}for full patent details including abstract, claims, and citations.
+                  </a>.
                 </p>
               </div>
             )}
