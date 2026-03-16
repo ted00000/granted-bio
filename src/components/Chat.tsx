@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, TrendingUp, Users, Activity, Bookmark, Download } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark, Download, FlaskConical } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
@@ -1923,14 +1923,14 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                   <span className="text-sm font-medium text-gray-900">{userQuery}</span>
                 </div>
 
-                {/* Persona switching chips - only show after results load */}
+                {/* Persona switching tabs - only show after results load */}
                 {toolResults.length > 0 && userQuery && (
-                  <div className="flex gap-1.5">
+                  <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full">
                     {[
-                      { key: 'researcher' as const, label: 'Projects' },
-                      { key: 'bd' as const, label: 'People' },
-                      { key: 'trials' as const, label: 'Trials' },
-                    ].map(({ key, label }) => {
+                      { key: 'researcher' as const, label: 'Projects', icon: FlaskConical },
+                      { key: 'bd' as const, label: 'People', icon: Users },
+                      { key: 'trials' as const, label: 'Trials', icon: Activity },
+                    ].map(({ key, label, icon: Icon }) => {
                       const isActive = persona === key
                       return (
                         <button
@@ -1941,14 +1941,15 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                             }
                           }}
                           className={`
-                            px-3 py-1.5 text-xs rounded-full border transition-all
+                            flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full transition-all
                             ${isActive
-                              ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
-                              : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
+                              ? 'bg-white text-gray-900 shadow-sm'
+                              : 'text-gray-500 hover:text-gray-700'
                             }
                           `}
                         >
-                          {label}
+                          <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#E07A5F]' : ''}`} strokeWidth={isActive ? 2 : 1.5} />
+                          <span className={isActive ? 'font-medium' : ''}>{label}</span>
                         </button>
                       )
                     })}
