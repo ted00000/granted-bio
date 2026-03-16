@@ -128,9 +128,10 @@ export default function ReportDetailPage({
 
       const pageWidth = doc.internal.pageSize.getWidth()
       const pageHeight = doc.internal.pageSize.getHeight()
-      const margin = 50
+      const margin = 54 // 0.75 inch
       const maxWidth = pageWidth - margin * 2
       let y = margin
+      let isFirstElement = true
 
       const cleanText = (text: string): string => {
         return text
@@ -143,132 +144,210 @@ export default function ReportDetailPage({
         if (y + height > pageHeight - margin) {
           doc.addPage()
           y = margin
+          return true
         }
+        return false
       }
 
+      // Collect table rows for proper rendering
       const lines = report.markdown_content.split('\n')
+      let i = 0
 
-      for (const line of lines) {
+      while (i < lines.length) {
+        const line = lines[i]
         const trimmed = line.trim()
 
         if (!trimmed) {
-          y += 8
+          y += 6
+          i++
           continue
         }
 
         // Skip table separator rows
         if (trimmed.match(/^\|[-:| ]+\|$/)) {
+          i++
           continue
         }
 
-        // Headers
+        // H1 Header
         if (trimmed.startsWith('# ')) {
-          addNewPageIfNeeded(30)
-          doc.setFontSize(18)
+          if (!isFirstElement) y += 16
+          addNewPageIfNeeded(24)
+          doc.setFontSize(16)
           doc.setFont('helvetica', 'bold')
+          doc.setTextColor(17, 24, 39)
           const text = cleanText(trimmed.slice(2))
           const splitText = doc.splitTextToSize(text, maxWidth)
           doc.text(splitText, margin, y)
-          y += splitText.length * 22 + 12
+          y += splitText.length * 20 + 8
+          isFirstElement = false
+          i++
           continue
         }
+
+        // H2 Header
         if (trimmed.startsWith('## ')) {
-          addNewPageIfNeeded(26)
-          y += 10
-          doc.setDrawColor(200, 200, 200)
-          doc.line(margin, y - 6, pageWidth - margin, y - 6)
-          doc.setFontSize(14)
+          y += 12
+          addNewPageIfNeeded(20)
+          doc.setDrawColor(229, 231, 235)
+          doc.setLineWidth(0.5)
+          doc.line(margin, y - 4, pageWidth - margin, y - 4)
+          y += 4
+          doc.setFontSize(13)
           doc.setFont('helvetica', 'bold')
+          doc.setTextColor(17, 24, 39)
           const text = cleanText(trimmed.slice(3))
           const splitText = doc.splitTextToSize(text, maxWidth)
           doc.text(splitText, margin, y)
-          y += splitText.length * 18 + 10
-          continue
-        }
-        if (trimmed.startsWith('### ')) {
-          addNewPageIfNeeded(22)
-          doc.setFontSize(12)
-          doc.setFont('helvetica', 'bold')
-          const text = cleanText(trimmed.slice(4))
-          const splitText = doc.splitTextToSize(text, maxWidth)
-          doc.text(splitText, margin, y)
           y += splitText.length * 16 + 8
+          isFirstElement = false
+          i++
           continue
         }
-        if (trimmed.startsWith('#### ')) {
+
+        // H3 Header
+        if (trimmed.startsWith('### ')) {
+          y += 8
           addNewPageIfNeeded(18)
           doc.setFontSize(11)
           doc.setFont('helvetica', 'bold')
-          const text = cleanText(trimmed.slice(5))
+          doc.setTextColor(17, 24, 39)
+          const text = cleanText(trimmed.slice(4))
           const splitText = doc.splitTextToSize(text, maxWidth)
           doc.text(splitText, margin, y)
           y += splitText.length * 14 + 6
+          isFirstElement = false
+          i++
+          continue
+        }
+
+        // H4 Header
+        if (trimmed.startsWith('#### ')) {
+          y += 6
+          addNewPageIfNeeded(16)
+          doc.setFontSize(10)
+          doc.setFont('helvetica', 'bold')
+          doc.setTextColor(17, 24, 39)
+          const text = cleanText(trimmed.slice(5))
+          const splitText = doc.splitTextToSize(text, maxWidth)
+          doc.text(splitText, margin, y)
+          y += splitText.length * 13 + 4
+          isFirstElement = false
+          i++
           continue
         }
 
         // Horizontal rule
         if (trimmed.match(/^---+$/)) {
-          y += 10
-          doc.setDrawColor(200, 200, 200)
+          y += 8
+          doc.setDrawColor(229, 231, 235)
+          doc.setLineWidth(0.5)
           doc.line(margin, y, pageWidth - margin, y)
-          y += 15
+          y += 12
+          i++
           continue
         }
 
         // Blockquote
         if (trimmed.startsWith('> ')) {
-          addNewPageIfNeeded(20)
-          doc.setFontSize(10)
+          addNewPageIfNeeded(18)
+          doc.setFontSize(9.5)
           doc.setFont('helvetica', 'italic')
-          doc.setTextColor(100, 100, 100)
+          doc.setTextColor(107, 114, 128)
           const text = cleanText(trimmed.slice(2))
-          const splitText = doc.splitTextToSize(text, maxWidth - 20)
+          const splitText = doc.splitTextToSize(text, maxWidth - 16)
+          const blockHeight = splitText.length * 12 + 4
           doc.setDrawColor(224, 122, 95)
           doc.setLineWidth(2)
-          doc.line(margin, y - 4, margin, y + splitText.length * 14)
-          doc.text(splitText, margin + 12, y)
-          y += splitText.length * 14 + 8
+          doc.line(margin, y - 2, margin, y + blockHeight - 4)
+          doc.text(splitText, margin + 10, y)
+          y += blockHeight + 4
           doc.setTextColor(0, 0, 0)
           doc.setLineWidth(0.5)
+          isFirstElement = false
+          i++
           continue
         }
 
-        // Table row
+        // Table - collect all rows first
         if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
-          const cells = trimmed.split('|').slice(1, -1).map(c => cleanText(c.trim()))
-          addNewPageIfNeeded(18)
-          doc.setFontSize(9)
-          doc.setFont('helvetica', 'normal')
-          const cellWidth = maxWidth / cells.length
-          cells.forEach((cell, i) => {
-            const cellText = doc.splitTextToSize(cell, cellWidth - 8)
-            doc.text(cellText, margin + i * cellWidth + 4, y)
-          })
-          y += 14
+          const tableData: string[][] = []
+          while (i < lines.length && lines[i].trim().startsWith('|') && lines[i].trim().endsWith('|')) {
+            const row = lines[i].trim()
+            if (!row.match(/^\|[-:| ]+\|$/)) {
+              const cells = row.split('|').slice(1, -1).map(c => cleanText(c.trim()))
+              tableData.push(cells)
+            }
+            i++
+          }
+
+          if (tableData.length > 0) {
+            const colCount = tableData[0].length
+            const colWidth = maxWidth / colCount
+            const rowHeight = 14
+
+            addNewPageIfNeeded(tableData.length * rowHeight + 8)
+
+            // Draw table
+            tableData.forEach((row, rowIndex) => {
+              const rowY = y + rowIndex * rowHeight
+
+              // Header row background
+              if (rowIndex === 0) {
+                doc.setFillColor(249, 250, 251)
+                doc.rect(margin, rowY - 10, maxWidth, rowHeight, 'F')
+              }
+
+              // Row border
+              doc.setDrawColor(229, 231, 235)
+              doc.setLineWidth(0.5)
+              doc.line(margin, rowY + 4, margin + maxWidth, rowY + 4)
+
+              // Cell text
+              doc.setFontSize(9)
+              doc.setFont('helvetica', rowIndex === 0 ? 'bold' : 'normal')
+              doc.setTextColor(rowIndex === 0 ? 17 : 55, rowIndex === 0 ? 24 : 65, rowIndex === 0 ? 39 : 81)
+
+              row.forEach((cell, colIndex) => {
+                const cellX = margin + colIndex * colWidth + 4
+                const cellText = doc.splitTextToSize(cell, colWidth - 8)
+                doc.text(cellText[0] || '', cellX, rowY)
+              })
+            })
+
+            y += tableData.length * rowHeight + 8
+          }
+          isFirstElement = false
           continue
         }
 
         // List item
         if (trimmed.match(/^[-*] /)) {
-          addNewPageIfNeeded(16)
-          doc.setFontSize(10)
+          addNewPageIfNeeded(14)
+          doc.setFontSize(9.5)
           doc.setFont('helvetica', 'normal')
+          doc.setTextColor(55, 65, 81)
           const text = cleanText(trimmed.slice(2))
-          const splitText = doc.splitTextToSize(text, maxWidth - 15)
+          const splitText = doc.splitTextToSize(text, maxWidth - 12)
           doc.text('•', margin, y)
-          doc.text(splitText, margin + 15, y)
-          y += splitText.length * 14 + 4
+          doc.text(splitText, margin + 12, y)
+          y += splitText.length * 12 + 3
+          isFirstElement = false
+          i++
           continue
         }
 
         // Regular paragraph
-        addNewPageIfNeeded(16)
-        doc.setFontSize(10)
+        addNewPageIfNeeded(14)
+        doc.setFontSize(9.5)
         doc.setFont('helvetica', 'normal')
+        doc.setTextColor(55, 65, 81)
         const text = cleanText(trimmed)
         const splitText = doc.splitTextToSize(text, maxWidth)
         doc.text(splitText, margin, y)
-        y += splitText.length * 14 + 6
+        y += splitText.length * 12 + 4
+        isFirstElement = false
+        i++
       }
 
       doc.save(filename)
@@ -607,30 +686,31 @@ export default function ReportDetailPage({
               </div>
             </div>
             {report.status === 'complete' && report.markdown_content && (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3 text-xs">
                 <button
                   onClick={downloadPdf}
                   disabled={exporting !== null}
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-white bg-[#E07A5F] hover:bg-[#C96A4F] rounded-lg transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="flex items-center gap-1.5 text-gray-500 hover:text-[#E07A5F] transition-colors disabled:opacity-50"
                 >
                   {exporting === 'pdf' ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   ) : (
-                    <FileDown className="w-4 h-4" />
+                    <FileDown className="w-3.5 h-3.5" strokeWidth={1.5} />
                   )}
-                  {exporting === 'pdf' ? 'Generating...' : 'Download PDF'}
+                  {exporting === 'pdf' ? 'Generating...' : 'PDF'}
                 </button>
+                <span className="text-gray-300">|</span>
                 <button
                   onClick={downloadWord}
                   disabled={exporting !== null}
-                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="flex items-center gap-1.5 text-gray-500 hover:text-[#E07A5F] transition-colors disabled:opacity-50"
                 >
                   {exporting === 'docx' ? (
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
                   ) : (
-                    <FileType className="w-4 h-4" />
+                    <FileType className="w-3.5 h-3.5" strokeWidth={1.5} />
                   )}
-                  {exporting === 'docx' ? 'Generating...' : 'Download Word'}
+                  {exporting === 'docx' ? 'Generating...' : 'Word'}
                 </button>
               </div>
             )}
