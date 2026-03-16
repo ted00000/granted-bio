@@ -113,9 +113,9 @@ export default function ReportsPage() {
           </div>
           <button
             onClick={() => setShowGenerateDialog(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg hover:bg-[#C96A4F] transition-colors text-sm font-medium"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[#E07A5F] hover:bg-[#FDF2EF] rounded-lg transition-colors text-sm font-medium"
           >
-            <Plus className="w-4 h-4" strokeWidth={2} />
+            <Plus className="w-4 h-4" strokeWidth={1.5} />
             New Report
           </button>
         </div>
@@ -139,9 +139,9 @@ export default function ReportsPage() {
             </p>
             <button
               onClick={() => setShowGenerateDialog(true)}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg hover:bg-[#C96A4F] transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[#E07A5F] hover:bg-[#FDF2EF] rounded-lg transition-colors text-sm font-medium"
             >
-              <Plus className="w-4 h-4" strokeWidth={2} />
+              <Plus className="w-4 h-4" strokeWidth={1.5} />
               Generate Your First Report
             </button>
           </div>
