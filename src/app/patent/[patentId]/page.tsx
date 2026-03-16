@@ -229,12 +229,12 @@ export default function PatentDetailPage() {
                 </h1>
               </div>
               <a
-                href={`https://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&s1=${patent.patent_id}.PN.`}
+                href={`https://patents.google.com/patent/US${patent.patent_id}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-sm text-gray-500 hover:text-[#E07A5F] transition-colors flex-shrink-0"
               >
-                USPTO
+                Google Patents
                 <ExternalLink className="w-3.5 h-3.5" />
               </a>
             </div>
@@ -244,12 +244,12 @@ export default function PatentDetailPage() {
                 <p className="text-amber-800 text-sm">
                   Limited data available. Visit{' '}
                   <a
-                    href={`https://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&s1=${patent.patent_id}.PN.`}
+                    href={`https://patents.google.com/patent/US${patent.patent_id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="underline font-medium hover:text-amber-900"
                   >
-                    USPTO
+                    Google Patents
                   </a>
                   {' '}for full patent details including abstract, claims, and citations.
                 </p>
@@ -352,12 +352,12 @@ export default function PatentDetailPage() {
           {/* External Link */}
           <div className="text-center">
             <a
-              href={`https://patft.uspto.gov/netacgi/nph-Parser?Sect1=PTO1&Sect2=HITOFF&d=PALL&p=1&u=%2Fnetahtml%2FPTO%2Fsrchnum.htm&r=1&f=G&l=50&s1=${patent.patent_id}.PN.`}
+              href={`https://patents.google.com/patent/US${patent.patent_id}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors inline-flex items-center gap-1"
             >
-              View full patent on USPTO
+              View full patent on Google Patents
               <ExternalLink className="w-3.5 h-3.5" />
             </a>
           </div>
