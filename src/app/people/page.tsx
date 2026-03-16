@@ -79,17 +79,13 @@ export default function MyPeoplePage() {
               <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
             </div>
           ) : people.length === 0 ? (
-            <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-              <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" strokeWidth={1.5} />
-              <h2 className="text-lg font-medium text-gray-900 mb-2">No saved people yet</h2>
-              <p className="text-gray-500 mb-6">
-                Save researchers and organizations while browsing to track them.
-              </p>
+            <div className="text-center py-12">
+              <p className="text-gray-400 mb-3">No saved people yet</p>
               <Link
                 href="/chat?lens=bd"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[#E07A5F] hover:bg-[#FDF2EF] rounded-lg transition-colors text-sm font-medium"
+                className="text-sm text-[#E07A5F] hover:text-[#C96A4F]"
               >
-                Search People
+                Search People →
               </Link>
             </div>
           ) : (
