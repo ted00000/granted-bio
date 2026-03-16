@@ -30,6 +30,8 @@ interface ApiResponse {
   source: 'local' | 'uspto' | 'linked_only'
 }
 
+type DataSource = 'local' | 'uspto' | 'linked_only'
+
 function formatDate(dateStr: string | null): string {
   if (!dateStr) return 'Not specified'
   try {
@@ -59,7 +61,7 @@ export default function PatentDetailPage() {
   const [patent, setPatent] = useState<PatentData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [isLocalOnly, setIsLocalOnly] = useState(false)
+  const [dataSource, setDataSource] = useState<DataSource>('local')
   const [isSaved, setIsSaved] = useState(false)
   const [savingPatent, setSavingPatent] = useState(false)
 
@@ -130,7 +132,7 @@ export default function PatentDetailPage() {
         }
         const data: ApiResponse = await response.json()
         setPatent(data.patent)
-        setIsLocalOnly(data.source === 'local' || data.source === 'linked_only')
+        setDataSource(data.source)
       } catch (e) {
         console.error('Error fetching patent:', e)
         setError('Failed to load patent')
@@ -237,7 +239,7 @@ export default function PatentDetailPage() {
               </a>
             </div>
 
-            {isLocalOnly && (
+            {dataSource === 'linked_only' && (
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
                 <p className="text-amber-800 text-sm">
                   Limited data available. Visit{' '}
