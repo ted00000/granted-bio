@@ -87,7 +87,7 @@ export default function MyPeoplePage() {
               </p>
               <Link
                 href="/chat?lens=bd"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg hover:bg-[#C96A4F] transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[#E07A5F] hover:bg-[#FDF2EF] rounded-lg transition-colors text-sm font-medium"
               >
                 Search People
               </Link>
