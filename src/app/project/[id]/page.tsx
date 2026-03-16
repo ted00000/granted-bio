@@ -405,14 +405,12 @@ export default function ProjectPage() {
                     ) : (
                       publications.map((pub) => (
                         <div key={pub.pmid} className="pb-4 border-b border-gray-50 last:border-0">
-                          <a
-                            href={`https://pubmed.ncbi.nlm.nih.gov/${pub.pmid}/`}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <Link
+                            href={`/publication/${pub.pmid}`}
                             className="text-gray-900 hover:text-[#E07A5F] font-medium"
                           >
                             {pub.pub_title || `PMID: ${pub.pmid}`}
-                          </a>
+                          </Link>
                           <div className="flex gap-3 mt-1 text-sm text-gray-500">
                             <span>{pub.journal_abbr}</span>
                             <span>{pub.pub_year}</span>
