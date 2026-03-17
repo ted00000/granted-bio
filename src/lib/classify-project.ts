@@ -162,6 +162,12 @@ SBIR/STTR (R41-R44, SB1) commercialization projects:
 - Usually biotools (research instruments/platforms) or therapeutics (drugs/treatments)
 - Rarely digital_health unless explicitly clinical/patient-facing
 
+Disease application vs disease treatment:
+- "Tool validated on cancer samples" → biotools (disease is use case, tool is product)
+- "Platform for neurodegenerative disease research" → biotools (enabling research, not treating)
+- "Drug to treat Alzheimer's" → therapeutics (treatment is the product)
+- "Developing a therapy for cancer" → therapeutics (intervention for patients)
+
 Organization Type Definitions:
 - company: Commercial entities (Inc., LLC, SBIR/STTR)
 - university: Academic institutions
