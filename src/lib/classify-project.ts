@@ -145,43 +145,53 @@ Always → infrastructure: P30, P50, P51, S10, G20, U13, R13, U24, U2C
 8. digital_health - CLINICAL software for PATIENT care only. Telemedicine, EHR tools, patient-facing apps. NOT research data visualization or scientific databases
 9. other - Health services, behavioral interventions, epidemiology, non-biomedical research
 
-## CRITICAL DISTINCTIONS
+## DECISION FRAMEWORK
 
-Tool development vs Tool application:
-- "Developing a CRISPR screening platform" → biotools
-- "Using CRISPR to study gene function" → basic_research
-- "Using CRISPR to treat sickle cell" → therapeutics
+STEP 1 - Who is the end user?
+- Scientist/researcher → biotools, basic_research, or infrastructure
+- Patient/clinician/caregiver → diagnostics, digital_health, therapeutics, or medical_device
 
-Biotools vs Digital Health (ask: who is end user? what decision does it inform?):
-- End user is researcher/scientist, informs research decisions → biotools
-- End user is clinician/patient, informs clinical/health decisions → digital_health
-- Data from instruments/assays/research datasets → biotools
-- Data from patients/wearables/EHR → digital_health
-- ML analysis of cells/sequences for research → biotools
-- Remote patient monitoring, clinical decision support → digital_health
+STEP 2 - What is the output?
+- Product sold to researchers → biotools
+- Knowledge/dataset for community → basic_research
+- Shared platform/standard/data commons → infrastructure
+- Clinical detection/diagnosis → diagnostics
+- Software for clinical care → digital_health
+- Drug/biologic/cell therapy → therapeutics
+- Physical device on patients → medical_device
 
-SBIR/STTR (R41-R44, SB1) commercialization projects:
-- Usually biotools (research instruments/platforms) or therapeutics (drugs/treatments)
-- Rarely digital_health unless explicitly clinical/patient-facing
+## BOUNDARY TIE-BREAKERS
 
-Disease application vs disease treatment:
-- "Tool validated on cancer samples" → biotools (disease is use case, tool is product)
-- "Platform for neurodegenerative disease research" → biotools (enabling research, not treating)
-- "Drug to treat Alzheimer's" → therapeutics (treatment is the product)
-- "Developing a therapy for cancer" → therapeutics (intervention for patients)
+Biotools vs Basic Research:
+- Product with customer → biotools
+- Paper or dataset → basic_research
+- "Developing new sequencing method" → biotools
+- "Using sequencing to map brain" → basic_research
 
-Lab devices vs Medical devices:
-- "Cell isolation device for research labs" → biotools (research use, sold to labs)
-- "Blood processing device for researchers" → biotools (research use)
-- "Implantable cardiac device for patients" → medical_device (clinical use, treats patients)
-- "Surgical robot for operations" → medical_device (used on patients)
+Biotools vs Infrastructure:
+- One lab sells it → biotools
+- Consortium builds for everyone → infrastructure
+- "Cell sorting platform" → biotools
+- "Reference cell atlas for community" → infrastructure
 
-Research instruments vs Clinical diagnostics:
-- "Cell sorter for small labs" → biotools (research instrument, even if detects cells)
-- "ML-based cell classification platform for researchers" → biotools (tool for labs)
-- "Competing with FACS/MACS" → biotools (research equipment market)
-- "Blood test for early cancer detection in patients" → diagnostics (clinical test for patient diagnosis)
-- "FDA-cleared diagnostic assay" → diagnostics (clinical use)
+Diagnostics vs Digital Health:
+- Clinical detection claim → diagnostics
+- Managing/monitoring health behavior → digital_health
+
+Diagnostics vs Biotools:
+- Research-use only, no regulatory intent → biotools (even with clinical samples)
+- FDA pathway, patient diagnosis → diagnostics
+
+Medical Device vs Therapeutics:
+- Physical device on body → medical_device
+- Drug/biologic/cell therapy → therapeutics
+
+## RED HERRINGS (Don't be fooled!)
+
+- Disease mentions ≠ therapeutics (researchers study diseases with tools)
+- ML/imaging ≠ diagnostics (often just biotools for research)
+- Clinical samples ≠ diagnostics (research context = biotools)
+- SBIR/STTR = usually biotools or therapeutics, rarely digital_health
 
 Organization Type Definitions:
 - company: Commercial entities (Inc., LLC, SBIR/STTR)
