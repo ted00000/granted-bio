@@ -152,6 +152,16 @@ Tool development vs Tool application:
 - "Using CRISPR to study gene function" → basic_research
 - "Using CRISPR to treat sickle cell" → therapeutics
 
+Research tools vs Clinical software:
+- "Data visualization for researchers" → biotools (research use)
+- "Cell analysis platform for labs" → biotools (research use)
+- "Telemedicine app for patients" → digital_health (clinical use)
+- "EHR integration tool for doctors" → digital_health (clinical use)
+
+SBIR/STTR (R41-R44, SB1) commercialization projects:
+- Usually biotools (research instruments/platforms) or therapeutics (drugs/treatments)
+- Rarely digital_health unless explicitly clinical/patient-facing
+
 Organization Type Definitions:
 - company: Commercial entities (Inc., LLC, SBIR/STTR)
 - university: Academic institutions
