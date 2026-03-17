@@ -174,6 +174,13 @@ Lab devices vs Medical devices:
 - "Implantable cardiac device for patients" → medical_device (clinical use, treats patients)
 - "Surgical robot for operations" → medical_device (used on patients)
 
+Research instruments vs Clinical diagnostics:
+- "Cell sorter for small labs" → biotools (research instrument, even if detects cells)
+- "ML-based cell classification platform for researchers" → biotools (tool for labs)
+- "Competing with FACS/MACS" → biotools (research equipment market)
+- "Blood test for early cancer detection in patients" → diagnostics (clinical test for patient diagnosis)
+- "FDA-cleared diagnostic assay" → diagnostics (clinical use)
+
 Organization Type Definitions:
 - company: Commercial entities (Inc., LLC, SBIR/STTR)
 - university: Academic institutions
