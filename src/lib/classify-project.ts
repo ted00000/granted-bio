@@ -28,6 +28,89 @@ export interface ClassificationResult {
   org_type: 'company' | 'university' | 'hospital' | 'research_institute' | 'other'
 }
 
+/**
+ * Deterministic org type classification based on keyword patterns.
+ * Returns the org_type if a clear match is found, or null to let LLM decide.
+ *
+ * Priority order:
+ * 1. University keywords (highest - "University of X, Inc" is still a university)
+ * 2. Hospital keywords
+ * 3. Research institute keywords
+ * 4. Company indicators (lowest - only if no institution keywords)
+ */
+export function classifyOrgType(orgName: string | undefined, activityCode: string | undefined): ClassificationResult['org_type'] | null {
+  if (!orgName) return null
+
+  const org = orgName.toUpperCase()
+  const code = (activityCode || '').toUpperCase()
+
+  // University patterns (highest priority)
+  // Match "UNIVERSITY", "UNIV", "COLLEGE" - these are always academic
+  if (
+    org.includes('UNIVERSITY') ||
+    org.includes(' UNIV ') ||
+    org.includes(' UNIV,') ||
+    org.startsWith('UNIV ') ||
+    org.endsWith(' UNIV') ||
+    org.includes('COLLEGE')
+  ) {
+    return 'university'
+  }
+
+  // Hospital/Medical Center patterns
+  // Match various hospital and medical center terms
+  if (
+    org.includes('HOSPITAL') ||
+    org.includes('MEDICAL CENTER') ||
+    org.includes('MEDICAL CTR') ||
+    org.includes('MED CTR') ||
+    org.includes('HEALTH SYSTEM') ||
+    org.includes('CHILDREN\'S HOSPITAL') ||
+    org.includes('CHILDRENS HOSPITAL')
+  ) {
+    return 'hospital'
+  }
+
+  // Research Institute patterns
+  // Match "INSTITUTE" or "INST" but not when part of university name
+  if (
+    org.includes('INSTITUTE') ||
+    org.includes(' INST ') ||
+    org.includes(' INST,') ||
+    org.endsWith(' INST')
+  ) {
+    return 'research_institute'
+  }
+
+  // Company indicators (lowest priority - only apply if no institution keywords matched)
+  // SBIR/STTR activity codes are always commercial
+  if (code.startsWith('R41') || code.startsWith('R42') || code.startsWith('R43') || code.startsWith('R44') ||
+      code.startsWith('SB1') || code.startsWith('U43') || code.startsWith('U44')) {
+    return 'company'
+  }
+
+  // Corporate suffixes typically indicate companies
+  // But only if no institution keywords were matched above
+  if (
+    org.endsWith(' INC') ||
+    org.endsWith(' INC.') ||
+    org.endsWith(', INC') ||
+    org.endsWith(', INC.') ||
+    org.endsWith(' LLC') ||
+    org.endsWith(', LLC') ||
+    org.endsWith(' CORP') ||
+    org.endsWith(' CORP.') ||
+    org.endsWith(', CORP') ||
+    org.endsWith(' LTD') ||
+    org.endsWith(' LTD.')
+  ) {
+    return 'company'
+  }
+
+  // No clear pattern - let LLM decide
+  return null
+}
+
 const CLASSIFICATION_PROMPT = `Analyze this NIH grant and classify it. Return only valid JSON, no other text.
 
 Project Data:
@@ -77,6 +160,10 @@ Organization Type Definitions:
 - other: Government agencies, non-profits`
 
 export async function classifyProject(project: ProjectData): Promise<ClassificationResult> {
+  // Pre-classify org type deterministically based on keywords
+  // This catches obvious cases like "UNIVERSITY OF X" that the LLM sometimes misses
+  const deterministicOrgType = classifyOrgType(project.org_name, project.activity_code)
+
   // Build prompt with project data
   const prompt = CLASSIFICATION_PROMPT
     .replace('{title}', project.title || 'N/A')
@@ -131,6 +218,12 @@ export async function classifyProject(project: ProjectData): Promise<Classificat
       result.org_type = 'other'
     }
 
+    // Override LLM org_type with deterministic classification if we found a clear match
+    // This ensures obvious cases like "UNIVERSITY OF MICHIGAN" are never misclassified
+    if (deterministicOrgType) {
+      result.org_type = deterministicOrgType
+    }
+
     // Ensure confidence is in range
     result.category_confidence = Math.max(0, Math.min(100, result.category_confidence))
 
@@ -142,7 +235,7 @@ export async function classifyProject(project: ProjectData): Promise<Classificat
     return {
       primary_category: 'other',
       category_confidence: 0,
-      org_type: 'other',
+      org_type: deterministicOrgType || 'other',
     }
   }
 }

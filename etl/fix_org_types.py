@@ -1,187 +1,210 @@
+#!/usr/bin/env python3
 """
-Fix org_type classifications with improved patterns.
-Re-classifies org_type using the updated classify_org function and updates the database.
+Fix misclassified organization types in the projects table.
+
+Uses deterministic keyword matching to correct obvious misclassifications:
+- Universities with "UNIVERSITY", "UNIV", "COLLEGE" in name
+- Hospitals with "HOSPITAL", "MEDICAL CENTER" in name
+- Research institutes with "INSTITUTE", "INST" in name
+- Companies with SBIR/STTR activity codes or corporate suffixes
 """
 
 import os
-import time
+import re
+from collections import defaultdict
+from supabase import create_client, Client
 from dotenv import load_dotenv
+
 load_dotenv('.env.local')
 
-from supabase import create_client
-from concurrent.futures import ThreadPoolExecutor, as_completed
+SUPABASE_URL = os.environ.get("NEXT_PUBLIC_SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_KEY")
 
-print("=" * 60)
-print("FIX ORG_TYPE CLASSIFICATIONS")
-print("=" * 60)
+if not SUPABASE_URL or not SUPABASE_KEY:
+    raise ValueError("Missing SUPABASE_URL or SUPABASE_SERVICE_KEY")
 
-supabase = create_client(
-    os.environ['NEXT_PUBLIC_SUPABASE_URL'],
-    os.environ['SUPABASE_SERVICE_KEY']
-)
-print("✓ Connected to Supabase\n")
+supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-SBIR_CODES = {'R41','R42','R43','R44','SB1','U44'}
 
-def classify_org(org_name, activity_code):
-    """Updated org classifier with HOSP abbreviation and known universities."""
+def classify_org_type(org_name: str, activity_code: str = "") -> str | None:
+    """
+    Deterministic org type classification based on keyword patterns.
+    Returns the org_type if a clear match is found, or None to keep existing.
+
+    Priority order:
+    1. University keywords (highest)
+    2. Hospital keywords
+    3. Research institute keywords
+    4. Company indicators (lowest)
+    """
     if not org_name:
-        return 'other'
+        return None
+
     org = org_name.upper()
+    code = (activity_code or "").upper()
 
-    if activity_code and activity_code in SBIR_CODES:
-        return 'company'
+    # University patterns (highest priority)
+    if (
+        "UNIVERSITY" in org or
+        " UNIV " in org or
+        " UNIV," in org or
+        org.startswith("UNIV ") or
+        org.endswith(" UNIV") or
+        "COLLEGE" in org
+    ):
+        return "university"
 
-    # Company signals
-    company_signals = [
-        'LLC', 'INC.', 'INC,', ' INC', 'CORP', 'L.L.C', 'L.P.',
-        'THERAPEUTICS', 'BIOSCIENCES', 'PHARMACEUTICALS', 'BIOTECH', 'BIOPHARMA',
-        'TECHNOLOGIES INC', 'SCIENCES INC', 'DEVICES INC', 'SOLUTIONS INC',
-        'HEALTH INC', 'ONCOLOGY INC', 'DIAGNOSTICS INC', 'GENOMICS INC',
-        'LABS INC', 'MEDICAL INC', 'PHARMA INC',
-    ]
-    if any(s in org for s in company_signals):
-        return 'company'
+    # Hospital/Medical Center patterns
+    if (
+        "HOSPITAL" in org or
+        "MEDICAL CENTER" in org or
+        "MEDICAL CTR" in org or
+        "MED CTR" in org or
+        "HEALTH SYSTEM" in org or
+        "CHILDREN'S HOSPITAL" in org or
+        "CHILDRENS HOSPITAL" in org
+    ):
+        return "hospital"
 
-    # University signals
-    uni_signals = [
-        'UNIVERSITY', 'UNIV ', ' UNIV', 'UNIV.', 'UNIVERSIT',
-        'COLLEGE', 'INSTITUTE OF TECHNOLOGY', 'POLYTECHNIC',
-        'SCHOOL OF MEDICINE', 'MEDICAL SCHOOL', 'MEDICAL COLLEGE',
-        'SCHOOL OF PUBLIC HEALTH',
-    ]
-    # Well-known universities without "UNIVERSITY" in name
-    known_universities = [
-        'RUTGERS', 'HARVARD', 'STANFORD', 'MIT ', 'CALTECH', 'YALE', 'PRINCETON',
-        'COLUMBIA', 'CORNELL', 'DUKE', 'JOHNS HOPKINS', 'EMORY', 'VANDERBILT',
-        'NORTHWESTERN', 'UCLA', 'UCSD', 'UCSF', 'USC ', 'NYU ', 'BROWN',
-        'DARTMOUTH', 'PENN STATE', 'OHIO STATE', 'MICHIGAN STATE', 'FLORIDA STATE',
-        'TEXAS A&M', 'PURDUE', 'WISCONSIN-',
-        'ICAHN SCHOOL', 'WEILL CORNELL', 'BAYLOR COLLEGE',
-    ]
-    is_uni = any(s in org for s in uni_signals) or any(s in org for s in known_universities)
+    # Research Institute patterns
+    if (
+        "INSTITUTE" in org or
+        " INST " in org or
+        " INST," in org or
+        org.endswith(" INST")
+    ):
+        return "research_institute"
 
-    # Hospital/health system signals
-    hosp_signals = [
-        'HOSPITAL', 'MEDICAL CENTER', 'HEALTH SYSTEM', 'HEALTH CENTER', 'CLINIC',
-        'MAYO', "CHILDREN'S", 'MEDICAL CTR', 'HEALTH CARE', 'HEALTH SCIENCES CENTER',
-        'NATIONAL JEWISH HEALTH', 'BANNER HEALTH', 'MOUNT SINAI',
-        'MEMORIAL SLOAN', 'MD ANDERSON', 'CITY OF HOPE',
-        ' HOSP ', 'HOSP ',  # Abbreviation: "CHILDRENS HOSP MED CTR"
-        'CHILDRENS HOSP', "CHILDREN'S HOSP",
-    ]
-    if any(s in org for s in hosp_signals) and not is_uni:
-        return 'hospital'
+    # SBIR/STTR activity codes are always commercial
+    if (
+        code.startswith("R41") or code.startswith("R42") or
+        code.startswith("R43") or code.startswith("R44") or
+        code.startswith("SB1") or code.startswith("U43") or
+        code.startswith("U44")
+    ):
+        return "company"
 
-    # Research institute signals
-    ri_signals = [
-        'RESEARCH INSTITUTE', 'RESEARCH CENTER', 'RESEARCH CTR',
-        'INSTITUTE FOR', 'INSTITUTE OF',
-        'SCRIPPS', 'BROAD INSTITUTE', 'SALK INSTITUTE',
-        'FRED HUTCHINSON', 'SLOAN', 'DANA-FARBER', 'COLD SPRING HARBOR',
-        'JACKSON LABORATORY', 'WISTAR', 'LA JOLLA INSTITUTE', 'FEINSTEIN',
-        'BECKMAN RESEARCH', 'BATTELLE', 'WOODS HOLE', 'STOWERS', 'ALLEN INSTITUTE',
-        'WHITEHEAD INSTITUTE', 'CARNEGIE INSTITUTION', 'HUDSON ALPHA', 'VAN ANDEL',
-        'PENNINGTON', 'RESEARCH TRIANGLE', 'LAUREATE',
-        'BIOMEDICAL RESEARCH', 'PSYCHIATRIC INSTITUTE',
-    ]
-    if any(s in org for s in ri_signals) and not is_uni:
-        return 'research_institute'
+    # Corporate suffixes typically indicate companies
+    if (
+        org.endswith(" INC") or
+        org.endswith(" INC.") or
+        org.endswith(", INC") or
+        org.endswith(", INC.") or
+        org.endswith(" LLC") or
+        org.endswith(", LLC") or
+        org.endswith(" CORP") or
+        org.endswith(" CORP.") or
+        org.endswith(", CORP") or
+        org.endswith(" LTD") or
+        org.endswith(" LTD.")
+    ):
+        return "company"
 
-    if is_uni:
-        return 'university'
-    if any(s in org for s in hosp_signals):
-        return 'hospital'
-    return 'other'
+    # No clear pattern
+    return None
 
-# Fetch ALL projects with org_type = 'other' (with pagination)
-print("Fetching projects with org_type='other'...")
-projects = []
-offset = 0
-batch_size = 1000
 
-while True:
-    result = supabase.table('projects').select(
-        'application_id, org_name, activity_code, org_type'
-    ).eq('org_type', 'other').range(offset, offset + batch_size - 1).execute()
+def fetch_projects_needing_fix():
+    """Fetch projects that may have incorrect org_type classification."""
+    print("Fetching projects to check...")
 
-    if not result.data:
-        break
-    projects.extend(result.data)
-    print(f"  Fetched {len(projects):,}...")
-    offset += batch_size
-    if len(result.data) < batch_size:
-        break
+    all_projects = []
+    offset = 0
+    batch_size = 1000
 
-print(f"✓ Found {len(projects):,} projects with org_type='other'\n")
+    while True:
+        response = supabase.table("projects").select(
+            "project_number, org_name, org_type, activity_code"
+        ).range(offset, offset + batch_size - 1).execute()
 
-# Reclassify and find changes
-changes = []
-for p in projects:
-    new_org_type = classify_org(p['org_name'], p['activity_code'])
-    if new_org_type != 'other':
-        changes.append({
-            'application_id': p['application_id'],
-            'org_name': p['org_name'],
-            'old_type': 'other',
-            'new_type': new_org_type
-        })
+        if not response.data:
+            break
 
-print(f"Found {len(changes):,} projects to reclassify\n")
+        all_projects.extend(response.data)
+        offset += batch_size
 
-if not changes:
-    print("No changes needed!")
-    exit(0)
+        if len(response.data) < batch_size:
+            break
 
-# Show sample changes
-print("Sample changes:")
-for c in changes[:10]:
-    print(f"  {c['org_name'][:50]:50s} → {c['new_type']}")
-print()
+    print(f"Fetched {len(all_projects)} projects")
+    return all_projects
 
-# Update database
-def update_org_type(change, max_retries=3):
-    for attempt in range(max_retries):
-        try:
-            supabase.table('projects').update({
-                'org_type': change['new_type']
-            }).eq('application_id', change['application_id']).execute()
-            return True, None
-        except Exception as e:
-            if attempt < max_retries - 1:
-                time.sleep(0.5 * (attempt + 1))
-                continue
-            return False, str(e)
-    return False, "Max retries exceeded"
 
-print(f"Updating {len(changes):,} records...")
-NUM_WORKERS = 10
-updated = 0
-errors = 0
+def analyze_and_fix(projects: list, dry_run: bool = True):
+    """Analyze projects and fix misclassified org_types."""
 
-with ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor:
-    futures = {executor.submit(update_org_type, c): c for c in changes}
-    for i, future in enumerate(as_completed(futures)):
-        success, error = future.result()
-        if success:
-            updated += 1
-        else:
-            errors += 1
-            print(f"  Error: {error}")
+    fixes_needed = defaultdict(list)
 
-        if (i + 1) % 100 == 0:
-            print(f"  Progress: {i+1:,}/{len(changes):,}")
+    for project in projects:
+        org_name = project.get("org_name") or ""
+        activity_code = project.get("activity_code") or ""
+        current_type = project.get("org_type")
+        project_number = project.get("project_number")
 
-print(f"\n{'=' * 60}")
-print("COMPLETE")
-print("=" * 60)
-print(f"Updated: {updated:,}")
-print(f"Errors: {errors:,}")
+        correct_type = classify_org_type(org_name, activity_code)
 
-# Show new distribution
-print("\nReclassified from 'other' to:")
-by_type = {}
-for c in changes:
-    by_type[c['new_type']] = by_type.get(c['new_type'], 0) + 1
-for t, count in sorted(by_type.items(), key=lambda x: -x[1]):
-    print(f"  {t}: {count:,}")
+        # Only fix if we have a deterministic classification AND it differs
+        if correct_type and correct_type != current_type:
+            fixes_needed[f"{current_type} -> {correct_type}"].append({
+                "project_number": project_number,
+                "org_name": org_name,
+                "old_type": current_type,
+                "new_type": correct_type
+            })
+
+    # Summary
+    print("\n" + "=" * 60)
+    print("Organization Type Corrections Needed")
+    print("=" * 60)
+
+    total_fixes = 0
+    for change, items in sorted(fixes_needed.items()):
+        print(f"\n{change}: {len(items)} projects")
+        # Show examples
+        for item in items[:3]:
+            print(f"  - {item['org_name'][:60]}...")
+        if len(items) > 3:
+            print(f"  ... and {len(items) - 3} more")
+        total_fixes += len(items)
+
+    print(f"\nTotal fixes needed: {total_fixes}")
+
+    if dry_run:
+        print("\nDRY RUN - no changes made. Run with --execute to apply.")
+        return
+
+    # Apply fixes
+    print("\nApplying fixes...")
+    updates_done = 0
+
+    for change, items in fixes_needed.items():
+        for item in items:
+            try:
+                supabase.table("projects").update({
+                    "org_type": item["new_type"]
+                }).eq("project_number", item["project_number"]).execute()
+
+                updates_done += 1
+                if updates_done % 1000 == 0:
+                    print(f"  Updated {updates_done} projects...")
+            except Exception as e:
+                print(f"  Error updating {item['project_number']}: {e}")
+
+    print(f"\nUpdated {updates_done} projects.")
+
+
+def main():
+    import sys
+
+    dry_run = "--execute" not in sys.argv
+
+    print("=" * 60)
+    print("Fix Organization Type Classifications")
+    print("=" * 60)
+
+    projects = fetch_projects_needing_fix()
+    analyze_and_fix(projects, dry_run=dry_run)
+
+
+if __name__ == "__main__":
+    main()
