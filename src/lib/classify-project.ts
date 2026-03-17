@@ -152,11 +152,13 @@ Tool development vs Tool application:
 - "Using CRISPR to study gene function" → basic_research
 - "Using CRISPR to treat sickle cell" → therapeutics
 
-Research tools vs Clinical software:
-- "Data visualization for researchers" → biotools (research use)
-- "Cell analysis platform for labs" → biotools (research use)
-- "Telemedicine app for patients" → digital_health (clinical use)
-- "EHR integration tool for doctors" → digital_health (clinical use)
+Biotools vs Digital Health (ask: who is end user? what decision does it inform?):
+- End user is researcher/scientist, informs research decisions → biotools
+- End user is clinician/patient, informs clinical/health decisions → digital_health
+- Data from instruments/assays/research datasets → biotools
+- Data from patients/wearables/EHR → digital_health
+- ML analysis of cells/sequences for research → biotools
+- Remote patient monitoring, clinical decision support → digital_health
 
 SBIR/STTR (R41-R44, SB1) commercialization projects:
 - Usually biotools (research instruments/platforms) or therapeutics (drugs/treatments)
