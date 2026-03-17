@@ -136,13 +136,13 @@ Always → infrastructure: P30, P50, P51, S10, G20, U13, R13, U24, U2C
 ## THE 9 CATEGORIES
 
 1. training - Programs for training/education/career development of researchers
-2. infrastructure - Core facilities, centers, equipment, coordination grants
-3. basic_research - Understanding biology/mechanisms WITHOUT a tool/drug/diagnostic. OUTPUT = knowledge
+2. infrastructure - Core facilities, centers, equipment, coordination grants, reference atlases, databases, biobanks, consortium data resources (HuBMAP, Human Cell Atlas, ENCODE)
+3. basic_research - Understanding biology/mechanisms WITHOUT a tool/drug/diagnostic. OUTPUT = knowledge. Includes tissue mapping, cell atlas creation, characterization studies
 4. biotools - DEVELOPING research tools, assays, platforms, methods. OUTPUT = tool for researchers
 5. therapeutics - DEVELOPING drugs/treatments for patients. OUTPUT = therapy. NOT behavioral interventions
 6. diagnostics - DEVELOPING clinical tests for disease detection. OUTPUT = diagnostic test
 7. medical_device - DEVELOPING physical devices for patient treatment. Must be MEDICAL
-8. digital_health - DEPLOYING software/apps for patient care. Telemedicine, clinical decision support
+8. digital_health - CLINICAL software for PATIENT care only. Telemedicine, EHR tools, patient-facing apps. NOT research data visualization or scientific databases
 9. other - Health services, behavioral interventions, epidemiology, non-biomedical research
 
 ## CRITICAL DISTINCTIONS
