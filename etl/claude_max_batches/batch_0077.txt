@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 11090433
+activity_code: P30
+title: Translational Biomarker Analytical Core
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: Amino Acids;analytical method;Animal Model;Articulation;Attention;base;Bioinformatics;Biological;Biological Assay;Biological Markers;blood glucose regulation;C-Peptide;Catecholamines;Classification;Clinical;Clinical Investigator;clinical phenotype;Clinical Research;Collaborations;Consultations;Contracts;Core Facility;cost;Data;Data Analyses;Development;Diabetes Mellitus;Diet;Dietary Intervention;Disease;Dyslipidemias;energy balance;Enzyme-Linked Immunosorbent Assay;Experimental Designs;Fingerprint;Funding;Genetic;Glucagon;glucagon-like peptide 1;Glucose;glucose output;glucose tolerance;Glycerol;Grant;Hepatic;Homeostasis;Hormonal;Hormones;Human Resources;human subject;Hydrocortisone;improved;Individual;instrumentation;Insulin;Insulin Resistance;insulin secretion;insulin sensitivity;Investigation;investigator training;Investments;Ketones;Kinetics;Laboratories;lipidomics;Lipids;Lipoproteins;Liquid substance;Maintenance;Mass Spectrum Analysis;Measurement;Medical;member;Metabolic;Metabolism;metabolomics;Methods;Molecular Genetics;Monitor;new technology;Nonesterified Fatty Acids;novel;operation;Pathway Analysis;Pathway interactions;Pharmaceutical Preparations;Phenotype;Plasma;Postdoctoral Fellow;Publications;Radioimmunoassay;Regimen;Reproducibility;Research;Research Personnel;Resources;sample collection;Services;skills;small molecule;stable isotope;Techniques;Technology;Testing;Therapeutic;Therapeutic Intervention;Training;translational study;type I and type II diabetes;Universities
+current_category: infrastructure
+---
+application_id: 10925200
+activity_code: P30
+title: Biostatistics Module
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Algorithms;Applications Grants;Area;Assessment tool;Big Data;Biometry;Biostatistics Core;Businesses;Collaborations;Communities;Computer software;Core Grant;cost;cost efficient;Data;Data Analyses;data management;Data Science;Databases;Dedications;Development;Education;education resources;Educational workshop;Ensure;Epidemiologist;Epidemiology;Eye;Faculty;faculty support;Feedback;Fees;flexibility;Fostering;frontier;Funding;Future;Goals;Grant;Growth;Hour;Human Resources;improved;Individual;innovation;Institution;interdisciplinary collaboration;interest;Internet;lectures;Link;Manuscripts;Methodology;Mission;novel;Online Systems;Ophthalmology;Outcome;Outcome Assessment;Output;outreach;Patient Care;Patients;Phase;Preparation;Procedures;Productivity;Progress Reports;Protocols documentation;Public Health Schools;Publications;Research;Research Design;Research Personnel;Research Project Grants;Resources;Sampling;satisfaction;Schools;Scientist;Services;Site;skills;Standardization;statistical service;Structure;success;symposium;System;Technology;Technology Transfer;Time;Training;Training and Education;United States Centers for Medicare and Medicaid Services;Vision;Vision research;web site;web-based assessment;Work
+current_category: infrastructure
+---
+application_id: 10836481
+activity_code: P30
+title: Diabetes Translational Research Core
+org_name: YALE UNIVERSITY
+phr: N/A
+terms: Adult;Animal Model;Biopsy;Body Composition;Center for Translational Science Activities;Child;Clinical;clinical center;clinical investigation;Clinical Investigator;Clinical Research;clinical training;Clinical Trials;Collaborations;Complex;Consumption;cost;cost effective;data acquisition;Data Analytics;Diabetes Mellitus;Dietary Intervention;Discipline of Nursing;Equipment;Functional disorder;Funding;glucose and insulin clamps;Goals;Good Clinical Practice;Grant;Harvest;Human;human disease;Human Resources;In Vitro;Incubators;Indirect Calorimetry;Infrastructure;Infusion procedures;insight;Insulin;Investigation;Joints;Knowledge;Laboratories;Magnetic Resonance Imaging;medical schools;Medicine;Metabolic;metabolic abnormality assessment;Metabolic Diseases;Mission;Multicenter Studies;Muscle;National Institute of Diabetes and Digestive and Kidney Diseases;novel;novel therapeutics;nursing skill;Organizational Efficiency;Patients;Physicians;Play;Positron-Emission Tomography;Prevention;Principal Investigator;Process;Public Health;Research;research facility;Research Infrastructure;Research Personnel;Resources;Role;sample collection;Science;Scientist;Services;Spectrum Analysis;stable isotope;System;Techniques;Testing;Time;Training;Training Support;translational goal;Translational Research;translational study;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 10836468
+activity_code: P30
+title: Administrative Core
+org_name: YALE UNIVERSITY
+phr: N/A
+terms: Academia;Address;Animal Model;Area;Basic Science;bench to bedside;Biological;catalyst;Cellular biology;Clinical;Clinical Investigator;college;Consumption;Core Facility;cost;Data;design;Development;Diabetes Mellitus;diabetic patient;Discipline;doctoral student;Ensure;Environment;Expenditure;Faculty;Funding;Future;Goals;Grant;Health Occupations;High School Student;Human Subject Research;Inequity;Infrastructure;innovation;Institution;interdisciplinary collaboration;interest;Internships;medical schools;member;Metabolic;Metabolic Diseases;Metabolism;Mission;Molecular Biology;Molecular Genetics;multidisciplinary;Mus;novel;novel therapeutic intervention;Occupational activity of managing finances;Office of Administrative Management;operation;Organizational Efficiency;Outcome;outreach;Pathogenesis;Pathway interactions;Patients;Physiology;Positioning Attribute;Postdoctoral Fellow;prevent;Prevention strategy;Productivity;programs;Publications;Reporting;Research;Research Activity;Research Personnel;Research Support;Research Training;Resources;Scholars Program;Schools;Science;Scientist;Services;student training;Suggestion;Supervision;Techniques;Testing;Time;tool;Training;Translating;Translational Research;United States National Institutes of Health;Vertebrates;Work
+current_category: infrastructure
+---
+application_id: 10813095
+activity_code: P30
+title: Translational Biomarker Analytical Core
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: Amino Acids;analytical method;Animal Model;Articulation;Attention;base;Bioinformatics;Biological;Biological Assay;Biological Markers;blood glucose regulation;C-Peptide;Catecholamines;Classification;Clinical;Clinical Investigator;clinical phenotype;Clinical Research;Collaborations;Consultations;Contracts;Core Facility;cost;Data;Data Analyses;Development;Diabetes Mellitus;Diet;Dietary Intervention;Disease;Dyslipidemias;energy balance;Enzyme-Linked Immunosorbent Assay;Experimental Designs;Fingerprint;Funding;Genetic;Glucagon;glucagon-like peptide 1;Glucose;glucose output;glucose tolerance;Glycerol;Grant;Hepatic;Homeostasis;Hormonal;Hormones;Human Resources;human subject;Hydrocortisone;improved;Individual;instrumentation;Insulin;Insulin Resistance;insulin secretion;insulin sensitivity;Investigation;investigator training;Investments;Ketones;Kinetics;Laboratories;lipidomics;Lipids;Lipoproteins;Liquid substance;Maintenance;Mass Spectrum Analysis;Measurement;Medical;member;Metabolic;Metabolism;metabolomics;Methods;Molecular Genetics;Monitor;new technology;Nonesterified Fatty Acids;novel;operation;Pathway Analysis;Pathway interactions;Pharmaceutical Preparations;Phenotype;Plasma;Postdoctoral Fellow;Publications;Radioimmunoassay;Regimen;Reproducibility;Research;Research Personnel;Resources;sample collection;Services;skills;small molecule;stable isotope;Techniques;Technology;Testing;Therapeutic;Therapeutic Intervention;Training;translational study;type I and type II diabetes;Universities
+current_category: infrastructure
+---
+application_id: 10840902
+activity_code: P30
+title: CELLULAR AND MOLECULAR IMAGING CORE
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Applications Grants;Area;cellular imaging;Clinical;Clinical Pathology;Collaborations;comparative;Comparative Pathology;Consultations;Core Facility;cost effective;Data;Development;Diabetes Mellitus;Disease;Ensure;Equipment;experimental study;fluorescence imaging;Fluorescence Microscopy;Fostering;Funding;Goals;Growth;high standard;Histocytochemistry;Human Resources;Image;Image Analysis;imaging system;Imaging Techniques;Immunohistochemistry;innovation;Institution;instrumentation;Investigation;laser capture microdissection;Leadership;Manuscripts;Methodology;microscopic imaging;Microtomy;molecular imaging;Morphology;Pathologist;Peer Review Grants;preclinical study;Productivity;Protocols documentation;Publishing;Quality Control;Quantitative Microscopy;Reagent;Reproducibility;Research;Research Design;Research Personnel;Scanning;Services;superresolution microscopy;System;Techniques;Tissue imaging;tissue processing;Tissue Stains;Tissues;Training;Universities;Update;Washington;Work
+current_category: infrastructure
+---
+application_id: 11049117
+activity_code: P30
+title: Admin Core (with Enrichment Program)
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Area;Awareness;Biomedical Research;Collaborations;Communication;Communities;cystic fibrosis related diabetes;Dedications;Diabetes Mellitus;Disease;Education;Educational workshop;Endocrinology;Ensure;Environment;equity, diversity, and inclusion;Evaluation;Event;Faculty;Funding;Future;Goals;graduate student;Grant;Human Resources;Immunology;improved;Information Centers;information gathering;innovation;Institution;Insulin-Dependent Diabetes Mellitus;interest;Joints;Leadership;lectures;Medical Students;meetings;Mission;Monitor;National Institute of Diabetes and Digestive and Kidney Diseases;novel;Nutrition;Obesity;operation;outreach;Periodicals;Postdoctoral Fellow;posters;Process;programs;Progress Reports;Provider;Publications;Records;Research;Research Institute;Research Personnel;Resources;Rotation;Scientist;Services;success;symposium;Training;Training and Education;Universities;Visit;Washington;web site;Work
+current_category: infrastructure
+---
+application_id: 11049133
+activity_code: P30
+title: P&F Program
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Area;Award;Behavioral;career development;Clinical;Development;Diabetes Mellitus;Disease;Faculty;feasibility research;Fellowship;Female;Fostering;Funding;Goals;graduate student;Grant;high risk;innovation;Laboratories;Mentors;National Institute of Diabetes and Digestive and Kidney Diseases;novel;Obesity;Peer Review;Pilot Projects;post-doctoral training;Postdoctoral Fellow;programs;Publications;Qualifying;Research;Research Personnel;Research Project Grants;Research Support;Resources;retention rate;Services;success;Time;Training;Underrepresented Minority;United States National Institutes of Health;Universities;Washington
+current_category: infrastructure
+---
+application_id: 10839852
+activity_code: P30
+title: Component for Institution # 264313
+org_name: TEMPLE UNIV OF THE COMMONWEALTH
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;addiction;Anhedonia;animal breeding;Animal Model;Animals;Anxiety;anxiety-like behavior;Behavior;Behavior assessment;behavior test;Behavioral;behavioral economics;Behavioral Model;Brain;Breeding;Cognition;cognitive testing;Collaborations;Communities;conditioned place preference;Data;Data Analyses;drug of abuse;Drug Regulations;drug reinforcement;emotional functioning;Equipment;Ethanol;experience;Experimental Designs;experimental study;Food;Funding;Gene Modified;Generations;Goals;HIV-1;HIV/AIDS;Human Resources;humanized mouse;in vivo;in vivo evaluation;Infection;innovation;Institution;Intravenous;Knowledge;Learning;Locomotion;Measurement;Measures;member;Memory;Mental Depression;Methods;Modeling;mouse model;Mus;mutant;Mutant Strains Mice;National Institute of Drug Abuse;negative affect;neurobiological mechanism;novel therapeutics;Oral;Pain;Pathway interactions;Pharmaceutical Preparations;preference;Procedures;programs;Rattus;Relapse;Research;Research Design;Research Personnel;Research Project Grants;Research Support;Resources;Rewards;Rodent Model;Saccharin;Scientific Advances and Accomplishments;Self Administration;Self Stimulation;skills;stereotypy;Stress;Stress Tests;Substance abuse problem;Sucrose;Techniques;Testing;Training;Transgenic Organisms;Ultrasonics;United States National Institutes of Health;Universities;vocalization;ward;Work
+current_category: infrastructure
+---
+application_id: 10839861
+activity_code: P30
+title: Component for Institution # 264313
+org_name: TEMPLE UNIV OF THE COMMONWEALTH
+phr: N/A
+terms: Absence of pain sensation;addiction;Address;Alcohols;Applications Grants;Area;Award;Basic Science;Behavioral;Biology;Cannabinoids;career;Clinical Sciences;Collaborations;Data;Discipline;Drug abuse;drug of abuse;Drug Regulations;Faculty;Feasibility Studies;Fostering;Funding;Generations;Grant;HIV;Immunologics;innovation;Institution;Interdisciplinary Study;meetings;Mentors;Molecular;National Institute of Drug Abuse;Nicotine;novel;Opioid;Outcome;Pain;Pharmaceutical Preparations;pharmacologic;Physiological;Pilot Projects;Probability;psychostimulant;Publications;Reporting;Research;research facility;Research Personnel;Research Project Grants;Research Support;Substance abuse problem;Substance Addiction;Techniques;Testing;United States National Institutes of Health;Universities;Work
+current_category: infrastructure
+---
+application_id: 10839858
+activity_code: P30
+title: Component for Institution # 264313
+org_name: TEMPLE UNIV OF THE COMMONWEALTH
+phr: N/A
+terms: addiction;Animals;Behavior;Breeding;cannabinoid receptor;Cell Line;Cells;chromatin immunoprecipitation;Cloning;Collaborations;Core Facility;design and construction;Development;Discipline;Dominant-Negative Mutation;drug action;drug of abuse;Drug Regulations;Epitopes;Evaluation;experience;experimental study;Funding;Gene Expression;Gene Expression Profiling;Gene Expression Regulation;gene product;Genes;Genotype;HIV;Immune system;In Vitro;in vivo;Institution;interest;Investigation;Measures;meetings;Messenger RNA;Methodology;MicroRNAs;Molecular;Molecular Analysis;Molecular Biology;mutant;National Institute of Drug Abuse;Northern Blotting;novel;Nuclear;Opioid Receptor;Organ;Parasites;Pharmacotherapy;Plasmids;Population;Procedures;Process;promoter;Proteins;Quantitative Reverse Transcriptase PCR;receptor;receptor-mediated signaling;Research;Research Personnel;Research Project Grants;Resources;Reverse Transcriptase Polymerase Chain Reaction;Ribonucleases;RNA;Rodent;Role;Run-On Assays;Savings;service utilization;Services;Signal Transduction Pathway;System;Techniques;Time;Tissues;trafficking;Training;Transcript;transcription factor;Transfection;United States National Institutes of Health;Universities;vector;Work
+current_category: infrastructure
+---
+application_id: 10839850
+activity_code: P30
+title: Component for Institution # 264313
+org_name: TEMPLE UNIV OF THE COMMONWEALTH
+phr: N/A
+terms: addiction;Categories;Collaborations;Communities;Data;Development;Drug abuse;drug of abuse;Drug Regulations;Education;Effectiveness;Ensure;Equipment and Supplies;Evaluation;Evaluation Research;Expenditure;Faculty;falls;Feedback;Fostering;Funding;Future Generations;Goals;Grant;HIV;Human Resources;Individual;innovation;Institution;interdisciplinary approach;Interdisciplinary Study;International;Investigation;investigator training;Journals;meetings;member;Mentors;Methods;National Institute of Drug Abuse;operation;organizational structure;Outcomes Research;Pain;Pathology;Pilot Projects;Postdoctoral Fellow;Preparation;Process;programs;Quality Control;Records;recruit;Reporting;Research;Research Activity;Research Design;Research Personnel;Research Project Grants;Research Support;Resource Sharing;scientific organization;Scientist;Series;Services;Students;Substance abuse problem;synergism;Techniques;Training;United States National Institutes of Health;Universities
+current_category: infrastructure
+---
+application_id: 10839854
+activity_code: P30
+title: Component for Institution # 264313
+org_name: TEMPLE UNIV OF THE COMMONWEALTH
+phr: N/A
+terms: 5&apos;-AMP-activated protein kinase;addiction;Address;Adolescent;Adult;Affinity Chromatography;Agonist;Antibodies;Applications Grants;Area;Arrestins;Autoradiography;Award;Behavioral;beta-arrestin;Binding;Binding Sites;Biochemical;Biochemical Pharmacology;Biological Assay;Brain;cannabinoid receptor;Cannabinoids;Cell Line;Cells;Chimeric Proteins;Cholinergic Receptors;Chronic;Clustered Regularly Interspaced Short Palindromic Repeats;CNR1 gene;CNR2 gene;Cocaine;Collaborations;Country;Cultured Cells;Cyclic AMP;Data;delta opioid receptor;Dopamine;Dopamine Receptor;Drug abuse;Drug Addiction;drug of abuse;Drug Receptors;Drug Regulations;Exposure to;Funding;G-Protein-Coupled Receptors;GPR4 gene;Grant;GTP-Binding Proteins;Human Resources;Individual;innovation;Institution;interdisciplinary approach;interest;Investigation;kappa opioid receptors;Knockout Mice;Laboratories;Ligand Binding;Methods;Mitogen-Activated Protein Kinases;Morphine;Mus;Mutant Strains Mice;Nicotine;Nicotinic Receptors;nociceptin;novel;offspring;Opioid agonist;Opioid Receptor;ORL1 receptor;Peptides;Phosphorylation;Positioning Attribute;preservation;Publications;radioligand;Rattus;receptor;Receptor Activation;receptor binding;receptor expression;receptor function;receptor internalization;Receptor Signaling;recruit;Regulation;Research;Research Personnel;Research Project Grants;Resources;Rodent;Scientist;screening;Serum;Services;side effect;sigma receptors;Signal Transduction;Signaling Protein;Specificity;Spinal Cord;Substance abuse problem;Techniques;Therapeutic Effect;tool;Training;United States National Institutes of Health;Visualization;Western Blotting
+current_category: infrastructure
+---
+application_id: 11014540
+activity_code: P30
+title: Genomics Shared Resource
+org_name: UNIVERSITY OF ROCHESTER
+phr: N/A
+terms: Address;Advocacy;Aging;anti-cancer research;Applications Grants;assay development;Bioinformatics;bioinformatics pipeline;Bioinformatics Shared Resource;Biological Process;Biological Sciences;Biometry;Cancer Biology;cancer stem cell;cancer therapy;Catchment Area;Cells;Chromium;Cleavage Under Targets and Release Using Nuclease;Clinical;Cloud Computing;Collaborations;Communities;computerized data processing;cost;cost effective;cost efficient;Coupled;Custom;Data;Data Analyses;data integration;data quality;Data Set;deep learning;Development;DNA sequencing;Doctor of Philosophy;Emerging Technologies;Ensure;Epigenetic Process;epigenomics;Evaluation;exome;experience;Experimental Designs;Financial Support;functional genomics;Future;gene function;Gene Structure;Generations;Genes;Genetic;genetic manipulation;Genome;genome resource;Genomics;Genomics Shared Resource;Goals;Grant;High Performance Computing;high throughput screening;High-Throughput Nucleotide Sequencing;Human Resources;Hybrids;Image;improved;Incidence;Infrastructure;Institution;instrumentation;International;Investments;Libraries;Malignant Neoplasms;Manuscripts;member;Metabolism;Metagenomics;method development;Methodology;Methods;mid-career faculty;Mission;Modality;Molecular Genetics;multiple omics;new technology;novel;Peer Review;Preparation;Price;Process;programs;Publications;Reagent;Reproducibility;Research;Research Personnel;Research Support;Resources;response;Sampling;Scientist;screening;Services;single cell ATAC-seq;single cell genomics;Software Tools;spatial transcriptomics;stem cell biology;Strategic Planning;Structure;System;Targeted Resequencing;Techniques;Technology;technology development;therapy resistant;Time;Tissues;Training and Education;Transcript;transcriptome;transcriptomics;tumor microenvironment;tumor progression;Universities;Urticaria;Validation;whole genome
+current_category: infrastructure
+---
+application_id: 11014530
+activity_code: P30
+title: Cancer Prevention and Control Research Program
+org_name: UNIVERSITY OF ROCHESTER
+phr: N/A
+terms: Academic Medical Centers;Achievement;Address;Advisory Committees;Aging;American Society of Clinical Oncology;Area;Award;base;Basic Science;behavior change;Behavioral Medicine;Cancer Burden;cancer care;Cancer Control;Cancer Control Research Program;cancer diagnosis;cancer epidemiology;Cancer Etiology;cancer prevention;cancer risk;care delivery;care outcomes;Caregivers;Catchment Area;Clinical;Clinical Sciences;Clinical Trials Design;Collaborations;Communities;Community Clinical Oncology Program;community collaboration;community engagement;Community Health Care;Community Outreach;community partners;Country;Death Rate;Dentistry;Disease;Doctor of Philosophy;effective intervention;eHealth;Elderly;Epigenetic Process;Evidence based treatment;Exercise;Faculty;Faculty Recruitment;Fatigue;Fostering;Funding;Future;Genetic;Genetic Screening;Geriatric Assessment;Goals;Grant;Growth;Guidelines;Health Care Systems;Hematology;Hepatobiliary;HPV cervical cancer;HPV screening;Human;implementation science;improved;Incidence;Individual;innovation;Institution;International;Intervention;Intervention Trial;Journals;K-Series Research Career Programs;Leadership;lifestyle intervention;Malignant neoplasm of lung;Malignant Neoplasms;medical schools;member;Mentorship;Metabolism;mHealth;Molecular Epidemiology;Morbidity - disease rate;mortality;multidisciplinary;National Cancer Institute;New York;novel;Obesity;older adult;Oncology;Outcome;Pancreas;Participant;Patients;Peer Review;Persons;Physical activity;Policies;Policy Developments;Population;population based;preventive intervention;Primary Care;Primary Prevention;Probability;Productivity;programs;Public Health;Publications;recruit;Research;Research Personnel;Resource Sharing;Resources;Review Committee;School Nursing;Schools;Science;Scientist;screening;Screening for cancer;Shapes;side effect;Smoking;Strategic Planning;Supportive care;Survivors;survivorship;synergism;System;Text;Tobacco;Tobacco use;Tobacco Use Cessation;Toxic effect;Training;Translating;Translational Research;translational scientist;treatment guidelines;Treatment-Related Cancer;Treatment-related toxicity;tumor microenvironment;Underserved Population;Universities;Update;vaping;Weight maintenance regimen;Work;working group;Yoga
+current_category: infrastructure
+---
+application_id: 11014533
+activity_code: P30
+title: Shared Resource Management
+org_name: UNIVERSITY OF ROCHESTER
+phr: N/A
+terms: Accounting;Address;Advisory Committees;anti-cancer research;biobank;Bioinformatics;bioinformatics infrastructure;Bioinformatics Shared Resource;Biometry;Cancer Control;Cancer Control Research;cancer prevention;Cancer Research Project;Clinical;Collaborations;Committee Members;Communication;Communities;Complex;Consultations;cost;cost effective;cost efficient;Cost Sharing;Cytometry;Data;Data Analyses;data quality;Decision Making;DNA Methylation;Doctor of Philosophy;Education;Effectiveness;Emerging Technologies;Ensure;Epigenetic Process;Equipment;Evaluation;Feedback;Fostering;Future;Genetic;Genome;Genomics;Genomics Shared Resource;Goals;Grant;High Performance Computing;Human;Image;improved;innovation;innovative technologies;instrumentation;Investments;Leadership;Malignant Neoplasms;Marketing;meetings;member;Metabolism;metabolomics;Methodology;Mission;new technology;novel;novel strategies;Outcome;Peer Review;Policies;Process;programs;Publications;Publishing;Radiation;Reporting;Reproducibility;Research;Research Design;Research Personnel;Research Support;Resource Sharing;Resources;response;satisfaction;Scientist;Services;Source;Speed;Strategic Planning;Structure;Surveys;System;Techniques;Technology;Training;Training and Education;tumor microenvironment;Universities;Update;Work
+current_category: infrastructure
+---
+application_id: 11014526
+activity_code: P30
+title: Cancer Research Training and Education Coordination
+org_name: UNIVERSITY OF ROCHESTER
+phr: N/A
+terms: Address;American Cancer Society;American Society of Clinical Oncology;anti-cancer research;Cancer Biology;Cancer Center;Cancer Control;Cancer Control Research;cancer education;career;career development;Catchment Area;Collaborations;Communities;community engagement;Community Outreach;Coordination and Collaboration;deaf;design;Development;Doctor of Philosophy;early-career faculty;Education;Endowment;Enrollment;Environment;Faculty;Fellowship Program;Fortification;Fostering;Funding;graduate student;Grant;high school program;High School Student;Infrastructure;innovation;Institution;interest;Interest Group;Internships;Leadership;Learning;Love;Malignant Neoplasms;Medical Students;member;Mentors;Mentorship;National Cancer Institute;Oncology;Physicians;programs;Research;Research Personnel;Research Project Grants;Research Training;Schools;Science;Science, Technology, Engineering and Mathematics Education;Scientist;skills;Strategic Planning;Students;summer internship;symposium;symptom management;synergism;Training;Training Activity;Training and Education;Training Programs;translational oncology;Travel;undergraduate student;Universities;Wages;Work;Writing;Youth
+current_category: infrastructure
+---
+application_id: 11014531
+activity_code: P30
+title: Community Outreach and Engagement
+org_name: UNIVERSITY OF ROCHESTER
+phr: N/A
+terms: Address;Adult;Affect;aging population;anti-cancer research;Appalachian Region;Award;Cancer Burden;cancer care;Cancer Center;Cancer Control;cancer prevention;Catchment Area;Cities;Clinical Trials;Code;Collaborations;Communication;Communities;community academic partnership;community engaged research;community engagement;Community Health;community organizations;Community Outreach;community partners;County;Custom;Data;Databases;deaf;empowerment;Ensure;Environmental Exposure;Epigenetic Process;Evaluation;Event;evidence base;Faculty;Faith-based organization;Festival;Fostering;Funding;Future;Genetic;Goals;Grant;Health;health assessment;Health Fairs;Hematologic Neoplasms;hepatobiliary cancer;Impact evaluation;improved;Incidence;Informatics;Infrastructure;Joints;Lead;Leadership;Logic;Malignant neoplasm of pancreas;Malignant Neoplasms;Manuscripts;Maps;Measures;member;Metabolism;Modeling;Monitor;mortality;NCI-Designated Cancer Center;Needs Assessment;New York;novel;older adult;Organizational Models;Outcome;outreach;patient navigation;Patient-Focused Outcomes;Persons;Policies;Population;programs;public education;Publishing;Research;Research Personnel;Research Project Grants;Rural Community;Schools;Screening for cancer;service programs;Services;Smoking Cessation Intervention;Strategic Planning;success;System;Targeted Research;Time;Tobacco use;Tobacco Use Cessation;Tobacco-Related Carcinoma;tool;Training and Education;Training Programs;Translating;tumor microenvironment;Universities;Urban Community;Visual;Work
+current_category: infrastructure
+---
+application_id: 11014525
+activity_code: P30
+title: Cancer Center Administration
+org_name: UNIVERSITY OF ROCHESTER
+phr: N/A
+terms: Accounting;Advocate;anti-cancer research;Applications Grants;Area;Award;Bioinformatics;Budgets;Businesses;Cancer Center;Cancer Center Support Grant;Clinical;Clinical Research;Clinical Trials;Collaborations;Communication;Communities;community based research;community engagement;Community Outreach;Conduct Clinical Trials;cost effective;data management;design and construction;Development;Developmental Therapeutics Program;Ensure;Evaluation;Expenditure;experience;Faculty;Faculty Recruitment;Financial Support;Fostering;Funding;Funding Opportunities;Goals;Grant;Growth;Human Resources;implementation facilitation;implementation science;Individual;Information Dissemination;Information Technology;innovation;Institution;inter-institutional;Leadership;Malignant Neoplasms;Medical center;meetings;member;Mission;Monitor;Natural Immunity;Office of Administrative Management;operation;Organizational Efficiency;outreach;Performance;Philanthropic Fund;Pilot Projects;Play;Policies;Policy Developments;Positioning Attribute;Process;programs;Progress Reports;Qualifying;recruit;Reporting;Research;Research Project Grants;Resource Sharing;Resources;response;Role;Scientist;Services;Strategic Planning;Strategic vision;Structure;symposium;System;Training and Education;translational engagement;tumor metabolism;Universities;Vision
+current_category: infrastructure
+---
+application_id: 11014538
+activity_code: P30
+title: Biostatistics and Bioinformatics Shared Resource
+org_name: UNIVERSITY OF ROCHESTER
+phr: N/A
+terms: Address;analytical method;anti-cancer research;Applications Grants;Artificial Intelligence;Big Data;Bioinformatics;bioinformatics infrastructure;Bioinformatics Shared Resource;Biometry;career;Charge;Clinical Research;Clinical Trials Database;Collaborations;Communication;Communities;Computational Biology;cost effective;Data;Data Analyses;data integration;design;Development;Doctor of Philosophy;Education;Educational Activities;Environment;Faculty;Fostering;Funding;Future;Grant;Hour;Human Resources;Image;Investments;Leadership;Machine Learning;Malignant Neoplasms;Manuscripts;Measures;meetings;member;Mentors;Methodology;Methods;Mission;Monitor;novel;Outcome;Play;Positioning Attribute;Preparation;programs;protocol development;Protocols documentation;recruit;Reporting;Research;Research Design;Research Personnel;Resource Sharing;Role;Safety;Sample Size;Services;Statistical Methods;Statistical Models;Strategic Planning;Students;tool;Training;Training and Education;Universities;Walking
+current_category: infrastructure
+---
+application_id: 11014532
+activity_code: P30
+title: Developmental Funds
+org_name: UNIVERSITY OF ROCHESTER
+phr: N/A
+terms: Achievement;Address;Aging;anti-cancer research;Applications Grants;Articulation;Award;base;Calendar;Cancer Center Support Grant;career;career development;Catchment Area;clinical investigation;Clinical Investigator;Clinical Research;Clinical Trials;Collaborations;Communities;Community Clinical Oncology Program;community engagement;Community Outreach;Critiques;Development;doctoral student;early-career faculty;Educational Curriculum;experience;Extramural Activities;Faculty;Fellowship Program;Foundations;Funding;Future;Goals;Grant;Growth;High School Student;incentive program;Incentives;Infrastructure;innovation;Institution;investigator-initiated trial;Investments;Journals;K-Series Research Career Programs;Lead;Leadership;Malignant Neoplasms;Measures;Medical Students;member;Mentors;National Clinical Trials Network;operation;participant enrollment;Phase I Clinical Trials;Physicians;Postdoctoral Fellow;Prevention trial;Principal Investigator;programs;Publications;Publishing;Recording of previous events;Research;research and development;Research Personnel;Research Project Grants;Scientist;Site;Strategic Planning;Students;success;Supportive care;Training;Training and Education;training opportunity;Training Support;undergraduate student;Universities;Update;Work
+current_category: infrastructure
+---
+application_id: 11045616
+activity_code: P30
+title: Cancer Research Training and Education Coordination
+org_name: RUTGERS BIOMEDICAL AND HEALTH SCIENCES
+phr: PROJECT NARRATIVE  Not required per PAR-21-321 (Cancer Center Support Grants (CCSGs) for NCI-designated Cancer Centers  (P30 Clinical Trial Optional)
+terms: Address;Advisory Committees;anti-cancer research;Award;Cancer Biology;cancer care;Cancer Center Support Grant;cancer education;Cancer health equity;Cancer Institute of New Jersey;career;Catchment Area;Clinical;Clinical Trials;college;Communities;community collaboration;community engagement;Community Outreach;Comprehensive Cancer Center;County;curriculum development;Development;Disparity;Doctor of Philosophy;Education;education access;education research;Educational Status;English Language;Environment;equity, diversity, and inclusion;Evolution;Faculty;Family;Funding;Future;Geography;Goals;Grant;Health;high school;Home;Immigrant;Incentives;Income;Individual;Institution;K-12 student;Kansas;Malignant Neoplasms;Medical;Medical center;meetings;member;Mentors;Mentorship;Minority Groups;multidisciplinary;NCI-Designated Cancer Center;New Jersey;next generation;Outcome;Patients;Population;Population Density;Postdoctoral Fellow;professor;programs;Reporting;Research;Research Personnel;Resources;Science;science teacher;Secure;Specialist;Strategic Planning;Students;summer internship;Training;Training and Education;Training Programs;Travel;undergraduate student;United States National Institutes of Health;Universities;Youth
+current_category: infrastructure
+---
+application_id: 11045643
+activity_code: P30
+title: Clinical Protocol and Data Management
+org_name: RUTGERS BIOMEDICAL AND HEALTH SCIENCES
+phr: PROJECT NARRATIVE  Not required per PAR-21-321 (Cancer Center Support Grants (CCSGs) for NCI-designated Cancer Centers  (P30 Clinical Trial Optional)
+terms: Address;Adult;Agreement;anti-cancer research;Area;Attention;Budgets;Businesses;Cancer Burden;Cancer Center;Cancer Center Support Grant;cancer clinical trial;Cancer Institute of New Jersey;cancer research center director;Catchment Area;Childhood;Clinical;Clinical Data;Clinical Investigator;Clinical Management;Clinical Oncology;Clinical Protocols;Clinical Research;clinical trial enrollment;Clinical Trials;community engagement;Community Hospitals;Community Outreach;Data;data management;Development;Disease;Education;Enrollment;faculty mentor;Fostering;Funding;Future;Geographic Locations;Goals;Growth;Health;Health system;Hospitals;Housing;Human;Infrastructure;Institution;Intervention;Investigational New Drug Application;investigator-initiated trial;Leadership;Location;Malignant Neoplasms;member;Modeling;Monitor;NCI-Designated Cancer Center;New Jersey;Oncology;oncology service;operation;organizational structure;Patients;Phase;Population;Principal Investigator;programs;Protocols documentation;quality assurance;Reporting;Research;Research Activity;Research Personnel;Resources;Role;Safety;screening;Services;Site;software systems;System;Therapeutic;Therapeutic Intervention;Training;Translational Research;treatment trial;Underrepresented Populations;Universities;Work
+current_category: infrastructure
+---
+application_id: 11045642
+activity_code: P30
+title: Leadership, Planning and Evaluation
+org_name: RUTGERS BIOMEDICAL AND HEALTH SCIENCES
+phr: PROJECT NARRATIVE  Not required per PAR-21-321 (Cancer Center Support Grants (CCSGs) for NCI-designated Cancer Centers  (P30 Clinical Trial Optional)
+terms: Acceleration;Achievement;Address;Advocate;Basic Science;cancer cell;Cancer Center;Cancer Center Support Grant;Cancer health equity;Cancer Institute of New Jersey;cancer prevention;cancer therapy;career;Catchment Area;Cell Therapy;Clinical;clinical care;Clinical Research;Clinical Trials;Collaborations;Communication;Communities;community building;community engagement;Community Outreach;Consultations;Data;Decision Making;Development;Doctor of Philosophy;Education;Education and Outreach;effectiveness evaluation;empowerment;Ensure;equity, diversity, and inclusion;Evaluation;evidence base;Evidence based practice;Evolution;Faculty;Fostering;Funding;Genomics;Goals;Grant;Growth;Health;health equity promotion;Immunologic Monitoring;Immunology;implementation evaluation;improved;Individual;innovation;insight;Institution;Investments;Joints;Leadership;Malignant Neoplasms;meetings;Mentorship;Metabolism;Minority;Mission;NCI-Designated Cancer Center;neoplasm resource;New Jersey;novel;Nurses;operation;Outcome;outreach;Patient Care;Patients;Peer Review;Persons;Physicians;Play;Population Sciences;Prevention;Process;programs;recruit;Reporting;Research;Research Activity;Research Personnel;research vision;Resource Sharing;Resources;Rest;Role;Schedule;Science;screening;Screening for cancer;Strategic Planning;success;Technology;Therapeutic Intervention;Therapeutic Studies;Training and Education;Translational Research;Trust;tumor immunology;tumor metabolism;underserved area;Universities;Vision;Work
+current_category: infrastructure
+---
+application_id: 10767730
+activity_code: P30
+title: Clinical Protocol and Data Management
+org_name: RUTGERS BIOMEDICAL AND HEALTH SCIENCES
+phr: PROJECT NARRATIVE Not required per PAR-21-321 (Cancer Center Support Grants (CCSGs) for NCI-designated Cancer Centers (P30 Clinical Trial Optional)
+terms: Adult;Agreement;anti-cancer research;Area;Attention;Budgets;Businesses;Cancer Center;Cancer Center Support Grant;cancer clinical trial;Cancer Institute of New Jersey;cancer research center director;Catchment Area;Childhood;Clinical;Clinical Data;Clinical Investigator;Clinical Management;Clinical Oncology;Clinical Protocols;Clinical Research;clinical trial enrollment;Clinical Trials;community engagement;Community Hospitals;Community Outreach;Data;data management;Data Management Resources;Development;Disease;Education;Enrollment;faculty mentor;Fostering;Funding;Future;Goals;Grant;Growth;Health;Health system;Hospitals;Housing;Human;Infrastructure;insight;Institution;Intervention;investigator-initiated trial;Leadership;Location;member;Minority Enrollment;Modeling;Monitor;NCI-Designated Cancer Center;New Jersey;Office Management;Oncology;oncology service;operation;organizational structure;Patients;Phase;Principal Investigator;programs;Protocols documentation;quality assurance;Regulatory Affairs;Reporting;Research;Research Activity;Research Personnel;Resources;Role;Safety;screening;Services;Site;software systems;Support System;System;Therapeutic;Therapeutic Intervention;Training;Translational Research;treatment trial;Underrepresented Populations;Universities;Work
+current_category: infrastructure
+---
+application_id: 10767722
+activity_code: P30
+title: Cancer Metabolism and Immunology
+org_name: RUTGERS BIOMEDICAL AND HEALTH SCIENCES
+phr: PROJECT NARRATIVE Not required per PAR-21-321 (Cancer Center Support Grants (CCSGs) for NCI-designated Cancer Centers (P30 Clinical Trial Optional)
+terms: Address;Anabolism;anti-cancer research;anti-tumor immune response;Area;authority;Award;base;Cancer Cachexia;cancer cell;Cancer Center;Cancer Center Support Grant;Cancer Institute of New Jersey;cancer therapy;Catchment Area;cell growth;Cell Therapy;Cells;Cellular Metabolic Process;Circulation;Clinical Research;Clinical Trials;Collaborations;community engaged research;community engagement;Community Outreach;Discipline;driver mutation;Foundations;Funding;gene therapy;Genetic;Goals;Grant;Growth;Health system;host neoplasm interaction;Immune;Immune Evasion;Immunologics;Immunology;immunoregulation;improved;innovation;Institution;Invaded;Journals;Malignant Neoplasms;member;Metabolic;metabolic abnormality assessment;Metabolic Control;metabolic fitness;Metabolic Pathway;Metabolism;NCI-Designated Cancer Center;Neoplasm Metastasis;neoplastic cell;novel;novel strategies;Nutrient;Nutritional Requirements;Oncogenic;Oxidation-Reduction;Paper;Peer Review;pharmacologic;Positioning Attribute;post-doctoral training;Process;Production;Prognosis;programs;Proliferating;Publishing;recruit;Regulation;Research;Research Institute;response;Risk Factors;Role;Signal Transduction;Site Visit;Sorbus;Stress;Therapeutic;Translational Research;treatment strategy;tumor;tumor growth;tumor immunology;tumor metabolism;Tumor-infiltrating immune cells;United States National Institutes of Health;Universities
+current_category: infrastructure
+---
+application_id: 11045639
+activity_code: P30
+title: Community Outreach and Engagement
+org_name: RUTGERS BIOMEDICAL AND HEALTH SCIENCES
+phr: PROJECT NARRATIVE  Not required per PAR-21-321 (Cancer Center Support Grants (CCSGs) for NCI-designated Cancer Centers  (P30 Clinical Trial Optional)
+terms: Academy;Address;Advisory Committees;Advocacy;Advocate;Affect;Area;Arts;Award;Breast;Cancer Burden;Cancer Center Support Grant;Cancer Control;cancer health disparity;Cancer health equity;Cancer Institute of New Jersey;cancer site;Cancer Survivor;Caring;Catchment Area;Clinical Trials;Colorectal;Communities;community engagement;community organizations;Community Outreach;community partners;community partnership;community science;County;dashboard;Data;Data Collection;data dashboard;Decision Making;Detection;Development;digital;digital media;Disparity;diversity and inclusion;Education;Education and Outreach;Ensure;Equity;Evaluation;evidence base;Evidence based intervention;Faculty;Fostering;Foundations;Funding;Geographic Locations;Goals;Grant;Health;health care quality;Health Services Accessibility;Home;Human Papillomavirus;improved;Incidence;Language;Lesion;Logic;Lung;Malignant - descriptor;Malignant Neoplasms;meetings;Melanoma;member;Minority;Mission;model design;Monitor;mortality;NCI-Designated Cancer Center;New Jersey;organizational structure;Outcome;outreach;Policies;Population;Population Heterogeneity;Population Sciences;premalignant;Prevention;Preventive service;Printing;Professional Education;Program Development;programs;Prostate;Public Policy;Publications;Race;Reporting;Research;Research Personnel;Research Support;Risk Factors;Science;Scientist;Screening for cancer;Screening Result;Site;socioeconomics;Stage at Diagnosis;Strategic Planning;Subgroup;Touch sensation;Training;Training and Education;Visit;Voice;Work
+current_category: infrastructure
+---
+application_id: 11023141
+activity_code: P30
+title: Clinical Protocol and Data Management
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: N/A
+terms: Address;anti-cancer research;Area;Awareness;Budgets;Cancer Center Support Grant;cancer clinical trial;Cancer Therapy Evaluation Program;Catchment Area;Cell Therapy;Clinical;Clinical Data;clinical implementation;clinical investigation;Clinical Oncology;Clinical Protocols;Clinical Research;Clinical Research Protocols;clinical research site;Clinical Sciences;Clinical Trials;Clinical Trials Cooperative Group;Clinical Trials Network;Clinical Trials Support Unit;Collaborations;Colorado;community engagement;Community Outreach;Contracts;County;Data;data management;demographics;Development;Developmental Therapeutics Program;Early Therapeutic-Clinical Trials Network;Education;education resources;Educational Curriculum;electronic medical record system;Enrollment;Ensure;Faculty;Feedback;Funding;Health;Hematology;high risk;Hispanic;Hour;improved;Industry;Infrastructure;innovation;Intervention;Investigational Therapies;investigator training;investigator-initiated trial;Investments;Knowledge;Lead;Malignant Neoplasms;Medical center;member;Minority Groups;minority patient;Monitor;Multi-Institutional Clinical Trial;multidisciplinary;Nurses;Oncology;operation;outreach;participant safety;Pathway interactions;patient safety;Patients;Peer Review;Phase;Phase II Clinical Trials;Policies;Population;population health;Population Sciences;Prevention trial;Process;process optimization;programs;Protocols documentation;Qualifying;quality assurance;Quality Control;Recording of previous events;Regulation;Reporting;repository;Research;Research Activity;Research Personnel;research study;Research Support;Resources;Rural;Safety;Services;Site;socioeconomic diversity;socioeconomics;Solid Neoplasm;Structure;Subgroup;System;Therapy trial;Time;Training;Training and Education;Translational Research;treatment trial;Underrepresented Minority;Underserved Population;United States National Institutes of Health;Universities;Work
+current_category: infrastructure
+---
+application_id: 10766156
+activity_code: P30
+title: Shared Resource Management
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: acronyms;Address;Advisory Committees;Animal Disease Models;anti-cancer research;Basic Science;biobank;Bioinformatics;Biostatistics Shared Resource;Cancer Center;Cancer Center Support Grant;Cancer Control;cancer research center director;Cancer Research Project;cancer therapy;Clinical Research;community center;cost effective;Data;DNA sequencing;Education;Elements;Ensure;Equipment;Flow Cytometry;Funding;Future;Goals;Immune response;Immunologics;improved;incomplete Freund&apos;s adjuvant;instrumentation;Malignant Neoplasms;medical schools;meetings;member;metabolomics;Microscopy;Mission;Molecular;Monitor;Names;operation;Outcome;population health;Population Sciences;Positioning Attribute;Procedures;Process;programs;Proteomics;Protocols documentation;Publications;Recommendation;Reproducibility;Research;research facility;Research Personnel;Resource Sharing;response;service delivery;Services;Site;Strategic Planning;Structure;Suggestion;Technology;Tissues;training opportunity;transcriptome sequencing;Translational Research;Trust;United States National Institutes of Health;University of Virginia Cancer Center;Vaccines;Virginia;Work
+current_category: infrastructure
+---
+application_id: 11051166
+activity_code: P30
+title: BSR - SR Component
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: acronyms;Address;anti-cancer research;Basic Science;Biological Markers;Biometry;Biostatistics Shared Resource;Cancer Center Support Grant;Clinical;clinical trial analysis;Clinical Trials Design;Collaborations;computer program;Conformal Radiotherapy;Consultations;Data;design;Development;Diagnostic;Dose;early phase clinical trial;Education;Ensure;Event;experience;Focal Adhesion Kinase 1;Goals;Health Sciences;Infrastructure;Laboratory Scientists;Laboratory Study;lectures;Life;Linear Models;Measures;medical schools;meetings;member;Methodology;Methods;Mission;Monitor;Monitoring Clinical Trials;Non-linear Models;novel;Observational Study;Outcome;Outcomes Research;Phase;Population;Population Sciences;Population Study;preclinical study;predictive modeling;programs;Protocols documentation;Public Health;Quality Control;Reporting;Reproducibility;Research;Research Design;Research Personnel;Research Project Grants;research study;Resource Sharing;Resources;Review Committee;Safety;Science;skills;Statistical Methods;Time;Translational Research;University of Virginia Cancer Center
+current_category: infrastructure
+---
+application_id: 11051177
+activity_code: P30
+title: PHCOC - SR Component
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: Address;anti-cancer research;Applications Grants;Basic Science;Cancer Burden;cancer care;Cancer Center Support Grant;Cancer Control;cancer risk;Catchment Area;Centers for Population Health;Clinical Sciences;Data;Data Analyses;Data Collection;design;Development;Evaluation;Fee-for-Service Plans;Goals;health assessment;Hour;improved;instrument;Malignant Neoplasms;Measures;member;Methods;Mission;Outcome;Pattern;Pilot Projects;Policies;Population;Population Analysis;population based;population health;Population Research;Population Study;Population trends;programs;Publications;Quality of life;Research Design;Research Personnel;Resource Sharing;Resources;Services;Statistical Data Interpretation;survivorship;trend;University of Virginia Cancer Center;Work
+current_category: infrastructure
+---
+application_id: 11051159
+activity_code: P30
+title: AMF - SR Component
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: acronyms;Advanced Development;anti-cancer research;Biological Process;cancer cell;Cancer Center Support Grant;cancer therapy;Cells;Collaborations;Communities;Conceptions;Country;Cryoelectron Microscopy;Data;data acquisition;Data Analyses;design;Development;Education;education resources;Educational workshop;Electrons;Ensure;Equipment;experimental study;Fluorescence;Fostering;Foundations;Funding;Goals;Human;Human Resources;Image;Image Analysis;image processing;imaging capabilities;Imaging Device;Imaging technology;improved;Individual;insight;Institution;instrument;instrumentation;Learning;Light;Malignant Neoplasms;medical schools;meetings;member;Microscopy;NCI Center for Cancer Research;operation;Pathogenicity;Performance;performance tests;Preparation;Protocols documentation;quantitative imaging;Reproducibility;Research;research and development;Research Personnel;Resource Sharing;Resources;Rotation;Sampling;Secure;Services;symposium;Technology;theories;tool;Training;Training and Education;United States National Institutes of Health;University of Virginia Cancer Center;Vendor;Visualization;webinar;Work
+current_category: infrastructure
+---
+application_id: 11051156
+activity_code: P30
+title: Protocol Review & Monitoring System
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: acronyms;Adherence;Adverse event;Agreement;Amendment;authority;Cancer Center Support Grant;cancer initiation;cancer research center director;Charge;Clinical Research;Clinical Trials;Data;data management;design;Development;Disease;Doctor of Philosophy;Ensure;Goals;Guidelines;Human;human subject;implementation process;Industry;Institution;Institutional Review Boards;Malignant Neoplasms;Mediating;meetings;Monitor;Monitoring Clinical Trials;National Clinical Trials Network;Patients;Peer Review;Pharmacy facility;Play;Principal Investigator;Protocols documentation;Research;Research Personnel;Research Priority;research study;Review Committee;Role;Safety;Serious Adverse Event;sound;System;United States National Institutes of Health;Universities;University of Virginia Cancer Center;Virginia;Voting
+current_category: infrastructure
+---
+application_id: 11051175
+activity_code: P30
+title: MITS - SR Component
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: Address;Advisory Committees;Alleles;Animal Cancer Model;Animal Disease Models;animal imaging;Animal Model;Animals;biobank;Biological Assay;Biometry;Blood specimen;Cancer Center Support Grant;Cancer Model;cancer therapy;Clinical;Clinical Research;Clinical Trials;comparative;conditional knockout;cost;cost effective;CRISPR/Cas technology;Dedications;Derivation procedure;design;Development;Diagnosis;dimensional analysis;disease model;drug development;enzyme linked immunospot assay;Equipment;experimental study;Flow Cytometry;Fluorescence;Gene Targeting;genetic technology;Genetically Engineered Mouse;Genome engineering;Goals;high dimensionality;Hour;Human;human disease;human imaging;human tissue;Image;Imaging technology;Immunocompetent;Immunohistochemistry;Immunologic Markers;Immunologic Monitoring;Immunologics;implantation;in vivo;in vivo imaging;innovation;instrumentation;Interdisciplinary Study;Investigation;Knock-in;Knowledge;Leadership;luminescence;Magnetic Resonance Imaging;Malignant Neoplasms;medical schools;member;Microscopy;Minor;Modality;Modeling;Molecular;molecular marker;Monitoring Clinical Trials;mouse model;Mouse Strains;Mus;patient derived xenograft model;Patients;Positron-Emission Tomography;pre-clinical;pre-clinical research;preclinical study;preservation;Price;Published Comment;radiochemical;Reproductive Technology;Research;research facility;Research Personnel;Research Project Grants;Resource Sharing;Resources;Rodent;Rodent Model;Running;Sampling;Services;single photon emission computed tomography;skills;Systems Development;Techniques;Technology;Therapeutic;Time;Tissues;Training;Translational Research;Translations;tumor;tumor xenograft;University of Virginia Cancer Center;X-Ray Computed Tomography
+current_category: infrastructure
+---
+application_id: 11051106
+activity_code: P30
+title: Admin Core
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: acronyms;Administrator;anti-cancer research;Applied Research;Area;Association of American Cancer Institutes;Award;Budgets;cancer care;Cancer Center;Cancer Center Support Grant;Capital;Characteristics;Clinical Research;Collaborations;Communication;community engagement;Community of Practice;Community Outreach;Development;Engineering;Evaluation;Faculty Recruitment;faculty support;Fostering;Funding;Funding Opportunities;Goals;Grant;Health system;Immunologics;Infrastructure;Institution;interdisciplinary collaboration;Internet;Leadership;Malignant Neoplasms;Master of Public Health;medical schools;meetings;member;Mission;Monitor;Newsletter;Occupational activity of managing finances;Oncology;Outcome;Patient Care;Philanthropic Fund;Play;Policies;population health;precision medicine;Preparation;Printing;Process;programs;recruit;Reporting;Research;research and development;Research Personnel;Research Project Grants;Research Proposals;Resource Sharing;Resources;Role;Schools;Services;Strategic Planning;Therapeutic;Training;translational pipeline;Translational Research;University adminstration;University of Virginia Cancer Center;Work
+current_category: infrastructure
+---
+application_id: 10766177
+activity_code: P30
+title: BTRF - SR Compnent
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: acronyms;Advisory Committees;American Association of Cancer Research;Anatomy;Animal Cancer Model;anti-cancer research;automated image analysis;Basic Science;biobank;Biological;Blood;Blood specimen;Board Certification;cancer biomarkers;Cancer Center Support Grant;cancer therapy;Clinical;Clinical Research;Clinical Trials;Color;Complex;digital;digital imaging;Disease;Flow Cytometry;Histological Techniques;Histology;Histopathology;Human;human tissue;Image Analysis;Immunohistochemistry;Immunologics;In Situ Hybridization;Informatics;insight;International;Laboratories;laser capture microdissection;Lasers;Malignant Neoplasms;manufacture;medical schools;Microarray Analysis;Microdissection;Molecular Analysis;Neoplasm Circulating Cells;next generation sequencing;Nucleic Acids;Oncology;Operative Surgical Procedures;Pathologist;Pathology;Procedures;Process;programs;repository;Research;research facility;Research Personnel;Research Support;Resource Informatics;Resource Sharing;RNA;Scanning;Services;Slide;Societies;Specimen;Techniques;Therapeutic;Therapy Clinical Trials;Tissue Extracts;Tissue Microarray;Tissue Sample;Tissues;Translational Research;Universities;University of Virginia Cancer Center;Urine;Validation;Virginia
+current_category: infrastructure
+---
+application_id: 10766183
+activity_code: P30
+title: PHCOC - SR Component
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: Address;anti-cancer research;Applications Grants;Basic Science;Cancer Burden;cancer care;Cancer Center Support Grant;Cancer Control;cancer risk;Catchment Area;Centers for Population Health;Clinical Sciences;Data;Data Analyses;Data Collection;design;Development;Evaluation;Fee-for-Service Plans;Goals;health assessment;Hour;improved;instrument;Malignant Neoplasms;Measures;member;Methods;Mission;Outcome;Pattern;Pilot Projects;Policies;Population;Population Analysis;population based;population health;Population Research;Population Study;Population trends;programs;Publications;Quality of life;Research Design;Research Personnel;Resource Sharing;Resources;Services;Statistical Data Interpretation;survivorship;trend;University of Virginia Cancer Center;Work
+current_category: infrastructure
+---
+application_id: 10766140
+activity_code: P30
+title: Cancer Research Training & Education Core
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: acronyms;Age;American Cancer Society;American Heart Association;anti-cancer research;Applied Research;Arts;Award;Biomedical Engineering;Cancer Biology;Cancer Center Support Grant;cancer education;care outcomes;career;career development;Career Mobility;Catchment Area;Clinical;Clinical Research;Collaborations;Colorectal Cancer;Communities;community center;community engagement;Community Healthcare;Community Outreach;Continuing Education;Data Science;design;Development;Development Plans;Education;Educational Curriculum;Educational workshop;elementary school;Engineering;Faculty;falls;Fellowship;Foundations;Goals;Grant;Hand;Health Personnel;Health Professional;Health Sciences;High School Student;Individual;Infrastructure;innovation;Institution;K-12 Education;Leadership;Learning;Malignant Neoplasms;Master of Public Health;Master of Science;Medical;medical schools;Medical Students;meetings;member;Mentors;Minority-Serving Institution;Mission;population health;Positioning Attribute;Postdoctoral Fellow;Program Development;programs;Publications;Records;Research;Research Project Grants;Resource Sharing;Science;Scientist;Site;Students;success;summer research;symposium;synergism;Telemedicine;Time;Training;Training Activity;Training and Education;Training Programs;University of Virginia Cancer Center;Virginia;Work
+current_category: infrastructure
+---
+application_id: 10766163
+activity_code: P30
+title: Clinical Protocol & Data Management
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: biobank;Budgets;Cancer Center;Cancer Center Support Grant;cancer clinical trial;cancer site;Catchment Area;Clinical Cancer Center;Clinical Data;clinical infrastructure;Clinical Oncology;Clinical Protocols;Clinical Research;Clinical Trials;Complex;Data;data management;Development;Disease;Education;Elderly;Elements;Enrollment;Grant;Growth;Health system;human old age (65+);Individual;Industrialization;Infrastructure;Institutional Review Boards;Intervention;Intervention Studies;Intervention Trial;Investigational Drugs;investigator-initiated trial;life span;Maintenance;Malignant Neoplasms;Minority;Monitor;Newly Diagnosed;Nurses;operation;Patients;Pharmaceutical Services;Process;programs;protocol development;Protocols documentation;quality assurance;recruit;Research;Research Activity;research facility;Research Infrastructure;Research Personnel;Rural Community;Safety;Services;Stress;Therapeutic Trials;Time;Tissues;Training;treatment trial;trial design;University of Virginia Cancer Center;Woman;Work;Writing
+current_category: infrastructure
+---
+application_id: 10766158
+activity_code: P30
+title: Leadership, Planning & Evaluation
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: acronyms;Advisory Committees;Animal Disease Models;anti-cancer research;Area;Basic Science;Cancer Biology;Cancer Center;Cancer Center Support Grant;Cancer Control;Cancer health equity;career development;Catchment Area;Chemistry;Clinical Investigator;Clinical Research;Clinical Sciences;Clinical Trials;Collaborations;Communities;community based participatory research;community engagement;Community Outreach;Data Science;Development;Disclosure;drug discovery;Education;Ensure;Epigenetic Process;Evaluation;Faculty Recruitment;Feedback;Funding;Future;Genomics;Goals;Immunologics;improved;Individual;Infrastructure;Intervention Trial;Large granular lymphocyte;Leadership;Legal patent;Licensing;Malignant Neoplasms;medical schools;meetings;member;Mentorship;Mission;Molecular;Molecular Genetics;Monitor;Oncology;Outcome;Persons;Population;population health;Population Research;Population Sciences;Positioning Attribute;Process;programs;Recommendation;recruit;Research;Research Personnel;Resource Sharing;Schools;Science;Scientist;Source;Strategic Planning;Strategic vision;Tobacco;Training;Training Activity;Training and Education;translational pipeline;Translational Research;undergraduate research experience;University of Virginia Cancer Center;Work
+current_category: infrastructure
+---
+application_id: 10766176
+activity_code: P30
+title: BSR - SR Component
+org_name: UNIVERSITY OF VIRGINIA
+phr: Project Narrative: Per PAR-20-043, Project Narrative is not completed.
+terms: acronyms;Address;anti-cancer research;Basic Science;Biological Markers;Biometry;Biostatistics Shared Resource;Cancer Center Support Grant;Clinical;clinical trial analysis;Clinical Trials Design;Collaborations;computer program;Conformal Radiotherapy;Consultations;Data;design;Development;Diagnostic;Dose;early phase clinical trial;Education;Ensure;Event;experience;Focal Adhesion Kinase 1;Goals;Health Sciences;Infrastructure;Laboratory Scientists;Laboratory Study;lectures;Life;Linear Models;Measures;medical schools;meetings;member;Methodology;Methods;Mission;Monitor;Monitoring Clinical Trials;Non-linear Models;novel;Observational Study;Outcome;Outcomes Research;Phase;Population;Population Sciences;Population Study;preclinical study;predictive modeling;programs;Protocols documentation;Public Health;Quality Control;Reporting;Reproducibility;Research;Research Design;Research Personnel;Research Project Grants;research study;Resource Sharing;Resources;Review Committee;Safety;Science;skills;Statistical Methods;Time;Translational Research;University of Virginia Cancer Center
+current_category: infrastructure
+---
+application_id: 10747970
+activity_code: P30
+title: Leadership, Planning and Evaluation
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Achievement;Applications Grants;Area;Award;Cancer Center Support Grant;Capital;career;clinical implementation;Collaborations;Communities;community engagement;Community Outreach;Development;Engineering;Environment;Evaluation;expectation;experience;Faculty Recruitment;Formulation;Funding;Future;Goals;Immunology;Individual;insight;Institution;Intellectual Property;Investments;Leadership;member;multidisciplinary;NCI Center for Cancer Research;Norris Cotton Cancer Center;Parents;peer;Peer Review;Population Sciences;Positioning Attribute;Process;programs;Qualifying;Recommendation;Research;Research Infrastructure;Resource Sharing;Role;Science;Secure;Services;Strategic Planning;Strategic vision;Training;Translations;Vision;Work
+current_category: infrastructure
+---
+application_id: 11170072
+activity_code: P30
+title: Developmental Funds
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Award;Biometry;Cancer Center Support Grant;cancer research center director;Cells;Clinical;Clustered Regularly Interspaced Short Palindromic Repeats;Collaborations;college;Coupled;Development;Direct Costs;Emerging Technologies;Engineering;Evaluation;Faculty;Faculty Recruitment;Funding;Funding Mechanisms;Gene Transfer;Genomics;Health;Immunooncology;Individual;Infrastructure;innovation;Investments;Malignant Neoplasms;member;Molecular Biology;mouse model;NCI Center for Cancer Research;Needs Assessment;Norris Cotton Cancer Center;novel;Pathology;patient derived xenograft model;Peer Review;Philanthropic Fund;Pilot Projects;Population Research;precision oncology;preference;Prevention;Process;programs;Publications;Radar;Recording of previous events;recruit;Registries;Reporting;Research;Research Personnel;Resource Sharing;Resources;Rural Population;Science;Secure;Service provision;Services;Strategic Planning;survivorship;System;Techniques;Translational Research;Work
+current_category: infrastructure
+---
+application_id: 11170066
+activity_code: P30
+title: Trace Elements (TE)
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: analytical method;Animal Organ;animal tissue;Arsenic;Beverages;bioimaging;Biological;Blood;Budgets;Cancer Center;Cancer Center Support Grant;Carcinogens;case-by-case basis;Catchment Area;Cells;Cereals;Chemicals;Chromatography;Coupled;Data;early life exposure;Elements;Ensure;Exposure to;Fishes;Funding;granite;Hair;Health Policy;Human;Individual;Inductively Coupled Plasma Mass Spectrometry;Infant;Inorganic Chemistry;Institution;instrument;instrumentation;International;Invertebrates;Iron;Link;Malignant Neoplasms;Measures;member;Methods;Micronutrients;Monitor;nanoparticle;NCI Center for Cancer Research;Norris Cotton Cancer Center;Placenta;Platinum;Play;Population Sciences;Preparation;programs;Protocols documentation;Public Health;quality assurance;Quality Control;Research;Research Personnel;Resource Sharing;Resources;Role;Running;Sampling;Selenium;Services;Soil;Structure of nail of toe;Technology;Testing;Therapeutic Effect;Therapeutic Uses;Tissues;Trace Elements;Urine;Water;Work
+current_category: infrastructure
+---
+application_id: 11016960
+activity_code: P30
+title: Health Outcomes & Behavior
+org_name: H. LEE MOFFITT CANCER CTR & RES INST
+phr: N/A
+terms: active method;addiction;Address;Adoption;Adult;Affect;Area;Automobile Driving;Awareness;Behavior;Behavioral;biobehavior;Black Populations;Cancer Burden;cancer care;Cancer Center Support Grant;Cancer Control;Cancer Detection;cancer prevention;Cancer Survivorship;cancer survivorship care;cancer therapy;care delivery;care providers;Caregivers;Caring;Catchment Area;Client;Clinical;clinical care;clinical practice;Collaborations;colorectal cancer screening;Communities;community barrier;community based participatory research;community engagement;community organizations;Congresses;County;Detection;Development;Diagnosis;Direct Costs;Distress;end of life;energy balance;evidence base;Evidence based intervention;Family;Federally Qualified Health Center;Food;former smoker;Fostering;Funding;Genetic Counseling;genetic testing;Goals;Grant;Guidelines;Health;Health behavior;Health behavior and outcomes;health care delivery;Health Care Systems;health difference;health goals;Health Policy;Health Services Accessibility;Hereditary Malignant Neoplasm;Hispanic Populations;HIV;HPV prevention;Human;implementation research;implementation science;improved;Individual;individualized prevention;innovation;Institution;International;Intervention;Intervention Studies;Laboratory Study;Long-Term Effects;Long-Term Survivorship;low dose computed tomography;lung cancer screening;Malignant Neoplasms;member;Morbidity - disease rate;novel strategies;Observational Study;Outcome;Patient Care;Patient Outcomes Assessments;Patients;Peer Review;Persons;Policies;Population;population health;Populations at Risk;Practice Guidelines;Prevalence;Prevention;Prevention Measures;Process;programs;Provider;psychologic;psychosocial;Public Health;Publishing;Qualifying;Quality of life;quality of life for cancer survivors;quality of life improvement;Randomized, Controlled Trials;Recommendation;reduce tobacco use;Research;Research Activity;Research Institute;Research Priority;Risk Factors;rural dwellers;screening;Screening for cancer;Services;side effect;Site;smoking cessation;Social Network;survivorship;symptomatology;System;targeted treatment;therapy development;Tobacco use;Tobacco-Related Carcinoma;Translational Research;Translations;Underserved Population;United Nations;United States National Institutes of Health;uptake;Vulnerable Populations;Work
+current_category: infrastructure
+---
+application_id: 11170063
+activity_code: P30
+title: Irradiation, Preclinical Imaging, & Microscopy (IPIM)
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: anatomic imaging;angiogenesis;Angiography;animal imaging;Animals;anti-cancer research;Bioluminescence;biomedical imaging;Biotechnology;Brain Neoplasms;Budgets;Cancer Center;Cancer Center Support Grant;cancer surgery;cancer therapy;Cells;cellular imaging;Clinical Research;clinical translation;Communities;Complex;cost effective;Data Analyses;Dedications;Development;Diagnosis;Diagnostic Imaging;dosimetry;driving force;Electron Microscopy;Environment;Equipment;experience;Experimental Designs;Family suidae;Fluorescence Microscopy;Fluoroscopy;Frequencies;Functional Magnetic Resonance Imaging;Funding;Genetic;Head and Neck Cancer;Histopathology;Human;Image;Image Analysis;image visualization;imager;imaging agent;imaging modality;Imaging Techniques;improved;Inflammation;innovation;Institution;instrumentation;irradiation;live cell imaging;Magnetic Resonance Imaging;Maintenance;Malignant Neoplasms;member;Membrane Protein Traffic;Methods;microscopic imaging;Microscopy;Microvascular Permeability;Modality;Modeling;Molecular;Molecular Genetics;Molecular Target;multimodality;NCI Center for Cancer Research;Nerve;new technology;next generation;Norris Cotton Cancer Center;novel;Operative Surgical Procedures;Optics;Pharmacologic Substance;Positron-Emission Tomography;pre-clinical;preclinical imaging;Productivity;programs;Qualifying;Radiation Oncology;radiological imaging;Research;Research Peer Review;Research Personnel;Research Project Grants;Resource Sharing;Resources;Rodent;Scanning Electron Microscopy;Services;Techniques;Technology;Therapeutic;Time;Tissues;tool;Transmission Electron Microscopy;tumor;ultrasound;Update;Whole Organism;Workplace;Xenograft procedure
+current_category: infrastructure
+---
+application_id: 11170070
+activity_code: P30
+title: Immunology and Cancer Immunotherapy (ICI)
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Address;Advanced Development;Advocate;Antitumor Response;Applications Grants;Area;Award;bench to bedside;Cancer Biology;Cancer Center;Cancer Center Support Grant;cancer immunotherapy;Cancer Patient;cancer therapy;CAR T cell therapy;career;Cellular biology;chimeric antigen receptor T cells;Clinical;Clinical Research;Clinical Trials;Collaborations;Development;Direct Costs;drug efficacy;engineered T cells;Engineering;Ensure;Equipment;Exclusion;Faculty;Fostering;Funding;Future;Goals;Grant;Health;Health system;Human;Image;Immune;immune checkpoint blockade;Immune checkpoint inhibitor;Immune system;Immunologics;Immunologist;Immunology;immunoregulation;Immunotherapeutic agent;Immunotherapy;immunotherapy clinical trials;improved;innovation;Institution;interest;Intervention;Journals;Laboratories;Laboratory Finding;Leadership;Ligands;Malignant Neoplasms;medical schools;meetings;member;Mentors;Mentorship;Mission;Modality;Molecular;mosaic;novel;Patients;Peer Review;Population Sciences;pre-clinical;programs;Publications;Radiobiology;recruit;Research;Research Personnel;Research Support;Resources;Schools;Scientist;standard of care;success;Sum;T memory cell;T-Lymphocyte;Therapeutic;therapeutic nanoparticles;Training;Translating;translational immunology;tumor immunology;tumor microenvironment;United States National Institutes of Health;viral nanoparticle;Work;working group;Writing
+current_category: infrastructure
+---
+application_id: 11170071
+activity_code: P30
+title: Community Outreach and Engagement
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Achievement;Address;Affect;Age;anti-cancer research;Area;Automobile Driving;base;Cancer Biology;Cancer Burden;Cancer Center;Cancer Center Support Grant;Cancer Control;Cancer health equity;cancer site;Cancer Survivor;Catchment Area;Categories;Classification;Clinical Research;Clinical Trials;Code;Collaborations;Communities;community advisory board;community collaboration;community engaged intervention;community engagement;Community Outreach;community research;Comprehensive Cancer Center;County;Data;Death Rate;Disparity;Early Diagnosis;economic determinant;Education;Ensure;Ethnic Origin;Etiology;Event;Grant;Health behavior;health equity;Health Service Area;Health Services Accessibility;Health system;Incidence;Income;Individual;Infrastructure;Intervention;Knowledge;Malignant Neoplasms;Measures;metropolitan;Mission;Monitor;mortality;NCI Center for Cancer Research;NCI-Designated Cancer Center;New England;Norris Cotton Cancer Center;Observational Study;Play;Policies;Population;population migration;Prevalence;Prevention;programs;Publications;Race;Research;research study;Resources;Risk;Risk Factors;Role;Rural;rural area;Rural Community;Rural Population;screening;social determinants;Solid;survivorship;Translating;Translations;Underserved Population;Work
+current_category: infrastructure
+---
+application_id: 11170064
+activity_code: P30
+title: Mouse Modeling (MM)
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Alleles;Antibodies;Area;Award;Biology;Biomedical Research;Breast Adenocarcinoma;Breast Cancer Model;Budgets;Cancer Center;Cancer Center Support Grant;Communicable Diseases;Communities;Complex;cost effective;CRISPR/Cas technology;embryonic stem cell;Engineering;Experimental Designs;Experimental Models;experimental study;Faculty;flexibility;Funding;Gene Modified;Generations;Genes;Genetic;Genetically Engineered Mouse;Glioma;Human;Human Resources;ID2 gene;Knock-in;LoxP-flanked allele;Maintenance;Malignant Breast Neoplasm;Malignant Neoplasms;Mammary Neoplasms;member;model organism;Modeling;Modification;mouse model;Mus;NCI Center for Cancer Research;Neurosciences;Norris Cotton Cancer Center;Nursing Faculty;Pathologic;Phosphotransferases;programs;Reporting;Research;Research Personnel;Resource Sharing;Resources;Role;Schools;Services;skills;Solvents;Technology;Time;tissue culture;Update;Work;zygote
+current_category: infrastructure
+---
+application_id: 11016351
+activity_code: P30
+title: Signaling, Genomes, and Networks
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Acceleration;Advanced Malignant Neoplasm;anti-cancer research;anti-cancer treatment;Area;Arts;Award;Basic Science;Biochemistry;Biological Process;Cancer Biology;cancer cell;Cancer Center;Cancer Center Support Grant;cancer genomics;cancer prevention;cancer therapy;cancer type;career development;Catchment Area;Cellular biology;Clinical;Clinical Investigator;Clinical Research;clinical translation;Clinical Trials;Collaborations;college;commercialization;community engagement;Community Outreach;community partners;Computational Biology;Development;Doctor of Philosophy;Education;Enrollment;Ensure;Entrepreneurship;Faculty;Faculty Recruitment;Fostering;Funding;Genetic;Genome;Genomics;Goals;Grant;Health;Human;improved;innovation;Institution;Intellectual Property;Interdisciplinary Study;Intervention;Intervention Trial;Journals;Knowledge;Laboratories;Laboratory Finding;Laboratory Scientists;Lead;Malignant Neoplasms;Manuscripts;Medical Oncologist;medical schools;member;Mentors;Molecular;Molecular Biology;Molecular Biology Shared Resource;Molecular Target;Neoplasm Metastasis;New Hampshire;novel therapeutic intervention;Oncology;Pathway interactions;Patients;Peer Review;precision cancer prevention;professor;programs;Publications;Radiation Oncologist;Research;Research Personnel;Resource Sharing;Science;scientific organization;Scientist;Signal Transduction;Strategic Planning;success;Surgical Oncologist;Teacher Professional Development;Technology;Training;Training and Education;Translating;translational approach;translational oncology;translational scientist;translational study;treatment center;trial enrollment;triple helix;Vermont;Work
+current_category: infrastructure

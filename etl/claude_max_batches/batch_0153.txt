@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10825316
+activity_code: U19
+title: Leveraging human organoid models for the development of broad interventions to mitigate emergent respiratory viral pandemics
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: 2019-nCoV;adaptive immune response;Adult;Affinity;Antibodies;Antibody Response;Antibody-mediated protection;Antigen-Antibody Complex;Antigens;B-Lymphocytes;Binding;Biochemical;Bioinformatics;Biological Models;Canis familiaris;Child;Collaborations;Complement;Complex;Coronavirus;Coronavirus Infections;coronavirus vaccine;COVID-19;COVID-19 vaccination;COVID-19 vaccine;cross reactivity;Cryoelectron Microscopy;design;Development;Diabetes Mellitus;Directed Molecular Evolution;Effectiveness;Effector Cell;electron crystallography;Electron Microscopy;Engineering;Epidemic;Epitope Mapping;Epitopes;Evaluation;Event;Family suidae;Feedback;flu;FOXP3 gene;Future;Generations;Genetic;Germ Lines;Haitian;Health;Hemagglutinin;Human;human coronavirus;human disease;Human Metapneumovirus;Humoral Immunities;Immune;Immune response;Immune system;Immunity;Immunization;Immunoglobulin G;Immunology;Immunotherapy;imprint;In Vitro;in vivo;Infection;Influenza;Influenza A virus;Influenza Hemagglutinin;innovation;insight;Integration Host Factors;Intervention;Lung;Measures;member;Memory B-Lymphocyte;Modeling;Molecular;Monoclonal Antibodies;Morbidity - disease rate;mortality;nanoparticle;Negative Staining;neutralizing antibody;new pandemic;Obesity;Organoids;pandemic disease;pandemic potential;pandemic response;particle;Peripheral Blood Mononuclear Cell;Plasma;Population;Probability;Protein Engineering;receptor binding;Resolution;respiratory;respiratory virus;response;Risk;Risk Factors;RNA Viruses;Role;Sarbecovirus;SARS-CoV-2 antibody;SARS-CoV-2 spike protein;seasonal influenza;Seasons;Site;Specificity;Speed;spillover event;Spleen;structural biology;Structure;Structure of germinal center of lymph node;Subunit Vaccines;Symptoms;synergism;T cell response;T-Lymphocyte;Techniques;Technology;Testing;three dimensional structure;transmission process;Vaccinated;Vaccination;vaccination strategy;vaccine platform;vaccine response;Vaccinee;Vaccines;Variant;Viral;viral epidemic;viral pandemic;Virus;Virus Diseases;Virus Replication;weapons;Work;Zoonoses;zoonotic coronavirus;zoonotic spillover
+current_category: biotools
+---
+application_id: 10825317
+activity_code: U19
+title: Identifying and understanding the mechanisms for increased risk of severe infection in obesity and diabetes
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: 2019-nCoV;Ablation;Adopted;Affect;Anti-viral Agents;Anti-viral Therapy;Antibodies;Antibody titer measurement;Antigen-Antibody Complex;Bacterial Infections;Biological;biological heterogeneity;Biology;Blood;Blood specimen;cell type;Cells;chikungunya;Clinical;clinical heterogeneity;cohort;Cohort Analysis;Cohort Studies;Collaborations;computer framework;Computing Methodologies;Consumption;COVID-19 vaccination;COVID-19 vaccine;CRISPR/Cas technology;Data;Data Set;Databases;Development;Diabetes Mellitus;Diagnostic;diagnostic signature;Disease;Disease Outbreaks;Ebola;gene conservation;Gene Expression;Gene Expression Profile;Genes;genetic signature;Goals;Heterogeneity;Human;Hybrids;Immune;Immune response;Immunology;improved;In Vitro;in vivo;Infection;Inflammatory;Influenza;Influenza A Virus, H1N1 Subtype;Knock-in;Knock-out;machine learning method;Methods;Middle East Respiratory Syndrome Coronavirus;neural;new outbreak;next generation;novel;novel virus;Obesity;Organoids;Outcome;pandemic disease;pandemic preparedness;pathogen;Pathway interactions;Patients;peripheral blood;Pharmaceutical Preparations;Process;profiles in patients;prognostic;Proteins;response;Risk;risk prediction;Risk Reduction;Sampling;SARS coronavirus;Severities;single-cell RNA sequencing;Spleen;statistical and machine learning;System;T cell response;Technology;Testing;Therapeutic;Time;Tonsil;transcriptome;Vaccination;vaccine immunogenicity;vaccine response;Vaccines;Viral Load result;Virus;Virus Diseases;ZIKA
+current_category: basic_research
+---
+application_id: 10825311
+activity_code: U19
+title: Administrative Core
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Collaborations;collaborative environment;Communication;COVID-19 vaccine;Data;data management;data sharing;Decision Making;Deposition;Effectiveness;Evaluation;In Vitro;in vivo;Influenza;Institution;Intellectual Property;Lead;Leadership;Licensing;Mollies;Monitor;Periodicals;Procedures;Resolution;Resource Allocation;Resources;Role;success;Technology;vaccine response
+current_category: infrastructure
+---
+application_id: 10825313
+activity_code: U19
+title: Human Immune Monitoring Center (HIMC) Core
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Archives;biobank;Biological Assay;Blood;Blood specimen;Cells;Clinical;clinical database;Clinical Research;Collaborations;complex data;Consultations;COVID-19 vaccine;Custom;cytokine;Cytometry;Data;data format;data integration;data mining;Data Set;data standards;Databases;DNA;Equipment and supply inventories;Flow Cytometry;Hemagglutinin;Human;human data;Immunologic Monitoring;Immunologics;Immunology procedure;In Vitro;in vivo;Individual;Inflammation;Influenza;influenza virus vaccine;Infrastructure;Metadata;Mission;multiple omics;Peripheral Blood Mononuclear Cell;Persons;Phenotype;Plasma;Procedures;Process;Protocols documentation;Resources;RNA;Sampling;Serum;service organization;Signal Transduction;Source;Specimen;Standardization;System;Tissues;transcriptome sequencing;Translational Research;vaccine response;vaccine trial;Visualization;web portal;Whole Blood;Work
+current_category: infrastructure
+---
+application_id: 10913322
+activity_code: P41
+title: ReproNim: A Center for Reproducible Neuroimaging Computation
+org_name: UNIV OF MASSACHUSETTS MED SCH WORCESTER
+phr: Project Narrative A large investment in time and money is made to support neuroimaging research to understand how brain structure and function develops and ages, and how various disorders affect it. However, much of this research, while very valuable, is performed on a relatively small number of subjects and is reported in a way that makes it difficult to replicate or assess its generalization across the population. ReproNim: A Center for Reproducible Neuroimaging Computation, provides a re-exec
+terms: Adoption;Affect;Age;Attention;Basic Science;Behavior;Biomedical Technology;Brain;Clinical;Clinical Research;Communities;community advisory board;Data;data management;Data Set;data sharing;Decision Making;Dedications;Development;Disease;Disparate;Educational workshop;Effectiveness;Equity;Evaluation;First Independent Research Support and Transition Awards;Fostering;Goals;Hearing;Human Resources;improved;informatics infrastructure;innovation;Institution;International;Investments;Knowledge;Literature;meetings;member;Methods;Mission;Monitor;National Institute of Biomedical Imaging and Bioengineering;neuroimaging;neuroinformatics;operation;Phase;Population;Process;programs;Publications;Publishing;Reporting;Reproducibility;Research;Research Personnel;research study;Resource Development;Resources;response;Schedule;Science;Services;Structure;System;Technology;technology development;technology validation;Time;tool;Training;United States National Institutes of Health;Voice;Work;working group
+current_category: other
+---
+application_id: 10913338
+activity_code: P41
+title: ReproNim: A Center for Reproducible Neuroimaging Computation
+org_name: UNIV OF MASSACHUSETTS MED SCH WORCESTER
+phr: Project Narrative A large investment in time and money is made to support neuroimaging research to understand how brain structure and function develops and ages, and how various disorders affect it. However, much of this research, while very valuable, is performed on a relatively small number of subjects and is reported in a way that makes it difficult to replicate or assess its generalization across the population. ReproNim: A Center for Reproducible Neuroimaging Computation, provides a re-exec
+terms: Address;Affect;Age;Biological Sciences;Brain;Brain imaging;Clinical Research;Communication;Communities;community engagement;Competence;Complement;Computer software;Data;Development;Diffuse;Discipline;Disease;Documentation;Education;Education and Outreach;Educational Materials;Educational process of instructing;Educational workshop;Equipment and supply inventories;Event;Exercise;experience;experimental study;Feedback;Fellowship;Fellowship Program;Fostering;Future;Goals;Home;improved;Institution;International;Investments;Laboratories;Learning;learning materials;Link;massive open online courses;Measurable;meetings;Mind;neuroimaging;neuroinformatics;new technology;online resource;open source;outreach;Persons;Phase;Physics;Polishes;Population;programs;quantum;Registries;Reporting;repository;Reproducibility;Research;Research Personnel;research study;Resources;Running;Scheme;Series;Services;social media;Societies;Structure;Students;success;symposium;Teaching Materials;Testing;Time;tool;Trainers Training;Training;Training Activity;Universities;Update;web site;Work
+current_category: biotools
+---
+application_id: 10879014
+activity_code: P20
+title: Animal Models and Histology Core
+org_name: LOUISIANA STATE UNIV HSC SHREVEPORT
+phr: N/A
+terms: Address;Animal Model;Animals;Area;Awareness;Biology;Blood flow;Blood gas;Blood Pressure;Blood Vessels;Breeding;Calorimetry;Cardiac;Cardiovascular Diseases;Cardiovascular system;Cause of Death;Centers of Research Excellence;Charge;Chemistry;Clinical Chemistry;Collaborations;Complement;cost;Death Rate;Development;disease model;Equipment;Exercise;exercise regimen;experimental study;Faculty;Feedback;Frequencies;Funding;Funding Agency;Future;Future Teacher;Generations;Genotype;Goals;Grant;Growth;Heart;heart function;Histologic;Histology;Human Resources;Immunohistochemistry;Implant;implantation;improved;in vivo Model;Income;Infrastructure;Institution;instrument;Intervention;laboratory experience;Lipids;Louisiana;Measurement;Measures;member;Mentors;Metabolic;Modality;Modeling;Modification;Mus;non-invasive imaging;Operative Surgical Procedures;Organ;Oxidation-Reduction;Pathologic;Pathology;Pathway interactions;Phase;Phenotype;Pilot Projects;Positioning Attribute;Post-Translational Protein Processing;Postdoctoral Fellow;Preparation;pressure;Price;programs;Protein Structure Initiative;Rattus;Regulation;Research;Research Personnel;Rodent;Rodent Model;Role;Running;Schools;Science;Services;Signal Transduction;skills;Source;Stains;Study models;Surgical Models;Surveys;System;Techniques;Technology;Telemetry;Temperature;Testing;Time;tissue processing;Tissues;Training;treadmill;ultrasound;United States;United States National Institutes of Health;VO2max;Wages
+current_category: infrastructure
+---
+application_id: 11056746
+activity_code: U19
+title: Core D:  Analysis Core
+org_name: BOSTON UNIVERSITY MEDICAL CAMPUS
+phr: N/A
+terms: Address;advanced analytics;analytical method;Blood;Calcium;Clinical;Clinical Data;clinically relevant;Crystal Formation;Data;Data Analyses;Data Analytics;Data Collection;data management;Degenerative polyarthritis;Deposition;design;Disease Progression;Ensure;Epidemiologist;Epidemiology;Exercise;experience;Fright;Funding;Goals;Grant;Image;Image Analysis;Impairment;Incidence;insight;Joints;Knee Osteoarthritis;Knowledge;Machine Learning;meetings;Methodology;Methods;mineralization;multidimensional data;Nervous System;novel;Observational Study;older adult;Pain;Physical activity;Policies;Procedures;Process;Proteins;Proteomics;Reproducibility;Reproducibility of Results;Research;Research Design;Research Personnel;Risk;Risk Factors;Role;Services;Site;Standardization;success;Synovial Fluid;Techniques;Training;Training and Education;Visualization;Work
+current_category: infrastructure
+---
+application_id: 10994899
+activity_code: P20
+title: Role of oxidative stress in doxorubicin-induced cardiotoxicity racial disparities
+org_name: LOUISIANA STATE UNIV HSC SHREVEPORT
+phr: N/A
+terms: African American;African American population;Antioxidants;Biochemical;Biological Assay;Biology;Calcium;Cardiac;Cardiac Myocytes;cardioprotection;Cardiotoxicity;Cardiovascular Diseases;caucasian American;cohort;CRISPR/Cas technology;Data;Disease;Doxorubicin;EPHA2 gene;Genes;Heart;heart cell;Hepatic;high risk;Human;human induced pluripotent stem cells;in vivo;induced pluripotent stem cell;induced pluripotent stem cell derived cardiomyocytes;inflammatory marker;Knockout Mice;Mitochondria;Mus;novel;Oxidation-Reduction;Oxidative Stress;Pathogenesis;Pathway interactions;Patients;Production;Race;racial disparity;Regulation;Role;Severities;Signal Transduction;transcriptome sequencing
+current_category: basic_research
+---
+application_id: 11194080
+activity_code: P20
+title: Redox, Environmental, and Metabolomics: investigating Disease Yield (REMEDY)
+org_name: LOUISIANA STATE UNIV HSC SHREVEPORT
+phr: N/A
+terms: 8-hydroxy-2&apos;-deoxyguanosine;Applications Grants;Biological Markers;Biology;biomarker identification;Cardiovascular Diseases;cardiovascular disorder risk;cardiovascular health;central database;Clinical Data;clinically significant;Data;data repository;Disease;Environmental Exposure;epidemiologic data;Equilibrium;Individual;Information Management;Intervention;Link;Measures;metabolomics;novel strategies;Oxidation-Reduction;oxidative damage;Oxidative Stress;Oxidative Stress Induction;Participant;Patients;Plasma;potential biomarker;Proteins;Public Health;Research;Sampling;Science;substance use;Substance Use Disorder;therapeutic target;United States National Center for Health Statistics;volatile organic compound;Work
+current_category: other
+---
+application_id: 11056743
+activity_code: U19
+title: Core C:  Imaging Core
+org_name: BOSTON UNIVERSITY MEDICAL CAMPUS
+phr: N/A
+terms: Address;Adherence;Adopted;Agreement;Ancillary Study;Archives;Arthralgia;Attention;Cartilage;Certification;Clinic;clinical center;Collaborations;computerized data processing;Data;Data Analyses;data de-identification;data management;Data Set;data sharing;deep learning;Degenerative polyarthritis;digital;Disease;Dose;Ensure;Evolution;experience;Feedback;Funding;Glean;Goals;Grant;Hand;Image;image processing;imaging modality;insight;Joints;Knee;Limb structure;Lower Extremity;Machine Learning;Magnetic Resonance Imaging;Manuals;Measurement;Methods;Modeling;Monitor;Musculoskeletal;novel;operation;Pain;Pathogenesis;Pathology;Performance;Positioning Attribute;Procedures;programs;Protocols documentation;quality assurance;Radiology Specialty;Reader;Reading;Research Personnel;Roentgen Rays;Role;Secure;Site;Structure;Symptoms;System;Training;Training Programs;ultrasound;Update;Weight-Bearing state;Work;X-Ray Computed Tomography
+current_category: infrastructure
+---
+application_id: 10879012
+activity_code: P20
+title: Administrative Core
+org_name: LOUISIANA STATE UNIV HSC SHREVEPORT
+phr: N/A
+terms: Achievement;Advisory Committees;Area;Biology;Budgets;Businesses;Cardiovascular Diseases;Cardiovascular system;Communication;Consult;Continuing Education;Core Facility;Development;Education;education research;Eligibility Determination;Evaluation;Event;Faculty;faculty research;Functional disorder;Funding;Goals;Grant;Growth;Health;Individual;Institution;International;Leadership;Link;meetings;member;Mentors;Mentorship;Monitor;National Institute of General Medical Sciences;Oxidation-Reduction;Policies;Principal Investigator;Procedures;Program Development;programs;recruit;Report (document);Reporting;Research;Research Personnel;Research Project Grants;Resources;Science;Services;Teacher Professional Development;Training;Training Programs;web page;web site
+current_category: infrastructure
+---
+application_id: 10911943
+activity_code: P50
+title: PROJECT 3:  Applying Liquid Biopsy Technologies to Detect Clinical Response and Mechanisms of Resistance in the Treatment of LMS
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Project 3: Project Narrative Leiomyosarcoma (LMS) is an aggressive soft tissue sarcoma that remains difficult to cure even with intensive chemotherapy and surgery. In this study, blood samples from patients with metastatic LMS will be used to profile circulating tumor DNA to identify genomic features that are associated with a high-risk of treatment failure. Results from this study will enable the development of new risk-based and personalized treatment strategies for patients with LMS.
+terms: Adult;Anesthesia procedures;Biological Markers;Biology;Biopsy;Biopsy Specimen;Blood;Blood specimen;burden of illness;Cancer Biology;Chemoresistance;chemotherapy;Chemotherapy-Oncologic Procedure;Clinical;clinical care;clinical decision-making;Clinical Research;Clinical Trials;Clonal Evolution;cohort;Collection;Consensus;Correlation Studies;Cytotoxic Chemotherapy;Data;deep sequencing;design;Detection;Development;Diagnosis;Diagnostic;Disease;disease natural history;Disease Progression;Disease Resistance;disorder control;docetaxel;Doxorubicin;Evolution;experience;experimental study;Future;gemcitabine;Gene Mutation;Genetic;genomic profiles;Genomics;Heterogeneity;high risk;Image;improved;improved outcome;In Vitro;in vivo;insight;leiomyosarcoma;Lesion;liquid biopsy;Malignant Neoplasms;Metastatic Leiomyosarcoma;Modality;Modeling;Mutation;Newly Diagnosed;next generation sequencing;novel;novel strategies;novel therapeutic intervention;Oncologist;Operative Surgical Procedures;Outcome;participant enrollment;patient derived xenograft model;Patient Selection;patient subsets;Patient-Focused Outcomes;Patients;Pattern;personalized medicine;Pilot Projects;Plasma;prevent;Prognosis;prognostic;Prognostic Factor;Prognostic Marker;Progression-Free Survivals;prospective;Proxy;radiation risk;radiological imaging;Radiology Specialty;Recurrence;Regimen;Relapse;Research;Research Personnel;Resistance;resistance mechanism;response;Risk;Safety;Sampling;side effect;single cell sequencing;Single Nucleotide Polymorphism;Smooth Muscle;Soft tissue sarcoma;Solid;Systemic Therapy;Technology;Testing;therapy resistant;Time;Toxic effect;Treatment Failure;Treatment Futility;treatment response;treatment strategy;tumor;tumor DNA;tumor heterogeneity;Unresectable;Validation;Variant
+current_category: infrastructure
+---
+application_id: 10911953
+activity_code: P50
+title: Career Enhancement Program
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: N/A
+terms: Achievement;Anatomy;Area;Basic Science;Behavior;Biological Markers;Biology;Biomedical Engineering;Biometry;Cancer Biology;cancer type;care coordination;career;career development;Caring;Characteristics;Clinical;Clinical Investigator;Committee Members;Dana-Farber Cancer Institute;design;Development;Diagnosis;Discipline;Disease;disease model;Ensure;Equilibrium;experience;Faculty;Foundations;Funding;Funding Mechanisms;Genetic;Genetic Predisposition to Disease;Genomics;Genotype;Goals;human capital;improved;In Vitro;in vitro Model;in vivo Model;Individual;innovation;insight;Institution;integrated care;interdisciplinary approach;Interdisciplinary Study;Investigational Therapies;Laboratories;Leadership;Learning;leiomyosarcoma;Life Expectancy;Medical;Medical Oncologist;Medical Oncology;Medicine;member;Mentors;Mentorship;Minority;Molecular;multidisciplinary;Nature;novel strategies;novel therapeutic intervention;Operative Surgical Procedures;Pathologist;Pathology;Patients;Pediatric Oncology;Phenotype;pressure;Productivity;programs;Qualifying;Quality of life;Radiation;Radiation Oncologist;Radiation Oncology;Records;recruit;Rejuvenation;Research;Research Personnel;Research Support;Sarcoma;Science;Scientist;soft tissue;Solid;Source;Specialist;success;Surgeon;Surgical Oncology;Talents;Time;Training;translational cancer research;Translational Research;translational scientist;translational study;tumor;Universities;Uterine Leiomyosarcoma;Validation;Woman
+current_category: infrastructure
+---
+application_id: 10911946
+activity_code: P50
+title: Core B- Biospecimen Core
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Core B – Biospecimen Core - Narrative: Leiomyosarcoma (LMS) is a rare and aggressive soft tissue sarcoma that can be difficult to diagnose and treat. The Biospecimen Core will support the LMS SPORE investigators by conducting expert pathology review and facilitating the collection, specialized processing, storage, and distribution of high quality biospecimens. Any residual biospecimens will be banked and made available following review to qualified investigators who have innovative ideas.
+terms: accurate diagnosis;Address;Adult;biobank;Biological Assay;Biological Specimen Banks;Blood;bone;Cancer Biology;Cells;Child;Clinical Research;Collaborations;Collection;Data;Databases;Dermis;Diagnosis;diagnostic accuracy;digital imaging;Doctor of Philosophy;Ensure;experience;Future;Gastrointestinal tract structure;Genetic;Genomics;Guidelines;Heart;Histology;Hospitals;Human;imaging system;Immunohistochemistry;improved;innovation;Institution;Leadership;leiomyosarcoma;Limb structure;Malignant Neoplasms;medical schools;Nature;Neoplasm Metastasis;novel strategies;Nucleic Acids;Organ;participant enrollment;Pathologist;Pathology;Patients;Pediatric Hospitals;Physician Executives;Population;Procedures;professor;Prognosis;Protocols documentation;Qualifying;Quality Control;rare cancer;Research;Research Institute;Research Personnel;Residual state;Resolution;Resources;Retroperitoneal Space;Sampling;Sarcoma;Services;Slide;Smooth Muscle;Soft tissue sarcoma;Stains;Standardization;success;Surgical Pathology;technological innovation;Tissue Microarray;Tissues;translational goal;Translational Research;tumor;Uterus;Veins;Woman;Work
+current_category: infrastructure
+---
+application_id: 10874235
+activity_code: P01
+title: Model Systems Core (MODS Core)
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: N/A
+terms: Acute;Address;Adherence;Age;Amniocentesis;Biological Models;Blood;Brain Injuries;Breeding;California;candidate identification;cell type;Cells;Child Health;clinical risk;Collaborations;Congenital Abnormality;congenital cytomegalovirus;Cytomegalovirus;Cytomegalovirus Infections;Cytomegalovirus Vaccines;Data;Data Analyses;data repository;Decidua;Development;Disease;effective intervention;Ensure;Experimental Designs;experimental study;Female;fetal;Fetal Tissues;flexibility;Gene Expression;Gene Expression Profile;Generations;Gestational Age;Goals;Human;Immune;Immune response;Immune Targeting;Immunity;Immunologics;In Vitro;in vivo;Infrastructure;Investigation;Macaca mulatta;male;maternal vaccination;Maternal-Fetal Exchange;Modeling;Monkeys;Mucous Membrane;multiple omics;Nature;new technology;nonhuman primate;novel;novel strategies;novel vaccines;novel virus;Oregon;Organoids;Partner in relationship;pathogen;Pathogenesis;Phenotype;Placenta;Play;Pre-Clinical Model;Predisposition;Pregnancy;prevent;Prevention;primary endpoint;Primates;Procedures;programs;Proteomics;Protocols documentation;Research;Resolution;Resources;response;Rhesus;Risk;Role;Sampling;secondary endpoint;Site;Structure;Technology;therapeutic target;therapy development;Time;Tissue Donors;Tissue Harvesting;tissue processing;Tissue Sample;Tissues;tool;transcriptomics;Translating;Translations;transmission process;trophoblast;Tropism;ultrasound;Vaccination;vaccine candidate;vaccine development;vaccine efficacy;Vaccines;Vertebral column;Vertical Transmission;Viral;Viral Pathogenesis;viral transmission;virology;Virus
+current_category: therapeutics
+---
+application_id: 10874237
+activity_code: P01
+title: Immune Data Science Core (IDS Core)
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: N/A
+terms: Address;Amniotic Fluid;Antibodies;Antigen Receptors;Antigen-Antibody Complex;Applied Research;Autopsy;Bayesian Modeling;Binding;Biological Assay;Biological Markers;Biological Models;Biology;Body System;Categories;CD4 Positive T Lymphocytes;cell type;Cells;Cellular Assay;Complex;Computational Biology;computing resources;congenital cytomegalovirus;Creativeness;Custom;cytokine;Cytomegalovirus;Data;Data Analyses;data ingestion;Data Science;Data Science Core;Data Set;data visualization;Databases;Dependence;design;dimension reduction;Disease;Engineering;Ensure;Epitopes;experience;Experimental Designs;experimental study;Flow Cytometry;Gene Expression Profile;Generations;Genes;high dimensionality;Immune;Immunocompetent;Immunofluorescence Microscopy;immunogenicity;Immunohistochemistry;Immunologic Factors;Immunologics;Immunology;Immunology procedure;interest;Knowledge;Link;Macaca mulatta;mathematical model;Metadata;Methods;Modeling;multiplex assay;mutant;nonhuman primate;novel;Outcome;Outcome Measure;Passive Immunization;Pattern;Plasma;prevent;primary outcome;Process;programs;Proteomics;Protocols documentation;Quality Control;Reproducibility;Research;Research Personnel;Resources;Saliva;saliva sample;Sample Size;single cell analysis;single-cell RNA sequencing;Stains;Statistical Data Interpretation;Statistical Models;statistics;Structure;T-Cell Depletion;T-cell receptor repertoire;Testing;Time;Tissues;tool;transcriptomics;transmission blocking;transmission process;Urine;vaccine efficacy;vaccine immunogenicity;Vaccines;vaccinology;Variant;Viral;Viral Load result;viral transmission;Viral Vaccines;virology;Virus;Virus Shedding;Visualization;Work
+current_category: infrastructure
+---
+application_id: 10874238
+activity_code: P01
+title: Immune defense of cCMV at the maternal-fetal interface
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: N/A
+terms: Address;adverse pregnancy outcome;Age;Amniotic Fluid;Animals;Bioinformatics;Blood;Breeding;CD4 Positive T Lymphocytes;CD8-Positive T-Lymphocytes;CD8B1 gene;Cells;Cellular Assay;Cellular Immunity;Conceptions;congenital cytomegalovirus;CXCR3 gene;Cytomegalovirus;Cytomegalovirus Vaccines;cytotoxic;Data Analyses;Decidua;Disease;DNA;Enrollment;experimental study;Female;fetal;First Pregnancy Trimester;Frequencies;Immune;Immune response;Immunity;Immunocompetent;immunogenicity;Immunohistochemistry;Immunologics;immunopathology;Infection;Infectious Pregnancy Complications;Inflammation;Inflammatory;Innate Immune Response;Knowledge;Leukocytes;Listeria;Lymphocyte;Lymphocyte Depletion;Macaca mulatta;Maternal-Fetal Exchange;Modeling;Monitor;monocyte;mouse model;Natural Killer Cells;Neurologic;neutrophil;Newborn Infant;nonhuman primate;Organoids;Outcome;Partner in relationship;Pathogenesis;Placenta;Pregnancy;pregnant;prevent;Prevention;protective effect;Proteomics;recruit;Regimen;response;Role;Second Pregnancy Trimester;Sensorineural Hearing Loss;single-cell RNA sequencing;SIV;SIV Vaccines;success;T cell response;T-Lymphocyte;Testing;tissue archive;Tissues;trafficking;transcriptomics;transmission process;Vaccinated;vaccine candidate;vaccine evaluation;Vaccines;vector vaccine;Viral;virology;Virus;Virus Diseases
+current_category: basic_research
+---
+application_id: 10874240
+activity_code: P01
+title: Efficacy of CMV vFcR vaccines to prevent congenital CMV transmission
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: N/A
+terms: Active Immunization;adaptive immunity;Affect;Antibodies;Antibody Response;Antigen Receptors;Antigens;Binding;Blood;Brain Injuries;CD4 Positive T Lymphocytes;Clinical Trials;CMV glycoprotein B;cohort;Congenital Abnormality;congenital cytomegalovirus;Cytomegalovirus;Cytomegalovirus Infections;Cytomegalovirus Vaccines;Data Analyses;data modeling;Development;Disease;Effectiveness;efficacy evaluation;Engineering;experience;Fc Receptor;Fetal Diseases;fetal loss;Globulins;Glycoproteins;Goals;high risk;Human;Immune Evasion;Immune response;Immunity;Immunization;Immunocompetent;immunogenicity;Immunoglobulin G;Immunologic Factors;Immunologic Receptors;Immunologics;Impairment;improved;in utero;In Vitro;in vivo;infant infection;Infection;Interruption;Length;Macaca mulatta;Maternal-Fetal Exchange;Measures;Mediating;Messenger RNA;Modeling;Monkeys;mRNA lipid nano particle vaccine;Natural Immunity;Neurologic;Newborn Infant;nonhuman primate;novel;passive antibodies;Passive Immunization;Placenta;Plasma Enhancement;pre-clinical assessment;preclinical evaluation;Pregnancy;pregnant;Prevalence;prevent;Prevention;protective effect;rational design;receptor;receptor binding;receptor function;Receptor Inhibition;response;Rhesus;Risk;Role;seropositive;T cell response;T-Cell Depletion;Testing;Time;transmission process;Vaccinated;Vaccination;vaccine candidate;vaccine development;vaccine efficacy;vaccine strategy;Vaccines;Variant;Vertical Disease Transmission;Viral;Viral Interference;Viremia;virology;Virus;Virus Receptors;Woman;Work
+current_category: therapeutics
+---
+application_id: 10833508
+activity_code: P01
+title: Core B: Administrative Core
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Project Narrative The Administrative Core (Core B) will coordinate smooth running of the overall program, ensuring communication, fiscal responsibility, and evaluation and ethical standards among participants of all five institutions.
+terms: Animals;Annual Reports;Bioinformatics;Budgets;Cancer Center;Cells;cohesion;college;Communication;Communities;Data;Ensure;Ethics;Evaluation;Experimental Designs;Feedback;Funding;Goals;good laboratory practice;Hematologic Neoplasms;Hematopoiesis;high standard;Human;Human Resources;improved;Institution;Institutional Review Boards;Leadership;Malignant - descriptor;Manuscripts;Medicine;meetings;member;Monitor;multidisciplinary;Mus;Participant;Patients;Productivity;Program Evaluation;Program Reviews;programs;Protocols documentation;Public Health Schools;Publications;Recommendation;Reporting;Reproducibility;Research;Research Personnel;Rice;Running;sound;stressor;Suggestion;Texas;Training;Universities;Videoconferencing;Work
+current_category: infrastructure
+---
+application_id: 10850854
+activity_code: U19
+title: Bioinformatics, Biostatistics, and Data Management Core
+org_name: MAYO CLINIC  JACKSONVILLE
+phr: N/A
+terms: Address;Age-associated memory impairment;Aging;aging mechanism;Algorithms;Alzheimer&apos;s Disease;analytical tool;Apolipoprotein E;Area;Automobile Driving;Bioinformatics;Biology;Biometry;Cells;Cognitive;Collaborations;Communities;Computer software;Data;Data Analyses;Data Element;data format;data handling;data integration;data management;data modalities;data portal;data quality;Data Security;Data Set;data sharing;Database Management Systems;Databases;Dedications;deep learning;design;Dictionary;digital pathology;Disease;Ensure;Fostering;Funding;Genes;Genotype;Guidelines;Institution;Investigation;Knowledge;Lead;lipidomics;Lipids;Machine Learning;Measures;metabolomics;Metadata;method development;Methodology;Methods;Modeling;Molecular;Monitor;multimodality;Multiomic Data;multiple omics;novel;Outcome Study;Pathway interactions;phenotypic data;Play;Policies;Population Genetics;Preparation;Problem Solving;Process;programs;Proteins;Proteome;Proteomics;Publications;Quality Control;Research;Research Design;Resolution;Resources;Role;Sampling;Scientist;Standardization;Statistical Models;structural biology;System;Testing;Time;Tissues;transcriptome;transcriptomics;United States National Institutes of Health;web portal;Work
+current_category: infrastructure
+---
+application_id: 11043465
+activity_code: P30
+title: Bioinformatics Shared Resource
+org_name: MAYO CLINIC ROCHESTER
+phr: N/A
+terms: analytical method;Area;Arizona;Attention;biobank;Bioinformatics;Bioinformatics Shared Resource;Biological;Biostatistics Shared Resource;Breast;Breeding;Cancer Center Support Grant;Categories;Clinic;Clinical Research;Code;Collaborations;commercial application;Communities;Comprehensive Cancer Center;computer cluster;Data;data access;data exchange;data management;Data Set;Data Sources;design;Development;Ensure;experience;Faculty;Florida;Funding;genome analysis;genomic data;Genomics;Genotype-Tissue Expression Project;Grant;Hematologic Neoplasms;Human Resources;improved;Infrastructure;Institution;Investments;Lead;Licensing;Lymphoma;Malignant neoplasm of gastrointestinal tract;Malignant Neoplasms;Mayo Clinic Cancer Center;member;Methods;Mission;Multiple Myeloma;novel;open source;operation;Ovarian;Pancreas;Pathway Analysis;Pathway interactions;Positioning Attribute;Process;programs;Publications;Publishing;Quality Control;Research;Research Personnel;Resource Sharing;Resources;Review Literature;secondary analysis;Services;Site;Techniques;The Cancer Genome Atlas;tool;Update;Variant;Visualization;web portal;Woman;Work
+current_category: infrastructure
+---
+application_id: 10878686
+activity_code: U19
+title: Project 2: Biomarker Analysis, Non-Genetic Risk Factors, and Their Genetic Interactions
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: Acculturation;accurate diagnosis;Alzheimer disease prevention;Alzheimer&apos;s Disease;Alzheimer&apos;s disease diagnosis;Alzheimer&apos;s disease pathology;Alzheimer&apos;s disease patient;Alzheimer&apos;s disease risk;Alzheimer’s disease biomarker;American;Amyloid beta-42;Amyloid beta-Protein;Asia;Asian;Asian Americans;Asian ancestry;Asian population;astrogliosis;axon injury;Biological Markers;biomarker development;Blood;Canada;Clinical;clinical diagnosis;clinical trial readiness;Clinical Trials;cognitive function;cohort;Communities;Creatine;Dementia;design;Development;Diagnosis;Diagnostic;Diet;Disease;disease diagnosis;Education;effective therapy;Environment;ethnic minority;Ethnic Population;European;European ancestry;Future;Genetic;Genetic Risk;Glial Fibrillary Acidic Protein;Goals;gray matter;high risk;imaging biomarker;Immigration;Impaired cognition;Individual;Intervention;Intervention Trial;Knowledge;Leisure Activities;Life Style;Light;Link;Measures;Mediating;modifiable risk;Molecular;neglect;neurofilament;neuropathology;non-genetic;North America;novel;Patients;Peripheral;Physical activity;Plasma;Plasma Proteins;polygenic risk score;Population;Population Heterogeneity;Population Study;Positioning Attribute;prevent;Preventive;protective factors;protein biomarkers;Proteins;Psychosocial Stress;racial minority;racial population;Recording of previous events;Reporting;Research;Resources;Risk;Risk Factors;Role;Serum;sex;sex as a biological variable;tau Proteins;tau-1;Testing;Therapeutic Trials;Time;Traction
+current_category: therapeutics
+---
+application_id: 10850849
+activity_code: U19
+title: Human iPSC Models Core
+org_name: MAYO CLINIC  JACKSONVILLE
+phr: N/A
+terms: 3-Dimensional;Address;Affect;African American;Aging;aging related;Alzheimer&apos;s Disease;Apolipoprotein E;apolipoprotein E-1;Astrocytes;biobank;Biochemical;Biochemistry;Bioinformatics;Biological Models;Biology;Biometry;Blood Vessels;brain cell;Cell Physiology;cell type;Cells;cerebrovascular;Cerebrum;cohort;Collaborations;Collection;Communities;Complement;CRISPR/Cas technology;Culture Media;Data;data management;Dermal;Disease;engineered stem cells;Ethnic Origin;Ethnic Population;Event;Fibroblasts;Gene Expression;Genome engineering;Genotype;Goals;Hispanic;Human;human induced pluripotent stem cells;human stem cells;Individual;induced pluripotent stem cell;Induced pluripotent stem cell derived neurons;Institution;Knowledge;Laboratories;lipidomics;Lipoproteins;metabolomics;Microglia;Modeling;Molecular;Multiomic Data;multiple omics;Mutation;neuroinflammation;Neurons;Nucleosome Core Particle;Organoids;Outcome;Participant;particle;Pathogenicity;Pathologic;Patients;Peripheral Blood Mononuclear Cell;Phase;Phenotype;Property;Protein Isoforms;Proteomics;Protocols documentation;Reproducibility;Research;Resources;Series;sex;Site;Somatic Cell;Source;stem cell model;stem cells;Structural Models;Synapses;Techniques;Technology;Testing;Training;transcriptomics;TREM2 gene;Work
+current_category: infrastructure
+---
+application_id: 10872206
+activity_code: P50
+title: Molecular Targets of Neurosteroid Anti-depressant Action
+org_name: WASHINGTON UNIVERSITY
+phr: Project Narrative Neurosteroids are rapidly acting anti-depressant agents with an undefined mechanism of action. The proposed research will identify specific neurosteroid binding sites on putative target proteins as well as novel neurosteroid binding proteins, enabling assessment of the functional role of these target proteins in anti-depressant physiology and behavior. The work will provide the basis for synthesizing compounds that target the specific proteins and sites that mediate neurosteroi
+terms: Affinity;Agonist;Alkynes;Allopregnanolone;Amino Acids;analog;Anesthetics;antagonist;Anti-Anxiety Agents;anti-depressive agents;anti-epileptic agents;Anti-Inflammatory Agents;antidepressant effect;Automobile Driving;Autophagocytosis;Behavior;Behavior assessment;Behavioral;beta Tubulin;Binding;Binding Proteins;Binding Sites;Biological;biological adaptation to stress;Biological Assay;Biology;Brain;Carrier Proteins;Cell membrane;Cellular Stress;Chemicals;Chemistry;Cholesterol;Clustered Regularly Interspaced Short Palindromic Repeats;Coupled;Data;Development;Docking;Electrophysiology (science);enantiomer;Goals;Golgi Apparatus;Hippocampus;in vivo;Inflammatory;insight;Intracellular Membranes;Ion Channel;Ketamine;Knock-out;Label;Link;lipid transfer protein;lipid transport;Lipids;liquid chromatography mass spectrometry;Maps;Mass Spectrum Analysis;Mediating;Membrane;Mental Depression;Methods;Molecular;molecular modeling;Molecular Target;Mutation;N-Methyl-D-Aspartate Receptors;network dysfunction;neuroinflammation;neuronal excitability;Neurons;neurosteroids;Nitrous Oxide;NMDA receptor A1;novel;novel therapeutics;Organelles;Output;oxysterol binding protein;Pathway interactions;Phospholipids;Photoaffinity Labels;Physiological;Physiological Processes;Physiology;positive allosteric modulator;Protein Chemistry;protein expression;Protein Isoforms;Proteins;Proteome;Proteomics;Psychiatric therapeutic procedure;Reagent;receptor;Receptor Inhibition;Research;Research Support;response;Role;sedative;Signal Transduction;Site;steroid analog;Sterols;Techniques;Therapeutic;trans-Golgi Network;Treatment Efficacy;Work
+current_category: infrastructure
+---
+application_id: 10878675
+activity_code: U19
+title: Core C: Clinical Core
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: adjudication;Alzheimer&apos;s Disease;Alzheimer&apos;s disease diagnosis;Alzheimer&apos;s disease risk;Asian;Asian Americans;Asian population;Assessment tool;balance testing;bilingualism;Biological Markers;Clinical;Clinical dementia rating scale;Cognition;Cognitive;cohort;Consensus;Cultural Sensitivity;Data;Data Collection;Dementia;dementia risk;design;Diagnosis;Diet;Documentation;Ensure;Evaluation;Exclusion Criteria;experience;Feedback;follow-up;Future;Genetic;genetic analysis;geriatric depression;Goals;improved;innovation;instrument;Life Experience;Life Style;Linguistics;Medical;Medical History;mild cognitive impairment;Neurologic;Neurological observations;Neurologist;non-genetic;older adult;Participant;phrases;Plasma;Population;Procedures;Process;protective factors;Protocols documentation;quality assurance;recruit;Reporting;Research Project Grants;Risk Factors;Site;Stream;Subgroup;Training;waiver
+current_category: infrastructure
+---
+application_id: 10878684
+activity_code: U19
+title: Core F: Training and Quality Assurance Core
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: Adopted;Alzheimer&apos;s Disease;American;Asian;Assessment tool;Big Data;Biological Markers;Certification;Chinese;Clinical;Cognitive;cohort;Collaborations;Copyright;Data;Data Analyses;Data Collection;data management;data standards;Educational process of instructing;Educational workshop;efficacy evaluation;Electronics;Ensure;Feedback;Future;health care disparity;Infrastructure;International;Interview;Koreans;Language;Life Style;Manuals;Measures;meetings;member;Minority Groups;Modeling;Monitor;Neuropsychology;outreach;Participant;Periodicals;Population;Population Heterogeneity;Positioning Attribute;Predisposition;prevent;Procedures;Process;programs;Protocols documentation;Publishing;Qualifying;quality assurance;Quality Control;Questionnaires;recruit;Research;response;Risk;Scientist;Site;social health determinants;Standardization;Structure;Surveys;Training;Training and Education;Training Programs;Underrepresented Populations;user-friendly;Video Recording;Vietnamese;web site;Work
+current_category: training
+---
+application_id: 10874234
+activity_code: P01
+title: Administrative Core
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: N/A
+terms: Accounting;Agreement;animal resource;arm;Biological Models;Child;Collaborations;Communication;Communities;congenital cytomegalovirus;Custom;Cytomegalovirus;Data;data management;Data Science;Data Science Core;data sharing;Databases;Dedications;Disease;Ensure;Goals;Grant;Guidelines;Human Resources;Immune;Immune Evasion;Immunity;Immunologics;Individual;Infrastructure;Institution;knowledge integration;Lead;Leadership;Macaca mulatta;Maternal-Fetal Exchange;Medicine;meetings;Modeling;Monitor;multidisciplinary;Physicians;pre-clinical;prevent;Productivity;Program Research Project Grants;programs;Proteins;Publications;Regulation;Reporting;Research;Research Personnel;Research Project Grants;Resources;Sampling;Scientist;Strategic Planning;success;synergism;transmission process;United States National Institutes of Health;Universities;Vaccination;vaccine candidate;vaccine development;vaccine strategy;Veterinarians;Viral;virology
+current_category: infrastructure
+---
+application_id: 10878678
+activity_code: U19
+title: Core D: Data Management and Analysis Core
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;analysis pipeline;analytical method;application programming interface;Asian;Authorization documentation;Biological Markers;central database;Clinical;Clinical Data;Clinical Research;cohort;Collaborations;Collection;Communities;computerized data processing;Consultations;Data;data access;data acquisition;Data Analyses;Data Collection;data dictionary;data management;Data Management Resources;data platform;data resource;Data Set;data sharing;data storage site;Database Management Systems;Databases;Dedications;Deposition;design;ethnic diversity;Genetic;genetic analysis;Genetic Diseases;Genetic study;genome-wide;Genotype;Human Resources;Infrastructure;innovation;instrument;Language;Leadership;Life Style;Manuals;Methods;multi-ethnic;National Institute on Aging;non-genetic;Online Systems;outreach;Participant;Phenotype;phenotypic data;Population;Preparation;Protocols documentation;Quality Control;racial diversity;recruit;Reporting;repository;Research Design;Research Personnel;Resources;sample collection;Sampling;Scanning;screening;Secure;Single Nucleotide Polymorphism;Site;SNP array;Statistical Data Interpretation;Statistical Methods;Surveys;System;tool;Training;web interface;web services
+current_category: infrastructure
+---
+application_id: 10874239
+activity_code: P01
+title: The role of viral chemokines for CMV dissemination and congenital infection
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: N/A
+terms: Affect;Animals;Antibody Response;Attenuated;Biological Models;CD4 Positive T Lymphocytes;CD8-Positive T-Lymphocytes;cell type;Cells;chemokine;Complex;Congenital Abnormality;congenital cytomegalovirus;congenital infection;Control Groups;CXC Chemokines;Cytomegalovirus;Cytomegalovirus Infections;Cytomegalovirus Vaccines;Data;Data Science Core;Defect;Disease;experimental study;Family;Family member;Fetus;Glycoproteins;Goals;health goals;Homologous Gene;Human;IL8 gene;IL8RA gene;IL8RB gene;Immune;Immunity;Immunization;Immunize;Immunocompetent;immunogenic;Immunoglobulin G;Immunohistochemistry;Immunologics;immunoregulation;In Vitro;in vivo;in vivo monitoring;Infection;Innate Immune Response;innovation;Intravenous;Licensing;Macaca mulatta;mature animal;Measurement;Mediating;member;migration;Natural Killer Cells;Neighborhoods;neutrophil;novel;Open Reading Frames;Organoids;Placenta;Plasma;Play;prevent;Prevention;Primary Infection;Primates;Protein Family;Proteins;Proteomics;Public Health;Recombinants;Reporting;Rhesus;Role;single cell analysis;Statistical Data Interpretation;T cell response;T-Cell Depletion;T-Lymphocyte;Tissues;Transcript;transcriptomics;transmission process;vaccine development;Vaccines;Viral;Viral Physiology;Viremia;virology;Virus;Virus Diseases
+current_category: basic_research
+---
+application_id: 10878672
+activity_code: U19
+title: Core A: Administrative and Enrollment Core
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Asian;Asian Americans;Benchmarking;Biological Markers;Budgets;Canada;cohort;Collaborations;Communities;community advisory board;Complex;Consent Forms;Data;data access;Data Analyses;data exchange;data harmonization;data management;Data Set;data sharing;dementia risk;Development;Electronic Mail;Enrollment;Ensure;FAIR principles;Freezing;functional genomics;Funding Agency;Future;Genetic;Genetic Diseases;Genetic study;genome sequencing;genome wide association study;genome-wide;genomic data;Genotype;Human Subject Research;Institutional Review Boards;interest;Leadership;meetings;National Institute on Aging;non-genetic;outreach;Participant;Performance;Persons;Phenotype;phenotypic data;programs;Progress Reports;Protocols documentation;Publications;Qualifying;quality assurance;recruit;Recruitment Activity;Recurrence;repository;Research;Research Personnel;Research Project Grants;Resources;response;Sampling;Schedule;Science;Site;SNP array;Standardization;Structure;symposium;Training;Training Activity;Transfer Agreement;Update;web site;whole genome;Work
+current_category: infrastructure
+---
+application_id: 10898700
+activity_code: P50
+title: Research and Methods Core
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: Address;Advanced Malignant Neoplasm;American;behavioral economics;cancer care;cancer risk;care delivery;Caring;clinical care;clinical practice;Communication;Communication Methods;compare effectiveness;Continuity of Patient Care;design;Development;digital;Disparity;Dissemination and Implementation;Effectiveness;Elements;Ensure;Equity;Evaluation;evidence base;Future;Goals;Health;health care delivery;health equity;Healthcare Systems;implementation framework;improved;Individual;Inequity;Information Dissemination;innovation;insight;Intervention;Investigation;Knowledge;lung cancer screening;Malignant neoplasm of lung;Measures;Methodology;Methods;Modeling;Monitor;Names;Nurses;Outcome;Patient Care;patient oriented;Patients;Pennsylvania;Pilot Projects;pragmatic trial;Process;programs;Recommendation;Research;Research Methodology;Research Personnel;Science;screening;Sequential Multiple Assignment Randomized Trial;Shapes;shared decision making;Statistical Methods;success;successful intervention;telehealth;telehealthcare;Telemedicine;Testing;therapy design;tool;trial design;Universities;Visit
+current_category: infrastructure
+---
+application_id: 10924058
+activity_code: U19
+title: Association of cumulative exposure to metformin and other T2D medications with cognitive impairment and AD/ADRD biomarkers
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: adjudication;Advanced Glycosylation End Products;Agonist;Alzheimer disease prevention;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;apolipoprotein E-4;Atrophic;Biguanides;Biological Markers;Brain;Brain imaging;brain magnetic resonance imaging;Categories;Cerebrovascular Disorders;Classification;Cobalamin;Cognition Disorders;Cognitive;cognitive benefits;cognitive reserve;cognitive testing;Cohort Studies;Collaborations;Data;Dementia;Diabetes prevention;diabetes prevention program;Dipeptidyl Peptidases;Endothelium;Ethnic Origin;Exposure to;genomic signature;Glial Fibrillary Acidic Protein;GLP-I receptor;Glucose;Goals;Hemorrhage;Impaired cognition;Infarction;Inflammation;inhibitor;Insulin;insulin signaling;Light;Mediating;Mediator;Metformin;mild cognitive impairment;Modification;National Institute on Aging;Nerve Degeneration;neurofilament;neuroimaging;neuroinflammation;Neurons;neuropathology;neuroprotection;Non-Insulin-Dependent Diabetes Mellitus;Outcome;Outcome Study;Participant;Peripheral;Persons;Pharmaceutical Preparations;Pharmacotherapy;Physical activity;Plasma;Positron-Emission Tomography;Prediabetes syndrome;racial population;Randomized;Research;Rest;Risk;sex;side effect;Sodium;Statistical Methods;Structure;Sulfonylurea Compounds;symporter;Syndrome;tau Proteins;Thiazolidinediones;Thick;vascular cognitive impairment and dementia;vascular risk factor;white matter;White Matter Hyperintensity
+current_category: other
+---
+application_id: 10924047
+activity_code: U19
+title: Administrative Core
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: Adherence;Adopted;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;Ancillary Study;Budgets;career development;clinical center;clinical research site;Cognitive;Collaborations;data sharing;Development;Diabetes Mellitus;diabetes prevention program;Education;education research;Ensure;experience;Funding;Goals;Institutional Review Boards;Journals;Leadership;Ligands;Manuscripts;Measurable;meetings;Mentorship;Minority;Monitor;National Institute of Diabetes and Digestive and Kidney Diseases;National Institute on Aging;Non-Insulin-Dependent Diabetes Mellitus;Observational Study;Outcome;Outcome Study;Participant;Peer Review;Prediabetes syndrome;Preparation;Prevention Guidelines;Prevention program;Principal Investigator;Procedures;programs;Progress Reports;Protocols documentation;Publications;Reading;Reporting;Research;Research Personnel;Resources;Scientist;Site;Structure;success;Travel;United States;United States Centers for Medicare and Medicaid Services;Universities;Update;Washington;web site;working group
+current_category: infrastructure
+---
+application_id: 10898706
+activity_code: P50
+title: Clinical Practice Network
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: Advanced Malignant Neoplasm;Area;behavioral economics;Black race;cancer care;Cancer Center;Cancer Model;care delivery;Caring;Catchment Area;Clinical;clinical care;Clinical Informatics;clinical infrastructure;Clinical Oncology;clinical practice;clinical research site;Clinical Services;Communication;Communities;Community Health;connected care;Continuity of Patient Care;Country;County Hospitals;data infrastructure;Data Store;data warehouse;Department chair;digital;digital divide;Ecosystem;Effectiveness;effectiveness testing;electronic health record system;Ensure;Environment;Equity;Evaluation;evidence base;experience;Family Practice;Female;health disparity;Health Services Accessibility;Health system;Hospitals;Human Resources;implementation facilitation;improved;Informatics;informatics infrastructure;Infrastructure;Internal Medicine;Latinx;Leadership;Link;lung cancer screening;Malignant neoplasm of lung;Malignant Neoplasms;Medicaid;Medical center;Medicine;metropolitan;Modeling;Oncology;patient oriented;patient population;Patients;Pennsylvania;Philadelphia;Physician Executives;Physicians;Pilot Projects;pragmatic trial;Presbyterian Church;Primary Care;primary care services;Provider;Research;Research Methodology;Research Personnel;Resources;Science;screening;Screening for cancer;screening program;Services;Site;Structure;survivorship;System;telehealth;Testing;Uninsured;Universities;University Hospitals
+current_category: infrastructure
+---
+application_id: 10898703
+activity_code: P50
+title: Pragmatic Trial
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: Address;Adult;Adult women;Advanced Malignant Neoplasm;Age;American;arm;Awareness;behavioral economics;Benefits and Risks;black patient;Black race;cancer care;cancer health disparity;cancer survival;care coordination;care delivery;Communication;comparative;compare effectiveness;Complex;contextual factors;COVID-19 pandemic;Data;Decision Aid;design;digital healthcare;Disparity;Effectiveness;effectiveness evaluation;Eligibility Determination;Equity;evidence base;Geography;Goals;Guidelines;health equity;Healthcare;Individual;Inferior;innovation;Insurance Coverage;Intervention;Interview;Knowledge;low dose computed tomography;lung cancer screening;male;Malignant neoplasm of lung;Methods;Modeling;mortality;Outcome;Patients;payment;Pennsylvania;Persons;Policy Maker;Population;pragmatic trial;preference;programs;Race;racial disparity;Radiation exposure;Randomized;Recommendation;Research;Risk;Science;screening;screening guidelines;Sequential Multiple Assignment Randomized Trial;sex;shared decision making;Smoking History;Socioeconomic Status;Surgical complication;telehealth;Testing;Time;Touch sensation;Training;trial design;Universities;uptake;Visit;women patients
+current_category: infrastructure
+---
+application_id: 10924049
+activity_code: U19
+title: Cognitive Assessment and Adjudication Core
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: adjudication;Alzheimer disease detection;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;Ancillary Study;Biological Markers;Biometry;Brain imaging;cerebrovascular;Certification;Classification;Clinical;Cognition;Cognition Disorders;Cognitive;cognitive testing;Collaborations;Communities;Data;Data Collection;data infrastructure;Data Set;Dedications;Dementia;diabetes prevention program;Diagnosis;Digit structure;Doctor of Philosophy;Electronic Mail;Ensure;executive function;experience;Goals;Human Resources;Impaired cognition;improved;Lead;Magnetic Resonance Imaging;Manuals;Measures;mental state;mild cognitive impairment;Mind;Multi-Ethnic Study of Atherosclerosis;Nerve Degeneration;neuroimaging;Non-Insulin-Dependent Diabetes Mellitus;operation;Outcome Study;Participant;Pathologic;Physicians;Plasma;Positron-Emission Tomography;Prediabetes syndrome;Primary Care;Procedures;Process;processing speed;quality assurance;Quality Control;Recording of previous events;Research;Resolution;Site;Smell Perception;Spanish/English;Stroke;tau Proteins;Testing;Time;Training;Update;vascular cognitive impairment and dementia;Verbal Learning;web site;Work
+current_category: infrastructure
+---
+application_id: 10924056
+activity_code: U19
+title: Association of glycemia and related factors and complications with cognitive impairment and AD/ADRD biomarkers
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: adjudication;Advanced Glycosylation End Products;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;Amyloid beta-42;Amyloid beta-Protein;apolipoprotein E-4;Beta Cell;Biological Markers;Blood Pressure;Blood Vessels;Brain;Brain imaging;Brain Pathology;Buffers;Classification;Clinical;Cognition Disorders;Cognitive;cognitive reserve;cognitive testing;Collaborations;Coronary Arteriosclerosis;Data;Defect;Dementia;diabetes mellitus genetics;diabetes prevention program;Dyslipidemias;Education;Educational Status;endothelial dysfunction;Ethnic Origin;extracellular vesicles;Functional disorder;Genetic Risk;genetic risk factor;Glial Fibrillary Acidic Protein;Goals;high risk;imaging biomarker;Impaired cognition;Impairment;Infarction;Inflammation;Insulin Resistance;insulin signaling;Investigation;Kidney Diseases;Light;literacy;macrovascular disease;Magnetic Resonance Imaging;Measures;Mediating;Microvascular Dysfunction;mild cognitive impairment;modifiable risk;Myocardial Infarction;neurofilament;neuroimaging;Neurons;neuropathology;Neuropathy;neurophysiology;Non-Insulin-Dependent Diabetes Mellitus;novel;Outcome;Outcome Study;Participant;Pathologic;Peripheral;Persons;Plasma;Positron-Emission Tomography;Prediabetes syndrome;predictive modeling;Prevention strategy;Race;Recording of previous events;Retinal Diseases;Risk;Risk Factors;risk prediction;Severities;sex;sociodemographic factors;Stroke;Structure of beta Cell of islet;Syndrome;tau Proteins;Thick;Thinness;Time;treatment strategy;vascular contributions;vascular factor;White Matter Hyperintensity
+current_category: basic_research
+---
+application_id: 10898698
+activity_code: P50
+title: Admin_Core
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: access disparities;Address;Advanced Malignant Neoplasm;advocacy organizations;behavioral economics;cancer care;Cancer Survivor;care delivery;career;career development;Caregivers;Caring;Clinical;clinical care;clinical practice;Collaborations;Communication;Communities;Continuity of Patient Care;Data Analyses;Data Collection;design;Development;Discipline;Disparity;Education;Effectiveness;Ensure;Environment;Equity;Evaluation;evidence base;experience;Faculty;Funding;graduate student;Guidelines;health care delivery;health care model;health disparity;health equity;Health Personnel;Healthcare;improved;Infrastructure;innovation;insight;Institutional Review Boards;Interdisciplinary Study;Intervention;Journals;Knowledge;Leadership;Licensing;Malignant Neoplasms;Manuscripts;Measures;Methodology;Mission;Monitor;National Cancer Institute;Outcome;Patient advocacy;patient oriented;Patients;Peer Review;Pennsylvania;Policies;Policy Maker;Positioning Attribute;Postdoctoral Fellow;pragmatic trial;Process;Professional Organizations;Publications;Quality of Care;Research;Research Methodology;Research Personnel;Resources;Science;Series;Service delivery model;success;Sum;symposium;synergism;Technology;telehealth;telehealthcare;Testing;Universities;Vision;visiting scholar
+current_category: infrastructure
+---
+application_id: 10924055
+activity_code: U19
+title: Cognitive impairment in the DPPOS cohort and its neuropathologic, neurophysiologic, sociodemographic, and behavioral correlates
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: adjudication;aged;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;Amyloid beta-42;Attenuated;Behavioral;Biological Markers;Brain imaging;Categories;Cerebrovascular Disorders;Characteristics;Classification;Cognition;Cognition Disorders;cognitive testing;Cohort Studies;Collaborations;Dementia;depressive symptoms;diabetes prevention program;Education;epidemiology study;Ethnic Origin;Ethnic Population;extracellular vesicles;Female;Glial Fibrillary Acidic Protein;Goals;high risk;high risk population;imaging biomarker;Impaired cognition;Incidence;Infarction;Insulin;insulin receptor substrate 1 protein;Insulin Resistance;insulin signaling;IRS1 gene;Knowledge;Light;literacy;Measures;Metabolic;mild cognitive impairment;National Institute on Aging;Nerve Degeneration;neurofilament;neuroimaging;neuroinflammation;Neurons;neuropathology;neurophysiology;Non-Insulin-Dependent Diabetes Mellitus;Not Hispanic or Latino;Obstructive Sleep Apnea;Outcome Study;Participant;Pathologic;Pathology;Peripheral;Persons;Pharmaceutical Preparations;Plasma;poor sleep;Population;Positron-Emission Tomography;Prediabetes syndrome;Prevalence;Prevention;Proto-Oncogene Proteins c-akt;Race;racial population;Research;Rest;Risk;Sampling;sex;sex variable;Sleep disturbances;sleep quality;sociodemographic factors;sociodemographics;Structure;tau Proteins;Thick;Tyrosine;United States;vascular cognitive impairment and dementia;Vascular Dementia;white matter;White Matter Hyperintensity
+current_category: infrastructure
+---
+application_id: 10916338
+activity_code: U19
+title: HABS-HD - Core E - Disparities & Outreach Core
+org_name: UNIVERSITY OF NORTH TEXAS HLTH SCI CTR
+phr: N/A
+terms: Address;African American;African American population;Age;aged;Aging;aging brain;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Awareness;Back;Biological Markers;Brain;Clinical;Cognitive aging;cohort;Collaborations;Communities;community advisory board;community engagement;Community Networks;Community Outreach;Data;Development;Disparate;Disparity;Education;Education and Outreach;Educational Materials;Ensure;ethnic minority population;Ethnic Population;Event;Feedback;Focus Groups;Funding;Future;Goals;Health;Health Disparities Research;health disparity;health goals;Hispanic Populations;Home;improved outcome;Individual;Informatics;information gathering;Infrastructure;Institution;Life Cycle Stages;Linguistics;Location;Measures;member;Methods;Mexican Americans;Minority Groups;Monitor;multi-ethnic;neuroimaging;Newsletter;Not Hispanic or Latino;novel;outreach;Participant;Population;Population Heterogeneity;precision medicine;Prevention strategy;Procedures;Process;Protocols documentation;Publications;Race;racial minority population;racial population;recruit;Research;Research Methodology;Scientist;social media;Spinal Puncture;Students;Training;treatment strategy;Underrepresented Minority;Work
+current_category: infrastructure
+---
+application_id: 11056096
+activity_code: P01
+title: Project 1: Modeling the Mechanisms of Prion Transmission, Strain Selection, Mutation and Species Barrier in Transgenic Mice
+org_name: UNIVERSITY OF TEXAS HLTH SCI CTR HOUSTON
+phr: N/A
+terms: Address;Affect;Alleles;American;Animal Diseases;Animals;Antibodies;Automobile Driving;Binding;Biological Models;Body Fluids;Cell Culture Techniques;Cells;cervid;Characteristics;Chemicals;Chronic Wasting Disease;Clinical;combat;Complement;conformer;Cultured Cells;Deer;design;Detection;Development;Disease;Disease susceptibility;Ectopic Expression;effective therapy;Epidemic;Epitopes;Evolution;Gene Targeting;Genetic;Genetic Engineering;Genetic Polymorphism;genetic selection;glycosylation;Goals;Heritability;Human;human PrP;improved;In Vitro;in vivo;Location;Methods;Modeling;Molecular Conformation;Mus;Mutation;neural;neuroblastoma cell;Neurodegenerative Disorders;novel;novel strategies;Outcome Measure;Pathogenesis;Pathogenicity;Peptide Hydrolases;Pharmaceutical Preparations;Phase;Physiological;Positioning Attribute;Predisposition;pressure;Prevalence;Prion Diseases;Prions;Process;Property;Proteins;PrP gene;PrP variant;PrPSc Proteins;Reindeer;Resistance;Resources;response;Risk;Risk Management;Sampling;Scandinavian;Science;Scrapie;Sheep;Soil;System;Tail;Tissues;tool;Transgenic Mice;Transgenic Organisms;transmission process;Variant;Western Blotting;Zoonoses
+current_category: basic_research
+---
+application_id: 10916337
+activity_code: U19
+title: HABS-HD - Core D - Omics Core
+org_name: UNIVERSITY OF NORTH TEXAS HLTH SCI CTR
+phr: N/A
+terms: African American population;aging brain;Alzheimer&apos;s Disease;Alzheimer&apos;s disease diagnosis;Alzheimer’s disease biomarker;Amyloid;Amyloid beta-42;biobank;Bioinformatics;Biological Assay;Biological Markers;biomarker validation;Biostatistics Core;Blood;clinical diagnosis;Clinical Trials;cohort;Collaborations;Collection;Data;Data Analyses;Data Set;Dementia;Diagnostic;Disease;Ethnic Population;exosome;Fatty Acids;follow-up;genome repository;genome sequencing;genome wide association study;genomic data;Glycolysis;Health;health disparity;Impaired cognition;International;Investigation;lipid metabolism;Marker Discovery;Mass Spectrum Analysis;metabolomics;Methods;Methylation;Mexican Americans;mild cognitive impairment;Modeling;Molecular Weight;Nerve Degeneration;Neurons;Not Hispanic or Latino;novel;novel marker;oxidation;Oxidative Phosphorylation;Participant;Pathology;Pathway interactions;Pharmaceutical Preparations;Plasma;Population;Population Heterogeneity;Prognosis;Proteins;Proteomics;Protocols documentation;Publishing;Qualifying;Quality Control;racial population;Research Personnel;Sampling;System;tau Proteins;Technology;transcriptomics;Update;Validation;Visit;whole genome;Work
+current_category: infrastructure
+---
+application_id: 10916349
+activity_code: U19
+title: HABS-HD - Project 3
+org_name: UNIVERSITY OF NORTH TEXAS HLTH SCI CTR
+phr: N/A
+terms: Acculturation;African American population;age effect;Age of Onset;aging brain;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Alzheimer’s disease biomarker;Amyloid;Area;Autopsy;Biological;Biological Markers;Blood Vessels;burden of illness;Childhood;Cognition;Cognitive;cognitive function;Collaborations;Data;deprivation;Disease;Disease Outcome;Disparate;Disparity;epigenetic marker;Epigenetic Process;ethnic difference;Ethnic Population;executive function;experience;Health;Health Disparities Research;health disparity;Hispanic Populations;Household;Impaired cognition;Income;indexing;Inflammation;Inflammatory;Intervention;Language;Lead;Link;Magnetic Resonance Imaging;magnetic resonance imaging biomarker;Measures;Memory;Metabolic;Metabolic dysfunction;methylation pattern;Mexican Americans;middle age;neighborhood disadvantage;Neighborhoods;Nerve Degeneration;neuropathology;Not Hispanic or Latino;Outcome;Pathologic;Plasma;Population Heterogeneity;Prevalence;Race;racial difference;racial population;racism;Research;Research Personnel;residential segregation;Risk;social culture;social factors;sociocultural determinant;Stress;successful intervention;tau Proteins;theories;trend
+current_category: other
+---
+application_id: 10832571
+activity_code: U19
+title: Epithelial activation of airway inflammation in patients with non-T2 asthma
+org_name: UNIVERSITY OF WASHINGTON
+phr: Project 2 Narrative Effective treatments for non-type 2 (T2) asthma are lacking for children and adults. Using bronchial airway epithelial cells from well characterized cohorts of children and adults with and without asthma we will conduct mechanistic experiments using organotypic models to improve understanding of the role of the airway epithelium in coordinating immune cells that drive airway inflammation and remodeling, and influence exacerbations, lung function, and inflammatory signatures i
+terms: Adrenal Cortex Hormones;Adult;airway epithelium;airway inflammation;airway remodeling;Asthma;asthma exacerbation;asthmatic;asthmatic airway;Automobile Driving;Bioinformatics;Biological Assay;Biological Products;biomarker signature;Caspase;Cell model;cell type;Cells;Child;Chromatin;Clinical;Coculture Techniques;cohort;cost;CSF3 gene;cytokine;Data;effective therapy;Environment;Epigenetic Process;Epithelial Cells;Epithelium;Exhibits;experimental study;Frequencies;Gene Expression;Gene Proteins;Genes;Genetic;genomic locus;Genomics;Healthcare Systems;Human;humanized mouse;Immune;Immune response;improved;in vivo;in vivo evaluation;in vivo Model;Incidence;Individual;Infection;Infiltration;Inflammasome;Inflammation;Inflammatory;Inhalation;Interferons;Interleukin-1 beta;interleukin-17C;Link;Lung;Macrophage;Modeling;Morbidity - disease rate;Mouse Strains;neutrophil;Neutrophil Activation;new therapeutic target;Obesity;Outcome;Pathway interactions;Patients;Pattern;Physiology;prevent;Production;Proteins;pulmonary function;pulmonary function decline;Quantitative Trait Loci;Reporting;Resistance;respiratory;response;Rhinovirus;Rhinovirus infection;Role;Smoking;Techniques;Testing;TNF gene;TNFSF10 gene;transcriptomics;Transposase;Viral;Virus;Virus Diseases
+current_category: basic_research
+---
+application_id: 10916341
+activity_code: U19
+title: HABS-HD - Core F - Biostatistics Core
+org_name: UNIVERSITY OF NORTH TEXAS HLTH SCI CTR
+phr: N/A
+terms: aging brain;Algorithms;Alzheimer&apos;s Disease;Alzheimer&apos;s disease therapeutic;Amyloid;Artificial Intelligence;Bioinformatics;Biological Markers;biomarker discovery;Biometry;Biostatistics Core;Clinical;Clinical Research;Clinical Trials Design;Cognitive;Collaborations;Communities;Complex;Consultations;Consumption;Data;Data Analyses;Data Discovery;data integration;data quality;data reduction;Data Reporting;Data Set;design;Disease;Disease Marker;disorder prevention;Doctor of Philosophy;Ensure;Epidemiologist;Equation;experience;Faculty;Generations;Genetic;Genomics;Health;health disparity;Health Promotion;Image;improved;Individual;Informatics;Infrastructure;innovation;International;Lead;life span;Machine Learning;machine learning method;machine learning model;Mediation;metabolomics;method development;Methodology;Methods;Modeling;Modernization;Monitor;Nerve Degeneration;neuroimaging;Neurology;novel;novel marker;Outcome;Pathologic;Population Heterogeneity;power analysis;Preventive Medicine;prognostic;programs;Proteomics;Protocols documentation;Publications;Qualifying;Quality Control;recruit;Research;Research Design;Research Institute;Research Methodology;Research Personnel;Resources;Safety;Specific qualifier value;Statistical Data Interpretation;Statistical Methods;tau Proteins;Training;Update;Work
+current_category: infrastructure
+---
+application_id: 10929985
+activity_code: U19
+title: Nurse Led Telephonic Care
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Academy;access disparities;Accident and Emergency department;Acute;Address;Advance Care Planning;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Ambulatory Care;Area;arm;Behavioral Symptoms;care coordination;care fragmentation;care systems;Caring;Case Management;Cessation of life;Characteristics;Chronic;Cluster randomized trial;Communities;comorbidity;cost effective;Data;Delirium;Dementia;dementia care;deprivation;design;Drug Prescriptions;Effectiveness;effectiveness study;effectiveness trial;Emergency Care;Emergency department visit;Ensure;Ethnic Origin;evidence base;Exclusion;Health;health care service utilization;health equity;health inequalities;health plan;Health system;Healthcare Systems;Home;Hospitalization;Iatrogenesis;implementation fidelity;improved;indexing;Individual;Inequity;Institutionalization;Intervention;Intervention Trial;Lead;Medicare claim;Medicine;Modality;novel;Nurses;Outcome;Outpatients;pain symptom;palliative;Palliative Care;Paramedical Personnel;patient oriented;Patients;Persons;Population;Population Heterogeneity;Pragmatic clinical trial;pragmatic trial;primary outcome;Procedures;Process;programs;Provider;psychological symptom;Quality of Care;Quality of life;Race;Randomized;Reach, Effectiveness, Adoption, Implementation, and Maintenance;Reporting;Site;social;social health determinants;success;Surrogate Endpoint;symptom management;Telephone;Testing;Time;United States Agency for Healthcare Research and Quality;user centered design;Variant;Visit;Work
+current_category: therapeutics
+---
+application_id: 10929965
+activity_code: U19
+title: Implementation Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Accident and Emergency department;acute care;Address;Alzheimer&apos;s Disease;Caring;clinical decision support;Collaborations;college;Communication;Communities;community setting;Complex;contextual factors;Data;Dementia;dementia care;design;Discipline of Nursing;Documentation;Dose;Electronic Health Record;Emergency Care;Emergency department visit;Ensure;experience;Frequencies;Goals;Health;Health system;Human Resources;implementation barriers;implementation science;implementation strategy;improved;Informatics;Intervention;Lead;Leadership;learning network;Lived experience;Measures;medical schools;member;Methods;Monitor;Needs Assessment;Nurses;older adult;Outcome;Paramedical Personnel;peer;peer learning;Persons;Physicians;pilot test;pragmatic trial;Procedures;Process;Provider;Readiness;Report (document);Research Infrastructure;Research Personnel;Role;Rural;Scientist;Seasons;Site;Social Work;Specific qualifier value;Statistical Data Interpretation;success;support tools;Telephone;Testing;Time;tool;Training;Universities;usability;Wisconsin;Work
+current_category: infrastructure
+---
+application_id: 10836391
+activity_code: P50
+title: Core B - Technical Services
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: N/A
+terms: 3-Dimensional;aggregation database;Alleles;Bayesian Modeling;biobank;Biological Assay;case control;Catalogs;Categories;Cell Line;Cell model;cloud based;Clustered Regularly Interspaced Short Palindromic Repeats;Code;cohort;Collection;Communities;Complex;computerized data processing;computerized tools;Copy Number Polymorphism;Data;Data Analyses;Data Set;de novo mutation;Disease;dosage;Engineering;exome;exome sequencing;Family;Female;Fertilization;follow-up;functional genomics;gene discovery;Gene Expression Profile;Gene Expression Profiling;General Hospitals;Genes;genetic architecture;Genome;genome resource;genome sequencing;genomic data;Genomic medicine;genomic profiling;genomic variation;Genomics;GNRH1 gene;Human;human disease;human induced pluripotent stem cells;Idiopathic Hypogonadotropic Hypogonadism;Individual;Infertility;insertion/deletion mutation;insight;Joints;Kallmann Syndrome;loss of function;loss of function mutation;male;Massachusetts;Methods;Modeling;Molecular;multidisciplinary;Mutation;Neurodevelopmental Disorder;Neurons;novel;Pathogenicity;Pathway interactions;Patients;Phenotype;Point Mutation;Population;prime editing;Process;progenitor;programs;rare variant;Reagent;Reproductive Medicine;Research;Resources;Risk;Sampling;Scoring Method;Series;Services;System;Technology;trait;transcriptome;transcriptome sequencing;transmission process;Untranslated RNA;Variant;variant detection;whole genome
+current_category: infrastructure
+---
+application_id: 11056146
+activity_code: P20
+title: Research Expanding Access to Child Health (REACH)
+org_name: NEMOURS CHILDREN'S HOSPITAL, DELAWARE
+phr: N/A
+terms: Accountability;Achievement;Address;Advisory Committees;Advocate;Biomedical Research;career;career development;Caring;Centers of Research Excellence;cerivastatin;Child;Child Health;child health care;Communities;Delaware;Doctor of Philosophy;Education;Elements;Ensure;Evaluation;Event;experience;Faculty;Family;Feedback;Fostering;Funding;Future;Goals;Health;health care availability;health care delivery;Health Care Research;Health Care Systems;Health Psychology;Health system;Hospitals;Improve Access;improved;Infrastructure;innovation;Institution;Intervention;Lead;Leadership;Mentors;Mentorship;Methods;Mission;Monitor;multidisciplinary;operation;Operations Research;Patients;Pediatric Hospitals;Pediatric Research;Performance;Persons;Procedures;Process;Production;Program Development;programs;Provider;recruit;Reporting;Research;research and development;Research Infrastructure;Research Personnel;Research Project Grants;Resources;Role;Science;Scientific Evaluation;Site;skills;sound;Strategic Planning;Structure;success;synergism;System;systems research;Technology;technology intervention;Voice
+current_category: infrastructure

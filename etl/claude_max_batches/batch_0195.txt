@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10923992
+activity_code: S06
+title: Researcher Career Enhancement Project
+org_name: SOUTHCENTRAL FOUNDATION
+phr: N/A
+terms: Academic Training;Address;Adopted;aged;Alaska Native;American Indian community;American Indian Population;American Indians;Applied Research;Area;care outcomes;care systems;career;Case Study;case-based;Clinical;Clinical Research;Collaborations;college;Communities;community based participatory research;Competence;culturally appropriate intervention;design;Development;Dissemination and Implementation;Doctor&apos;s Degree;Education;effective intervention;Effectiveness;Ensure;Equipment and supply inventories;Ethics;Evaluation;evidence base;experience;Feedback;Fostering;Foundations;Funding;Goals;hands-on learning;Health;health care delivery;health care service organization;health disparity;Health Priorities;Health Services;Health system;Healthcare Systems;high school;implementation efforts;implementation framework;implementation research;improved;Instruction;Intervention Studies;Investigation;Job Application;Knowledge;Lead;Leadership;Learning;Manuscripts;Master of Science;member;Mentors;Mentorship;multidisciplinary;Native American Research Center for Health;Occupations;Outcome;peer coaching;Persons;Policies;population health;Preparation;Principal Investigator;Problem Solving;professor;programs;Publications;Research;Research Design;Research Personnel;Research Project Grants;Resources;Self Efficacy;Service delivery model;skill acquisition;skills;skills training;sound;Specialist;Statistical Methods;Students;Targeted Research;Training;tribal community;tribal health;tribal healthcare;tribal leader;Tribes;United States;Universities;Washington;Youth
+current_category: other
+---
+application_id: 10874269
+activity_code: P30
+title: BID Core
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: The goal of our proposed Roybal Center is to speed up the pace and increase the impact of scientific discoveries about how to change health behaviors to prevent premature aging. To do this, we focus on three innovative strategies: design thinking to incorporate the experiences of older adults; online platforms that help us conduct large-scale studies easily; and dynamic adaptation, which allows us quickly learn how different interventions work for different populations. With these strategies, we
+terms: Address;Adherence;Advisory Committees;Aging;American;Area;Artificial Intelligence;Behavior;behavior change;Behavior Therapy;behavioral economics;behavioral health;Behavioral Mechanisms;blood pressure control;Center for Translational Science Activities;Collaborations;design;Diabetes Mellitus;Dietary Fiber;digital platform;Effectiveness;Effectiveness of Interventions;effectiveness testing;efficacy testing;Ensure;experience;Faculty;feasibility testing;financial incentive;Funding;Goals;Grain;Health;Health behavior;Health behavior change;health care service organization;Healthy Eating;human centered design;Hyperaldosteronism;improved;Individual;innovation;Institution;Intervention;Intervention Studies;Learning;Maintenance;Marketing;Mentorship;middle age;Mission;Modeling;modifiable risk;Morbidity - disease rate;mortality;older adult;Patients;Pilot Projects;pilot test;Population;Population Heterogeneity;Prediabetes syndrome;Premature aging syndrome;prevent;Privatization;Process;Program Description;Provider;Research;Research Personnel;Resources;screening;Source;Speed;success;Technology;technology platform;Testing;therapy development;Thinking;Training;Translating;United States National Institutes of Health;Universities;Work
+current_category: infrastructure
+---
+application_id: 10915730
+activity_code: P50
+title: Biomedical Research Core
+org_name: WASHINGTON UNIVERSITY
+phr: N/A
+terms: Acceleration;Adolescent;Adopted;Adult;age related;Aging;Atlases;Authorization documentation;Biological Assay;biological research;Biology;Biomedical Research;Biopsy;Cell Line;cell type;Cells;Child;Childhood;Clinical;Collaborations;Communities;Consent;Data;delivery complications;design;design verification;Development;Distal;Drug toxicity;Early Diagnosis;effective intervention;End stage renal failure;Engineering;Ensure;epigenome;FAIR principles;fetal;gene function;Generations;Gifts;Goals;Human;Hypertension;Image;Incidence;induced pluripotent stem cell;Infant Mortality;Infrastructure;innovation;Instruction;interest;interoperability;Kidney;kidney cell;Kidney Diseases;kidney dysfunction;Kidney Failure;Knowledge;Life;life span;Measurement;Methods;Molecular;molecular imaging;Morphology;multimodality;multiple omics;Nature;Neonatal;Nephrology;Nephrons;operation;Organ;Organ Transplantation;Organoids;Parents;Pathologic;Pathology;Patients;Pediatric Research;Physiological;Policies;Positioning Attribute;postnatal;premature;preservation;prevent;Procedures;Protocols documentation;Provider;Publishing;quality assurance;Quality Control;Reporter;repository;Research;Research Personnel;Resources;Sampling;screening;Severities;single cell technology;Source;Specimen;Technology;Time;Tissue Banks;Tissue Engineering;tissue processing;Tissue Sample;Tissues;transcriptome;Translational Research;Trauma;United States;Universities;validation studies;Washington
+current_category: infrastructure
+---
+application_id: 10923997
+activity_code: S06
+title: Metabolism-Informed Care to Aid Alaska Native People to Quit Smoking
+org_name: SOUTHCENTRAL FOUNDATION
+phr: N/A
+terms: acceptability and feasibility;Address;Adult;Affect;Agonist;Alaska;Alaska Native;Alaska Native population;Alaskan;American Indian Population;American Indians;arm;attributable mortality;Biological Markers;Bupropion;Caring;Chronic Obstructive Pulmonary Disease;Clinic;Clinical;clinical practice;Communities;community based participatory research;community engagement;Consolidated Framework for Implementation Research;cost;Data;design;Dissemination and Implementation;Dopamine Uptake Inhibitors;Environment;Ethnic Population;Familiarity;Foundations;Genetic Research;Goals;Health;health disparity;health organization;Health system;Healthcare Systems;Heart Diseases;implementation facilitation;implementation framework;implementation intervention;implementation research;improved;Intervention;intervention refinement;Knowledge;Learning;Literature;Malignant neoplasm of lung;member;Metabolic;Metabolic Marker;Metabolism;Methods;Modeling;Nicotine;nicotine replacement;nicotine use;Nicotinic Receptors;Norepinephrine;Nurses;Observational Study;Participant;Patient Preferences;Patients;personalized approach;Persons;Pharmaceutical Preparations;pharmacologic;Pharmacological Treatment;Pharmacy facility;Physicians;pilot trial;pragmatic trial;Protocols documentation;Provider;Race;Reach, Effectiveness, Adoption, Implementation, and Maintenance;Recommendation;Research;Research Project Grants;response;Selection for Treatments;Services;side effect;Smoke;Smoking;smoking abstinence;smoking cessation;Smoking Cessation Intervention;smoking prevalence;Solid;Specialist;Stroke;success;Testing;Therapeutic;Tobacco;tobacco cessation intervention;Tobacco Use Cessation;treatment optimization;tribal health;tribal healthcare;varenicline;Work
+current_category: other
+---
+application_id: 10894149
+activity_code: P30
+title: Biostatistics and Data Science Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: N/A
+terms: academic standard;Address;Aging;Ally;American;Architecture;bioinformatics tool;Biometry;Biostatistics Core;Boston;Capsicum;Clinical;Cognition;Collaborations;Communities;Computer software;Consultations;cost;Data;Data Analyses;data management;Data Science;Data Science Core;Dedications;design;Development;education research;Educational Curriculum;Experimental Designs;Faculty;Funding;Genetic;Goals;implantable device;improved;Industry Standard;informatics tool;innovation;instrument;International;Longevity;Measurement;Measures;Medical History;meetings;Mentorship;Methodology;Methods;Mission;Monitor;Names;novel;older adult;Population;Pragmatic clinical trial;prevent;Productivity;programs;Publications;Publishing;Reporting;Reproducibility;Research;Research Design;Research Personnel;Resources;Science;science education;Scientist;software development;software repository;Software Tools;Statistical Methods;statistics;success;Survival Analysis;System;Time;tool;Training;Training Activity;Training and Education;Training Programs;translational approach;wearable device;web based software;Work
+current_category: infrastructure
+---
+application_id: 10894140
+activity_code: P30
+title: Function Assessment Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: N/A
+terms: Activities of Daily Living;Address;Aging;Animals;Area;Behavior;Boston;Caenorhabditis elegans;Calibration;Certification;clinical development;Clinical Research;Clinical Trials;Collaborations;COVID-19 pandemic;Development;disability;Disability status;efficacy evaluation;Elderly;Environment;Equipment;Evaluation;Exercise Physiology;experience;Face;Goals;hospital laboratories;Human;Human Resources;Impairment;Infection Control;Infrastructure;innovation;instrument;interdisciplinary collaboration;Intervention Studies;late life;Leadership;Maintenance;Measurement;Measures;Movement;Muscle;Musculoskeletal;novel;Nutritional Study;Observational Study;older adult;Older Population;Performance;Physical assessment;Physical Function;physically handicapped;preservation;procedure safety;Procedures;Protocols documentation;Quality Control;Quality of life;Research Personnel;Services;Societies;Standardization;Structure;Techniques;Technology;tool;Training;translational approach;Walking;Woman
+current_category: infrastructure
+---
+application_id: 10894150
+activity_code: P30
+title: Research Education
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: N/A
+terms: Age;Aging;Animals;Area;Award;Basic Science;Boston;career;career development;Clinical Sciences;Data;Development;disability;Discipline;Disease;Education;education research;Educational Activities;experience;Funding;Future;Future Generations;Goals;Health;Human;human old age (65+);improved;Individual;Intervention;K-Series Research Career Programs;Knowledge;lectures;Mentors;Mentorship;novel;Nursery Schools;Personal Satisfaction;Persons;Physical Function;Research;Research Personnel;Science;Scientist;skills;Talents;Testing;Training;Translating;translational approach;Translational Research;Vocational Guidance;Work
+current_category: infrastructure
+---
+application_id: 10894137
+activity_code: P30
+title: Leadership and Administrative Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: N/A
+terms: Academic Medical Centers;Accountability;Aging;American;Area;Behavior Therapy;Biology of Aging;Boston;Budgets;Capsicum;career;career development;Clinical;clinical translation;Collaborations;commercialization;Communities;Community Outreach;Core Facility;Development;Dietary Intervention;Directories;Disabling;Education;education research;experience;forging;Fostering;Foundations;Geriatrics;Gerontology;Goals;Grant;Information Dissemination;innovation;Institution;Interdisciplinary Study;Leadership;Logistics;Medical center;medical schools;meetings;member;Mentors;Monitor;New England;Newsletter;Nodal;older adult;operation;Peer Review;Personnel Management;pharmacologic;Productivity;Program Effectiveness;programs;Progress Reports;Reporting;Request for Applications;Research;Research Personnel;Research Support;Resources;Schedule;Science;Scientist;success;symposium;synergism;therapy development;Training;translational approach;Translational Research;Universities;Utilization Review;web site
+current_category: infrastructure
+---
+application_id: 10914970
+activity_code: P30
+title: Research Education Core
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: N/A
+terms: Address;African American population;age related;Aging;Alabama;Applications Grants;Area;Automobile Driving;Award;Behavioral;behavioral and social science;Behavioral Research;Bioethics;Black race;career;career development;Clinical Research;Collaborations;Communities;Country;Cultural Sensitivity;Deep South;design;Development;Discipline;early-career faculty;editorial;Education;education research;Ensure;expectation;experience;Exposure to;Faculty;faculty support;Fostering;Foundations;Funding;Future;Goals;Grant;Health;Health Disparities Research;health disparity;health inequalities;Historically Black Colleges and Universities;Home;human old age (65+);improved;Infrastructure;innovation;Institution;interest;Intervention;Intervention Studies;Leadership;Mentors;Mentorship;Methodology;Minority;Mission;Morehouse School of Medicine;Occupational activity of managing finances;older adult;Older Population;Outcomes Research;peer coaching;Pilot Projects;Preparation;programs;Publications;Publishing;recruit;Reduce health disparities;Research;Research Activity;Research Infrastructure;Research Personnel;Research Project Grants;Research Support;Resources;responsible research conduct;Role;Rural;rural area;Science;Scientist;Services;social;Social Sciences;Study Section;success;theories;tool;Training;Underrepresented Populations;Universities;webinar;Work;Writing
+current_category: infrastructure
+---
+application_id: 10914972
+activity_code: P30
+title: Community Liaison and Recruitment Core
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: N/A
+terms: Address;Advocacy;African American population;Aging;Area;Behavior;behavior change;Black race;catalyst;Church;Clinical Research;cohort;Communities;community academic partnership;community engaged approach;community engagement;Community Health;Community Health Education;community involvement;community partners;cultural values;Deep South;design;Development;Economics;education research;Elderly;Equity;evidence base;Family;Fostering;Funding;Goals;Grant;Health;Health behavior;Health education;Health Promotion;Individual;Infrastructure;Institutional Policy;interest;Intervention;Intervention Studies;Kinship Networks;Knowledge;member;Mentors;Minority;Participant;perceived discrimination;Politics;public health relevance;racism;recruit;recruitment science;Religious Belief;Research;Research Project Grants;research study;Resources;retention rate;Role;Route;Rural;Rural Community;Science;Scientific Advances and Accomplishments;Scientist;Secure;segregation;social;Social Behavior;System;Testing;Textiles;theories;Theory of Change;tool;Training;Urban Community;Work
+current_category: infrastructure
+---
+application_id: 10914962
+activity_code: P30
+title: Leadership and Administrative Core
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: N/A
+terms: Advisory Committees;African American;Aging;Alabama;Applications Grants;Award;Behavioral;Biological;Biometry;Black race;career;career development;Collaborations;Communication;Communities;Country;Deep South;design;Disparity;Education;education research;Ensure;Epidemiology;Ethics;Evaluation;Faculty;Feedback;Funding;Goals;Grant;Health;health care disparity;Health Disparities Research;health disparity;Health Services Research;Historically Black Colleges and Universities;Human Resources;Institution;Institutional Review Boards;Leadership;Mentors;Mentorship;Minority;Minority Health Research;minority investigator;Minority Recruitment;Monitor;Morehouse School of Medicine;multidisciplinary;National Institute on Aging;older adult;operation;parent grant;Persons;Process;Program Effectiveness;programs;recruit;Reduce health disparities;Regulation;Research;Research Activity;Research Methodology;Research Personnel;Research Support;Resource Development;Resources;Role;rural setting;Scientist;Site;social;social culture;United States National Institutes of Health;Universities;urban setting;Work
+current_category: infrastructure
+---
+application_id: 10923995
+activity_code: S06
+title: Implementing a Diabetes Screening and Referral Service Developed for Dental Clinics Within an Urban Alaska Native Health Care Setting
+org_name: SOUTHCENTRAL FOUNDATION
+phr: N/A
+terms: Address;Administrator;Adoption;Adult;Age;Alaska;Alaska Native;Alaska Native population;American Indian Population;American Indians;Appointment;Area;Award;Belief;Blood Glucose;Blood Tests;care systems;Characteristics;Clinic;Clinical Research;Code;cohort;Communities;Complex;Complications of Diabetes Mellitus;Comprehensive Health Care;Consolidated Framework for Implementation Research;cultural competence;Data;Dental;Dental Care;Dental Clinics;design;Development;diabetes control;Diabetes Mellitus;diabetes risk;Diagnosis;disparities in morbidity;Dissemination and Implementation;dissemination science;Early Intervention;early screening;Enrollment;Evaluation;evidence base;experience;Fasting;Feedback;follow-up;Foundations;Glycosylated Hemoglobin;Grant;Health;health care service;health care settings;health data;Health Educators;health organization;Health system;Healthcare Systems;Home;Human Resources;Hygiene;implementation framework;implementation outcomes;implementation research;implementation science;improved;Incidence;Individual;Institution;Intervention;Interview;Life Style;Maintenance;Medical;Medical center;Methods;Modeling;Monitor;multidisciplinary;multiple chronic conditions;Native American Research Center for Health;novel;Patient Outcomes Assessments;Patients;Perception;Periodontal Diseases;Persons;Phase;point of care;Populations at Risk;pragmatic trial;Prevalence;prevent;Prevention;Preventive service;Primary Care;primary care clinic;primary care provider;primary care services;Process;Protocols documentation;Provider;Reach, Effectiveness, Adoption, Implementation, and Maintenance;referral services;Research;Research Personnel;Risk;Risk Factors;Rural;Sampling;screening;screening and brief intervention;screening services;service delivery;Services;Site;Specialist;Surveys;System;Testing;tool;tribal health;tribal healthcare;virtual;Visit;Walking;Work
+current_category: other
+---
+application_id: 10923990
+activity_code: S06
+title: Administrative Core
+org_name: SOUTHCENTRAL FOUNDATION
+phr: N/A
+terms: Address;Administrator;Alaska;Alaska Native;Alaska Native population;American Indian Population;American Indians;Award;Bioethics;Biomedical Research;career;Career Choice;Collaborations;Communication;Communities;community academic partnership;Complex;Computer software;Consolidated Framework for Implementation Research;Data;Development;Dissemination and Implementation;distrust;Educational Curriculum;Ensure;Eskimo Population;Ethics;Evaluation;Evaluation Research;Fostering;Foundations;Funding;Funding Mechanisms;Goals;Grant;Growth;Health;health care delivery;health care service organization;Health system;Healthcare Systems;implementation design;implementation framework;implementation research;improved;Individual;Infrastructure;Institution;Inupiat;Lead;Leadership;Learning;Mentors;Mentorship;Movement;Native American Research Center for Health;Outcome;Outcomes Research;Persons;Pharmacogenetics;Positioning Attribute;Procedures;Process;Productivity;Program Evaluation;programs;Psychologist;Reach, Effectiveness, Adoption, Implementation, and Maintenance;Research;Research Personnel;Research Project Grants;Self Determination;Strategic Planning;success;System;Tobacco;Training;tribal community;tribal health;tribal healthcare;Tribes;United States National Institutes of Health;Universities;Work
+current_category: training
+---
+application_id: 10836512
+activity_code: P30
+title: Clinical Research Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: Address;Adherence;Affect;Aging;American;Ancillary Study;Area;Behavioral;Behavioral Research;behavioral study;Biological;Budgets;career development;Clinical;clinical investigation;Clinical Research;clinical translation;clinical trial implementation;Clinical Trials;Cognitive;Collaborations;Collection;Data;design;Development;Disability prevention;Discipline;early phase clinical trial;Education;education research;efficacy study;Elderly;Environment;Environmental Risk Factor;Ethnic Origin;faculty research;Florida;Fostering;functional decline;functional disability;Funding;Future;Goals;health disparity;high risk;Human Resources;improved;improved mobility;Infrastructure;innovation;Interdisciplinary Study;Intervention;Intervention Studies;Investigation;Joints;Lead;Leadership;Measures;Mentors;Minority;Mobility decline;neural;neuroregulation;Nutritional Study;Observational Study;older adult;Older Population;Pain;Pathway interactions;Patient Recruitments;pharmacologic;Phase II Clinical Trials;Physical Function;Physiological;Pilot Projects;pre-clinical research;preclinical study;Progress Reports;protocol development;Race;Records;recruit;Research;research facility;research faculty;Research Personnel;research study;Resources;response;Role;Science;Scientist;senior faculty;sex;social;Specimen;standardize measure;success;synergism;Technology;therapy design;Training;Translational Research;Translations;United States National Institutes of Health;Universities;University resources;Walking
+current_category: infrastructure
+---
+application_id: 10890663
+activity_code: P30
+title: Leadership and Administrative Core (LAC)
+org_name: DUKE UNIVERSITY
+phr: N/A
+terms: Administrator;Aging;aging population;American;Anesthesiology;Area;Bioinformatics;Biometry;Capsicum;Centers for Population Health;Clinical;Clinical and Translational Science Awards;Clinical Research;Collaborations;Core Facility;data integration;Decision Making;Development;Education;education research;Ensure;Environment;Faculty;Fostering;Funding;Funding Opportunities;Future;Geriatrics;Goals;Grant;Health;Healthcare Systems;improved;Infrastructure;innovation;Institution;Interdisciplinary Study;interest;Leadership;Malignant Neoplasms;Measures;Medical center;Medicine;meetings;member;Molecular;Monitor;older adult;operation;Operative Surgical Procedures;Orthopedics;Performance;Persons;Physiology;Pilot Projects;Process;programs;Progress Reports;Research;Research Activity;Research Institute;Research Personnel;resilience;Resource Allocation;Resource Sharing;Resources;Scientist;Secure;Strategic Planning;Structure;success;Teacher Professional Development;Translating;Translational Research;United States National Institutes of Health;Universities;working group
+current_category: infrastructure
+---
+application_id: 11019764
+activity_code: S06
+title: Saint Regis Mohawk Research Scholars Program
+org_name: SAINT REGIS MOHAWK TRIBE
+phr: N/A
+terms: academic preparation;Address;Advocacy;Akwesasne;anti-cancer research;Awareness;Bachelor&apos;s Degree;behavioral health;Biological;Cancer Biology;Cancer Burden;cancer epidemiology;cancer health disparity;Cancer Science;career;Case Study;Clinical Trials;Collection;college;College Preparation;Communities;community based research;community engagement;Complement;Comprehensive Cancer Center;Data Analyses;Data Collection;Degree Completion;Development;Dropout;Education;Educational workshop;Effectiveness;Enrollment;Environment;Environmental Health;Epidemiology;experience;Faculty;Family;Family member;Feeling;Goals;Graduate Education;graduate school;graduate school preparation;Health;Health behavior;Health Care;health care disparity;health disparity;Health Professional;Health Sciences;high school;High School Student;Indigenous;indigenous community;Instruction;interest;Knowledge;Laboratory Research;Learning;lectures;literacy;Low income;Malignant Neoplasms;medical schools;member;Mentorship;Methods;minority student;Mission;Mohawk Tribe;Native American;Native American Research Center for Health;Outcome;peer;Play;Population Sciences;Prevention;programs;Public Health;public health research;Research;research faculty;Research Personnel;Research Project Grants;Role;Rural Community;Saints;Sampling;Scholars Program;school health;Schools;Science;science teacher;Scientist;screening;Self Efficacy;Series;skills;social;Statistical Data Interpretation;statistics;student participation;Students;success;summer research;Surveys;symposium;Tablets;Time;Training;tribal college;tribal community;Underrepresented Minority;underrepresented minority student;university student;Youth
+current_category: other
+---
+application_id: 11019756
+activity_code: S06
+title: Akwesasne Center for Health Research
+org_name: SAINT REGIS MOHAWK TRIBE
+phr: N/A
+terms: Adherence;Akwesasne;anti-cancer research;Area;Behavioral Sciences;Biology;Communication;Communities;community based research;Complex;cultural values;Data;data integrity;Dissemination and Implementation;Ecosystem;Elements;Ethics;Evaluation;flexibility;Health;Indigenous;indigenous community;Individual;Institutional Review Boards;interdisciplinary approach;International;intertribal;Leadership;Life;Life Style;Liver;Medicine;member;Methodology;Modeling;Mohawk Tribe;multidisciplinary;Outcome;physical science;Policies;population health;Process;Program Evaluation;programs;Protocols documentation;Quality Control;Reporting;Research;Research Ethics;Research Personnel;Research Project Grants;Resources;Schools;Science;Social Sciences;Societies;stem;Students;System;Systems Theory;timeline;tribal organization;Tribes;United States Indian Health Service;United States National Institutes of Health;Update;virtual
+current_category: other
+---
+application_id: 10836510
+activity_code: P30
+title: Leadership and Administrative Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: Aging;American;animal care;Basic Science;Benchmarking;Biological Assay;career development;Clinical Research;cohesion;Collaborations;Communication;Communities;community advisory board;Community Outreach;Development;Directories;disability;education research;Ensure;Etiology;Evaluation;Florida;Fostering;Funding;Future;Goals;Grant;Health;human subject;Individual;Infrastructure;innovation;Institution;interdisciplinary approach;Interdisciplinary Study;Intranet;Knowledge;late life;Leadership;meetings;Mentors;Mission;Monitor;operation;Periodicals;Physical Performance;Play;Policies;preclinical study;Prevention strategy;Process;Productivity;programs;Progress Reports;Reporting;Research;Research Personnel;Resources;Role;Safety;Series;Strategic Planning;success;symposium;System;Technology;theories;Training;Training Programs;Translational Research;Translations;Universities
+current_category: infrastructure
+---
+application_id: 10840267
+activity_code: S06
+title: Saint Regis Mohawk Research Scholars Program
+org_name: SAINT REGIS MOHAWK TRIBE
+phr: N/A
+terms: academic preparation;Address;Advocacy;Akwesasne;anti-cancer research;Awareness;Bachelor&apos;s Degree;behavioral health;Biological;Cancer Biology;Cancer Burden;cancer epidemiology;cancer health disparity;Cancer Science;career;Case Study;Clinical Trials;Collection;college;College Preparation;Communities;community based research;community engagement;Complement;Comprehensive Cancer Center;Data Analyses;Data Collection;Degree Completion;Development;Dropout;Education;Educational workshop;Effectiveness;Enrollment;Environment;Environmental Health;Epidemiology;experience;Faculty;Family;Family member;Feeling;Goals;Graduate Education;graduate school;graduate school preparation;Health;Health behavior;health care disparity;health disparity;Health Professional;Health Sciences;Healthcare;high school;High School Student;Indigenous;indigenous community;Instruction;interest;Knowledge;Laboratory Research;Learning;lectures;literacy;Low income;Malignant Neoplasms;medical schools;member;Mentorship;Methods;minority student;Mission;Mohawk Tribe;Native American Research Center for Health;Native Americans;Outcome;peer;Play;Population Sciences;Prevention;programs;Public Health;public health research;Research;research faculty;Research Personnel;Research Project Grants;Role;Rural Community;Saints;Sampling;Scholars Program;school health;Schools;Science;science teacher;Scientist;screening;Self Efficacy;Series;skills;social;Statistical Data Interpretation;statistics;student participation;Students;success;summer research;Surveys;symposium;Tablets;Time;Training;tribal college;tribal community;Underrepresented Minority;underrepresented minority student;university student;Youth
+current_category: other
+---
+application_id: 10914150
+activity_code: S06
+title: The Voices of our Elders
+org_name: WABANAKI HEALTH AND WELLNESS
+phr: N/A
+terms: Age;aged;Alzheimer&apos;s Disease;Alzheimer&apos;s disease care;Alzheimer&apos;s disease related dementia;Alzheimer&apos;s disease risk;American Indian community;American Indian Population;American Indians;Area;billing data;care burden;Caring;case control;Cause of Death;Chronic;Clinical;clinical database;clinical diagnostics;Cognitive;cognitive function;Communities;Contracts;cost;Country;Data;Dementia;dementia risk;detection platform;Development;Diagnosis;Direct Costs;disparity elimination;economic cost;economic evaluation;Elderly;epidemiology study;ethnic minority;Evaluation;experience;Facilities and Administrative Costs;Failure;Funding;Future;General Population;Health;health care availability;health care quality;health data;health economics;Health Status;Healthcare;Heterogeneity;human old age (65+);Human Subject Research;human very old age (85+);Hypertension;Impaired cognition;informal caregiver;Intervention;Interview;Life Expectancy;Life Style;Light;Maine;Measures;mild cognitive impairment;Morbidity - disease rate;Native American Research Center for Health;Native-Born;Non-Insulin-Dependent Diabetes Mellitus;Not Hispanic or Latino;older adult;Participant;Persons;PF4 Gene;Population;population based;Population Study;Prevalence;prevent;Probability;Provider;Public Health;public health intervention;racial minority;Research;Research Design;Research Personnel;Research Project Grants;response;Risk Factors;screening;Screening Result;service delivery;Services;System;systematic review;text searching;trend;tribal community;tribal health;tribal member;Tribes;United States Indian Health Service;Universities;validation studies;Voice;Washington
+current_category: diagnostics
+---
+application_id: 10837159
+activity_code: U19
+title: Administrative Core
+org_name: WALTER AND ELIZA HALL INST MEDICAL RES
+phr: N/A
+terms: Administrator;Agreement;Asia;Australia;Award;Biological;Biology;Budgets;Cambodia;Collaborations;Communication;Communities;Country;Data;Data Coordinating Center;data management;data sharing;design;Diagnostic;Documentation;Education;Ensure;Epidemiology;Ethics;Expenditure;experience;Genomics;Goals;Guidelines;Human;Institution;interdisciplinary approach;International;Laboratories;Laboratory Research;Leadership;Legal;Malaria;Medical Research;member;Methodology;Modeling;Molecular;Monitor;National Institute of Allergy and Infectious Disease;Observational Study;Occupational activity of managing finances;operation;Output;Papua New Guinea;Parasites;Policies;Productivity;Program Reviews;programs;Protocols documentation;Regulation;Reporting;Research;Research Personnel;Research Project Grants;Resource Sharing;Resources;Sampling;Serology;Site;Structure;support network;Technology;Training;transmission process;United States National Institutes of Health;vector;Writing
+current_category: infrastructure
+---
+application_id: 10914147
+activity_code: S06
+title: Wabanaki NARCH Admin
+org_name: WABANAKI HEALTH AND WELLNESS
+phr: N/A
+terms: Address;African American;Agreement;American Indians;Annual Reports;Appointment;Articulation;Awareness;Budgets;Cherokee Indian;Collaborations;collaborative approach;college;Communication;Communities;Community Health;Consult;data sharing;Doctor of Philosophy;Education;Elderly;Eligibility Determination;Ensure;Evaluation;experience;Faculty;Funding;Goals;Grant;Health;health assessment;health disparity;Houlton;Human Resources;implementation facilitation;Institution;intertribal;Investigation;Leadership;Life Cycle Stages;Maine;Manuscripts;Medicine;meetings;member;mid-career faculty;Monitor;National Institute of General Medical Sciences;Native American Research Center for Health;Nonprofit Organizations;Office of Administrative Management;operation;Oral;Passamaquoddy;Peer Review;Penobscot;Policies;population based;Positioning Attribute;Preparation;Principal Investigator;Process;programs;Public Health;Public Health Practice;Qualifying;Regulation;Research;Research Institute;Research Methodology;Research Project Grants;Research Support;Scholarship;Services;Training;Travel;tribal community;tribal member;Tribes;underserved community;United States National Institutes of Health;United States Public Health Service;Universities;Washington;Writing
+current_category: other
+---
+application_id: 10914159
+activity_code: S06
+title: Wabanaki Research Review Board
+org_name: WABANAKI HEALTH AND WELLNESS
+phr: N/A
+terms: Address;American Indian community;American Indian Population;American Indians;Area;Communities;community based research;community engagement;Community Health;Consent;cultural competence;Data;data integrity;data sharing;design;Education;Ensure;Ethics;federal policy;fly;Funding;Future;Future Generations;Government;Grant;Health;health disparity;health organization;Helicopter;Houlton;human subject;human subject protection;Human Subject Research;improved;Individual;Institutional Review Boards;interest;Knowledge;Laws;Leadership;Light;Maine;Mainstreaming;member;Native American Research Center for Health;Native-Born;Ownership;Passamaquoddy;Pathway interactions;Penobscot;Persons;Policies;Policy Compliance;Poverty;Procedures;Process;Public Health;public health research;Publications;Regulation;Research;Research Institute;Research Personnel;Reservations;responsible research conduct;Rewards;Rural;social group;Social Protection;Specimen;Standardization;stem;Stigmatization;Terminology;tribal community;Tribal Council;tribal health;tribal member;tribal organization;Tribes;Trust;United States Public Health Service;Universities;urban Native American;Washington
+current_category: other
+---
+application_id: 10707082
+activity_code: S06
+title: Admin-Core
+org_name: FOND DU LAC RESERVATION
+phr: N/A
+terms: Advisory Committees;Alaska Native;American Indian Population;American Indians;Chippewa;Collaborations;Communication;Communities;community clinic;community collaboration;community involvement;Data;Data Protection;Development;Documentation;Education;Employment Opportunities;empowerment;Ensure;Epidemiology;Evaluation;Event;experience;Fond du Lac;Fond du Lac Tribal and Community College;Fostering;Foundations;Goals;Grant;Health;Health Disparities Research;health disparity;Human;Human Subject Research;Indigenous;Infrastructure;innovation;Institution;Institutional Review Boards;Internships;Interview;Knowledge;Lead;Leadership;member;Minnesota;minority health;Monitor;Native American community;Native American Research Center for Health;next generation;Phase;Procedures;Productivity;Program Development;Protocols documentation;Recording of previous events;Research;Research Activity;research and development;Research Infrastructure;Research Institute;Research Project Grants;Resources;response;Role;Safety;Services;Site;social;Social Environment;Social Well-Being;Solid;sound;Strategic Planning;Structure;Students;Surveys;synergism;System;Training;Training Activity;training project;Travel;tribal community;Tribes;Universities;Washington;web site;Work
+current_category: other
+---
+application_id: 10922829
+activity_code: P30
+title: CHIME Leadership and Administrative Core
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: N/A
+terms: Address;African American population;Aging;Annual Reports;Area;Award;California;career;Collaborations;Communities;Community Actions;Country;Dedications;Disabled Persons;distinguished professor;Elderly;Elements;Endowment;Ensure;Ethnic Population;Faculty;Funding;Geriatrics;Goals;Group Meetings;Health;health disparity;health inequalities;Health Policy;Health Services Research;improve minority health;improved;innovation;Institution;Institutional Review Boards;interest;Internal Medicine;Intervention;K-Series Research Career Programs;Latino;Leadership;Medicine;meetings;member;Mentors;Minority;Minority Groups;Mission;multidisciplinary;Native Hawaiian or Other Pacific Islander;older adult;Older Population;Outcome;Performance;Personal Satisfaction;Pilot Projects;professor;Program Development;programs;Public Health;racial population;Recommendation;recruit;Reduce health disparities;Reporting;Research;Research Personnel;Running;Schedule;Science;Scientist;Site;success;Talents;Teacher Professional Development;Training;United States National Institutes of Health;Woman
+current_category: infrastructure
+---
+application_id: 10916499
+activity_code: P30
+title: CORE-001 - OPERATIONS CORE
+org_name: YALE UNIVERSITY
+phr: N/A
+terms: Aging;American;Award;Biometry;Biostatistics Core;Budgets;Capsicum;Caring;Clinical Informatics;Collaborations;Communities;Computer software;Consultations;Data;Data Collection;data management;Data Mart;Data Reporting;data sharing;database design;design;Development;Education;Elderly;electronic data;electronic data capture system;Ensure;Equipment;Extramural Activities;Fostering;Funding;Funding Agency;Future;Goals;Grant;Health system;improved;Informatics;informatics infrastructure;Infrastructure;innovation;Institution;Investigation;Mentors;Methodology;Mission;Monitor;next generation;novel;older adult;operation;participant safety;Peer Review;Policies;Population;programs;Publications;recruit;Reporting;Research;Research Personnel;Research Project Grants;Research Support;Resources;Services;Silver;skills;Software Design;software development;Software Tools;System;technological innovation;tool;Training;United States National Institutes of Health;Veterans Health Administration;Work
+current_category: infrastructure
+---
+application_id: 10916506
+activity_code: P30
+title: Research Education Core
+org_name: YALE UNIVERSITY
+phr: N/A
+terms: Address;Advisory Committees;Aging;aging related;American;Applications Grants;Area;Award;Basic Science;Biological;Capsicum;career development;Career Mobility;Clinical Research;cohort;Collaborations;collaboratory;design;Development;didactic education;Discipline;Doctor of Philosophy;education research;Educational Curriculum;Educational workshop;Elderly;Ensure;experience;Faculty;Financial Support;Fostering;Funding;Funding Agency;Funding Opportunities;Geriatrics;Goals;Growth;Home;Individual;interest;Journals;K-Series Research Career Programs;Knowledge;Leadership;leadership development;Learning;Medical;meetings;Mentors;Mentorship;Monitor;Outcome;Physicians;programs;Publications;Research;research and development;Research Personnel;Research Project Grants;Resources;Role;Services;skills;Source;success;Time;Training;translational pipeline;translational research program;translational study;Underrepresented Populations;Update;Work;Writing
+current_category: infrastructure
+---
+application_id: 10902013
+activity_code: S06
+title: Cancer Prevention and Control
+org_name: NORTHWEST PORTLAND AREA INDIAN HLTH BD
+phr: N/A
+terms: Address;Affect;Alaska Native;Alaska Native population;American Indian Population;American Indians;anti-cancer research;Applications Grants;Area;Benchmarking;Cancer Burden;Cancer Control;Cancer Control Research;Cancer Etiology;cancer prevention;cancer survival;case-based;Communication Methods;Communities;Consultations;cultural competence;data management;design;Disparity;Distance Learning;Educational Curriculum;Educational workshop;Electronic Mail;Enrollment;Evaluation;Exercise;experience;Faculty;Fellowship;follow-up;Funding;Goals;Grant;Health;Health Sciences;improved;Incidence;Indigenous;innovation;Investments;Language;Malignant Neoplasms;Manuscripts;Measurable;Measures;meetings;member;Mentors;mortality;Native American Research Center for Health;Participant;Preparation;Principal Investigator;Problem-Based Learning;Program Evaluation;programs;Public Health Schools;Qualifying;recruit;Research;Research Personnel;Research Project Grants;Research Training;reservation-based;Risk;Role;Site Visit;skills;success;Surgical Oncologist;Telephone;Training;Training Programs;tribal community;Tribal group;tribal health;Tribes;Trust;trustworthiness;webinar;Work;Writing
+current_category: other
+---
+application_id: 10914960
+activity_code: P30
+title: Biological Mechanisms Core - RC2
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: age related;age related decline;Aging;aging mechanism;aging related;American;Angiotensins;Animal Model;animal model development;Animals;aptamer;Area;Attenuated;Biological;Biological Aging;Biological Assay;biological systems;Biology of Aging;Biomedical Engineering;Chronic;Clinical;Clinical Research;Clinical Trials;clinically relevant;Collaborations;Communication;Complex;Data;Data Analyses;Development;Diagnostic;diagnostic development;Energy Metabolism;Epigenetic Process;Etiology;experience;Faculty;Fostering;frailty;functional decline;Genetic;Genomics;Gerontology;Goals;healthspan;Human;human subject;Inflammation;Inflammatory;Infrastructure;insight;Institution;International;Intervention;Laboratories;late life;Leadership;Measurement;Measures;Mentors;Mentorship;metabolomics;mild cognitive impairment;Mitochondria;Modality;model development;Molecular;molecular array;mouse model;multiple omics;Nanotechnology;new technology;next generation;novel;older adult;Pathway interactions;Phenotype;Physiological;Physiology;Population Study;prevent;Prevention;Prevention strategy;Preventive;Proteomics;Psychological Transfer;Research;Research Design;Research Personnel;Resources;Sampling;sarcopenia;Science;skills;System;Technology;Technology Transfer;Testing;Therapeutic;therapy development;Tissue Model;Tissues;tool;Training;Translational Research;Translations;Vendor
+current_category: infrastructure
+---
+application_id: 10916504
+activity_code: P30
+title: Core 003 - Pilot Exploratory Studies Core
+org_name: YALE UNIVERSITY
+phr: N/A
+terms: Address;Adipose tissue;Advisory Committees;age related changes;Age related macular degeneration;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease patient;American;Apoptosis;Applications Grants;Area;Award;Biometry;Biopsy;Biostatistics Core;Blindness;Breast Cancer Detection;Capsicum;cell injury;Clinical;clinical decision-making;cohort;Collaborations;Communicable Diseases;Core Grant;cost;cost effective intervention;COVID-19 diagnosis;Data;design;Development;Diabetes Mellitus;Diagnosis;Doctor of Medicine;Doctor of Philosophy;Elderly;Encapsulated;Enrollment;Ensure;Environment;Etiology;Extramural Activities;Fatty acid glycerol esters;Fostering;Funding;Future;Glaucoma;glial activation;Goals;Grant;Health Services;Human;human subject protection;Image;Immune system;immunosenescence;Inflammasome;Inflammatory;Infusion procedures;innovation;insight;Internist;Investments;Laboratory Research;Macular degeneration;Malignant Breast Neoplasm;Mammography;Medicine;Metabolic syndrome;Methodology;Microglia;Mid-Career Clinical Scientist Award (K24);Monitor;neuroinflammation;older adult;Older Population;older women;operation;Ophthalmology;Outcome;Pathogenesis;Pathology;Pathway interactions;Patients;Physicians;Prefrontal Cortex;Prevention;professor;programs;Publications;Recommendation;Recording of previous events;Research;Research Activity;Research Infrastructure;Research Personnel;Research Project Grants;Research Proposals;Resources;Retina;Role;Safety;Scientist;single cell analysis;Study Section;success;Testing;Therapeutic Intervention;therapy development;Training;transcriptomics;United States National Institutes of Health;Vaccines;Vertebrates;vision science;Work;young adult
+current_category: infrastructure
+---
+application_id: 10914952
+activity_code: P30
+title: Leadership and Administrative Core
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Address;adverse outcome;Aging;American;base;Basic Science;Benchmarking;Biological;career development;Clinical;Clinical Research;clinically relevant;Communities;cost effectiveness;Data;Dedications;design;Development;Documentation;education research;Ensure;Environment;experience;Faculty;Feedback;frailty;Generations;Goals;health equity;Information Dissemination;Infrastructure;innovation;Institution;interest;Intervention;Lead;Leadership;Maintenance;meetings;Mentorship;Methods;Monitor;multidisciplinary;next generation;older adult;Older Population;operation;Participant;Population Heterogeneity;Prevention;Prevention strategy;Principal Investigator;Process;Productivity;programs;recruit;Reporting;Research;Research Personnel;Research Support;Resources;Safety;Scholarship;Science;sound;success;Training;Translations;Universities;Vision;Wages;Work
+current_category: infrastructure
+---
+application_id: 11030841
+activity_code: P20
+title: Injury Control Research to Practice and Policy Core
+org_name: RHODE ISLAND HOSPITAL
+phr: N/A
+terms: Acceleration;Address;adverse outcome;Age Years;Awareness;Centers of Research Excellence;Clinical;clinical practice;Code;Communication;Communities;community advisory board;Conduct Clinical Trials;Consultations;Coupled;data de-identification;Data Reporting;design;Development;Dissemination and Implementation;dissemination strategy;Educational Curriculum;Event;experience;Faculty;falls;Future;Goals;Health Policy;Hospitals;implementation science;Individual;informant;Infrastructure;Injury;injury burden;injury prevention;innovation;interdisciplinary collaboration;Learning;Life;life span;Measurement;member;Mentors;Mentorship;Methodological Studies;Methodology;Methods;Morbidity - disease rate;mortality;Non-accidental;novel;Observational Study;older adult;online resource;open source;Outcome;Patients;pediatric trauma;Pilot Projects;Policies;Policy Maker;population health;Post-Traumatic Stress Disorders;prevent;Process;Public Health;Recurrence;Research;Research Design;Research Personnel;Research Project Grants;research study;research to practice;Research Training;Rhode Island;Risk;Scientist;Series;skills;social media;social media platform;social media use;sound;symposium;System;Technology;Time;tool;Training;training project;Translational Research;Translations;Trauma;Visual;Work
+current_category: infrastructure
+---
+application_id: 10909357
+activity_code: P30
+title: Pilot/Exploratory Studies Core
+org_name: WAKE FOREST UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: Address;Affect;Aging;Area;Award;Basic Science;Brain;Capsicum;Cardiac rehabilitation;Cardiovascular Diseases;career;career development;Centers of Research Excellence;Clinical;Data;design;Development;Disability prevention;Disability treatment;Doctor of Philosophy;Education;education research;exercise program;exosome;experience;feasibility testing;Feedback;Funding;Goals;Grant;Growth;Heart failure;Home;improved;innovation;Institution;Interdisciplinary Study;Investments;K-Series Research Career Programs;Leadership;Mentors;Metformin;Mission;Mitochondria;Muscle;nonhuman primate;novel;novel strategies;older adult;older patient;Older Population;Pathway interactions;Patients;Peer Review;Physical Function;Physical Performance;physically handicapped;Pilot Projects;Procedures;Process;Productivity;programs;Publications;R24;recruit;Research;Research Design;Research Personnel;Research Project Grants;Research Proposals;research study;Resources;Rural;Science;skills;Speed;Study Section;success;symposium;Talents;Testing;Touch sensation;Translational Research;translational scientist;United States National Institutes of Health;Vision;Writing
+current_category: infrastructure
+---
+application_id: 10887576
+activity_code: P30
+title: Emory Alzheimer's Disease Research Center
+org_name: EMORY UNIVERSITY
+phr: Per RFA-AG-20-004  Project Narrative: Do not complete. Note: ASSIST screens will show an asterisk for this attachment indicating it is  required. However, eRA systems only enforce this requirement in the Overall component and applications will not receive  an error if omitted in other components.
+terms: Alzheimer&apos;s Disease;Alzheimer&apos;s disease risk;Alzheimer&apos;s disease therapy;Alzheimer’s disease biomarker;Amyloid beta-42;Area;Biological Assay;Biological Markers;Biological Specimen Banks;biomarker discovery;biomarker identification;Brain;Brain imaging;brain magnetic resonance imaging;candidate marker;Chronic Disease;Clinical;Clinical Trials;cohort;Collection;Communities;Complement;complex data;Data;Data Analyses;Data Mart;Data Set;Databases;Dementia;Diagnosis;Disease;DNA Resequencing;Elements;Eligibility Determination;Ensure;Environment;Etiology;Foundations;Funding;Genes;Genetic;genetic analysis;genetic information;genetic profiling;genomic data;Genotype;genotypic sex;Goals;Human;Individual;Inherited;innovation;Intervention;Learning;Magnetic Resonance Imaging;Methods;mild cognitive impairment;mutation carrier;neuroimaging;neuropathology;novel marker;Participant;Pathology;Population;Positron-Emission Tomography;Procedures;Process;prognostic;Proteomics;Protocols documentation;Quality Control;Race;recruit;repository;Research;Research Activity;Research Personnel;Research Support;response;risk variant;Sampling;serial imaging;Services;Standardization;System;Talents;tau Proteins;tau-1;Testing;tool;whole genome;Work
+current_category: infrastructure
+---
+application_id: 10912058
+activity_code: P30
+title: Michigan Center for Urban African American Aging Research - RESEARCH CORE (REC)
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: N/A
+terms: Academia;African American;African American population;Aging;Area;Behavioral;behavioral and social science;Behavioral Sciences;biopsychosocial;Black American;Black race;college;Communities;community partners;course development;Development;Development Plans;doctoral student;Economics;Education;education research;Educational Curriculum;Educational process of instructing;Educational workshop;Effectiveness;Elderly;Ethics;ethnic minority;Ethnic Origin;Evaluation;Faculty;follow-up;fundamental research;Funding;graduate school;Grant;Health;health disparity;Historically Black Colleges and Universities;Individual;K-Series Research Career Programs;Latino Population;Life Cycle Stages;Literature;Manuscripts;member;Mental Health;Mentors;Methodology;Methods;Michigan;Minority;minority investigator;Native Americans;next generation;Occupations;older adult;Outcome;outreach;Peer Review;Personal Satisfaction;physical conditioning;Pilot Projects;Positioning Attribute;Postdoctoral Fellow;Process;Productivity;programs;Publications;Publishing;Race;racial minority;recruit;Recruitment Activity;Research;Research Personnel;Research Project Grants;research study;Role;Schools;Science;Scientist;Series;social;Social Sciences;Social Workers;sociologist;Stress and Coping;Structure;success;Tennessee;tenure track;Training;United States National Institutes of Health;Universities;Work;Writing
+current_category: infrastructure
+---
+application_id: 10902015
+activity_code: S06
+title: Summer Research Training Institute for AI /AN Health Professionals
+org_name: NORTHWEST PORTLAND AREA INDIAN HLTH BD
+phr: N/A
+terms: Advertising;Alaska Native;Alaska Native population;American Indian Population;American Indians;Applications Grants;Area;Behavioral;Cancer Control;Cardiovascular Diseases;career;career development;Clinical;Communities;Development;distrust;doctoral student;Educational workshop;experience;Faculty;Fostering;Funding;Goals;graduate student;Grant;Health;health disparity;Health Occupations;Health Professional;Health Sciences;Health Services;Idaho;innovation;Manuscripts;meetings;Modeling;Morbidity - disease rate;mortality;Native American Research Center for Health;Native-Born;Needs Assessment;Oregon;outreach;Polynesian;Population Research;Postdoctoral Fellow;programs;Protocols documentation;recruit;Reduce health disparities;Research;research and development;Research Personnel;Research Project Grants;Research Support;Research Technics;Research Training;Resources;Role;role model;Science;skills;Structure;Students;success;summer institute;summer program;summer research;Training;training opportunity;Training Programs;Tribal group;tribal health;Tribes;undergraduate student;United States Indian Health Service;Universities;Washington;Writing
+current_category: other
+---
+application_id: 10912056
+activity_code: P30
+title: Michigan Center for Urban African American Aging Research - Leadership and Administrative Core (LAC)
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: N/A
+terms: Address;African American;African American population;Aging;Alzheimer&apos;s Disease;American;Arabs;Asian;Attention;Behavioral Sciences;Black American;Capsicum;Cessation of life;Collaborations;Communities;community advisory board;community engagement;Community Outreach;community partners;contaminated water;Country;Educational workshop;Emergency Situation;Ensure;Environmental Health;equity, diversity, and inclusion;ethnic minority;Ethnic Origin;Evaluation;Event;experience;Faculty;faculty community;follow-up;Funding;Gerontology;Goals;Grant;Group Meetings;Health;Historically Black Colleges and Universities;Individual;Institution;Lead;Leadership;Life Cycle Stages;meetings;member;Mentors;Methods;Michigan;Modeling;next generation;Outcome;Participant;Performance;Principal Investigator;Process;Productivity;programs;racial diversity;Recording of previous events;recruit;Registries;Research;Research Personnel;Role;Scientist;Site;skills;social;Social Sciences;Stress and Coping;Structure;success;summer program;symposium;Teacher Professional Development;Technology;Teleconferences;Time;Training;United States;United States National Institutes of Health;Universities;Videoconferencing;women faculty;Work
+current_category: infrastructure
+---
+application_id: 10902017
+activity_code: S06
+title: Improving Applied Biostatistics Skills for AI/AN Researchers
+org_name: NORTHWEST PORTLAND AREA INDIAN HLTH BD
+phr: N/A
+terms: Address;Behavioral;Benchmarking;Biological;Biometry;Biostatistical Methods;career;career development;Clinical;cohort;Communication;Communities;Companions;Competence;Complex;complex data;computer program;Data;Data Analyses;data handling;Data Science;Data Scientist;Data Sources;data visualization;data wrangling;design;Development;Distance Learning;Educational Curriculum;Educational workshop;Employee;Epidemiology;Ethics;Etiology;Evaluation;Fostering;Funding;Glean;Goals;Grant;Health;health disparity;Health Priorities;Health Professional;health science research;Health Sciences;Home;improved;Individual;insight;Institution;interest;Investigation;Knowledge;Lead;meetings;member;Mentors;Mentorship;Methods;minority scientist;Modernization;Native American Research Center for Health;novel;Participant;Persons;Play;Population;population based;practical application;Process;Productivity;programs;Proliferating;Publishing;Research;Research Personnel;Role;Schedule;Science;Scientist;skills;social;sound;Statistical Computing;Strategic Planning;Stress;Students;Time;Training;Training Programs;tribal community;tribal health;Tribes;Trust;United States National Institutes of Health;Work
+current_category: digital_health
+---
+application_id: 10912758
+activity_code: P30
+title: Analysis Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Acceleration;Aging;aging related;Behavior Therapy;Behavioral Mechanisms;burden of illness;career;Collaborations;Communities;community research;Complex;Consultations;Data Analyses;Data Set;data sharing;Data Sources;design;Diagnosis;Disparity;diverse data;education research;Educational Curriculum;Equity;Face;Funding;Goals;Health;health determinants;Health Disparities Research;health disparity;health equity;health equity promotion;Health equity research;health inequalities;Health Services Accessibility;improved;Intervention;Leadership;Life Cycle Stages;Measurement;Mentors;Methodology;Methods;older adult;outcome disparities;Pilot Projects;Policies;Population;Population Group;Population Heterogeneity;programs;Publications;Quality of life;Recording of previous events;Reduce health disparities;Research;Research Design;Research Methodology;Research Personnel;Resources;Scientist;social;Statistical Data Interpretation;tool;Training;treatment response;United States National Institutes of Health;web site;Work
+current_category: infrastructure
+---
+application_id: 10912757
+activity_code: P30
+title: Leadership and Administrative Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Address;Advisory Committees;Aging;aging related;Area;Award;Behavioral;Behavioral Mechanisms;Behavioral Sciences;Biomedical Research;California;career;career development;Clinical Investigator;Clinical Trials;cognitive neuroscience;Collaborations;Communities;community advisory board;Community Care Networks;community engaged research;cultural equity;Dedications;education research;Ensure;Environment;Epidemiology;Equity;equity, diversity, and inclusion;Ethnic Population;Exclusion;experience;Faculty;faculty community;Focus Groups;Fostering;Funding;gender minority group;Geography;Health Disparities Research;health disparity;health equity;health inequalities;Health Services Research;Healthcare;Hispanic-serving Institution;implementation science;Institution;Intervention;Joints;Lead;Leadership;Measurement;meetings;Mentors;Mentorship;Methodology;Methods;Minority;multidisciplinary;next generation;older adult;outcome disparities;Pilot Projects;Population;Population Sciences;Practice based research;Process;programs;racial population;recruit;Reporting;Research;Research Personnel;Resources;Rural;San Francisco;Scientist;sexual minority group;social;Social Sciences;Structure;System;Talents;Training;Training Programs;Underrepresented Populations;United States National Institutes of Health;Universities
+current_category: infrastructure
+---
+application_id: 10912759
+activity_code: P30
+title: Research Education Component
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Advisory Committees;African American;Aging;aging related;Asian;Asian Americans;Behavioral Mechanisms;Black race;California;career;career development;Collaborations;Communities;community research;Cultural Backgrounds;Data;Department chair;Education;education research;Equity;ethnic diversity;ethnic health disparity;Ethnic Population;evidence base;experience;Faculty;faculty community;faculty mentor;Feedback;Funding;Goals;Grant;Health;Health Disparities Research;health disparity;health equity;health inequalities;Healthcare;Hispanic;improved;innovation;Intervention;Latino;Leadership;Medical;Medicine;meetings;mentoring community;Mentors;Mentorship;Methods;National Institute on Aging;Nursing Faculty;older adult;Older Population;outcome disparities;peer;Physicians;Population;Principal Investigator;process improvement;programs;Publishing;Race;racial health disparity;racial population;Recommendation;Reporting;Research;Research Personnel;Research Project Grants;Resources;Role;San Francisco;Scientist;Secure;senior faculty;skills;social;success;Time;Training;Training and Education;United States Dept. of Health and Human Services;United States National Institutes of Health;Universities
+current_category: infrastructure
+---
+application_id: 10857220
+activity_code: P2C
+title: Promoting Center Expertise
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Acceleration;Address;Ally;American;Apple;Area;Artificial Leg;Attention;Award;Awareness;Biomechanics;Biomedical Engineering;Caring;Cerebral Palsy;Clinical;Collaborations;Communication;Communities;community center;computer science;computer scientist;Computer software;Congresses;Data;data hub;Data Science;Data Scientist;Data Set;data sharing;Degenerative polyarthritis;design;Development;Devices;Disabled Persons;Discipline;Effectiveness;Electronic Mail;Engineering;Ensure;Equity;ethnic minority;Event;experience;fitbit;Fostering;frailty;Future;Generations;Goals;Grant;Human;improved;Incentives;Individual;Industrialization;Industry;innovation;insight;interdisciplinary collaboration;Joints;knowledgebase;Leadership;Libraries;Low Back Pain;Machine Learning;massive open online courses;Medical center;member;mHealth;Minority Groups;Mission;mobile application;mobile computing;mobile sensor;Monitor;Movement;new technology;Newsletter;Nonprofit Organizations;open source;Outcome;outreach program;Parkinson Disease;Patient Care;Patient Recruitments;Patients;Persons;Physical Medicine;physical therapist;Physical therapy;Physicians;Problem Solving;Professional Organizations;programs;Prosthesis;racial minority;Rehabilitation Centers;Rehabilitation Outcome;rehabilitation research;Rehabilitation therapy;Research;Research Activity;Research Infrastructure;Research Personnel;Research Support;Research Training;Resources;Running;Scientist;sensor technology;shared repository;Site;social media;Software Tools;statistics;Stream;Stroke;symposium;System;Talents;Technology;Technology Assessment;tool;Touch sensation;Training;Training and Infrastructure;Translating;Underrepresented Minority;United States National Institutes of Health;Visit;Walking;wearable data;wearable sensor technology;web site;Woman;Work
+current_category: biotools
+---
+application_id: 10857223
+activity_code: P2C
+title: Administrative Oversight
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Acceleration;Area;Award;Biomechanics;Biomedical Engineering;career;Caring;Cerebral Palsy;Clinical;cohesion;Collaborations;Communication;Communities;community building;community center;computer science;computer scientist;Computer software;Data;data hub;Data Science;Data Set;data sharing;Degenerative polyarthritis;design;Devices;Discipline;Effectiveness;Elements;Engineering;Ensure;Event;experience;Faculty;Fostering;frailty;Funding;Generations;Goals;Grant;Health Sciences;improved;Individual;Industry;industry partner;Infrastructure;innovation;insight;interdisciplinary collaboration;Joints;knowledge hub;knowledgebase;Leadership;Libraries;Low Back Pain;massive open online courses;Mentors;mHealth;Mission;mobile computing;mobile sensor;Monitor;Movement;new technology;novel;open source;Outcome;Outcome Measure;outreach program;Parkinson Disease;Patient Care;Patient Recruitments;Patients;Physical Medicine;physical therapist;Physical therapy;Physicians;Pilot Projects;Policies;Process;programs;Rehabilitation Centers;Rehabilitation Outcome;rehabilitation research;Rehabilitation therapy;Research;Research Infrastructure;Research Personnel;research study;Research Training;Resource Development;Resources;Rewards;Running;Scholars Program;Scientist;sensor technology;shared repository;Software Tools;statistics;Stroke;success;symposium;synergism;Talents;technology development;Testing;tool;Training;Training and Infrastructure;Translating;United States National Institutes of Health;visiting scholar;wearable data;wearable sensor technology;web site;Work
+current_category: biotools
+---
+application_id: 10857215
+activity_code: P2C
+title: Didactic Interaction
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Acceleration;Algorithms;Area;Award;Biomechanics;Biomedical Engineering;biomedical scientist;Caring;Cerebral Palsy;Client;Clinical;Collaborations;Communities;community center;computer science;computer scientist;Computer software;Data;data cleaning;Data Science;Data Set;data sharing;Degenerative polyarthritis;design;Devices;Discipline;Distance Learning;Documentation;Education;Educational process of instructing;Educational workshop;effectiveness evaluation;Engineering;Evaluation;Event;experience;Exposure to;Faculty;Feedback;Fostering;Foundations;frailty;Generations;Goals;Grant;improved;Individual;Industry;innovation;insight;interdisciplinary collaboration;knowledgebase;Leadership;Letters;Libraries;Low Back Pain;Machine Learning;massive open online courses;Mentors;mHealth;Mission;mobile computing;mobile sensor;Monitor;Movement;neurological rehabilitation;new technology;open source;Outcome;outreach program;Parkinson Disease;Participant;Patient Care;patient engagement;Patient Recruitments;Patients;Physical Medicine;physical therapist;Physical therapy;Physicians;Pilot Projects;Process;Production;programs;Published Comment;Rehabilitation Centers;Rehabilitation Outcome;rehabilitation research;rehabilitation technology;Rehabilitation therapy;Research;Research Design;Research Infrastructure;Research Personnel;Research Project Grants;Research Training;Resources;Robotics;Rotation;Running;Sampling;Scientist;sensor technology;shared repository;simulation;Software Tools;Specialist;statistics;Stroke;Students;Surveys;symposium;Talents;Technology;Time;tool;Training;Training and Infrastructure;Training Programs;Translating;Translations;Travel;Universities;user-friendly;Validation;wearable data;wiki
+current_category: biotools
+---
+application_id: 10857216
+activity_code: P2C
+title: Technology Development
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Acceleration;Area;artificial intelligence method;Award;biomechanical model;Biomechanics;Biomedical Engineering;Caregivers;Caring;Cartilage;Cellular Phone;Cerebral Palsy;Child;Classification;Clinic;Clinical;clinical outcome measures;Clothing;Collaborations;Communities;community center;complex data;computer science;computer scientist;Computer software;Data;Data Collection;data hub;Data Science;Data Set;data sharing;Degenerative polyarthritis;design;Elderly;Engineering;Environment;Ethics;experience;Fostering;frailty;functional improvement;Gait;Generations;Goals;Grant;heart rate monitor;Human;improved;Individual;Industry;innovation;insight;instrument;interdisciplinary collaboration;Intervention;Knee;knowledgebase;Leadership;Location;Low Back Pain;Machine Learning;machine learning model;massive open online courses;Measurement;Measures;mHealth;Mission;mobile computing;mobile sensor;Modeling;Monitor;Movement;Nature;new technology;novel strategies;open source;Operative Surgical Procedures;Outcome;Outcome Measure;Output;outreach program;Parkinson Disease;Patient Care;patient population;Patient Recruitments;Patients;Performance;Physical activity;Physical Medicine;physical therapist;Physical therapy;Physicians;Population;Population Heterogeneity;post stroke;predict clinical outcome;Protocols documentation;Public Health;Rehabilitation Centers;Rehabilitation Outcome;rehabilitation research;Rehabilitation therapy;Reproducibility;Research;Research Infrastructure;Research Personnel;Research Training;Resources;Running;Scientist;sensor;sensor technology;shared repository;smart watch;smartphone application;software development;Software Tools;Spinal Stenosis;statistics;Stroke;symposium;Talents;technique development;Technology;Technology Assessment;technology development;Testing;tool;Training;Training and Infrastructure;Translating;usability;Validation;wearable data;wearable device;wearable sensor technology;web site
+current_category: biotools
+---
+application_id: 10862868
+activity_code: P2C
+title: Didactic Interactions Component
+org_name: REHABILITATION INSTITUTE OF CHICAGO D/B/A SHIRLEY RYAN ABILITYLAB
+phr: N/A
+terms: Academy;Advertising;Archives;Awareness;Caring;Clinical;Clutterings;Collaborations;Communication;Data Set;Databases;design;Diagnostic;Effectiveness;Electronic Mail;Ensure;Exhibits;experience;Exposure to;Facebook;Goals;Individual;innovation;Internet;Leadership;Link;LinkedIn;Manuals;Marketing;Measures;Methods;Names;Newsletter;Outcome;outreach;Pilot Projects;Professional Organizations;Qualifying;Rehabilitation therapy;Research;Research Personnel;Resources;Site;social media;Stretching;success;symposium;Technology;Technology Assessment;Testing;Twitter;Underrepresented Populations;Universities;Update;Visit;web portal;web site
+current_category: diagnostics
+---
+application_id: 10843216
+activity_code: P2C
+title: LeaRRN: the Learning Health Systems Rehabilitation Research Network
+org_name: BROWN UNIVERSITY
+phr: N/A
+terms: Acceleration;Address;Adopted;Adoption;Area;Awareness;Back;Bioinformatics;Biological Models;Boston;Clinical;Collaborations;Communities;Competence;Consultations;Data;Data Analyses;data to knowledge;Development;didactic education;Discipline;Dissemination and Implementation;education resources;Educational workshop;Ensure;Event;evidence base;Evidence based practice;Faculty;feeding;Fostering;Glean;health economics;Health system;implementation science;improved;innovation;Institution;Internet;Knowledge;Learning;Link;Medical;member;multimodality;online resource;Online Systems;Patient-Focused Outcomes;Performance;Persons;Printing;Process;Quality of Care;rehabilitation research;Rehabilitation therapy;rehabilitative care;Research;Research Methodology;Research Personnel;Resources;Scientist;Services;skills;symposium;systems research;Testing;Training;Training Activity;Training and Education;Universities;Update;webinar
+current_category: other
+---
+application_id: 11030731
+activity_code: P20
+title: Community Engagement, Bioethics and Outreach Core
+org_name: MAINEHEALTH
+phr: N/A
+terms: Acute;acute care;Address;Adherence;Aging;Asphyxia;Attitude;Authorization documentation;Awareness;Bioethics;career;Caring;Centers of Research Excellence;Clinical;Clinical Research;Communities;community consultation;community engagement;Consent;design;Disadvantaged;Disclosure;Disparity;Distant;Doctor of Philosophy;Education;eligible participant;Encephalopathies;Enrollment;Ensure;Environment;Ethics;experience;Face;Family;Female;Future;Gender;Geographic Locations;Geography;Health Care Research;Heart Arrest;Hospitals;Hour;human subject;human subject protection;Inequality;Informed Consent;Infrastructure;Institutional Review Boards;Legal;Life;Location;Maine;Medical;Medical center;Medical Research;medical schools;member;Mentors;Neonatal;outreach;participant enrollment;Pathway interactions;Patients;Physicians;preference;Preparation;pressure;Process;prognostication;programs;Protocols documentation;recruit;Regulation;Reporting;Research;research and development;Research Design;Research Personnel;Research Project Grants;Research Training;Resources;Rural;rural area;Rural Community;rural disparities;rural health care;Rural Hospitals;rural patients;Rural Population;rural setting;rurality;Scientist;Site;skills;Stroke;Teaching Hospitals;teleconsent;tertiary care;Time;Transportation;Trauma;United States Dept. of Health and Human Services;United States National Institutes of Health;Universities;urban area;urban setting
+current_category: infrastructure
+---
+application_id: 10843225
+activity_code: P2C
+title: LEARRN: Techniques Development Component
+org_name: BROWN UNIVERSITY
+phr: N/A
+terms: Achievement;Arthritis;Back;Boston;Budgets;Businesses;Caring;Chronic Disease;Collaborations;Committee Members;Communication;Communities;Complex;Dedications;Department of Defense;Doctor of Philosophy;Effectiveness;Evaluation;Evaluation Research;Expenditure;experience;Feedback;Fellowship Program;Fostering;Foundations;Funding;Gerontology;Goals;Health Care Research;Health Personnel;Health Services;Health Services Research;Health system;Healthcare Systems;improved;Infrastructure;innovation;Institution;Intervention Studies;Leadership;Learning;Long-Term Care;Measurement;member;Mission;Modeling;older adult;Outcome;Physical therapy;Principal Investigator;process improvement;Program Evaluation;programs;Public Health Schools;Quality of Care;Rehabilitation Outcome;rehabilitation research;Rehabilitation therapy;rehabilitative care;Reporting;Research;Research Personnel;Resource Allocation;Resource Sharing;Resources;Site;Social Work;sound;technique development;Testing;Therapeutic Studies;Training;United States Department of Veterans Affairs;Universities;Work
+current_category: infrastructure
+---
+application_id: 11001856
+activity_code: U54
+title: Rio Grande Valley Cancer Health Disparity Research Center
+org_name: UNIVERSITY OF TEXAS RIO GRANDE VALLEY
+phr: N/A
+terms: Achievement;Area Health Education Centers;bilingualism;cancer health disparity;Caring;Clinical Research;Collaborations;Communication;Communities;community advisory board;community center;community engaged research;community engagement;Community Health;Community Health Education;Community Healthcare;Community Networks;community organizations;community partnership;cultural competence;Data;design;Devices;Diagnosis;Disease;Education;Education and Outreach;Ensure;evidence base;Evidence based practice;Financial Support;follow-up;Fostering;Foundations;Goals;Health;Health Disparities Research;health equity promotion;health goals;Health Priorities;Healthcare;Hispanic;Incentives;Industry;Institution;Knowledge;Latino;Leadership;low socioeconomic status;member;Methods;Outcome;outreach;Participant;patient navigation;Patients;Pilot Projects;Policies;Population;Population Heterogeneity;Prevention;programs;recruit;Reduce health disparities;Research;Research Personnel;Research Project Grants;Resources;Rural Community;Rural Population;rural underserved;screening;Screening for cancer;Services;success;Testing;Translating;Translational Research;Trust;Uninsured;United States National Institutes of Health;Visual;Walking;Work
+current_category: other

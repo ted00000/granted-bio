@@ -1,0 +1,442 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 11003318
+activity_code: R01
+title: Testing a Cardiovascular Ambulatory Rapid Evaluation for Patients with Chest Pain (CARE-CP)
+org_name: WAKE FOREST UNIVERSITY HEALTH SCIENCES
+phr: PROJECT NARRATIVE Each year 7 million patients seek care in U.S. Emergency Departments for chest pain. Most moderate-risk patients undergo hospitalization for expensive testing aimed at identifying a heart attack, which costs the healthcare system more than $3 billion annually without a clear improvement in patient outcomes. Our study will compare rapid outpatient vs hospitalization management to determine the best strategy (based on patient- centered measures and safe, equitable, and efficient 
+terms: N/A
+current_category: therapeutics
+---
+application_id: 11239568
+activity_code: U01
+title: CE25-026 - Evaluating Comprehensive Child Sexual Abuse Prevention Initiatives: A Cluster Randomized Trial of Rural Elementary Schools
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: Project Narrative  Primary and secondary schools are in the unique position to not only implement strategies to prevent child sexual abuse (CSA) but also to directly address problematic sexual behavior (PSB) of youth. Little research has rigorously evaluated system-wide standards in programs designed to combat CSA and PSB in school settings. This project aims to approach primary prevention of CSA and PSB through a multilayered approach addressing school-wide policy, procedures, and training to s
+terms: N/A
+current_category: other
+---
+application_id: 10911162
+activity_code: R35
+title: Harnessing Supercoiling to Regulate DNA Activity
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: PROJECT NARRATIVE Unlike the static, double-helical structure of DNA depicted in textbooks, sculpture, and art, the DNA of living cells is dynamic—winding and unwinding to allow its duplication and repair. Many antibiotic and anticancer drugs target enzymes that bind to DNA only in underwound or overwound states, yet the impact of DNA winding has been largely ignored because the tools to address it properly in experiments did not exist. To remedy this, we invented methods to create DNA as it exi
+terms: Address;Affect;analytical ultracentrifugation;Antibiotics;antimicrobial;Antineoplastic Agents;Binding;Biochemical;Biological Assay;Biophysics;Cell Physiology;Cells;Chromatin Loop;clinical application;Coupled;Cryoelectron Microscopy;Data;design and construction;DNA;DNA biosynthesis;DNA Structure;DNA Topoisomerases;drug action;drug efficacy;Drug Interactions;Drug Targeting;Engineering;Enzymes;experimental study;Fluorescence;Frequencies;fundamental research;Gene Delivery;gene therapy;Gene Transduction Agent;Genetic Transcription;Genomic Instability;Gold;Human;human disease;Imaging Device;improved;in vivo;Infection;inhibitor;innovation;insight;invention;Knowledge acquisition;Libraries;Malignant Neoplasms;Methods;Molecular Conformation;Monosaccharides;nanoparticle;Nervous System Disorder;novel;novel therapeutics;Pharmaceutical Preparations;Physiological;Property;repaired;Research;screening;Sculpture;Shapes;Structure;Superhelical DNA;targeted agent;Techniques;Textbooks;Therapeutic;therapeutic target;three dimensional structure;Time;tomography;tool;Topoisomerase;uptake;Vision;Work
+current_category: basic_research
+---
+application_id: 10979151
+activity_code: R01
+title: Ehrlichia Notch SLiM-activated oncoprotein inhibition of apoptosis
+org_name: UNIVERSITY OF TEXAS MED BR GALVESTON
+phr: Narrative E. chaffeensis is an obligately intracellular bacterium that replicates in mononuclear phagocytes by secreting moonlighting effectors that exploit evolutionarily conserved host cell signaling pathways for infection. This investigation will define a pathogen molecular mimicry strategy that promotes host cell survival and E. chaffeensis infection by hijacking the Notch signaling pathway. Defining the role of pathogen mimicry in host cell manipulation and the pathways involved will also p
+terms: Apoptosis;Apoptosis Inhibitor;Apoptotic;Bacteria;BCL-2 Protein;Binding;BIR Domain;CASP3 gene;Caspase;Cell Communication;Cell Physiology;Cell Reprogramming;Cell Survival;Cells;Development;Disease;Down-Regulation;Ehrlichia;Ehrlichia chaffeensis;Ehrlichiosis;Etiology;Eukaryotic Cell;Event;FBXW7 gene;Genetic Transcription;Genome;Goals;Host Defense;Host Defense Mechanism;Human;Immune;Immune Evasion;in vivo;Infection;Inflammation;Inhibition of Apoptosis;Investigation;Knowledge;Laboratories;Life;Ligands;Link;MCL1 gene;Mediating;Membrane Proteins;mimetics;mimicry;Mitochondria;Molecular;Molecular Mimicry;Mononuclear;new therapeutic target;notch protein;Notch Signaling Pathway;novel therapeutic intervention;Oncoproteins;pathogen;Pathway interactions;Phagocytes;Play;Positioning Attribute;Post-Translational Protein Processing;prevent;programs;Protein Inhibition;protein protein interaction;Proteins;receptor;receptor binding;receptor expression;Receptor Signaling;Regulation;Research;Role;Science;Signal Pathway;Signal Transduction;Surface;System;Tandem Repeat Sequences;tick-borne;TLR2 gene;Toll-like receptors;ubiquitin ligase
+current_category: therapeutics
+---
+application_id: 10906840
+activity_code: R01
+title: Dissecting Rotavirus Viroporin and Enterotoxin Calcium Signaling Pathways
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Infectious diarrheal diseases, such as rotavirus, are leading causes of sickness and death in children worldwide despite several vaccines being available. During infection, a rotavirus protein called nonstructural protein 4 (NSP4) takes over the cell’s communication systems and reprograms the cell to promote rotavirus replication and cause diarrhea and vomiting. This proposal makes use of new genetic tools to map the parts of NSP4 responsible for commandeering cellular communication machinery, w
+terms: 5 year old;Acute;Address;Agonist;Antidiarrheals;Astrovirus;Attenuated;Biological Models;Calcium Signaling;Cell Communication;Cell membrane;Cells;Cessation of life;Child;Childhood;Chlorides;Communication;Cytoplasmic Tail;Cytosol;Defect;Diarrhea;diarrheal disease;Disease;Disease Pathway;Drug Targeting;Dysentery;Endoplasmic Reticulum;Enteral;Enterocytes;Enterotoxins;Event;Exhibits;experience;experimental study;extracellular;fascinate;Functional disorder;Genetic;global health;Goals;Homeostasis;Hour;Human;human pathogen;Image;improved;in vivo;Infection;insight;Intestines;Ion Channel;knock-down;Knowledge;Maps;Mediating;mimicry;Modeling;Molecular;mortality;Mus;mutant;Mutation;neonatal mice;new therapeutic target;Nonstructural Protein;Norovirus;novel;Nuclear;Paracrine Communication;pathogen;Pathogenesis;pathogenic virus;Pathogenicity;Pathway interactions;Physiology;Play;Point Mutation;Process;programs;Protein Biosynthesis;protein expression;Proteins;pup;receptor;Recombinant Proteins;Research;reverse genetics;Role;Rotavirus;Rotavirus Infections;Rotavirus Vaccines;Signal Pathway;Signal Transduction;System;Tertiary Protein Structure;theories;tool;vaccine access;vaccine efficacy;Vaccines;Viral;Viral Pathogenesis;Virus;Virus Diseases;Virus Replication;Vomiting
+current_category: basic_research
+---
+application_id: 10912660
+activity_code: R35
+title: Controlling Cellular Fate using Micromachines
+org_name: UNIVERSITY OF DELAWARE
+phr: PROJECT NARRATIVE This project aims to develop microscale machines for controlling cell fate and driving the formation of cellular structures. Using this technology would enable us to reduce noise in gene expression in cells to support gene- and cell- based therapies for application in regenerative medicine.
+terms: 3-Dimensional;automated algorithm;Automobile Driving;behavior change;Biological;biological systems;Biology;cell behavior;Cell Communication;Cell Culture Techniques;Cell Fate Control;Cell Therapy;cell type;Cells;Cellular Structures;Cellularity;Complex;design;Development;Diffusion;Embryo;Engineering;Event;Feedback;Fibrosis;Gene Expression;Genes;human-in-the-loop;In Vitro;Individual;Malignant Neoplasms;Mediating;Methodology;Methods;microrobot;Mitotic;morphogens;Noise;novel;optogenetics;Organ;Organoids;Pattern;Pattern Formation;Positioning Attribute;Reaction;Regenerative Medicine;Research;Shapes;Signal Transduction;Signaling Molecule;spatiotemporal;Stimulus;Surface;System;Technology;Tissues;Work
+current_category: basic_research
+---
+application_id: 10860020
+activity_code: DP5
+title: Harnessing Network Science to Personalize Scalable Interventions for Adolescent Depression
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: Project Narrative
+The goal of this project is to integrate advances in network analysis and intervention science—specifically,
+research on single-session interventions (SSIs)—to identify potent, accessible strategies for reducing
+depression in adolescents. The first goal is to establish guidelines for characterizing adolescents' depression
+symptom structures, using experience sampling method data to compare two approaches for computing
+personalized symptom networks; the second goal is to test wh
+terms: <Acceleration><Access to Care><Achievement><Achievement Attainment><Active Follow-up><Address><Adolescent><Adolescent Youth><Age><Anhedonia><Anxiety><Area><Behavioral><Behavioral Symptoms><Belief><Cannot see a future><Clinical><Clinical Psychology><Cognitive><Cognitive Manifestations><Cognitive Symptoms><Complex><Data><Data Collection><Department chair><Development><Diagnosis><Disease><Disorder><Economic Burden><Educational process of instructing><Emotional Depression><Feeling hopeless><Feels there is no future><Funding><Generalized Growth><Goals><Growth><Guidelines><Health Services Accessibility><Heterogeneity><Individual><Infrastructure><Institution><Intervention><Intervention Strategies><Intervention Studies><Intervention Trial><Interventional trial><Investigators><Jobs><Leadership><Learning><Link><Longitudinal Studies><Loss of hope for the future><Major Depressive Disorder><Mental Depression><Mental disorders><Mental health disorders><Mentors><Mentorship><Meta-Analysis><Methods><Modeling><NRSA><National Research Service Awards><Nature><Negative about the future><Network Analysis><Neurobehavioral Manifestations><Neurobehavioral Signs and Symptoms><No hope for the future><Occupations><On-Line Systems><Online Systems><Paper><Parents><Pathway Analysis><Ph D student><Ph D. student><Ph. D. student><Ph.D student><Ph.D. student><PhD student><PhD. student><Physiologic><Physiological><Position><Positioning Attribute><Professional Positions><Psychiatric Disease><Psychiatric Disorder><Psychologic Theory><Psychological Theory><Psychology><Psychopathology><Publishing><R-Series Research Projects><R01 Mechanism><R01 Program><Randomization trial><Randomized><Recovery><Research><Research Grants><Research Personnel><Research Project Grants><Research Projects><Researchers><Sampling><Schools><Science><Secure><Services><Social Support System><Statistical Methods><Stress><Structure><Support System><Symptoms><Teaching><Techniques><Testing><Time><Tissue Growth><Training><Universities><Withdrawal><Work><Youth><Youth 10-21><abnormal psychology><access to health services><access to services><access to treatment><accessibility to health services><active followup><adolescent depression><adolescents with depression><ages><availability of services><care access><career><child depression><childhood depression><childhood onset depression><clinical depression><college><collegiate><depressed adolescents><depression><depression in adolescence><depression symptom><depressive><depressive symptoms><design><designing><developmental><disability><doctoral student><evidence base><experience><faculty mentor><follow up><follow-up><followed up><followup><full professor><health service access><health services availability><hopelessness><improved><innovate><innovation><innovative><intervention design><intervention research><interventional research><interventional strategy><interventional study><interventions research><juvenile><juvenile human><long-term study><longitudinal outcome studies><longterm study><major depression><major depression disorder><medical college><medical schools><mental illness><methods to study multiple-level influences><multi-level analysis><multi-level model><multilevel analysis><multilevel model><multilevel modeling><neurobehavioral symptom><novel><online computer><ontogeny><outcome prediction><parent><pediatric depression><posters><predicting response><prediction of response><predictive outcomes><predictive response><predictor of response><predictors of outcomes><professor><programs><prospective><psychiatric illness><psychological disorder><randomisation><randomization><randomized trial><randomly assigned><response><response prediction><response to therapy><response to treatment><school of medicine><senior faculty><service availability><social><statistic methods><stem><teacher><tenure process><tenure track><therapeutic response><therapy design><therapy response><tool><trait><treatment access><treatment design><treatment response><vector><web based><youth depression>
+current_category: other
+---
+application_id: 11123342
+activity_code: R35
+title: Role of structural dynamics in RNA regulation
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Project Narrative
+Messenger RNAs (mRNAs) encode specific regulatory instructions in their untranslated regions
+(UTRs) that govern when, where, and how much protein should be made from each mRNA. Our
+studies will investigate how mRNA UTR sequences fold into specific structures, and how these
+structures impact mRNA regulation. Our results will provide insights into how mutations in UTRs
+contribute to disease, help improve our ability to design molecular therapies that target UTRs to
+control gene e
+terms: <3' Untranslated Regions><3'UTR><Area><Back><Base Pairing><Binding><Binding Sites><Biology><Cell Body><Cells><Chemicals><Combining Site><Complex><DNA mutation><Data><Disease><Disorder><Distal><Dorsum><Gene Expression><Genetic Change><Genetic defect><Genetic mutation><Instruction><Lesion><Link><Maps><Medicine><Messenger RNA><MicroRNAs><Modeling><Molecular><Molecular Interaction><Mutation><Non-Polyadenylated RNA><Play><Post-Transcriptional Control><Post-Transcriptional Regulation><Proteins><RNA><RNA Gene Products><RNA-Binding Proteins><Reactive Site><Regulation><Research><Resolution><Ribonucleic Acid><Role><Site><Structure><Technology><Translations><UTRs><Untranslated Regions><Work><biophysical approaches><biophysical methodology><biophysical methods><biophysical techniques><combinatorial><design><designing><genome mutation><human disease><improved><insight><mRNA><miRNA><molecular targeted therapeutics><molecular targeted therapies><molecular targeted treatment><next generation><post-transcriptional gene regulation><resolutions><single molecule><social role><therapeutic target><translation>
+current_category: basic_research
+---
+application_id: 10870191
+activity_code: R35
+title: Role of BAP1/ASXL3 complex in transcriptional regulation and development
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: Project Narrative Dysregulations or mutations found within epigenetic factors are shown to be the main drivers in many human diseases. In this study, we will investigate the function of a novel epigenetic axis comprised of BAP1/ASXL3/BRD4 by examining: 1) its mechanism involving modifications to gene expression based on chromatin signatures at active enhancer regions, 2) modulating the activity of this multi-protein complex by small- molecule inhibitors, and 3) further expanding and applying thi
+terms: Attenuated;Biochemical;Biological Markers;Bromodomain;Cells;Chromatin;Chromatin Structure;Complex;Development;developmental disease;Developmental Process;Disease;driver mutation;Enhancers;Epigenetic Process;Equilibrium;Functional disorder;Gene Expression;gene repression;Genes;Genetic;Genetic Transcription;Goals;Histone H2A;histone modification;Histones;human disease;Lysine;Malignant Neoplasms;Mammalian Cell;Mammals;Mediating;Modification;Molecular;Mouse Embryonic Stem Cells;Multiprotein Complexes;Mutation;nerve stem cell;Neurons;new therapeutic target;novel;novel therapeutics;Patients;Play;Polycomb;PRC1 Protein;Prognostic Marker;Proteins;recruit;Role;Scaffolding Protein;screening;small molecule;small molecule inhibitor;stem cell differentiation;Therapeutic;Transcription Coactivator;Transcriptional Regulation;transcriptome;ubiquitin isopeptidase;Ubiquitination
+current_category: basic_research
+---
+application_id: 10928173
+activity_code: R35
+title: The functional role of mTORC1 regulation by AMPK in cellular metabolic reprogramming
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: PROJECT NARRATIVE  The importance of proper regulation of cell growth and energy homeostasis to human health is underscored by the association of many disease states with altered energy states, including diabetes, cancer, and neurological diseases. Therefore, it is the goal of this work to resolve the controversial role of mTORC1 inhibition caused by AMPK activation in regulating the gene expression, autophagy, and lipid synthesis involved in cellular metabolic reprogramming. Understanding the b
+terms: 5&apos;-AMP-activated protein kinase;Alanine;Autophagocytosis;Biochemical;cell growth;cell growth regulation;Cell Physiology;Cells;Complex;Diabetes Mellitus;Disease;energy balance;Energy consumption;Environment;experimental study;Failure;FRAP1 gene;functional genomics;Gene Expression;Genetic Transcription;Goals;Growth;Health;Homeostasis;Human;human disease;innovation;insight;Knowledge;Laboratories;Link;Lipids;Malignant Neoplasms;Mediator;Metabolic;Metabolic Control;Metabolic Diseases;Metabolic dysfunction;Metabolic Pathway;Metabolism;Molecular;mouse model;Mus;Mutant Strains Mice;Mutation;Nervous System Disorder;novel;novel therapeutic intervention;Nutrient;Pathway interactions;Phosphorylation;Phosphorylation Site;Phosphotransferases;Play;Process;programs;Protein Synthesis Inhibition;Regulation;Research;Role;Serine;Signal Pathway;Signal Transduction;Stress;Tissues;treatment strategy;Work
+current_category: basic_research
+---
+application_id: 11145944
+activity_code: R35
+title: The functional role of mTORC1 regulation by AMPK in cellular metabolic reprogramming
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: PROJECT NARRATIVE
+ The importance of proper regulation of cell growth and energy homeostasis to human health is
+underscored by the association of many disease states with altered energy states, including diabetes, cancer,
+and neurological diseases. Therefore, it is the goal of this work to resolve the controversial role of mTORC1
+inhibition caused by AMPK activation in regulating the gene expression, autophagy, and lipid synthesis involved
+in cellular metabolic reprogramming. Understanding the b
+terms: <(hydroxymethylglutaryl-CoA reductase (NADPH)) kinase><5'-AMP-activated protein kinase><AMP-activated kinase><AMP-activated protein kinase><AMPK enzyme><Alanine><Autophagocytosis><Autoregulation><Biochemical><Body Tissues><Cancers><Cell Body><Cell Communication and Signaling><Cell Function><Cell Physiology><Cell Process><Cell Signaling><Cells><Cellular Expansion><Cellular Function><Cellular Growth><Cellular Physiology><Cellular Process><Cellular Regulation><Complex><DNA mutation><Diabetes Mellitus><Disease><Disorder><Energy consumption><Environment><FK506 Binding Protein 12-Rapamycin Associated Protein 1><FKBP12 Rapamycin Complex Associated Protein 1><FRAP1><FRAP1 gene><FRAP2><Failure><Gene Expression><Gene Transcription><Generalized Growth><Genetic Change><Genetic Transcription><Genetic defect><Genetic mutation><Goals><Growth><HMG CoA reductase (NADPH) kinase><HMG CoA reductase kinase><HMG coenzyme A reductase (NADPH) kinase><Health><Homeostasis><Human><Intermediary Metabolism><Intracellular Communication and Signaling><Kinases><Knowledge><L-Serine><Laboratories><Link><Lipids><Malignant Neoplasms><Malignant Tumor><Mechanistic Target of Rapamycin><Mediator><Metabolic><Metabolic Control><Metabolic Diseases><Metabolic Disorder><Metabolic Pathway><Metabolic Processes><Metabolic dysfunction><Metabolism><Mice><Mice Mammals><Modern Man><Molecular><Murine><Mus><Mutant Strains Mice><Mutation><Nervous System Diseases><Nervous System Disorder><Neurologic Disorders><Neurological Disorders><Nutrient><Pathway interactions><Phosphorylation><Phosphorylation Site><Phosphotransferase Gene><Phosphotransferases><Physiological Homeostasis><Play><Process><Protein Phosphorylation><Protein Synthesis Inhibition><RAFT1><RNA Expression><Regulation><Research><Role><Serine><Signal Pathway><Signal Transduction><Signal Transduction Systems><Signaling><Stress><Subcellular Process><Thesaurismosis><Tissue Growth><Tissues><Transcription><Transphosphorylases><Work><autophagy><biological signal transduction><cell growth><cell growth regulation><diabetes><energy balance><experiment><experimental research><experimental study><experiments><functional genomics><genome mutation><human disease><hydroxymethylglutaryl-CoA-reductase kinase><innovate><innovation><innovative><insight><mTOR><malignancy><mammalian target of rapamycin><metabolism disorder><mouse model><mouse mutant><murine model><neoplasm/cancer><neurological disease><new therapeutic approach><new therapeutic intervention><new therapeutic strategies><new therapy approaches><new treatment approach><new treatment strategy><novel><novel therapeutic approach><novel therapeutic intervention><novel therapeutic strategies><novel therapy approach><ontogeny><pathway><programs><social role><treatment strategy>
+current_category: basic_research
+---
+application_id: 10986368
+activity_code: R56
+title: Gut Microbiome and Salivary Gland Function: Protective Actions & Key Players
+org_name: ADA FORSYTH INSTITUTE, INC.
+phr: Project Narrative Salivary gland function is chronically impaired in Sjӧgren’s syndrome, a challenging autoimmune exocrine gland disease affecting 4 million Americans with no cure or effective therapies available. There is an urgent need to develop effective and targeted new therapeutic approaches to protect and improve salivary gland secretory function in these patients. Completion of this research project will generate critical new knowledge and insights for the development of novel, microbiom
+terms: 16S ribosomal RNA sequencing;Acceleration;Address;Advanced Development;Affect;Age;American;Animal Model;attenuation;Autoimmune;autoreactivity;B-Lymphocytes;Bacteria;Bile Acids;Biological;Biological Assay;Bromodomain;C57BL/6 Mouse;Cells;Characteristics;Chronic;combat;cytokine;Data;Development;Disease;dysbiosis;effective therapy;Epigenetic Process;Epithelial Cells;Exhibits;Exocrine Glands;fecal microbiota;fecal transplantation;Functional disorder;Gene Expression;germ free condition;gut bacteria;gut dysbiosis;gut microbes;gut microbiome;gut microbiota;Health;Human;Immune;Immunization;Immunologics;Impairment;improved;in vivo;Inbred NOD Mice;Inflammatory;Inflammatory Response;insight;Investigation;Kinetics;Knowledge;Knowledge acquisition;Lacrimal gland structure;Link;Literature;Mediating;metabolomics;Methodology;microbial;microbiome;microbiome analysis;Modeling;Molecular;mouse model;Mus;new therapeutic target;novel;novel therapeutic intervention;Oral;Oral health;Pathogenesis;Pathology;Patients;Persons;Plasma;Population;prevent;Probiotics;protective effect;Reader;Research;Research Project Grants;Safety;Saliva;saliva secretion;Salivary Glands;Salivary Proteins;Sampling;Sialadenitis;Sjogren&apos;s Syndrome;System;Testing;Therapeutic;therapeutically effective;Tissues;transcriptome sequencing;transcriptomics;Transplantation;Tryptophan;Volatile Fatty Acids
+current_category: basic_research
+---
+application_id: 11170829
+activity_code: R56
+title: Cellular and molecular mechanisms governing bladder aging.
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: PROJECT NARRATIVE Conditions affecting the bladder such as urinary tract infections (UTIs) become more common with aging and can have a severe impact on health span and quality of life, especially among postmenopausal women. Our research aims to uncover how aging predisposes the bladder to UTIs by examining proteostasis and ribosomal and endoplasmic reticulum dynamics. Completion of this work will establish a new platform for new treatments, focusing on drugs that target aging-related bladder ch
+terms: 3-Dimensional;Address;Affect;Age;age related changes;aged;Aging;aging related;Binding Proteins;biological adaptation to stress;Biological Assay;Bladder;Bladder Tissue;cell age;Cell Aging;Cell Physiology;Cells;Chronic;Collaborations;Complement;cost;Coupled;Cycloheximide;Data;Disease;DNA Damage;Drug Targeting;Elderly;Endoplasmic Reticulum;endoplasmic reticulum stress;Epithelium;epithelium regeneration;experimental study;Foundations;Frequencies;Genes;Genome Stability;glycosylation;Golgi Apparatus;healthspan;Heat shock proteins;Histologic;Homeostasis;Human;Immunofluorescence Immunologic;Incontinence;Infection;Inflammation;Inflammatory;Inflammatory Response;Injury;Intervention;Investigation;Label;Lysosomes;Maintenance;Measures;Mediator;Membrane Proteins;Metabolic;Mitochondria;Modeling;Modification;Molecular;Mus;Natural regeneration;new therapeutic target;novel;novel therapeutics;old mice;Organ;Organoids;Oxidation-Reduction;Oxidative Stress;Pathway interactions;Pharmaceutical Preparations;pharmacologic;Pharmacologic Substance;Phenocopy;Phenotype;Play;Post-Translational Protein Processing;Postmenopause;prevent;pro-aging;Proteins;proteostasis;proteostasis loss;Quality Control;Quality of life;Quantitative Reverse Transcriptase PCR;recurrent infection;Regenerative capacity;Research;response;Ribosomes;Role;Rough endoplasmic reticulum;secretory protein;senescence;Senotherapeutic;Stress;stressor;System;tauroursodeoxycholic acid;Testing;Time;tissue regeneration;trafficking;Translating;Translational Repression;Translational Research;Translations;Tunicamycin;Urinary tract;Urinary tract infection;Uropathogenic E. coli;Urothelial Cell;Urothelium;Western Blotting;Woman;Work
+current_category: basic_research
+---
+application_id: 11138575
+activity_code: R35
+title: Multiscale considerations for immune engineering at mucosal interfaces
+org_name: UNIVERSITY OF DELAWARE
+phr: Project Narrative
+ Mucosal surfaces line the respiratory, gastrointestinal, and urogenital tracts and serve as the first barrier to
+foreign invasions due to specialized immune cells that reside at this boundary. With this work, we aim to engineer
+therapeutics that are optimized for the complex organ and mucosal movement to deliver critical instructions to
+the underlying immune cells and correct the improper immune functions that occur in a wide range of human
+diseases.
+terms: <Address><Alimentary Canal><Antigen-Presenting Cells><Area><Biologic Models><Biological Models><Biology><Bypass><Cell Body><Cell Communication><Cell Interaction><Cell-to-Cell Interaction><Cells><Cellular Immune Function><Chemicals><Complex><Cues><Dedications><Digestive Tract><Drug Delivery><Drug Delivery Systems><Engineering><Environment><Equilibrium><Evaluation><Future><GI Tract><Gastrointestinal Tract><Gastrointestinal tract structure><Goals><Home><Human Figure><Human body><Immune><Immune response><Immunes><Immunomodulation><Infection><Instruction><Invaded><Lung><Lung Respiratory System><Model System><Modeling><Motion><Movement><Mucosa><Mucosal Immune System><Mucosal Tissue><Mucous Membrane><Organ><Pathogenicity><Physiologic><Physiological><Pulmonary Body System><Pulmonary Organ System><Regulation><Research><Respiratory System><Respiratory Tracts><Respiratory tract structure><Route><Surface><System><Therapeutic><Therapeutic Uses><Work><accessory cell><alimentary tract><arm><balance><balance function><body movement><combat><commensal bacteria><commensal bacterial species><design><designing><digestive canal><engineered immune system><genitourinary tract><homes><host response><human disease><immune engineering><immune function><immune modulation><immune regulation><immune system response><immunoengineering><immunologic reactivity control><immunomodulatory><immunoregulation><immunoregulatory><immunoresponse><life span><lifespan><mimicry><nano particle><nano-sized particle><nanoparticle><nanosized particle><novel><particle><pathogen><programs><respiratory><response><tool><urogenital tract>
+current_category: therapeutics
+---
+application_id: 10861721
+activity_code: R35
+title: Multiscale considerations for immune engineering at mucosal interfaces
+org_name: UNIVERSITY OF DELAWARE
+phr: Project Narrative  Mucosal surfaces line the respiratory, gastrointestinal, and urogenital tracts and serve as the first barrier to foreign invasions due to specialized immune cells that reside at this boundary. With this work, we aim to engineer therapeutics that are optimized for the complex organ and mucosal movement to deliver critical instructions to the underlying immune cells and correct the improper immune functions that occur in a wide range of human diseases.
+terms: Address;Antigen-Presenting Cells;Area;arm;Biological Models;Biology;Bypass;Cell Communication;Cells;Chemicals;combat;commensal bacteria;Complex;Cues;Dedications;design;Drug Delivery Systems;Engineering;Environment;Equilibrium;Evaluation;Future;Gastrointestinal tract structure;Goals;Home;Human body;human disease;Immune;immune function;Immune response;immunoengineering;immunoregulation;Infection;Instruction;Invaded;life span;Lung;mimicry;Modeling;Motion;Movement;Mucosal Immune System;Mucous Membrane;nanoparticle;novel;Organ;particle;pathogen;Pathogenicity;Physiological;programs;Regulation;Research;respiratory;Respiratory System;response;Route;Surface;System;Therapeutic;Therapeutic Uses;tool;urogenital tract;Work
+current_category: therapeutics
+---
+application_id: 11007080
+activity_code: R43
+title: Developing a Novel Biologic Therapy to Eradicate Brain Cancer and Brain Metastasis
+org_name: CREATIVE BIOTHERAPEUTICS, LLC
+phr: PROJECT NARRATIVE Current therapies attempting to regress and cure brain tumors and brain metastases have failed due to drug and immune resistance from glioma stem cells which our research shows are highly associated with extracellular GRP78. Our overall goal for this NIH SBIR Phase I proposal is to further our proof-of-concept experiments with our patented anti-cancer GRP78 inhibitors establishing a lead candidate as an effective therapy for patients with pediatric and adult brain tumors and br
+terms: 15 year old;Adult;Age;aggressive therapy;American Cancer Society;anti-cancer;Antineoplastic Agents;Binding;Biological Response Modifier Therapy;blood-brain tumor barrier;Brain;Brain Neoplasms;Breast;cancer recurrence;cancer stem cell;cancer therapy;Cell Physiology;Cell surface;Cessation of life;CFC1 gene;chemotherapy;Chicago;Child;Childhood;Clinical Research;Clinical Trials;Colon;Combined Modality Therapy;Cranial Irradiation;Creativeness;Death Rate;design;Disease;Documentation;Dose;drug candidate;drug development;drug discovery;Drug Industry;Drug resistance;effective therapy;efficacy evaluation;Essential Drugs;Event;Excision;experience;experimental study;extracellular;Extracellular Domain;family support;fighting;Foundations;Glioblastoma;Glioma;glucose-regulated proteins;Goals;GRP78 gene;Human;humanized mouse;Immune;immune resistance;Immunosuppression;Immunotherapy;In complete remission;In Vitro;in vivo;in vivo evaluation;Incidence;Induction of Apoptosis;inhibitor;Lead;lead candidate;Legal patent;Letters;Lung;Malignant Breast Neoplasm;Malignant neoplasm of brain;Malignant Neoplasms;Melanoma;Metastatic malignant neoplasm to brain;Modeling;molecular targeted therapies;Mothers;mouse model;Multiple Myeloma;Mus;N-terminal;Neoplasm Metastasis;neoplastic cell;Neurosphere;Neurosurgeon;Normal Cell;novel;novel therapeutics;Nude Mice;oncofetal antigen;Oncologist;Operative Surgical Procedures;Ovarian;Pain;Parents;Pathologic;Pathway interactions;Patients;Pediatric Hospitals;Pharmaceutical Preparations;Phase;Primary Brain Neoplasms;programmed cell death ligand 1;Prostate;Proteins;Protocols documentation;Provider;Radiation therapy;Radiosurgery;Recurrence;refractory cancer;Research;ROR1 gene;side effect;Small Business Innovation Research Grant;Son;Stable Disease;stem cells;Surface;Testing;Therapeutic;Toxic effect;tumor;tumor growth;tumor microenvironment;tumorigenic;United States National Institutes of Health;Work
+current_category: therapeutics
+---
+application_id: 10912139
+activity_code: R42
+title: Development of Deep Mutational Scanning with Duplex Sequencing (DMS-DS) for anti-cancer drug evaluation and administration
+org_name: ATLAS BIOLOGICS, LLC
+phr: Targeted therapies have revolutionized patient care for a wide range of cancers, but are fundamentally limited by acquired resistance mutations. Current technologies used in industry to evaluate the mutational landscapes of next generation targeted therapies are limited in sensitivity, incomplete, and retrospective. This project proposes to develop and commercialize deep mutational scanning with duplex sequencing (DMS-DS), the most comprehensive and accurate platform available for measuring the 
+terms: Acceleration;Amino Acid Substitution;anti-cancer;Antineoplastic Agents;Architecture;base;bcr-abl Fusion Proteins;Bioinformatics;Businesses;Cancer Patient;cancer therapy;cancer type;Cause of Death;Cell Line;Cells;Client;Clinical;clinical candidate;clinical development;Clinical Trials;clinically relevant;Collaborations;commercialization;Complex;Data Reporting;design;Detection;Development;Dose;Drug Design;drug development;Drug Evaluation;Drug resistance;Drug Screening;Drug Targeting;effective therapy;Evolution;experience;Frequencies;Funding;Goals;Grant;Imatinib;improved;In Vitro;in vitro Assay;Industry;inhibitor;Innovation Corps;interest;kinase inhibitor;Knowledge;lead candidate;Libraries;machine learning model;Malignant neoplasm of lung;Malignant Neoplasms;Maps;Marketing;Measurement;Measures;Methods;Molecular Biology;mortality;multidisciplinary;Mutagenesis;mutant;Mutation;mutation screening;next generation;next generation sequencing;novel therapeutics;Oncology;Outcome;Patient Care;Patients;Pharmaceutical Preparations;Pharmacologic Substance;Phase;Phosphotransferases;Pilot Projects;Positioning Attribute;pre-clinical;Precision therapeutics;prevent;Process;Prognosis;programs;Proteins;relapse patients;Reporting;Reproducibility;Research;Research Personnel;Resistance;resistance mutation;response;rho;Scanning;screening;Secure;sequencing platform;Service delivery model;Services;Specificity;success;symposium;targeted agent;targeted treatment;Techniques;Technology;tool;Translating;treatment planning;Validation
+current_category: therapeutics
+---
+application_id: 10847501
+activity_code: R35
+title: Single Cell Mosaic Mutation Atlas of Human Organ
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: PROJECT NARATIVE Analysis of rare somatic mutations in normal tissues is important for understanding the manifestation of normal phenotypes and the genetic disposition of human diseases. This project aims to detect mosaic mutations from scRNA-seq data generated by human cell atlas and many related projects to quantify their prevalence and functional effects on the rare mutated cells. Our bioinformatic tools provide a cost-effective way to construct a full picture of mosaic mutation atlas of huma
+terms: Affect;Alleles;Atlases;Bayesian Method;bioinformatics tool;Biological Phenomena;Brain;Case Study;Cell Physiology;cell type;Cells;clinical phenotype;Computer software;computerized tools;Computing Methodologies;Copy Number Polymorphism;cost effective;Data;data resource;Data Set;Detection;Development;early onset;Ecosystem;Eye;Genetic;Genomics;Genotype;Goals;Heart;heart cell;Heart Diseases;Heart Transplantation;Human;Human body;human disease;human tissue;Individual;insight;Knowledge;Machine Learning;Malignant Neoplasms;Methods;Mitochondrial DNA;Modeling;mosaic variant;Mosaicism;Mutate;Mutation;Mutation Detection;Normal tissue morphology;novel;novel strategies;Organ;Phenotype;Point Mutation;Prevalence;prevent;Prevention strategy;Research;single-cell RNA sequencing;Somatic Mutation;synergism;Technology;Tissues;tool;transcriptome;Validation
+current_category: biotools
+---
+application_id: 10846745
+activity_code: R35
+title: New roles for Topoisomerase II in meiosis
+org_name: UNIVERSITY OF DELAWARE
+phr: PROJECT NARRATIVE The formation of sperm and eggs with the “wrong” number of chromosomes is a key contributing factor to infertility, miscarriages, and birth defects in humans. The proposed project seeks to identify and characterize the mechanisms that contribute to sex-specific chromosome structure and chromosome separation in sperm vs. eggs. The completion of this project will advance our understanding of how the disruption of components that determine chromosome structure and separation contr
+terms: Alleles;Animal Model;Biochemical;Caenorhabditis elegans;Candidate Disease Gene;Cell division;Cells;Chromosome Segregation;Chromosome Structures;Chromosomes;Congenital Abnormality;Development;Diploidy;DNA;ds-DNA;egg;Embryo;Embryonic Development;Ensure;Enzymes;Female infertility;Fertilization;Generations;Genes;Genetic Recombination;Genetic Techniques;Genetic Transcription;Germ Cells;Goals;Haploidy;Human;in vivo evaluation;Infertility;Male Infertility;Meiosis;Mitosis;Molecular;Morphology;mutant;Mutation;Mutation Analysis;novel;Oogenesis;Phenotype;Play;Process;programs;Proteins;Regulation;Research;Role;segregation;sex;Sex Differences;sex linked trait;sexual dimorphism;Specificity;sperm cell;Spermatogenesis;Spontaneous abortion;Synaptonemal Complex;System;Time;Topoisomerase II;tyrosyl-DNA phosphodiesterase;Work
+current_category: basic_research
+---
+application_id: 11124669
+activity_code: R35
+title: Heme trafficking in prokaryotic cytochrome c biogenesis
+org_name: UNIVERSITY OF DELAWARE
+phr: Project Narrative
+Cytochromes c play an essential role in bioenergetics, functioning in diverse electron transport chains for
+aerobic/anaerobic respiration, photosynthesis and detoxification, which are critical for bacterial survival. The
+proposed studies strive to elucidate the molecular mechanisms of cytochrome c biogenesis, specifically heme
+delivery, trafficking and attachment. Investigation of these pathways will provide insights into two fundamental,
+yet poorly understood, biological proce
+terms: <Address><Aerobic><Bioenergetics><Biogenesis><Biologic Models><Biological><Biological Function><Biological Models><Biological Process><Catalysis><Cell Communication and Signaling><Cell Function><Cell Physiology><Cell Process><Cell Signaling><Cellular Function><Cellular Physiology><Cellular Process><Chaperone><Cytoplasm><Drug Metabolic Detoxication><Drug Metabolic Detoxification><E coli><E. coli><Electron Transport><Environment><Escherichia coli><Eukaryota><Eukaryote><Ferricytochrome c><Ferrocytochrome c><Ferroprotoporphyrin><Foundations><Future><Heme><Heme Proteins><Hemeproteins><Individual><Integral Membrane Protein><Intracellular Communication and Signaling><Intrinsic Membrane Protein><Investigation><Knowledge><Learning><Ligase><Ligase Gene><Lytotoxicity><Membrane><Membrane Protein Gene><Membrane Proteins><Membrane-Associated Proteins><Metabolic Drug Detoxications><Metabolism of Toxic Agents><Model System><Molecular><Molecular Chaperones><Nature><Organism><Origin of Life><Pathway interactions><Periplasmic Space><Photosynthesis><Play><Position><Positioning Attribute><Prokaryotae><Prokaryotic Cells><Protoheme><Reaction><Recombinants><Regulation><Respiration><Role><Signal Transduction><Signal Transduction Systems><Signaling><Subcellular Process><Surface Proteins><Synthetases><System><Transmembrane Protein><Transmembrane Protein Gene><Work><anti-microbial><antimicrobial><biologic><biological signal transduction><cofactor><cytochrome c><cytotoxicity><detoxification><electron transfer><ferroheme><heme receptor><hemopexin-heme receptor><hemoprotein><insight><living system><membrane heme binder><membrane structure><novel><pathogen><pathway><periplasm><prokaryote><protein function><protein purification><respiratory mechanism><social role><trafficking>
+current_category: basic_research
+---
+application_id: 10840382
+activity_code: R35
+title: Characterizing functional translation in putative 'noncoding' regions of a genome
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: PROJECT NARRATIVE The proposed study is to use integrated experimental and computational genomics approaches to characterize the functional roles of newly identified short open reading frames (sORFs) in cells. The work will reveal basic molecular mechanisms mediating sORF expression and conservation, as well as the tight coupling between sORF translation vs. other layers of peptide and RNA metabolic processes.
+terms: 5&apos; Untranslated Regions;Automobile Driving;Biological;Biological Process;Cell Proliferation;Cells;Computational algorithm;Coupling;Data;Degradation Pathway;Development;Disease;Disease Progression;Elements;Eukaryota;Evolution;frontier;Genetic study;Genome;Genomic approach;insight;Mediating;Metabolism;Modeling;Molecular;Normal Range;novel;Open Reading Frames;Other Genetics;Peptides;Pseudogenes;Research;ribosome profiling;RNA;RNA Stability;Role;Translating;Translations;Untranslated RNA;Work
+current_category: basic_research
+---
+application_id: 11066897
+activity_code: R41
+title: Nanoparticle formulation of Mediator kinase inhibitor for the treatment of peritoneal ovarian cancer
+org_name: SENEX BIOTECHNOLOGY, INC.
+phr: Ovarian cancer is the second most common gynecological malignancy, the treatment of which still relies primarily on conventional cytotoxic drugs. Metastatic ovarian cancer, which in most patients is localized to the abdominal cavity, remains a lethal disease. This proposal aims to develop a novel nanoparticle form of an experimental drug developed to suppress metastatic tumors, and to test the efficacy of these nanoparticles in animal models of metastatic ovarian cancer.
+terms: Abdominal Cavity;Animal Model;Anoikis;Antineoplastic Agents;bevacizumab;bioluminescence imaging;Cancer Model;Cancer Patient;cancer subtypes;cancer therapy;cancer type;Cell Death;Cells;Characteristics;chemotherapeutic agent;chemotherapy;Cisplatin;Clinical Trials;Control Groups;copolymer;Cytotoxic agent;cytotoxicity;Development;Disease;Distant Metastasis;Dose;drug candidate;Drug Delivery Systems;Drug Kinetics;Drug usage;efficacy evaluation;efficacy testing;Environment;Excipients;Formulation;Future;Gene Expression;Genetic Transcription;Goals;Greater sac of peritoneum;Growth;Human;Hyperthermia;improved;inhibitor;inhibitor therapy;intraperitoneal;intraperitoneal therapy;Intravenous;Investigational New Drug Application;kinase inhibitor;Length;malignant ascites;Malignant Female Reproductive System Neoplasm;Malignant neoplasm of ovary;Malignant Neoplasms;manufacture;Measures;Mediator;Modeling;mouse model;Mus;nano;nanoparticle;nanoparticle delivery;Neoplasm Metastasis;neoplastic cell;new therapeutic target;Nodule;novel;Omentum;Oral;Oral Administration;Ovarian Clear Cell Tumor;Patients;Peritoneal;Peritoneum;Pharmaceutical Preparations;Pharmacotherapy;Phase;Phenotype;Phosphotransferases;Plasma;Platinum Compounds;Poly(ADP-ribose) Polymerase Inhibitor;Polymers;potential biomarker;prevent;Process;programs;Quality of life;Relapse;Resistance;response;response biomarker;Safety;safety study;scale up;Serous Cystadenocarcinoma;Shapes;Small Business Technology Transfer Research;small molecule inhibitor;standard of care;Stomach;Structure;Survival Analysis;Survival Rate;Suspensions;systemic toxicity;targeted treatment;taxane;Temperature;Testing;Toxic effect;Toxicokinetics;transcriptional reprogramming;transcriptome sequencing;transcriptomics;tumor;Tumor Burden;Tumor Debulking;Tumor Suppression
+current_category: therapeutics
+---
+application_id: 10896943
+activity_code: R01
+title: Preventing Medication-Related Problems in Care Transitions to Skilled Nursing Facilities
+org_name: UNIVERSITY OF WASHINGTON
+phr: NARRATIVE The transition from hospital to a skilled nursing facility is a vulnerable point in the continuum of care, and medication-related errors during transitions are a major driver of avoidable harm and healthcare utilization. Using a cluster-randomized design with a network of four hospitals and 16 skilled nursing facilities, we will compare clinical outcomes of integrating pharmacists into the care transition process, targeting key gaps that contribute to medication errors, and evaluate it
+terms: N/A
+current_category: therapeutics
+---
+application_id: 10894704
+activity_code: R01
+title: Care Transitions App for Patients with Multiple Chronic Conditions
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: NARRATIVE Care transitions are a vulnerable period for patients, leading to post-discharge adverse events, falls, medication errors, and readmissions. Specific challenges such as poor communication among inpatient providers, patients, and the primary care team, poor quality and timeliness of discharge documentation, and suboptimal patient understanding of care plans can be improved with our proposed Care Transitions App. In a cluster randomized control trial, we will evaluate the App’s efficacy 
+terms: N/A
+current_category: digital_health
+---
+application_id: 11035534
+activity_code: R41
+title: Xenon gas inhalation as a novel treatment for opioid withdrawal syndrome
+org_name: GENERAL BIOPHYSICS, LLC
+phr: NARRATIVE
+Opioid withdrawal symptoms (OWS) are highly aversive and occur in people with opioid use disorder (OUD).
+OWS drive people to seek out and take opioids, including unprescribed opioids contaminated with fentanyl,
+leading to overdoses and tens of thousands of deaths per year. The goal of this proposal is to explore the effects
+of Xenon (Xe) gas on inhibition of inflammation in-vitro and to prepare for a clinical trial of Xe inhalation for
+managing OWS in OUD patients.
+terms: <21+ years old><AD model><AKT><Acquired brain injury><Actiq><Adult><Adult Human><Akt protein><Alzheimer's disease model><Amentia><Anesthestic Drugs><Anesthetic Agents><Anesthetic Drugs><Anesthetics><Anti-Inflammatories><Anti-Inflammatory Agents><Anti-inflammatory><Antiinflammatory Effect><Applications Grants><Asystole><Attenuated><B cell differentiation factor><B cell stimulating factor 2><B-Cell Differentiation Factor><B-Cell Differentiation Factor-2><B-Cell Stimulatory Factor-2><BBB penetration><BCDF><BSF-2><BSF2><Biological Markers><Biophysics><Blood><Blood Reticuloendothelial System><Blood Sample><Blood monocyte><Blood specimen><Brain><Brain Injuries><Brain Nervous System><CCL2><CCL2 gene><CSIF><CSIF-10><Cardiac Arrest><Cell Body><Cell Communication and Signaling><Cell Signaling><Cells><Cessation of life><Chemokine, CC Motif, Ligand 2><Clinical Trials><Clinical Trials Design><Clonidine><Collaborations><Cytokine Synthesis Inhibitory Factor><Data><Death><Dementia><Development><Dopamine><Dose><Drugs><Duragesic><Early-Stage Clinical Trials><Encephalon><Enrollment><Exposure to><Fentanest><Fentanyl><Fentyl><Flow Cytofluorometries><Flow Cytofluorometry><Flow Cytometry><Flow Microfluorimetry><Flow Microfluorometry><Freezing><Funding Opportunities><Future><Gases><Generalized Growth><Glycogen Synthase Kinases><Goals><Grant Proposals><Growth><HPGF><Heart Arrest><Hepatocyte-Stimulating Factor><Hospitals><Human><Hybridoma Growth Factor><Hydroxytyramine><IFN-beta 2><IFNB2><IL-10><IL-6><IL10><IL10A><IL6 Protein><Immune><Immunes><Immunomodulation><In Vitro><Inflammation><Inflammatory><Infumorph><Inhalation><Inhalation Anesthetics><Inhalators><Inhaler><Inhaling><Intellectual Property><Interleukin 10 Precursor><Interleukin-10><Interleukin-6><Intracellular Communication and Signaling><Investigators><Kadian><Ketamine><Kinetics><Klofenil><Legal patent><MCAF><MCP-1><MCP1><MGI-2><MS Contin><MSir><Marketing><Marrow monocyte><Mediating><Medical><Medication><Mice><Mice Mammals><Modern Man><Monocyte Chemoattractant Protein-1><Monocyte Chemotactic Protein-1><Monocyte Chemotactic and Activating Factor><Monocyte Chemotactic and Activating Protein><Monocyte Chemotactive and Activating Factor><Monocyte Secretory Protein JE><Morbidity><Morbidity - disease rate><Morphia><Morphine><Murine><Mus><Myeloid Differentiation-Inducing Protein><Nalorex><Naltrexone><Nemexin><Nerve Degeneration><Neuron Degeneration><Neuroprotectants><Neuroprotective Agents><Neuroprotective Drugs><Nucleus Accumbens><Opiate Addiction><Opiate Dependence><Opiates><Opioid><Oramorph><Oramorph SR><Overdose><Patents><Pathway interactions><Patients><Persons><Pharmaceutical Preparations><Phase><Phase 1 Clinical Trials><Phase 2 Clinical Trials><Phase I Clinical Trials><Phase II Clinical Trials><Phenotype><Phentanyl><Phosphorylation><Plasmacytoma Growth Factor><Pre IND FDA meeting><Pre-IND mtg><Property><Protein Kinase B><Protein Phosphorylation><Proto-Oncogene Proteins c-akt><RAC-PK protein><ReVia><Reporting><Research Personnel><Researchers><Resolution><Role><Roxanol><SCYA2><STTR><Safety><Sepsis><Severities><Signal Transduction><Signal Transduction Systems><Signaling><Small Business Technology Transfer Research><Small Inducible Cytokine A2><Statex SR><Substance Withdrawal Syndrome><Sympathetic Nervous System><Tissue Growth><Tissue Harvesting><Validation><Vivitrol><Withdrawal Symptom><Withdrawal Syndrome><Woman><Xe element><Xenon><addiction liability><addiction potential><adulthood><alzheimer model><anti-inflammatory effect><attenuate><attenuates><attenuation><bio-markers><biologic marker><biological signal transduction><biomarker><biophysical foundation><biophysical principles><biophysical sciences><blood-brain barrier penetration><bloodbrain barrier penetration><brain damage><brain tissue><brain-injured><c-akt protein><clinical trial protocol><cytokine><design><designing><developmental><drug/agent><enroll><experience><experiment><experimental research><experimental study><experiments><flow cytophotometry><gut dysbiosis><healthy volunteer><imaging agent><immune modulation><immune regulation><immunologic reactivity control><immunomodulatory><immunoregulation><immunoregulatory><in vivo><inhibitor><interferon beta 2><lofexidine><mRNA Expression><monocyte><mortality><mouse model><murine model><neural degeneration><neurodegeneration><neurodegenerative><neurological degeneration><neuronal degeneration><neuroprotection><neuroprotective><novel><ontogeny><opiate use disorder><opiate withdrawal><opioid addiction><opioid dependence><opioid dependent><opioid detox><opioid detoxification><opioid tapering><opioid use disorder><opioid withdrawal><pathway><phase 1 trial><phase I protocol><phase I trial><phase II protocol><pre-IND consultation><pre-IND discussion><pre-IND meeting><pre-Investigational New Drug meeting><programs><protein activation><protein expression><proto-oncogene protein RAC><proto-oncogene protein akt><rac protein kinase><related to A and C-protein><resolutions><safety assessment><sedative><side effect><social role><symptom treatment><symptomatic treatment><systemic inflammation><systemic inflammatory response><therapeutically effective><treat symptom><validations>
+current_category: therapeutics
+---
+application_id: 11373677
+activity_code: U2F
+title: Texas Animal Feed Regulatory Program Standards Maintenance and Mutual Reliance
+org_name: TEXAS A&M AGRILIFE RESEARCH
+phr: Narrative: Texas Animal Feed Regulatory Program Standards Maintenance and Mutual Reliance During the next 3 years, OTSC will maintain adherence to AFRPS through a number of activities that include: building a more robust facility risk ranking matrix and analysis platform, expanding audit capability from one to two auditors and enter phase 3, utilizing feed-related illnesses or death data in the risk ranking matrix and identifying/performing state comprehensive inspection under the mutual relianc
+terms: N/A
+current_category: other
+---
+application_id: 11290943
+activity_code: P01
+title: Project 3: Influenza Virus HA and NA Immunogen Design
+org_name: BOSTON CHILDREN'S HOSPITAL
+phr: N/A
+terms: N/A
+current_category: basic_research
+---
+application_id: 11007712
+activity_code: R44
+title: Advancing Next Generation CAR-T cells for Renal Cell Carcinoma
+org_name: CELLINFINITY BIO, INC.
+phr: Project Narrative CAR-T cell therapy is a revolutionary treatment with curative potential against many cancers; however, multiple challenges exist for current cell therapy, particularly for solid tumors. To overcome these challenges, we apply our cell-based directed evolution technology to create superior autologous CAR-Ts targeting a novel antigen in renal cell carcinoma. Successful completion of the proposal will enable a path towards successful IND approval, leading to initiation of a Phase I
+terms: Address;Adult;Animal Cancer Model;Antibody-drug conjugates;anticancer activity;Antigens;Autologous;Benefits and Risks;Binding;Biological Assay;Blood;Cancer Control;CAR T cell therapy;Cell Therapy;Cells;Characteristics;checkpoint therapy;chimeric antigen receptor T cells;Clinical;clinical candidate;clinical development;Clinical Research;Clustered Regularly Interspaced Short Palindromic Repeats;CRISPR library;CRISPR screen;CTLA4 gene;cytokine;cytokine therapy;Cytoplasmic Tail;cytotoxicity;Development;Directed Molecular Evolution;Disease;Disease Progression;Disease remission;Disseminated Malignant Neoplasm;DNA Sequence;Dose;engineered T cells;Engineering;Epigenetic Process;Evolution;exhaustion;Exhibits;Exons;experience;Failure;first-in-human;Flow Cytometry;Gene Modified;Gene Mutation;Genes;Genetic;Genetic Screening;genetic selection;Goals;Hematologic Neoplasms;Immune;immune-related adverse events;Immunotherapy;improved;In Vitro;in vivo;in vivo evaluation;Individual;Infiltration;Inflammatory;Kidney;Knock-in;Knock-out;Lead;Lentivirus Vector;Libraries;loss of function;Malignant Neoplasms;manufacture;Memory;Messenger RNA;Modeling;Modification;Mus;Mutation;next generation;Normal tissue morphology;novel;Oncogenic;Outcome;Pathology;Pathway interactions;patient derived xenograft model;Patients;Pharmaceutical Preparations;Pharmacodynamics;pharmacokinetics and pharmacodynamics;Phase;Phase I Clinical Trials;Phase I/II Clinical Trial;Phase II Clinical Trials;Phenotype;plasmid DNA;Plasmids;PRDM1 gene;pre-clinical;Pre-Clinical Model;preclinical development;Process;Production;programs;Proliferating;Property;Protocols documentation;Renal Carcinoma;Renal Cell Carcinoma;Risk Assessment;SCID Beige Mouse;Side;Site;Solid Neoplasm;T-Cell Proliferation;T-Lymphocyte;Tail;targeted treatment;Technology;Testing;Therapeutic;Time;Toxic effect;Toxicology;transcriptome sequencing;tumor;Tumor Antigens;Tumor Volume;Validation;whole genome
+current_category: therapeutics
+---
+application_id: 11005738
+activity_code: R35
+title: New Computational Systems Biology Methods for Modeling Gene Regulatory Circuits
+org_name: NORTHEASTERN UNIVERSITY
+phr: Project Narrative Most human complex diseases are multigenic, but our understanding of how biological processes are controlled by complex gene regulatory interactions in healthy states and how the operations are disrupted in disease states is lacking. In the PI’s research program, a suite of computational systems biology algorithms will be developed to construct and model gene regulatory circuits of higher complexity to fill an important gap in our understanding of cellular state transitions and
+terms: Address;algorithm development;Algorithms;Automobile Driving;Basic Science;Behavior;Benchmarking;Biological Process;Biology;Cell Differentiation process;Chromosome Mapping;Clinical Treatment;Collaborations;Complex;computational suite;Computer Assisted;computerized tools;Computing Methodologies;Data;data resource;Data Set;design;Developmental Process;Disease;dynamic system;Epithelium;experimental study;Gene Expression;gene interaction;gene network;gene regulatory network;Genes;genomic data;Genomic medicine;Goals;Grain;Health;Human;human disease;in silico;in vivo;Intervention;Kinetics;knowledge integration;mathematical model;Mesenchymal;Methods;Modeling;models and simulation;new technology;next generation sequencing;operation;Patients;programs;reconstruction;Research;Risk;Signal Transduction;success;System;Systems Biology;Technology;Therapeutic Intervention;tool;tumorigenesis;Uncertainty
+current_category: biotools
+---
+application_id: 11170029
+activity_code: DP5
+title: Identifying transcriptomic and epigenomic convergence in intellectual and developmental disorders
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Project Narrative
+Individuals with intellectual and developmental disabilities (IDD) have poor health outcomes, and their life
+expectancy is 20 years shorter than the rest of the U.S. population. The limited arsenal of efficacious treatments
+for these disorders exacerbates this public health emergency. This proposal will develop a framework for
+identifying convergent mechanisms for a group of IDD risk genes, which would accelerate the development of
+mechanism-based therapies.
+terms: <ALL1><ALL1 gene><Acceleration><Acute Lymphoblastic Leukemia Protein 1><Affect><Binding Sites><Biological><CRISPR interference><CRISPR-dCas9-mediated repression><CRISPR/dCas9 interference><CRISPR/dCas9-mediated transcriptional inhibition><CRISPRi><CUT&RUN><CXXC7><Calcium><Children's Hospital><Chromatin><Chromatin Remodeling Complex><Chromatin Remodeling Factor><Cleavage Targets and Release Using Nuclease><Cleavage Under Targets and Release Using Nuclease><Clustered Regularly Interspaced Short Palindromic Repeats interference><Collaborations><Combining Site><Complex><Computing Methodologies><Confounding Factors (Epidemiology)><Confounding Variables><DNA-Binding Proteins><Development><Disease><Disorder><Drosophila Homolog of Trithorax><EC 2.1.1><Electrophysiology><Electrophysiology (science)><Epidemiologic Confounding Factor><Epigenetic><Epigenetic Change><Epigenetic Mechanism><Epigenetic Process><Family><Family member><Financial Support><Foundations><Funding><Gene Expression><Gene Transcription><Genes><Genetic><Genetic Transcription><Genomics><Grant><HRX><Human><Human Genetics><Image><Individual><Induced pluripotent stem cell derived human neuron><Induced pluripotent stem cell derived neurons><Institution><Intellectual disability><Intellectual functioning disability><Intellectual limitation><Investigators><Journals><KMT2A><Life Expectancy><Lysine-Specific Methyltransferase 2A><MLL gene><MLL1><Magazine><Maps><Medicine><Mentors><Mentorship><Methylation><Methyltransferase><Mixed Lineage Leukemia Gene><Mixed-Lineage Leukemia Protein><Modeling><Modern Man><Morphology><Multiple lineage leukemia 1><Myeloid-Lymphoid Leukemia Gene><Myeloid-Lymphoid Leukemia Protein><Myeloid/Lymphoid Leukemia Gene><Myeloid/Lymphoid Or Mixed Lineage Leukemia Protein><Myeloid/Lymphoid or Mixed Lineage Leukemia Gene><NRSA><National Research Service Awards><Nerve Cells><Nerve Unit><Neural Cell><Neurocyte><Neurodevelopmental Disorder><Neurologic><Neurological><Neurological Development Disorder><Neuron from iPSC><Neuron from induced pluripotent stem cells><Neurons><Neurophysiology / Electrophysiology><Paper><Pathway interactions><Patients><Pediatric Hospitals><Phenotype><Population><Productivity><Progenitor Cells><Proteins><Proto Oncogene Proteins MLL><Publishing><RNA Expression><Reactive Site><Research><Research Institute><Research Personnel><Research Resources><Research Training><Researchers><Resources><Rest><Risk-associated variant><Sight><Subgroup><System><Testing><Texas><Therapeutic><Therapeutic Intervention><Training><Transcription><Vision><Work><Zinc Finger Protein HRX><biologic><career><chromatin modifier><college><collegiate><computational methodology><computational methods><computer based method><computer methods><computing method><customized therapy><customized treatment><developmental><developmental disease><developmental disorder><disabled><disease model><disorder model><efficacious therapy><efficacious treatment><electrophysiological><empowerment><epigenetically><epigenomics><experiment><experimental research><experimental study><experiments><financial assistance><functional genomics><graduate student><hiPSC-derived neurons><histone demethylase><histone modification><human iPSC-derived sensory neuron><human induced pluripotent stem cell derived sensory neuron><iPS neurons><iPSC derived-neurons><iPSC-derived human neuron><imaging><individualized medicine><individualized patient treatment><individualized therapeutic strategy><individualized therapy><individualized treatment><induced pluripotent stem cell neurons><inducible pluripotent stem cell derived human neuron><inducible pluripotent stem cell derived human sensory neuron><inhibitor><intellectual and developmental disability><intervention therapy><knock-down><knockdown><limited intellectual functioning><method development><methylase><mixed lineage leukemia 1><multi-electrode arrays><multielectrode arrays><neurodevelopmental disease><neuronal><neurons derived from induced pluripotent stem cells><neurons differentiated from human induced pluripotent stem cells><neurons differentiated from induced pluripotent stem cells><novel><pathway><patient specific therapies><patient specific treatment><poor health outcome><progenitor biology><progenitor cell biology><programs><protein complex><public health emergency><reduced health outcome><repressing CRISPR-dCas9 system><risk allele><risk gene><risk genotype><risk loci><risk locus><risk variant><scRNA sequencing><scRNA-seq><single cell RNA-seq><single cell RNAseq><single cell expression profiling><single cell transcriptomic profiling><single-cell RNA sequencing><small molecule><stem and progenitor biology><stem cell biology><stem cells><tailored medical treatment><tailored therapy><tailored treatment><transcriptomics><transmethylase><unique treatment><visual function><worse health outcome>
+current_category: basic_research
+---
+application_id: 11099651
+activity_code: R01
+title: RFA-CE-23-004: Youth Participatory Action Research to Prevent Community Violence among Black youth
+org_name: EMORY UNIVERSITY
+phr: PROJECT NARRATIVE Black youth experience persistent inequities in community violence with homicide being the leading cause of death for this population. Multilevel approaches that promote individual and collective healing processes and recognize community as an asset and agent of change are promising intervention strategies to prevent youth and community violence. We propose to use a community-based participatory research (CBPR) approach to implement and evaluate a multilevel intervention, Youth
+terms: N/A
+current_category: other
+---
+application_id: 10877790
+activity_code: R35
+title: DEFINING THE ROLE OF RNA SEQUESTRATION IN MAMMALIAN CELL FATE
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: PROJECT NARRATIVE Post-transcriptional mechanisms have the potential to influence complex changes in gene expression, yet their role in mammalian cell fate transitions remains incompletely understood. The research outlined in this proposal will elucidate the cellular, molecular, and functional role of RNA sequestration in mammalian embryogenesis and adult hematopoietic homeostasis. We expect that results from these studies will yield fundamental insights into the general principles that control 
+terms: Adult;anti-cancer;Basic Science;Cell Fate Control;Cells;Complex;Cytoplasm;Development;Ectoderm;Embryo;embryo cell;Embryonic Development;embryonic stem cell;Endoderm;Gene Expression;Goals;Hematopoiesis;Hematopoietic;Hematopoietic stem cells;Homeostasis;innovation;insight;Malignant Neoplasms;Mammalian Cell;Maps;Mesoderm;Molecular;novel;novel therapeutic intervention;Physical condensation;Play;Pluripotent Stem Cells;Post-Transcriptional Regulation;posttranscriptional;Process;progenitor;programs;Protein Isoforms;regenerative approach;Regenerative Medicine;Regulation;Regulator Genes;Research;RNA;RNA methylation;RNA Processing;Role;Specific qualifier value;Technology;Tissues;tool;Transcript;translational medicine;translatome;Work
+current_category: basic_research
+---
+application_id: 11131839
+activity_code: R01
+title: Spreading Depolarization and Progression of Developmental Epileptic Encephalopathy
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Project Narrative This project will investigate the role of a brain phenomenon called spreading depolarization (SD) in the genetic epilepsy mouse model of Dravet syndrome. We will investigate how SD affects their physiology and behavior, and identify how such a massive depolarization is regulated.
+terms: acquired epilepsy;Acute;Address;Adolescent;Adult;Affect;Amygdaloid structure;Anesthesia procedures;Animals;Area;awake;Basic Science;Behavior;Behavioral;Biological;Biological Markers;Blood flow;Brain;Brain Stem;brain tissue;Cardiovascular system;Chronic;circadian;Classic Migraine;Clinical;Clinical Research;Clinical Treatment;Cognitive;comorbidity;Data Set;data sharing;Detection;Development;developmental epileptic encephalopathy;Disease;Disease Progression;Distant;dravet syndrome;Edema;Electroencephalography;Electrophysiology (science);Epilepsy;epilepsy patient;Event;Exhibits;Female;Frequencies;Functional disorder;Generations;Genes;Genetic;Genotype;Goals;high risk;Hippocampus;Hour;Human;Hyperthermia;insight;Intervention;Laboratories;Life;male;Metabolic;Methods;migration;Modeling;Monitor;mortality;Motor;mouse model;multimodality;Mus;neurobehavioral;Neuroglia;Neurologic;Neurologic Deficit;Neurologic Dysfunctions;neuronal circuitry;Neurons;neuropathology;novel;optogenetics;Outcome;Pathologic;Pathology;Pattern;Phenotype;Physiology;pre-clinical;Pre-Clinical Model;preclinical study;Predisposition;Premature Mortality;Research;Resources;respiratory;Risk;Role;Scalp structure;Seizures;Sensory;Slice;Stroke;Structure;sudden unexpected death in epilepsy;System;Techniques;Testing;Tissues;tool;Traumatic Brain Injury;vigilance
+current_category: basic_research
+---
+application_id: 10943961
+activity_code: R01
+title: Bedside Notes: A multicenter trial to improve family clinical note access and outcomes for hospitalized children
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: PROJECT NARRATIVE Hospitalized children suffer harm from medical errors at a rate three times that of adults and depend on clinicians to exchange information with parents to identify and intercept errors. While access to information within clinical notes, which detail a child’s diagnoses, treatment and contingency plans, has prompted parents to identify safety concerns, less than 10% of parents access notes during their child’s hospital stay. The objective of this proposed multisite clinical tri
+terms: N/A
+current_category: other
+---
+application_id: 11142988
+activity_code: R01
+title: Diagnostic  Safety and Quality Optimization in Sepsis (DISQOS)
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Sepsis is one of the most common causes of hospitalization, healthcare costs, and mortality in the United States. Despite existing evidence-based guidelines that promote timely delivery of antibiotics to appropriate patients with sepsis, diagnostic challenges often lead to harmful diagnostic errors We propose to leverage tools from safety and implementation science to address the fundamental knowledge gap in understanding and applying best practices for sepsis diagnostic safety and quality.
+terms: N/A
+current_category: diagnostics
+---
+application_id: 10931492
+activity_code: R01
+title: Diagnostic  Safety and Quality Optimization in Sepsis (DISQOS)
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Sepsis is one of the most common causes of hospitalization, healthcare costs, and mortality in the United States. Despite existing evidence-based guidelines that promote timely delivery of antibiotics to appropriate patients with sepsis, diagnostic challenges often lead to harmful diagnostic errors We propose to leverage tools from safety and implementation science to address the fundamental knowledge gap in understanding and applying best practices for sepsis diagnostic safety and quality.
+terms: N/A
+current_category: digital_health
+---
+application_id: 10978784
+activity_code: R01
+title: Assessing the Effects of EHR Optimization Interventions in Primary Care
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: NARRATIVE While electronic health records (EHRs) have had positive effects for patient safety and quality of care, they have also worsened the work experiences of primary care physicians (PCPs), and health system leaders struggle to identify interventions that contribute to improved primary care quality while also enhancing PCPs’ EHR interactions and wellbeing. To address this gap, we will use data from both community-based and academic primary care practices to evaluate the impact of three EHR-
+terms: N/A
+current_category: basic_research
+---
+application_id: 10809640
+activity_code: R01
+title: EnhanCed HandOffs (ECHO)
+org_name: WASHINGTON UNIVERSITY
+phr: NARRATIVE: ECHO PROJECT Handoff standardization strategies have been implemented across hospitals to mitigate deleterious postoperative handoff events, but the "one-size-fits-all" approach has failed to promote critical collaborative handoff functions, consequently contributing to communication errors and care continuity failures. To address these failures, we propose to develop and implement the INTERACT (Intelligent interactive care continuity) handoff bundle, a flexible standardized, EHR-inte
+terms: N/A
+current_category: digital_health
+---
+application_id: 10894033
+activity_code: R01
+title: Integrating real-time clinical activity and behavioral responses for characterizing cognitive load and errors (IGNITE)
+org_name: WASHINGTON UNIVERSITY
+phr: PROJECT NARRATIVE Cognitive load and burnout affect the well-being of clinicians and safety of patients under their care. Prior studies have relied predominantly relied on surveys for their measurement. We propose the use of electronic health record (EHR)-based audit logs to determine the cognitive load experienced by clinicians, assess its direct impact on errors using automated clinical decision support tools, and determine the mediating role of burnout in explaining the relationship between c
+terms: N/A
+current_category: therapeutics
+---
+application_id: 10873233
+activity_code: R01
+title: Developing e-Triggers to Detect Telemedicine Related Diagnostic Safety Events
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Better methods are needed to identify and mitigate any risks of misdiagnosis during telemedicine visits. In this project we will first understand what aspects of telemedicine may involve risks of misdiagnosis, then develop electronic methods to identify telemedicine visits where misdiagnosis may have occurred, and finally use all this knowledge to develop risk assessment guidance tools that health care organizations, providers, and patients can use to reduce any risks of misdiagnosis associated 
+terms: N/A
+current_category: diagnostics
+---
+application_id: 10869937
+activity_code: R01
+title: Molecular Regulation of Mitochondrial Permeability Transition and its Role in Regulated Necrosis
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Project Narrative Loss of cardiomyocytes by necrotic cell death is the direct mechanistic basis for mortality due to myocardial infarction injury, as well as ensuing heart failure associated with an array of cardiomyopathies. This proposal will explore novel mechanisms in regards to the composition and regulation of the mitochondria permeability transition pore and its opening, which is the critical event that is responsible for regulated necrotic cell death. Further definition and molecular com
+terms: Adenine Nucleotides;Affect;Ants;Binding;Calcium;candidate identification;Cardiac Myocytes;Cardiomyopathies;Cause of Death;Cell Culture System;Cell Death;Cells;Cessation of life;Characteristics;Communities;Compensation;Crista ampullaris;Cyclophilin A;cyclophilin D;Cyclosporine;Data;desensitization;design;Enterobacteria phage P1 Cre recombinase;Event;Excision;Family;Family member;Genetic;Heart;Heart failure;In Vitro;in vivo;inhibitor;Injury;Inner mitochondrial membrane;insight;Ischemia;ischemic injury;Isomerism;Knockout Mice;Laboratories;Liver;Liver Mitochondria;Masks;Measures;Membrane;Membrane Potentials;Membrane Proteins;mimetics;Mitochondria;mitochondrial dysfunction;mitochondrial permeability transition pore;Molecular;mortality;Mus;Mutate;Myocardial Infarction;Myocardial Ischemia;Necrosis;novel;novel therapeutic intervention;Organelles;Outer Mitochondrial Membrane;Oxygen;Peptidylprolyl Isomerase;Permeability;Probability;Production;protective effect;Protein Isoforms;Proteins;Regulation;Reperfusion Injury;Resistance;Role;Rupture;SLC25A4 gene;SLC25A5 gene;Swelling;Therapeutic;therapeutic target;Tissues;Work
+current_category: basic_research
+---
+application_id: 11081005
+activity_code: R01
+title: Mechanisms of resealing and rebuilding in muscle repair
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: PROJECT NARRATIVE
+Excessive muscle contraction and trauma often result in acute muscle injury, triggering the need for
+cellular repair. Defects in muscle repair contribute to and exacerbate chronic disorders like muscular
+dystrophy. The proposed studies will lead to an improved understanding of the mechanisms regulating muscle
+resealing and rebuilding, helping to guide therapeutic strategies aimed at improving muscle repair capacity.
+terms: <Actins><Acute><Annexin A6><Annexin VI><Annexins><Antimorphic mutation><Area><Calcimedin 67-kDa><Calcimedins><Calcium and Phospholipid-Binding Protein p68><Calelectrin 67-kDa><Calphobindin II><Cell Body><Cell Differentiation><Cell Differentiation process><Cell Locomotion><Cell Migration><Cell Movement><Cell-Extracellular Matrix><Cells><Cellular Migration><Cellular Motility><Chronic Disease><Chronic Illness><Cytoplasm><DNA mutation><DYSF><DYSF gene><Defect><Dependence><Disease><Disorder><Dominant Negative><Dominant-Negative Mutant><Dominant-Negative Mutation><ECM><Embryonic Muscle Cells><Event><Extracellular Matrix><F-Actin><FER1L1><Family member><Filamentous Actin><GeneHomolog><Genetic><Genetic Change><Genetic Diseases><Genetic defect><Genetic mutation><Health><Homolog><Homologous Gene><Homologue><Hour><Injury><LGMD2B><Limb girdle muscular dystrophy 2B (autosomal recessive)><Lipocortin VI><Lipocortins><Membrane><Molecular><Muscle><Muscle Atrophy><Muscle Cell Contraction><Muscle Contraction><Muscle Tissue><Muscle function><Muscular Atrophy><Muscular Contraction><Muscular Dystrophies><Mutation><Myoblasts><Myodystrophica><Myodystrophy><Outcome><Pharmacology><Phase><Polymers><Precursor Muscle Cells><Process><Proliferating><Proteins><Research><Resolution><Role><Sarcolemma><Sarcomeres><Shoulder><Site><Therapeutic><Time><Trauma><Visualization><Work><cell motility><cell type><cellular differentiation><chronic disorder><dysferlin><extracellular><fer-1-like family member><genetic condition><genetic disorder><genome mutation><improved><injured><injuries><injury and repair><membrane structure><migration><muscle breakdown><muscle degradation><muscle deterioration><muscle dystrophy><muscle fiber repair><muscle loss><muscle repair><muscle tissue repair><muscle wasting><muscular><muscular repair><novel><polymer><polymeric><polymerization><progenitor><progenitor cell differentiation><progenitor differentiation><programs><recruit><repair><repaired><resolutions><seal><social role><stem and progenitor differentiation><stem cell differentiation><tool>
+current_category: basic_research
+---
+application_id: 11034219
+activity_code: R01
+title: PKDNet - ARPKD Learning Network
+org_name: CHILDREN'S HOSP OF PHILADELPHIA
+phr: PROJECT NARRATIVE Autosomal recessive polycystic kidney disease (ARPKD) is a rare disease that can cause kidney failure and liver complications and currently does not have any available FDA-approved treatments. Even though several drugs have appeared promising in animal studies, there are few clinical trials in humans due to a lack of detailed information about the natural history of ARPKD and difficulty in recruiting enough patients who are able and willing to take part in trials. The goal of t
+terms: N/A
+current_category: therapeutics
+---
+application_id: 11034579
+activity_code: R01
+title: Progressing toward clinical trial readiness in CCHS: Natural history study to incorporate patient voice, harmonize clinical and registry data, and standardize assessments
+org_name: LURIE CHILDREN'S HOSPITAL OF CHICAGO
+phr: Project Narrative Congenital Central Hypoventilation Syndrome (CCHS) is a rare and complex disease, causing a life-threatening inability to regulate breathing and oxygen levels necessitating life-long ventilatory support, in addition to severe Hirschsprung disease, neural crest tumors, and autonomic co-morbidities. Despite limited treatment options and no cures, recent advances in pharmacology, bio-technology, and understanding of the molecular underpinnings of CCHS have paved the way for clinic
+terms: N/A
+current_category: therapeutics
+---
+application_id: 11184459
+activity_code: R01
+title: Progressing toward clinical trial readiness in CCHS: Natural history study to incorporate patient voice, harmonize clinical and registry data, and standardize assessments
+org_name: LURIE CHILDREN'S HOSPITAL OF CHICAGO
+phr: Project Narrative Congenital Central Hypoventilation Syndrome (CCHS) is a rare and complex disease, causing a life-threatening inability to regulate breathing and oxygen levels necessitating life-long ventilatory support, in addition to severe Hirschsprung disease, neural crest tumors, and autonomic co-morbidities. Despite limited treatment options and no cures, recent advances in pharmacology, bio-technology, and understanding of the molecular underpinnings of CCHS have paved the way for clinic
+terms: N/A
+current_category: therapeutics
+---
+application_id: 10701010
+activity_code: R01
+title: Gyrate Atrophy Ocular and Systemic Study (GYROS)
+org_name: JAEB CENTER FOR HEALTH RESEARCH, INC.
+phr: Project Narrative for Gyrate Atrophy: Ocular and Systemic Natural History Study (GYROS) Gyrate atrophy is a rare inherited chorioretinal degeneration that is associated with hyperornithinemia caused by autosomal recessive mutations in the ornithine aminotransferase (OAT) gene, leads to severe loss of vision, and for which the current standard of care treatment is a highly burdensome arginine-restricted diet (ARD) fraught with management complications. The principal investigators are currently de
+terms: N/A
+current_category: therapeutics
+---
+application_id: 11162290
+activity_code: R01
+title: Risk and Resilience in Pulmonary Arterial Hypertension and Genetically Susceptible Individuals
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: Project Narrative Pulmonary arterial hypertension (PAH) is a severe disease with a delayed diagnosis and markedly elevated mortality. High-risk populations, such as those with known genetic defects, provide a unique opportunity to determine the features of susceptibility and resilience to PAH. This proposal will fundamentally overturn the prevailing understanding of PAH by creating molecularly-driven signatures of susceptibility and resilience, provide novel insight into disease severity, and po
+terms: N/A
+current_category: basic_research
+---
+application_id: 11042791
+activity_code: R01
+title: Investigating the function and mechanism of interleukin 7 receptor-expressing pro-angiogenic macrophages during experimental choroidal neovascularization
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: PROJECT NARRATIVE Evidence suggests a role for pro-angiogenic macrophages in neovascular age-related macular degeneration pathogenesis, which is the leading cause of vision loss in the developed world. Our preliminary data demonstrates that macrophages are heterogeneous in experimental choroidal neovascularization (CNV) and that interleukin-7 receptor (IL7R) expressing macrophages are pro- angiogenic. In this proposal, we will determine the origin and function of IL7R+ macrophages during experim
+terms: Ablation;angiogenesis;Angiogenesis Pathway;Annexins;Area;Atrophic;Basement membrane;Blindness;Blood Vessels;Bone Marrow;Breeding;Cell Therapy;Cells;Choroid;choroidal angiogenesis;Choroidal Neovascularization;Classification;Complement;complement pathway;Complement Receptor;Confocal Microscopy;cytokine;Data;Dendritic Cells;diphtheria toxin receptor;Drusen;Endothelial Cells;experimental study;Exudative age-related macular degeneration;Eye;Fibronectins;Flow Cytometry;Fluorescence-Activated Cell Sorting;Genes;Heterogeneity;Homeostasis;Human;Immune;Inflammatory;Interleukin 7 Receptor;Interleukin-1 beta;intravitreal injection;Knock-out;Laser injury;Lasers;Lesion;LoxP-flanked allele;Lymphocyte;Macrophage;Maps;Matrix Metalloproteinases;Measures;Modeling;monocyte;Mus;novel;novel therapeutics;Ontology;Operative Surgical Procedures;osteopontin;Pathogenesis;Pathogenicity;Pathologic;Pathway interactions;Patients;prevent;PTPRC gene;recruit;Resistance;Role;scaffold;single-cell RNA sequencing;System;T-Lymphocyte;Tamoxifen;targeted treatment;Testing;Therapeutic;transcriptome;Vascular Endothelial Growth Factors;Vision;Wild Type Mouse
+current_category: basic_research
+---
+application_id: 10786084
+activity_code: R01
+title: Multi-Cellular Analysis of the Retinal Network
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: PROJECT NARRATIVE It has been suggested that many retinal diseases are mediated by abnormalities in retinal synaptic circuits, such as rod and cone dystrophy in retinitis pigmentosa, macular degeneration, congenital stationary night blindness (CSNB) and glaucoma. Our multi-cellular analysis of retinal circuits will provide important new insights into how synaptic abnormalities contribute to various retinal disorders.
+terms: Adopted;Adoption;Affect;Behavior;cell type;Cells;Characteristics;Classification;Classification Scheme;Cone;connectome;Coupled;Coupling;Darkness;Disease;Distant;electrical property;Electrodes;Equation;Exhibits;Feedback;functional group;ganglion cell;Glaucoma;Goals;horizontal cell;Human;Individual;Injections;insight;Kinetics;Knowledge;Lateral;Learning;Light;Light Adaptations;Light Cell;light effects;Location;Macular degeneration;Maps;Mediating;Monitor;Nervous System;network dysfunction;neural circuit;neural network;neuronal circuitry;Neurons;Night Blindness;operation;Pathway interactions;Photoreceptors;Physiological;postsynaptic;presynaptic;Property;Radial;Reaction Time;Research;response;Retina;Retinal Cone;Retinal Diseases;retinal neuron;retinal rods;Retinitis Pigmentosa;Rod;Role;Salamander;Shapes;signal processing;Signal Transduction;spatiotemporal;Stimulus;Synapses;System;Taxonomy;Techniques;two-dimensional;Variant;Vertebrate Photoreceptors;visual information;visual processing;voltage clamp;voltage gated channel
+current_category: basic_research
+---
+application_id: 10813140
+activity_code: R01
+title: Cilium-associated structures in rod cells
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Narrative This proposal is focused on understanding the structural link between genetic deficiencies and inherited diseases of the eyes and other tissues. Doing so will help us understand the mechanisms of retinal neurodegeneration and other cilium-associated pathologies and could lead to new therapeutic approaches.
+terms: Animal Model;appendage;Bardet-Biedl Syndrome;Carrier Proteins;Cell Death;Cellular Structures;Cilia;ciliopathy;Color;Computer software;Cryo-electron tomography;Deficiency Diseases;Development;Disease;Electron Microscopy;Electrons;Environment;Event;Exclusion;experimental study;Eye diseases;Fiber;Fluorescence;Fluorescence Microscopy;Functional disorder;Genes;Genetic;Genetic Techniques;Goals;Hereditary Disease;imaging approach;Imaging technology;improved;innovation;kinetosome;Lead;Light;Link;Membrane;Membrane Proteins;Microtubules;Molecular;molecular scale;mouse model;Mus;nanometer resolution;Nerve Degeneration;Noise;novel;novel therapeutic intervention;particle;Pathology;Pharmaceutical Preparations;Play;protein complex;protein function;Proteins;Resolution;restoration;Retina;Retinal Degeneration;Retinal Photoreceptors;retinal rods;Rod;Role;Route;Secondary to;Sensory;Shapes;Signal Transduction;Structure;Testing;three dimensional structure;Tissues;trafficking;Triplet Multiple Birth;ultra high resolution;Vertebrate Photoreceptors
+current_category: basic_research

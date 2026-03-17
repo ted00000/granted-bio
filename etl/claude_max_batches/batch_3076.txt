@@ -1,0 +1,409 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 11138793
+activity_code: OT2
+title: CANCAN - Kaiser
+org_name: KAISER FOUNDATION RESEARCH INSTITUTE
+phr: N/A
+terms: Address;Adipose tissue;Affect;Algorithmic Analysis;Animals;Anorexia;anorexic;anti-cancer treatment;Atlases;Atrophic;Autophagocytosis;Basic Science;Behavior;behavioral study;Biological Markers;Blood;Body Composition;Body Weight decreased;Cachexia;Cancer Cachexia;Cancer Model;Cancer Patient;cancer therapy;carcinogenesis;Catabolic Process;Cells;Characteristics;chemotherapy;Classification;Clinic;Clinical;clinical biomarkers;clinical care;clinical phenotype;Clinical Research;clinical subtypes;Clinical Trials;clinically relevant;Cluster Analysis;Clustered Regularly Interspaced Short Palindromic Repeats;cohort;Combined Modality Therapy;cytokine;Cytometry;Data;Desire for food;Diagnosis;dietary;Eating;effective therapy;Endocrine;Energy Metabolism;Epidemiology;Etiology;Fatty acid glycerol esters;Feeding behaviors;Foundations;Future;GDF15 gene;Gene Expression Profiling;Generations;Genes;Genetic;Geography;Goals;gut microbiome;high risk;Histologic;Hormonal;Hormones;host neoplasm interaction;Human;Image;imaging Segmentation;Immune;Immunology;improved;improved outcome;in vivo;Inflammatory;Inflammatory Response;innovation;insulin signaling;Interleukin-6;International;Intervention;Intrinsic factor;Investigation;Isotopes;Lead;Life Expectancy;Link;Lipolysis;lung microbiome;Malignant Neoplasms;Maps;Mass Spectrum Analysis;Measures;Mediator;Medical;Metabolic;Metabolic Diseases;Metabolic dysfunction;metabolic phenotype;Metabolism;Methods;microbial;microbiome;microbiota;molecular subtypes;mortality;mouse model;multicatalytic endopeptidase complex;multidisciplinary;Mus;Muscle;neoplastic cell;Neuroendocrinology;Neurologic;Neurosecretory Systems;Non-Small-Cell Lung Carcinoma;novel;nuclear imaging;Nutrient;Observational Study;optogenetics;Organ;Organoids;Pathway interactions;patient population;Patient Recruitments;Patient-Focused Outcomes;Patients;Performance Status;Peripheral;pharmacologic;Phenotype;Physical Function;Physiological;Pre-Clinical Model;Prospective, cohort study;Quality of life;Recovery;recruit;response;Risk;Science;Scientist;Skeletal Muscle;Specialist;System;Therapeutic;Time;Tissues;tool;Toxin;Translations;treatment response;treatment strategy;treatment trial;tumor;tumor metabolism;tumor microenvironment;Ubiquitin;uptake;Validation;virtual;Vision;wasting;Wasting Syndrome;Whole Organism;Work;Xenograft procedure
+current_category: basic_research
+---
+application_id: 11458705
+activity_code: N02
+title: SUBJECT MATTER EXPERT CONSULTANT FOR DRUG METABOLISM PHARMACOKINETICS [DMPK].-  HEAL
+org_name: N/A
+phr: N/A
+terms: Award;clinical pain;Contracts;cost;Development;drug development;drug discovery;Drug Industry;Drug Kinetics;drug metabolism;efficacy study;Funding;Helping to End Addiction Long-term;Industry;Lead;Maps;Neurosciences;Neurosciences Research;Pain;Pain management;Pharmaceutical Chemistry;Phase;Principal Investigator;Program Development;programs;Research;research clinical testing;Research Contracts;Research Personnel;Services;Speed;United States National Institutes of Health
+current_category: therapeutics
+---
+application_id: 10869547
+activity_code: R01
+title: Post-transcriptional mechanisms of centrosome regulation
+org_name: EMORY UNIVERSITY
+phr: Project Narrative Centrosomes are required for error-free mitosis and other cellular functions, and their deregulation drives developmental disorders, such as microcephaly and cancer. This proposal investigates novel paradigms of centrosome regulation by examining the functional consequences of mRNA localized to centrosomes.
+terms: Active Biological Transport;Acute;Adhesions;autism spectrum disorder;Biochemistry;Biology;brain size;cancer biomarkers;cell behavior;Cell Cycle;Cell division;Cell Physiology;Cell Survival;cell type;Cells;Cellular biology;Centrosome;Chromosomal Instability;cilium biogenesis;Complex;Congenital Abnormality;Coupled;Data;Developmental Delay Disorders;developmental disease;Disease;disease model;Drosophila genus;Dynein ATPase;Embryo;Engineering;fly;FMR1 gene;Foundations;Functional disorder;Future;Genetic;Genome Stability;Goals;Head;Health;Heritability;Homeostasis;Human;Image;Intellectual functioning disability;interdisciplinary approach;Interphase;Knowledge;Learning;Link;Malignant Neoplasms;Memory;Messenger RNA;Microcephaly;Microtubule-Organizing Center;Microtubules;migration;Minus End of the Microtubule;Mitosis;Mitotic spindle;Modeling;Monitor;Motor;Mutation;Neurodevelopmental Disorder;Normal Cell;novel;Paraneoplastic Cerebellar Degeneration;pericentrin;posttranscriptional;Prognostic Marker;Proliferating;Protein Biosynthesis;Proteins;recruit;Regulation;response;Ribonucleoproteins;RNA;RNA Sequences;RNA-Binding Proteins;Role;Site;spatiotemporal;Structure;Testing;trafficking;Translations;Work
+current_category: basic_research
+---
+application_id: 11407975
+activity_code: U19
+title: Clinical Project
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: <AIDS Virus><Accounting><Acquired Immune Deficiency Syndrome Virus><Acquired Immunodeficiency Syndrome Virus><Affect><Age><Alcohol Drinking><Alcohol consumption><Anti-viral Therapy><Antigen-Antibody Complex><Antigens><Attenuated><Biological><Biological Markers><Blood><Blood Plasma><Blood Reticuloendothelial System><Blood Serum><Body Tissues><CD183><CKR-L2><CMKAR3><CRG-2><CXCL10><CXCL10 gene><CXCR3><CXCR3 gene><Cell Surface Antigens><Chemokine (C-X-C Motif) Receptor 3><Clinical><DNA><DNA Integration><Data><Defective Hybrids><Defective Interfering Particles><Defective Interfering Viruses><Defective Viruses><Deoxyribonucleic Acid><Disease Outcome><EtOH drinking><EtOH use><Event><Fibrosis><G Protein-Coupled Receptor 9><GPR9><Gene Transcription><Genetic Transcription><HBV><HBV Genotype><HBV cure><HBV functional cure><HBV infected individuals><HBV infection><HBV infection in patients><HBV infection in people><HBV patients><HIV><HIV and HBV><HIV and hepatitis B><HIV-HBV><HIV/HBV><HIV/hepatitis B><HIV/hepatitis B virus><Hepatic><Hepatic Disorder><Hepatitis B Infection><Hepatitis B Virus><History><Human Immunodeficiency Viruses><IFI10><INP10><IP-10><IP10><IP10 Receptor><IP10-Mig receptor><IP10-R><Immune Cell Activation><Immune Complex><Immune response><Immunological Surface Markers><Immunology><Incomplete Viruses><Infection><Inflammation><Investigation><Isoforms><LAV-HTLV-III><Light><Liver><Liver diseases><Liver lesion biopsy><Lymphadenopathy-Associated Virus><MOB-1><Math Models><Measurement><Measures><Metabolic><Mig Receptor><Mig-R><MigR><Modeling><Non-Polyadenylated RNA><Outcome><Pathogenesis><Persons><Photoradiation><Plasma><Plasma Serum><Production><Protein Isoforms><Proteins><RNA><RNA Expression><RNA Gene Products><Recording of previous events><Reticuloendothelial System, Serum, Plasma><Ribonucleic Acid><SCYB10><Serology><Serum><Source><Surface Antigens><T-Cells><T-Lymphocyte><Testing><Tissues><Transcription><Viral><Virus><Virus Replication><Virus-HIV><Visit><Work><ages><alcohol ingestion><alcohol intake><alcohol product use><alcohol use><alcoholic beverage consumption><alcoholic drink intake><analyzing longitudinal><attenuate><attenuates><bio-markers><biologic><biologic marker><biomarker><clinical relevance><clinical significance><clinically relevant><clinically significant><cytokine><data integration><e Antigens><elastic imaging><elasticity imaging><elastography><ethanol consumption><ethanol drinking><ethanol ingestion><ethanol intake><ethanol product use><ethanol use><expectation><experience><gIP-10><hepatic body system><hepatic disease><hepatic inflammation><hepatic organ system><hepatitis B cure><hepatitis B functional cure><hepatitis B patients><hepatitis B viral infection><hepatitis B virus and human immunodeficiency virus><hepatitis B virus cure><hepatitis B virus functional cure><hepatitis B virus genotype><hepatitis B virus infected individuals><hepatitis B virus infection><hepatitis B virus infection in patients><hepatitis B virus infection in people><hepatopathy><histories><host response><immune activation><immune system response><immunogen><immunoresponse><individuals with HBV><individuals with hepatitis B><infected with HBV><infected with hepatitis B><infected with hepatitis B virus><infection with HBV><infection with hepatitis B virus><inflamed liver><insight><intrahepatic><liver biopsy><liver disorder><liver inflammation><longitudinal analysis><mathematic model><mathematical model><mathematical modeling><molecular biomarker><molecular marker><new marker><novel><novel biomarker><novel marker><patients with HBV><patients with hepatitis B><people with HBV><people with hepatitis B><response><response to therapy><response to treatment><serological marker><sex><therapeutic response><therapy response><thymus derived lymphocyte><treatment effect><treatment response><treatment responsiveness><viral DNA><viral RNA><viral infectious disease treatment><viral multiplication><viral replication><viral testing><virus DNA><virus RNA><virus multiplication><virus testing>
+current_category: basic_research
+---
+application_id: 11383963
+activity_code: N01
+title: CCTN-CONTRACEPTIVE DEVELOPMENT PROGRAM – CORE FUNCTION ACTIVITIES FOR SITES OF FEMALE CONTRACEPTIVE STUDIES - UCSF
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Clinical;Clinical Trials Network;Communication;Conduct Clinical Trials;Contraceptive Agents;Contraceptive methods;Contractor;Female Contraceptive Agents;Future;Goals;Medical;Methods;Mission;National Institute of Child Health and Human Development;Obesity;Performance;product development;Program Development;protocol development;Protocols documentation;Risk Reduction;Services;Site;Time;unintended pregnancy;venous thromboembolism;Woman
+current_category: infrastructure
+---
+application_id: 11074016
+activity_code: F31
+title: Cross Sex Steroid Therapy and Cardiovascular Risk in the Transgender Female
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: Narrative: Gender-Affirming Hormone Therapy (GAHT) for transgender women, which involves estrogen supplementation combined with anti-androgen therapy, is associated with an increased risk for cardiovascular diseases compared to the general population. Yet, the mechanisms involved are unknown. This project will investigate the etiology of increased cardiovascular risk in transgender women on GAHT using a novel and innovative model of GAHT in the male rat that mimics the effect of elevated estradi
+terms: Acute;Address;Adult;Age;Aging;Androgen Antagonists;Androgen Suppression;Angiotensin II;Angiotensins;Animal Model;Anti-androgen Therapy;arm;Basic Science;Biological;biological sex;Birth;Blood Pressure;blood pressure control;blood pressure regulation;Blood Vessels;Body Weight;Brain;Cardiovascular Diseases;cardiovascular disorder risk;cardiovascular health;cardiovascular risk factor;Cardiovascular system;Castration;Cerebrovascular Disorders;Characteristics;Chronic Disease;cis-male;clinically relevant;cohort;Communication;Complex;Coupled;Creatinine;Data;Development;Down-Regulation;Echocardiography;Endocrine;epidemiology study;Equilibrium;Estradiol;Estrogens;Etiology;Experimental Models;Exposure to;Female;Feminization;follow-up;Gender;gender affirming hormone therapy;gender dysphoria;Gender Identity;General Population;Goals;Gonadal Steroid Hormones;Grant;Guidelines;Health Care;Heart;heart damage;Heart Injuries;Hormonal;hormone therapy;Human;Hypertension;Inbred SHR Rats;Individual;innovation;Investigation;Kidney;Knowledge;Laboratories;Lactose;Learning;Long-Term Effects;Longitudinal Studies;male;Male Castration;male specific;Measurement;Mediating;Methods;Modeling;Myocardial Infarction;Myocardial Ischemia;normotensive;novel;Orchiectomy;Organ;organ injury;Outcome;Oxidoreductase;Participant;Pathway interactions;Phosphotransferases;Physicians;Physiological;Population;Predisposition;Prevalence;Rat Strains;Rattus;Renin-Angiotensin System;Reperfusion Therapy;Reporting;response;Risk;Risk Assessment;Rodent Model;Scientist;sex;Sex Characteristics;skills;Societies;Spironolactone;Sprague-Dawley Rats;Steroid therapy;Supplementation;System;Technical Expertise;Testing;Testis;Testosterone;testosterone deficiency;Thinness;Training;transgender;transgender women;Ultrasonography;United States;Upregulation;Vasoconstrictor Agents;Vasodilator Agents;Weight;young adult
+current_category: training
+---
+application_id: 11384005
+activity_code: N01
+title: CCTN-CONTRACEPTIVE DEVELOPMENT PROGRAM – CORE FUNCTION ACTIVITIES FOR SITES OF FEMALE CONTRACEPTIVE STUDIES - EAST VA
+org_name: EASTERN VIRGINIA MEDICAL SCHOOL
+phr: N/A
+terms: Clinical Trials Network;Conduct Clinical Trials;Contraceptive Agents;Contraceptive methods;Development;Female Contraceptive Agents;Future;Goals;Medical;Methods;Mission;National Institute of Child Health and Human Development;Obesity;product development;Program Development;protocol development;Protocols documentation;Risk Reduction;Services;Site;unintended pregnancy;venous thromboembolism;Woman
+current_category: infrastructure
+---
+application_id: 10766738
+activity_code: R13
+title: International Conference on Advances in Quantitative Laryngology,Voice and Speech Research (AQL)
+org_name: MAYO CLINIC ARIZONA
+phr: Project Narrative This proposal seeks funding for the upcoming 14th, 15th, and 16th International Conference on Advances in Quantitative Laryngology, Voice and Speech Research (AQL) and the associated workshops and pre- conference, taking place in 2021, 2023, and 2025. AQL is an important international scientific meeting specialized in translational research and methods for measurement and modeling of voice and speech. Special emphasis will be given to promoting young investigators and underrepr
+terms: Area;Award;Biology;Carbon;career;Caring;Child;Child Support;Clinical;Collection;Colombia;Communities;cost;COVID-19 pandemic;Dedications;design;Development;digital;Disabled Persons;Discipline;Education;Educational workshop;empowerment;Engineering;Ensure;Environment;Equity;ethnic minority;Evaluation;Event;expectation;Family;Fees;Fostering;Funding;Future;Germany;Goals;Health;improved;interest;International;Leadership;Location;Logistics;Machine Learning;Measurement;Measures;meeting abstracts;meetings;member;Mentors;Methodology;Minority;Modeling;multidisciplinary;Occupations;Online Systems;Otolaryngology;outreach;Persons;Physics;posters;preservation;programs;racial minority;Recording of previous events;recruit;Request for Proposals;Research;Research Methodology;Research Personnel;Safety;Science;Scientist;social;South America;South Korea;Specialist;Speech;Speech Pathology;Stream;Student Selections;Students;symposium;translational progress;Translational Research;Travel;Underrepresented Populations;United States National Institutes of Health;Update;virtual;Voice;web site;Woman
+current_category: infrastructure
+---
+application_id: 11292534
+activity_code: K23
+title: Improving shared decision-making around the use of disease modifying anti-rheumatic drugs in patients with rheumatoid arthritis and cancer
+org_name: UNIVERSITY OF WASHINGTON
+phr: NARRATIVE Patients with rheumatoid arthritis (RA) have an increased incidence of cancer, especially lymphoma and lung cancer, compared to the general population and to date relatively little is known about the safety of standard immunosuppressives for RA in patients with active or recently (< 5 years since diagnosis) diagnosed cancer. Little is also known about how to support decision-making for these patients who have at least two major comorbid conditions and may be under the care of multiple 
+terms: American;cancer diagnosis;Cancer Etiology;cancer risk;career development;Caring;Cause of Death;Cessation of life;Characteristics;clinical decision-making;clinical practice;Collaborations;comorbidity;comparative effectiveness;comparative safety;Data;Databases;Decision Aid;Decision Making;Development;Diagnosis;Disease-Modifying Second-Line Drugs;Ensure;evidence base;experience;Family;Family member;follow-up;Foundations;Funding;Future;General Population;Goals;Guidelines;Immune response;Immunosuppression;Immunosuppressive Agents;Impairment;improved;Incidence;Individual;individual patient;Interview;Knowledge;Lung Lymphoma;Lymphoma;Malignant neoplasm of lung;Malignant Neoplasms;member;Mentors;Mentorship;Methodology;Methods;mortality;Newly Diagnosed;Nurse Practitioners;Oncologist;Outcome;Outcomes Research;Patient Care;patient oriented;patient population;Patient-Focused Outcomes;Patients;Perception;Persons;Pharmaceutical Preparations;Pharmacoepidemiology;Pharmacotherapy;Population;preference;primary care provider;Process;Property;Qualitative Research;Recording of previous events;Recurrence;Research;Research Design;Research Methodology;Research Personnel;Retrospective cohort study;Rheumatism;Rheumatoid Arthritis;rheumatologist;Risk;Safety;Sample Size;Shapes;shared decision making;Signal Transduction;skills;Smoking;Specialist;Stage at Diagnosis;standard care;Testing;Training;treatment and outcome;treatment guidelines;treatment planning;Treatment Protocols;tumor;Tumor stage;United States Department of Veterans Affairs;Universities;Veterans;Washington;willingness
+current_category: training
+---
+application_id: 11195042
+activity_code: R13
+title: Environmental Mutagenesis and Genomics Society (EMGS) Annual Meeting 2024-2028
+org_name: ENVIRONMENTAL MUTAGENESIS/GENOMICS SOC
+phr: Members of the Environmental Mutagenesis and Genomics Society (EMGS) have expertise in multiple disciplines covering all aspects of basic and applied research on mechanisms and consequences of responses to genotoxic agents. Integration of these disciplines remains the central focus of the Society, and the annual meetings are key to the dissemination of information and fostering of interactions between researchers and individuals who must make informed regulatory decisions with respect to environ
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10901553
+activity_code: R13
+title: 2024 Thiol-Based Redox Regulation and Signaling Gordon Research Conference and Gordon Research Seminar
+org_name: GORDON RESEARCH CONFERENCES
+phr: PROJECT SUMMARY Oxidation of the thiol (–SH) of select protein cysteines can act as a molecular switch to adapt protein function and modulate cellular signaling events in response to metabolic changes and stress conditions. Excessive levels of cellular oxidants as a consequence of genetic alterations, environmental exposure, inflammation, or aging can disrupt thiol-based redox signaling with a range of pathological consequences, including cardiovascular and lung disease, neurodegeneration, and m
+terms: Acute;age-related disease;Aging;aging related;Alkylation;Animal Model;Area;Attention;Bioinformatics;Biological;Biological Markers;Biological Models;Biology;biophysical techniques;cancer cell;Cardiovascular Diseases;career;Cell model;Cells;Cessation of life;Chemicals;Chemistry;Chronic Disease;Clinical;Collaborations;Communication;Communities;Cysteine;design;Detection;diagnostic development;Discipline;Disease;doctoral student;Education;Environment;Environmental Exposure;Event;experience;Faculty;Functional disorder;Future;gene environment interaction;Global Change;Goals;graduate student;Hazardous Substances;Homeostasis;Human;human disease;Individual;Inflammation;Knowledge;Life;Link;Lung Diseases;Malignant Neoplasms;medical specialties;meetings;Mentors;Mentorship;Metabolic;Methods;Mission;Modification;Molecular;multiple omics;Mutation;National Institute of Environmental Health Sciences;Nerve Degeneration;Nitrogen;novel;novel diagnostics;novel therapeutic intervention;Organelles;Organism;Outcome;Oxidants;oxidation;Oxidation-Reduction;Oxygen;Participant;Pathologic;Pathology;Physicians;Physiological Processes;Physiology;Play;Post-Translational Protein Processing;Postdoctoral Fellow;posters;Prevention;Process;professional atmosphere;programs;protein function;Proteins;recruit;Recurrence;Regulation;Relaxation;Request for Proposals;Research;Research Personnel;response;Role;Running;Scientist;Signal Transduction;Societies;Sorting;Source;Spain;Stimulus;Stress;student participation;Students;success;Sulfhydryl Compounds;Sulfur;supportive environment;symposium;Talents;Therapeutic;Toxic effect;Toxicology;Translating;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 11416273
+activity_code: U54
+title: Data Management and Biostatistical Analysis Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10770576
+activity_code: R13
+title: Lessons for Success
+org_name: AMERICAN SPEECH-LANGUAGE-HEARING ASSN
+phr: According to the National Institute on Deafness and Other Communication Disorders (NIDCD), millions of people in the United States have a communication or related disorder. Thirty million people 12 years of age or older have hearing loss in both ears, 6–8 million people have some form of a language impairment, and 7.5 million people have a voice difficulty. The Lessons for Success program aims to increase the generation of research in Communication Sciences and Disorders by providing educational
+terms: 12 year old;Acculturation;Address;Award;base;career;career development;Career Mobility;Collaborations;Communication;Communities;Competence;Data;Databases;Development;Discipline;Disease;Ear;Education;Elements;Eligibility Determination;experience;Extramural Activities;Faculty;Faculty Workshop;field survey;Funding;Generations;Grant;Grant Review;health communication;hearing impairment;improved;Individual;innovation;Interdisciplinary Study;language impairment;Mentors;National Institute on Deafness and Other Communication Disorders;Outcome;Outcome Measure;Participant;Persons;Positioning Attribute;Preparation;Principal Investigator;Productivity;Program Evaluation;programs;Publications;Reporter;Reporting;Research;Research Personnel;satisfaction;Science;Scientific Advances and Accomplishments;Scientist;skills;success;symposium;Training;United States;United States National Institutes of Health;Voice;Work;Writing
+current_category: infrastructure
+---
+application_id: 11307407
+activity_code: N01
+title: Preclinical Models of Infectious Diseases
+org_name: UK HEALTH SECURITY AGENCY
+phr: N/A
+terms: Animal Model;animal model development;Contracts;Development;infectious disease model;Infrastructure;Pre-Clinical Model;Standardization
+current_category: infrastructure
+---
+application_id: 11042094
+activity_code: N01
+title: Task B11: Sample Storage to Support a Label Change for Amoxicillin and Amoxicillin-Clavulanate
+org_name: UK HEALTH SECURITY AGENCY
+phr: N/A
+terms: Amoxicillin;Bacillus anthracis;Clavulanate;Contracts;Development;Evaluation;infectious disease model;Label;nonhuman primate;Sampling;therapeutic development
+current_category: infrastructure
+---
+application_id: 11328962
+activity_code: N01
+title: Task D02: Pre-Clinical Pharmacokinetic Services
+org_name: SRI INTERNATIONAL
+phr: N/A
+terms: Antimicrobial Resistance;Biological;Chemistry;Communicable Diseases;Development;Development Plans;DNA Viruses;Drug Kinetics;Evaluation;fungus;Gram-Negative Bacteria;In Vitro;in vivo;Interventional Agent Development;Lead;manufacture;pathogen;pre-clinical;product development;programs;RNA Viruses;Safety;Services;Staphylococcus aureus;Support Contracts;Therapeutic;therapeutic development;Toxicology;Toxin
+current_category: infrastructure
+---
+application_id: 11457943
+activity_code: N01
+title: INTER-AGENCY SERVICE (NIH)
+org_name: N/A
+phr: N/A
+terms: Alzheimer&apos;s Disease;Services;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 11377952
+activity_code: R01
+title: PROgression of Tuberculosis infECTion in young children living with and without HIV: the PROTECT study
+org_name: UNIVERSITY OF CALIFORNIA-IRVINE
+phr: PROJECT NARRATIVE
+The inability to target preventive therapy to children at highest risk of tuberculosis (TB) progression is a major
+barrier to its scale-up in high burden countries. This study will identify novel host biomarkers and determine the
+best biomarker panels (i.e., biosignatures) that can meet the World Health Organization-recommended
+diagnostic accuracy thresholds for a test of TB progression in young children. If successful, the results will be
+the first step needed to make progress
+terms: <0-11 years old><21+ years old><5 year old><5 years of age><AIDS Virus><Accuracy of Diagnosis><Acquired Immune Deficiency Syndrome Virus><Acquired Immunodeficiency Syndrome Virus><Acute><Address><Adolescent><Adolescent Youth><Adult><Adult Human><Antibodies><Antibody Response><Antigen-Antibody Complex><Antigens><Assay><B blood cells><B cell><B cells><B-Cells><B-Lymphocytes><B-cell><Bioassay><Bioinformatics><Biological><Biological Assay><Biological Markers><Blood Banks><Blood Plasma Cell><Body Tissues><Candidate Disease Gene><Candidate Gene><Cell Body><Cell Death><Cells><Cessation of life><Characteristics><Child><Child Youth><Childhood><Children (0-21)><Clinical><Country><Death><Disease><Disease Progression><Disorder><Early Diagnosis><Early treatment><Evaluation><Expression Signature><Funding><Gambia><Gene Expression Profile><Gene Transcription><Generalized Growth><Genes><Genetic Transcription><Growth><HIV><Human Immunodeficiency Viruses><Immune><Immune Complex><Immunes><Immunochemical Immunologic><Immunologic><Immunologic Sensitization><Immunological><Immunological Sensitization><Immunologically><Immunologics><In Vitro><Infection><Injury><LAV-HTLV-III><Link><Lymphadenopathy-Associated Virus><M tb><M tuberculosis><M tuberculosis antigen><M tuberculosis infection><M. tb><M. tb infection><M. tuberculosis><M. tuberculosis antigen><M. tuberculosis infection><M.tb antigen><M.tb infection><M.tuberculosis infection><MTB infection><Machine Learning><Mass Photometry/Spectrum Analysis><Mass Spectrometry><Mass Spectroscopy><Mass Spectrum><Mass Spectrum Analyses><Mass Spectrum Analysis><Measures><Mouse Strains><Mtb antigen><Mycobacterium tuberculosis><Mycobacterium tuberculosis (MTB) infection><Mycobacterium tuberculosis antigens><Mycobacterium tuberculosis infection><NIAID><National Institute of Allergy and Infectious Disease><Network Analysis><Non-Polyadenylated RNA><Pathogenesis><Pathway Analysis><Pathway interactions><Performance><PhIP-seq><Phage ImmunoPrecipitation Sequencing><Plasma Cells><Plasmacytes><Predictive Value><Preventative therapy><Preventative treatment><Preventive therapy><Preventive treatment><Proteins><Proteome><Proteomics><RNA><RNA Expression><RNA Gene Products><Recommendation><Research><Resolution><Ribonucleic Acid><Role><Sampling><Secondary to><South Africa><Specific qualifier value><Specified><Subgroup><System><TB diagnosis><TB immunity><TB infection><Testing><Therapy trial><Tissue Growth><Tissues><Training><Transcription><Translating><Tuberculosis><Tuberculosis diagnosis><Uganda><Urine><Viet Nam><Vietnam><Viral Respiratory Tract Infection><Virus-HIV><Whole Blood><World Health Organization><adulthood><age 5 years><bio-informatics pipeline><bio-markers><biobank><bioinformatics pipeline><biologic><biologic marker><biomarker><biomarker array><biomarker discovery><biomarker identification><biomarker panel><biomarker signature><biorepository><biosignature><candidate biomarker><candidate identification><candidate marker><clinical relevance><clinical validation><clinically relevant><cohort><diagnosed with TB><diagnosed with Tuberculosis><diagnostic accuracy><disseminated TB><disseminated tuberculosis><early detection><early therapy><field based data><field learning><field study><field test><five year old><five years of age><gene expression pattern><gene expression signature><high risk><human model><identification of biomarkers><identification of new biomarkers><immunity against M. tuberculosis><immunity against Mtb><immunity against Mycobacterium tuberculosis><immunity against TB><immunity against tuberculosis><immunity in tuberculosis><immunity to TB><immunity to tuberculosis><immunogen><immunopathology><in vivo><infection due to Mycobacterium tuberculosis><injuries><injury to tissue><insight><ion mobility><juvenile><juvenile human><kids><machine based learning><marker identification><marker panel><metabolism measurement><metabolomics><metabonomics><model of human><mouse model><mtb><multiomics><multiple omics><murine model><mycobacterial><necrocytosis><new marker><next generation><novel><novel biomarker><novel marker><ontogeny><panomics><pathway><pediatric><plasmocyte><point of care><point of care testing><resolutions><response><scale up><segregation><social role><targeted biomarker><tissue injury><transcriptional profile><transcriptional signature><tuberculosis immunity><tuberculosis infection><tuberculous spondyloarthropathy><viral respiratory infection><youngster>
+current_category: diagnostics
+---
+application_id: 10982602
+activity_code: R01
+title: CAPER: Computerized Assessment of Psychosis Risk
+org_name: TEMPLE UNIV OF THE COMMONWEALTH
+phr: Narrative Early detection of young people at clinical high risk for psychosis offers a critical opportunity for early intervention to improve the course of illness, and perhaps even prevent onset entirely. Current interview-based methods for psychosis risk detection lack specificity, and are only available in a handful of research centers in the United States. The proposed study aims to improve accessibility and broaden impact of high risk screening by testing brief computerized measures, ultima
+terms: Address;American;Attenuated;Automobile Driving;Behavioral;Biological Markers;Clinical;clinical high risk for psychosis;clinical practice;cognitive testing;Collaborations;computerized;Computing Methodologies;design;Detection;Deterioration;Diagnosis;Dimensions;Early Diagnosis;Early identification;Early Intervention;follow-up;Foundations;Frequencies;functional decline;Functional disorder;functional outcomes;Generations;Goals;help-seeking behavior;high risk;high risk population;Human Resources;improved;Individual;Internet;Intervention Trial;Interview;Joints;Link;Longitudinal Studies;Machine Learning;machine learning classification;machine learning method;Measures;Methods;Modeling;neural;Neurobiology;new therapeutic target;next generation;online delivery;Outcome;Participant;Patient Self-Report;Performance;Persons;Population;Predictive Value;prevent;preventive intervention;Primary Prevention;Psychopathology;Psychoses;psychosis risk;psychotic symptoms;Public Health;Publishing;Recording of previous events;recruit;Research;Research Personnel;Risk;Role;Sample Size;screening;Secondary Prevention;Severities;Site;social;Specificity;Symptoms;System;Techniques;Test Result;Testing;Training;trait;Translating;United States;Work;Youth
+current_category: basic_research
+---
+application_id: 11453939
+activity_code: N01
+title: Interventional Agents Chemistry Services
+org_name: AAPHARMASYN LLC
+phr: N/A
+terms: Chemistry;Clinical;Communicable Diseases;Contracts;flexibility;Intervention;Investigational New Drug Application;lead optimization;manufacturing capabilities;meetings;preclinical development;programs;service programs;Services
+current_category: therapeutics
+---
+application_id: 11416159
+activity_code: U01
+title: A Placebo-Controlled Effectiveness in INPH Shunting (PENS) Trial
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: This trial aims to provide strong evidence of the effectiveness of shunting excess fluid from the brain for the surgical treatment of
+Idiopathic Normal Pressure Hydrocephalus (iNPH), a potentially reversible form of dementia and imbalance in the elderly. In addition,
+this study evaluates patient features to accurately identify people who may benefit. With this evidence, there can be an increase in the number of the 300-700,000 patients in the US with iNPH that can be treated and live more indepe
+terms: <21+ years old><A β-42><A β42><A-beta 42><A-beta42><AD dementia><Abeta-42><Abeta42><Abnormal gait><Abscission><Adult><Adult Human><Affect><Age Years><Algorithms><Alzheimer Type Dementia><Alzheimer disease dementia><Alzheimer sclerosis><Alzheimer syndrome><Alzheimer's><Alzheimer's Disease><Alzheimers Dementia><Amentia><Amyloid beta-42><Amyloid beta42><Amyloid β-42><Amyloid β42><Amyloidβ-42><Amyloidβ42><Anatomic Sites><Anatomic structures><Anatomy><Aβ-42><Aβ42><Biological Markers><Bladder Control><Blinded><Blood Vessels><CSF shunt><Cephalic><Cerebrospinal Fluid Shunts><Cerebrospinal fluid shunts procedure><Clinical><Clinical effectiveness><Cognition><Cognitive><Cognitive Disturbance><Cognitive Impairment><Cognitive decline><Cognitive function abnormal><Collaborations><Controlled Clinical Trials><Cranial><Creation of ventriculo-peritoneal shunt><Data><Data Collection><Dementia><Devices><Diagnosis><Disease><Disorder><Disturbance in cognition><Effectiveness><Elderly><Enrollment><Equilibrium><Excision><Extirpation><FDA approved><Future><Gait><Gait abnormality><Gait disorder><Gait disturbances><Gait dysfunction><Gait impairment><Goals><Guidelines><Hakim Syndrome><Health><Health Expenditures><Hydrocephalus><Hydrocephaly><Image><Impaired cognition><Impairment><Liquid substance><MR Imaging><MR Tomography><MRI><MRIs><MT-bound tau><Magnetic Resonance Imaging><Measures><Medical><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><Methods><Morbidity><Morbidity - disease rate><NMR Imaging><NMR Tomography><Neurologist><Neurology><Neuropsychologic Tests><Neuropsychological Tests><Neuropsychologies><Neuropsychology><Neurosurgeon><Normal Pressure Hydrocephalus><Nuclear Magnetic Resonance Imaging><Operative Procedures><Operative Surgical Procedures><Outcome><Outcome Assessment><Outcome Measure><Participant><Patient Selection><Patients><Pattern><Persons><Physiologic><Physiological><Placebo Control><Placebo Effect><Placebos><Population><Prevalence><Primary Senile Degenerative Dementia><Randomized><Removal><Reporting><Research><Research Proposals><Risk><Running><Sham Treatment><Shunt><Shunt Device><Site><Subgroup><Surgical><Surgical Interventions><Surgical Procedure><Surgical Removal><Survey Instrument><Surveys><Symptoms><System><Testing><Treatment Effectiveness><Uncertainty><Uncontrolled Study><Urgency to pass urine><Urgent desire to urinate><Urinary Incontinence><Ventricular><Ventriculo-peritoneal Shunt><Ventriculoperitoneal Shunt><Walking impairment><Work><Zeugmatography><active method><active technique><active treatment><adulthood><advanced age><aged group><aged groups><aged individual><aged individuals><aged people><aged person><aged persons><aged population><aged populations><aging population><balance><balance function><bio-markers><biologic marker><biomarker><biomarker identification><bladder continence><brain surgery><clinical outcome measures><cognitive dysfunction><cognitive loss><comparator group><comparison group><cost><disability><doubt><early experience><effective therapy><effective treatment><elderly patient><enroll><expectancy effect><expectation effect><fluid><fluid flow><geriatric><health care expenditure><health care service><hydrocephalic><identification of biomarkers><identification of new biomarkers><imaging><imaging biomarker><imaging marker><imaging-based biological marker><imaging-based biomarker><imaging-based marker><implantation><improved><liquid><marker identification><measurable outcome><medical expenditure><microtubule bound tau><microtubule-bound tau><micturition control><micturition urgency><neuro-surgeon><neurodegenerative dementia><neuropsychologic><nocebo><older patient><outcome measurement><patient biomarkers><placebo control trial><placebo controlled><placebo controlled study><placebo controlled trial><placebo group><placebo response><population aging><primary degenerative dementia><primary end point><primary endpoint><primary outcome><prospective><randomisation><randomization><randomized placebo-controlled clinical trial><randomized, clinical trials><randomly assigned><recruit><resection><response><secondary analysis><secondary outcome><senile dementia of the Alzheimer type><senior citizen><sham group><sham therapy><shunts><success><surgery><tau><tau Proteins><tau factor><treatment effect><urinary continence><urinary control><urinary urgency><urination control><urination urgency><vascular><virtual><τ Proteins>
+current_category: therapeutics
+---
+application_id: 11041785
+activity_code: N01
+title: Targeted Clinical Research Program to Address Selected Viral Infections
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: N/A
+terms: Address;Clinical Research;Clinical Trials;Cytomegalovirus;patient population;Phase IV Clinical Trials;programs;Selection for Treatments;Therapeutic;therapy development;Transplant Recipients;Virus Diseases
+current_category: infrastructure
+---
+application_id: 11036250
+activity_code: F30
+title: Combining OCE and Brillouin microscopy to evaluate in vivo lens biomechanics in Presbyopia
+org_name: UNIV OF MARYLAND, COLLEGE PARK
+phr: Project Narrative Presbyopia corrections so far have not addressed the causative nature of loss of accommodation, and major barriers to innovation result from the need to measure biomechanics in vivo. The goal of this project is to characterize the spatially-varying biomechanical signature of the lens by developing an in vivo measurement of mechanics. Results from this study will provide a method to monitor and plan novel presbyopia treatments that target biomechanics.
+terms: 3-Dimensional;Acoustics;Address;Affect;Age;age related changes;Assessment tool;biomarker identification;Biomechanics;biophysical model;burden of illness;Calibration;Ciliary Muscle;Clinic;Clinical;Collaborations;Crystalline Lens;Data;Defect;Diagnosis;Diagnostic;Early Intervention;Elasticity;elastography;Elements;Evaluation;Eye;Eyeglasses;Family suidae;field study;Frequencies;Goals;Grant;Human;Image;In Situ;in vivo;in vivo imaging system;innovation;insight;instrument;Lateral;Length;lens;Maps;Measurement;Measures;mechanical properties;Mechanics;Methods;Microscopy;Modeling;Modulus;Monitor;Morphologic artifacts;Motion;Myopia;Nature;novel;novel marker;novel therapeutics;Optical Coherence Tomography;Optics;Pathology;Patients;Performance;Physiological;potential biomarker;precision medicine;predictive modeling;Presbyopia;Procedures;programs;Property;Protocols documentation;prototype;Quality of life;Quantitative Evaluations;Refractive Errors;Research;Resistance;Resolution;response;Shapes;Specific qualifier value;Speed;success;Surface;System;Techniques;Testing;Therapeutic;Tissues;Translations;Treatment outcome;vapor;Variant;virtual clinical trial;Vision
+current_category: training
+---
+application_id: 10992694
+activity_code: F99
+title: Understanding metabolic and vascular vulnerabilities of residual disease in triple negative breast cancer to inform on treatment strategies
+org_name: DUKE UNIVERSITY
+phr: PROJECT NARRATIVE Mechanisms of residual cell survival following initial therapy, one of the leading causes of cancer recurrence, remain under-studied, in part due to the scarcity of tools and models to faithfully study the evolutionary dynamics of residual disease. My doctoral work will focus on designing novel imaging methodologies to visualize spatiotemporal metabolic and vascular heterogeneities during residual disease and recurrence in vivo while my postdoctoral work will focus on elucidati
+terms: Aftercare;Anatomy;anti-cancer research;Award;Behavior;Biological Assay;Blood capillaries;Blood Vessels;Breast Cancer Model;Cancer Biology;cancer cell;Cancer Etiology;cancer recurrence;Cause of Death;Cell Survival;Cells;Characteristics;chemotherapy;Clinical;clinically relevant;Complement;Crowding;design;Development;Diameter;Disease regression;Doctor of Philosophy;Environmental Risk Factor;Exhibits;fatty acid oxidation;Fatty Acids;Functional Imaging;Gene Expression Profiling;Genetic Transcription;Genetically Engineered Mouse;glucose uptake;Glycolysis;Heterogeneity;Hypoxia;Image;imaging approach;Imaging Device;imaging Segmentation;improved;in vivo;in vivo imaging;Isotopes;journal article;Lead;Length;Link;Malignant Neoplasms;Manuscripts;Maps;mass spectrometric imaging;Membrane Potentials;Mentorship;Metabolic;Metabolic Pathway;metabolic phenotype;Metabolism;metabolomics;Methodology;Microscope;mitochondrial membrane;mitochondrial metabolism;Modeling;Molecular;molecular marker;Monitor;multiple omics;MYC gene;Nature;neoplastic cell;novel;Nutrient;Oncogenes;Oncogenic;optical imaging;Outcome;Paclitaxel;patient derived xenograft model;Patients;Perfusion;Phase;Phenotype;Positioning Attribute;Postdoctoral Fellow;Pre-Clinical Model;preference;Preparation;pressure;Property;Recurrence;Recurrent tumor;Reporter;Research;Research Personnel;Research Project Grants;Residual Neoplasm;Residual state;Resistance;Resolution;Sampling;Seminal;serial imaging;Signal Pathway;Site;skills;spatiotemporal;Stratification;System;targeted treatment;Technology;Therapeutic;therapy outcome;therapy resistant;Tissues;tool;Training;training opportunity;translational therapeutics;treatment response;treatment strategy;triple-negative invasive breast carcinoma;tumor;tumor heterogeneity;tumor metabolism;tumor microenvironment;Tumor-Associated Vasculature;uptake;Variant;Visualization;Work
+current_category: training
+---
+application_id: 11159355
+activity_code: N01
+title: In Vivo SHIV/SIV Titration via Mucosal Route in Indian-origin Rhesus Macaques
+org_name: BIOQUAL, INC.
+phr: N/A
+terms: Advanced Development;AIDS Vaccines;Award;Clinical;Complement;Contracts;Development;Evaluation Studies;Funding;Grant;HIV vaccine;Immunotherapy;in vivo;Investigator-Initiated Research;Local Microbicides;Macaca mulatta;Modality;Mucous Membrane;National Institute of Allergy and Infectious Disease;nonhuman primate;p53-binding protein 1;pre-clinical;preclinical evaluation;preclinical study;Prevention;Prevention strategy;programs;Research Personnel;Resources;Route;simian human immunodeficiency virus;SIV;Titrations;vaccine candidate;Vaccine Design;vaccine development;vaccine evaluation;Vaccine Research;Vaccines;Virus
+current_category: therapeutics
+---
+application_id: 11053290
+activity_code: N01
+title: DCP - Cancer Prevention Phase 0/I/II Cancer Prevention Clinical Trials Program (Consortia) BioRepository
+org_name: LEIDOS BIOMEDICAL RESEARCH, INC.
+phr: N/A
+terms: biobank;Biological Specimen Banks;cancer prevention;clinical research site;Contracts;Phase;prevention clinical trial;programs
+current_category: infrastructure
+---
+application_id: 11419539
+activity_code: N01
+title: This service is a MicroContract for DMPK Expert services for BPN, HEAL and Biologics. Incumbent is Gene Williams, Ph.D. POP: 07/01/2025 to 06/30/2026.
+org_name: ALLUCENT GOVERNMENT SERVICES (US) LLC
+phr: The National Institutes of Health (NIH) is the nation’s leading medical research agency and the primary Federal agency whose mission is to seek fundamental knowledge about the nature and behavior of living systems and the application of that knowledge to enhance health, lengthen life, and reduce illness and disability, conducting, supporting and making medical discoveries that improve people’s health and save lives.    DMPK SME will provide executive (senior scientific)-level DMPK expertise and 
+terms: Behavior;Biological Products;disability;Doctor of Philosophy;drug development;drug discovery;Drug Industry;Drug Kinetics;drug metabolism;experience;Extramural Activities;Feedback;Funding;Genes;Health;improved;Industry;Knowledge;Life;Medical;Medical Research;member;Mission;National Institute of Neurological Disorders and Stroke;Nature;Nervous System;Neurosciences;Neurosciences Research;Organism;Persons;Pharmaceutical Chemistry;Phase;Program Development;programs;Research;research clinical testing;Research Contracts;Research Personnel;Research Support;Services;small molecule;United States National Institutes of Health
+current_category: therapeutics
+---
+application_id: 10934750
+activity_code: N/A
+title: Preclinical Services for Antibacterial Resistance Biopharmaceutical Product Development
+org_name: AMERICAN TYPE CULTURE COLLECTION
+phr: N/A
+terms: <Antibacterial Drug Resistance><Antibacterial Drug Resistant><Antibacterial resistant><Attenuated><Bacterial Drug Resistance><Biologic Products><Biological Agent><Biological Products><Biotech><Biotechnology><Clinical Treatment Moab><Development><Development Plans><Documentation><Evaluation><Formulation><Infectious Diseases / Laboratory><Infectious Diseases Research><Monoclonal Antibodies><Nucleic Acids><Peptides><Plasmids><Process><Recombinant Proteins><Services><Short interfering RNA><Small Interfering RNA><Translational Research><Translational Science><anti-bacterial drug resistance><anti-bacterial drug resistant><anti-bacterial resistance><anti-bacterial resistant><antibacterial resistance><assay development><attenuate><attenuates><biologics><biopharmaceutical><biotherapeutic agent><developmental><mAbs><manufacture><monoclonal Abs><pre-clinical><pre-clinical development><preclinical><preclinical development><product development><resistance to anti-bacterial><resistance to antibacterial><resistant to anti-bacterial><resistant to antibacterial><service programs><siRNA><translation research><translational investigation><vector>
+current_category: therapeutics
+---
+application_id: 10934751
+activity_code: N/A
+title: Preclinical Services for Biopharmaceutical Product Development
+org_name: AMERICAN TYPE CULTURE COLLECTION
+phr: N/A
+terms: <Attenuated><Biologic Products><Biological Agent><Biological Products><Biotech><Biotechnology><Clinical Treatment Moab><Development><Development Plans><Documentation><Evaluation><Formulation><Infectious Diseases / Laboratory><Infectious Diseases Research><Monoclonal Antibodies><Nucleic Acids><Peptides><Plasmids><Process><Recombinant Proteins><Services><Short interfering RNA><Small Interfering RNA><Translational Research><Translational Science><assay development><attenuate><attenuates><biologics><biopharmaceutical><biotherapeutic agent><developmental><mAbs><manufacture><monoclonal Abs><pre-clinical><pre-clinical development><preclinical><preclinical development><product development><service programs><siRNA><translation research><translational investigation><vector>
+current_category: therapeutics
+---
+application_id: 11310100
+activity_code: N01
+title: REQUEST TO ISSUE TASK ORDER 1 - TASK AREA 1: MANUAL OF OPERATIONS - FOR THE BRAIN INITIATIVE CELL ATLAS NETWORK (BICAN) SEQUENCING CORE CONTRACTS RFP 75N95022R00031 WITH THE UNIVERSITY OF WASHINGTON
+org_name: UNIVERSITY OF WASHINGTON
+phr: The overarching goal of the BRAIN Initiative Cell Atlas Network (BICAN) is to build reference brain cell atlases that will be used throughout the research community to create a molecular and anatomical foundational framework for the study of the human brain in health and disease. The availability of such comprehensive and high-resolution molecular signatures that reflect cellular phenotypes and functional heterogeneity in diverse brain regions will contribute to opportunities to explore exactly 
+terms: Anatomy;Atlases;Brain;brain cell;BRAIN initiative;Brain region;Cells;Communities;Contracts;Disease;DNA Sequencing Facility;Goals;Health;Heterogeneity;Human;Human body;Manuals;Molecular;Molecular Profiling;operation;Phenotype;Process;Research;Resolution;Speed;Universities;Washington
+current_category: infrastructure
+---
+application_id: 10874070
+activity_code: T32
+title: Training in Mechanisms and Clinical Presentation of Pain
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: Project Narrative Pain is the principal reason for seeking medical attention. It respects no boundaries, is not restricted to any one disease or medical discipline, is distributed across the life span and experienced by all irrespective of status (economic, educational, etc.) or gender. Many tissue insults lead to chronic pain states which are poorly managed because the mechanisms underlying pain are incompletely understood. Thus, there is a compelling need to enhance and broaden the training of
+terms: Clinical;Pain;Training
+current_category: training
+---
+application_id: 11170554
+activity_code: R13
+title: Human Teratogens Course
+org_name: UNIVERSITY OF SOUTH FLORIDA
+phr: Pregnant or breastfeeding women are often worried about exposures such as medications, maternal diseases, chemicals in the environment, infectious agents, and other substances and seek counseling from their healthcare providers. The Human Teratogens Course educates healthcare providers with up-to-date information on exposures during pregnancy and breastfeeding. The course also teaches healthcare providers how to assess and evaluate the benefits and risks of these exposures to better counsel thei
+terms: <Address><Ally><Area><Benefits and Risks><Birth Defects><Breast Feeding><Breast fed><Breastfed><Breastfeeding><Caring><Chemicals><Communication><Confusion><Confusional State><Congenital Abnormality><Congenital Anatomical Abnormality><Congenital Defects><Congenital Deformity><Congenital Malformation><Continuance of education><Continuing Education><Counseling><Country><Developing Countries><Developing Nations><Discipline of Nursing><Disease><Disorder><Drugs><Education><Education and Training><Educational aspects><Educational process of instructing><Embryology><Environment><Epidemiology><Event><Exposure to><Faculty><Fees><Fetus><Florida><Foundations><Genetic Counseling><Gestation><Goals><Gynecologist><Health><Health Care><Health Care Professional><Health Care Providers><Health Personnel><Health Professional><Human><Individual><Infant><Infection><Infectious Agent><Information Specialists><International><Investigators><Knowledge><Lactation><Learning><Less-Developed Countries><Less-Developed Nations><Location><Medication><Medicine><Mental Confusion><Midwife><Modern Man><Nursing><Nursing Field><Nursing Profession><Outcome><Parents><Participant><Patient outcome><Patient-Centered Outcomes><Patient-Focused Outcomes><Patients><Persons><Pharmaceutical Preparations><Pharmacies><Pharmacists><Pharmacy facility><Pregnancy><Pregnant Women><Prevention><Professional Organizations><Provider><QOC><Quality of Care><Research><Research Personnel><Research Resources><Researchers><Resources><Risk><Risk Assessment><Scientist><Services><Societies><Teaching><Teratogenic><Teratogenicity><Teratogens><Teratology><Third-World Countries><Third-World Nations><Toxicology><Training and Education><Translational Research><Translational Science><Translations><Under-Developed Countries><Under-Developed Nations><Universities><Woman><career><child health care provider><clinical practice><conference><convention><developing country><developing nation><drug/agent><epidemiologic><epidemiological><evidence base><expectant mother><expectant women><expecting mother><expecting women><genetic consultation><genetic counselor><health care personnel><health care worker><health provider><health workforce><improved><improved outcome><individuals who are pregnant><infectious organism><interest><lactating><lactational><lectures><medical personnel><meeting><meetings><member><parent><patient oriented outcomes><pediatric care provider><pediatric health care provider><pediatric provider><pediatrician><people who are pregnant><pregnant><pregnant females><pregnant mothers><pregnant people><pregnant populations><professional association><professional membership><professional society><skills><summit><symposia><symposium><those who are pregnant><tool><translation><translation research><translational investigation><treatment provider><virtual><waiver><women who are pregnant>
+current_category: infrastructure
+---
+application_id: 11309976
+activity_code: N01
+title: Single Institutional Review Board (sIRB)
+org_name: ADVARRA, INC.
+phr: N/A
+terms: Clinical Trials;Communicable Diseases;Institutional Review Boards;National Institute of Allergy and Infectious Disease;Support Contracts
+current_category: infrastructure
+---
+application_id: 10881944
+activity_code: F31
+title: Regulation of thrombin-induced p38 MAPK pro-inflammatory signaling by deubiquitinases
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: PROJECT NARRATIVE Cardiovascular disease (CVD) remains a leading cause of death in the United States and is linked to inflammatory signaling that promotes endothelial barrier dysfunction, a hallmark of inflammatory responses. Thrombin is generated during vascular injury and inflammation and promotes endothelial barrier disruption through p38 MAPK signaling. However, the pathways that regulate p38 MAPK signaling following thrombin stimulation is not known and important to understand to develop ne
+terms: Actins;Adaptor Signaling Protein;Adherens Junction;Automobile Driving;Binding;Binding Proteins;Biochemical;Biological Assay;Blood Vessels;Cardiovascular Diseases;Cause of Death;Cell membrane;Cells;Centers for Disease Control and Prevention (U.S.);Complex;Cytoskeleton;Deubiquitination;Development;Early Endosome;Endosomes;Endothelial Cells;endothelial dysfunction;Endothelium;Enzymes;Extravasation;Functional disorder;G Protein-Coupled Receptor Signaling;G-Protein-Coupled Receptors;Generations;genome-wide;Goals;GPR3 gene;Human;In Vitro;in vivo;Inflammation;Inflammation Mediators;Inflammatory;Inflammatory Response;Knowledge;Libraries;Link;MAP3K7 gene;MAP3K7IP1 gene;Mediating;Methods;Microscopic;Microscopy;Mitogen-Activated Protein Kinases;Molecular;mouse model;Mus;Myosin Light Chains;novel therapeutic intervention;p38 Mitogen Activated Protein Kinase;PAR-1 Receptor;Pathway interactions;Permeability;Phosphotransferases;Process;protein complex;recruit;Regulation;Research;response;RNA interference screen;Role;Signal Pathway;Signal Transduction;Small Interfering RNA;Testing;therapeutic development;Thrombin;Time;Ubiquitin;ubiquitin isopeptidase;ubiquitin-protein ligase;Ubiquitination;United States;vascular inflammation;vascular injury;Work
+current_category: training
+---
+application_id: 10790173
+activity_code: R21
+title: Discovery of human metapneumovirus epitopes
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: Discovery of human metapneumovirus epitopes Our lab has established methods to discover human MHC-I and MHC-II epitopes using HLA-transgenic mice and human PBMCs. We propose to apply these methods to human metapneumovirus (HMPV) to discover HLA-restricted T cell epitopes recognized by CD4+ and CD8+ T cells. These tools will be needed to understand human immune responses to both natural infection and vaccines against this important human respiratory pathogen.
+terms: 5 year old;Adult;Alleles;Anti-viral Therapy;Antibody Response;Asthma;Biological Assay;bone;CD4 Positive T Lymphocytes;CD8-Positive T-Lymphocytes;CD8B1 gene;Child;Chronic Obstructive Pulmonary Disease;Clinical;comorbidity;cytokine;Data;Dengue Vaccine;design;Development;Dimensions;Disease;early childhood;enzyme linked immunospot assay;Epitopes;experimental study;falls;Flow Cytometry;Formalin;Goals;Government;Granzyme;HIV;HLA-A gene;Hospitalization;Human;Human Metapneumovirus;Immune;Immune response;Immunity;Immunize;Immunocompromised Host;immunogenicity;immunopathology;Individual;Industry;Infection;Interferon Type II;Interleukin-2;Life;Lower Respiratory Tract Infection;Lung;Lung Diseases;lung histology;Mediating;Methods;mouse model;Mus;older adult;Pathogenesis;pathogenic virus;Pathology;Patients;peptide vaccination;Peptides;perforin;Peripheral Blood Mononuclear Cell;Persons;Phenotype;Population;Population Heterogeneity;pre-clinical;premature;Production;protective efficacy;Pulmonary Pathology;receptor expression;Research;Research Personnel;respiratory pathogen;Respiratory syncytial virus;response;Severity of illness;Stains;T cell response;T cell therapy;T memory cell;T-Lymphocyte;T-Lymphocyte Epitopes;Testing;TNF gene;tool;transcription factor;Transgenic Mice;United States National Institutes of Health;Vaccination;vaccine candidate;vaccine development;Vaccines;Viral;Virulent;Virus;Weight
+current_category: therapeutics
+---
+application_id: 11231493
+activity_code: F31
+title: Visual Perception in Visual Snow Syndrome
+org_name: UNIVERSITY OF MINNESOTA
+phr: Project Narrative Visual Snow Syndrome is a poorly understood neurological condition involving persistent perception of visual specks or 'snow' that can be debilitating and interfere with daily life. This project seeks to determine how both visual perception and processing within the brain are altered in Visual Snow Syndrome. A better understanding of how people with Visual Snow Syndrome see and process visual stimuli is necessary to develop potential treatments and assistive technologies that c
+terms: Address;Afterimage;Automobile Driving;Behavioral;Brain;career;Clinical;common symptom;comorbidity;comparison control;Contrast Sensitivity;Detection;Diagnosis;Disease;effective therapy;Environment;Exclusion;Exhibits;experience;experimental study;Frequencies;Functional Magnetic Resonance Imaging;Future;Human;Image;Knowledge;Life;luminance;Magnetic Resonance;Measurement;Measures;Migraine;neural;neuroimaging;Neurologic;neuromechanism;novel;Participant;Patients;Perception;Performance;Persons;Pharmacologic Substance;Photic Stimulation;Photophobia;Prevalence;Process;Psychophysics;Qualifying;quality of life improvement;Reading;Research;Resolution;response;Science;Self-Help Devices;Sensory;Series;Signal Transduction;spatiotemporal;Stimulus;Symptoms;Syndrome;Technology;Television;Testing;Time;Tinnitus;Training;Vision;Vision Disorders;vision science;Visual;Visual Fields;Visual Perception;visual performance;visual processing;Visual Psychophysics;visual stimulus;Visual System;Work
+current_category: training
+---
+application_id: 11080030
+activity_code: N01
+title: Single Institutional Review Board (sIRB)
+org_name: ADVARRA, INC.
+phr: N/A
+terms: biobank;Clinical Trials;Communicable Diseases;Institutional Review Boards;National Institute of Allergy and Infectious Disease;Support Contracts
+current_category: biotools
+---
+application_id: 11047620
+activity_code: N01
+title: Task B21: Comprehensive Viral Screening Panel
+org_name: UTAH STATE UNIVERSITY
+phr: N/A
+terms: Advanced Development;Anti-viral Agents;Biological Assay;Cell Line;Contracts;Development;in vitro testing;Maintenance;screening panel;therapeutic development;Viral;Virus;Virus Diseases
+current_category: diagnostics
+---
+application_id: 11457940
+activity_code: N01
+title: INTER-AGENCY SERVICE (NIH)
+org_name: N/A
+phr: N/A
+terms: Alzheimer&apos;s Disease;Services;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 11457938
+activity_code: N01
+title: INTER-AGENCY SERVICE (NIH)
+org_name: N/A
+phr: N/A
+terms: Alzheimer&apos;s Disease;Services;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 11457935
+activity_code: N01
+title: INTER-AGENCY SERVICE (NIH)
+org_name: N/A
+phr: N/A
+terms: Alzheimer&apos;s Disease;Services;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 11457934
+activity_code: N01
+title: INTER-AGENCY SERVICE (NIH)
+org_name: N/A
+phr: N/A
+terms: Alzheimer&apos;s Disease;Services;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 11307504
+activity_code: N01
+title: Simian Vaccine Evaluation Unit (SVEU) - Animal Maintenance and Care
+org_name: BIOQUAL, INC.
+phr: N/A
+terms: Advanced Development;AIDS Vaccines;Animals;Award;Caring;Clinical;Complement;Contracts;Development;Evaluation Studies;Funding;Grant;HIV vaccine;Immunotherapy;Investigator-Initiated Research;Local Microbicides;Maintenance;Modality;National Institute of Allergy and Infectious Disease;nonhuman primate;pre-clinical;preclinical evaluation;preclinical study;Prevention;Prevention strategy;programs;Research Personnel;Resources;vaccine candidate;Vaccine Design;vaccine development;vaccine evaluation;Vaccine Research;Vaccines
+current_category: therapeutics
+---
+application_id: 11311990
+activity_code: K23
+title: Graft harvest as a model of tendon injury; Trajectory of recovery and clinical outcomes
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: PROJECT NARRATIVE There is a poor understanding of tendon healing in humans, which has led to a disconnect between the way treatments are designed for overuse tendon injuries and their use in clinical practice, placing patients at risk for long-lasting impairments, injury recurrence, impaired function, and decreased quality of life. Graft harvest (removing a portion of the tendon to use in another area of the body) provides an opportunity to improve our understanding of tendon healing and narrow
+terms: Acceleration;Address;Adoption;Animal Model;anterior cruciate ligament reconstruction;Area;Autologous Transplantation;Basic Science;Biology;career;Clinic;Clinical;clinical examination;clinical practice;Clinical Research;Clinical Trials;cohort;Cumulative Trauma Disorders;Data;design;Development;Development Plans;dosage;elastography;Evaluation;experience;Goals;Harvest;healing;high risk;Hip Osteoarthritis;Human;Impairment;improved;Injury;innovation;Intervention;Investigation;Isometric Exercise;Knee Osteoarthritis;Knowledge;Lateral;Lead;Lower Extremity;Measures;mechanical properties;Mentorship;Methods;Modeling;Multicenter Studies;Outcome;Outcome Measure;Pain;Participant;Patient Outcomes Assessments;Patients;Performance;preservation;prevent;Property;prospective;Prospective, cohort study;Proxy;quadriceps muscle;Quality of life;Randomized;Recovery;Recurrence;Rehabilitation therapy;Research;Research Activity;Residual state;Resolution;Risk;Scientist;sedentary;Severities;Site;Societies;Speed;Standardization;Structure;Study models;Symptoms;tendon development;tendon graft;Tendon Injuries;Tendon structure;Testing;therapy design;Thick;Time;Tissues;Training;Treatment Effectiveness;treatment optimization;Treatment outcome;Ultrasonography;unethical;Universities
+current_category: training
+---
+application_id: 11453962
+activity_code: N01
+title: Interventional Agents Safety and Pharmacokinetic Services
+org_name: RESEARCH TRIANGLE INSTITUTE
+phr: N/A
+terms: Communicable Diseases;Drug Kinetics;Intervention;meetings;pre-clinical;Safety;service programs;Services;Support Contracts;therapy development
+current_category: infrastructure
+---
+application_id: 11032312
+activity_code: R25
+title: Iowa-Diversifying Research And Mentorship (iDREAM)
+org_name: UNIVERSITY OF IOWA
+phr: Project Narrative (3 sentences) This doctoral readiness program, Iowa Diversifying Research Experiences And Mentorship (iDREAM), capitalizes on an outstanding T32 supported (JSPTPN) Neuroscience Graduate program with a highly successful track record of training neuroscientists from diverse backgrounds, particularly those from backgrounds underrepresented in STEM. It integrates an outstanding interdisciplinary neuroscience research environment with evidence-based practices designed to cultivate s
+terms: Admission activity;Applications Grants;Area;Awareness;career;career development;Climate;Communication;Communities;Critical Thinking;Data;design;Development;diversity and inclusion;Doctor of Philosophy;education research;Educational workshop;Elevator;empowerment;Ensure;Environment;equity, diversity, and inclusion;essays;evidence base;Evidence based practice;expectation;experience;Faculty;faculty research;Funding;Future;Gender;Goals;graduate school;hands on research;Healthcare;innovation;Institution;interest;Interview;Iowa;Laboratories;Laboratory Research;Lead;Leadership;matriculation;meetings;member;Mentors;Mentorship;Methodology;Mission;Neurosciences;Neurosciences Research;Paper;Parents;Participant;peer;Persons;Positioning Attribute;Postbaccalaureate;Process;programs;Qualifying;Readiness;recruit;Reporting;Research;Research Project Grants;response;responsible research conduct;Running;Schools;Self Efficacy;skills;Structure;Students;success;Talents;Teacher Professional Development;tenure track;Training;Training Programs;undergraduate student;underrepresented minority student;Underrepresented Students;Universities;university student;verbal;Vision;Writing
+current_category: training
+---
+application_id: 11031104
+activity_code: R25
+title: Summer Research Experience in Neurobiology at The Jackson Laboratory
+org_name: JACKSON LABORATORY
+phr: PROJECT NARRATIVE A trained and diverse biomedical workforce requires support of educational programs at all levels, including those designed to provide students exposure to biomedical research, reinforce their intent to graduate with a science degree, and to prepare them for graduate studies leading to a career in research. The proposed summer research program will provide opportunities for students to improve their research skills and gain confidence in the research environment.
+terms: addiction;Alzheimer&apos;s Disease;Bioinformatics;Biomedical Research;career;cohort;Communication;Databases;Dedications;design;Development;E-learning;Education;education research;Educational Curriculum;Educational workshop;Environment;Ethics;Evaluation;experience;Exposure to;Foundations;Funding;genetic resource;Genomics;Glaucoma;Grant;High School Student;Human Biology;human disease;improved;Institution;instrumentation;International;Internships;Laboratories;Laboratory mice;Lead;Learning;Learning Module;meetings;member;Mentors;Methods;Modernization;motor neuron degeneration;Neurobiology;outreach;Participant;Peripheral Nervous System Diseases;Personal Growth;Privatization;Procedures;Process;programs;recruit;Research;Resources;Retinal Diseases;Rett Syndrome;Science;Scientific Inquiry;Sensory Disorders;skills;Student recruitment;Students;summer research;summer student;symposium;Synapses;Talents;The Jackson Laboratory;tool;Training;Travel;undergraduate student;Underrepresented Students;Wages
+current_category: training
+---
+application_id: 11030911
+activity_code: R25
+title: BP-ENDURE: The St. Louis Neuroscience Pipeline
+org_name: WASHINGTON UNIVERSITY
+phr: Project Narrative This renewal would continue the tradition of innovative training for top-notch neuroscientists at Washington University. The proposed Neuroscience Pipeline will prepare underrepresented students for graduate-level studies through advanced educational and research experiences, intensive advising and dedicated community outreach. These efforts, combined with our mentor training and evaluation plans, should be scalable and findings translatable to those who share our goals of chan
+terms: Community Outreach;Dedications;Education;Evaluation;experience;Future;Goals;Guidelines;innovation;Mentors;Neurosciences;notch protein;parent grant;Research;Scientist;Training;Underrepresented Students;Universities;Washington
+current_category: training
+---
+application_id: 11030568
+activity_code: T32
+title: Training in Neurodegenerative Diseases
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: PROJECT NARRATIVE The Neurodegeneration Training Program provides training to outstanding predoctoral students to become leaders of academic, clinical, or pharmaceutical research programs focused on neurodegeneration. The program emphasizes rigorous basic neurodegeneration research, mentored clinical experience with patients, and career development skills necessary for making successful translational advances for maintaining a healthy aging population.
+terms: Neurodegenerative Disorders;Training
+current_category: training
+---
+application_id: 11029228
+activity_code: R25
+title: UAB Blazer BRAIN (Broadening Representation And Inclusion in Neuroscience) Summer Program
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: PROJECT NARRATIVE The UAB Blazer BRAIN (Broadening Representation And Inclusion in Neuroscience) Summer Program at the University of Alabama at Birmingham (UAB) focuses on increasing diversity in the neuroscience workforce through providing an outstanding summer research and educational experience for undergraduates earning their STEM degree at partner HBCUs and throughout the southeast U.S. This experience will instill confidence and excitement in these talented students and increase their desi
+terms: Advisory Committees;Alabama;Biomedical Research;career;career life balance;Communication;design;Development;Diverse Workforce;Doctor of Philosophy;Doctor&apos;s Degree;Education;Environment;Evaluation;experience;Exposure to;faculty mentor;Funding;Future;Goals;graduate school;Historically Black Colleges and Universities;improved;Institution;Investments;Laboratories;Learning;medical schools;meetings;Mentors;Minority Groups;National Institute of Neurological Disorders and Stroke;Nervous System Disorder;Neurosciences;Neurosciences Research;programs;recruit;Research;research faculty;Research Personnel;Scholars Program;Science;Scientist;Secure;skills;Southeastern United States;Students;success;summer program;summer research;symposium;Talents;undergraduate student;Underrepresented Minority;United States;United States National Institutes of Health;Universities
+current_category: training

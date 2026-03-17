@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10768742
+activity_code: P20
+title: Administrative & Mentoring Core
+org_name: MEDICAL UNIVERSITY OF SOUTH CAROLINA
+phr: N/A
+terms: Accountability;Address;Advisory Committees;Basic Science;Biomedical Research;Biometry;Biostatistical Methods;career;career development;Centers of Research Excellence;Collaborations;Development;Development Plans;Digestive System Disorders;Effectiveness;Elements;Ensure;Evaluation;experimental analysis;Experimental Designs;Extramural Activities;Faculty;Fostering;Funding;Future;Gastrointestinal Diseases;Goals;Individual;Information Dissemination;Infrastructure;Institution;Leadership;Liver diseases;Medical;Mentors;Monitor;multidisciplinary;novel;operation;Peer Review;Pilot Projects;Program Evaluation;programs;Recommendation;recruit;remediation;Reproducibility;Research;Research Personnel;Research Project Grants;Resources;Scheme;Scientist;Series;Services;sound;Source;South Carolina;success;synergism;Teacher Professional Development;Training;Universities
+current_category: training
+---
+application_id: 10768745
+activity_code: P20
+title: Advanced Imaging Core
+org_name: MEDICAL UNIVERSITY OF SOUTH CAROLINA
+phr: N/A
+terms: Animals;Apoptosis;Award;Biological Sciences;cell fixing;Cell Membrane Permeability;Cell Survival;Cells;Centers of Research Excellence;Clinical;Communities;Computer software;Computer Workstations;Consultations;Data;Data Analyses;Detection;Digestive System Disorders;digital imaging;Education;electrical potential;Ensure;Equipment;fluorescence microscope;Fluorescence Resonance Energy Transfer;fluorophore;Gases;Gene Expression;Generations;Goals;Grant;high resolution imaging;histological image;histological slides;Image;image processing;imaging approach;imaging modality;imaging system;Imaging technology;Immersion;immunocytochemistry;Individual;intravital imaging;intravital microscopy;Ions;Laboratories;Lasers;Leukocytes;liquid crystal polymer;live cell imaging;Liver diseases;Medicine;Mentors;Microcirculation;Microscope;microscopic imaging;Microscopy;Mission;Mitochondria;Monitor;multi-photon;multiphoton microscopy;multiplexed imaging;Necrosis;next generation;Optics;Organism;Pathology;pathology imaging;Permeability;Phase;Preparation;protein distribution;Proteins;pyridine nucleotide;quasar;Reporter;Research;Research Personnel;Scanning;Services;Silicone Oils;Slide;Specimen;submicron;success;superresolution microscopy;System;Technology;Temperature;Three-Dimensional Imaging;Time;Tissue imaging;Tissues;Training;ultra high resolution;Water;Work
+current_category: infrastructure
+---
+application_id: 10883883
+activity_code: P20
+title: Elucidating the role of Myosin 5b in intestinal inflammation
+org_name: MEDICAL UNIVERSITY OF SOUTH CAROLINA
+phr: N/A
+terms: Actins;Acute;Address;Adhesions;Alkaline Phosphatase;Animal Model;Animals;Antigens;Apical;Biopsy;cellular microvillus;Centers of Research Excellence;Chronic;Colitis;Colon;Complex;Data;density;Digestive System Disorders;Disease;Drug Metabolic Detoxication;Enzymes;Epithelial Cells;Epithelium;Functional disorder;functional loss;Gene Expression;Gene Proteins;gut inflammation;Health;Height;Homeostasis;Human;Inflammation;Inflammatory;Inflammatory Bowel Diseases;intestinal epithelium;Intestines;Liver diseases;member;Modeling;Molecular Motors;murine colitis;Mus;Myosin ATPase;novel therapeutics;Organoids;Outcome;Pathway interactions;Patients;Play;Protein phosphatase;Proteins;Quality of life;Research;Role;Signal Transduction;Stimulus;Structure;T-Lymphocyte;trinitrobenzene sulfonic acid induced colitis;Work
+current_category: basic_research
+---
+application_id: 10829361
+activity_code: P50
+title: Germline-mediated Transgenerational Epigenetic Inheritance of Paternal Epimutations Induced by a High Fat Diet
+org_name: LUNDQUIST INSTITUTE FOR BIOMEDICAL INNOVATION AT HARBOR-UCLA MEDICAL CENTER
+phr: N/A
+terms: 3-Dimensional;Adult;Adult Children;Biological Assay;Cell Lineage;cell type;Cells;Characteristics;Chemical Exposure;Chromatin;Consumption;Data;Defect;design;Development;Diagnosis;Diet;diet and exercise;Disease;disease phenotype;DNA Methylation;Embryo;Enhancers;Environmental Exposure;Epigenetic Process;epigenome;epigenomics;Etiology;Event;Exercise;Experimental Designs;experimental study;Exposure to;Fetus;Future;Gene Expression;Gene Expression Profile;Gene Expression Regulation;Genes;Genetic;Germ Cells;Germ Lines;good diet;Heterogeneity;Hi-C;High Fat Diet;histone modification;Homo;Human;Incidence;Inherited;intergenerational;Life Style;male;Maps;Mediating;men;Molecular;mouse model;Nature;neuronal cell body;non-genetic;novel;offspring;Organ;Pathway interactions;Pattern;Prevalence;prevent;Productivity;promoter;pup;reproductive;Research;Role;Sampling;Series;single cell ATAC-seq;single-cell RNA sequencing;Smoking;Somatic Cell;Specificity;sperm cell;Spermatogenic Cell;Structure;Testing;Tissues;trait;transgenerational epigenetic inheritance;transmission process;Unhealthy Diet;Untranslated RNA
+current_category: infrastructure
+---
+application_id: 10804632
+activity_code: P20
+title: Computational Core
+org_name: UNIVERSITY OF KENTUCKY
+phr: N/A
+terms: absorption;Acceleration;Address;Artificial Intelligence;Basic Science;Biology;Biomedical Research;career development;Centers of Research Excellence;Chemicals;Clinical;clinical application;Clinical Research;Complement;Complex;Computer Hardware;Computer software;Computing Methodologies;Consultations;Data Analyses;design;Development;Devices;Diffusion;Disease;DNA;Doctor of Philosophy;Excretory function;experimental study;Faculty;faculty research;Goals;Gold;Health;Individual;Infrastructure;innovation;intermolecular interaction;Kentucky;Lead;Leadership;Ligands;Macromolecular Complexes;Mentors;Mentorship;Metabolism;Methods;Modeling;models and simulation;Molecular;molecular dynamics;Molecular Medicine;molecular modeling;multidisciplinary;nanoparticle;Organic Synthesis;particle;Pharmacologic Substance;pre-clinical;prevent;primary outcome;Process;protein complex;Proteins;Protocols documentation;Research;Research Design;research faculty;Research Personnel;Research Support;Resources;Science;Scientist;self assembly;Services;simulation;stem;Structure;synergism;Techniques;tool;Toxic effect;Training;Translational Research;Universities;Validation;virtual screening
+current_category: infrastructure
+---
+application_id: 10804629
+activity_code: P20
+title: Administrative Core
+org_name: UNIVERSITY OF KENTUCKY
+phr: N/A
+terms: Address;Agriculture;Arts;Biological;Biology;Biomedical Research;Cancer Center;Cardiovascular Diseases;career;career development;Career Mobility;Centers of Research Excellence;Chemicals;Clinical;clinical application;clinical center;Clinical Sciences;college;Communication;Decision Making;Development;Development Plans;Devices;Discipline;Disease;Education;Engineering;Ensure;Environment;Evaluation;Faculty;faculty research;Food;Fostering;Goals;Health;Human Resources;improved;Infrastructure;innovation;Institution;interdisciplinary collaboration;Kentucky;Knowledge;Leadership;Medicine;Mentors;Mentorship;Modeling;Molecular Medicine;multidisciplinary;Obesity;operation;Oral;Outcome;outreach;Pharmacologic Substance;Pharmacy facility;prevent;primary outcome;Process;Program Effectiveness;Program Evaluation;programs;Research;Research Personnel;Research Priority;Research Support;Resource Allocation;Resource Sharing;Resources;Science;stem;Structure;success;supportive environment;synergism;Systemic disease;tool;Translational Research;Translations;tumor metabolism;Universities;Validation
+current_category: infrastructure
+---
+application_id: 10893303
+activity_code: P20
+title: Elucidating the chemical biology of the druggable targets in enteric pathogens C. jejuni & E. coli
+org_name: UNIVERSITY OF KENTUCKY
+phr: N/A
+terms: Antibiotic Resistance;Biology;Campylobacter jejuni;Centers of Research Excellence;Chemicals;druggable target;enteric infection;enteric pathogen;Escherichia coli;gut inflammation;gut microbiota;human pathogen;innovation;Intervention;microbial;Pharmacologic Substance;Research;small molecule;therapy development
+current_category: therapeutics
+---
+application_id: 10768743
+activity_code: P20
+title: Cell Models Core
+org_name: MEDICAL UNIVERSITY OF SOUTH CAROLINA
+phr: N/A
+terms: Adopted;Affect;Animal Disease Models;Biological Models;Cell Culture Techniques;Cell Differentiation process;Cell Line;Cell Maintenance;Cell model;cell type;Cells;Centers of Research Excellence;cholangiocyte;Collaborations;Colon;Communities;CRISPR/Cas technology;Data;Development;Digestive System Disorders;directed differentiation;DNA Sequence Alteration;Drug Screening;Ensure;Enteroendocrine Cell;Epithelial Cells;established cell line;Evaluation;experience;experimental study;Feedback;Funding;Future;Gastrointestinal tract structure;gene editing technology;Gene Modified;Generations;genetically modified cells;Genome engineering;Goals;Goblet Cells;Hepatocyte;human induced pluripotent stem cells;human pluripotent stem cell;Implant;in vivo;induced pluripotent stem cell;innovation;intestinal epithelium;Investigation;Laboratories;Leadership;Liver;Liver diseases;Medical;medical schools;Mentors;Mesenchyme;Modeling;Molecular;mouse model;Mutate;Mutation;Needs Assessment;new technology;operation;Organoids;Paneth Cells;Performance;Printing;Procedures;Production;professor;Program Evaluation;programs;Protocols documentation;Reagent;recruit;Reproducibility;Research;Research Personnel;Resources;Running;Self-Examination;Services;South Carolina;stable cell line;stem cell biology;stem cells;Surveys;System;Technical Expertise;Technology;tissue culture;Tissues;tool;Training;training opportunity;Universities;Wisconsin;Work
+current_category: infrastructure
+---
+application_id: 11052046
+activity_code: P20
+title: The role of hippocampal neurogenesis in the development of cognitive deficits in autoimmune encephalitis with seizures
+org_name: UNIVERSITY OF NEBRASKA MEDICAL CENTER
+phr: N/A
+terms: Adult;Affect;Age Years;Aging;Alzheimer&apos;s disease model;anakinra;Animals;antagonist;arm;Attenuated;attenuation;Autoimmune;Autoimmune encephalitis;behavior test;Behavioral;Brain Diseases;Brain imaging;Cells;Chemicals;Chronic;Cognitive;Cognitive deficits;cognitive function;cognitive neuroscience;Coma;Complication;Confusion;Data;Development;Encephalitis;Encephalopathies;Exposure to;Failure;Fc Receptor;Functional disorder;Goals;Hippocampus;Histologic;Image;Impaired cognition;in vivo;Inflammation;Inflammatory;Intervention;Learning;Literature;Memory;Memory impairment;Memory Loss;mouse model;Mus;N-Methyl-D-Aspartate Receptors;nerve stem cell;neurogenesis;novel therapeutic intervention;Patients;Pattern;Persons;pharmacologic;phenotypic biomarker;Positron-Emission Tomography;Proliferating;Proteins;Psychoses;Quality of life;Radiolabeled;receptor;restoration;Role;Seizures;stem cells;Thymidine;Tissues;Visualization
+current_category: biotools
+---
+application_id: 10788357
+activity_code: P20
+title: Translational Imaging and Behavioral Assessment (TIBA) Core
+org_name: UNIVERSITY OF NEBRASKA MEDICAL CENTER
+phr: N/A
+terms: Aging;animal imaging;Animal Model;Behavior;Behavior assessment;Behavioral Research;Cognition Disorders;cognitive neuroscience;cognitive testing;Communities;Data Set;Development;Equipment;experimental study;Funding;image translation;imaging facilities;imaging modality;imaging study;improved;in vivo imaging;Individual;Infrastructure;innovation;instrumentation;Interdisciplinary Study;Magnetic Resonance Imaging;Mentors;Methodology;Modality;Multimodal Imaging;multiphoton microscopy;neural;Neurocognitive;neurocognitive disorder;Neurodegenerative Disorders;Neurodevelopmental Disorder;Optics;Positron-Emission Tomography;pre-clinical;preclinical imaging;Research;Resources;Rodent;Structure;Study models;translational model
+current_category: infrastructure
+---
+application_id: 10788354
+activity_code: P20
+title: The role of host amino acid metabolism in behavioral changes during latent toxoplasmosis
+org_name: UNIVERSITY OF NEBRASKA MEDICAL CENTER
+phr: N/A
+terms: acute infection;Affect;Aging;amino acid metabolism;Amino Acid Metabolism Pathway;Amino Acids;Arginine;Basic Amino Acid Transport Systems;Behavior;Behavioral;Brain;Cells;Cellular Metabolic Process;Cerebral cortex;Chronic;chronic infection;cognitive change;cognitive neuroscience;Cyst;Cytosol;Data;Development;Disease;Environment;flu;Frustration;Genes;Heart;HIV/AIDS;Immune response;Immune system;Individual;Infection;inhibitor;insight;Knock-out;Lesion;Life;Lysosomes;Measures;Mediating;Mental disorders;Metabolic;Mus;Nerve Degeneration;Nervous System Disorder;Neurocognitive Deficit;neuroinflammation;Neurologic;novel therapeutics;Nutrient;obligate intracellular parasite;Parasites;Pathway interactions;Patients;Persons;Pharmaceutical Preparations;Positioning Attribute;Publishing;Role;Stains;Supplementation;Symptoms;Techniques;Testing;Thick;Tissues;Toxoplasma;Toxoplasma gondii;Toxoplasmosis;transcriptomic profiling
+current_category: basic_research
+---
+application_id: 10788358
+activity_code: P20
+title: Hypothalamic Sleep-Wake Neuron Defects in Alzheimer’s disease
+org_name: UNIVERSITY OF NEBRASKA MEDICAL CENTER
+phr: N/A
+terms: Ablation;Address;Affect;Age Months;age related;age related changes;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease patient;Animal Behavior;Area;Behavior assessment;Behavioral;Brain;Calcium;Caregivers;cell type;cerebral atrophy;Cerebrospinal Fluid;Characteristics;Clinical;Cognitive;Cognitive deficits;cognitive development;cognitive enhancement;cognitive function;cognitive neuroscience;cognitive performance;Core Facility;Data;Defect;Development;Dreams;Electroencephalography;Exhibits;Funding;Generations;Genetic;genetic approach;Hippocampus;Human;Hypothalamic structure;Image;Impaired cognition;improved;improvement on sleep;in vivo;in vivo calcium imaging;Lateral;Learning;Maintenance;MAPT gene;Mediating;Medical center;melanin-concentrating hormone;Membrane;Memory;Memory impairment;Mission;Monitor;morris water maze;mouse model;Mouse Strains;Mus;Mutation;Nebraska;Neurofibrillary Tangles;neuromechanism;neuron loss;Neurons;neuropathology;non rapid eye movement;novel therapeutic intervention;patch clamp;Pathology;Patients;Pattern;Phase;Play;preference;protein expression;Publishing;rapid eye movement;Regulation;REM Sleep;Research;Role;Severities;Sleep;sleep abnormalities;Sleep Architecture;Sleep Deprivation;Sleep Disorders;Sleep disturbances;sleep pattern;sleep quality;sleep regulation;Sleep Wake Cycle;Slice;spatial memory;tau Proteins;Tauopathies;Testing;Therapeutic Intervention;United States National Institutes of Health;Universities
+current_category: therapeutics
+---
+application_id: 10862784
+activity_code: P20
+title: Wildfires and arrhythmias: evaluating associations and intervention strategies
+org_name: UNIVERSITY OF MONTANA
+phr: This project is directly related to Center for Population Health Research priorities, as it explores a novel means of health promotion and prevention of age-related physical frailty, which is designed to overcome barriers to access and promote autonomy in managing physical health. Thus, it is well-suited to address the needs of under-served and rural communities.
+terms: Accounting;Acute;Address;Adult;adverse birth outcomes;Age;age related;Air;air cleaner;Air Pollution;ambient air pollution;Arrhythmia;Attitude;Behavior;Blood Pressure;Cardiovascular Diseases;Cardiovascular system;Centers for Population Health;Characteristics;Clinic Visits;cohort;Cohort Studies;Communities;community advisory board;Data;Data Set;design;Development;Devices;Diné Nation;Disease;Education;Effectiveness;efficacy evaluation;Electronics;Equilibrium;Evaluation;Event;Exposure to;Feedback;fine particles;follow-up;frailty;Future;Goals;Health;Health behavior;health care settings;Health Promotion;Heart;Height;High Prevalence;Home;Household;Human Resources;Implant;improved;Independent Living;Individual;indoor air;Indoor Air Pollution;Indoor Air Quality;Indoor environment;Infiltration;insight;interest;International;Intervention;intervention program;Interview;Investigation;Knowledge;Length;Literature;Measurement;Measures;member;Mental disorders;Modality;Modeling;Montana;mortality;novel;novel strategies;Outcome;Outcome Measure;Participant;Patient Recruitments;Patients;Perception;Persons;Pharmaceutical Preparations;physical conditioning;Physical Function;Population;portability;post intervention;Predisposition;prevent;Prevention;Prevention strategy;Program Development;Program Evaluation;programs;prospective;Public Health;Quality of life;randomized trial;Recommendation;Records;Reporting;Research;Research Priority;Respiratory Disease;Rural;Rural Community;Schedule;Seasons;sensor;Site;sociodemographics;Subgroup;Surveys;Target Populations;Testing;Theory of Change;Time;Training;underserved community;United States;United States National Institutes of Health;Universities;Visit;Wildfire;Work
+current_category: other
+---
+application_id: 10862771
+activity_code: P20
+title: Admin Core
+org_name: UNIVERSITY OF MONTANA
+phr: N/A
+terms: Academic Medical Centers;Administrator;Advisory Committees;Applications Grants;Award;Benchmarking;career;career development;Centers for Population Health;Child;Child Health;Collaborations;Communication;Data;design;Development;Development Plans;Ensure;Epidemiology;Evaluation;experience;Extramural Activities;Faculty;formative assessment;Fostering;Funding;Future;Goals;graduate student;Grant;Growth;Health;improved;Individual;Infrastructure;innovation;Intervention;Intervention Studies;Investments;Leadership;leadership development;Marketing;Mentors;Mentorship;Modeling;Modification;Montana;Newsletter;outreach;Pathway interactions;Pilot Projects;Prevention Research;Process;Productivity;programs;Recommendation;Recording of previous events;recruit;Reporting;Research;Research Personnel;Research Support;Resource Allocation;Resources;Risk;Rural;Rural Community;skills;Structure;success;Talents;Teacher Professional Development;Testing;Training;Update;Vision;web site;Work;Writing
+current_category: infrastructure
+---
+application_id: 10862774
+activity_code: P20
+title: Stakeholder Engagement and Intervention Support Core
+org_name: UNIVERSITY OF MONTANA
+phr: N/A
+terms: Behavior assessment;behavioral response;career;Centers for Population Health;Child;Child Health;Communities;Complement;County;Data;Data Collection;design;Development;economic evaluation;Economics;Education;educationally disadvantaged;Ensure;epidemiologic data;Epidemiology;Evaluation;experience;Face;frontier;Funding;Future;Geography;Grant;Health;health disparity;health economics;Health Promotion;improved;Intervention;Intervention Studies;Investments;Low income;Medically Underserved Area;Methods;Modeling;Montana;Outcome;Participant;Pathway interactions;Pattern;Persons;Phase;Prevention;Prevention Research;Process;programs;Publications;Qualitative Research;recruit;Research;Research Personnel;Research Project Grants;Reservations;Risk;Rural;rural area;Rural Community;Rural Health;rural setting;Structure;Surveys;theories;therapy design;training opportunity;underserved community;Vulnerable Populations
+current_category: infrastructure
+---
+application_id: 10818639
+activity_code: P50
+title: Prevention and Early Identification for High Risk Youth in School-based Clinics
+org_name: CAMBRIDGE HEALTH ALLIANCE
+phr: N/A
+terms: 17 year old;Abuse Reporting;acceptability and feasibility;access disparities;Accounting;age group;aged;behavioral health;Clinic;Cognitive;college;Communities;compare effectiveness;Complex;Computers;coping;coping mechanism;Counseling;COVID-19;Data;Databases;Diagnosis;Disadvantaged;Disparity;disparity reduction;Distress;E-learning;Early identification;Early Intervention;early screening;Early treatment;Education;effective intervention;Effectiveness;effectiveness evaluation;Effectiveness of Interventions;effectiveness testing;Electronic Health Record;Electronics;Ethnic Origin;Explosion;Face;Family;feasibility testing;follow-up;Food;functional improvement;functional status;Future;Haitian;Health Alliance;Health Promotion;Health Services;Health Services Accessibility;Health system;help-seeking behavior;high risk;Individual;Institute of Medicine (U.S.);Insurance;Intervention;Language;Measurement;Measures;Mental disorders;Mental Health;mental health personnel;Methods;Minority;minority children;minority communities;Neighborhoods;novel;Outcome;outreach;Paper;Parents;peer support;perceived discrimination;Population;Portuguese;prevent;Prevention;Preventive;preventive intervention;promote resilience;Race;reduce symptoms;remediation;Reporting;resilience;Risk;Risk Factors;Sampling;school closure;School-Age Population;Schools;screening;Self Efficacy;single episode major depressive disorder;Social Distance;social health determinants;social stigma;socioeconomics;Spanish;stressor;Structure;Students;Substance abuse problem;substance use;Symptoms;Technology;Teenagers;Testing;Therapeutic Intervention;Time;tool;Trauma;treatment disparity;Unemployment;Work;Youth
+current_category: infrastructure
+---
+application_id: 10893979
+activity_code: P20
+title: Developmental Research Project Program
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Address;Advisory Committees;American Association for the Advancement of Science;Applications Grants;Area;Award;Biomedical Research;career development;Collaborations;Committee Members;Communication;Counseling;Data;Development;Eligibility Determination;Evaluation;Evolution;expectation;experience;Faculty;Feedback;formative assessment;Funding;Funding Opportunities;Goals;Grant;Grant Review;Guidelines;improved;Incentives;Institution;interest;Lead;Leadership;Learning;Letters;meetings;member;Mentors;Modification;National Institute of General Medical Sciences;New Hampshire;Paper;Peer Review;Pilot Projects;Principal Investigator;probation;Process;professor;Program Evaluation;Program Research Project Grants;programs;Progress Reports;Publishing;Recommendation;recruit;Reporting;Research;Research Activity;research and development;Research Project Grants;Research Proposals;Research Support;Resources;response;Role;Schools;Science;Solid;student participation;student training;Students;undergraduate research experience;undergraduate student;Writing
+current_category: infrastructure
+---
+application_id: 10893976
+activity_code: P20
+title: Research Training Core
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Accounting;Address;Advisory Committees;American Association for the Advancement of Science;Award;Bioinformatics;Biomedical Research;Budgets;Collaborations;Committee Members;Communication;community college;Complex;Decision Making;Development;Disparate;Enrollment;Equipment;Evaluation;Evolution;experience;Faculty;Faculty Recruitment;faculty research;Funding;Genomics;Goals;Grant;improved;Individual;Infrastructure;Institution;Lead;Leadership;member;Mentors;New Hampshire;novel;novel strategies;operation;Postdoctoral Fellow;Privatization;Process;Program Research Project Grants;programs;Research;Research Activity;research faculty;Research Infrastructure;Research Personnel;Research Support;Research Training;Resources;Schools;Science;service delivery;Service provision;Services;Strategic Planning;student mentoring;Students;System;Training;Training and Education;Training Programs;undergraduate student;Universities
+current_category: training
+---
+application_id: 10893973
+activity_code: P20
+title: Bioinformatics and Genomics Core
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Acceleration;Address;Bioinformatics;Biology;Biomedical Research;Cancer Education Grant Program;Collaborations;computer infrastructure;cost effective;Data;Data Analyses;Data Science;Development;Education;Educational Curriculum;Educational process of instructing;Ensure;Evaluation;Evolution;experience;Experimental Designs;Faculty;FAIR principles;Fostering;Funding;Future;Generations;Genomics;Geographic Locations;Goals;Grant;improved;informatics training;innovation;Institution;Kansas;Lead;Measures;Methods;New Hampshire;Phase;programs;Publications;Reproducibility;Research;Research Personnel;Research Project Grants;Research Support;Research Training;Resources;Science;skills;Strategic Planning;student training;success;Teacher Professional Development;Trainers Training;Training;Training Activity;Training and Infrastructure;Training Programs;undergraduate student;United States National Institutes of Health;Universities;Workforce Development
+current_category: infrastructure
+---
+application_id: 10848393
+activity_code: P20
+title: Proteomics Core
+org_name: UNIVERSITY OF VERMONT & ST AGRIC COLLEGE
+phr: N/A
+terms: Area;Bioinformatics;bioinformatics network;Biomedical Research;Businesses;Career Choice;Client;Collaborations;Communities;Consult;course module;Custom;Data;Data Analyses;Development;Education;Education and Outreach;Ensure;equipment acquisition;experience;Experimental Designs;Extramural Activities;Faculty;faculty research;faculty support;Fostering;Funding;Future;Genetic;Goals;Grant;hands on research;Home;innovation;Institution;laboratory curriculum;Learning;lectures;Manuscripts;Mass Spectrum Analysis;Methodology;Mission;operation;outreach;Preparation;Price;Procedures;Productivity;programs;Protein Analysis;Proteome;Proteomics;Publications;Research;Research Activity;Research Personnel;Research Training;Sampling;science education;Services;skills;student participation;student training;Students;Technology;Time;Training and Education;undergraduate student;Universities;Vermont;Work
+current_category: infrastructure
+---
+application_id: 10848391
+activity_code: P20
+title: Administrative Core
+org_name: UNIVERSITY OF VERMONT & ST AGRIC COLLEGE
+phr: N/A
+terms: Address;Advisory Committees;American Association for the Advancement of Science;Award;Bioinformatics;Biomedical Research;Budgets;career;Centers of Research Excellence;Collaborations;Communication;conflict resolution;Development;Education;Ensure;Evaluation;Event;experience;Extramural Activities;Faculty;faculty mentor;First Generation College Students;formative assessment;Funding;Future;Genetic;Goals;Grant;Guidelines;human subject;improved;Infrastructure;Institution;interest;Lead;Leadership;Longitudinal Surveys;meetings;member;Mentors;Mission;Monitor;National Institute of General Medical Sciences;operation;Participant;Policies;Principal Investigator;Procedures;Process;Program Development;programs;Proteomics;Publications;Recommendation;recruit;Regulation;Reporting;Research;Research Infrastructure;Research Personnel;Resources;Secure;Services;STEM field;Students;success;undergraduate student;Underrepresented Minority;United States National Institutes of Health;Universities;Vermont;Vertebrates;Work
+current_category: infrastructure
+---
+application_id: 11037103
+activity_code: P20
+title: ConProject-008
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 11085463
+activity_code: U42
+title: Viral Testing Core
+org_name: TULANE UNIVERSITY OF LOUISIANA
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Animals;Antigens;Biological Assay;Breeding;California;cost;Data;Detection;Development;diagnostic assay;Diagnostic Services;Future;germ free condition;Grant;interest;Laboratories;Macaca;Maintenance;Microbiology;Mission;nonhuman primate;offspring;pathogen;Pathogen detection;Performance;performance tests;Primates;programs;quality assurance;Research;Research Personnel;Research Support;Sampling;screening;Shipping;Simian Retroviruses;Site;SIV;success;Surveillance Program;targeted agent;Techniques;Testing;United States National Institutes of Health;Validation;Validity of Results;Veterinary Medicine;Viral Physiology;Virus;virus testing;working group
+current_category: infrastructure
+---
+application_id: 11036809
+activity_code: P20
+title: ConProject-004
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 11036810
+activity_code: P20
+title: ConProject-005
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 10895319
+activity_code: P50
+title: Organoid, Mouse Model, and Biomarker
+org_name: DANA-FARBER CANCER INST
+phr: NARRATIVE - Core 3: Organoid, Model Systems, and Biomarkers Core  The overarching goals of the Organoids, Model Systems, and Biomarkers Core are to provide tissue collection infrastructure, murine PDX models, and HGSC organoid models for combination drug testing and biomarker analysis. The core will be utilized by all three projects of the Dana-Farber/Harvard Cancer Center Ovarian Cancer SPORE program.
+terms: Apoptosis;Architecture;Biological Assay;Biological Markers;Biological Models;Biopsy;Cancer cell line;Cancer Center;cancer therapy;Cell Culture Techniques;Cell Line;Cells;chemotherapy;Clinical;Clinical Trials;Collection;design;Development;DNA Repair;Drug Combinations;Drug Evaluation;Drug resistance;drug sensitivity;drug testing;Environment;functional loss;functional status;Generations;Genes;Goals;Grant;Guidelines;Gynecologic Oncology Group;In Vitro;in vivo;Infrastructure;infrastructure development;inhibitor;insight;Investigation;ITGB2 gene;Laboratories;Maintenance;Malignant neoplasm of ovary;Malignant Neoplasms;Modeling;mouse model;Mus;Mutation;neoplastic cell;Newly Diagnosed Disease;novel strategies;Organoids;Ovarian;Paracentesis;Participant;patient derived xenograft model;Patients;Platinum;Poly(ADP-ribose) Polymerase Inhibitor;Primary Cell Cultures;programs;Protocols documentation;Publications;Recurrent disease;repository;Reproducibility;Research;Research Personnel;Residual Neoplasm;Resistance;Resistance development;response;restoration;sample collection;Sampling;Serous;Services;Therapeutic procedure;therapeutic target;therapy resistant;Thoracentesis;Tissue Banks;treatment response;tumor;tumorigenic;Validation;Work;Xenograft Model
+current_category: infrastructure
+---
+application_id: 11035898
+activity_code: P20
+title: ConProject-001
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 10874302
+activity_code: P20
+title: Alteration and Renovation
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: Area;Biological Sciences;Biomedical Research;Biotechnology;Cities;college;community college;curriculum enhancement;design;Educational Curriculum;Educational process of instructing;Educational workshop;Equipment;experience;experimental study;Faculty;Funding;Goals;High School Faculty;improved;instrumentation;K-12 Faculty;K-12 student;Laboratories;Longitudinal Studies;Mentors;Microbiology;Oklahoma;outreach;programs;Research;Research Project Grants;Research Training;Students;teaching laboratory;tool;Training;Training Programs;undergraduate research;undergraduate research experience;undergraduate student
+current_category: infrastructure
+---
+application_id: 10874299
+activity_code: P20
+title: Developmental Research Project Program
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: Academia;Area;Arkansas;Award;base;Biological Sciences;Biomedical Research;Biotechnology;career;career development;Career Mobility;Clinical;Collaborations;Communication;Country;Data;Dedications;Development;Development Plans;Economics;Evaluation;Faculty;Fostering;Foundations;Funding;Funding Opportunities;Generations;Goals;Grant;Health;Health Benefit;health disparity;Health Professional;Home environment;improved;Individual;Industry;innovation;Institution;Investments;Leadership;Marketing;Measures;member;Mentors;Mentorship;Mission;Oklahoma;Outcome;Pilot Projects;Population;practical application;primarily undergraduate institution;Probability;Program Research Project Grants;programs;Proteomics;R24;Recommendation;Reporting;Research;Research Personnel;Research Project Grants;Research Support;Resources;Science;Scientist;Secure;Source;Strategic Planning;Structure;student training;Students;success;Talents;Technology;Translating;Translational Research;Work
+current_category: infrastructure
+---
+application_id: 11037101
+activity_code: P20
+title: ConProject-006
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 11031228
+activity_code: P20
+title: Administrative Core
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: Administrative Supplement;Advisory Committees;American Association for the Advancement of Science;Area;Award;career;career development;Chairperson;Communication;Development;Educational workshop;Evaluation;Faculty;Goals;Grant;Health Professional;improved;Individual;Institution;International;lectures;meetings;National Institute of General Medical Sciences;Oklahoma;operation;Outcome;Policies;Principal Investigator;programs;Research;research and development;Research Infrastructure;Research Personnel;Research Project Grants;Resource Allocation;Resources;Role;Scientist;Students;symposium;Teacher Professional Development;Time;Travel;undergraduate research experience;United States National Institutes of Health;Vocational Guidance;Work
+current_category: infrastructure
+---
+application_id: 10874298
+activity_code: P20
+title: Administrative Core
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: Advisory Committees;Award;Biomedical Research;career;career development;Chairperson;Communication;Development;Educational workshop;Equipment;Evaluation;Faculty;Goals;Grant;Health Professional;improved;Individual;Infrastructure;Institution;Learning;lectures;meetings;Oklahoma;Outcome;Performance;Pilot Projects;Policies;Principal Investigator;programs;Research;research and development;Research Infrastructure;Research Personnel;Research Project Grants;Resource Allocation;Resources;Role;Students;symposium;Teacher Professional Development;Techniques;Time;undergraduate research experience;undergraduate summer research;United States National Institutes of Health;Vocational Guidance;Work
+current_category: infrastructure
+---
+application_id: 10874300
+activity_code: P20
+title: Data Science Core
+org_name: UNIVERSITY OF OKLAHOMA HLTH SCIENCES CTR
+phr: N/A
+terms: Appointment;Area;Bioinformatics;Bioinformatics core;Biomedical Research;Biostatistical Methods;Cataloging;college;computer science;Data Analyses;Data Science;Data Science Core;Data Scientist;data submission;Discipline;Education;Education and Outreach;Eligibility Determination;experience;faculty research;faculty support;Foundations;Funding;Genomics;Goals;higher education;Immunology;Information Specialists;Infrastructure;Institution;Leadership;Medical Research;member;Mentors;microbial genomics;Microbiology;microbiome research;Names;Oklahoma;outreach;Phase;professor;programs;Public Health;Publications;Puerto Rico;Qualifying;Research;Research Infrastructure;Schools;Science;Services;student participation;Students;success;Training;training data;training opportunity;transcriptomics;Workforce Development
+current_category: infrastructure
+---
+application_id: 11055245
+activity_code: P20
+title: Delaware INBRE
+org_name: UNIVERSITY OF DELAWARE
+phr: N/A
+terms: Advisory Committees;American Association for the Advancement of Science;Bioinformatics;Biomedical Research;career;Collaborations;Communities;Critiques;Delaware;Development;Disease;Economics;Education;Educational workshop;effectiveness evaluation;Evaluation;experience;Faculty;Funding;Future;Goals;graduate student;Grant;Heart;Human Resources;Impact evaluation;improved outcome;Institution;Leadership;meeting abstracts;Mentors;Mission;Occupations;Pilot Projects;Policies;Principal Investigator;Procedures;Process;Program Development;Program Evaluation;Program Research Project Grants;programs;Publications;Recommendation;Research;Research Activity;research and development;Research Personnel;Resource Sharing;Resources;Services;Strategic Planning;Students;success;symposium;undergraduate student
+current_category: infrastructure
+---
+application_id: 11084122
+activity_code: P20
+title: Delaware INBRE
+org_name: UNIVERSITY OF DELAWARE
+phr: N/A
+terms: Academic Research Enhancement Awards;Area;Award;base;Biomedical Research;cardiovascular health;Cardiovascular system;career;Centers of Research Excellence;Clinical;cohort;Collaborations;Delaware;Development;Dreams;Economic Development;Faculty;Funding;Goals;graduate student;Grant;Health;Health Promotion;Healthcare;improved;Infrastructure;innovation;Institution;instrumentation;Investments;Lead;Literature;Malignant Neoplasms;meeting abstracts;Mentors;Mission;Neurosciences;novel strategies;outreach;Peer Review;Pilot Projects;Postdoctoral Fellow;Program Research Project Grants;programs;Publications;Publishing;Research;Research Personnel;Research Project Grants;Resources;Secure;Services;student participation;Students;undergraduate student;underrepresented minority student;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 11084076
+activity_code: P20
+title: Delaware INBRE
+org_name: UNIVERSITY OF DELAWARE
+phr: N/A
+terms: Advisory Committees;American Association for the Advancement of Science;Bioinformatics;Biomedical Research;career;Collaborations;Communities;Critiques;Delaware;Development;Disease;Economics;Education;Educational workshop;effectiveness evaluation;Evaluation;experience;Faculty;Funding;Future;Goals;graduate student;Grant;Heart;Human Resources;Impact evaluation;improved outcome;Institution;Leadership;meeting abstracts;Mentors;Mission;Occupations;Pilot Projects;Policies;Principal Investigator;Procedures;Process;Program Development;Program Evaluation;Program Research Project Grants;programs;Publications;Recommendation;Research;Research Activity;research and development;Research Personnel;Resource Sharing;Resources;Services;Strategic Planning;Students;success;symposium;undergraduate student
+current_category: infrastructure
+---
+application_id: 10798053
+activity_code: U54
+title: Administrative Core
+org_name: HOWARD UNIVERSITY
+phr: N/A
+terms: Achievement;Advisory Committees;Collection;Communities;cost;Data Analyses;Dedications;Development;Effectiveness;Ensure;Evaluation;Evaluation Reports;Generations;Goals;Health Disparities Research;improved;Institution;Maintenance;minority health;minority health disparity;Monitor;Performance;Principal Investigator;programs;Recommendation;Research;Research Personnel;Research Project Grants;Research Support;Resolution;Review Committee;Role;Services;Training;Training Activity;training opportunity;Universities
+current_category: infrastructure
+---
+application_id: 10868317
+activity_code: P20
+title: Idaho INBRE Data Science Core
+org_name: UNIVERSITY OF IDAHO
+phr: N/A
+terms: Address;Big Data;Binding;Bioinformatics;Bioinformatics core;Biomedical Research;Biometry;career;Cloud Computing;Collaborations;college;Computational Biology;Computational Science;Core Facility;cyber infrastructure;Data;Data Analyses;data management;Data Science;Data Science Core;data science education;Data Security;Data Storage and Retrieval;Degree program;Development;DNA sequencing;Doctor of Philosophy;Education;Educational Activities;Educational process of instructing;Educational workshop;Environment;experience;experimental study;Faculty;faculty mentor;Flow Cytometry;Funding;genome resource;Goals;Grant;Idaho;Image;Image Cytometry;improved;Infrastructure;innovation;Institution;Interdisciplinary Study;knowledge network;Laboratories;Lead;Learning;Life Cycle Stages;Location;metabolomics;Modernization;Molecular;National Institute of General Medical Sciences;Positioning Attribute;Program Research Project Grants;programs;Proteins;Proteomics;Qualifying;Research;Research Personnel;Research Project Grants;Resources;Running;satisfaction;Secure;Services;skills;Source;Specialized Center;student research;Students;supercomputer;Technology;tool;Training;transcriptome sequencing;undergraduate research experience;undergraduate summer research;United States National Institutes of Health;Universities
+current_category: infrastructure
+---
+application_id: 11031625
+activity_code: P20
+title: Core-002
+org_name: UNIVERSITY OF IDAHO
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 11021933
+activity_code: P20
+title: Idaho INBRE Bioinformatics Core
+org_name: UNIVERSITY OF IDAHO
+phr: N/A
+terms: Address;Area;Assessment tool;Binding;Bioinformatics;bioinformatics resource;bioinformatics tool;Biomedical Research;Biometry;career development;Centers of Research Excellence;Collaborations;college;community college;Computational Biology;computing resources;Core Facility;cyber infrastructure;Data;data management;Data Storage and Retrieval;Dedications;Degree program;Development;DNA sequencing;Doctor of Philosophy;Education;education resources;Educational Curriculum;Educational process of instructing;Educational workshop;Environment;equipment acquisition;experience;Faculty;faculty mentor;Flow Cytometry;Funding;genome resource;graduate student;Grant;Idaho;Image;Image Cytometry;improved;Infrastructure;innovation;Institution;Interdisciplinary Study;knowledge network;Laboratories;laboratory experiment;Learning;lectures;Life Cycle Stages;Location;member;Mentors;metabolomics;Molecular;Montana;New Mexico;online resource;operation;optical imaging;Pilot Projects;Positioning Attribute;programs;Proteins;Proteomics;Qualifying;repository;Research;Research Personnel;Research Project Grants;Resources;Role;Running;Science;Secure;Services;Signal Transduction;Site;skills;Specialized Center;Stream;student training;Students;Technology;Time;tool;Training;Training and Education;transcriptome sequencing;undergraduate research experience;undergraduate student;United States Department of Agriculture;United States National Institutes of Health;Universities;web site
+current_category: infrastructure
+---
+application_id: 11035434
+activity_code: P20
+title: Project-002
+org_name: UNIVERSITY OF ALASKA FAIRBANKS
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 10874904
+activity_code: P20
+title: Data Science Core
+org_name: UNIVERSITY OF ALASKA FAIRBANKS
+phr: N/A
+terms: Address;Administrator;Alaska;Animals;Artificial Intelligence;Big Data;Bioinformatics;Bioinformatics core;Biomedical Research;career development;Clinical Research;Cloud Computing;Collaborations;Communities;Computational Biology;Data;Data Analyses;data ecosystem;data infrastructure;data management;data repository;Data Science;Data Science Core;Data Scientist;Data Security;data sharing;Development;Discipline;Drowning;Educational Curriculum;Educational workshop;Elements;Environmental Science;Event;experience;FAIR principles;Family;Funding;Genomics;Goals;Health;Human;improved;Indigenous;Individual;Infrastructure;innovation;Institution;Interdisciplinary Study;Investments;Isotopes;Leadership;Learning;Machine Learning;Methods;Modeling;Modernization;next generation;Personal Satisfaction;programs;Research;Research Activity;Research Infrastructure;Research Personnel;Resource Sharing;Resources;Services;small molecule;Strategic Planning;student training;Students;tool;Trainers Training;Training;training opportunity;Translational Research;undergraduate student;United States National Institutes of Health;Work;Workforce Development
+current_category: infrastructure
+---
+application_id: 11021951
+activity_code: P20
+title: Developmental Research Pilot Project
+org_name: UNIVERSITY OF ALASKA FAIRBANKS
+phr: N/A
+terms: Address;Advisory Committees;Agreement;Alaska;Alaska Native;Alaska Native population;Alaskan;Animals;Appointment;Award;Basic Science;behavioral health;Behavioral Research;Biomedical Research;career;career development;Clinical Research;Collaborations;Communities;design;Development;Direct Costs;Education;Educational workshop;Eligibility Determination;Environment;Environmental Science;expectation;experience;Faculty;Family;Foundations;Funding;Goals;Grant;Growth;Health;health disparity;health organization;Human;improved;Incentives;Individual;Infrastructure;Institution;interdisciplinary collaboration;Interdisciplinary Study;Investments;Laboratories;Lead;Leadership;Letters;meetings;multidisciplinary;National Institute of General Medical Sciences;Participant;Personal Satisfaction;Pilot Projects;Principal Investigator;Productivity;Program Research Project Grants;programs;Publishing;Recommendation;recruit;Research;Research Infrastructure;Research Personnel;Research Project Grants;Research Proposals;Resource Sharing;responsible research conduct;Safety;Science;Site;student training;Students;success;Time;Training;Training Programs;Translational Research;tribal health;undergraduate student;United States National Institutes of Health;Work
+current_category: infrastructure
+---
+application_id: 11021949
+activity_code: P20
+title: Research Experiences Core
+org_name: UNIVERSITY OF ALASKA FAIRBANKS
+phr: N/A
+terms: Achievement;Address;Alaska;Alaska Native;Alaska Native population;Alaskan;Animals;Assistantship;Award;base;Basic Science;behavioral health;Behavioral Research;Biomedical Research;career;Clinical Research;Collaborations;Communities;curriculum development;Development;Education;Educational Curriculum;Educational workshop;Engineering;Environmental Science;experience;Faculty;Family;Fostering;Foundations;frontier;Future;Goals;graduate student;Health;health disparity;health knowledge;health organization;Healthcare;Human;improved;Individual;Infrastructure;Institution;Interdisciplinary Study;interest;Investments;Knowledge;knowledge base;Leadership;learning community;Medical;Personal Satisfaction;programs;recruit;Research;Research Infrastructure;Research Personnel;Research Support;Research Training;Resource Sharing;Rural;Science;student participation;Students;success;Support System;System;Technology;Training;Training in Biomedical and Behavioral Research;Translational Research;Travel;tribal health;undergraduate research experience;undergraduate student;Underserved Population;underserved students;United States National Institutes of Health;Universities
+current_category: infrastructure
+---
+application_id: 11021947
+activity_code: P20
+title: Administrative Core
+org_name: UNIVERSITY OF ALASKA FAIRBANKS
+phr: N/A
+terms: Address;Administrator;Advisory Committees;Advocate;Alaska;Alaska Native;Alaska Native population;Alaskan;Animals;Award;Behavior;behavioral health;Behavioral Research;Benchmarking;Biomedical Research;career;Clinical Research;Collaborations;Communication;Communities;conflict resolution;Databases;Decision Making;design;Development;Doctor of Philosophy;Education;effectiveness evaluation;Eligibility Determination;Ensure;Environmental Science;Evaluation;experience;Faculty;Failure;Family;Feedback;Fostering;Foundations;Goals;Grant;Health;health disparity;health organization;Health system;Human;Individual;Infrastructure;Institution;Interdisciplinary Study;Investments;Lead;Leadership;Life Cycle Stages;Logistics;meeting reports;meetings;member;Modification;Newsletter;Organizational Productivity;Outcome;outreach;patient engagement;Personal Satisfaction;Process;programs;Recommendation;recruit;Reporting;Research;Research Infrastructure;Research Personnel;Research Project Grants;Resource Sharing;social media;Students;success;systems research;Training;Translational Research;tribal health;United States National Institutes of Health;Universities;Wages;web site
+current_category: infrastructure
+---
+application_id: 11021948
+activity_code: P20
+title: Bioinformatics Core
+org_name: UNIVERSITY OF ALASKA FAIRBANKS
+phr: N/A
+terms: Address;Alaska;Alaska Native;Alaska Native population;Alaskan;Animals;Award;behavioral health;Bioinformatics;bioinformatics resource;Biomedical Research;Biometry;career;career development;Clinical Research;Collaborations;Communities;Consultations;curriculum development;data acquisition;Data Analyses;Development;distributed model;Education;Educational Curriculum;Educational workshop;Enhancement Technology;Environment;Environmental Science;Equipment;experience;Experimental Designs;Faculty;Family;Foundations;Funding;Genes;genome resource;Goals;Health;health disparity;health organization;High Performance Computing;Human;Individual;Infrastructure;Institution;instrumentation;Interdisciplinary Study;Investments;Leadership;Methodology;Methods;Microbe;Modeling;Modernization;nanopore;next generation sequencing;Personal Satisfaction;Persons;Plants;Postdoctoral Fellow;programs;Proteins;Proteomics;recruit;Research;Research Infrastructure;Research Personnel;Resource Sharing;Resources;Scientist;Services;Sorting;student training;Students;System;Technology;tool;Training;Translational Research;Travel;tribal health;United States National Institutes of Health;Universities
+current_category: infrastructure
+---
+application_id: 10874906
+activity_code: P20
+title: Community Based Participatory Research Core
+org_name: UNIVERSITY OF ALASKA FAIRBANKS
+phr: N/A
+terms: Academic Training;Address;Advocate;Affect;Alaska;Alaska Native;Alaskan;American Indian;Animals;Attention;Award;Biomedical Research;Boat;career development;career networking;Case Study;Centers of Research Excellence;Clinical Research;Collaborations;Communities;community based participatory research;community based research;community engaged research;community engagement;community research;Country;Development;Disease;Disease Progression;Educational Curriculum;Educational workshop;Effectiveness;Environment;experience;Face;Faculty;Family;frontier;Funding;Geography;Goals;Health;Health Promotion;high risk;Household;Human;Individual;innovation;Intervention;Investments;Knowledge;Learning;member;Mentors;Mentorship;Native American Research Center for Health;next generation;Participant;patient engagement;Persons;poor health outcome;Population;Process;Program Research Project Grants;programs;Public Health;recruit;Research;Research Assistant;Research Infrastructure;Research Personnel;research to practice;Research Training;resource guides;Resources;Risk;Rural Community;Rural Population;student mentoring;student research;Students;symposium;tool;Training;Translational Research;Tribes;United States National Institutes of Health;Veterans;Work
+current_category: infrastructure
+---
+application_id: 10874903
+activity_code: P20
+title: Developmental Research Project Program
+org_name: UNIVERSITY OF ALASKA FAIRBANKS
+phr: N/A
+terms: Address;Administrator;Alaska;Alaska Native;Animals;Appointment;Award;behavioral health;Biomedical Research;career;career development;Clinical Research;Collaborations;college;Communities;Development;Education;Educational workshop;Eligibility Determination;Environmental Science;experience;Extramural Activities;Faculty;Family;Foundations;Funding;Funding Opportunities;Generations;Goals;Grant;Growth;Health;health knowledge;Human;improved;Incentives;Individual;Infrastructure;Institution;interdisciplinary collaboration;Interdisciplinary Study;interest;Investments;Lead;Leadership;Mentors;Mentorship;Mission;Outcome;Personal Satisfaction;Pilot Projects;primarily undergraduate institution;Principal Investigator;Productivity;Program Research Project Grants;programs;Research;Research Activity;Research Infrastructure;Research Personnel;Research Project Grants;Research Support;Research Training;Resource Sharing;Science;Scientist;student participation;student training;Students;success;Training;Training Programs;Translational Research;Travel;tribal college;tribal health;undergraduate student;United States National Institutes of Health
+current_category: biotools
+---
+application_id: 10874905
+activity_code: P20
+title: Research Analytics Core
+org_name: UNIVERSITY OF ALASKA FAIRBANKS
+phr: N/A
+terms: advanced analytics;Alaska;analytical method;Area;Award;Awareness;base;Biomedical Research;Businesses;career;certificate program;Chemicals;Consultations;Contract Services;Core Facility;Data;data acquisition;Data Analyses;Data Collection;Data Science Core;Development;Educational workshop;empowerment;Ensure;Equipment;equipment acquisition;Event;experience;Financial Support;Funding;Genomics;Geographic Locations;Goals;Grant;Health;Human Resources;instrument;instrumentation;interdisciplinary collaboration;Investments;Knowledge;Laboratories;laboratory facility;Location;Market Research;meetings;Mentorship;Methodology;Mission;Modeling;Modernization;Occupations;operation;programs;Recording of previous events;Research;Research Personnel;Research Project Grants;Research Support;Resources;Series;Services;skills;stable isotope;student research;Students;symposium;System;Techniques;Technology;Time;Training;Training Activity;training opportunity;Training Support;undergraduate research;undergraduate student;Universities
+current_category: infrastructure
+---
+application_id: 10897847
+activity_code: P01
+title: Core B
+org_name: BETH ISRAEL DEACONESS MEDICAL CENTER
+phr: N/A
+terms: adeno-associated viral vector;Bioinformatics;Brain region;Breeding;Cell Nucleus;cell type;Cells;cost;Data Set;Development;differential expression;EGR2 gene;Elements;Engineering;Enterobacteria phage P1 Cre recombinase;experience;experimental study;FLP recombinase;FOXP2 gene;Funding;Generations;Genes;Genetic;genetic manipulation;Genetic Recombination;Genotype;Goals;Histocytochemistry;Histologic;improved;In Situ Hybridization;In Vitro;in vivo evaluation;interest;Laboratories;Maintenance;Methods;Microinjections;Mission;Molecular;Molecular Biology;mRNA Expression;Mus;Mutant Strains Mice;neural;neurochemistry;Neurons;pharmacologic;Phenotype;Plasmids;Preparation;Production;promoter;Protocols documentation;Publications;Recombinants;Scheme;Series;Services;Signal Transduction;single nucleus RNA-sequencing;Sleep;Sleep Apnea Syndromes;Specificity;success;Techniques;Technology;Tissues;tool;Toxic effect;Toxin;transcriptomics;Transgenic Organisms;Update;Viral;Viral Vector;Work
+current_category: infrastructure

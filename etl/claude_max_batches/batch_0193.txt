@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 11035192
+activity_code: P20
+title: Primary Cilia-Dependent Mechanisms of Lymphangiogenesis
+org_name: SOUTH DAKOTA STATE UNIVERSITY
+phr: N/A
+terms: Actins;Affect;Biological Assay;Biology;Blood;candidate identification;Carrier Proteins;Cell Line;Cell Physiology;Cell Polarity;cell type;Cells;Chemotaxis;Chronic;Cilia;Clustered Regularly Interspaced Short Palindromic Repeats;Complement;Cornea;Corneal Neovascularization;Data;Defect;density;Development;Diameter;Elements;Endothelial Cells;Erinaceidae;Event;Fluorescence;frontier;Future;gene-editing approach;Genes;Goals;Graft Rejection;Immune;In Vitro;in vitro Assay;in vitro testing;in vivo;Inflammation;innovation;insight;Intercellular Junctions;intravital imaging;KDR gene;Keratoplasty;Knock-out;Knockout Mice;Light;Liquid substance;lymph nodes;Lymphangiogenesis;Lymphatic;Lymphatic Diseases;Lymphatic Endothelial Cells;lymphatic vessel;Lymphedema;Lymphocyte;mice imaging;Microscopy;migration;Modeling;mouse model;Mus;new therapeutic target;next generation sequencing;notch protein;novel therapeutics;Ontology;Organelles;Pathology;Pathway Analysis;Pathway interactions;Pattern;Phase;Platelet-Derived Growth Factor alpha Receptor;prevent;programs;Proliferating;Proteins;Refractory;Regulation;Reporter;Research;Research Personnel;response;shear stress;Signal Pathway;Signal Transduction;Sorting;spatial transcriptomics;spatiotemporal;Structure;Surgical sutures;targeted treatment;Technology;Testing;therapeutic target;Time;Tissues;transcriptome sequencing;transcriptomics;Translational Research;tumor;Validation;Vascular Endothelial Growth Factor C;Work;wound healing
+current_category: basic_research
+---
+application_id: 10880645
+activity_code: P30
+title: South Texas Alzheimer's Disease Center Data and Statistical Management Core
+org_name: UNIVERSITY OF TEXAS HLTH SCIENCE CENTER
+phr: N/A
+terms: advanced system;Alzheimer&apos;s Disease;Alzheimer&apos;s Disease Core Center;Alzheimer&apos;s disease related dementia;Archives;Automation;Bioinformatics;Biological Markers;Clinical;Clinical Data;Clinical Informatics;clinical practice;Clinical Research;Collaborations;Collection;Communities;community partners;Data;data acquisition;Data Analyses;data cleaning;Data Collection;data dictionary;data exchange;data handling;data harmonization;data integration;data management;data quality;Data Science;Data Set;data sharing;data standards;Data Storage and Retrieval;data submission;Decentralization;design;Development;Disparate;Doctor of Philosophy;early-career faculty;Electronic Health Record;Etiology;experience;Faculty;Future;Genetic;Goals;Health;Heterogeneity;Hispanic;Hispanic Populations;Image;Informatics;information highway;Information Systems;Infrastructure;Institution;interoperability;Investigation;Machine Learning;Maintenance;Mentors;Methods;Monitor;Multicenter Studies;multiple data sources;multiple omics;neuroimaging;neuropathology;Neurosciences;next generation;nonalzheimer dementia;Nuclear Pore Complex;operation;outcome prediction;outreach;personalized intervention;Phase;Population;Population Study;Procedures;Process;programs;Quality Control;recruit;Reporting;Research;Research Design;Research Personnel;sample collection;Sampling;Services;Site;South Texas;Statistical Data Interpretation;Statistical Methods;statistics;System;Testing;Time;Training;United States National Institutes of Health;Update;Work
+current_category: infrastructure
+---
+application_id: 10880647
+activity_code: P30
+title: South Texas Alzheimer's Disease Center Genetics and Multiomics Core
+org_name: UNIVERSITY OF TEXAS HLTH SCIENCE CENTER
+phr: N/A
+terms: Acceleration;Address;Affect;African American population;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;Applied Genetics;Area;Astrocytes;biobank;Biological;Biological Markers;Biology;biotypes;Blood;Brain;catalyst;cell type;Cells;Cholesterol;Clinical;clinical sequencing;Clinical Trials;cohort;Collaborations;Communities;Comprehensive Health Care;Consensus;Consent;Creativeness;Data;data management;Data Set;decrease resilience;Dementia;Diagnosis;digital;Disease;Disease Progression;Diverse Workforce;DNA;DNA Sequence Alteration;education research;Eligibility Determination;Endowment;Enrollment;Ensure;Ethics;Extended Family;Faculty;Family;Family history of;First Degree Relative;follow-up;functional genomics;Funding;Genes;Genetic;Genetic Counseling;Genetic Diseases;Genetic Risk;genetic variant;Genetic Variation;genome sequencing;genome wide association study;genomic data;genomic epidemiology;Genomics;Genotype;Goals;graduate student;Grant;Heart;Heterogeneity;Hispanic;Hispanic Americans;Hispanic Populations;Image;improved;Individual;individual patient;individualized prevention;induced pluripotent stem cell;Inflammation;innovation;International;lipidomics;machine learning method;Magnetic Resonance Imaging;Medical;Medical Genetics;member;metabolomics;Methods;Methylation;Mexican Americans;Microglia;Mitochondria;Motor;Multiomic Data;multiple omics;Mutation;Neurons;neuropathology;Neurosciences;new therapeutic target;normal aging;Not Hispanic or Latino;novel;Nuclear Pore Complex;Office of Administrative Management;older adult;Oligodendroglia;Organoids;Participant;Pathologic;Pathway interactions;Patients;personalized medicine;Pharmaceutical Preparations;Phenotype;phenotypic data;Population;Population Heterogeneity;Positron-Emission Tomography;precision medicine;Precision therapeutics;Prevention;proband;prognostication;Publications;recruit;Research;Research Methodology;Research Personnel;Research Support;resilience;Resources;Risk;Risk Estimate;risk stratification;Sampling;Science;Sensory;Serum;single cell ATAC-seq;South Texas;symposium;Syndrome;tau Proteins;therapeutic target;Training;Training Programs;transcriptomics;usability;Validation;whole genome;Work
+current_category: infrastructure
+---
+application_id: 10829940
+activity_code: P30
+title: Psychosocial Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Affect;age related;Aging;Alzheimer&apos;s Disease;Autopsy;Biological Markers;Brain;Brain imaging;caregiver interventions;Caregivers;Caring;Clinical;clinical training;Clinical Trials;Cognitive;cognitive change;cognitive function;cognitive testing;cohort;Collaborations;Communities;Consultations;coping;Counseling;daily functioning;Data;Data Analyses;Data Set;Databases;Dementia;depressive symptoms;design;Development;Disease;Disparity;doctoral student;Education;Emotional;Environment;Evaluation;Evidence based intervention;Family Caregiver;Family member;family support;Fostering;Goals;Health;health care service;Image;Image Analysis;Impaired cognition;Impairment;improved;Individual;innovation;insight;instrument;Intervention;intervention participants;Intervention Studies;Loneliness;longitudinal analysis;longitudinal database;Measurement;Measures;member;Memory Loss;Mentors;mild cognitive impairment;Mission;neuroimaging;neuropathology;Neuropsychological Tests;normal aging;older adult;optimism;Outcome;outreach;Participant;Performance;Personal Satisfaction;Persons;Pilot Projects;Population;Postdoctoral Fellow;Professional counselor;programs;Protocols documentation;psychosocial;Psychosocial Assessment and Care;psychosocial outcome;psychosocial wellbeing;Quality of life;recruit;Referral and Consultation;Research;Research Personnel;Research Project Grants;research study;Research Training;resilience;Resources;Self Efficacy;social;Social Work;successful intervention;therapeutically effective;Training;United States
+current_category: infrastructure
+---
+application_id: 10829933
+activity_code: P30
+title: Outreach, Recruitment and Engagement Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: African American;Alzheimer disease detection;Alzheimer&apos;s Disease;Alzheimer&apos;s Disease Core Center;Alzheimer&apos;s disease related dementia;animation;Attention;Biological Markers;biomedical referral center;Black race;Clinical;clinical center;Clinical Services;Clinical Trials;cohort;Collaborations;Communication;Communities;community advisory board;community collaboration;Community Health Aides;community organizations;Community Services;Confidentiality of Patient Information;Data;Detection;Disease;disease heterogeneity;Disease Progression;Education;education research;Educational workshop;effective therapy;Effectiveness;Electronic Health Record;electronic health record system;Ensure;Evaluation;Event;experience;Face;Feedback;Funding;Funding Opportunities;Goals;Growth;Health Fairs;human subject;improved;Incidence;innovation;Institution;interest;Investigation;Laboratories;Latino;Learning;Link;meetings;member;Mission;National Institute on Aging;neighborhood disadvantage;neuropathology;New York;novel;outreach;Participant;Patients;peer;Play;Population;population based;Population Heterogeneity;Positioning Attribute;Prevalence;prevent;Program Development;programs;psychosocial;Psychosocial Assessment and Care;recruit;Recruitment Activity;Registries;Research;Research Activity;research and development;research study;Research Subject Recruitments;Research Subjects;Resources;response;Role;Services;Social Work;Students;Technology;Therapeutic Trials;Training;underserved community;United States National Institutes of Health;Universities;Workforce Development
+current_category: infrastructure
+---
+application_id: 11367941
+activity_code: U54
+title: Examining the neuropsychiatric effects of HIV-1 integrase inhibitors
+org_name: MEHARRY MEDICAL COLLEGE
+phr: HIV-1 integrase strand transfer inhibitors (INSTIs) are among the most widely prescribed antiretrovirals. The goal of this application is to dissect the mechanism of INSTI--associated neuropsychiatric adverse effects. Our studies will generate new knowledge to promote novel strategies to prevent and/or manage INSTI associated neuropsychiatric complications among people living with HIV.
+terms: Adverse effects;Adverse event;Affect;African American population;Anti-Retroviral Agents;antiretroviral therapy;Biochemical;Biochemical Pathway;Brain;Brain region;Calcium;Calcium Channel;Calcium Signaling;Chromosomes;Clinical;Clinical Research;clinically relevant;Cognitive deficits;Communication;Data;Disease;DNA Integration;Drug usage;effective therapy;Electrophysiology (science);Equilibrium;excitotoxicity;Exposure to;extracellular;Functional disorder;Genetic;Genetic study;Genome;Glutamate Receptor;glutamatergic signaling;Glutamates;Goals;Health Disparities Research;HIV;HIV Infections;HIV-1;HIV-1 integrase;HIV/AIDS;Homeostasis;in vivo;Individual;Infection;inhibitor;Integrase;Integrase Inhibitors;interdisciplinary approach;Knowledge;Length;Measures;Mediating;medical schools;Metabolic;Minority;N-Methyl-D-Aspartate Receptors;N-Methylaspartate;Neurites;Neuronal Dysfunction;Neurons;Neuropathogenesis;neuropsychiatric disorder;neuropsychiatry;Neurosciences;neurotransmission;novel;novel strategies;Nucleus Accumbens;Pathway interactions;Persons;Pharmacology Study;Play;postsynaptic;presynaptic;prevent;Production;programs;Recommendation;Regimen;Reporting;Research;response;reward circuitry;Role;side effect;Signal Transduction;success;Synapses;synaptic function;Testing;Upregulation;viral DNA;Virus;voltage
+current_category: therapeutics
+---
+application_id: 10829924
+activity_code: P30
+title: Administrative Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Acceleration;Administrator;Advisory Committees;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Animal Welfare;Biological Markers;biomarker identification;Clinical;Cognitive;Collaborations;Communication;Communities;Consultations;Data;data management;Data Set;Dementia;Development;education research;Ensure;Faculty Recruitment;Financial Support;Fostering;Future;Grant;Health;Heterogeneity;human subject;Impaired cognition;Institution;Intervention;Leadership;meetings;mild cognitive impairment;Mission;Monitor;neural;neuroimaging;Neurology;neuropathology;Neurosciences;next generation;normal aging;novel;outreach;Play;Policies;posters;prevent;Procedures;Process;Productivity;programs;psychosocial;recruit;Research;Research Personnel;Research Priority;Research Project Grants;Resources;Role;Sampling;Science;Scientist;symposium;Technology;transmission process;United States National Institutes of Health;Universities;Work
+current_category: infrastructure
+---
+application_id: 10813191
+activity_code: P50
+title: UC Davis Conte Center: Administrative Core
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: N/A
+terms: Area;Awareness;Biostatistics Core;Brain;Collaborations;Communication;Communities;continuing medical education;Development;Education;Education and Outreach;Electronic Mail;Ensure;Evaluation;Event;Face;Fostering;Goals;graduate student;Group Meetings;Health;Individual;informal learning;interest;Knowledge;lectures;Measures;meetings;member;Mental disorders;Mental Health;Mind;National Institute of Mental Health;neuroimaging;Neuroimmunomodulation;Neurosciences;next generation;Occupational activity of managing finances;organizational structure;Outcome;outreach;Persons;Play;post-doctoral training;Postdoctoral Fellow;pre-doctoral;programs;Progress Reports;Psychiatry;Psychotic Disorders;recruit;Reporting;Research;Research Personnel;Research Project Grants;Resources;Role;Schools;Series;Services;Societies;symposium;Training;Training Activity;Training Programs;Videoconferencing;web site;Work
+current_category: infrastructure
+---
+application_id: 11379765
+activity_code: P30
+title: Biomarker Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Address;Administrative Supplement;Age;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Alzheimer’s disease biomarker;Amyloid;apolipoprotein E-4;Basic Science;behavior measurement;Biological;Biological Assay;Biological Markers;Blood;Blood Vessels;Brain;Cerebrospinal Fluid;Cerebrovascular Disorders;Clinical;Clinical Research;clinically relevant;Cognitive;Collaborations;Communities;cost effective;Data;data management;Data Set;data sharing;Dedications;Dementia;design;Diagnosis;diagnostic tool;Disease;disease heterogeneity;Disease Progression;DNA;DNA Methylation;Enzyme-Linked Immunosorbent Assay;epidemiology study;Equipment;Fostering;Funding;Future;Genomics;glial activation;Goals;Heterogeneity;Human Resources;Impaired cognition;improved;Inflammation;Intake;Interdisciplinary Study;Intervention;Light;Link;Magnetic Resonance Imaging;metabolomics;microbiome;microbiome analysis;mild cognitive impairment;Nerve Degeneration;neurobiological mechanism;neurofilament;neuroimaging;neuropathology;next generation;normal aging;novel;novel marker;Participant;Pathology;Pathway interactions;phenotypic biomarker;Phosphorylation;Plasma;Positron-Emission Tomography;Postdoctoral Fellow;pre-clinical;predictive modeling;prevent;Procedures;Process;Prognosis;programs;Proteomics;Quality Control;Research;Research Personnel;Risk;RNA;Role;Sampling;Scientific Advances and Accomplishments;Serum;sex;Sleep;statistics;statistics core;stool sample;Students;Systems Biology;tau Proteins;tau-1;Technology;Tissue Banks;tool;transcriptomics;Translational Research;Work
+current_category: infrastructure
+---
+application_id: 10927450
+activity_code: S06
+title: Healing From Within: Identifying and Understanding the Intersecting Barriers to Help-seeking After Experiences of Violence for Wisconsin American Indian Women Through Survivor-led Research
+org_name: GREAT LAKES INTER-TRIBAL COUNCIL, INC.
+phr: NARRATIVE: Pilot Project, Healing from Within.  The proposed pilot study uses a mixed-methods and community engaged approach to identify and understand barriers to help-seeking among Indigenous women with co-occurring mental health and/or substance use disorders after experiences of gender-based violence, and to understand how resiliency and cultural identity may help to motivate help- seeking among Indigenous women survivors of GBV in the local context of Wisconsin. This proposed pilot study is
+terms: Address;Advisory Committees;American Indian Women;Area;barrier to care;career;Cessation of life;Clinic;Communities;community academic partnership;community advisory board;community based participatory research;community collaboration;community engaged approach;community engaged research;community partners;community partnership;Complex;County;Data;Elderly;Ensure;Environment;experience;forest;Foundations;Future;Gender;gender-based violence;healing;Health;health care availability;health disparity;health equity promotion;Health Priorities;Health Promotion;help-seeking behavior;Home;improved;Indigenous;indigenous community;Individual;Inequality;Institution;Interview;Investigation;Knowledge;Life;Mainstreaming;meetings;Mental disorders;Mental Health;Methodology;Methods;Midwestern United States;Motivation;Murder;Native American Research Center for Health;Native-Born;Outcome;Pattern;Personal Satisfaction;Pilot Projects;Policies;Potawatomi;Prevalence;Provider;racism;Recommendation;recruit;Reduce health disparities;relationship abuse;Reporting;Research;Research Personnel;research study;reservation-based;resilience;resilience factor;Resources;response;restraint;Risk;Rural;rural area;Safety;Services;severe injury;Shapes;Shelter facility;social stigma;structural determinants;substance misuse;substance use;Substance Use Disorder;Surveys;Survivors;tribal community;tribal health;tribal Nation;Tribes;Trust;Universities;urban area;Violence;Wisconsin;Woman
+current_category: other
+---
+application_id: 10829926
+activity_code: P30
+title: Clinical Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Action Research;Address;African American;African American population;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Alzheimer’s disease biomarker;Amyloid;Biological Markers;Black Populations;Black race;Brain;career;Cerebrovascular Disorders;Clinical;Clinical Assessment Tool;Clinical assessments;clinical biomarkers;clinical phenotype;clinical risk;Clinical Skills;Clinical Trials;Cognition;Cognitive;Cognitive aging;cognitive change;cohort;Collaborations;Communities;Consent;Data;data management;Data Reporting;Dementia;Detection;Diagnosis;Diagnostic;Digital biomarker;Disease;disease heterogeneity;early detection biomarkers;education research;Emerging Technologies;Etiology;Evaluation;experience;genetic risk factor;global deterioration scale;Goals;Health Professional;Heterogeneity;imaging biomarker;Impaired cognition;improved;innovation;Intervention;Intervention Studies;Latino Population;Life Style;Longitudinal Studies;Measures;Monitor;Motor;Nerve Degeneration;neuroimaging;neuropathology;neuropsychiatric symptom;next generation;normal aging;Normal Range;novel;older adult;outreach;Participant;Pathologic;Pathology;patient engagement;Patient Recruitments;Populations at Risk;Positron-Emission Tomography;pre-clinical;prevent;Probability;programs;Protocols documentation;Psychometrics;psychosocial;recruit;Registries;repository;Research;Research Personnel;Resources;Risk;Role;Scheme;Scientist;Screening procedure;Site;skills;Sleep;statistics;tau Proteins;Technology;Testing;tool;Training;Underrepresented Populations;Work
+current_category: infrastructure
+---
+application_id: 11379767
+activity_code: P30
+title: Psychosocial Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Administrative Supplement;Affect;age related;Aging;Alzheimer&apos;s Disease;Autopsy;Biological Markers;Brain;Brain imaging;caregiver interventions;Caregivers;Caring;Clinical;clinical training;Clinical Trials;Cognitive;cognitive change;cognitive function;cognitive testing;cohort;Collaborations;Communities;Consultations;coping;Counseling;daily functioning;Data;Data Analyses;Data Set;Databases;Dementia;depressive symptoms;design;Development;Disease;Disparity;doctoral student;Education;Emotional;Environment;Evaluation;Evidence based intervention;Family Caregiver;Family member;family support;Fostering;Goals;Health;health care service;Image;Image Analysis;Impaired cognition;Impairment;improved;Individual;innovation;insight;instrument;Intervention;intervention participants;Intervention Studies;Loneliness;longitudinal analysis;longitudinal database;Measurement;Measures;member;Memory Loss;Mentors;mild cognitive impairment;Mission;neuroimaging;neuropathology;Neuropsychological Tests;normal aging;older adult;optimism;Outcome;outreach;Participant;Performance;Personal Satisfaction;Persons;Pilot Projects;Population;Postdoctoral Fellow;Professional counselor;programs;Protocols documentation;psychosocial;Psychosocial Assessment and Care;psychosocial outcome;psychosocial wellbeing;Quality of life;quality of life improvement;recruit;Referral and Consultation;Research;Research Personnel;Research Project Grants;research study;Research Training;resilience;Resources;Self Efficacy;social;Social Work;successful intervention;therapeutically effective;Training;United States
+current_category: infrastructure
+---
+application_id: 11379763
+activity_code: P30
+title: Neuropathology Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Acceleration;Address;Administrative Supplement;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Animal Model;Autopsy;Biological Markers;Blood Vessels;Brain;brain tissue;Cell Line;Cell model;Clinical;Collaborations;Collection;Communities;Data;Dementia;Diagnosis;Diagnostic;disease heterogeneity;Education and Outreach;Enrollment;Evaluation;Family;Health Professional;Heterogeneity;Image;Impaired cognition;induced pluripotent stem cell;innovation;International;Intervention;laboratory facility;Measures;Methods;mild cognitive impairment;Molecular;Nerve Degeneration;Neurodegenerative Disorders;neuroimaging;neuropathology;new therapeutic target;next generation;normal aging;novel;novel diagnostics;novel therapeutic intervention;Participant;Pathogenesis;Pathology;Patients;prevent;Procedures;programs;Property;Proteomics;Protocols documentation;psychosocial;Reporting;repository;Research;research clinical testing;Research Personnel;Resources;Risk;Sampling;Source;Standardization;Syndrome;System;Technology;Therapeutic;therapeutically effective;tissue processing;Tissue Sample;Tissues;Training;Work
+current_category: infrastructure
+---
+application_id: 11379759
+activity_code: P30
+title: Administrative Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Acceleration;Administrative Supplement;Administrator;Advisory Committees;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Animal Welfare;Biological Markers;biomarker identification;Clinical;Cognitive;Collaborations;Communication;Communities;Consultations;Data;data management;Data Set;Dementia;Development;education research;Ensure;Faculty Recruitment;Financial Support;Fostering;Future;Grant;Health;Heterogeneity;human subject;Impaired cognition;Institution;Intervention;Leadership;meetings;mild cognitive impairment;Mission;Monitor;neural;neuroimaging;Neurology;neuropathology;Neurosciences;next generation;normal aging;novel;outreach;Play;Policies;posters;prevent;Procedures;Process;Productivity;programs;psychosocial;recruit;Research;Research Personnel;Research Priority;Research Project Grants;Resources;Role;Sampling;Science;Scientist;symposium;Technology;transmission process;United States National Institutes of Health;Universities;Work
+current_category: infrastructure
+---
+application_id: 10917100
+activity_code: S06
+title: ITCA NARCH 12 Capacity Building Core
+org_name: INTER TRIBAL COUNCIL OF ARIZONA, INC.
+phr: NARCH XII Capacity Building Project: Building Our Tribes’ Capacity to Initiate Community-Based  Research   Project Narrative  Tribal research sovereignty will not be realized until Tribes are self-empowered to fully manage the research  process ranging from problem identification to implementation, analysis, and dissemination. Tribally-initiated  projects are more likely to address the structural causes of disparities and Tribal solutions are more likely to be  sustained within the community. Th
+terms: Address;American Indians;Area;Arizona;authority;Award;Collaborations;Communities;community based participatory research;community based research;Competence;Decision Making;Disparity;empowerment;Exercise;experience;Feedback;Fostering;Funding;Funding Agency;Grant;Health;Infrastructure;innovation;intertribal;Mentors;Mentorship;Mission;National Institute of General Medical Sciences;Native American Research Center for Health;Process;Qualifying;Readiness;Recording of previous events;Research;Research Infrastructure;Research Personnel;Research Project Grants;Research Proposals;research study;Resources;Role;Training;tribal community;Tribal Council;tribal member;tribal Nation;Tribes;unethical;Universities;Writing
+current_category: training
+---
+application_id: 11379761
+activity_code: P30
+title: Data Management and Statistical Core
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Address;Administrative Supplement;Algorithms;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;analytical method;Applications Grants;Basic Science;Biological Markers;Brain;Charge;Clinical;Clinical Trials;Clinical Trials Design;cohort;Collaborations;Communities;computational platform;Computer software;Consultations;Data;data acquisition;Data Analyses;Data Analytics;data exchange;data management;Data Management and Analysis Core;Data Set;data sharing;Data Storage and Retrieval;data visualization;data warehouse;Databases;design;Development;disease heterogeneity;electronic data;Ensure;Evaluation;Genetic;Genomics;Heterogeneity;Impaired cognition;Individual;Informatics;Information Management;innovation;insight;Intervention;machine learning method;Maintenance;Measures;Mentors;Methods;Multicenter Studies;multidimensional data;neuroimaging;novel;open source;Participant;Pilot Projects;Population Research;Process;Proteomics;psychosocial;Randomized;Registries;Reporting;Reproducibility;Research;Research Design;Research Personnel;Research Project Grants;Resolution;Resources;risk prediction model;Secure;Services;skills;social media;Source;Specimen;Standardization;Statistical Data Interpretation;Statistical Methods;Statistical Models;statistics core;Sum;synergism;System;Technology;tool;Training;Training Programs;translational impact;translational pipeline;Translational Research;transmission process;Visualization;Visualization software;web site
+current_category: infrastructure
+---
+application_id: 10839386
+activity_code: P30
+title: 1Florida Alzheimer's Disease Research Center Outreach, Recruitment and Engagement (ORE) Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: Address;African American;African American population;aging population;Agreement;Alzheimer disease detection;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Applied Research;Area;Autopsy;Black race;Brain;Clinic;Clinical;Clinical Research;clinical training;Clinical Trials;cohort;Collaborations;Communication;Communities;community academic partnership;community engagement;community organizations;community partners;County;Data;data management;Dementia;dementia risk;Development;Disease;disorder risk;Disparity;Early Diagnosis;Education;Education and Outreach;education research;Educational Materials;Elderly;empowerment;Enrollment;ethnic diversity;ethnic minority;Evaluation;experience;Faculty;Feedback;Florida;follow-up;Follow-Up Studies;Fostering;genetic analysis;Goals;Healthcare;Hispanic;Hispanic Americans;Hispanic Populations;Individual;interest;Knowledge;Language;Literature;Magnetic Resonance Imaging;Measures;Medical center;medical schools;Memory Disorders;Methods;Minority;minority communities;Mission;Monitor;neuroimaging;neuropathology;Neuropsychology;next generation;Not Hispanic or Latino;older adult;outreach;Participant;Persons;PET/CT scan;Phase;Population;Population Heterogeneity;Postdoctoral Fellow;pre-clinical;Prevalence;prevent;programs;racial diversity;racial minority;recruit;recruitment science;Registries;Research;Research Personnel;Research Project Grants;Resources;retention rate;Risk Factors;Scanning;Scientist;Site;Spanish/English;success;tool;Training;Training Activity;Training Support;Underrepresented Minority;underserved minority;Underserved Population;Universities;Update;Work
+current_category: infrastructure
+---
+application_id: 11031448
+activity_code: U19
+title: Admin-Core-001
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10839388
+activity_code: P30
+title: 1Florida Alzheimer's Disease Research Center Research Education Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: Active Learning;Alzheimer&apos;s Disease;career;career development;Caring;Clinical;Clinical Sciences;cohort;Collaborations;Communication;community engagement;Competence;computer science;data management;Development;Discipline;Discipline of Nursing;Disease;disorder prevention;Disparity;education research;Educational Curriculum;Effectiveness;Engineering;Ethnic Origin;Evaluation;experience;Faculty;Florida;Funding;Future;Gender;Goals;health equity;Health Occupations;Health Sciences;Immersion;implementation science;Infrastructure;innovation;Institution;interest;Leadership;leadership development;Learning;Medicine;Mentors;Mind;Molecular Biology;multidisciplinary;Neurology;Neurosciences;next generation;peer coaching;peer support;Pharmacy facility;Policies;Population Sciences;Positioning Attribute;Postdoctoral Fellow;Private Sector;Process;Program Development;programs;Psychology;Public Health;Qualifying;recruit;Research;research and development;Research Personnel;Research Training;Role;Scholars Program;Science;science education;Scientist;Site;skills;success;Training;Translational Research;translational scientist;underserved community;Universities;Veterinary Medicine;Work
+current_category: infrastructure
+---
+application_id: 10917102
+activity_code: S06
+title: UA Student Dev: Rising Stars Program for AI/AN Students at UArizona
+org_name: INTER TRIBAL COUNCIL OF ARIZONA, INC.
+phr: N/A
+terms: Alaska Native;Alaska Native population;American Indian community;American Indian Population;American Indians;Arizona;Asian population;Attention;Award;Black Populations;Cardiovascular Diseases;career;citizen science;Collaborations;college;Communities;Development;Diabetes Mellitus;disparities in morbidity;Drops;Education;Educational Curriculum;empowerment;Ethnic Origin;experience;Faculty;Family;Fright;Future;Grant;Health;health disparity;health equity;health organization;health science research;Health Sciences;Health Status;high school;High School Student;Hispanic Populations;improved;Income;Indigenous;Institute of Medicine (U.S.);interest;intertribal;Knowledge;Leadership;literacy;Malignant Neoplasms;matriculation;Mental Health;minority health professional;mortality;Native American Research Center for Health;Pascua Yaqui;Personal Satisfaction;physical conditioning;prevent;programs;Race;racial population;Recommendation;recruit;Reduce health disparities;Research;Research Personnel;Reservations;response;role model;Schools;Science;science education;STEM field;structural determinants;Structure;Students;success;Suicide;teacher;Testing;Training;tribal community;Tribal Council;tribal health;tribal leader;Tribes;United States National Institutes of Health;Universities;university student;Youth
+current_category: other
+---
+application_id: 10912534
+activity_code: S06
+title: Environmental Influences Driving Autoimmunity and Autoimmune Disease in Tribal Members
+org_name: CHEROKEE NATION
+phr: N/A
+terms: 2019-nCoV;Academic Detailing;Algorithms;Antibodies;Arthralgia;Autoantibodies;Autoimmune;Autoimmune Diseases;autoimmune rheumatologic disease;Autoimmunity;Automobile Driving;Binding;Cardiolipins;Caring;Case Based Learning;Cells;Cellular Indexing of Transcriptomes and Epitopes by Sequencing;Cherokee Indian;Cherokee Nation;Cities;Clinic;Clinical Research;Clinical Research Protocols;Cotinine;COVID-19;COVID-19 impact;COVID-19 mortality;COVID-19 patient;cytokine;Cytomegalovirus;Cytometry;Data;Degenerative polyarthritis;Development;Diagnosis;Disease;Disease Outcome;Dissemination and Implementation;Early Diagnosis;Early Intervention;Early treatment;Environmental Exposure;Environmental Impact;Environmental Risk Factor;Epstein-Barr virus early antigen;Evaluation;Exanthema;Fatigue;Foundations;Future;Genomics;Goals;Grant;Health;Health system;Heart;Human Herpesvirus 4;Immune;Immune System Diseases;Immunophenotyping;immunoregulation;improved outcome;Individual;Infection;infection rate;Infrastructure;Legal patent;Long COVID;Lung;Lupus;Malaise;Measures;Medical Research;Methods;Morbidity - disease rate;mortality;multiple omics;Myalgia;Native American population;Native American Research Center for Health;Native Americans;novel;Oklahoma;Outcome;participant enrollment;Pathway interactions;patient engagement;Patients;Population;Prevention;primary care clinic;primary care provider;Production;programs;proteogenomics;Provider;Race;response;Rheumatism;Rheumatoid Arthritis;rheumatologist;Rheumatology;Rivers;SARS-CoV-2 antibody;SARS-CoV-2 infection;Scleroderma;Self Tolerance;single cell genomics;smoking exposure;Symptoms;systemic autoimmune disease;Systemic Lupus Erythematosus;Systemic Scleroderma;Testing;Thrombosis;Time;tribal community;tribal member;Tribes;Vaccines;Viral;Virus Diseases;Vitamin D Deficiency;Work
+current_category: basic_research
+---
+application_id: 10839379
+activity_code: P30
+title: 1Florida Alzheimer's Disease Research Center Administrative Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: African American population;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;Appointment;Autopsy;Award;Brain;Budgets;Clinical;clinical research site;Clinical Sciences;cohort;Collaborations;Complex;Consensus;Consent;data management;data sharing;design;Development;diverse data;Doctor of Philosophy;Education;education research;Educational Activities;Ensure;experience;Extramural Activities;Fellowship;Fellowship Program;Florida;Foundations;Funding;Funding Mechanisms;Generations;Goals;Grant;Hispanic Americans;Human Resources;Infrastructure;Institution;interest;Leadership;Letters;Link;Longitudinal Studies;meetings;Pamphlets;Pathologic;Population Heterogeneity;Positioning Attribute;Positron-Emission Tomography;Privatization;Process;programs;Publications;Request for Applications;Research;Research Activity;Research Personnel;Research Support;Resources;Science;Scientist;Site;Source;Spanish/English;Structure;success;symposium;Training;Training and Education;Translational Research;Vision;web site;Work
+current_category: infrastructure
+---
+application_id: 10912530
+activity_code: S06
+title: Long-term consequences of SARS-CoV-2 infection and COVID-19 disease among American Indians: an ambidirectional cohort study in the Cherokee Nation
+org_name: CHEROKEE NATION
+phr: N/A
+terms: 5 year old;acute COVID-19;Address;Adult;Affect;Age;American;American Indian Population;American Indians;Anxiety;Cardiovascular system;Caring;Cessation of life;Cherokee Nation;Child;Child Health;Clinic;cohort;Cohort Studies;Coin;Communities;Community Surveys;comorbidity;Contact Tracing;COVID-19;COVID-19 impact;COVID-19 incidence;COVID-19 mortality;COVID-19 pandemic;COVID-19 pandemic effects;COVID-19 patient;COVID-19 test;Dedications;Disease;Dizziness;Eligibility Determination;experience;Fatigue;Future;gastrointestinal;Gender;Goals;Guidelines;Health;Health care facility;health inequalities;Healthcare;Healthcare Systems;Heart;high risk;Hospitalization;improved;Incidence;Indian reservation;Infection;Intensive Care;Interview;Knowledge;Long COVID;long term consequences of COVID-19;Long-Term Effects;long-term sequelae;Medical;member;Memory;Mental Depression;Native American Research Center for Health;Oklahoma;Outpatients;pandemic disease;Paper;Participant;Patient risk;Patients;persistent symptom;Persons;Population;post SARS-CoV-2 infection;post-COVID-19;Prevalence;primary care provider;prospective;psychologic;Public Health;Publishing;Questionnaires;Race;Reporting;Review Literature;Risk;rural counties;SARS-CoV-2 infection;SARS-CoV-2 negative;SARS-CoV-2 positive;severe COVID-19;Severity of illness;Surveys;symptom management;symptomatic COVID-19;Symptoms;Telephone Interviews;Test Result;Testing;Time Study;tribal community;Visit
+current_category: other
+---
+application_id: 10839382
+activity_code: P30
+title: 1Florida Alzheimer's Disease Research Center Data Management and Statistical (DMS) Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: Algorithms;Alzheimer&apos;s Disease;Big Data;Biological Markers;biomedical informatics;Biometry;career;Catalogs;Clinical;Clinical Trials;Code;Collaborations;Communities;Competence;Computer software;Consultations;Data;data acquisition;Data Analyses;Data Collection;data collection site;Data Coordinating Center;data exchange;data handling;data management;Data Management Resources;data repository;Data Security;Data Set;Database Management Systems;Dementia;Development;Diagnosis;distributed data;Documentation;education research;eHealth;Ensure;Equation;Equipment and supply inventories;Fiber;Florida;Geography;Growth;Language;Leadership;Link;Logistic Regressions;longitudinal analysis;machine learning algorithm;Maintenance;Manuscripts;Measures;Methods;Modeling;multilevel analysis;neuroimaging;novel;open data;open source;operation;Participant;Peer Review;phenotypic data;power analysis;Printing;Process;Publications;Pythons;Quality Control;repository;Reproducibility;Research;Research Design;Research Personnel;Research Support;Secure;sound;Source Code;Statistical Data Interpretation;Statistical Methods;statistics;System;tool;Training Activity;Trust;Validation;Work
+current_category: infrastructure
+---
+application_id: 10839380
+activity_code: P30
+title: 1Florida Alzheimer's Disease Research Center Clinical Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: Acculturation;Affect;African American;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;Amyloid beta-42;Autopsy;bilingualism;Biological Markers;Blood Vessels;blood-based biomarker;Brain;Brain Pathology;Brain region;cerebrovascular;Classification;Clinical;clinical center;clinical research site;Clinical Trials;Cognition;Cognitive;cognitive change;cohort;Collaborations;Communities;comorbidity;Complement;Consent;Data;Dementia;Diagnosis;Diagnostic;Disease;disparity reduction;Early Diagnosis;Education;Elderly;Elements;Enrollment;Ensure;Epidemiology;ethnic diversity;Evaluation;Florida;follow-up;Funding;Genetic;Genotype;Goals;Hispanic;Hispanic Populations;Image;Impaired cognition;improved;Individual;instrument;Investigation;Language;Lewy Body Disease;Longitudinal Studies;Magnetic Resonance Imaging;Medical center;Methodology;Methods;mild cognitive impairment;Minority Groups;Monitor;MRI Scans;National Institute on Alcohol Abuse and Alcoholism;Nerve Degeneration;neuroimaging;neuropathology;Neuropsychological Tests;Neuropsychology;Not Hispanic or Latino;novel;older adult;Parkinson Disease;Parkinsonian Disorders;Participant;Pathology;Performance;Phenotype;Positron-Emission Tomography;preclinical study;Protocols documentation;Qualifying;racial diversity;recruit;Research;Research Activity;Research Personnel;Research Project Grants;research study;retention rate;Site;Spanish/English;Standardization;success;tau Proteins;Training;Underrepresented Minority;Universities;Vascular Dementia;Vascular Diseases
+current_category: infrastructure
+---
+application_id: 11379774
+activity_code: P30
+title: 1Florida Alzheimer's Disease Research Center Outreach, Recruitment and Engagement (ORE) Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: Address;African American;African American population;aging population;Agreement;Alzheimer disease detection;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Applied Research;Area;Autopsy;Black race;Brain;Clinic;Clinical;Clinical Research;clinical training;Clinical Trials;cohort;Collaborations;Communication;Communities;community academic partnership;community engagement;community organizations;community partners;County;Data;data management center;Dementia;dementia risk;Development;Disease;disorder risk;Disparity;Early Diagnosis;Education;Education and Outreach;education research;Educational Materials;Elderly;empowerment;Enrollment;ethnic diversity;ethnic minority;Evaluation;experience;Faculty;Feedback;Florida;follow-up;Follow-Up Studies;Fostering;genetic analysis;Goals;Health Care;Hispanic;Hispanic Americans;Hispanic Populations;Individual;interest;Knowledge;Language;Literature;Magnetic Resonance Imaging;Measures;Medical center;medical schools;Memory Disorders;Methods;Minority;minority communities;Mission;Monitor;neuroimaging;neuropathology;Neuropsychology;next generation;Not Hispanic or Latino;older adult;outreach;Participant;Persons;PET/CT scan;Phase;Population;Population Heterogeneity;Postdoctoral Fellow;pre-clinical;Prevalence;prevent;programs;racial diversity;racial minority;recruit;recruitment science;Registries;Research;Research Personnel;Research Project Grants;Resources;retention rate;Risk Factors;Scanning;Scientist;Site;Spanish/English;success;Target Populations;tool;Training;Training Activity;Training Support;Underrepresented Minority;underserved minority;Underserved Population;Universities;Update;Work
+current_category: infrastructure
+---
+application_id: 10891449
+activity_code: P30
+title: Management and Administrative Core
+org_name: MASSACHUSETTS INSTITUTE OF TECHNOLOGY
+phr: N/A
+terms: academic review;Advisory Committees;Aging;aging population;Agreement;Area;Award;Awareness;Behavior Therapy;Center for Translational Science Activities;Collaborations;Communication;Contracts;cost;Cost Analysis;Data;Databases;design;Development;Ensure;Evaluation;Feedback;Funding;Goals;Growth;Health;Health Policy;Healthcare;improved;Infrastructure;innovation;interest;Knowledge;Leadership;Mediation;meetings;member;Monitor;National Institute on Aging;North America;Office of Administrative Management;older adult;Outcome;outreach;Persons;Pilot Projects;Policies;Policy Maker;Poverty;Process;Progress Reports;prospective;Publications;Randomized;Reporting;Request for Proposals;Research;Research Personnel;Research Project Grants;Resources;therapy development;Translating;Travel;web site;Work
+current_category: infrastructure
+---
+application_id: 10794307
+activity_code: U19
+title: Defined microbial communities to prevent and eradicate infection by AMR pathogens
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: N/A
+terms: Accounting;Acute;Antibiotic Resistance;Antibiotic Therapy;Antibiotics;Antimicrobial Resistance;Back;Bacteria;Bacterial Antibiotic Resistance;Bacterial Infections;Bacteriophages;carbapenem resistance;Cause of Death;Cessation of life;Clinical Trials;clinically relevant;Clostridium difficile;colonization resistance;combat;commensal bacteria;commensal microbes;Communicable Diseases;Communities;design;Diagnosis;Diet;Disease;Drug resistance;dysbiosis;Enterobacteriaceae;environmental change;Escherichia coli;Escherichia coli Infections;experimental study;Exposure to;Extended-spectrum β-lactamase;fecal transplantation;Focal Infection;gastrointestinal;Goals;Growth;gut microbiome;gut microbiota;Health Benefit;healthcare-associated infections;Hospitals;Human;Human body;Human Microbiome;human microbiota;human tissue;In Vitro;Individual;Infection;Infection prevention;Inflammation;innovation;Intervention;Intestines;Learning;Lytic;Medical Care Costs;Metabolic;metabolomics;Methods;Microbe;microbial;microbial community;Microbial Physiology;microbiome;microbiota;mouse model;Mucous Membrane;multi-drug resistant pathogen;novel;Nutritional;opportunistic pathogen;Organoids;Outpatients;pathobiont;pathogen;Pathogenesis;pathogenic bacteria;pathogenic Escherichia coli;Patients;Persons;Pharmaceutical Preparations;Pneumonia;Population Heterogeneity;Predisposition;preservation;pressure;prevent;Prevention strategy;Probiotics;Property;Public Health;Recurrence;recurrent infection;Resistance;Risk;Sampling;Site;stool sample;success;Surface;synergism;Testing;Therapeutic;tissue culture;transmission process;United States;Urinary tract infection;Uropathogen;Vagina;Virulence;Work
+current_category: basic_research
+---
+application_id: 10912537
+activity_code: S06
+title: Building Tribal Capacity through Informing the Development of Tribal Research Codes to Govern Genomic Research: A Collaboration between Cherokee Nation and the University of Oklahoma
+org_name: CHEROKEE NATION
+phr: N/A
+terms: Address;Agreement;Alaska Native;American Indians;Articulation;Attention;bean;biobank;Biological;biological research;Biomedical Research;Biotechnology;Cherokee Indian;Cherokee Nation;Code;cohort;Collaborations;Collection;Communities;Consult;Data;data sharing;design;Development;Employee;Equipment and supply inventories;ethical, legal, and social implication;Ethics;Face;Funding;Genomics;Goals;Health;Indigenous;Information Systems;innovation;Institutional Review Boards;interest;Legal;meetings;member;Native American Research Center for Health;Oklahoma;Ownership;Persons;Policies;precision medicine;Procedures;programs;Protocols documentation;RADx Underserved Populations;Regulation;Research;research and development;Research Infrastructure;Research Personnel;Research Training;Resources;Rights;Role;Sampling;Scholars Program;Self Determination;Series;Services;Shapes;Specimen;Structure;Students;Training;training opportunity;tribal Nation;Tribes;Universities;Work
+current_category: biotools
+---
+application_id: 10891450
+activity_code: P30
+title: Pilot Core
+org_name: MASSACHUSETTS INSTITUTE OF TECHNOLOGY
+phr: N/A
+terms: Advisory Committees;Aging;aging population;Area;Award;Behavior Therapy;behavioral economics;Behavioral Mechanisms;Behavioral Sciences;Behavioral trial;Center for Translational Science Activities;Collaborations;Complement;Conflict of Interest;cost;Data;Data Collection;design;Development;Discipline;Economics;Evaluation;Event;evidence base;experimental study;Feedback;Funding;Government Agencies;Grant;Health;health care delivery;health plan;Healthcare;Hospitals;improved;improved outcome;Infrastructure;innovation;insight;interest;Intervention;Mentorship;middle age;North America;older adult;Older Population;Outcome;peer;Peer Review;Pilot Projects;Policies;Policy Maker;Poverty;Process;professor;Program Development;Publications;Randomized;Randomized, Controlled Trials;Request for Proposals;Research;Research Assistant;Research Design;Research Personnel;Research Project Grants;Resources;service providers;Suggestion;symposium;Testing;therapy design;Training;Universities;Work
+current_category: infrastructure
+---
+application_id: 10874252
+activity_code: P30
+title: BID Core with P1 and P2
+org_name: FEINSTEIN INSTITUTE FOR MEDICAL RESEARCH
+phr: See attachment in Overall Component, Other Project Information, Narrative
+terms: Alzheimer&apos;s disease related dementia;Award;Basic Science;behavior change;behavior test;Behavior Therapy;Behavioral Mechanisms;Behavioral trial;caregiver interventions;Caregivers;Caring;Clinical Trials;Cognitive;Communities;Consultations;Creativeness;Data;demographics;Development;Eligibility Determination;Ensure;Evaluation;evidence base;exercise intervention;experience;Fostering;Funding;Future;Goals;Habits;Hour;Infrastructure;innovation;Institution;Internet;Intervention;Intervention Studies;Intervention Trial;Lead;Maintenance;Measurement;Measures;Methodology;Methods;Mission;Modeling;Monitor;open data;Pathway interactions;Peer Review;Persons;Physical activity;physical model;Process;programs;Progress Reports;Protocols documentation;Regimen;Reporter;Reporting;Request for Applications;Research;research and development;Research Personnel;Research Support;Resources;Review Committee;Safety;Science;Science Policy;Scientist;sedentary;social interventions;Structure;Techniques;Testing;theories;Theory of Change;therapy development;Time;timeline;Translating;Translational trial;United States National Institutes of Health;Vision;Walking;Work
+current_category: infrastructure
+---
+application_id: 10874251
+activity_code: P30
+title: Admin-Core
+org_name: FEINSTEIN INSTITUTE FOR MEDICAL RESEARCH
+phr: See attachment in Overall Component, Other Project Information, Narrative
+terms: Advisory Committees;Agreement;Alzheimer&apos;s disease related dementia;behavior change;Behavior Therapy;Behavioral;Behavioral Mechanisms;Behavioral trial;care providers;caregiver interventions;Caregivers;Caring;Characteristics;clinical center;Clinical Research;Clinical Trials;Clinical Trials Data Monitoring Committees;Collaborations;Communities;Data;data exchange;Dementia;demographics;Deposition;Development;Effectiveness of Interventions;Ensure;Evaluation;Expert Systems;Feedback;Future;Goals;Grant;Health;human subject;improved;Individual;Infrastructure;Institutional Review Boards;interest;Intervention;intervention program;Intervention Studies;Intervention Trial;Leadership;Maintenance;Measures;meetings;Mission;Modeling;Monitor;National Institute on Aging;Office of Administrative Management;open data;Operations Research;Participant;patient population;Patients;Persons;Physical activity;Process;Productivity;programs;Progress Reports;Quality of life;Regimen;Regulation;repository;Research Activity;research and development;Resources;Safety;Scientist;Skilled Nursing Facilities;social interventions;Strategic vision;success;System;therapy development;Translational trial;Travel;Underrepresented Populations;United States National Institutes of Health;Vision;Work;Writing
+current_category: infrastructure
+---
+application_id: 10923824
+activity_code: S06
+title: HPV Cancer Prevention Project
+org_name: INDIAN HEALTH COUNCIL, INC.
+phr: PROJECT NARRATIVE  Cervical cancer is the most frequently diagnosed cancer in American Indian/Alaska Native  (AI/AN) women, who are nearly twice as likely to develop cervical cancer compared to non-  Hispanic white (NHW) women and four times as likely to die from it. While implementation  strategies and relevant evidence-based interventions (EBIs) exist to increase screening, few  have been tested in AI/AN populations. Furthermore, few health care settings have adopted  these EBIs, and their eva
+terms: 12 year old;Address;Adolescent;Adopted;Advisory Committees;Alaska Native;Alaska Native population;Alaska Native Women;American Indian Population;American Indian Women;American Indians;Anus;Attention;California;Cancer Center;cancer diagnosis;cancer prevention;Caring;cervical cancer prevention;Cervical Cancer Screening;Cervix Uteri;Child;Child Care;Client;Clinical;Communities;community engaged research;cost;County;Data;Development;Education;Effectiveness;effectiveness evaluation;Elements;Enabling Factors;Ensure;Evaluation;evidence base;Evidence based intervention;Female;Future;Goals;Health;health care settings;Health Personnel;health plan;Health Professional;Health Promotion;Health Resources;Health system;Healthcare;HPV vaccine acceptance;Human Papilloma Virus Vaccination;Human Papilloma Virus Vaccine;Human Papilloma Virus-Related Malignant Neoplasm;implementation evaluation;implementation science;implementation strategy;implementation study;Improve Access;Incidence;Indigenous;Individual;innovation;Intervention;Knowledge;Leadership;male;Malignant neoplasm of cervix uteri;Malignant Neoplasms;malignant oropharynx neoplasm;Medicine;men;Mexico;National Cancer Institute;Native American Research Center for Health;Neighborhood Health Center;Not Hispanic or Latino;Oropharyngeal;Patients;penis;Perception;Population Registers;preventable death;Prevention strategy;Preventive service;Probability;programs;Provider;provider intervention;Public Health Practice;Randomized;Recommendation;Reporting;Research;screening;Screening for cancer;Services;Site;System;Testing;Transportation;treatment as usual;Tribal Council;Tribes;Underserved Population;Vaccination;vaccine trial;Vagina;Vulva;White Women;Woman;Women&apos;s Health
+current_category: other
+---
+application_id: 10769331
+activity_code: P30
+title: Immune Monitoring Laboratory
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: N/A
+terms: Academia;Advisory Committees;anti-cancer research;anti-tumor immune response;Antibodies;Area;Basic Science;Bioinformatics;Biological Assay;Cancer Center;Cancer Center Support Grant;cancer immunotherapy;Cell Separation;Cells;Clinic;Clinical;Clinical Research;clinical translation;Collaborations;collaborative environment;community center;cost;Custom;Cytometry;Data Analyses;design;Development;Doctor of Philosophy;educational atmosphere;Emerging Technologies;experience;Experimental Designs;Experimental Pathology;Faculty;flexibility;Flow Cytometry;Funding;Future;Genome;Goals;Health;Hour;Human;Immune;Immunologic Monitoring;Immunologist;Immunology;Immunophenotyping;Immunotherapy;immunotherapy trials;Individual;Industry;instrumentation;Laboratories;Leadership;medical schools;meetings;member;metabolomics;Methodology;mid-career faculty;Mission;Modernization;multimodality;NCI Center for Cancer Research;Needs Assessment;operation;Pathology;patient response;Peer Review;Peer Review Grants;Phenotype;Positioning Attribute;professor;programs;Protocols documentation;Publications;Recovery;Research;research and development;Research Personnel;Resource Sharing;Scientist;Services;single cell analysis;single cell technology;Specimen;Students;Surveys;Technology;Toxic effect;Training;Translational Research;tumor immunology;Universities;Vaccine Research
+current_category: infrastructure
+---
+application_id: 10923817
+activity_code: S06
+title: NARCH XII-Admin CORE
+org_name: INDIAN HEALTH COUNCIL, INC.
+phr: Calac-CORE CA-NARCH XII Project Narrative  Project Narrative  The overall goals of the CA-NARCH Administrative Core are to support the research efforts of  the NARCH XII projects and to provide critical ongoing community-based participatory tribal  direction. The CA-NARCH Administrative Core aims to 1) provide administrative, fiscal, and  management direction and oversight to the CA-NARCH XII research projects; 2) coordinate  communication among the proposed projects and between the proposed pro
+terms: Address;Alaska Native;American Indians;cancer prevention;career;Caring;Communication;Communities;community advisory board;community based research;Development;Elements;Evaluation;evidence base;Funding;Goals;Health;Human Papilloma Virus-Related Malignant Neoplasm;innovation;Institution;Institutional Review Boards;Mission;Modeling;Native American Research Center for Health;Opioid;population health;Research;Research Project Grants;Research Support;stakeholder perspectives;Structure;Students;Trauma;tribal community;tribal Nation;Tribes;Work
+current_category: infrastructure
+---
+application_id: 10793648
+activity_code: P20
+title: Molecular Biology and Immunopathology Core
+org_name: LOUISIANA STATE UNIV A&M COL BATON ROUGE
+phr: N/A
+terms: Adopted;animal imaging;animal tissue;anti-cancer research;bioimaging;Bioinformatics;Biological;Biological Assay;Biomedical Research;Biotechnology;Cell Culture Techniques;Cell Separation;Cells;Cellular biology;Centers of Research Excellence;Collaborations;Computer software;Computers and Advanced Instrumentation;Consult;Consultations;Contract Services;Core Facility;cost;course module;CRISPR/Cas technology;Data;Disease;disease model;Electron Microscopy;Ensure;Equipment;Experimental Designs;experimental study;Faculty;Faculty Recruitment;Funding;Gene Expression;Genomics;Genus Hippocampus;Goals;Human;Human Resources;Immunofluorescence Microscopy;Immunologics;Immunology;immunopathology;improved;in vivo;instrumentation;interest;Investigation;Laboratories;Leadership;Life;Louisiana;Maintenance;Malignant Neoplasms;Measurement;Measures;Methodology;Methods;Molecular;Molecular Biology;Molecular Medicine;Monoclonal Antibodies;nano-string;new technology;novel therapeutic intervention;Pathology;Patients;pre-clinical;preclinical evaluation;predictive modeling;Productivity;Proteins;Proteomics;Quantitative Reverse Transcriptase PCR;Reagent;repaired;Research;Research Personnel;Resources;Reverse Transcriptase Polymerase Chain Reaction;Science;Services;single cell sequencing;spheroids;Students;Technical Expertise;Technology;Time;Tissue Sample;tissue/cell culture;Training;Training Activity;Training and Education;transcriptome sequencing;transcriptomics;Treatment outcome;United States National Institutes of Health;Universities;Update;Veterinary Medicine;Veterinary Schools;Viral Vector;Work
+current_category: infrastructure
+---
+application_id: 10837763
+activity_code: U19
+title: Systems Immunology
+org_name: UNIVERSITY OF MARYLAND BALTIMORE
+phr: N/A
+terms: Address;Affect;Age;Antibodies;Antibody Repertoire;Antibody Response;antibody transfer;Cells;Chromatin;cohort;Communities;Computer Analysis;data resource;Dendritic Cells;design;Dissection;empowerment;Environment;Epigenetic Process;Fc Receptor;Funding;Genetic;Genetic Transcription;glycosylation;Human;imaging approach;Immune;Immunity;Immunization;Immunology;improved;Individual;infancy;Infant;Infant Mortality;Infection;Influenza;insight;Interferon Type I;Interferons;Intramural Research Program;Knowledge;Life;Link;Machine Learning;Maternal antibody;maternal vaccination;Measures;Membrane Proteins;Molecular;Mothers;mouse model;multimodality;Neonatal Mortality;Newborn Infant;Outcome;Pathway interactions;Peripheral;Peripheral Blood Mononuclear Cell;Phenotype;Physiological;Population;postnatal;Pregnancy;pregnant;Pregnant Women;Process;receptor binding;Recording of previous events;Research;Resolution;response;Serology;sex;Shapes;synergism;System;Technology;Therapeutic;Time;Tissue imaging;transcriptome;United States National Institutes of Health;Vaccination;vaccine response;vaccine-induced antibodies;Vaccines
+current_category: basic_research
+---
+application_id: 10866819
+activity_code: P30
+title: REC - Research Education Core
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: N/A
+terms: Address;Aging;Alzheimer&apos;s Disease;Basic Science;Behavioral;Biological;Biological Markers;Biology of Aging;career;career development;Caring;certificate program;Clinical;Clinical Research;Collaborations;community based research;comorbidity;Competence;Data Analytics;Degree program;Dementia;Development;Education;education evaluation;education research;Educational Activities;Educational Curriculum;Educational workshop;Effectiveness;effectiveness evaluation;effectiveness measure;efficacy evaluation;Ensure;experience;Exposure to;Faculty;Fellowship;Funding;Goals;Grant;Growth;Health;Individual;innovation;insight;Instruction;Interdisciplinary Study;Leadership;Learning;Life Cycle Stages;Liquid substance;Measurement;Mentors;Mentorship;Methods;Mission;multimodality;National Institute on Aging;neuroimaging;neuropathology;Neuropsychology;next generation;novel;Pathology;Pathway interactions;Persons;Postdoctoral Fellow;pre-doctoral;Productivity;programs;Publications;Records;recruit;Research;Research Personnel;Research Project Summaries;Research Training;scaffold;Scholars Program;Science;Scientist;success;Teacher Professional Development;Training;training opportunity;Training Programs;Translational Research;undergraduate student;Underrepresented Populations;United States National Institutes of Health;Universities;Wisconsin;Work
+current_category: infrastructure
+---
+application_id: 10866821
+activity_code: P30
+title: Core H - Care Research Core
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: N/A
+terms: Address;Advanced Development;advanced disease;Alzheimer&apos;s Disease;Alzheimer&apos;s disease care;Alzheimer&apos;s disease related dementia;Alzheimer’s disease biomarker;Area;Award;Biological Markers;Brain;Caregivers;Caring;Clinical;clinical care;Cognition;cohort;Collaborations;Communities;Consultations;Data;Dementia;dementia care;deprivation;Development;Diagnosis;Diagnostic;Disease;disease disparity;Disease Management;Disease Outcome;Electronic Health Record;Ensure;Funding;Geriatrics;Gerontology;Goals;Grant;health record;improved;improved outcome;indexing;Individual;Infrastructure;innovation;Investigation;Investments;Methodology;Modeling;multidisciplinary;National Institute on Aging;neuroimaging;Outcome;Patients;Persons;Plasma;Population;Preparation;Process;recruit;Registries;Research;Research Design;Research Infrastructure;Research Methodology;Research Personnel;research study;Research Support;Resources;Rest;Services;social;social inclusion;Structure;symposium;System;Testing;therapy design;Training;United States;Wisconsin
+current_category: infrastructure
+---
+application_id: 10930033
+activity_code: S06
+title: Assessing Cultures of Recovery in Tribal Communities - Research Core
+org_name: HEALING LODGE OF THE SEVEN NATIONS
+phr: N/A
+terms: addiction;Addictive Behavior;Adolescent;Adult;Alaska Native;American Indian Population;American Indians;Authorization documentation;Award;Behavior;behavioral health;Belief;Collaborations;Communities;community research;Community Surveys;control trial;curriculum enhancement;design;Educational Curriculum;Effectiveness;Enrollment;ethnic minority population;experience;Face;Feedback;follow-up;Future;Goals;healing;Health;Health Resources;Health Services Accessibility;health training;help-seeking behavior;Incidence;Indigenous;Individual;Knowledge;Learning;long term recovery;Measures;member;Mental Health;Modification;Native American Research Center for Health;Participant;Perception;Population;Prevalence;prevent;Prevention;Program Evaluation;psychosocial;racial minority population;Randomized;Records;Recovery;Research;research data dissemination;Research Design;Resources;Social isolation;social stigma;Surveys;Time;Training;Training Activity;Training Programs;tribal community;Tribal Council;tribal Nation;Tribally Based Participatory Research;Tribes;United States;Waiting Lists;Work;working group;Youth
+current_category: training
+---
+application_id: 10866817
+activity_code: P30
+title: Core E - Outreach, Recruitment and Engagement Core
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: N/A
+terms: Affect;Ally;Alzheimer disease prevention;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Alzheimer’s disease biomarker;Ancillary Study;Awareness;Biological Markers;blood-based biomarker;Brain;brain health;Caring;Characteristics;Clinic;Clinical;Clinical Research;Clinical Trials;cohort;Collaborations;Collection;Communication;Communities;Community Healthcare;comorbidity;Consultations;data management;Dementia;design;Development;Diagnosis;Diagnostic;Disclosure;Education;education research;Educational Activities;Elderly;Ensure;Evaluation;Event;Evidence based program;Family;Feedback;General Population;Geriatrics;Gerontology;Goals;Health;Health Personnel;Health Professional;Health Services;improved;Individual;innovation;Knowledge;Life Cycle Stages;Link;Measures;Medical History;medical schools;Medicine;mild cognitive impairment;multimodality;neuropathology;outreach;Participant;participant enrollment;Pathology;Personal Satisfaction;Persons;Physicians;Plasma;podcast;Population;pre-clinical;preclinical study;prevent;primary care provider;Printed Media;Professional Education;programs;Provider;Public Health;Quality of Care;Race;recruit;Registries;Research;Research Personnel;Resolution;Resources;response;social media;Social Work;socioeconomics;State Government;study population;Training Programs;Translating;Translational Research;Underrepresented Populations;Universities;Wisconsin;Work
+current_category: infrastructure
+---
+application_id: 10865859
+activity_code: P30
+title: Genomic Core
+org_name: MAYO CLINIC ROCHESTER
+phr: N/A
+terms: African American population;Algorithms;Aliquot;alpha synuclein;Alzheimer&apos;s Disease;Amyloid beta-Protein;Amyotrophic Lateral Sclerosis;Biochemistry;Biological Markers;Brain;caucasian American;Clinic;Clinical;Code;Cognition;Collaborations;Communities;Data;data management;data repository;data sharing;Dementia;Diagnosis;digital;Disease;disease phenotype;disorder risk;DNA;Education;endophenotype;Ethnic Origin;Etiology;experience;Frontotemporal Lobar Degenerations;frontotemporal lobar dementia amyotrophic lateral sclerosis;Funding;Gene Expression;Generations;Genes;Genetic;genetic risk factor;genome wide association study;Genomics;Genotype;Goals;Grant;inclusion criteria;Infrastructure;innovation;Institution;Knowledge;Knowledge Portal;Lead;Leadership;Lewy Bodies;Measures;Methylation;mixed dementia;Molecular;Molecular Profiling;molecular subtypes;Multiomic Data;multiple omics;Mutation;mutation screening;Neurodegenerative Disorders;neuroimaging;neuropathology;new therapeutic target;Not Hispanic or Latino;Office of Administrative Management;Outcome;outreach;Participant;Patients;Phenotype;Plasma;presenilin-1;programs;Quality Control;Race;recruit;repository;Reproducibility;Research;Research Personnel;resilience;Resources;risk variant;RNA;sample collection;Sampling;screening;Seminal;sex;social health determinants;Standardization;statistics;structural determinants;Systems Biology;therapeutic biomarker;United States National Institutes of Health;vascular cognitive impairment and dementia
+current_category: infrastructure
+---
+application_id: 10930040
+activity_code: S06
+title: Assessing Cultures of Recovery in Tribal Communities - Capacity Building Core
+org_name: HEALING LODGE OF THE SEVEN NATIONS
+phr: N/A
+terms: Active Learning;addiction;Address;Alaska Native;Alaska Native population;American Indians;Authorization documentation;Back;Beds;behavioral health;Clinical;Clinical Research;clinical training;clinically relevant;college;Communities;community building;Data Collection;Dedications;design;Development;Drug Addiction;Education;Ensure;Evaluation;experience;Face;Goals;graduate student;healing;Health;health communication;health disparity;improved;Institution;interest;knowledge translation;Leadership;Learning;learning strategy;member;Mental Health;Methods;Native American Research Center for Health;Native Americans;Newsletter;Oral health;Personal Satisfaction;Pilot Projects;Positioning Attribute;Preparation;Process;programs;public health research;Recovery;Research;Research Assistant;research data dissemination;Research Personnel;Residential Facilities;Resources;Scientist;Seasons;Series;skills;Students;Substance Use Disorder;Supervision;Time;Trainers Training;Training;Training Activity;Training Programs;tribal community;Tribes;undergraduate student;Universities;Visual;Work;Writing;Youth
+current_category: training
+---
+application_id: 10865857
+activity_code: P30
+title: Research Education Component
+org_name: MAYO CLINIC ROCHESTER
+phr: N/A
+terms: Address;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Basic Science;Behavioral;Bioinformatics;built environment;career;career development;career life balance;Cerebrovascular Disorders;Clinic;Clinical;clinical application;Clinical Research;Clinical Sciences;Collaborations;Data;Dementia;digital;Disease;Doctor of Philosophy;Education;education research;Educational process of instructing;Educational Status;Educational workshop;Elements;Ethics;Etiology;Evaluation;experience;Faculty;Florida;Fostering;Frontotemporal Dementia;Frontotemporal Lobar Degenerations;Genetic;Genomics;Goals;graduate medical education;graduate school;Grant;Individual;Infrastructure;insight;Instruction;interdisciplinary approach;interpersonal conflict;Laboratories;Leadership;lectures;Lewy Body Dementia;Lewy Body Disease;Manuscripts;Massachusetts;member;Mentors;Mentorship;Methods;Minnesota;Minor;mixed dementia;multidisciplinary;Nerve Degeneration;Nervous System Disorder;Neurobiology;Neurodegenerative Disorders;neuroimaging;Neurologist;neuropathology;Neuropsychology;Neurosciences;next generation;Outcome;Participant;Persons;Prevalence;Process;programs;Recommendation;Recording of previous events;Research;Research Design;Research Methodology;Research Personnel;Research Project Summaries;Research Training;Resources;Science;Site;Site Visit;skills;social;Solid;Specimen;Students;Teacher Professional Development;Tissues;Training;Training and Infrastructure;Training Programs;Underrepresented Populations;Vascular Dementia;Wisconsin;Work;Writing
+current_category: infrastructure
+---
+application_id: 10867184
+activity_code: P30
+title: Core I: iPSC Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: N/A
+terms: 3-Dimensional;Acceleration;Affect;Aging;aging related;Alzheimer&apos;s Disease;Alzheimer&apos;s disease model;Alzheimer&apos;s disease related dementia;Area;Autopsy;Basic Science;biobank;Bioenergetics;Biological Aging;Biological Assay;Biological Markers;Biopsy;Cataloging;Cell Line;Cell model;Cells;Clinical;Clustered Regularly Interspaced Short Palindromic Repeats;cohort;Collaborations;Collection;combat;Communities;Complex;Data;data management;Development;Disease;disease model;Etiology;exhaust;familial Alzheimer disease;Fibroblasts;Fostering;Generations;genome editing;Genomics;Goals;Health;Human;Human Genetics;Human Resources;Immune;Induced Neurons;induced pluripotent stem cell;Knowledge;Latin American;Latino;Latino Population;Metabolism;Modeling;Molecular;Nerve Degeneration;Nervous System Disorder;Neurons;Organoids;Participant;Pathology;Persons;Play;preservation;prevent;programs;Protocols documentation;Quality Control;Research;Research Personnel;Research Project Grants;Resources;Role;sample collection;Sampling;Services;skills;Skin;Societies;Somatic Cell;Source;stem cell model;Stem Cell Research;System;tool;Training;validation studies;vector;Work
+current_category: infrastructure
+---
+application_id: 10867181
+activity_code: P30
+title: Core F: Biomarker Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: N/A
+terms: accurate diagnosis;Age;Aging;aging clocks;alpha synuclein;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;Applications Grants;Arteriosclerosis;Basic Science;Behavior;biobank;Biological;Biological Assay;Biological Markers;Biotechnology;Blood;Blood Vessels;Brain;brain magnetic resonance imaging;Budgets;Catalogs;Cell Line;Cells;Cerebrospinal Fluid;Clinical;clinical phenotype;Cognitive;cohort;Collaborations;Communities;Consultations;Data;Data Analyses;data sharing;Diagnosis;Differential Diagnosis;Disease;disease heterogeneity;DNA;DNA Methylation;Early Diagnosis;Education;Educational process of instructing;Ensure;Epigenetic Process;Equipment and Supplies;Ethnic Origin;Faculty;follow-up;Functional disorder;Funding;Genetic;genetic analysis;genome wide association study;Genotype;glymphatic function;hazard;Heterogeneity;Histology;Image;imaging study;induced pluripotent stem cell;Industry;Interest Group;International;Laboratories;Latino;Latino Population;Lead;Leadership;lipidomics;Liquid substance;Magnetic Resonance Imaging;Maps;Measures;Metabolism;Methods;microbiome;Monitor;Motor;myelination;Nerve Degeneration;neuroimaging;neuroinflammation;neuropathology;novel;novel marker;online resource;operation;Other Genetics;Participant;Pathologic;Pathology;Phenotype;Plasma;Positron-Emission Tomography;pre-clinical;precision medicine;Process;Prognosis;Protein Analysis;protein TDP-43;Proteomics;Quality Control;repository;Research;Research Activity;Research Personnel;Research Support;Resources;Review Committee;RNA analysis;Sampling;Serum;sex;social health determinants;Staging;Standardization;Structure;Synapses;tau Proteins;Tissues;Validation;Vascular Cognitive Impairment;Vascular Diseases;Work;β-amyloid burden
+current_category: infrastructure
+---
+application_id: 10868122
+activity_code: P30
+title: Core G - Biomarker Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: accurate diagnosis;Age of Onset;Aging;alpha synuclein;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Alzheimer&apos;s disease therapeutic;Alzheimer’s disease biomarker;Amyloid;Argentina;Belief;biobank;Biological;Biological Markers;Biological Specimen Banks;biomarker discovery;Blood;Blood specimen;C9ORF72;career;cell repository;Cells;Classification;Clinical;Clinical Research;Clinical Trials;cohort;Collaborations;Collection;Communities;Data;Data Analyses;Data Management Resources;Dementia;design;Development;Diagnosis;Diagnostic;diverse data;DNA;Doctor of Philosophy;Early Diagnosis;early onset;Education;education research;Ensure;exome;exome sequencing;experience;Faculty;Fibroblasts;Frontotemporal Dementia;gene discovery;Generations;Genetic;Genetic Risk;genome sequencing;genome-wide;Genomics;Genotype;Goals;Grant;Health;Heterogeneity;Human;Image;improved;induced pluripotent stem cell;Infrastructure;innovation;interest;International;Investigation;Lead;Leadership;Light;Liquid substance;Measurement;Measures;Mentors;Mission;molecular phenotype;multidisciplinary;Nerve Degeneration;Neurodegenerative Disorders;neurofilament;Neurons;novel;novel marker;novel strategies;Participant;participant enrollment;Pathology;Pathway interactions;Patient Selection;Patients;Peripheral Blood Mononuclear Cell;Phenotype;Philosophy;Pilot Projects;Plasma;Population;Population Heterogeneity;Positioning Attribute;precision medicine;presenilin-1;presenilin-2;Procedures;prognostic;Protein Isoforms;Proteins;Proteomics;Proxy;rare variant;recruit;Research;Research Institute;Research Personnel;Research Project Grants;Resources;Risk;risk variant;Sampling;Scientist;screening;SNP array;Specimen;Standardization;Synapses;Syndrome;synergism;System;tau Proteins;tau-1;TBK1 gene;Techniques;Technology;Training;transcriptomics;Translational Research;TREM2 gene;Underrepresented Populations;United States National Institutes of Health;Universities;Validation;whole genome;Work
+current_category: infrastructure
+---
+application_id: 10868123
+activity_code: P30
+title: Research Education Component
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Basic Science;behavioral neurology;brain health;California;Capsicum;career;Career Mobility;Clinical;clinical center;Clinical Research;Clinical Sciences;Clinical Trials;Communication;Communities;Dementia;Development;Diagnostic;Discipline;Discipline of Nursing;diversity and equity;Education;education research;Educational Curriculum;Educational workshop;Ensure;Environment;Epidemiology;Equity;experience;Exposure to;Faculty;Fellowship;Foundations;Funding;Geriatric Psychiatry;Geriatrics;Grant;Heterogeneity;Home;Image;interest;Leadership;Medical;Medical Research;medical specialties;Medical Students;Medicine;meetings;Memory;Mental disorders;Mentorship;Methods;Minority;Modeling;multidisciplinary;Nerve Degeneration;Neurology;Neuropsychology;Neurosciences;novel strategies;Online Systems;outreach;Palliative Care;Phenotype;Positioning Attribute;Postdoctoral Fellow;Program Description;programs;Psychiatry;Publications;Research;Research Activity;Research Methodology;Research Personnel;Research Project Grants;Research Project Summaries;Research Training;Resources;Role;Rotation;Science;Scientist;Secure;Structure;Students;symposium;Training;training opportunity;Training Programs;trend;Underrepresented Populations;United States National Institutes of Health;Universities;Writing
+current_category: infrastructure
+---
+application_id: 10838622
+activity_code: P30
+title: Core H - Basic Science Core
+org_name: MIRIAM HOSPITAL
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;antiretroviral therapy;Area;Basic Science;Behavioral;Behavioral Research;Behavioral Sciences;Biological Assay;Boston;Clinical;Clinical Research;Clinical Sciences;Collaborations;Consultations;Dedications;design;Detection;Devices;Disease remission;Drug resistance;Education and Outreach;Environment;Epidemic;experience;Faculty;Feedback;Fostering;Funding;Goals;Grant;HIV;HIV Infections;HIV/AIDS;Immune System Diseases;Immunology;improved;Inflammation;Infrastructure;innovation;Institution;International;investigator training;Leadership;life span;Location;Medical center;Mentors;Mentorship;Minority Groups;Mission;Molecular;multidisciplinary;Needs Assessment;novel;Persons;Point of Care Technology;prevent;Prevention;Publications;Publishing;Reduce health disparities;Research;Research Personnel;Research Project Grants;Research Support;Research Training;Resource-limited setting;Resources;Role;Science;Scientist;Services;Surveys;synergism;Technical Expertise;Technology;Technology Transfer;Training;Training and Education;Translational Research;Translations;transmission process;United States National Institutes of Health;Universities;virology;Virus;Work
+current_category: infrastructure
+---
+application_id: 10864401
+activity_code: P30
+title: Research Education
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: N/A
+terms: Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Animal Model;Area;Basic Science;Biomedical Research;Brain;career development;Clinic;Clinical;Clinical Research;Cognitive;cohort;Collaborations;college;Data;Dementia;Development Plans;digital phenotyping;disadvantaged background;Discipline;education research;Educational workshop;Engineering;Ensure;Environment;Epidemiologist;ethnic diversity;experience;Faculty;Fellowship;Fostering;Funding;Future;graduate student;Institution;interest;Investments;Joints;K-Series Research Career Programs;Leadership;Learning;lecturer;longitudinal analysis;Massachusetts;Medical;Medicine;Mentors;Mentorship;Methodology;Methods;Mission;multidisciplinary;multimodality;neuroimaging;Neurologist;neuropathology;novel;Pathway interactions;Play;Price;Program Effectiveness;programs;Psychiatrist;racial diversity;recruit;Research;Research Methodology;Research Personnel;Research Support;Resources;responsible research conduct;Role;Rotation;Science;Scientist;Series;Services;summer internship;symposium;three dimensional cell culture;Training;training opportunity;Training Programs;Translations;Underrepresented Populations;Work
+current_category: infrastructure

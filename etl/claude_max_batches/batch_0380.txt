@@ -1,0 +1,474 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 11102311
+activity_code: S10
+title: Hamilton BiOS M10 Robotic Frozen Storage Unit for the Discover Together Biobank
+org_name: CINCINNATI CHILDRENS HOSP MED CTR
+phr: Project Narrative
+Discover Together (DT) Biobank is an institutional Biobanking resource at Cincinnati Children’s
+that provides Biobanking infrastructure and maintains a large institutional biospecimen collection
+for research. With biospecimen storage in excess of 900,000 aliquots, DT Biobank is in need of
+an automated frozen storage environment that will dramatically increase: 1) available storage
+space; 2) operational efficiency of lab staff; 3) long term biospecimen fidelity; 4) capabilities 
+terms: <0-11 years old><Abscission><Acceleration><Aliquot><Automation><Child><Child Youth><Children (0-21)><Children's Hospital><Clinical Data><DNA><Deoxyribonucleic Acid><Enrollment><Environment><Excision><Extirpation><Freezing><Funding><Generalized Growth><Genomics><Growth><Incentives><Individual><Institution><Investigators><Maintenance><Medical center><NIH><National Institutes of Health><Orphan Disease><Outcome><Pediatric Hospitals><Pediatrics><Policies><Position><Positioning Attribute><Process><Protocol><Protocols documentation><R-Series Research Projects><R01 Mechanism><R01 Program><Rare Diseases><Rare Disorder><Removal><Research><Research Grants><Research Personnel><Research Project Grants><Research Projects><Research Resources><Researchers><Resources><Robotics><Sample Size><Sampling><Services><Standardization><Surgical Removal><System><Temperature><Time Management><Tissue Growth><United States National Institutes of Health><biobank><biorepository><cohort><enroll><improved><kids><ontogeny><orphan disorder><programs><research study><resection><sample collection><specimen collection><youngster>
+current_category: infrastructure
+---
+application_id: 10851365
+activity_code: S10
+title: Acquisition of an 800 MHz NMR
+org_name: VANDERBILT UNIVERSITY
+phr: Acquisition of a modern 800 MHz NMR spectrometer will provide essential new capabilities in
+high throughput fragment-based drug discovery, 19F NMR, and NMR-based structural biology to
+six major users and many minor users at Vanderbilt University, supported by NIH funding. It will
+extend essential capabilities in basic and translational biomedical research and training. It will
+be used for probing biomolecular binding interactions, and structural and dynamics studies of
+complex biological macromo
+terms: <Binding><Biological><Biomedical Research><Biomolecular NMR><Biomolecular Nuclear Magnetic Resonance><Complex><Dedications><Drug Screening><Faculty><Funding><He element><Helium><Institution><Laboratories><Methods><Minor><Molecular Interaction><NIH><NMR Spectrometer><NMR Spectroscopy><National Institutes of Health><Phase><Postdoc><Postdoctoral Fellow><Preparation><Research><Research Associate><Resolution><Sampling><Science><Site><Training><Underrepresented Groups><Underrepresented Populations><United States National Institutes of Health><Universities><biologic><drug discovery><instrumentation><macromolecule><nuclear magnetic resonance spectroscopy><operation><operations><post-doc><post-doctoral><post-doctoral trainee><pre-doc><pre-doctoral><predoctoral><preparations><research associates><resolutions><structural biology><under representation of groups><under represented groups><under represented people><under represented populations><undergrad><undergraduate><undergraduate student><underrepresentation of groups><underrepresented people>
+current_category: infrastructure
+---
+application_id: 10630511
+activity_code: S10
+title: Acquisition of a Bruker 11.7T/16cm Preclinical Scanner for Novel MRI/MRSI Studies
+org_name: YALE UNIVERSITY
+phr: This application requests funds to purchase and install a state-of-the-art 11.7T/16cm small bore animal MRI
+scanner with cryoprobes for 1H and X nuclei at Yale University with a substantial institutional match. This novel
+equipment will greatly enhance the small animal MRI research capabilities of a highly productive MRI research
+community, including scientists from Yale and elsewhere, spanning across disciplines of neuroscience,
+metabolism, cancer, physiology, physics, and engineering.
+terms: <1H- Nuclear Magnetic Resonance Spectroscopic Imaging><20 year old><20 years of age><3-D><3-Dimensional><3D><Advisory Committees><Anatomic Sites><Anatomic structures><Anatomy><Animals><Brain><Brain Nervous System><Brain imaging><Cell Nucleus><Column of Bertini><Common Rat Strains><Communities><Cortical Column><Development><Disease><Disorder><EXTMR><Education><Educational aspects><Educational process of instructing><Encephalon><Extramural><Extramural Activities><Faculty><Failure><Functional Imaging><Funding><Goals><He element><Helium><Human><Institution><Investigators><MR Imaging><MR Tomography><MRI><MRIs><MRSI><Magnetic Resonance><Magnetic Resonance Imaging><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><Mentors><Metabolic><Minor><Modern Man><NIH><NMR Imaging><NMR Tomography><National Institutes of Health><Neurosciences Research><Nuclear><Nuclear Magnetic Resonance Imaging><Nucleus><Organoids><Pathogenesis><Performance><Physiologic Imaging><Postdoc><Postdoctoral Fellow><Proton Magnetic Resonance Spectroscopic Imaging><Pump><R-Series Research Projects><R01 Mechanism><R01 Program><Rat><Rat Transgene><Rats Mammals><Rattus><Renal Column of Bertini><Research><Research Associate><Research Grants><Research Personnel><Research Project Grants><Research Projects><Researchers><Resolution><Rodent><Rodentia><Rodents Mammals><Spectroscopy><Spectrum Analyses><Spectrum Analysis><Study models><System><Task Forces><Teaching><Technical Expertise><Technology><Transgenic Mice><Transgenic Model><Transgenic Organisms><Translations><United States National Institutes of Health><Universities><Zeugmatography><advisory team><age 20 years><brain visualization><cost><cryogenics><developmental><experience><graduate student><imaging spectroscopy><improved><magnetic resonance spectroscopic imaging><metabolic imaging><method development><multi-modality><multimodality><novel><operation><operations><peer><physiological imaging><post-doc><post-doctoral><post-doctoral trainee><pre-clinical><preclinical><research associates><resolutions><spectroscopic imaging><structural imaging><super high resolution><superresolution><technical skills><three dimensional><tissue fixing><transgenic><transgenic trait><translation><translation to humans><translational model><translational neuroscience><twenty year old><twenty years of age><ultra high resolution>
+current_category: infrastructure
+---
+application_id: 10630534
+activity_code: S10
+title: High Performance PET/CT Scanner
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: Project Narrative
+This application seeks support to install an extended axial field of view PET/CT tomograph at the
+MGH/HST Athinoula A. Martinos Center for Biomedical Imaging. The new instrument will offer
+dramatically enhanced performance compared to state-of-the-art PET/CT instruments that will
+benefit the research projects of our multidisciplinary users from MGH and Greater Boston region,
+and will foster opportunities for new projects and collaborations.
+terms: <Accounting><Award><Boston><Cardiovascular Diseases><Clinical Research><Clinical Study><Collaborations><Communities><Complement><Complement Proteins><Data><Fostering><Funding><Future><General Radiology><Generations><Grant><Image><Institution><Investigators><Leadership><Lung diseases><MR Imaging><MR Tomography><MRI><MRIs><Magnetic Resonance Imaging><Maintenance><Measurement><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><NIH><NMR Imaging><NMR Tomography><National Institutes of Health><Nuclear Magnetic Resonance Imaging><Oncology><Oncology Cancer><Organ><PET><PET Scan><PET imaging><PET/CT><PET/CT scan><PETSCAN><PETT><Performance><Positron Emission Tomography Medical Imaging><Positron Emission Tomography Scan><Positron-Emission Tomography><Price><Pulmonary Diseases><Pulmonary Disorder><R-Series Research Projects><R01 Mechanism><R01 Program><Rad.-PET><Radiation exposure><Radiology><Radiology Specialty><Research><Research Grants><Research Personnel><Research Project Grants><Research Projects><Researchers><Schedule><Sight><System><Time><Tracer><United States National Institutes of Health><Vision><Zeugmatography><biomedical imaging><cardiovascular disorder><detector><disease of the lung><disorder of the lung><imaging><improved><instrument><instrumentation><lung disorder><meter><multidisciplinary><operation><operations><positron emission computed tomography><positron emission tomographic (PET) imaging><positron emission tomographic imaging><positron emitting tomography><pricing><programs><radiolabel><radiolabels><radiotracer><temporal measurement><temporal resolution><time measurement><visual function>
+current_category: infrastructure
+---
+application_id: 10630654
+activity_code: S10
+title: Next-generation 3 Tesla Human MRI System
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: PROJECT NARRATIVE
+This project supports the purchase of a next-generation 3 Tesla whole-body human MRI scanner at the Athinoula
+A. Martinos Center for Biomedical Imaging to serve a diverse array of clinical and basic research studies at Mass
+General Brigham and across the greater Boston area research community. The new 3 Tesla human MRI will
+boost imaging performance and provide major benefits to structural, functional, and multimodality imaging and
+microstructural tissue characterization across
+terms: <16 year old><16 years of age><Acceleration><Area><Basic Research><Basic Science><Body Tissues><Boston><Brain><Brain Mapping><Brain Nervous System><Brain imaging><Childhood><Clinical><Clinical Research><Clinical Study><Cognitive><Collaborations><Communities><Complement><Complement Proteins><Computer software><Computers><Custom><Development><Encephalon><Fostering><Funding><Grant><Heart><Hospitals><Human><Human Figure><Human body><Image><Imaging Procedures><Imaging Technics><Imaging Techniques><Institution><Investigators><MR Imaging><MR Tomography><MRI><MRIs><Magnetic Resonance Imaging><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><Modern Man><Modernization><NIH><NMR Imaging><NMR Tomography><National Institutes of Health><Neurosciences><Nuclear Magnetic Resonance Imaging><Organ System><Performance><Physiologic Monitoring><Physiologic pulse><Physiological Monitoring><Productivity><Prostate><Prostate Gland><Prostatic Gland><Pulse><Research><Research Personnel><Research Resources><Research Support><Researchers><Resolution><Resources><Site><Software><Standardization><Structure><Structure-Activity Relationship><System><Technology><Tissues><Translational Research><Translational Science><United States National Institutes of Health><Vendor><Zeugmatography><age 16 years><biomedical imaging><body system><brain visualization><cancer imaging><cardiovascular imaging><chemical structure function><customs><data quality><density><developmental><fetal><frontier><image construction><image generation><image reconstruction><imaging><improved><innovate><innovation><innovative><instrumentation><neural imaging><neuro-imaging><neuroimaging><neurological imaging><next generation><novel><oncologic imaging><oncology imaging><pediatric><pressure><programs><resolutions><sixteen year old><sixteen years of age><structure function relationship><system architecture><tech development><technology development><tractography><translation research><translational investigation><tumor imaging><whole body imaging><whole body scanning>
+current_category: infrastructure
+---
+application_id: 10632461
+activity_code: S10
+title: 3T MRI scanner for Advanced Brain Imaging
+org_name: UNIVERSITY OF ARIZONA
+phr: Project Narrative
+A state-of-the-art 3T MRI scanner for neuroimaging will be acquired to support NIH-funded
+research aimed at understanding normal cognitive function as well as neurological disorders.
+The scanner will be administered within a core facility at the University of Arizona, serving
+neuroscientists and neuroimaging scientists across the entire campus.
+terms: <AD dementia><Aging><Alzheimer Type Dementia><Alzheimer disease dementia><Alzheimer sclerosis><Alzheimer syndrome><Alzheimer's><Alzheimer's Disease><Alzheimers Dementia><Apoplexy><Area><Arizona><Biologic Sciences><Biological Sciences><Biomedical Engineering><Bioscience><Brain><Brain Nervous System><Brain Trauma><Brain Vascular Accident><Brain imaging><Cerebral Stroke><Cerebrovascular Apoplexy><Cerebrovascular Stroke><Data><Dedications><Diffusion><Discipline><Encephalon><Faculty><Funding><Health Sciences><Hearing><Human><Image><Infrastructure><Institution><Investigators><Laboratory Research><Language><Life Sciences><MR Imaging><MR Tomography><MRI><MRIs><Magnetic Resonance Imaging><Medical Imaging><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><Modern Man><NIH><NMR Imaging><NMR Tomography><National Institutes of Health><Nervous System Diseases><Neurologic Disorders><Neurological Disorders><Neurosciences><Nuclear Magnetic Resonance Imaging><Paralysis Agitans><Parkinson><Parkinson Disease><Primary Parkinsonism><Primary Senile Degenerative Dementia><Psychiatry><Psychology><Request for Proposals><Research><Research Personnel><Research Resources><Researchers><Resources><Science><Speech><Stroke><Techniques><Traumatic Brain Injury><United States National Institutes of Health><Universities><Zeugmatography><animal imaging><bio-engineered><bio-engineers><bio-imaging><bioengineering><bioimaging><biological engineering><brain attack><brain visualization><cerebral vascular accident><cerebrovascular accident><diffused><diffuses><diffusing><diffusions><human imaging><image-based method><imaging><imaging method><imaging modality><improved><instrument><nervous system disorder><neural imaging><neuro-imaging><neuroimaging><neurological disease><neurological imaging><primary degenerative dementia><prisma><programs><senile dementia of the Alzheimer type><stroked><strokes><traumatic brain damage>
+current_category: infrastructure
+---
+application_id: 10630533
+activity_code: S10
+title: High-Performance Gradient Coil for 7 Tesla MRI
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: PROJECT NARRATIVE
+This project proposes to upgrade a human 7 Tesla MRI scanner at the MGH/HST Athinoula A. Martinos Center
+for Biomedical Imaging. The upgrade will consist of a newly available high-performance gradient coil, provided
+by the scanner manufacturer, and designed exclusively for 7 Tesla MRI, that can achieve more than double the
+strength and three times the speed of the existing gradient coil. This transformative new technology will
+dramatically improve data quality and provide highe
+terms: <Acceleration><Adopted><Area><Artifacts><Basic Research><Basic Science><Biological><Boston><Brain imaging><Cell Communication and Signaling><Cell Signaling><Clinical Research><Clinical Study><Communities><DWI (diffusion weighted imaging)><DWI-MRI><Diffusion><Diffusion MRI><Diffusion Magnetic Resonance Imaging><Diffusion Weighted MRI><Diffusion weighted imaging><Diffusion-weighted Magnetic Resonance Imaging><Echo-Planar Imaging><Echo-Planar Magnetic Resonance Imaging><Echoplanar Imaging><Echoplanar Magnetic Resonance Imaging><Engineering><Functional Imaging><Functional MRI><Functional Magnetic Resonance Imaging><Funding><Generations><Head><Human><Image><Intracellular Communication and Signaling><Investigators><MR Imaging><MR Tomography><MRI><MRIs><Magnetic Resonance Imaging><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><Methods><Modern Man><Morphologic artifacts><NMR Imaging><NMR Tomography><Nuclear Magnetic Resonance Imaging><Performance><Perfusion><Physiologic Imaging><Planar Medical Imaging><Research><Research Personnel><Researchers><Resolution><Signal Transduction><Signal Transduction Systems><Signaling><Site><Speed><Talents><Technical Expertise><Techniques><Technology><Time><Translational Research><Translational Science><Zeugmatography><anatomic imaging><anatomical imaging><base><bases><biologic><biological signal transduction><biomedical imaging><brain visualization><dMRI><data quality><design><designing><diffused><diffuses><diffusing><diffusion tensor imaging><diffusions><experience><experiment><experimental research><experimental study><experiments><fMRI><image-based method><imaging><imaging method><imaging modality><imaging study><improved><innovate><innovation><innovative><instrument><instrumentation><invention><magnetic field><millimeter><new technology><next generation><novel technologies><physiological imaging><resolutions><success><technical skills><translation research><translational investigation>
+current_category: infrastructure
+---
+application_id: 11336532
+activity_code: U2C
+title: KF Supplement -- Sustainable and Optimized Cloud Resources on behalf of the Kids First DRC
+org_name: CHILDREN'S HOSP OF PHILADELPHIA
+phr: PROJECT NARRATIVE
+Under this supplement the Kids First Data Resource will provide the requisite continued support of the scalable
+cloud-based resources required for the continued operations and use of the Portal, associated services,
+CAVATICA, and additional AWS-hosted platforms as well as the transition of AWS storage resources to the
+Cancer Research Data Commons (CRDC). Support will also continue for data harmonization and integration
+across pediatric cancer and structural birth defect dataset
+terms: <0-11 years old><Cancers><Child><Child Youth><Childhood Cancers><Children (0-21)><Clinical Data><Cloud Service><Communication><Consultations><Data><Data Commons><Data Files><Data Management Core><Data Set><Data Storage and Retrieval><Development><Disease><Disorder><Ensure><Environment><FHIR><Fast Health Care Interoperability Resources><Malignant Childhood Neoplasm><Malignant Childhood Tumor><Malignant Neoplasms><Malignant Pediatric Neoplasm><Malignant Pediatric Tumor><Malignant Tumor><Malignant childhood cancer><Metadata><NICHD><NIH><National Institute of Child Health and Human Development><National Institutes of Health><Participant><Research><Research Resources><Resources><Sampling><Security><Services><Source><Structural Birth Defect><Structural Congenital Anomalies><Technology><United States National Institutes of Health><Variant><Variation><anti-cancer research><cancer in a child><cancer in children><cancer research><child with cancer><childhood malignancy><cloud based><cloud storage><cloud-based storage><cohort><community engagement><computational resources><computing resources><congenital structural malformation><consultation><data exchange><data exploration><data framework><data harmonization><data ingestion><data integration><data interoperability><data management and coordinating center><data management center><data portal><data resource><data retrieval><data sharing portal><data storage><data transfer><data transmission><database of Genotypes and Phenotypes><dbGaP><developmental><empowerment><engagement with communities><genomic data><genomic dataset><harmonized data><kids><malignancy><meta data><neoplasm/cancer><operation><operations><parent award><parent grant><parent project><pediatric cancer><pediatric malignancy><programs><sustainable resource><sustainable resources><youngster>
+current_category: infrastructure
+---
+application_id: 10909885
+activity_code: R44
+title: One-click Automated 3D Treatment Planning for Radiopharmaceutical Therapy
+org_name: VOXIMETRY, INC.
+phr: PROJECT NARRATIVE Millions of patients are treated with radiopharmaceutical therapy (RPT) each year. Unfortunately, current prescription methods do not consider absorbed dose to individual patients but instead use empirically derived or standard methods leading to suboptimal treatment outcomes in some patients. Our solution, Torch, will be the first commercialized full-Monte Carlo and automated patient-specific dosimetry software for RPT.
+terms: 3-Dimensional;absorption;Acceleration;Address;Adoption;Algorithms;Antibodies;Artificial Intelligence;automated segmentation;Automation;Benchmarking;Biodistribution;Calibration;Cancer Patient;cancer therapy;Characteristics;chemotherapy;Clinic;Clinical;clinical decision support;clinical practice;clinically significant;commercialization;Computer software;Consensus;Contracts;cost effective;Deposition;design;Development;digital;Disseminated Malignant Neoplasm;Dose;dosimetry;Drug Kinetics;Ensure;Evaluation;experience;External Beam Radiation Therapy;Funding;Gamma Rays;Goals;Grant;Healthcare Systems;Image;image registration;individual patient;individualized medicine;Intellectual Property;Lead;Lymphoma;Marketing;Metastatic Prostate Cancer;Methods;Modeling;Neoplasm Metastasis;neoplastic cell;Neuroendocrine Tumors;Normal tissue morphology;Organ;Overdose;Patient-Focused Outcomes;Patients;Peptides;personalized medicine;Pharmaceutical Preparations;pharmacokinetic model;Phase;Physicians;Physiology;Radiation;Radioactivity;Radioisotopes;Radiopharmaceuticals;reconstruction;Reporting;Resources;response;Risk;Route;Secure;side effect;single photon emission computed tomography;Small Business Innovation Research Grant;small molecule;System;Technology;Testing;theranostics;Therapeutic;Time;tool;Treatment outcome;treatment planning;tumor;Tumor Tissue;uptake;user-friendly;Validation;verification and validation;Work
+current_category: therapeutics
+---
+application_id: 10883697
+activity_code: S21
+title: PREDICT (Precision Medicine, Education, Data Informatics and Community Translation) Institute
+org_name: XAVIER UNIVERSITY OF LOUISIANA
+phr: Project Narrative The purpose of the Precision Medicine, Education, Data Informatics, and Community Translation (PREDICT) Institute is to serve as a holistic and replicable framework for the utilization of electronic health data and community translation to affect the decision- making process to improve health outcomes. The PREDICT Institute will extend the technical research exchange (TREX) program at Xavier to include training of current and future underrepresented researchers on health inform
+terms: Address;Affect;Awareness;Bioinformatics;Clinical Research;college;Communities;Complement;COVID-19 pandemic;Data;data access;data acquisition;Data Analytics;data warehouse;Decision Making;Education;electronic health data;Future;Health;health disparity;health equity;Health Promotion;improved;Informatics;informatics infrastructure;Infrastructure;Louisiana;Mentors;mid-career faculty;minority communities;National Institute on Minority Health and Health Disparities;Outcome;outreach;Pharmacy facility;population health;Postdoctoral Fellow;precision medicine;Process;programs;Public Health Informatics;Reduce health disparities;Research;Research Infrastructure;Research Personnel;Students;Time;tool;Training;translational engagement;Translations;United States National Institutes of Health;Universities;Vulnerable Populations
+current_category: other
+---
+application_id: 11459077
+activity_code: Y01
+title: OPEN KNOWLEDGE NETWORK PROTO OKN
+org_name: OFFICE OF THE DIRECTOR, NATIONAL INSTITUTES OF HEALTH
+phr: N/A
+terms: Address;Affect;Algorithms;Award;Biomedical Technology;Budgets;Development;digital;digital twin;Direct Costs;Engineering;Evaluation;Facilities and Administrative Costs;Foundations;Funding;Goals;Grant;Health Care;Human;in silico;Interdisciplinary Study;Joints;knowledge network;Mathematics;Medical Device;method development;Modeling;Procedures;programs;Research Project Grants;synthetic data;technological innovation;United States National Institutes of Health
+current_category: other
+---
+application_id: 11017844
+activity_code: U24
+title: PanKbase: a community hub for integrated pancreas knowledge
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Narrative The overall goal of this project is to develop PanKbase, a centralized and comprehensive resource of the human pancreas for the diabetes research community, with a focus on type 1 diabetes (T1D) pathogenesis. If successful, results from this project will provide new insights into T1D pathogenesis and enable the development of new therapies and biomarkers. The project will also foster cross-disciplinary collaborations and promote innovation, with the ultimate aim of improving the lives 
+terms: Acceleration;analytical tool;Architecture;Area;base;Biological Markers;Biology;Biometry;Caring;cell type;Cells;Charge;Clinical;Clinical Trials;cloud based;Collaborations;Collection;Communities;community engagement;Community Networks;Community Surveys;complex data;Conduct Clinical Trials;Creativeness;Data;Data Commons;data modalities;Data Science;Data Scientist;Data Set;Databases;Dedications;design;Development;Diabetes Mellitus;diabetes pathogenesis;Diabetes prevention;Disease;diverse data;Drug Industry;Ecosystem;endophenotype;Engineering;Ensure;Etiology;Europe;FAIR principles;Feedback;Fostering;Foundations;Functional disorder;Funding;Future;Generations;Genetic;genetic association;Genomics;Goals;graph knowledge base;heterogenous data;Human;Human Resources;Image;Imaging technology;Immune;improved;innovation;insight;Insulin-Dependent Diabetes Mellitus;International;islet;Islets of Langerhans;Knowledge;knowledge graph;knowledgebase;Lead;learning community;Libraries;Machine Learning;meetings;member;Metadata;Modality;Modernization;Molecular;Molecular Profiling;multidisciplinary;multimodal data;multimodality;multiplexed imaging;National Institute of Diabetes and Digestive and Kidney Diseases;next generation;novel diagnostics;novel therapeutics;Ontology;Organ;Pancreas;Participant;Persons;Phenotype;Physiological;Population;prevent;Process;Productivity;programs;Property;Provider;Quality Control;Reproducibility;Research;Research Personnel;Resolution;Resources;Sampling;Scientist;single cell sequencing;spatial relationship;Standardization;synergism;Technology;tissue mapping;Tissues;tool;tool development;United States;user-friendly;Visualization;web interface;Work
+current_category: infrastructure
+---
+application_id: 11289470
+activity_code: U24
+title: PanKbase: a community hub for integrated pancreas knowledge
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Narrative
+The overall goal of this project is to develop PanKbase, a centralized and comprehensive resource of the
+human pancreas for the diabetes research community, with a focus on type 1 diabetes (T1D) pathogenesis. If
+successful, results from this project will provide new insights into T1D pathogenesis and enable the
+development of new therapies and biomarkers. The project will also foster cross-disciplinary collaborations and
+promote innovation, with the ultimate aim of improving the lives 
+terms: <Acceleration><Architecture><Area><B9 endocrine pancreas><Biological Markers><Biology><Biometrics><Biometry><Biostatistics><Body Tissues><Brittle Diabetes Mellitus><Caring><Causality><Cell Body><Cells><Charge><Clinical><Clinical Trials><Collaborations><Collection><Communities><Community Networks><Community Surveys><Conduct Clinical Trials><Creativeness><Data><Data Bases><Data Commons><Data Science><Data Scientist><Data Set><Databases><Dedications><Development><Diabetes Mellitus><Diabetes prevention><Disease><Disorder><Drug Industry><Dysfunction><Ecologic Systems><Ecological Systems><Ecosystem><Endocrine Pancreas><Engineering><Engineering / Architecture><Ensure><Etiology><Europe><FAIR data><FAIR guiding principles><FAIR principles><Feedback><Findable, Accessible, Interoperable and Re-usable><Findable, Accessible, Interoperable, and Reusable><Fostering><Foundations><Functional disorder><Funding><Future><Generations><Genetic><Genomics><Goals><Human><Human Resources><IDDM><Image><Imaging technology><Immune><Immunes><Insulin-Dependent Diabetes Mellitus><International><Investigators><Islands of Langerhans><Islets of Langerhans><Juvenile-Onset Diabetes Mellitus><Ketosis-Prone Diabetes Mellitus><Knowledge><Lead><Libraries><Machine Learning><Manpower><Metadata><Modality><Modern Man><Modernization><Molecular><Molecular Fingerprinting><Molecular Profiling><NIDDK><National Institute of Diabetes and Digestive and Kidney Diseases><Nesidioblasts><Ontology><Organ><Pancreas><Pancreatic><Pancreatic Islets><Pars endocrina pancreatis><Participant><Pb element><Persons><Pharmaceutic Industry><Pharmaceutical Industry><Phenotype><Physiologic><Physiological><Physiopathology><Population><Process><Productivity><Property><Provider><Quality Control><Reproducibility><Research><Research Personnel><Research Resources><Researchers><Resolution><Resources><Sampling><Scientist><Single cell seq><Standardization><Sudden-Onset Diabetes Mellitus><T1 DM><T1 diabetes><T1D><T1DM><Technology><Tissues><Type 1 Diabetes Mellitus><Type 1 diabetes><Type I Diabetes Mellitus><United States><Visualization><Work><analytical tool><base><bases><bio-markers><biologic marker><biomarker><causation><cell type><cloud based><community engagement><complex data><creativity><data base><data diversity><data heterogeneity><data modalities><data set heterogeneity><dataset heterogeneity><design><designing><developmental><diabetes><diabetes pathogenesis><disease causation><diverse data><endophenotype><engagement with communities><genetic association><graph knowledge base><graph knowledgebase><heavy metal Pb><heavy metal lead><heterogeneous data><heterogeneous data sets><heterogeneous datasets><heterogenous data><heterogenous data sets><heterogenous datasets><imaging><improved><innovate><innovation><innovative><insight><insulin dependent diabetes><insulin dependent type 1><islet><juvenile diabetes><juvenile diabetes mellitus><ketosis prone diabetes><knowledge graph><knowledgebase><learning community><machine based learning><meeting><meetings><member><meta data><molecular profile><molecular signature><multi-modal data><multi-modal datasets><multi-modality><multidisciplinary><multimodal data><multimodal datasets><multimodality><multiplexed imaging><new diagnostics><new drug treatments><new drugs><new pharmacological therapeutic><new therapeutics><new therapy><next generation><next generation diagnostics><next generation therapeutics><novel diagnostics><novel drug treatments><novel drugs><novel pharmaco-therapeutic><novel pharmacological therapeutic><novel therapeutics><novel therapy><pathophysiology><personnel><prevent><preventing><programs><resolutions><single cell next generation sequencing><single cell sequencing><spatial relationship><synergism><tissue map><tissue mapping><tool><tool development><type I diabetes><type one diabetes><user-friendly><web interface>
+current_category: infrastructure
+---
+application_id: 11172343
+activity_code: N44
+title: Nanovaccine for Eliciting bnAbs Against HIV-1
+org_name: NEOVAXSYN, INC.
+phr: N/A
+terms: Address;Adjuvant;Animals;Antibodies;Antibody Response;Antigens;Attention;Contracts;design;Development;env Gene Products;Formulation;Goals;HIV;HIV vaccine;HIV-1;Immune response;improved;Lipids;Modality;nanoGold;nanoparticle;nanovaccine;neutralizing antibody;next generation;particle;Peptides;Polymers;vaccine delivery;Vaccine Research
+current_category: therapeutics
+---
+application_id: 11202798
+activity_code: N01
+title: DMID Clinical Research Operations & Management Support (CROMS)
+org_name: TECHNICAL RESOURCES INTERNATIONAL, INC.
+phr: N/A
+terms: Clinical Research;clinical research site;Clinical Trials;Data;Monitor;Operations Research;programs;Research Personnel;Resources;Safety;Services;Site;Training
+current_category: infrastructure
+---
+application_id: 11183153
+activity_code: U24
+title: The ECHO Measurement Core: A Framework and Resource for Assessing Environmental Exposure and Child Health
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: Environmental exposures profoundly shape lifespan health and disease trajectories. The ECHO Measurement Core will advise, orchestrate, and frame the coordinated, sensitive measurement of exposures, developmental processes, and health outcomes central to achieving ECHO's objective of mapping the impact of early exposures on child health and development. We will develop and refine measures for the ECHO Cohort Protocol (ECP), including methods to implement the measures that are culturally sensitive
+terms: Adoption;Adult;Brain;Child Development;Child Health;Clinical Research;cohort;Cohort Studies;Collaborations;Collection;Communication;Computers;Conceptions;Data;Data Analyses;Data Collection;Data Element;data harmonization;Decision Making;Dedications;Detection;Development;Developmental Process;Disease;Ensure;Environmental Exposure;Environmental Risk Factor;flexibility;Foundations;Goals;Health;implementation fidelity;implementation strategy;improved;innovation;instrument;Investigation;Lead;life span;Link;Manuals;Maps;Measurement;Measures;Methods;mindfulness;Monitor;neurodevelopment;novel;Obesity;Outcome;Participant;participant retention;Perinatal Exposure;Personal Satisfaction;Persons;Population Heterogeneity;postnatal;preclinical study;Predisposition;Procedures;Process;Protocols documentation;Psychometrics;Public Health;Publications;remote assessment;Reproducibility;Resources;Respondent;Risk;Science;Scientist;Shapes;Site;sound;Specific qualifier value;Standardization;standardize measure;Structure;Support System;System;Technology;Testing;Time;Training;Visit;wearable sensor technology;Work
+current_category: infrastructure
+---
+application_id: 11182172
+activity_code: N44
+title: SBIR PHASE II, TOPIC 431: AUTOMATIC TREATMENT PLANNING OF CERVICAL CANCER HIGH-DOSE RATE BRACHYTHERPAY FOR LOW-RESOURCE SETTINGS.
+org_name: VELOXAI LLC
+phr: N/A
+terms: Affect;Algorithms;Brachytherapy;Cancer Burden;Clinical;commercialization;Computer software;Disease;Dose Rate;Ensure;High-Dose Rate Brachytherapy;Human;improved;innovation;Institution;low and middle-income countries;Malignant neoplasm of cervix uteri;novel;Phase;Process;Radiation therapy;Recurrence;research and development;Resource-limited setting;Resources;Small Business Innovation Research Grant;software systems;standard of care;Treatment outcome;treatment planning;usability;validation studies;Vendor
+current_category: therapeutics
+---
+application_id: 11199161
+activity_code: N44
+title: 2024 SBIR TOPIC 465: CANCER PREVENTION AND TREATMENT CLINICAL TRIALS TOOLS FOR RECRUITMENT AND RETENTION OF DIVERSE POPULATIONS
+org_name: MEDNET, INC.
+phr: N/A
+terms: Awareness;cancer prevention;cancer therapy;clinical trial enrollment;Clinical Trials;Collaborations;cost;demographics;Development;Disease;Eligibility Determination;Enrollment;Goals;improved;Information Resources;Location;National Cancer Institute;Oncologist;online community;participant enrollment;Patients;Phase;Physicians;point of care;Population Heterogeneity;predictive tools;Randomized;Randomized, Controlled Trials;Recommendation;Recording of previous events;recruit;Site;Small Business Innovation Research Grant;social;Southwest Oncology Group;Technology;Testing;tool;trial enrollment;United States
+current_category: therapeutics
+---
+application_id: 11018212
+activity_code: U2F
+title: A People-Centered, Technology-Driven, Scientific Approach to Advancing Conformance with the Voluntary National Retail Food Regulatory Program Standards
+org_name: NATIONAL ENVIRONMENTAL HEALTH ASSOCIATION
+phr: PROJECT NARRATIVE The National Environmental Health Association (NEHA) project entitled A People-Centered, Technology-Driven, Scientific Approach to Advancing Conformance with the Voluntary National Retail Food Regulatory Program Standards (Retail Program Standards) is intended to:  • Build and implement a Flexible Funding Model system to provide significant subaward  funding to state, local, tribal, and territorial (SLTT) retail food regulatory programs, to  assist them in meeting the requireme
+terms: N/A
+current_category: other
+---
+application_id: 10837638
+activity_code: U01
+title: RFA-CK-22-003, Emerging Infections Sentinel Networks (EISN) Research - 2022
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: Project Narrative The EMERGEncy ID NET program is a sentinel research network of 12 geographically-diverse, university-affiliated US hospital emergency departments (EDs), which was established in 1995 to address the threat of emerging infectious diseases. Over the past 25 years, the network has worked closely with CDC partners to conduct translational research of emerging infectious diseases with a goal of improving patient care, health outcomes, and infection prevention strategies.
+terms: N/A
+current_category: therapeutics
+---
+application_id: 11102577
+activity_code: S10
+title: Acquisition of a JEOL JEM-CRYOARM300
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: Narrative
+We are seeking funds to acquire a JEOL CRYO ARM 300 II (JEM-3300) cryogenic transmission
+electron microscope that will enable us to uncover the 3-D structures of proteins and perform
+cryo-electron tomography on cells and organelles. The JEM-3300 will advance our ability to
+support the aims of over 20 NIH-funded research projects led by scientists at the University of
+North Carolina at Chapel Hill and our regional partners. High-resolution structures are a
+prerequisite of building molec
+terms: <AD dementia><Address><Affect><Alzheimer Type Dementia><Alzheimer disease dementia><Alzheimer sclerosis><Alzheimer syndrome><Alzheimer's><Alzheimer's Disease><Alzheimers Dementia><Amyloid Fibrils><Cancers><Cardiac health><Causality><Cell division><Cellular biology><Collection><Cryo-electron Microscopy><Cryo-electron tomography><Cryoelectron Microscopy><Data><Data Collection><Disease><Disorder><Electron Cryomicroscopy><Electron Microscope><Enzyme Gene><Enzymes><Etiology><Exocytosis><Funding><Genomics><Heart health><Investigators><Malignant Neoplasms><Malignant Tumor><Micro Electron Diffraction><MicroEd><Modernization><NIH><National Institutes of Health><North Carolina><Primary Senile Degenerative Dementia><Process><Public Health><Regulation><Research><Research Personnel><Research Resources><Researchers><Resolution><Resources><Role><Scientist><Services><Speed><Therapeutic><Transmission><United States National Institutes of Health><Universities><Viral><arm><base><bases><causation><cell biology><cryo-EM><cryo-EM tomography><cryoEM><cryoEM tomography><cryoelectron tomography><cryogenic electron microscopy><cryogenics><disease causation><electron cryo-tomography><exosome><experiment><experimental research><experimental study><experiments><fat metabolism><insight><instrument><lipid metabolism><malignancy><neoplasm/cancer><new technology><novel technologies><particle><primary degenerative dementia><resolutions><senile dementia of the Alzheimer type><social role><structural biology><time use><transmission process>
+current_category: infrastructure
+---
+application_id: 11196862
+activity_code: N44
+title: ISYSMET: AI-POWERED PLATFORM FOR INTEGRATIVE ANALYSIS OFMULTIMODAL DATA
+org_name: OMICSCRAFT, LLC
+phr: N/A
+terms: Address;Algorithmic Analysis;anti-cancer research;Clinical;cloud based;Complex;computational pipelines;computer framework;Computing Methodologies;Data;Data Analyses;Data Analytics;Data Commons;deep learning;Development;Event;Image;Imaging technology;innovation;Medical Imaging;Methods;Molecular;multimodal data;Multiomic Data;multiple omics;novel;Outcome;Performance;Phenotype;Proteomics;prototype;Research Personnel;Resources;Techniques;Testing;The Cancer Genome Atlas;The Cancer Imaging Archive;tool;tumor
+current_category: biotools
+---
+application_id: 10850289
+activity_code: S10
+title: Glacios 2 Cryo-TEM for Structure Analysis
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: PROJECT NARRATIVE Recent advances in single particle cryo-EM have transformed structural biology. Here, we request funds to bring a critical resource, a Glacios 2 cryo-TEM with a Falcon 4i direct electron detector, as a shared core resource at Mount Sinai. The microscope will greatly enhance the NIH-funded research of users throughout the Institution and contribute directly to Mount Sinai’s mission to foster innovation and support investigation into the biological underpinnings of human disease.
+terms: Agreement;atomic transition;Biological;biological systems;Contract Services;cost;Cryoelectron Microscopy;cryogenics;Data;Data Collection;Detection;Devices;Disease;Electrons;Funding;Generations;Goals;Grant;Home;human disease;Infrastructure;Institution;Measures;medical schools;Microscope;Optics;particle;payment;Preparation;Research Personnel;Research Project Grants;Resolution;Sampling;Site;structural biology;Structure;success;Titan;United States National Institutes of Health;Wages
+current_category: infrastructure
+---
+application_id: 11099326
+activity_code: S10
+title: Biomedical 600 MHz High Field MR Spectroscopy and Imaging Magnet Upgrade
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: This project upgrades an aging, until recently highly productive, magnet for an NMR/MRI research instrument
+with a new magnet that is expected to provide another two decades of productivity. Research on this instrument
+has encompassed metabolic bone disease, cancer, Alzheimer’s disease, biomaterials, and many other
+biomedical fields. The upgrade will permit the continuance of these research programs, and enable several new
+areas such as infectious disease control.
+terms: <AD dementia><ASCVD><Aging><Alzheimer Type Dementia><Alzheimer disease dementia><Alzheimer sclerosis><Alzheimer syndrome><Alzheimer's><Alzheimer's Disease><Alzheimers Dementia><Atherosclerosis><Atherosclerotic Cardiovascular Disease><Biocompatible Materials><Biomaterials><Biomedical Research><Body Tissues><Businesses><C diff><C difficile><C. diff><C. difficile><Cancers><Cardiology><Clostridioides difficile><Clostridium difficile><Consumption><Contrast Agent><Contrast Drugs><Contrast Media><Dental><Development><Developmental Biology><Disease><Disorder><Equipment><Exhibits><Faculty><Functional MRI><Functional Magnetic Resonance Imaging><Funding><Grant><He element><Helium><Hospitals><Infection prevention><Institution><Intermediary Metabolism><Liquid substance><MR Imaging><MR Spectroscopy><MR Tomography><MRI><MRIs><Magic><Magnetic Resonance><Magnetic Resonance Imaging><Magnetic Resonance Spectroscopy><Maintenance><Malignant Neoplasms><Malignant Tumor><Manufacturer><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><Metabolic Processes><Metabolism><Minerals><Modernization><NMR Imaging><NMR Spectrometer><NMR Spectroscopy><NMR Tomography><Nuclear Magnetic Resonance Imaging><Oxidation-Reduction><Pathology><Play><Prevent infection><Primary Senile Degenerative Dementia><Radiopaque Media><Redox><Research><Resolution><Rest><Services><Specific qualifier value><Specified><Students><System><Time><Tissues><Training><Vascular calcification><Zeugmatography><atheromatosis><atherosclerotic disease><atherosclerotic vascular disease><biological material><bone><cost><developmental><fMRI><fluid><imager><instrument><liquid><malignancy><metabolism measurement><metabolomics><metabonomics><neoplasm/cancer><neurophysiological><neurophysiology><nuclear magnetic resonance spectroscopy><operation><operations><oxidation reduction reaction><primary degenerative dementia><repair><repaired><resolutions><senile dementia of the Alzheimer type>
+current_category: infrastructure
+---
+application_id: 10854378
+activity_code: S10
+title: Replacement of a pumped 11.74-T Small-Animal MRI Scanner with a 15.2-T System
+org_name: WASHINGTON UNIVERSITY
+phr: Project Narrative
+Ultra-high magnetic field strength MRI scanners offer significant benefits for advanced imaging of small animal
+disease models supporting the extraordinary community of internationally respected scientists at Washington
+University. This application seeks funding in partial support of the purchase of an ultra-high field, 15.2-Tesla,
+small-animal MRI scanner to replace an aging system with unsustainable liquid helium usage.
+terms: <Anatomic Sites><Anatomic structures><Anatomy><Animals><Applications Grants><Biomedical Research><Cell Communication and Signaling><Cell Nucleus><Cell Signaling><Communities><Computer software><Consumption><Department chair><Engineering><Fe element><Functional MRI><Functional Magnetic Resonance Imaging><Funding><Future><General Radiology><Grant Proposals><H element><He element><Helium><Hour><Hydrogen><Image><Institution><Intracellular Communication and Signaling><Iron><Libraries><Liquid substance><MR Imaging><MR Spectroscopy><MR Tomography><MRI><MRIs><Magnetic Resonance Imaging><Magnetic Resonance Spectroscopy><Marketing><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><Modernization><NIH><NMR Imaging><NMR Tomography><National Institutes of Health><Noise><Nuclear Magnetic Resonance Imaging><Nucleus><Performance><Physiologic pulse><Predisposition><Pulse><Pump><RF coil><Radiology><Radiology Specialty><Research><Research Resources><Resolution><Resources><Schools><Services><Signal Transduction><Signal Transduction Systems><Signaling><Software><Susceptibility><System><Technology><Ultrafine><United States National Institutes of Health><Universities><Washington><Zeugmatography><biological signal transduction><blood oxygen level dependent><blood oxygenation level dependent><cost><experiment><experimental research><experimental study><experiments><fMRI><fluid><imaging><imaging program><improved><instrumentation><liquid><medical college><medical schools><nano particle><nano-sized particle><nanoparticle><nanosized particle><pandemic><pandemic disease><pre-clinical><pre-clinical imaging><preclinical><preclinical imaging><programs><resolutions><school of medicine>
+current_category: infrastructure
+---
+application_id: 11042793
+activity_code: U24
+title: dkNET Coordinating Unit: Harnessing the Power of AI and Data Science forCollaborative Discovery and Sharing in the DK Community
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: Project Narrative In order to assist in navigating the growing resource information landscape and utilizing available tools and resources we will build on the foundation provided by dkNET to provide tools and services to researchers, clinicians, funders, and publishers. Specifically, we will support resource discovery and selection, improving rigor and reproducibility, assisting in ensuring data are published in a FAIR manner, and providing the NIDDK research community with a novel AI/ML computa
+terms: Adoption;Area;Artificial Intelligence enhanced;base;big data management;Big Data Methods;Bioinformatics;bioinformatics tool;biomedical resource;Cloud Computing;Communities;community engagement;Community Outreach;computational platform;computing resources;Data;Data Aggregation;data integration;data mining;data modalities;data reuse;Data Science;Data Set;data sharing;data tools;Development;Diabetes Mellitus;Digestive System Disorders;Education;Educational Materials;Elasticity;Ensure;Evaluation;FAIR principles;Feedback;Fostering;Foundations;Generations;Goals;Growth;improved;Information Networks;Kidney Diseases;Knowledge;knowledge of results;Lead;Leadership;Mission;Modality;Modeling;natural language;Natural Language Processing;next generation;novel;Organism;Organoids;outreach;Phase;Process;programs;Protocols documentation;Publishing;Reagent;Recommendation;Reproducibility;Research;Research Personnel;Resource Sharing;Resources;Science;Series;Services;Site;skills;sound;Source;stem cells;Students;success;Techniques;tool;Training;Validation;webinar;Work
+current_category: infrastructure
+---
+application_id: 11419428
+activity_code: N01
+title: Advancing Vaccine Adjuvant Research for Tuberculosis (TB)
+org_name: UNIVERSITY OF SYDNEY
+phr: N/A
+terms: Adjuvant;Aerosols;Animals;Antigens;Cause of Death;Cells;clinical candidate;clinical development;Development;Disease;Dose;Evaluation;Formulation;Goals;HIV;Human;Immune;Immunity;Immunologics;In Vitro;Inbred Mouse;Infectious Agent;Macaca mulatta;Modeling;mouse model;Mus;Mycobacterium tuberculosis;Mycobacterium tuberculosis antigens;nonhuman primate;nonhuman primate models;novel;Persons;Preventive;programs;Research;Research Personnel;Risk;Side;Treatment outcome;Tuberculosis;tuberculosis treatment;Tuberculosis Vaccines;Vaccine Adjuvant;Vaccines;Work
+current_category: therapeutics
+---
+application_id: 10978459
+activity_code: RC2
+title: COngenital Diarrhea and Enteropathy (PediCODE) Consortium and BioRepository
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: PROJECT NARRATIVE COngenital Diarrhea and Enteropathy (CoDE) are rare monogenic disorders that are under-researched and associated with enormous management costs and adverse life-long outcomes. Our main objective is to uncover the genetic origins of congenital diarrhea in children, understand the unique characteristics of these conditions, and study the responsible genes' underlying molecular and cellular mechanisms. We will use these insights to enable tools and resources for the research commu
+terms: Address;Advanced Development;Affect;Animal Disease Models;Animal Model;Applications Grants;Architecture;biobank;Biological;Biological Assay;Biological Models;Biology;Biopsy;causal variant;Cells;Cellular biology;Characteristics;Child;Clinical;clinical database;Clinical Management;clinical phenotype;clinical translation;cohort;Communities;Complement;cost;Data;data resource;data tools;Diarrhea;Disease;Enrollment;Epithelium;Etiology;exome sequencing;experience;Family;Fluid Balance;Genes;Genetic;Genetic Diseases;genome sequencing;Goals;Image;Immunofluorescence Immunologic;improved;Infant;innovation;insight;interest;intestinal epithelium;Intestines;Investigation;Libraries;Maps;Mendelian disorder;Metadata;Methods;Modality;Modeling;Molecular;Morbidity - disease rate;mortality;multidisciplinary;multimodality;multiple omics;Mus;next generation sequencing;novel;novel strategies;novel therapeutic intervention;nutrient absorption;Outcome;Pathologic;Patients;Phenotype;Physicians;pre-clinical;Proteins;Rare Diseases;repository;Research;Research Personnel;Research Project Grants;Resources;Sampling;Scientist;screening;Symptoms;System;targeted treatment;Technology;Therapeutic;therapeutic development;therapy development;Tissues;tool;transcriptome sequencing;transcriptomics;Validation;Variant;whole genome;Zebrafish
+current_category: basic_research
+---
+application_id: 10932388
+activity_code: U01
+title: Molecular Transducers of Physical Activity Consortium Adult Clinical Center
+org_name: CEDARS-SINAI MEDICAL CENTER
+phr: MoTrPAC Narrative
+While there are many important health benefits of physical activity, how exercise exerts its effects is not
+fully understood. A more comprehensive understanding of the molecular mechanisms underlying the
+responses to exercise would significantly impact public health. Continuation of the Molecular Transducers
+of Physical Activity Consortium (MoTrPAC) will achieve its objective of generating a comprehensive map
+of the molecular responses to acute exercise and exercise training, w
+terms: <0-11 years old><17 year old><17 years of age><18 year old><18 years of age><21+ years old><Acceleration><Active Follow-up><Acute><Adipose tissue><Adult><Adult Human><Age><Age Years><Ancillary Study><Animals><Attention><Award><Bio-Informatics><Bioinformatics><Biological Function><Biological Process><Blood><Blood Reticuloendothelial System><Body Tissues><COVID crisis><COVID epidemic><COVID pandemic><COVID-19><COVID-19 crisis><COVID-19 epidemic><COVID-19 era><COVID-19 global health crisis><COVID-19 global pandemic><COVID-19 health crisis><COVID-19 pandemic><COVID-19 period><COVID-19 public health crisis><COVID-19 years><CV-19><California><Categories><Charge><Chemicals><Child><Child Youth><Childhood><Children (0-21)><Chronic><Clinical><Clinical Protocols><Clinical Research><Clinical Study><Clinical Trials Data Monitoring Committees><Collaborations><Collection><Communication><Communities><Coronavirus Infectious Disease 2019><Data><Data Monitoring Committees><Data and Safety Monitoring Boards><Development><Disease><Disease Outcome><Disorder><Enrollment><Ensure><Exercise><Fatty Tissue><Frequencies><Funding><Gender><Goals><Health><Health Benefit><Heterogeneity><Human><IRB><IRBs><Individual><Individuals from minority><Individuals of minority><Institutional Review Boards><Intervention><Intervention Strategies><Investigators><Joints><Los Angeles><Manuals><Manuscripts><Maps><Measurement><Medical center><Minority Groups><Minority People><Minority Population><Minority individual><Modern Man><Molecular><Multi-center clinical study><Multi-site clinical study><Multicenter clinical study><Multisite clinical study><Muscle><Muscle Tissue><NIH><National Institutes of Health><Observation research><Observation study><Observational Study><Observational research><Participant><Pathway interactions><Pediatric cohort><Phase><Phenotype><Physical activity><Physiologic><Physiological><Procedures><Protocol><Protocols documentation><Public Health><Race><Races><Randomized><Randomized, Controlled Trials><Recruitment Activity><Research><Research Activity><Research Personnel><Research Resources><Researchers><Resistance><Resources><Rest><SARS-CoV-2 epidemic><SARS-CoV-2 global health crisis><SARS-CoV-2 global pandemic><SARS-CoV-2 pandemic><SARS-coronavirus-2 epidemic><SARS-coronavirus-2 pandemic><Safety Monitoring Boards><Severe Acute Respiratory Syndrome CoV 2 epidemic><Severe Acute Respiratory Syndrome CoV 2 pandemic><Severe acute respiratory syndrome coronavirus 2 epidemic><Severe acute respiratory syndrome coronavirus 2 pandemic><Site><Suspension substance><Suspensions><Testing><Time><Tissues><Training><Training Programs><Transducers><United States National Institutes of Health><Universities><Visit><Woman><Youth><Youth 10-21><active followup><active recruitment><adipose><adulthood><age 17 years><age 18 years><age group><ages><clinical center><cohort><coronavirus disease 2019><coronavirus disease 2019 crisis><coronavirus disease 2019 epidemic><coronavirus disease 2019 global health crisis><coronavirus disease 2019 global pandemic><coronavirus disease 2019 health crisis><coronavirus disease 2019 pandemic><coronavirus disease 2019 public health crisis><coronavirus disease crisis><coronavirus disease epidemic><coronavirus disease pandemic><coronavirus disease-19><coronavirus disease-19 global pandemic><coronavirus disease-19 pandemic><coronavirus infectious disease-19><design><designing><developmental><eighteen year old><eighteen years of age><endurance exercise><enroll><ethnic minority><exercise intervention><exercise training><falls><follow up><follow-up><followed up><followup><improved><innovate><innovation><innovative><insight><interventional strategy><kids><men><multiomics><multiple omics><muscular><novel><operation><operations><pandemic><pandemic disease><panomics><pathway><pediatric><phenotypic data><physical activity intervention><pre-clinical><preclinical><programs><public data base><public database><publicly accessible data base><publicly accessible database><publicly available data base><publicly available database><quality assurance><racial><racial background><racial minority><racial origin><randomisation><randomization><randomized control trial><randomly assigned><recruit><resistance exercise><resistance training><resistant><response><sedentary><seventeen year old><seventeen years of age><severe acute respiratory syndrome coronavirus 2 global health crisis><severe acute respiratory syndrome coronavirus 2 global pandemic><sex><white adipose tissue><work group><working group><yellow adipose tissue><youngster>
+current_category: basic_research
+---
+application_id: 11319399
+activity_code: OT2
+title: DREF Research Matters: Creating Possibilities to Achieve Health and Wellness for All of Us Through Community and Researcher Engagement, Enrollment and Retention
+org_name: DELTA RESEARCH AND EDUCATIONAL FOUNDATION
+phr: N/A
+terms: <0-11 years old><21+ years old><Acceleration><Adult><Adult Human><Biomedical Research><Child><Child Youth><Children (0-21)><Clinical Trials><Communities><Data Set><Enrollment><Health><Individual><Interdisciplinary Research><Interdisciplinary Study><Investigators><Multidisciplinary Collaboration><Multidisciplinary Research><Parents><Participant><R-Series Research Projects><R01 Mechanism><R01 Program><Research><Research Grants><Research Personnel><Research Project Grants><Research Projects><Researchers><School-Age Population><Text><adulthood><enroll><kids><parent><precision medicine><precision-based medicine><programs><school age><youngster>
+current_category: therapeutics
+---
+application_id: 11458970
+activity_code: N02
+title: TRANSITION TASK ORDER FOR FFRDC CONTRACT
+org_name: N/A
+phr: N/A
+terms: Award;Contracts;cost;Funding;operation;research and development;Vendor
+current_category: infrastructure
+---
+application_id: 10632928
+activity_code: S10
+title: New PET/CT System for Human and Non-human Primate Imaging
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: PROJECT NARRATIVE
+Funding is requested for a new state-of-the-art positron emission tomography/computed tomography (PET/CT)
+system at Weill Cornell Medical College’s Citigroup Biomedical Imaging Center. The requested scanner will
+replace outdated equipment and offer state-of-the-art capabilities for imaging research studies targeting a wide
+range of human diseases. This new instrument is critical to support the recent rapid growth in the number of
+scientists at Weill Cornell who are developing i
+terms: <12 year old><12 years of age><AD dementia><Address><Alzheimer Type Dementia><Alzheimer disease dementia><Alzheimer sclerosis><Alzheimer syndrome><Alzheimer's><Alzheimer's Disease><Alzheimers Dementia><Apoplexy><Area><Basic Research><Basic Science><Biodistribution><Biomedical Research><Brain Trauma><Brain Vascular Accident><CAT scan><CT X Ray><CT Xray><CT imaging><CT scan><Cancers><Cerebral Stroke><Cerebrovascular Apoplexy><Cerebrovascular Stroke><Clinical Research><Clinical Study><Computed Tomography><Computed Tomography Scanners><Core Facility><Dedications><Development><Development and Research><Disease><Disorder><Disseminated Sclerosis><Funding><Genetic Diseases><Genetic Medicine><Goals><Grant><Human><Image><Inflammatory><Infrastructure><Institution><Investigators><Investments><Malignant Neoplasms><Malignant Tumor><Mental disorders><Mental health disorders><Mission><Modern Man><Multiple Sclerosis><NIH><National Institutes of Health><Nature><Nerve Degeneration><Neurology><Neuron Degeneration><New York><Oncology><Oncology Cancer><Organ><PET><PET Scan><PET imaging><PETSCAN><PETT><Paralysis Agitans><Parkinson><Parkinson Disease><Positron Emission Tomography Medical Imaging><Positron Emission Tomography Scan><Positron-Emission Tomography><Primary Parkinsonism><Primary Senile Degenerative Dementia><Psychiatric Disease><Psychiatric Disorder><R & D><R&D><R-Series Research Projects><R01 Mechanism><R01 Program><Rad.-PET><Research><Research Grants><Research Personnel><Research Project Grants><Research Projects><Research Support><Researchers><Sight><Stroke><System><Technical Expertise><Technology><Tomodensitometry><Translational Research><Translational Science><Traumatic Brain Injury><United States National Institutes of Health><Universities><Vascular Diseases><Vascular Disorder><Viral Vector><Vision><X-Ray CAT Scan><X-Ray Computed Tomography><X-Ray Computerized Tomography><Xray CAT scan><Xray Computed Tomography><Xray computerized tomography><age 12 years><biomedical imaging><blood vessel disorder><brain attack><catscan><cerebral vascular accident><cerebrovascular accident><college><collegiate><computed axial tomography><computer tomography><computerized axial tomography><computerized tomography><detection sensitivity><developmental><facilities for imaging><frontier><genetic condition><genetic disorder><human imaging><imaging><imaging center><imaging facilities><imaging system><imaging-related facilities><innovate><innovation><innovative><instrument><instrumentation><insular sclerosis><malignancy><medical college><medical schools><mental illness><meter><neoplasm/cancer><neural degeneration><neurodegeneration><neurodegenerative><neurological degeneration><neuronal degeneration><non-contrast CT><non-human primate><noncontrast CT><noncontrast computed tomography><nonhuman primate><operation><operations><positron emission tomographic (PET) imaging><positron emission tomographic imaging><positron emitting tomography><precision medicine><precision-based medicine><primary degenerative dementia><programs><psychiatric illness><psychological disorder><research and development><school of medicine><senile dementia of the Alzheimer type><stroked><strokes><technical skills><tool><translation research><translational investigation><traumatic brain damage><twelve year old><twelve years of age><vascular dysfunction><vasculopathy><visual function>
+current_category: infrastructure
+---
+application_id: 10547926
+activity_code: C06
+title: “Renovation of Building 29 laboratories at the New Iberia Research Center"
+org_name: UNIVERSITY OF LOUISIANA AT LAFAYETTE
+phr: N/A
+terms: <AIDS Virus><AIDS/HIV><AIDS/HIV problem><Abscission><Acquired Immune Deficiency Syndrome Virus><Acquired Immunodeficiency Syndrome Virus><African Green Monkey><Animals><Antibodies><Asbestos><BSL-3 facility><BSL3 facility><Breeding><CAT scan><COVID><COVID crisis><COVID epidemic><COVID pandemic><COVID-19><COVID-19 crisis><COVID-19 epidemic><COVID-19 global health crisis><COVID-19 global pandemic><COVID-19 health crisis><COVID-19 pandemic><COVID-19 public health crisis><COVID19><COVID19 crisis><COVID19 epidemic><COVID19 global health crisis><COVID19 global pandemic><COVID19 health crisis><COVID19 pandemic><COVID19 public health crisis><CT X Ray><CT Xray><CT imaging><CT scan><CV-19><CV19><Caring><Chlorocebus aethiops><Chlorocebus sabaeus><Clinical><CoV disease><Colon or Rectum><Colorectal><Communicable Diseases><Computed Tomography><Crab-Eating Macaque><Crab-Eating Monkey><Cynomolgus Monkey><Cynomolgus macaque><Drug Kinetics><Ensure><Equipment><Excision><Expenditure><Extirpation><Floor><Funding><Generalized Growth><Green Monkey><Growth><HIV><HIV/AIDS><HIV/AIDS problem><Housing><Human Immunodeficiency Viruses><Infectious Disease Pathway><Infectious Diseases><Infectious Disorder><Institution><LAV-HTLV-III><Laboratories><Laboratory Research><Louisiana><Lymphadenopathy-Associated Virus><M fascicularis><M mulatta><M nemestrina><M. fascicularis><M. mulatta><M. nemestrina><Macaca><Macaca fascicularis><Macaca mulatta><Macaca nemestrina><Macaque><Metabolic Diseases><Metabolic Disorder><Modeling><Monitor><Monkeys><Mucosa><Mucosal Tissue><Mucous Membrane><NIAID><National Institute of Allergy and Infectious Disease><PET/CT><PET/CT scan><Pathogenesis><Pharmacokinetics><Pigtail Macaque><Pigtail Monkey><Preparation><Removal><Research><Research Resources><Research Support><Resources><Rhesus Macaque><Rhesus Monkey><Rodent><Rodentia><Rodents Mammals><SARS-CoV-2 epidemic><SARS-CoV-2 global health crisis><SARS-CoV-2 global pandemic><SARS-CoV-2 pandemic><SARS-CoV2 epidemic><SARS-CoV2 pandemic><SARS-coronavirus-2 epidemic><SARS-coronavirus-2 pandemic><Scientist><Severe Acute Respiratory Syndrome CoV 2 epidemic><Severe Acute Respiratory Syndrome CoV 2 pandemic><Severe acute respiratory syndrome coronavirus 2 epidemic><Severe acute respiratory syndrome coronavirus 2 pandemic><Site><Surgical Removal><Testing><Therapeutic><Thesaurismosis><Tissue Growth><Tomodensitometry><Universities><Vaccines><Vagina><Vaginal><Viral><Virus-HIV><X-Ray CAT Scan><X-Ray Computed Tomography><X-Ray Computerized Tomography><Xray CAT scan><Xray Computed Tomography><Xray computerized tomography><biosafety level 3 facility><building renovation><catscan><colo-rectal><colorectum><computed axial tomography><computer tomography><computerized axial tomography><computerized tomography><conference><convention><corona virus disease><corona virus disease 2019><corona virus disease 2019 epidemic><corona virus disease 2019 pandemic><coronavirus disease><coronavirus disease 2019><coronavirus disease 2019 crisis><coronavirus disease 2019 epidemic><coronavirus disease 2019 global health crisis><coronavirus disease 2019 global pandemic><coronavirus disease 2019 health crisis><coronavirus disease 2019 pandemic><coronavirus disease 2019 public health crisis><coronavirus disease crisis><coronavirus disease epidemic><coronavirus disease pandemic><coronavirus disease-19><coronavirus disease-19 global pandemic><coronavirus disease-19 pandemic><coronavirus infectious disease-19><experiment><experimental research><experimental study><fight against><higher education><imaging capabilities><interest><metabolism disorder><microbicidal><microbicide><non-contrast CT><non-human primate><noncontrast CT><noncontrast computed tomography><nonhuman primate><ontogeny><pandemic><pandemic disease><pig-tailed macaque><prevent><preventing><programs><resection><severe acute respiratory syndrome coronavirus 2 global health crisis><severe acute respiratory syndrome coronavirus 2 global pandemic><single cell analysis><summit><symposia><symposium><wasting>
+current_category: therapeutics
+---
+application_id: 10972796
+activity_code: OT2
+title:  All of Us New England Remote Enrollment and Engagement, Nutrition for Precision Health Support
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: N/A
+terms: <21+ years old><Address><Adult><Adult Human><Advisory Committees><Age><All of Us Program><All of Us Research Program><All of Us Research Project><AoURP><Area><Awareness><Back><Biomedical Research><Boston><COVID-19><CV-19><Caring><Childhood><Clinic><Clinical Research><Clinical Study><Collaborations><Collection><Communication><Communities><Consent><Coronavirus Infectious Disease 2019><County><Data><Data Collection><Dorsum><Economic Income><Economical Income><Education><Educational aspects><Educational process of instructing><Employee><Enrollment><Ensure><Equity><Ethnic Origin><Ethnicity><Evaluation><Event><Feedback><Food><Foundations><Geographic Area><Geographic Locations><Geographic Region><Geographical Location><Geography><Goals><Health><Health system><Hospitals><Human Resources><Income><Individual><Integrated Health Care Systems><Investigators><Leadership><Learning><Long-term cohort study><Longitudinal cohort study><Longterm cohort study><Low income><Lupus><Maine><Manpower><Massachusetts><Measurement><Medical center><Mental Health><Mental Hygiene><Methods><Modification><Monitor><New England><New Hampshire><Newsletter><Northeastern United States><Participant><Patients><Population><Primary Care><Primary Prevention><Procedures><Process><Productivity><Program Development><Psychological Health><Race><Races><Research><Research Personnel><Researchers><Rhode Island><Role><Rural><Rural Population><Rural group><Rural people><Science><Services><Site><Standardization><Structure><Survey Instrument><Surveys><Task Forces><Teaching><Teen><Teenagers><Training><United States><Universities><Vaccination><Work><adulthood><advisory team><ages><clinical care><clinical research site><clinical site><cohort><community based organizations><community engagement><community organizations><community partners><community-based partners><cooking><coronavirus disease 2019><coronavirus disease-19><coronavirus infectious disease-19><cost effectiveness><data exchange><data resource><data transfer><data transmission><design><designing><engagement with communities><enroll><ethnic diversity><ethnic minority><ethnically diverse><experience><extrinsic motivation><flexibility><flexible><geographic site><improved><incomes><integrated health system><integrated healthcare systems><integrated system of care><interest><intrinsic motivation><life span><lifespan><minority communities><nutrition><operation><operations><outreach><participant enrollment><participant retention><patient enrollment><pediatric><performance site><personnel><precision medicine><precision-based medicine><programs><racial><racial background><racial minority><racial origin><recruit><retention rate><retention strategy><rural individual><safety net><sample collection><social role><specimen collection><success><teen years><teenage><virtual>
+current_category: other
+---
+application_id: 11135083
+activity_code: U45
+title: Midwest Consortium for Hazardous Waste Worker Training
+org_name: UNIVERSITY OF MINNESOTA
+phr: PROJECT NARRATIVE  The Midwest Consortium for Hazardous Waste Worker Training facilitates adult-based, action-oriented, results-centered worker and community training with the goal that participants will better recognize and avoid or control risks of occupational and environmental exposure to hazardous materials and waste in nine states: Illinois, Indiana, Kentucky, Michigan, Minnesota, North Dakota, Ohio, Tennessee, and Wisconsin. While all activities are performed under a cooperative agreement
+terms: Address;Adult;Catalogs;chemical safety;Chemicals;Client;Collaborations;Communities;community center;community college;community organizations;Community Workers;Country;COVID-19 pandemic;Creativeness;curriculum development;Data Reporting;data to knowledge;Dedications;Disadvantaged;disease registry;Disparity population;Educational Curriculum;Electronics;Emergency response;Environment;Environmental and Occupational Exposure;Environmental Exposure;Environmental Health;Equipment;ethnic diversity;Evaluation;experience;Exposure to;Faith;Financial Support;Foundations;Goals;Government Agencies;hazard;Hazardous Substances;Hazardous Waste;Hazardous Waste Operations and Emergency Response;Hazardous Waste Sites;Health;Health Care Systems;health disparity;Historically Black Colleges and Universities;Hour;Human Resources;Illinois;Imprisonment;improved;Indiana;Individual;Industrialization;innovation;insight;instructor;Investigation;Kentucky;Knowledge;Learning;Limited English Proficiency;Maintenance;manufacture;meetings;Michigan;Midwestern United States;Minnesota;Modeling;Modernization;Motivation;National Institute for Occupational Safety and Health;National Institute of Environmental Health Sciences;neighborhood association;Nonprofit Organizations;North Dakota;novel;Occupational Health;Occupations;Ohio;Output;Participant;Poison;Prevention;Procedures;Production;Program Evaluation;programs;Public Health;racial diversity;Reaction;Reporting;resilience;Resources;Risk;Role;Safety;safety practice;Security;Services;Site;skills;Strategic Planning;Superfund;Tennessee;Time;Toxics Release Inventory;Training;Training Programs;Translations;Transportation;tribal Nation;tribal organization;U-Series Cooperative Agreements;United States Environmental Protection Agency;United States Occupational Safety and Health Administration;United States Substance Abuse and Mental Health Services Administration;Universities;Update;Wisconsin;Women&apos;s Health;Work;Workplace;Youth
+current_category: training
+---
+application_id: 11365559
+activity_code: U18
+title: Reducing Ultra-Processed Foods In Seattle Public Schools
+org_name: SEATTLE PUBLIC SCHOOLS
+phr: PROJECT NARRATIVE Ultra-processed food (UPF) consumption rates have been increasing among children in the U.S. over the past several decades, which may increase their risk of poor health outcomes. As many children rely on school meals for up to half their daily energy intake, schools are an ideal setting to implement changes to reduce exposures to UPFs and potential associated contaminants. In this intervention, we will replace UPFs with scratch-cooked meals through investments in kitchen equipm
+terms: N/A
+current_category: therapeutics
+---
+application_id: 11368943
+activity_code: U18
+title: FRESH Network:  Assisting North Little Rock Schools with Understanding Contaminants in School Meals and Transitioning to Better Food Systems
+org_name: NLR SPECIAL SCHOOL DISTRICT
+phr: Project Narrative  North Little Rock School District (Arkansas) FRESH Network: Assisting North Little Rock Schools with Understanding Contaminants in School Meals and Transitioning to Better Food Systems North Little Rock Public Schools in Arkansas have aligned with a group of partners that will support the district in understanding contaminants in school meals and in piloting a transformation to more scratch cooking. A research study will explore and document the school’s and its student’s expe
+terms: N/A
+current_category: other
+---
+application_id: 11111317
+activity_code: S21
+title: PREDICT (Precision Medicine, Education, Data Informatics and Community Translation) Institute
+org_name: XAVIER UNIVERSITY OF LOUISIANA
+phr: The purpose of the Precision Medicine, Education, Data Informatics, and Community Translation (PREDICT) Institute is to serve as a holistic and replicable framework for the utilization of electronic health data and community translation to affect the decision-making process to improve health outcomes. The PREDICT Institute will extend the technical research exchange (TREX) program at Xavier to include training of current and future researchers on health informatics best practices. The use of pop
+terms: Address;Affect;Bioinformatics;Clinical Research;college;Communities;Complement;Data;data access;data acquisition;Data Analytics;data warehouse;Decision Making;Education;electronic health data;Future;Health;health equity;Health Promotion;improved;Informatics;informatics infrastructure;Infrastructure;Louisiana;National Institute on Minority Health and Health Disparities;Outcome;outreach;Pharmacy facility;population health;precision medicine;Process;programs;Public Health Informatics;Reduce health disparities;Research;Research Infrastructure;Research Personnel;tool;Training;translational engagement;Translations;underserved community;United States National Institutes of Health;Universities
+current_category: other
+---
+application_id: 11088847
+activity_code: S21
+title: TRANSPORT II
+org_name: SUNY DOWNSTATE MEDICAL CENTER
+phr: NARRATIVE TRANSPORT II is aimed at expanding TRANSPORT I by enhancing the health equity research infrastructure at SUNY Downstate, recruiting and training more than 550 trainees and community partners, and developing multisectoral partnerships with key stakeholders.
+terms: Academic Medical Centers;Acceleration;Advocacy;Advocate;Area;Award;behavioral and social science;Behavioral Sciences;Biomedical Research;Black race;Black, Indigenous, People of Color;career;career development;certificate program;Clinical Research;Communities;community academic partnership;community based participatory research;community engaged research;community engagement;Community Health;community partners;community science;design;Disparity;diversity and equity;doctoral student;Education;empowerment;Endowment;Enrollment;Environment;Equity;Faculty;Fostering;Funding;graduate student;Grant;Health;Health Disparities Research;health disparity;Health equity research;Health Occupations;Health Sciences;High School Student;Hispanic;implementation science;Income;Individual;Infrastructure;innovation;literacy;Marketing;Medically Underserved Area;Medicine;member;Mentors;Mentorship;Mission;Multiple Partners;National Heart, Lung, and Blood Institute;National Institute on Minority Health and Health Disparities;New York City;novel;Participant;Persons;Policies;Population;Population Sciences;post-doctoral training;Postdoctoral Fellow;pre-doctoral;Program Development;programs;Public Health;recruit;Research;research and development;Research Design;Research Infrastructure;Research Methodology;Research Personnel;Research Training;scale up;Scholars Program;Scholarship;Schools;Science;Scientist;senior faculty;Senior Scientist;skills;social determinants;Social Justice;Social Sciences;Structure;Students;success;summer program;Sustainable Development;symposium;Time;Training;Training and Infrastructure;Training Programs;Translating;translational applications;translational engagement;undergraduate student;undergraduate summer research;Underrepresented Populations;United States Health Resources and Services Administration;Universities;Volatilization
+current_category: other
+---
+application_id: 10874708
+activity_code: S21
+title: TRANSPORT II
+org_name: SUNY DOWNSTATE MEDICAL CENTER
+phr: NARRATIVE TRANSPORT II is aimed at expanding TRANSPORT I by enhancing the health equity research infrastructure at SUNY Downstate, recruiting and training more than 550 trainees and community partners, and developing multisectoral partnerships with key stakeholders.
+terms: Academic Medical Centers;Acceleration;Advocacy;Advocate;Area;Award;behavioral and social science;Behavioral Sciences;Biomedical Research;Black race;Black, Indigenous, People of Color;career;career development;certificate program;Clinical Research;Communities;community academic partnership;community based participatory research;community engaged research;community engagement;Community Health;community partners;community science;design;Disparity;diversity and equity;doctoral student;Education;empowerment;Endowment;Enrollment;Environment;Equity;Faculty;Fostering;Funding;graduate student;Grant;Health;Health Disparities Research;health disparity;Health equity research;Health Occupations;Health Sciences;High School Student;Hispanic;implementation science;Income;Individual;Infrastructure;innovation;literacy;Marketing;Medically Underserved Area;Medicine;member;Mentors;Mentorship;Mission;Multiple Partners;National Heart, Lung, and Blood Institute;National Institute on Minority Health and Health Disparities;New York City;novel;Participant;Persons;Policies;Population;Population Sciences;post-doctoral training;Postdoctoral Fellow;pre-doctoral;Program Development;programs;Public Health;recruit;Research;research and development;Research Design;Research Infrastructure;Research Methodology;Research Personnel;Research Training;scale up;Scholars Program;Scholarship;Schools;Science;Scientist;senior faculty;Senior Scientist;skills;social determinants;Social Justice;Social Sciences;Structure;Students;success;summer program;Sustainable Development;symposium;Time;Training;Training and Infrastructure;Training Programs;Translating;translational applications;translational engagement;undergraduate student;Underrepresented Populations;United States Health Resources and Services Administration;Universities;Volatilization
+current_category: other
+---
+application_id: 10852173
+activity_code: S10
+title: 3T GE SIGNA Premier XT MRI
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: PROJECT NARRATIVE The proposed 3 Tesla, whole-body, wide-bore magnetic resonance imaging system (3T GE SIGNA Premier XT) would fulfill unmet research needs at the University of Colorado Anschutz Medical Campus while providing greater scientific and funding opportunities for investigators across a wide range of departments and institutions. Specifically, the new system would provide much needed additional scanning capacity and offer higher signal-to-noise ratios, less distortion, shorter exam tim
+terms: Acceleration;analog;Artificial Intelligence;auditory processing;Behavior;Brain region;Childhood;Collaborations;Colorado;data quality;deep learning;digital;Disease;Dropout;Eating;Environmental Risk Factor;Exposure to;Funding Opportunities;Image;imaging system;improved;Infant;innovation;Institution;instrument;interest;Loudness;Magnetic Resonance Imaging;Medical;medical schools;Mental disorders;Metabolic Diseases;Morphologic artifacts;Neurobiology;neurodevelopment;Neurodevelopmental Disorder;neuroimaging;Noise;Obesity;Participant;Performance;Population;prenatal exposure;processing speed;reconstruction;Renal function;Research;Research Personnel;Running;Scanning;Science;Signal Transduction;Sleep;Stress;Substance Use Disorder;System;Universities;vibration
+current_category: infrastructure
+---
+application_id: 10853685
+activity_code: S10
+title: NAEOTOM Alpha Photon-Counting CT Scanner
+org_name: UNIVERSITY OF IOWA
+phr: Project Narrative  This is a request to upgrade our energy integrating research CT scanner to a photon- counting system (Siemens NAEOTOM Alpha). The requested scanner is a paradigm shift in CT scanning, generating much more anatomic detail while allowing for simultaneously assessing both ventilation and perfusion together with signals of inflammation. Acquisition of this scanner will allow us to more accurately characterize structure to function relationships and to develop protocols which integ
+terms: analog;Arteries;Asthma;Characteristics;Chronic Obstructive Pulmonary Disease;Communities;Contrast Media;deep learning;design;Development;digital;Dose;Electronics;Gadolinium;Image;improved;Inflammation;Investigation;Krypton;Light;Location;Long COVID;Lung;Lung Diseases;Methodology;Morphologic artifacts;Multicenter Studies;Noise;Perfusion;Phenotype;photon-counting detector;Photons;Post-Acute Sequelae of SARS-CoV-2 Infection;Process;Protocols documentation;Pulmonary Pathology;Radiology Specialty;Research;Resolution;Scanning;Signal Transduction;Thick;Tissues;transfer learning;Translational Research;Veins;ventilation;X-Ray Computed Tomography
+current_category: infrastructure
+---
+application_id: 11426491
+activity_code: N01
+title: ADVANCED DEVELOPMENT OF LQ A LIPOSOME-BASED SAPONIN-CONTAINING ADJUVANT FOR USE IN PANSARBECOVIRUS VACCINES
+org_name: VACCINE FORMULATION INSTITUTE (CH) LTD
+phr: N/A
+terms: 2019-nCoV;Acceleration;Address;Adjuvant;Advanced Development;Antigens;Chromatography;Clinical Research;Communities;Contractor;cost effective;Development;efficacy study;Evaluation;Formulation;global health;Good Manufacturing Process;Hamsters;immunogenicity;Immunologic Adjuvants;innovation;liposome vector;Liposomes;Macaca mulatta;manufacture;Mus;nanoparticle;novel vaccines;Pharmacology;Phase;preclinical study;Preparation;protective efficacy;QS21;Quillaja;Safety;Saponins;Sarbecovirus;sarbecovirus vaccine;SARS coronavirus;Soapbush;Toxic effect;Toxicology;vaccine access;Vaccine Adjuvant;vaccine development;vaccine efficacy;Vaccines
+current_category: therapeutics
+---
+application_id: 10978104
+activity_code: RC2
+title: Consortium on Intestinal Regeneration and Fetal Reversion: from Atlas to Therapy
+org_name: CEDARS-SINAI MEDICAL CENTER
+phr: PROJECT NARRATIVE This RC2 consortium will develop a consensus view of intestinal repair and regeneration across diverse injury models in both mouse and human systems, identifying common and unique regenerative programs that are active in different injury contexts. We will functionally interrogate regenerative programs and identify molecular mediators and drugs that can induce a regenerative state. This work will lead to a deep understanding of gut repair and lay the foundation for new fields of
+terms: Atlases;Biological Assay;Biological Models;Cell Proliferation;Cells;Chemicals;Collaborations;college;Communities;Computational Biology;Consensus;Data;data modeling;Data Set;Development;Down-Regulation;Drug Screening;Eligibility Determination;Engraftment;epigenome;epigenomics;experimental study;FDA approved;fetal;Foundations;Future;gain of function;Gene Expression;Generations;Genes;Genetic Transcription;Genomics;Goals;healing;high-throughput drug screening;Homeostasis;Human;human model;Human Pathology;In Vitro;in vitro regeneration;in vivo;in vivo engraftment;Infection;Inflammatory;Injury;injury and repair;intestinal epithelium;intestinal injury;Intestines;irradiation;Joints;Libraries;Link;loss of function;Mediator;Medicine;Methods;Michigan;Modeling;Molecular;Molecular Biology;mouse model;Multiomic Data;Mus;National Institute of Diabetes and Digestive and Kidney Diseases;Natural regeneration;new therapeutic target;novel;novel therapeutics;Online Systems;Organism;Organoids;Parasitic infection;Pathway interactions;Pharmaceutical Preparations;Physiology;programs;Property;Protocols documentation;Publications;Publishing;Radiation;Reagent;regenerative;Regenerative Medicine;Regenerative response;repaired;Research;Resources;Scientist;Screening Result;Small Intestines;Standardization;stem cell biology;stem cells;Surveys;System;Technology;Testing;Therapeutic;tool;transcriptome;transcriptomics;translational approach;Transplantation;Universities;user-friendly;virology;Virus Diseases;web-accessible;Work
+current_category: basic_research
+---
+application_id: 10547892
+activity_code: C06
+title: Developing a Community-Based Facility to Support Next Generation Biomedical HIV Research
+org_name: WHITMAN-WALKER INSTITUTE, INC.
+phr: N/A
+terms: <AIDS><AIDS Virus><Acquired Immune Deficiency><Acquired Immune Deficiency Syndrome><Acquired Immune Deficiency Syndrome Virus><Acquired Immuno-Deficiency Syndrome><Acquired Immunodeficiency Syndrome><Acquired Immunodeficiency Syndrome Virus><Acquired Immunologic Deficiency Syndrome><Award><Clinical Research><Clinical Study><Clinical Trials Unit><Collaborations><Communities><Country><Epidemic><Funding><Goals><HIV><Health Inequity><Healthcare><Home><Human Immunodeficiency Viruses><Inequalities in Health><Inequities in Health><Institution><Investigation><Investigators><LAV-HTLV-III><Lymphadenopathy-Associated Virus><Mentorship><Neighborhoods><Pharmacies><Pharmacy facility><Policies><Prevention><Protocol><Protocols documentation><Public Health><Research><Research Personnel><Researchers><Science><Sterility><Sum><Translational Research><Translational Science><Translations><Universities><Virus-HIV><Walkers><Washington><Work><base><behavioral health><clinical center><co-infection><co-morbid><co-morbidity><coinfection><community center><community marginalization><comorbidity><disparities in race><efficacy research><health care><health inequalities><marginalized community><next generation><programs><public health research><race disparity><racial disparity><racial inequality><racial inequity><racially unequal><research facility><social space><socio-economic><socio-economically><socioeconomically><socioeconomics><sq. ft><square foot><sterile><training opportunity><translation research><under served community><underserved community><ward>
+current_category: therapeutics
+---
+application_id: 11425546
+activity_code: N02
+title: SBIR TOPIC 111, PHASE II: A COMPACT PORTABLE MEDICAL OXYGEN GENERATOR
+org_name: TDA RESEARCH, INC.
+phr: N/A
+terms: Anterior;Back;base;brain magnetic resonance imaging;cardiac resynchronization therapy;Catheters;Characteristics;commercialization;Contracts;Coronary artery;Coronary sinus structure;Development;Devices;Elements;Emergency Situation;Endocardium;Epicardium;Excision;Goals;Guidelines;Heart;Heart Atrium;Implant;implantation;Implantation procedure;Interruption;interstitial;Left;Left ventricular structure;Limb structure;Medical;Muscle;Myocardial;Myocardium;National Heart, Lung, and Blood Institute;Oxygen;Pacemakers;Phase;portability;Procedures;research clinical testing;restraint;Right ventricular structure;Site;Small Business Innovation Research Grant;Specific qualifier value;Structure of left gastric vein;Surgical sutures;System;Techniques;tool;Veins;Ventricular;Ventricular septum;Work
+current_category: infrastructure
+---
+application_id: 10849303
+activity_code: S10
+title: Upgrade of the Preclinical Horizontal 14T Magnet
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: Project Narrative
+The goal of this proposal is to purchase a Bruker ultra-high preclinical magnet to replace the obsolete 14 Tesla
+Magnex magnet procured in 2009, which has been dedicated to supporting the high-resolution anatomical and
+functional mapping of animals and ex-vivo human brain tissue imaging. The upgraded 15.2T preclinical
+scanner will support over 20 highly synergistic and collaborative research projects, in three main themes: 1)
+Neurovascular dynamic signaling, 2) Cutting-edge neu
+terms: <AD dementia><Acceleration><Alzheimer Type Dementia><Alzheimer disease dementia><Alzheimer sclerosis><Alzheimer syndrome><Alzheimer's><Alzheimer's Disease><Alzheimers Dementia><Amentia><Anatomic Sites><Anatomic structures><Anatomy><Animal Disease Models><Animal Model><Animal Models and Related Studies><Animals><Biosensor><Blood Vessels><Brain><Brain Diseases><Brain Disorders><Brain Mapping><Brain Nervous System><Brain Stem><Brain Vascular><Brainstem><Calcium><Cell Communication and Signaling><Cell Signaling><Coma><Comatose><Dedications><Dementia><Designing computer software><Electronics><Encephalon><Encephalon Diseases><Functional MRI><Functional Magnetic Resonance Imaging><Funding><General Hospitals><Glutamates><Goals><Human><Image><Injury><Intracellular Communication and Signaling><Intracranial CNS Disorders><Intracranial Central Nervous System Disorders><Investigators><L-Glutamate><MR Imaging><MR Tomography><MRI><MRIs><Magnetic Resonance Imaging><Maps><Massachusetts><Mediating><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><Methodology><Methods><Modern Man><NIH><NMR Imaging><NMR Tomography><National Institutes of Health><Nuclear Magnetic Resonance Imaging><Organ><Performance><Primary Senile Degenerative Dementia><R-Series Research Projects><R01 Mechanism><R01 Program><Research Grants><Research Personnel><Research Project Grants><Research Projects><Research Resources><Researchers><Resolution><Resources><Signal Transduction><Signal Transduction Systems><Signaling><Software Design><Techniques><Technology><Tissue imaging><Translations><United States National Institutes of Health><Zeugmatography><animal imaging><biological sensor><biological signal transduction><body map><brain tissue><cerebral vascular><cerebro-vascular><cerebrovascular><electronic><electronic device><ex vivo imaging><fMRI><glutamatergic><imaging><improved><injuries><instrument><model of animal><multi-modal neuro-imaging><multi-modal neuroimaging><multi-modality><multidisciplinary><multimodal neuro-imaging><multimodal neuroimaging><multimodality><neural imaging><neuro-imaging><neuro-vascular><neuroimaging><neurological imaging><neurovascular><next generation><novel><optical fiber><optogenetics><pre-clinical><preclinical><primary degenerative dementia><resolutions><senile dementia of the Alzheimer type><translation><translational opportunities><translational potential><translational study><vascular>
+current_category: infrastructure
+---
+application_id: 10854057
+activity_code: S10
+title: Ultra-High Field Translational MRI Scanner
+org_name: STANFORD UNIVERSITY
+phr: Project Narrative This proposal will provide funds for replacing the 7T whole-body MRI human scanner at the Lucas Center for Imaging (LCI) at Stanford University. This scanner is an essential tool for several NIH-funded grants that are currently hampered by the limitations of the existing system and its limited serviceability. The proposed replacement will resolve reliability challenges with the existing legacy system, address service life issues, and decrease patient burden.
+terms: Applications Grants;Clinical;cryostat;design;FDA approved;Generations;imaging facilities;instrumentation;Magnetic Resonance Imaging;manufacture;Manufacturer;Medical;Patient Participation;Research Project Grants;service providers;Services;System;Technology;Universities
+current_category: infrastructure
+---
+application_id: 11159357
+activity_code: N01
+title: Adjuvant Comparison and Characterization (HIV)
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Adjuvant;Antibody Response;Antigens;clinically relevant;Fingerprint;Goals;HIV;HIV envelope protein;HIV vaccine;Immune;Immune response;Immunologics;Infection;Learning;Mucous Membrane;neutralizing antibody;nonhuman primate;programs;Side;Tissues;vaccine development;Vaccines;Work
+current_category: infrastructure
+---
+application_id: 10916157
+activity_code: U01
+title: RFA-PS-23-001 - Project PrOVIDE: PrEP Optimization Via Implementation, Dissemination, and Evaluation
+org_name: LURIE CHILDREN'S HOSPITAL OF CHICAGO
+phr: PROJECT NARRATIVE Black women experience one of the highest incidences of HIV among all U.S. subpopulations and despite national PrEP implementation efforts, uptake among Black women remains low with only 10% who could benefit from PrEP prescribed it in 2020. Given the 2021 PrEP guidance to inform all sexually active patients of PrEP and 2022 FDA approval of cabotegravir injections, it is essential that health systems implement interventions to increase PrEP uptake and improve persistence among 
+terms: N/A
+current_category: other

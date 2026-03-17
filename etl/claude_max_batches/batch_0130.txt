@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10924917
+activity_code: U42
+title: Husbandry & Management Core
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Adult;Animals;biobank;Biological Assay;Breeding;California;Censuses;Collection;COVID-19 surveillance;Cytomegalovirus;detection test;fecal microbiome;flexibility;genetic analysis;genetic pedigree;Geography;Goals;gut microbiome;HIV;HIV Infections;HIV/AIDS;host microbiome;Immune response;Immune system;improved;Inflammation;Lymphoid Cell;Macaca mulatta;Maintenance;Major Histocompatibility Complex;Modeling;Parasitic infection;pathogen;peripheral blood;Peripheral Blood Lymphocyte;Population;Primates;Production;Research;Research Personnel;Research Project Grants;Resources;Rhadinovirus;Rhesus;Sampling;screening;Simian Foamy Virus;Simian Retroviruses;simian T cell lymphotrophic virus;SIV;Testing;Trypanosoma cruzi;Tuberculosis;Virus;Work
+current_category: infrastructure
+---
+application_id: 10924919
+activity_code: U42
+title: MHC Typing Core
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: N/A
+terms: Adult;Alleles;Animals;biobank;Biological Assay;Breeding;complex data;Cytomegalovirus;Ensure;Exhibits;Founder Effect;Generations;Genetic;genetic analysis;Genetic Drift;Genetic Heterogeneity;genetic pedigree;Genetic Services;genetic variant;Genetic Variation;Genome;Genotype;Geography;Goals;Grant;gut microbiome;Haplotypes;Health;Heterozygote;HIV;host microbiome;Immune system;improved;Inbreeding;Individual;life history;Longevity;Macaca mulatta;Maintenance;Major Histocompatibility Complex;Migrant;Monitor;Parasitic infection;Peripheral Blood Lymphocyte;Population;Population Genetics;preservation;Production;Productivity;reproductive;Research;Research Personnel;Research Project Grants;Rhadinovirus;Rhesus;Risk;Sampling;screening;Simian Foamy Virus;Simian Retroviruses;SIV;T-Lymphocyte;Testing;Time;Trypanosoma cruzi;Tuberculosis;Virus;Work
+current_category: infrastructure
+---
+application_id: 11063179
+activity_code: P01
+title: Spousal Influences on Subclinical and Clinical Vascular and Myocardial Disease
+org_name: EMORY UNIVERSITY
+phr: N/A
+terms: Adult;Affective;Age;aged;Air;Air Pollution;Algorithms;Asia;Atherosclerosis;Behavior;Behavioral;Blood;Blood Glucose;Blood Pressure;Body mass index;built environment;cardiometabolic risk;Cardiomyopathies;Cardiovascular Diseases;cardiovascular disorder prevention;cardiovascular disorder risk;cardiovascular health;cardiovascular risk factor;Cessation of life;Characteristics;Cholesterol;Clinical;clinical risk;cohort;Communities;contagion;coronary calcium scoring;Data;design;Development;Diabetes Mellitus;Diet;Disease;disease phenotype;Early Diagnosis;Early identification;Ecological momentary assessment;Education;Enrollment;Environment;Environmental Exposure;Environmental Risk Factor;experience;Family;Fasting;Funding;Future;Geography;Health;Health behavior;Household;Hypertension;improved;Incidence;India;Individual;Intervention;Investigation;Lead;Life Style;longitudinal analysis;longitudinal design;man;Marriage;Measures;Mental Depression;mHealth;Myocardial Infarction;National Heart, Lung, and Blood Institute;Natural History;novel;Outcome;Overweight;Pathway interactions;Phenotype;Physical activity;Polysomnography;population based;Population Heterogeneity;prediction algorithm;psychosocial;Psychosocial Factor;Random Allocation;real time monitoring;Recording of previous events;recruit;Research;Research Personnel;Resource Sharing;Risk;Risk Assessment;Risk Factors;risk prediction;risk prediction model;Risk Reduction;risk stratification;Role;Sampling;Science;Sleep;smartphone application;social;social determinants;Socioeconomic Factors;South Asian;Spouses;Stress;Stroke;synergism;Technology;Time;Vascular Diseases;wearable device;Woman;wristband
+current_category: digital_health
+---
+application_id: 10862015
+activity_code: P01
+title: CASP-11-dependent RNA modifications and their Role in Multi-Organ Pathologies
+org_name: OHIO STATE UNIVERSITY
+phr: N/A
+terms: 2019-nCoV;adaptive immune response;adaptive immunity;Anti-viral Therapy;Antibodies;Binding;Biological Process;Blood Coagulation Disorders;bronchial epithelium;CASP4 gene;Caspase;Cells;Cessation of life;Clinical Trials;COVID-19;COVID-19 cytokine storm;COVID-19 pandemic;COVID-19 patient;COVID-19 treatment;CRISPR/Cas technology;cytokine release syndrome;Data;Development;Disease;effective therapy;Enzymes;Epigenetic Process;Escape Mutant;Exposure to;Gene Expression;Goals;High-Throughput RNA Sequencing;Human;improved;In Vitro;in vivo;Inflammasome;inhibitor;Innate Immune Response;knock-down;Knock-out;Knockout Mice;Maps;Mediating;member;Methylation;Methyltransferase;Modification;Multiple Organ Failure;Mus;nanoparticle;Natural Immunity;new therapeutic target;novel;obligate intracellular parasite;Organ;Outcome;Pathogenesis;Pathology;Pharmaceutical Preparations;Play;Post-Translational Protein Processing;Process;Proteins;Pseudouridine;Pulmonary Pathology;Reader;RNA;RNA metabolism;RNA purification;RNA-Binding Proteins;Role;S-Adenosylhomocysteine;S-Adenosylmethionine;SARS-CoV-2 infection;SARS-CoV-2 inhibitor;SARS-CoV-2 variant;Series;severe COVID-19;Site;small hairpin RNA;Small Interfering RNA;small molecule inhibitor;Techniques;Therapeutic;Therapeutic Effect;Translations;variants of concern;Viral;Viral Load result;viral RNA;Virus;Virus Replication
+current_category: basic_research
+---
+application_id: 10911822
+activity_code: U19
+title: Drug resistance enablers and their role in antibiotic treatment failure
+org_name: BOSTON CHILDREN'S HOSPITAL
+phr: N/A
+terms: Acinetobacter baumannii;Antibiotic Therapy;Antibiotics;antimicrobial;Antimicrobial Resistance;bacterial resistance;Bar Codes;Biological Assay;candidate identification;candidate marker;cell growth;Cell Physiology;Cells;Clinic;Clinical;clinical development;clinical epidemiology;clinically relevant;clinically significant;Collaborations;Communicable Diseases;Complement;Complex;CRISPR interference;Cultural Evolution;Data;Development;Disease;drug action;Drug resistance;Drug Tolerance;end of life;Engineering;Essential Genes;Evaluation;Event;Evolution;experimental analysis;experimental study;Failure;Family;fitness;Genetic;Genetic Markers;Genetic Transcription;Genotype;Goals;Gram-Negative Bacteria;Growth;Health;Heterogeneity;Hospitals;Immune;In Vitro;in vivo;Insertional Mutagenesis;Intermediate resistance;Lesion;Link;member;Microbe;microbial;Microbial Biofilms;Modeling;Multi-Drug Resistance;Mus;mutant;Mutation;Nosocomial pneumonia;Organism;Patients;Phagocytes;Pharmaceutical Preparations;Phenotype;Pneumonia;pneumonia model;Population;Property;Protein Biosynthesis;Reporter;Resistance;resistance mutation;Resolution;Risk;Role;Series;Shotguns;Source;Streptococcus pneumoniae;Stress;System;Testing;Therapeutic Agents;Time;Treatment Failure;Variant;Work
+current_category: therapeutics
+---
+application_id: 10840934
+activity_code: U19
+title: Human Biomimetic Scientific Core
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: N/A
+terms: 3-Dimensional;Address;Affect;Animal Model;Antibodies;Architecture;Biological;Biological Models;Biomimetics;Cells;Clinical Trials;Coculture Techniques;Collaborations;Communicable Diseases;Communities;Complex;cost;cost effective;Cost Savings;cytokine;Development;Disease;Elements;Ensure;Environment;Epithelium;Equipment and Supplies;Fluids and Secretions;Functional disorder;Goals;Growth;Health;Homeostasis;Human;Human Activities;Human Resources;human tissue;Immune;Immune response;improved;In Vitro;in vivo;Individual;Infection;Infectious Agent;Infectious Diseases Research;Intestines;Knowledge;Leadership;Learning;Lung;Maintenance;Mechanics;microbiome;microbiome components;microbiome composition;microorganism;mimetics;Modality;Modeling;Mucous body substance;Mucous Membrane;neuron component;Neurons;novel;Organism;Organoids;pathogen;Pathogenesis;Pathogenicity;Physiology;Population;pre-clinical;Pre-Clinical Model;Predisposition;prevent;Prevention;Preventive;Quality Control;Reagent;Reporting;Reproducibility;Research;Research Personnel;Research Project Grants;Resources;response;Services;Signal Transduction;Standardization;Stromal Cells;success;Surface;Technology Transfer;Therapeutic;Time;tissue derived stem cell;Tissue Model;Training;Treatment outcome;Viral Pathogenesis;Work
+current_category: infrastructure
+---
+application_id: 10878976
+activity_code: U42
+title: ICSC Core - Customer Service and Public Relations
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: N/A
+terms: Awareness;biobank;Biomedical Research;Catalogs;Collaborations;Collection;Communication;Communities;disease model;Documentation;Education;Electronic Mail;Feedback;Genes;Goals;Human Resources;Informatics;interest;International;Journals;Knowledge;Learning;Link;Marketing;material transfer agreement;MeSH Thesaurus;Methods;mouse model;Mus;Mutant Strains Mice;Names;Online Systems;Ontology;outreach;Phenotype;phrases;Process;programs;prospective;Public Relations;Publications;repository;Reproducibility;Research;Research Personnel;Research Support;Resources;Science;Secure;Services;social media;symposium;Technical Expertise;United States National Institutes of Health;web site
+current_category: training
+---
+application_id: 11080680
+activity_code: U19
+title: Pharmacology Core
+org_name: HACKENSACK UNIVERSITY MEDICAL CENTER
+phr: N/A
+terms: Acceleration;Acinetobacter baumannii;Address;Adherence;Adverse effects;Animal Model;Anti-Bacterial Agents;Antibiotics;Antimicrobial Resistance;Bacterial Infections;Biological Assay;Burkholderia;candidate selection;Certification;clinically significant;Collaborations;cytotoxicity;Data;Dedications;design;Development;Dose;Dose Fractionation;drug candidate;drug development;drug discovery;drug distribution;drug efficacy;Drug Kinetics;Drug resistance;Drug Targeting;Ensure;Enterococcus;Equilibrium;Fiber;first-in-human;genotoxicity;Goals;good laboratory practice;Guidelines;Hepatocyte;high risk;Human;In Vitro;in vivo;industry partner;Infection;Infrastructure;innovation;Investigational Drugs;laser capture microdissection;Lead;lead optimization;Liquid substance;Maps;Measures;meetings;methicillin resistant Staphylococcus aureus;Microsomes;Modernization;Modification;Neisseria gonorrhoeae;non-tuberculosis mycobacteria;novel;operation;pathogen;pathogenic bacteria;Pharmaceutical Chemistry;Pharmaceutical Preparations;pharmacodynamic model;Pharmacodynamics;pharmacokinetics and pharmacodynamics;pharmacologic;Pharmacology;Pharmacology Study;Phase;Phenotype;pre-clinical;preclinical efficacy;Process;process optimization;programs;Property;Protocols documentation;Public Health;Quality Control;Quantitative Evaluations;Rattus;Research Design;Role;Safety;safety practice;Sampling;Secure;Site;stem;Therapeutic;Therapeutic Index;therapeutically effective;Tissues;Toxic effect;Toxicology;uptake
+current_category: infrastructure
+---
+application_id: 10878975
+activity_code: U42
+title: ICSC Core - Coordination
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: N/A
+terms: Accounting;Archives;Collaborations;Communication;Coordination and Collaboration;Documentation;Ensure;Evaluation;Goals;Guidelines;improved;Informatics;Information Services;Information Technology;Marketing;meetings;member;Mutant Strains Mice;Outcome;outreach;Policies;Process;programs;Progress Reports;Protocols documentation;Published Comment;Publishing;Reporting;repository;Research;Resolution;Resources;Secure;Services;Site Visit;Structure;System;Teleconferences;United States National Institutes of Health;Update;web site;Work
+current_category: infrastructure
+---
+application_id: 10764706
+activity_code: U42
+title: MHC Genetic Typing Core
+org_name: TULANE UNIVERSITY OF LOUISIANA
+phr: N/A
+terms: Acceleration;Acquired Immunodeficiency Syndrome;Alleles;animal data;Animal Husbandry;Animals;Behavioral;Breeding;Budgets;Collaborations;Communication Tools;Communities;Data;data sharing;Databases;Decision Making;deep sequencing;design;Development;Disease Progression;DNA Library;Ensure;evidence base;exome sequencing;experience;Funding;Future;Genetic;genetic information;genetic pedigree;genetic resource;Genetic Services;genetic testing;Genetic Variation;Genome;genome sequencing;genomic data;genomic variation;Genomics;Genotype;Geographic Locations;Geography;Goals;Grant;Haplotypes;Health;HIV/AIDS;Immune response;improved;Inbreeding;Infection;Informatics;Institution;Macaca;Macaca mulatta;Maintenance;male;MHC Class I Genes;Mind;Monitor;nonhuman primate;Other Genetics;Output;Population;Predisposition;Preventive Medicine;Primates;Process;programs;Protocols documentation;reproductive;Research;Research Activity;Research Personnel;research study;Role;Scientist;Services;simian human immunodeficiency virus;SIV;Source;Structure;System;Targeted Research;Testing;testing services;Time;Translational Research;Visit;whole genome;Wisconsin;working group
+current_category: infrastructure
+---
+application_id: 11036380
+activity_code: U42
+title: Viral Testing Core
+org_name: TEXAS BIOMEDICAL RESEARCH INSTITUTE
+phr: Narrative – Core B: Viral Testing Core Southwest National Primate Research Center (SNPRC) maintains an Indian origin rhesus macaque (Ind RM) colony that is Specific Pathogen Free (SPF) for SLTV-1, SIV, SRV, and BV to ensure that there is a ready supply of these NHPs for HIV research. In addition, SPF RM are serologically tested for both the parasite Trypanosoma cruzi and for measles antibodies titer to evaluate the efficacy of the measles vaccination program. During the COVID-19 pandemic, SARS-C
+terms: 2019-nCoV;Acquired Immunodeficiency Syndrome;Affect;AIDS vaccine development;Algorithms;animal care;Animal Model;Animals;Anti-viral Therapy;Antibodies;antibody detection;Antibody titer measurement;Biological Assay;Breeding;California;Caribbean region;Chagas Disease;Consensus;COVID-19 pandemic;COVID-19 testing;Data;Decision Making;Development;effectiveness evaluation;efficacy evaluation;Ensure;Equipment;Event;Exposure to;germ free condition;Goals;Grant;Health;Herpesvirus 1;HIV;Human;Human Resources;Immune response;Immunization;Immunization Programs;Immunoassay;Immunology;improved;infected rhesus macaques;Infection;instrument;interest;Investigation;Laboratories;Macaca;Macaca mulatta;Maintenance;Measles;Measles virus;member;Methods;Monitor;Monkeys;Mucous Membrane;Oregon;Parasites;pathogen;Pathogen detection;Patients;Pest Control;Prevalence;Primates;Principal Investigator;Procedures;programs;Reagent;Recombinants;Recommendation;Reliability of Results;Research;Research Personnel;Research Support;Reverse Transcriptase Polymerase Chain Reaction;Rhesus;Rhesus macaque colony;Risk;Sampling;SARS-CoV-2 antibody;screening;Serology;Serology test;Serum;simian human immunodeficiency virus;Simian Retroviruses;SIV;System;Techniques;Testing;Time;Trypanosoma cruzi;U-Series Cooperative Agreements;United States National Institutes of Health;Viral;Viral Pathogenesis;viral RNA;Virus;virus testing;Washington;working group
+current_category: infrastructure
+---
+application_id: 10911192
+activity_code: U19
+title: Targeting the neuronal microenvironment in glioblastoma
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: N/A
+terms: Acute;Adult;Adult Glioblastoma;Amino Acid Transporter;AMPA Receptors;Attention;Brain;Calcium;Catheters;Cell Proliferation;Cell secretion;Cells;Clinical;Clinical Trials;Coculture Techniques;Communication;Coupled;Data;Drug Targeting;Electrocorticogram;Electrophysiology (science);Excision;extracellular;feeding;Funding;Gap Junctions;Genomics;Glioblastoma;Glioma;Glutamate Receptor;glutamatergic signaling;Glutamates;Grant;Growth;Growth Factor;Hour;Human;human subject;human tissue;Image;improved outcome;in vivo;Infiltration;Magnetic Resonance;Malignant Neoplasms;mass spectrometric imaging;Measures;Mediating;Microdialysis;Modeling;Monitor;mouse model;Mus;Nervous System;Nervous System Disorder;neural circuit;neuroligin 3;neuronal excitability;Neurons;neuropsychiatric disorder;Neurosciences;neurosurgery;new therapeutic target;Oncology;Operative Surgical Procedures;paracrine;Pathogenesis;Pathogenicity;Patients;Perioperative;Pharmaceutical Preparations;pharmacologic;Pharmacologic Substance;Phase;Phosphorylation;Potassium;pre-clinical;Pre-Clinical Model;preclinical study;presynaptic;programs;Progression-Free Survivals;Proliferating;Property;Proteins;Randomized;Recurrence;Reporter;repository;Resected;reuptake;Role;Signal Transduction;single nucleus RNA-sequencing;skills;Slice;Spectrometry;Synapses;synaptic function;Testing;Therapeutic;tissue biomarkers;Tissues;Toxic effect;tumor;tumor microenvironment;tumor progression;Tumor Tissue;two-photon;United States National Institutes of Health;Work;Xenograft Model;Xenograft procedure
+current_category: therapeutics
+---
+application_id: 11080883
+activity_code: U19
+title: Human Immune Monitoring Core
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: adaptive immunity;antibody test;Antigens;Biological Assay;biological systems;Cells;Clinical;Clinical Research;Collaborations;comparative;cytokine;Data;data exchange;data integration;Data Management and Analysis Core;Data Set;Databases;demographics;Deposition;DNA Methylation;Equipment;Foundations;Genomics;Goals;Grant;Human;Human Resources;Immune;Immunoassay;Immunologic Monitoring;Immunology;Immunology procedure;Immunophenotyping;improved;Inflammation;Infrastructure;Journals;Laboratories;Maps;Natural Immunity;Paper;Peripheral Blood Mononuclear Cell;Phenotype;Principal Investigator;Proteins;Publications;Recording of previous events;Research Personnel;Resources;Sampling;SARS-CoV-2 antibody;Science;Seminal;Serum;Services;Stains;Standardization;success;System;Technology;transcriptomics;usability;Vaccination;Viral Antibodies;Virus
+current_category: infrastructure
+---
+application_id: 10908475
+activity_code: U41
+title: HORNET  Center for Autonomic Nerve Recording and Stimulation Systems (CARSS)
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: Not applicable per solicitation. Project Narrative: Do not complete. Note: ASSIST screens will show an asterisk for this attachment indicating it is required. However, eRAsystems only enforce this requirement in the Overall component and applications will not receive an error if omitted in other components.
+terms: Address;Affect;Algorithms;analog;Architecture;artificial neural network;Automobile Driving;autonomic nerve;battery recharging;Behavior;bioelectronics;Charge;Classification;Clinical;Clinical Research;Communication;Complex;Computer software;Custom;Data;design;Detection;Development;Devices;digital;Dimensions;Ecosystem;Electrocardiogram;Electronics;engineering design;Ensure;Exhibits;experience;Face;flexibility;Goals;high risk;Implant;implant design;improved;Individual;innovation;interest;Laws;Medicine;Monitor;neuroregulation;Noise;open source;operation;Patients;Performance;Physiologic pulse;Play;Power Sources;preference;prevent;Process;programs;Property;Research Personnel;Risk;Safety;Secure;signal processing;Signal Transduction;Standardization;System;Technology;Testing;Time;Transistors;voltage
+current_category: medical_device
+---
+application_id: 10840944
+activity_code: U19
+title: Human Gastrointestinal Biomimetics for Enteric Viral Infections
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: N/A
+terms: Address;Animal Model;Anti-viral Agents;Antigens;Apical;Attenuated;Bacteria;Bile Acids;Bile fluid;Binding;Biochemical;Biological;Biology;Biomimetics;Blood;Blood Group Antigens;burden of illness;Cell Culture Techniques;cell immortalization;Cell Line;cell type;Cells;Cellular biology;Ceramides;Cessation of life;Clinical;Clinical Trials;clinically relevant;co-infection;Colon;Communicable Diseases;Complex;Country;Cultured Cells;Data;Development;Disease;Engineering;Enteral;Enteric Nervous System;enteric virus infection;enteroaggregative Escherichia coli;Enterobacter;Enterocytes;Environment;epidemiology study;Epithelial Cells;Epithelium;Exhibits;first-in-human;flexibility;Functional disorder;Gastroenteritis;gastrointestinal;Gastrointestinal Diseases;gastrointestinal infection;Genetic;Genetic Transcription;Health Care Costs;Human;Immune;Immune Evasion;Immune response;Immune system;improved;Income;Infection;Interferons;Intervention;Intestines;Investments;Klebsiella;Knowledge;Laboratories;Life;Link;Low income;Mediating;Microbe;microbial community;microbiome;Modeling;Molecular;mortality;Mucosal Immune Responses;Mucous Membrane;multidisciplinary;Mus;Nerve;Neurons;Norovirus;Organ;Organoids;Outcome;pathogen;Pathogenesis;pathogenic bacteria;pathogenic virus;Physiological;Physiology;Play;Polysaccharides;pre-clinical;Predisposition;prevent;Production;Property;Research;response;Role;Rotavirus;Rotavirus disease;Rotavirus Infections;Rotavirus Vaccines;Route;Sampling;Serotonin;Severity of illness;Signal Pathway;Signal Transduction;Small Intestines;societal costs;success;Surface;technology development;Testing;tissue stem cells;translational model;translational potential;Translations;vaccine failure;vaccine response;Vaccines;Vesicle;Viral;Viral Gastroenteritis;virology;Virus;Virus Diseases;virus host interaction;Virus Replication;Work
+current_category: therapeutics
+---
+application_id: 11080683
+activity_code: U19
+title: Novel rifamycins to improve cure rates and shorten treatment of M. abscessus lung disease
+org_name: HACKENSACK UNIVERSITY MEDICAL CENTER
+phr: N/A
+terms: Acceleration;ADP ribosylation;Agreement;analog;antibiotic tolerance;Antibiotics;Antimycobacterial Agents;Antitubercular Agents;Automobile Driving;Bacterial Infections;bacterial resistance;bactericide;bench to bedside;beta-Lactams;Binding;Biological;Biological Assay;Biological Availability;Cells;chemical synthesis;Chronic;Clinical;clinical candidate;clinical development;clinical validation;Collaborations;Combined Antibiotics;Communicable Diseases;comorbidity;cost;CYP3A4 gene;Cytolysis;Data;design;Disease;DNA Fragmentation;DNA-Directed RNA Polymerase;Docking;Dose;drug candidate;Drug Combinations;drug development;drug discovery;Drug Evaluation;Drug Interactions;Drug Kinetics;drug preservation;Drug Tolerance;effective therapy;efficacy study;Exhibits;Extreme drug resistant tuberculosis;Fluoroquinolones;Funding;Genetic Polymorphism;Goals;Human;Image;Immune;Immunocompromised Host;immunodeficiency;improved;In Vitro;in vivo;Incidence;indexing;Industry Standard;Infection;Investigational New Drug Application;lead optimization;liver metabolism;Lung Diseases;Lung infections;lung injury;Measures;Mediating;Metabolism;Microbiology;Molecular;mouse model;Mus;Mutation;mycobacterial;Mycobacterium abscessus;Mycobacterium tuberculosis;Natural Resistance;Nature;Necrotic Lesion;non-tuberculosis mycobacteria;novel;Oral;Outsourcing;pathogen;Patients;Penetration;Pharmaceutical Chemistry;Pharmaceutical Preparations;Pharmacodynamics;pharmacologic;Pharmacologic Substance;Pharmacology;Pharmacotherapy;Phase;Phenotype;Population;Positioning Attribute;pre-Investigational New Drug meeting;preclinical development;Prevalence;prognostic;programs;Property;Recording of previous events;Records;Refractory;Regimen;repaired;Research;Resistance;response;Rifabutin;Rifampin;Rifamycins;Safety;Secure;Site;Source;Sterilization;structural biology;Structure-Activity Relationship;Therapeutic;tool;Toxicology;Transcription Repressor;treatment duration;tuberculosis treatment;Vertebral column;Weight;Work
+current_category: therapeutics
+---
+application_id: 10908478
+activity_code: U41
+title: HORNET  Center for Autonomic Nerve Recording and Stimulation Systems (CARSS)
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: Not applicable per solicitation. Project Narrative: Do not complete. Note: ASSIST screens will show an asterisk for this attachment indicating it is required. However, eRAsystems only enforce this requirement in the Overall component and applications will not receive an error if omitted in other components.
+terms: 3-Dimensional;Address;Adopted;Ally;Architecture;autonomic nerve;Autonomic nervous system disorders;Biocontrols;bioelectronics;Clinical;cost;Custom;design;Diameter;Elasticity;Electrodes;Equilibrium;fabrication;Film;flexibility;Foreign Bodies;Health;Hypertension;Immune response;Implant;Individual;Inflammatory Bowel Diseases;instrument;interest;Lead;manufacture;manufacturing technology;Measures;Medical;Medicine;Memory;Metals;Methods;Microfabrication;miniaturize;minimally invasive;Molds;Nerve;Nerve Fibers;neural;Non-Insulin-Dependent Diabetes Mellitus;novel;open source;Operative Surgical Procedures;parylene;parylene C;Perineuriums;Peripheral;Peripheral Nerves;Peripheral Nervous System;polydimethylsiloxane;Polymers;preservation;Process;Recording of previous events;Research;Rheumatoid Arthritis;Scheme;Shapes;Site;Structure;Surgical sutures;System;Testing;Thick;Thinness;tool;Welding;wound
+current_category: medical_device
+---
+application_id: 10908483
+activity_code: U41
+title: HORNET  Center for Autonomic Nerve Recording and Stimulation Systems (CARSS)
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: Not applicable per solicitation. Project Narrative: Do not complete. Note: ASSIST screens will show an asterisk for this attachment indicating it is required. However, eRAsystems only enforce this requirement in the Overall component and applications will not receive an error if omitted in other components.
+terms: Address;Administrator;Advisory Committees;Algorithms;artificial neural network;autonomic nerve;bioelectronics;career;Collaborations;collaborative approach;Communication;Communities;Computer software;computerized data processing;Data;Development;Documentation;Ensure;Event;Galaxy;Gender;Goals;Hour;Implant;implanted sensor;Individual;Industry;Institution;interest;interoperability;Lead;Leadership;Licensing;LinkedIn;Medicine;meetings;member;Network-based;Newsletter;online repository;open source;Patients;Physiologic pulse;Postdoctoral Fellow;programs;Reporting;Research Personnel;Resources;Running;signal processing;Site;social media;Software Engineering;Specific qualifier value;symposium;System;Systems Integration;Technology;technology platform;Testing;Training;Training Activity;United States National Institutes of Health;Update;user-friendly;Vision;wearable data;web site;wiki;Work
+current_category: medical_device
+---
+application_id: 11044021
+activity_code: U41
+title: HORNET  Center for Autonomic Nerve Recording and Stimulation Systems (CARSS)
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: Not applicable per solicitation. Project Narrative: Do not complete. Note: ASSIST screens will show an asterisk for this attachment indicating it is required. However, eRAsystems only enforce this requirement in the Overall component and applications will not receive an error if omitted in other components.
+terms: 3-Dimensional;Address;Adopted;Ally;Architecture;autonomic nerve;Autonomic nervous system disorders;Biocontrols;bioelectronics;Clinical;cost;Custom;design;Diameter;Elasticity;Electrodes;Equilibrium;fabrication;Film;flexibility;Foreign Bodies;Health;Hypertension;Immune response;Implant;Individual;Inflammatory Bowel Diseases;instrument;interest;Lead;manufacture;manufacturing technology;Measures;Medical;Medicine;Memory;Metals;Methods;Microfabrication;miniaturize;minimally invasive;Molds;Nerve;Nerve Fibers;neural;Non-Insulin-Dependent Diabetes Mellitus;novel;open source;Operative Surgical Procedures;parylene;parylene C;Perineuriums;Peripheral;Peripheral Nerves;Peripheral Nervous System;polydimethylsiloxane;Polymers;preservation;Process;Recording of previous events;Research;Rheumatoid Arthritis;Scheme;Shapes;Site;Structure;Surgical sutures;System;Testing;Thick;Thinness;tool;Welding;wound
+current_category: medical_device
+---
+application_id: 11044019
+activity_code: U41
+title: HORNET  Center for Autonomic Nerve Recording and Stimulation Systems (CARSS)
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: Not applicable per solicitation. Project Narrative: Do not complete. Note: ASSIST screens will show an asterisk for this attachment indicating it is required. However, eRAsystems only enforce this requirement in the Overall component and applications will not receive an error if omitted in other components.
+terms: Address;Affect;Algorithms;analog;Architecture;artificial neural network;Automobile Driving;autonomic nerve;battery recharging;Behavior;bioelectronics;Charge;Classification;Clinical;Clinical Research;Communication;Complex;Computer software;Custom;Data;design;Detection;Development;Devices;digital;Dimensions;Ecosystem;Electrocardiogram;Electronics;engineering design;Ensure;Exhibits;experience;Face;flexibility;Goals;high risk;Implant;implant design;improved;Individual;innovation;interest;Laws;Medicine;Monitor;neuroregulation;Noise;open source;operation;Patients;Performance;Physiologic pulse;Play;Power Sources;preference;prevent;Process;programs;Property;Research Personnel;Risk;Safety;Secure;signal processing;Signal Transduction;Standardization;System;Technology;Testing;Time;Transistors;voltage
+current_category: medical_device
+---
+application_id: 11080686
+activity_code: U19
+title: Pre-clinical Safety and Toxicology Studies of a PO-administered b-lactam-tarocin combination agent to treat methicillin susceptible and resistant staphylococci
+org_name: HACKENSACK UNIVERSITY MEDICAL CENTER
+phr: N/A
+terms: Acceleration;Adjuvant;ADME Study;Adopted;Adverse effects;Ambulatory Care;Anabolism;Antibiotics;Antimicrobial Resistance;Bacteremia;Bacterial Infections;bactericide;beta-Lactamase;bile duct;Biodistribution;Biological Availability;Blindness;Budgets;Canis familiaris;Cannulations;Carbapenems;Cell Line;Cell Wall;Cephalosporins;Cessation of life;Chemosensitization;Clinical;Complete Blood Count;COVID-19 impact;crosslink;cytotoxicity;Data;Development;Digit structure;Dose;drug candidate;drug development;Drug Kinetics;drug metabolism;efficacy study;Endocarditis;Enzymes;Excretory function;Extended-spectrum β-lactamase;genotoxicity;Genus staphylococcus;glycosyltransferase;Goals;Health;Hela Cells;Human;In Vitro;in vivo;Infection;Infection Control;inhibitor;Lactams;Linezolid;Lytic;Measures;Medical;meetings;Metabolism;Methicillin;Methicillin Resistance;methicillin resistant Staphylococcus aureus;methicillin susceptible Staphylococcus aureus;Microbiology;Modeling;Monitor;Monkeys;Monobactams;Multi-Drug Resistance;Mus;Myelosuppression;Names;novel;optic nerve disorder;Oral;Oxazolidinones;Pamphlets;Parents;pathogen;pathogenic bacteria;Pathway interactions;Patients;Penicillins;Peptidoglycan;Peripheral Nervous System Diseases;Pharmaceutical Preparations;Pharmacology;Polymers;pre-clinical;preclinical development;preclinical safety;Predisposition;process optimization;product development;Production;Protocols documentation;Rattus;Recovery;Resistance;resistance frequency;respiratory;Risk Factors;Rodent;Rodent Model;Route;Safety;safety study;scale up;standard of care;Staphylococcal Infections;Staphylococcus aureus infection;Staphylococcus epidermidis;synergism;Taro Vegetable;Teichoic Acids;Thigh structure;Time;Toxic effect;Toxicology;trend
+current_category: therapeutics
+---
+application_id: 11170054
+activity_code: P50
+title: Community Team Lifestyle Immersion Program for Chronic Disease Prevention and Control
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 11119326
+activity_code: U41
+title: HORNET  Center for Autonomic Nerve Recording and Stimulation Systems (CARSS)
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: Not applicable per solicitation. Project Narrative: Do not complete. Note: ASSIST screens will show an asterisk for this attachment indicating it is required. However, eRAsystems only enforce this requirement in the Overall component and applications will not receive an error if omitted in other components.
+terms: 3-Dimensional;Address;Adopted;Ally;Architecture;Aspiration Pneumonia;autonomic nerve;Autonomic nervous system disorders;Biocontrols;bioelectronics;Clinical;cost;Custom;Deglutition Disorders;design;Diameter;Elasticity;Electrodes;Equilibrium;fabrication;Film;flexibility;Foreign Bodies;Health;Hypertension;Immune response;Implant;Individual;Inflammatory Bowel Diseases;instrument;interest;Lead;manufacture;manufacturing technology;Measures;Medical;Medicine;Memory;Metals;Methods;Microfabrication;miniaturize;minimally invasive;Molds;Nerve;Nerve Fibers;neural;Non-Insulin-Dependent Diabetes Mellitus;novel;open source;Operative Surgical Procedures;parylene;parylene C;Perineuriums;Peripheral;Peripheral Nerves;Peripheral Nervous System;polydimethylsiloxane;Polymers;post stroke;preservation;Process;Recording of previous events;Research;Rheumatoid Arthritis;Scheme;Shapes;Site;Structure;Surgical sutures;System;Testing;Thick;Thinness;tool;Welding;wound
+current_category: medical_device
+---
+application_id: 10911057
+activity_code: P01
+title: Animal Core
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: The animal core will act as repository and center for distribution of the mice rats and bovine animals proposed in the program. It provides a unique infrastructure that allows for successful and reproducible generation of the animal models used and provides state of the art hemodynamic assessments.
+terms: Animal Euthanasia;Animal Husbandry;Animal Model;animal tissue;Animals;Blood gas;Blood Gas Analysis;Blood Pressure;Blood Pressure Monitors;Blood specimen;Breeding;Cardiac Output;Catheters;Cattle;Chronic;Clinical;clinical application;Collection;Complement;Data;data acquisition;Data Analyses;Data Collection;data integrity;Dyes;Echocardiography;Ensure;Equipment;Euthanasia;Experimental Designs;Flow Cytometry;Generations;Goals;heart function;hemodynamics;Human;Human Resources;Hypoxia;IACUC;Image;Inbred Mouse;Infrastructure;Institution;instrumentation;Insurance;Leadership;Liquid substance;Maintenance;Mediating;Methodology;Methods;Mission;Modeling;Molecular;Monitor;mouse model;Mus;non-invasive monitor;Organ;Organ Harvestings;Pathology;Play;Postdoctoral Fellow;Process;Program Research Project Grants;programs;Pulmonary Hypertension;pulmonary vascular disorder;pulmonary vasoconstriction;Rattus;repository;Reproducibility;Research Personnel;Role;Sampling;Schedule;Severities;Signal Transduction;solid state;Standardization;synergism;System;Tail;Technical Expertise;Technology;Tissue and Organ Harvesting;Tissue Banks;Tissue Fixation;Tissue Sample;Tissues;tool;Training;Transducers;Transgenic Mice;Transgenic Model;Vascular remodeling
+current_category: infrastructure
+---
+application_id: 10896225
+activity_code: P01
+title: Multiphoton In Vivo Microscopy (Core 2)
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: N/A
+terms: adeno-associated viral vector;Algorithms;Animals;Biophysics;Brain;Calcium;Calibration;Chlorides;Chronic;cost;cost effective;Custom;Data;Data Collection;data standards;Dedications;design;Development;Devices;digital;Dyes;Epileptogenesis;Experimental Designs;extracellular;Family suidae;flexibility;Fluorescence;fluorescence lifetime imaging;Fluorescence Microscopy;fluorophore;Funding;Image;image archival system;image registration;Imaging Device;imaging modality;in vivo;in vivo imaging;in vivo two-photon imaging;Injections;instrument;instrumentation;Ions;Measurement;Measures;Microscope;Microscopic;Microscopy;Modeling;Molecular;Morphologic artifacts;Motion;multi-photon;multimodal data;novel;Phase;Post-Traumatic Epilepsy;Procedures;programs;Research;Resolution;Resources;Rodent;serial imaging;Silicon;Speed;Technical Expertise;Technology;tool;tool development;Traumatic Brain Injury;Trephine hole;two-photon
+current_category: therapeutics
+---
+application_id: 10908473
+activity_code: U41
+title: HORNET  Center for Autonomic Nerve Recording and Stimulation Systems (CARSS)
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: Not applicable per solicitation. Project Narrative: Do not complete. Note: ASSIST screens will show an asterisk for this attachment indicating it is required. However, eRAsystems only enforce this requirement in the Overall component and applications will not receive an error if omitted in other components.
+terms: Address;Air;Algorithmic Software;Algorithms;Ally;Android;Architecture;autonomic nerve;Biochemical;bioelectronics;Biological Markers;Blood;Bluetooth;Cellular Phone;Chemicals;Clinical;clinical diagnostics;Clinical Research;Communication;Dedications;design;Development;Diagnostic Equipment;Disease;Effectiveness;electric impedance;Electrocardiogram;Exhalation;experience;Explosion;Face;flexibility;Galaxy;Galvanic Skin Response;Glucose;Implant;Individual;interest;Lead;mathematical ability;Mechanics;Medical Device;Medicine;Modality;Monitor;neuroregulation;open source;Operating System;operation;Patients;Physical activity;Physiologic pulse;Physiological;provider communication;Research Personnel;Respiration;Running;sensor;Sleep;System;Tablets;Technology;Telemetry;Temperature;Testing;wearable device;wireless fidelity
+current_category: medical_device
+---
+application_id: 11063154
+activity_code: P01
+title: Cardiovascular Disease (CVD) Phenotyping Core
+org_name: EMORY UNIVERSITY
+phr: N/A
+terms: adipokines;adjudication;arterial stiffness;Autopsy;Biochemical;Biological Markers;Blood;Blood Vessels;Calcium;Cardiac;Cardiovascular Diseases;cardiovascular imaging;Cardiovascular system;carotid intima-media thickness;Cessation of life;Clinical;clinical phenotype;Clinics and Hospitals;cohort;Collection;Consent;Coronary;Coronary Arteriosclerosis;coronary artery calcium;Data;data acquisition;data analysis core;Data Collection;data management;Data Management and Analysis Core;data management center;Databases;Death Certificates;Diagnosis;Disease Outcome;disease phenotype;Documentation;Elements;Equipment;Event;experience;Fatty acid glycerol esters;Fatty Liver;Functional disorder;Goals;Health;Health Care Visit;Heart failure;Hepatic;Household;immune activation;indexing;India;Inflammation;Infrastructure;Institution;International;Interviewer;Laboratories;Lead;Left;Link;Lipids;Logistics;Measurement;Measures;Metabolic;Monitor;mortality;Myocardial;Myocardial dysfunction;Myocardial Infarction;novel;Participant;participant enrollment;Pathway interactions;Peripheral arterial disease;Persons;Phenotype;phenotypic data;Physiologic pulse;Play;Process;Program Research Project Grants;Proteins;Protocols documentation;quality assurance;Quality Control;Questionnaires;Reading;Reproducibility;Research;revascularization;Risk Factors;Role;sample collection;Sampling;secondary outcome;Services;Standardization;Stress;Stroke;Structure;success;Symptoms;synergism;Techniques;Testing;thrombogenesis;Training;Transient Ischemic Attack;Transportation;Urine;Vascular Diseases;Ventricular;Visit;Work
+current_category: infrastructure
+---
+application_id: 10918162
+activity_code: U41
+title: Nest#4-Nerve Excitation Control Through AC Regulation (NECTAR)
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: N/A
+terms: Action Potentials;Area;Arrhythmia;Autonomic nervous system;bioelectronics;Bronchial Spasm;Charge;Chronic;chronic neuropathic pain;Chronic Obstructive Pulmonary Disease;clinical application;Communication;Communities;Complex;Data;Devices;Disease;Down-Regulation;Electric Stimulation;Electrodes;Ensure;Failure;Fiber;Frequencies;Future;Goals;Heart;Histologic;Implant;in vivo;Injections;Knowledge;Licensing;Maps;Measurement;Measures;Medical;multimodality;Muscle;Nerve;Nerve Block;Nervous System;Nervous System control;neural;Neural Conduction;neuroregulation;Nociception;open source;Output;Physiologic pulse;Physiological;prevent;Procedures;Protocols documentation;Publishing;Ramp;Regulation;Reproducibility;Research;Research Personnel;research study;Safety;spasticity;Speed;Sphincter;System;Techniques;Testing;Therapeutic;Therapeutic Effect;Time;tool;Translations;urinary;voltage;web site;Width;Work
+current_category: basic_research
+---
+application_id: 10840922
+activity_code: U19
+title: Project 3. Mechanisms of benefit of biologic agents for patients with aspirin-exacerbated respiratory disease (AERD)
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: N/A
+terms: Address;Adult;Affect;airway inflammation;Anosmia;antagonist;aspirin-exacerbated respiratory disease;Asthma;Automobile Driving;Biological;Biological Products;Biological Response Modifier Therapy;Biology;Cell Aging;Cells;cellular targeting;Chronic;chronic rhinosinusitis;Clinical;Clinical effectiveness;clinical efficacy;cohort;comparative efficacy;Controlled Clinical Trials;cysteinyl-leukotriene;cytokine;cytokine therapy;Data;Diagnosis;Dinoprostone;Disease;Double-Blind Method;effective therapy;Effector Cell;Epithelial Cells;experience;FDA approved;Functional disorder;Growth;Histology;Impairment;improved;Inflammation;Inflammatory;inhibitor;innovation;Interleukin-13;Interleukin-4;Interruption;Intervention Studies;Learning;Link;mast cell;mastocytosis;Mediator;Nasal Polyps;Nose;novel;Outcome Measure;Pain;Pathway interactions;Patient Agents;Patients;Pharmaceutical Preparations;Placebo Control;Play;polyposis;Polyps;Production;Prostaglandin Production;Recurrence;respiratory;Role;Severities;Signal Transduction;Sinus;Smell Perception;Symptoms;Syndrome;Testing;Therapeutic;Therapeutic Effect;therapeutic target;therapy outcome;Tissues;Treatment Efficacy;trial design;Tumorigenicity;Work
+current_category: therapeutics
+---
+application_id: 11080887
+activity_code: U19
+title: Systems biological assessment of innate responses to vaccination
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Ablation;adaptive immune response;adaptive immunity;Address;Adjuvant;Adult;Allergic Reaction;Allergy;Anti-viral resistance;Antibiotics;Antibody Response;antigen-specific T cells;B-Lymphocytes;biological systems;Cells;Clinical Trials;COVID-19 vaccination;COVID-19 vaccine;cytokine;Cytometry;Dendritic Cells;Dengue;Development;Epigenetic Process;epigenomics;Exposure to;Fine needle aspiration biopsy;Frequencies;gut microbiota;Human;Immune response;Immunity;immunogenicity;Immunologics;Immunology;immunoregulation;Impairment;imprint;Individual;Influenza;Influenza A Virus, H5N1 Subtype;influenza virus vaccine;innate immune mechanisms;Innate Immune Response;insight;lymph nodes;Memory;Messenger RNA;metabolomics;microbiome;microbiota;Molecular Profiling;monocyte;multiple omics;Myelogenous;Myeloid Cells;Natural Immunity;Nature;Novavax COVID-19 vaccine;novel;pandemic influenza;Peripheral Blood Mononuclear Cell;Pfizer-BioNTech COVID-19 vaccine;Plasma;Population;Predisposition;Rabies Vaccines;Rabies virus;Recombinants;Reporting;Resistance;response;RNA vaccine;Role;Sampling;Saponins;seasonal influenza;Secondary Immunization;Serum;South Africa;South African;Special Population;System;transcriptomics;Vaccinated;Vaccination;vaccine development;vaccine immunogenicity;Vaccines;vaccinology;Viral;Virus;Work;young adult;ZIKA
+current_category: therapeutics
+---
+application_id: 10918159
+activity_code: U41
+title: Nest#3-Wearable Interoperable Neuroprosthesis Gear (WING)
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: N/A
+terms: Acceleration;Adoption;bioelectricity;Charge;Clinical;Communication;Communities;Computers;cost;Custom;Data Collection;design;Development;Devices;Electric Stimulation;Electrocardiogram;Electronics;Evaluation;experience;Future;handheld mobile device;Housing;Implant;implantation;improved;innovation;interoperability;Intervention;Link;neuroprosthesis;open source;Operative Surgical Procedures;Paralysed;Participant;Persons;Physiological;Play;Power Sources;programs;Protocols documentation;prototype;Research;Research Personnel;response;Risk;Role;Self-Help Devices;sensor;Signal Transduction;Skin;smartphone application;Surface;System;Time;Titanium;Visualization;Water;wearable device;Wheelchairs;wireless;wireless communication;wireless fidelity;wireless sensor
+current_category: medical_device
+---
+application_id: 10861332
+activity_code: P01
+title: Project 2 Bacterial determinants of host adaptation and evolutionary success
+org_name: UNIV OF MASSACHUSETTS MED SCH WORCESTER
+phr: N/A
+terms: Address;Alleles;Atmosphere;Bacille Calmette-Guerin vaccination;Bacteria;bacterial genetics;Biological;clinically relevant;Collaborations;Complex;cytokine;Data;Development;Disease;Dissection;Distant;drug-sensitive;Ensure;Environment;Epidemiology;Evolution;Family;fitness;Fortune;Genes;Genetic;genetic approach;Genetic Determinism;Genetic Transcription;genetic variant;Heterozygote;Human;Human Characteristics;Human Genetics;human pathogen;Immune;Immune response;Immunity;Immunologics;in vivo;Individual;Infection;Inflammatory Response;Interferons;Intervention;Link;Lung;Macrophage;Measures;Membrane Microdomains;Metabolic;Modeling;mouse model;Mus;Mycobacterium tuberculosis;novel;Outcome;Oxidation-Reduction;pathogen;Pathogenesis;Pathway interactions;permissiveness;Persons;Peru;Peruvian;Phenotype;Phylogenetic Analysis;Population;Predisposition;pressure;Prevalence;Process;programs;Proteins;Pulmonary Pathology;Resistance;Respiratory System;response;Role;Series;Single Nucleotide Polymorphism;success;surveillance strategy;System;Testing;Therapeutic;trait;transcriptome sequencing;transmission process;Tuberculosis;Upper respiratory tract;Vaccination;vaccine strategy;Variant;Virulence;Work
+current_category: basic_research
+---
+application_id: 10918154
+activity_code: U41
+title: Nest#1-High density Interconnect with Variable Electronics (HIVE)
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: N/A
+terms: 3D Print;Academia;Adopted;Aerosols;biomarker identification;Brain;Cardiac;Catalogs;Clinical;Communication;Communities;Data;density;design;Devices;Electrodes;Electronics;Ensure;experimental study;Failure;Feedback;first-in-human;FPS-FES Oncogene;Funding;Goals;Human;Implant;implantable device;Industry;Investments;Lasers;Lead;Libraries;Location;Mechanics;Medical;Medical Device;microchip;Modification;Monkeys;nano;Nerve;neural prosthesis;novel;Ocular Prosthesis;open source;operation;Operative Surgical Procedures;Persons;Pilot Projects;power consumption;powered prosthesis;prevent;prosthetic hand;prototype;Publishing;Research;Research Personnel;Safety;safety testing;Sampling;seal;Specific qualifier value;Spinal;Spinal cord injury;supply chain;System;Technology;Test Result;Testing;Time;Titanium;usability;Utah;Validation;Vendor;verification and validation;Vision;Welding;wireless communication;Work
+current_category: medical_device
+---
+application_id: 10918151
+activity_code: U41
+title: Beekeeper Administrative Core for COSMIIC HORNET
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: N/A
+terms: Adoption;Agreement;Apidae;Applications Grants;Area;Arrhythmia;Autonomic nervous system;bioelectricity;bioelectronics;Bladder;Blood Vessels;Body System;Brain;Budgets;California;CBL gene;Cerebral Palsy;Charge;Clinic;clinical application;Clinical Trials;Communication;Communities;Congestive Heart Failure;Data;design;Devices;Diabetes Mellitus;disability;Disease;Documentation;Education;Electrodes;Electronics;Endocrine;Engineering;Ensure;Ethics;Family;Feedback;first-in-human;Foundations;Funding;Goals;Grant;Healthcare Systems;Heart;Heart Atrium;Human;Hypertension;Implant;implant design;implantable device;Incontinence;innovation;Institution;interest;Intestines;Label;Los Angeles;Macular degeneration;manufacture;Marketing;Medical;meetings;Menopause;Michigan;Monitor;Motor;Myocardial Infarction;Names;Nerve Pain;neural;neuroregulation;novel;Obesity;Ohio;online community;open source;operation;Pain;patient population;pelvic organ prolapse;Peripheral Nerves;Persons;Process;Property;recruit;Research;Resources;Retina;Retinitis Pigmentosa;Running;Schedule;Scientist;Sex Functioning;Skeletal Muscle;spasticity;Specific qualifier value;Spinal Cord;spinal cord and brain injury;Spinal cord injury;Spinal Ganglia;Stomach;Stroke;Synapses;System;Technology;Testing;Universities;web site
+current_category: infrastructure
+---
+application_id: 10861019
+activity_code: U19
+title: Development of dmPGE2 and Bcl-xl-targeting senolytics as medical countermeasures for H-ARS and DEARE
+org_name: UNIVERSITY OF MARYLAND BALTIMORE
+phr: N/A
+terms: Acute;Advanced Development;Affect;Age;aging reversal;Agonist;Animal Model;animal rule;Animals;BCL2L1 gene;Benign;Biology;Blood;Body System;Bone Marrow;Cardiac;Cells;Cessation of life;Childhood;Chronic Disease;Collaborations;combinatorial;CSF3 gene;Data;Depressed mood;Development;Dinoprostone;Dose;Edg4 Protein;efficacy study;Eicosanoids;Elderly;Environment;Etiology;Event;Exposure to;FDA approved;Filgrastim;General Population;Genetic Transcription;Goals;Grant;Granulocyte Colony-Stimulating Factor;Granulocyte-Macrophage Colony-Stimulating Factor;Hematologist;Hematopoiesis;Hematopoietic;hematopoietic stem cell fate;Hematopoietic stem cells;Hematopoietic System;Hemorrhage;Human;Human Resources;Inbreeding;Individual;Infection;irradiation;Joints;Kidney;Licensing;Life;lung injury;Lymphoid;medical countermeasure;Medical Research;Modeling;Molecular;mouse model;Mus;National Institute of Allergy and Infectious Disease;Natural regeneration;nonhuman primate;novel;Nuclear Accidents;Organ;Pegfilgrastim;Polypharmacy;Population;Populations at Risk;Primates;Productivity;programs;Qualifying;Radiation;Radiation Accidents;radiation countermeasure;Radiation Dose Unit;Radiation exposure;Radiation induced damage;Radiation Injuries;radiation mitigator;Radiation Protection;Radiation Syndromes;Radiation Toxicity;Radiology Specialty;radioprotected;Recovery;Regimen;repaired;Research Personnel;Residual state;response;sargramostim;Schedule;senescence;senescent cell;senolytics;stem cell biology;Stress;survival outcome;Survivors;System;Testing;Time;Tissues;Toxic effect;treatment effect;warfighter;young adult
+current_category: biotools
+---
+application_id: 10840924
+activity_code: P30
+title: P&F Program
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Area;Award;Behavioral;career development;Clinical;Development;Diabetes Mellitus;Disease;Faculty;feasibility research;Fellowship;Female;Fostering;Funding;Goals;graduate student;Grant;high risk;innovation;Laboratories;Mentors;National Institute of Diabetes and Digestive and Kidney Diseases;novel;Obesity;Peer Review;Pilot Projects;post-doctoral training;Postdoctoral Fellow;programs;Publications;Qualifying;Research;Research Personnel;Research Project Grants;Research Support;Resources;retention rate;Services;success;Time;Training;Underrepresented Minority;United States National Institutes of Health;Universities;Washington
+current_category: infrastructure
+---
+application_id: 10861016
+activity_code: U19
+title: Consortium-Wide Coordinating Core
+org_name: UNIVERSITY OF MARYLAND BALTIMORE
+phr: N/A
+terms: Acute;Advanced Development;Animal Model;Animals;Archives;Basic Science;Biocompatible Materials;Bioinformatics;Biological Markers;Biometry;Businesses;Calendar;Collaborations;Communication;Communities;Computer software;Data;Data Coordinating Center;data exchange;data sharing;Documentation;Educational Activities;Educational Materials;Equipment;Event;experience;Funding;General Population;Information Dissemination;Infrastructure;innovation;interest;Link;Medical center;medical countermeasure;meetings;Methods;Modeling;Monitor;National Heart, Lung, and Blood Institute;National Institute of Allergy and Infectious Disease;Nature;Pilot Projects;Procedures;programs;Protocols documentation;Publications;Radiation;radiation countermeasure;Radiation Syndromes;Radiobiology;Reagent;Research;Research Personnel;Resources;response;Running;Schedule;social media;Specimen;stem cell biology;stem cells;symposium;System;Training and Education;Translational Research;U-Series Cooperative Agreements;United States National Institutes of Health;Update;web page;web site
+current_category: infrastructure
+---
+application_id: 11075364
+activity_code: U19
+title: Analytics Core
+org_name: MAYO CLINIC  JACKSONVILLE
+phr: N/A
+terms: advanced system;Alzheimer&apos;s Disease;Alzheimer&apos;s disease risk;Alzheimer’s disease biomarker;Amyloid;Amyloid beta-Protein;Autopsy;Biological Markers;Biometry;Blood;Brain;brain tissue;Calibration;cerebrovascular;Clinical;Cognition;Cognitive;cohort;Communities;Complex;Computational Biology;computerized data processing;Computing Methodologies;Data;Data Analyses;data analysis pipeline;data framework;data harmonization;data integration;data mining;data visualization;Databases;deep learning;Deposition;Development;Diffusion Magnetic Resonance Imaging;Disease Progression;DNA Methylation;Documentation;endophenotype;Environment;Ethnic Population;fluorodeoxyglucose positron emission tomography;Functional Magnetic Resonance Imaging;Genetic;genetic association;Genetic study;Genetic Transcription;genome wide association study;Genotype;Goals;high dimensionality;high throughput analysis;Image;Institution;interoperability;Link;lipidomics;Magnetic Resonance Imaging;Measures;metabolomics;method development;Methods;Molecular;Molecular Profiling;multi-ethnic;multidimensional data;multidisciplinary;multimodal neuroimaging;multimodality;Multiomic Data;multiple omics;Nerve Degeneration;Neurofibrillary Tangles;neuroimaging;neuropathology;novel;Pathway Analysis;Peripheral;phenome;Phenotype;phenotypic data;polygenic risk score;Positron-Emission Tomography;Process;Proteomics;Research Personnel;Rest;Risk;risk prediction;risk stratification;Sampling;Science;Senile Plaques;Standardization;System;Systems Biology;tau Proteins;Team Process;Tissues;transcriptome sequencing;Visualization;whole genome;Work
+current_category: infrastructure
+---
+application_id: 10907974
+activity_code: U41
+title: Human Pangenome Reference
+org_name: WASHINGTON UNIVERSITY
+phr: N/A
+terms: Adopted;Adoption;bioinformatics tool;cohort;Collaborations;Communities;community engagement;Consent;Data;data access;Data Reporting;Data Storage and Retrieval;Democracy;Economics;Ecosystem;Elements;Ensure;Environment;Equity;ethical, legal, and social implication;experience;Feedback;flexibility;Fostering;Foundations;Generations;Genes;Genome;genomic data;Genomics;Graph;Haplotypes;Human;Human Genome;human pangenome;human reference genome;Humanities;improved;indexing;Individual;informatics tool;International;Libraries;Methods;pan-genome;Participant;Phase;Population;Process;Publications;Publishing;reference genome;Research Personnel;Resources;Sampling;Science;Sister;Solid;Strategic Planning;Structure;success;System;Technology Transfer;telomere;tool;Update;Work
+current_category: other
+---
+application_id: 10840910
+activity_code: U19
+title: Core A: Administrative Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: N/A
+terms: Animals;aspirin-exacerbated respiratory disease;Documentation;Funding Opportunities;Human;Human Resources;human subject;Individual;innovation;Institution;Manuscripts;meetings;Notification;Preparation;Principal Investigator;Progress Reports;Protocols documentation;Research;Schedule;Services;Specific qualifier value;symposium;Therapeutic;Training;Travel
+current_category: infrastructure
+---
+application_id: 10907976
+activity_code: U41
+title: HGRP Logistical Coordinating Center
+org_name: WASHINGTON UNIVERSITY
+phr: N/A
+terms: Address;Adopted;Adoption;Collaborations;Communication;Communities;community engagement;Data;data access;Development;Education and Outreach;Educational Activities;Educational Materials;Educational workshop;Effectiveness;ethical, legal, and social implication;Feedback;Foundations;functional genomics;Future;genetic counselor;Genomics;Goals;Graph;human pangenome;human reference genome;implementation strategy;Infrastructure;innovation;International;international partnership;Lead;Leadership;Library Materials;Link;Maintenance;Manuscripts;Medical;meetings;member;Methods;Molecular;Monitor;National Human Genome Research Institute;Newsletter;Nuclear;Online Systems;operation;outreach;pan-genome;Participant;Persons;Policies;Population;Press Releases;programs;Protocols documentation;Publications;recruit;Reporting;repository;Research;Research Design;Research Personnel;Resource Sharing;Resources;social media;success;Technology;telomere;tool;Training;Training and Education;Update;web site;webinar;Work;working group;Writing
+current_category: other
+---
+application_id: 10910214
+activity_code: UC7
+title: Biocontainment Research support services core
+org_name: GEORGE MASON UNIVERSITY
+phr: N/A
+terms: 2019-nCoV;Acceleration;Address;Aerosols;Animal Experimentation;animal imaging;Animal Model;animal rule;Animals;anti-microbial peptide;Antigens;Bacillus anthracis;biocontainment facility;biodefense;Biodistribution;Biological Assay;Biological Models;Biomedical Research;Biotechnology;Body System;Brucella abortus;Brucella melitensis;Burkholderia mallei;Burkholderia pseudomallei;cell type;Chikungunya virus;Clinical;Clinical Trials;Communicable Diseases;Containment;Coronavirus;detection limit;Development;Diagnostic;diagnostic tool;DNA;Dose;Eastern Equine Encephalitis Virus;Evaluation;expectation;Fortification;Francisella tularensis;Funding;Human;human disease;immunoregulation;In Vitro;in vivo;in vivo Model;Infection;Infectious Diseases Research;Inflammatory;Institution;instrumentation;Investigational Drugs;Japanese encephalitis virus;Laboratories;Laboratory Research;lead optimization;lipid nanoparticle;Marketing;medical countermeasure;metabolomics;microphysiology system;Middle Eastern;Modeling;Modernization;Molecular;Mycobacterium tuberculosis;nanoparticle;Nanotechnology;National Institute of Allergy and Infectious Disease;New Drug Approvals;novel diagnostics;Organ;organ growth;organ on a chip;Organoids;pandemic preparedness;Particulate;pathogen;Pathogen detection;pathogenic bacteria;pathogenic virus;Peer Review;Pharmacologic Substance;Positioning Attribute;pre-clinical;preclinical development;preclinical study;preservation;priority pathogen;Process;Product Approvals;product development;Proteins;Proteomics;Publishing;Research;research faculty;Research Personnel;Research Priority;Research Support;Resources;respiratory;Rift Valley fever virus;RNA delivery;safety assessment;SARS coronavirus;Scientist;screening;Services;small molecule therapeutics;success;systems research;Technology;technology platform;Testing;therapeutic evaluation;Tissues;Toxic effect;Training;Universities;Vaccines;Validation;Venezuelan Equine Encephalitis Virus;Virus;Western Equine Encephalitis Virus;Yellow fever virus;Yersinia pestis
+current_category: infrastructure
+---
+application_id: 10840859
+activity_code: U19
+title: Research Project I: AAV-CRISPR to Treat Huntington's Disease
+org_name: UNIVERSITY OF CALIFORNIA BERKELEY
+phr: N/A
+terms: Acute;adeno-associated viral vector;Alleles;Animal Model;Animals;Autopsy;Basal Ganglia;behavior test;Binding;Biodistribution;Brain;Brain region;brain tissue;Capsid;cell transformation;Clinic;Clinical;Clinical Trials;Clustered Regularly Interspaced Short Palindromic Repeats;Complex;Contracts;Convection;Corpus striatum structure;CRISPR/Cas technology;Data;delivery vehicle;Dependovirus;design;Disease;disease phenotype;DNA;DNA Double Strand Break;Dose;effective therapy;efficacy evaluation;efficacy testing;Engineering;Ensure;Enzymes;Evaluation;Excision;Exons;experimental study;feasibility testing;Fibroblasts;first-in-human;gain of function mutation;gene therapy;Genes;genome editing;Genomics;Guide RNA;Guidelines;Haplotypes;Hereditary Disease;Human;Huntington Disease;Huntington gene;In Vitro;Induced pluripotent stem cell derived neurons;Injections;Investigational Drugs;Investigational New Drug Application;knock-down;Lead;Length;Macaca fascicularis;Magnetic Resonance Imaging;Mediating;meetings;Molecular;mouse model;Movement Disorders;Mus;mutant;Mutation;Nervous System Disorder;Neurodegenerative Disorders;neurogenetics;neuron loss;nonhuman primate;novel;Onset of illness;Organ;Pathogenicity;Patients;Peripheral;Persons;polyglutamine;pre-clinical;pre-Investigational New Drug meeting;Process;programs;progressive neurodegeneration;Proteins;putamen;Rattus;Recombinants;repaired;Reporting;research clinical testing;Research Project Grants;RNA;Rodent;Safety;Satellite Viruses;screening;Serotyping;Severities;Site;Specific qualifier value;System;Testing;Thalamic structure;Therapeutic;tissue/cell culture;Tissues;Toxic effect;Toxicology;transduction efficiency;Translating;United States Food and Drug Administration;vector
+current_category: therapeutics
+---
+application_id: 11079651
+activity_code: U19
+title: Admin-Core-001
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10907975
+activity_code: U41
+title: Community Outreach and Adoption
+org_name: WASHINGTON UNIVERSITY
+phr: N/A
+terms: Address;Adopted;Adoption;Basic Science;Benchmarking;Clinical;Clinical Research;Code;Collaborations;Communication;Communities;community engagement;Community Outreach;Complement;Consent Forms;Data;Data Analyses;data dissemination;data exchange;data quality;data sharing;Data Storage and Retrieval;data submission;Democracy;design;Development;Disease;Documentation;Ecosystem;Education;education resources;Ensure;Equity;equity, diversity, and inclusion;ethical, legal, and social implication;Ethics;Feedback;Fostering;functional genomics;Future;genetic counselor;Genetic study;Genomics;global health;Graph;Haplotypes;Health;health disparity;Human;human pangenome;Infrastructure;International;international partnership;interoperability;Justice;Knowledge;Language;Laws;Medical;meetings;member;Methods;Molecular;Molecular Diagnosis;Ontology;outreach;Ownership;pan-genome;Pathway interactions;Phase;Policies;Population;portability;programs;Protocols documentation;public database;quality assurance;Readability;recruit;Research Personnel;Resources;sample collection;Science;Sister;success;Technology;tool;tool development;Training;Training and Education;Translating;Trust;TRUST principles;Update;Variant;Work;working group
+current_category: biotools
+---
+application_id: 10910193
+activity_code: UC7
+title: Biocontainment Research Support Service(s) Core
+org_name: UNIVERSITY OF MISSOURI-COLUMBIA
+phr: N/A
+terms: 2019-nCoV;Advanced Development;Aerosols;Animal Model;Animals;Area;biocontainment facility;biodefense;Biological Assay;biosafety level 3 facility;Blood Chemical Analysis;Cavia;Cells;Chemicals;Collaborations;Communicable Diseases;Communication;Communities;Containment;Controlled Environment;Core Facility;COVID-19 pandemic;Custom;cytokine;Data;Dedications;Development;Diagnostic;Emerging Communicable Diseases;emerging pathogen;Ensure;Equipment;Evaluation;Event;experience;experimental study;Family suidae;Ferrets;Flow Cytometry;Funding;Goals;Goat;Growth;Hamsters;human disease;human model;Human Resources;Image;Immune response;Immunity;Immunology;in vitro Assay;Infection;Infectious Diseases Research;Inhalation Exposure;instrumentation;Investments;Maintenance;Manufacturer;medical countermeasure;Methodology;Methods;Microbiology;Microscopy;Missouri;Modeling;Monitor;Mus;Mutant Strains Mice;National Institute of Allergy and Infectious Disease;new outbreak;next generation;novel;novel vaccines;Oryctolagus cuniculus;pathogen;pathogen exposure;pathogenic bacteria;pathogenic virus;Persons;pre-clinical;preclinical development;priority pathogen;Procedures;Productivity;programs;Public Health;Rattus;real-time images;Recovery;recruit;Reproducibility;Research;research and development;Research Personnel;Research Support;Resource Development;Resources;response;Route;Safety;Sampling;Scientist;Secure;Services;Sheep;Specialist;Speed;Structure;System;Technical Expertise;Technology;Time;Training;Transgenic Animals;Translating;United States National Institutes of Health;Universities;vector transmission;Viral;Work;Workforce Development
+current_category: infrastructure
+---
+application_id: 10807092
+activity_code: U19
+title: Systems biological assessment of innate responses to vaccination
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Ablation;adaptive immune response;adaptive immunity;Address;Adjuvant;Adult;Allergic Reaction;Anti-viral resistance;Antibiotics;Antibody Response;antigen-specific T cells;B-Lymphocytes;biological systems;Cells;Clinical Trials;COVID-19 vaccination;COVID-19 vaccine;cytokine;Cytometry;Dendritic Cells;Dengue;Development;Epigenetic Process;epigenomics;Exposure to;Fine needle aspiration biopsy;Frequencies;gut microbiota;Human;Hypersensitivity;Immune response;Immunity;immunogenicity;Immunologics;Immunology;immunoregulation;Impairment;imprint;Individual;Influenza;Influenza A Virus, H5N1 Subtype;influenza virus vaccine;innate immune mechanisms;Innate Immune Response;insight;lymph nodes;Memory;Messenger RNA;metabolomics;microbiome;microbiota;Molecular Profiling;monocyte;multiple omics;Myelogenous;Myeloid Cells;Natural Immunity;Nature;Novavax COVID-19 vaccine;novel;pandemic influenza;Peripheral Blood Mononuclear Cell;Pfizer-BioNTech COVID-19 vaccine;Plasma;Population;Predisposition;Rabies Vaccines;Rabies virus;Recombinants;Reporting;Resistance;response;RNA vaccine;Role;Sampling;Saponins;seasonal influenza;Secondary Immunization;Serum;South Africa;South African;Special Population;System;transcriptomics;Vaccinated;Vaccination;vaccine development;vaccine immunogenicity;Vaccines;vaccinology;Viral;Virus;Work;young adult;ZIKA
+current_category: therapeutics
+---
+application_id: 10816254
+activity_code: U2C
+title: Administrative Core
+org_name: UNIVERSITY OF TEXAS MED BR GALVESTON
+phr: N/A
+terms: Acceleration;Adoption;Analytical Chemistry;Arum;Biochemical;Calibration;Cells;Chemicals;clinical development;clinically relevant;Collaborations;college;commercialization;Communication;Computer Models;Consultations;Cosmetics;Data;Data Management Resources;data quality;data sharing;Database Management Systems;Decision Making;Development;Devices;Discipline;Discipline of obstetrics;Division of Basic Sciences;drug development;Drug Industry;Educational workshop;effectiveness evaluation;Elements;Ensure;Evaluation;experience;experimental study;Faculty;FAIR principles;Feedback;follow-up;Frequencies;fundamental research;Funding;Goals;Government Agencies;Gynecology;Human;human female;Human Resources;Individual;Industry;industry partner;Institution;Joints;Knowledge;Laboratories;Leadership;manufacture;Measurement;Medical;meetings;member;Mentors;microphysiology system;Molecular;Monitor;outreach;Performance;Pharmacologic Substance;practical application;Pregnancy;Preparation;Principal Investigator;Private Sector;programs;prospective;Protocols documentation;Publications;Qualifying;quality assurance;Quality Control;Reporting;Reproducibility;reproductive organ;Research;Research Personnel;Resources;Science;success;technology platform;Technology Transfer;Testing;Texas;Tissue Microarray;Tissues;tool development;Training;Translating;translational potential;Translational Research;Translations;United States National Institutes of Health;Universities;Women&apos;s Health;Work
+current_category: infrastructure
+---
+application_id: 10816294
+activity_code: U2C
+title: Admin Core
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Advisory Committees;authority;Bioinformatics;Budgets;Clinical Research;Collaborations;Communication;Communities;Community Outreach;Complex;Data;data dissemination;data sharing;Database Management Systems;drug development;drug efficacy;experience;Fostering;Goals;Human Resources;improved;industry partner;Information Dissemination;Institution;Kidney;Kidney Diseases;Leadership;Manuals;medication safety;meetings;microphysiology system;Monitor;operation;Patients;Performance;Physicians;Procedures;Professional Organizations;programs;protocol development;Protocols documentation;Qualifying;Quality Control;Records;Reporting;Reproducibility;Research;research and development;Research Personnel;Research Project Grants;Resources;Running;Science;Scientist;statistics;tool development;Translational Research;United States National Institutes of Health;Universities;working group
+current_category: infrastructure
+---
+application_id: 10815365
+activity_code: U2C
+title: MPS Resources Section
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: N/A
+terms: Advisory Committees;Automation;Back;Biological Sciences;Biomimetics;Cells;Cellular biology;Clinic;Clinical;Clinical Trials;cohort;Collaborations;commercialization;Computational Biology;Computer Models;Data;Devices;drug development;drug discovery;drug efficacy;drug metabolism;drug testing;efficacy testing;Ensure;Fatty Liver;Future;Goals;Hepatic;induced pluripotent stem cell;Informatics;Liver;Measurement;Medical center;Metadata;microphysiology system;Molecular Biology;Names;non-alcoholic fatty liver disease;Obesity;Organ;Patients;Positioning Attribute;Preparation;Procedures;Production;Protocols documentation;Qualifying;Quality Control;Reagent;Reproducibility;Research Design;Resource Sharing;Resources;safety testing;Sampling;scale up;Source;statistics;Structure;Systems Biology;technology platform;tool;tool development;Toxic effect;Toxicology;Universities;Validation;Work
+current_category: infrastructure

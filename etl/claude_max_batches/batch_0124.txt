@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10931654
+activity_code: U54
+title: Pilot Research Project: Evaluating Black and African American Breast Cancer Populations for Therapeutic Targeting of Aberrant p53, MDM2, MDMX, and PARP signaling
+org_name: HUNTER COLLEGE
+phr: N/A
+terms: Address;Affect;African American;African American population;African ancestry;aggressive breast cancer;American;animal imaging;Animals;Basic Research Breast Cancer;Bioinformatics;Biological;Biological Markers;biological research;Biological Specimen Banks;Biology;Biometry;Black American;Black race;BRCA mutations;BRCA1 gene;Breast Cancer Cell;Breast Cancer Patient;Cancer Biology;cancer biomarkers;cancer health disparity;Cancer health equity;cancer subtypes;Cell Culture Techniques;Cell Line;Cells;Chromosomes;Clinical;cohort;Collaborations;college;Communities;community engagement;Community Outreach;Complex;data acquisition;Data Analyses;Detection;Diagnosis;Disparity;DNA biosynthesis;DNA Damage;DNA Repair Pathway;Doctor of Philosophy;education research;Educational workshop;Eligibility Determination;empowerment;Ethics;Ethnic Origin;European;Exposure to;follower of religion Jewish;Fox Chase Cancer Center;Gene Amplification;Genetic Engineering;Genetic Screening;Goals;health disparity;Health Fairs;Human;Imaging technology;Immunohistochemistry;improved;Informed Consent;inhibitor therapy;insight;Institution;Learning;Malignant Breast Neoplasm;Malignant Neoplasms;MDM2 gene;Mentors;Microarray Analysis;minority engagement;minority trainee;Molecular Biology;Morbidity - disease rate;mortality;mouse model;mutant;Mutation;mutation carrier;Neoplasm Circulating Cells;next generation;novel;Outcome;Participant;Pathology;Pathway interactions;patient derived xenograft model;Patients;Pilot Projects;Play;Poly(ADP-ribose) Polymerase Inhibitor;Poly(ADP-ribose) Polymerases;Population;Probability;Proliferating;protein expression;Proteins;Race;replication stress;Research;Research Personnel;Research Project Grants;Resources;reverse genetics;Risk;Role;Sampling;Scientist;screening;Signal Transduction;Specimen;Stains;Students;systemic barrier;targeted treatment;temozolomide;Testing;therapeutic target;Tissue Microarray;Tissues;TP53 gene;Training;triple-negative invasive breast carcinoma;tumor;Tumor Tissue;Underrepresented Minority;Underrepresented Students;Universities;university student;Woman;Work;Xenograft procedure
+current_category: therapeutics
+---
+application_id: 10931661
+activity_code: U54
+title: Community Outreach Core
+org_name: HUNTER COLLEGE
+phr: N/A
+terms: Acculturation;Achievement;Address;African American;African American population;anti-cancer research;Asian Pacific American;Awareness;Black race;Breast Cancer Detection;Cancer Burden;cancer health disparity;cancer risk;Clinical;Collaborations;Colorectal Cancer;colorectal cancer screening;Communication;Communities;community advisory board;community based participatory research;community engaged approach;community engagement;community organizations;Community Outreach;Community Participation;community partners;community research;Competence;COVID-19 pandemic;Diagnosis;Disparity;Doctor of Philosophy;Education;education research;Educational Curriculum;Equity;ethnic minority;ethnic minority population;Ethnic Population;Evaluation;evidence base;Evidence based intervention;experience;Faith-based organization;Fostering;Fright;Funding;Genetic;Genetic Enhancement;genetic testing;Genetic testing for cancer risk;Genomics;Geographic Locations;Goals;Hispanic Americans;Impact evaluation;improved;Infrastructure;Inherited;Institutionalization;Intervention;Knowledge;Language;Logic;low health literacy;low socioeconomic status;Malignant Breast Neoplasm;Malignant Neoplasms;Medical;Methods;Modeling;Monitor;New York City;Outcome;outreach;Outreach Research;Population;Process;Program Evaluation;programs;Race;racial minority;racial minority population;Research Infrastructure;Research Personnel;Research Project Grants;Research Support;Resources;Risk Assessment;Scientist;screening;Screening for cancer;screening program;service providers;service utilization;social health determinants;success;systemic barrier;Test Result;Testing;testing services;tool;training opportunity;Woman;Yin
+current_category: infrastructure
+---
+application_id: 10931646
+activity_code: U54
+title: Biostatistics and Bioinformatics Core (BBC)
+org_name: HUNTER COLLEGE
+phr: N/A
+terms: Acceleration;Address;Advanced Malignant Neoplasm;African;Algorithms;American;Applications Grants;Artificial Intelligence;artificial intelligence algorithm;Asian;Bioinformatics;biological systems;Biometry;Biostatistics Core;Cancer Biology;cancer genetics;cancer health disparity;cancer prevention;career;Cell division;ChIP-seq;Clinical;clinical application;Clinical Informatics;Clinical Trials;Collaborations;Collection;Communities;computer infrastructure;Consultations;cost effective;Data;Data Analyses;Data Protection;data resource;Data Set;Database Management Systems;Development;Diverse Workforce;DNA sequencing;Doctor of Philosophy;Education;Environment;Epigenetic Process;epigenomics;Equity;ethnic minority population;experience;Experimental Designs;Fostering;Funding;Future;Genetic;Genomics;Goals;Grant;graph neural network;Health Disparities Research;High Performance Computing;Informatics;Infrastructure;innovation;Institution;instrument;interest;Investigation;Knowledge Extraction;Laboratories;Latinx;Leadership;Link;Machine Learning;Malignant Neoplasms;Manuscripts;Medical Genetics;member;Methods;minority investigator;minority trainee;Mission;Molecular;Multiomic Data;New Jersey;New York City;novel;Phase;Philadelphia;Pilot Projects;Play;Population Sciences;preclinical study;Productivity;protein function;protein protein interaction;Proteins;Proteomics;Publishing;Qualitative Research;racial minority population;Research;Research Design;Research Methodology;Research Personnel;Research Project Grants;Research Proposals;Research Support;Research Training;Resource Sharing;Retrieval;Ribosomal RNA;Role;Science;Secure;Services;single-cell RNA sequencing;skills;software development;statistics;Students;Surface;System;systemic barrier;Technology;tool;Training;transcriptome sequencing;Underrepresented Minority;Writing
+current_category: infrastructure
+---
+application_id: 11176887
+activity_code: U54
+title: Perceived Discrimination, Geography, and Demographic Effects on Immune Cell Function and Regulation
+org_name: MORGAN STATE UNIVERSITY
+phr: N/A
+terms: Affect;Baltimore;Behavioral;Biological;biopsychosocial;Black race;black women;Blood;Blood specimen;breast cancer metastasis;CD14 gene;Cell Physiology;cell type;Cells;chemokine;cytokine;Cytokine Gene;Data;Demographic Factors;Demographic Survey;design;differential expression;dimensional analysis;Dimensions;Discrimination;Disease;Disease susceptibility;DNA methylation profiling;Epigenetic Process;epigenetic regulation;Equation;ethnic identity;Ethnic Origin;experience;Flow Cytometry;Genetic Transcription;Genome;genome sciences;Genomics;Geography;Health;Health Disparities Research;Immune;Immune signaling;Immune system;Immunologics;immunoregulation;Individual;Infection;Inflammation;Inflammatory;inflammatory marker;Inflammatory Response;innovation;insight;Institution;interest;Interleukins;Intervention;Knowledge;Laboratories;Lipopolysaccharides;Macrophage;Maryland;Measures;Mediating;Methylation;methylation pattern;Mid-Atlantic Region;Modeling;Molecular;monocyte;Mononuclear;Nature;next generation;Organ;Outcome;Participant;Patient Self-Report;perceived discrimination;peripheral blood;Peripheral Blood Mononuclear Cell;Population;Population Group;Population Heterogeneity;Predisposition;Production;Psychometrics;psychosocial;Psychosocial Factor;Race;racial bias;racial discrimination;racial diversity;racial identity;Randomized;recruit;Regulation;Reporting;Research Personnel;response;Role;Signaling Protein;social;social exclusion;social inclusion;Statistical Data Interpretation;Techniques;Testing;Toxin;transcriptome sequencing;transcriptomics;trend;United States;Universities;urban health disparities;Urbanization;Variant;virtual;whole genome
+current_category: basic_research
+---
+application_id: 11031450
+activity_code: U19
+title: Core-002
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10883740
+activity_code: P30
+title: Core F: Biomarker Core
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: N/A
+terms: Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Amyloid;Amyloid beta-42;Amyloid beta-Protein;Antibodies;Automobile Driving;Biological Assay;Biological Markers;Blood;blood-based biomarker;Brain;cardiovascular risk factor;Clinical;clinical center;Clinical Management;clinical practice;Clinical Research;Clinical Trials;Collaborations;Collection;cost;Coupled;Data;data management;Databases;Dementia;Development;Diagnosis;Diagnostic;diagnostic accuracy;Disease;disease heterogeneity;Disease Progression;education research;Educational Activities;Enzyme-Linked Immunosorbent Assay;Ethnic Population;Evaluation;Faculty;Future;genomic data;Goals;Health Professional;health training;improved;innovation;Interleukin-10;Interleukin-6;Light;Longitudinal cohort;Magnetic Resonance Imaging;Mass Spectrum Analysis;Measurement;Measures;Michigan;Modality;Molecular Profiling;neurofilament;neuroimaging;neuropathology;Neuropsychology;novel;novel marker;Onset of illness;patient population;Patient Recruitments;Patients;Peripheral;Physicians;Plasma;Positron-Emission Tomography;precision medicine;Proteomics;racial population;Reagent;Research;Research Personnel;Research Support;Resources;Sampling;Scientist;Shapes;single molecule;Students;System;targeted biomarker;tau Proteins;Technology;Time;TNF gene;Translational Research;Universities
+current_category: infrastructure
+---
+application_id: 11082693
+activity_code: U42
+title: Applied Research Section
+org_name: JACKSON LABORATORY
+phr: N/A
+terms: Animal Model;Applied Research;Archives;base;base editor;Catalogs;causal variant;Cells;Clinical Trials;Collaborations;Collection;Communities;CRISPR therapeutics;design;Development;Disease;disease model;DNA;efficacy testing;ES Cell Line;Evaluation;experience;Fibroblasts;follow-up;Future;Generations;Genetic Diseases;genome editing;genome editor;Goals;Guide RNA;Human;human disease;human induced pluripotent stem cells;human model;improved;In Vitro;in vivo;Methodology;Modeling;Modification;Molecular;Mouse Embryonic Stem Cells;mouse model;Mus;Mutant Strains Mice;Mutation;novel;Organ;Patients;Phenotype;pluripotency;Pre-Clinical Model;precision genetics;Preclinical Testing;prime editor;Protocols documentation;rare genetic disorder;Research;Research Project Grants;Resources;Safety;screening;Services;Sickle Cell Anemia;System;Testing;The Jackson Laboratory;Therapeutic;therapeutic genome editing;Tissues;tool;Transfection;translational applications;Translational Research;Validation
+current_category: digital_health
+---
+application_id: 10845592
+activity_code: U54
+title: RCMI Administrative Core
+org_name: UNIVERSITY OF HOUSTON
+phr: N/A
+terms: Acceleration;addiction;Address;Affect;Area;Asian Americans;Basic Science;Black race;Budgets;Businesses;cancer prevention;career;Certification;Characteristics;Charge;Chronic Disease;Cities;Collaborations;college;Communicable Diseases;Communication;Communities;Data;Education;Ensure;Environment;Equity;ethnic diversity;Evaluation;evidence base;executive function;Extramural Activities;Funding;Goals;Grant;Health;health disparity;health equity;Health equity research;Health Occupations;Hispanic-serving Institution;Human Resources;improved;Influentials;Infrastructure;innovation;Institution;interest;Investments;Lead;Leadership;Logic;Longevity;member;Mentors;metropolitan;minority scientist;Minority-Serving Institution;Mission;Modeling;Monitor;National Institute on Minority Health and Health Disparities;Native Americans;Operations Research;Pacific Island Americans;Pilot Projects;Policy Maker;population health;Postdoctoral Fellow;prevent;Prevention Research;Productivity;professor;Program Evaluation;programs;Research;Research Infrastructure;Research Institute;Research Personnel;Research Project Grants;Resource Allocation;Resource Sharing;Resources;Schedule;Science;Scientist;Strategic Planning;Structure;success;System;Time;Translations;Underrepresented Minority;underserved community;Universities;vulnerable community;ward
+current_category: infrastructure
+---
+application_id: 10925219
+activity_code: U54
+title: Planning and Evaluation Core
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: N/A
+terms: Achievement;Advisory Committees;analytical tool;anti-cancer research;Award;Benchmarking;cancer health disparity;Cancer health equity;Cancer Research Project;career;career development;catalyst;Chicago;Clinical Sciences;Communication;community engaged approach;Consultations;Counseling;Data;Data Analyses;data tools;Decision Making;Development;early-career faculty;Educational workshop;Ensure;Evaluation;experience;Faculty;faculty mentor;Foundations;Funding;Funding Mechanisms;Goals;Grant;Health;health disparity;improved;Incubators;Infrastructure;innovation;Institution;Intervention Studies;Knowledge;Leadership;Logic;mathematical model;member;Mentors;Mentorship;Mission;Modeling;Monitor;novel;Outcome;Performance;Pilot Projects;Process;process improvement;Program Development;programs;Progress Reports;Quasi-experiment;Recommendation;Reporting;Research;Research Personnel;Research Project Grants;Resources;Running;skills;Statistical Data Interpretation;Structure;Surveys;Time;Translational Research;Universities;Work
+current_category: infrastructure
+---
+application_id: 10883602
+activity_code: P01
+title: Administrative Core
+org_name: WASHINGTON STATE UNIVERSITY
+phr: N/A
+terms: Advisory Committees;Alaska Native;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;American Indians;Appointment;Articulation;Biology;brain health;Budgets;Businesses;career development;Clinical Trials Data Monitoring Committees;Collaborations;Collection;college;Communication;Communities;Community Actions;community based participatory approach;community organizations;Computers;data sharing;Doctor of Philosophy;Education;Ensure;Evaluation;experience;Faculty;Genetic;Goals;Hawaii;Health;Health care facility;health disparity;Human Resources;implementation facilitation;Institution;Institutional Review Boards;International;Leadership;Medicine;meetings;Mental Health;Minnesota;Minority Groups;Mission;Monitor;National Institute on Aging;Native Hawaiian;Native Hawaiian or Other Pacific Islander;natives;Neurology;operation;Oral;outreach;Pacific Islander;physical conditioning;Policies;Population Research;Preparation;Principal Investigator;Process;professor;programs;Publications;recruit;Regulation;Research;Research Activity;Research Methodology;Research Personnel;Research Project Grants;Research Support;Rural;Satellite Centers;Scholarship;Scientist;Site;Specialist;Travel;Tribes;Underrepresented Minority;Underrepresented Populations;Underserved Population;Universities;urban Native American;Washington;Work;Writing
+current_category: infrastructure
+---
+application_id: 10925217
+activity_code: U54
+title: Administrative Core
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: N/A
+terms: Adherence;Advanced Malignant Neoplasm;Advisory Committees;anti-cancer research;Award;Budgets;cancer health disparity;Cancer health equity;career;career development;Chicago;Clinical;Collaborations;Communication;Communities;Comprehensive Cancer Center;conflict resolution;Decision Making;early-career faculty;Education;Ensure;Equity;Evaluation;experience;Faculty;Foundations;Goals;Guidelines;Illinois;improved;Individual;Infrastructure;Institution;Institutional Policy;interest;Lead;Leadership;Logic;Malignant Neoplasms;Manuals;meetings;member;Mentors;Minority;Minority-Serving Institution;Modeling;operation;outreach;Process;programs;Protocols documentation;recruit;Reporting;Research;research facility;Resources;Solid;Stream;Structure;Student recruitment;Students;success;Talents;Time;tool;Universities;Work
+current_category: infrastructure
+---
+application_id: 10925223
+activity_code: U54
+title: Outreach Core
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: N/A
+terms: Acceleration;Achievement;Address;Advanced Malignant Neoplasm;anti-cancer research;Area;Award;Awareness;cancer care;cancer education;cancer health disparity;Cancer health equity;cancer prevention;Cancer Survivor;Cancer Survivorship;cancer therapy;Chicago;Cities;citizen science;Clinical;Clinical Trials;Collaborations;Communities;community engaged approach;community engagement;Community Health;Community Networks;community organizations;Community Outreach;community partners;community partnership;community-centered;Comprehensive Cancer Center;Continuity of Patient Care;Death Rate;Development;disability;Disabled Persons;Disparity;Dissemination and Implementation;Early Diagnosis;Education;Education and Outreach;education research;Educational Activities;ethnic minority;Evaluation;Event;evidence base;Evidence based practice;experience;Faculty;forging;Fostering;Funding;gender minority community;Geographic Locations;Grant;Health;health disparity populations;Health Educators;health equity;Health equity research;Health Fairs;Human;Illinois;Immersion;improved;Incidence;Individual;Inequity;innovation;Institution;Interview;Lead;Leadership;Linguistics;literacy;Localized Malignant Neoplasm;Low income;Malignant Neoplasms;Maps;member;men of color;minority communities;mortality;Needs Assessment;Neighborhoods;neoplasm registry;outreach;Outreach Research;peer;peer coaching;Penetrance;Persons;Phase;Population;Positioning Attribute;Prevention;process evaluation;Productivity;programs;racial minority;Recommendation;Research;Research Personnel;Research Project Grants;Resources;response;screening;Secure;Services;Sexual and Gender Minorities;Students;Surveys;survivorship;symposium;tool;underserved community;Underserved Population;Universities;Vulnerable Populations;Work
+current_category: infrastructure
+---
+application_id: 11082692
+activity_code: U42
+title: Resource Section
+org_name: JACKSON LABORATORY
+phr: N/A
+terms: Address;Adoption;Agreement;Animals;Archives;Awareness;Biology;Biomedical Research;Breeding;Cell Line;Communities;Cryopreservation;Data Analytics;Derivation procedure;design;Development;Disease;disease model;Embryo;Ensure;Environment;experience;Fee-for-Service Plans;Feedback;Generations;Genetic;Genetic Engineering;Genetically Engineered Mouse;Genome;genome editing;Genome engineering;Genomics;Genotype;Germ;Goals;Health;Health Status;high risk;human disease;improved;induced pluripotent stem cell;Informatics;interest;International;Laboratories;Laboratory mice;Lead;Mammalian Genetics;meetings;member;Methods;Mission;Modeling;Monitor;Mouse Embryonic Stem Cells;mouse genetics;Mouse Strains;Mus;mutant;Mutant Strains Mice;pathogen;Performance;Phenotype;Physiology;Positioning Attribute;Procedures;Process;Production;programs;pup;Qualifying;Quality Control;repository;Reproducibility;Request for Proposals;Research;Research Activity;Research Personnel;Research Project Grants;Resources;Sales;Secure;Selection Criteria;Services;sperm cell;sperm cryopreservation;Standardization;System;Techniques;Technology;Testing;The Jackson Laboratory;Therapeutic;United States National Institutes of Health;web page;web site;Writing
+current_category: infrastructure
+---
+application_id: 10924009
+activity_code: U2C
+title: Genome Characterization Unit
+org_name: WASHINGTON UNIVERSITY
+phr: N/A
+terms: Address;African American population;Amendment;archive data;Biocompatible Materials;bioinformatics tool;Biological Assay;Board Certification;Cancer Biology;cancer genomics;cancer type;candidate selection;Categories;cell free DNA;cellular imaging;Cholangiocarcinoma;CLIA certified;CLIA certified sequencing;Clinical;Clinical Data;clinically actionable;clinically relevant;Collection;Colorectal Cancer;Communities;Computers;Data;data acquisition;Data Commons;Data Storage and Retrieval;Databases;deep sequencing;Detection;Diagnostic;Disease Progression;DNA;early onset;Eligibility Determination;Ensure;Event;Evolution;exome sequencing;follow-up;Friends;Gene Fusion;Genes;Genome;genomic data;Genomic Data Commons;Genomics;Germ Lines;Germ-Line Mutation;Goals;Guidelines;health disparity;Health Insurance Portability and Accountability Act;Human Resources;imaging study;immunogenic;Incidence;indexing;Individual;Industry Standard;Inherited;insertion/deletion mutation;Libraries;Methodology;Methods;Molecular;Monitor;mortality;Multiple Myeloma;Mutation;neoplastic cell;Normal tissue morphology;Nucleic Acids;Participant;Pathogenicity;Pathologist;patient engagement;Patients;Peptides;Physicians;Practice Management;preference;Preparation;Procedures;Process;Prognosis;programs;prospective;Proteomics;Published Comment;Publishing;Recommendation;Reporting;Research;research study;RNA;Running;Sampling;Schedule;Secure;Single Nucleotide Polymorphism;single-cell RNA sequencing;Somatic Mutation;Specimen;statistics;Surveys;System;targeted sequencing;Testing;Time;timeline;transcriptome sequencing;tumor;tumor diagnostic;Tumor Tissue;tumor-immune system interactions;Universities;Washington;web portal
+current_category: infrastructure
+---
+application_id: 10767338
+activity_code: P42
+title: Research Experience and Training Coordination Core
+org_name: UNIVERSITY OF KENTUCKY
+phr: PROJECT NARRATIVE The focus of University of Kentucky Superfund Research Center (UK-SRC) is committed to developing an in- depth understanding of environmental health associated with exposure to organic pollutants as well as the development of protective technologies to aid in reduction of such exposure incidents. The proposed interdisiplinary training activites of the UK-SRC will be led and coordinated by the Research Experience and Training Coordination Core to successfully train skilled indiv
+terms: Address;Affect;Bioinformatics;career;career development;Clinical;clinical center;Clinical Sciences;Collaborations;Communication;Communities;community engagement;Complex;Creativeness;Data Analyses;Data Collection;data management;Data Science;data sharing;design;Development;Discipline;Disparate;Doctor of Philosophy;Education;Educational workshop;empowerment;Environmental Engineering technology;Environmental Health;Environmental Science;experience;Exposure to;flexibility;Funding;Goals;Government;Grant;halogenation;Health;Individual;Industrialization;Industry;innovation;interdisciplinary approach;Interdisciplinary Study;interest;Kentucky;Knowledge;laboratory experience;Laboratory Research;Leadership;Life Style;Location;Medical Ethics;meetings;Mentors;Methods;Mind;Modeling;Modernization;multidisciplinary;next generation;novel;nutrition;Outcome;outreach;Policies;pollutant;Positioning Attribute;Postdoctoral Fellow;Problem Solving;Productivity;programs;Public Health;Recording of previous events;recruit;remediation;Reporting;Research;Research Project Grants;Resources;responsible research conduct;Science, Technology, Engineering and Mathematics;Scientist;Series;Signal Recognition Particle;skills;skills training;Social Impacts;Source;STEM field;student training;Students;success;Superfund;superfund chemical;superfund site;Technology;Thinking;Toxic effect;Toxicology;Training;Training Activity;Training and Education;training opportunity;Training Programs;Translational Research;Universities;Water;webinar;Writing
+current_category: other
+---
+application_id: 10919809
+activity_code: U54
+title: Planning and Evaluation Core
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: N/A
+terms: Achievement;Advisory Committees;analytical tool;anti-cancer research;Award;Benchmarking;cancer health disparity;Cancer health equity;Cancer Research Project;career;career development;catalyst;Chicago;Clinical Sciences;Communication;community engaged approach;Consultations;Counseling;Data;Data Analyses;data tools;Decision Making;Development;early-career faculty;Educational workshop;Ensure;Evaluation;experience;Faculty;faculty mentor;Foundations;Funding;Funding Mechanisms;Goals;Grant;Health;health disparity;improved;Incubators;Infrastructure;innovation;Institution;Intervention Studies;Knowledge;Leadership;Logic;Malignant Neoplasms;mathematical model;member;Mentors;Mentorship;Mission;Modeling;Monitor;novel;Outcome;Performance;Pilot Projects;Process;process improvement;Program Development;programs;Progress Reports;Quasi-experiment;Recommendation;Reporting;Research;Research Personnel;Research Project Grants;Resources;Running;skills;Statistical Data Interpretation;Structure;Surveys;Time;Translational Research;Universities;Work
+current_category: infrastructure
+---
+application_id: 10919811
+activity_code: U54
+title: Research Education Core
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: N/A
+terms: Address;African American;anti-cancer research;Area;Attention;cancer health disparity;Cancer health equity;Cancer Science;career;career development;career preparation;Chicago;Cities;college;Communities;community college;community engagement;community partners;Comprehensive Cancer Center;curriculum development;design;Development;disability;Disparity;Diverse Workforce;diversity and equity;Dryness;Education;education research;Educational Activities;Educational Curriculum;Educational Status;Ensure;Ethnic Origin;Evaluation;experience;Faculty;Fortification;Fostering;Foundations;Funding;Gender;Goals;Grant;Health Disparities Research;health disparity;Healthcare;high school;Hispanic;Illinois;Immersion;improved;Influentials;Institution;interest;Internships;laboratory experience;Laboratory Research;life-long learning;Link;lower income families;Malignant Neoplasms;Medical Students;Medicine;member;Mentors;Minority;minority student;Not Hispanic or Latino;peer;Postdoctoral Fellow;Program Evaluation;programs;Race;Readiness;Recording of previous events;Research;research faculty;Research Personnel;Research Project Grants;Science;science education;Science, Technology, Engineering and Mathematics Education;skills;social culture;Social Network;Structure;Student recruitment;Students;success;summer program;summer research;undergraduate student;Underrepresented Populations;Underrepresented Students;Universities;university student;Work
+current_category: infrastructure
+---
+application_id: 10919808
+activity_code: U54
+title: Administrative Core
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: N/A
+terms: Adherence;Advanced Malignant Neoplasm;Advisory Committees;anti-cancer research;Award;Budgets;cancer health disparity;Cancer health equity;career;career development;Chicago;Clinical;Collaborations;Communication;Communities;Comprehensive Cancer Center;conflict resolution;Decision Making;early-career faculty;Education;Ensure;Equity;Evaluation;experience;Faculty;Foundations;Goals;Guidelines;Illinois;improved;Individual;Infrastructure;Institution;Institutional Policy;interest;Lead;Leadership;Logic;Malignant Neoplasms;Manuals;meetings;member;Mentors;Minority;Minority-Serving Institution;Modeling;operation;outreach;Process;programs;Protocols documentation;recruit;Reporting;Research;research facility;Resources;Solid;Stream;Structure;Student recruitment;Students;success;Talents;Time;tool;Universities;Work
+current_category: infrastructure
+---
+application_id: 10918175
+activity_code: U54
+title: Planning and Evaluation Core
+org_name: NORTHEASTERN ILLINOIS UNIVERSITY
+phr: N/A
+terms: Achievement;Advisory Committees;analytical tool;anti-cancer research;Award;Benchmarking;cancer health disparity;Cancer health equity;Cancer Research Project;career;career development;catalyst;Chicago;Clinical Sciences;Communication;community engaged approach;Consultations;Counseling;Data;Data Analyses;data tools;Decision Making;Development;early-career faculty;Educational workshop;Ensure;Evaluation;experience;Faculty;faculty mentor;Foundations;Funding;Funding Mechanisms;Goals;Grant;Health;health disparity;improved;Incubators;Infrastructure;innovation;Institution;Intervention Studies;Knowledge;Leadership;Logic;mathematical model;member;Mentors;Mentorship;Mission;Modeling;Monitor;novel;Outcome;Performance;Pilot Projects;Process;process improvement;Program Development;programs;Progress Reports;Quasi-experiment;Recommendation;Reporting;Research;Research Personnel;Research Project Grants;Resources;Running;skills;Statistical Data Interpretation;Structure;Surveys;Time;Translational Research;Universities;Work
+current_category: infrastructure
+---
+application_id: 10918179
+activity_code: U54
+title: Outreach Core
+org_name: NORTHEASTERN ILLINOIS UNIVERSITY
+phr: N/A
+terms: Acceleration;Achievement;Address;Advanced Malignant Neoplasm;anti-cancer research;Area;Award;Awareness;cancer care;cancer education;cancer health disparity;Cancer health equity;cancer prevention;Cancer Survivor;Cancer Survivorship;cancer therapy;Chicago;Cities;citizen science;Clinical;Clinical Trials;Collaborations;Communities;community engaged approach;community engagement;Community Health;Community Networks;community organizations;Community Outreach;community partners;community partnership;community-centered;Comprehensive Cancer Center;Continuity of Patient Care;Death Rate;Development;disability;Disabled Persons;Disparity;Dissemination and Implementation;Early Diagnosis;Education;Education and Outreach;education research;Educational Activities;ethnic minority;Evaluation;Event;evidence base;Evidence based practice;experience;Faculty;forging;Fostering;Funding;gender minority community;Geographic Locations;Grant;Health;health disparity populations;Health Educators;health equity;Health equity research;Health Fairs;Human;Illinois;Immersion;improved;Incidence;Individual;Inequity;innovation;Institution;Interview;Lead;Leadership;Linguistics;literacy;Localized Malignant Neoplasm;Low income;Malignant Neoplasms;Maps;member;men of color;minority communities;mortality;Needs Assessment;Neighborhoods;neoplasm registry;outreach;Outreach Research;peer;peer coaching;Penetrance;Persons;Phase;Population;Positioning Attribute;Prevention;process evaluation;Productivity;programs;racial minority;Recommendation;Research;Research Personnel;Research Project Grants;Resources;response;screening;Secure;Services;Sexual and Gender Minorities;Students;Surveys;survivorship;symposium;tool;underserved community;Underserved Population;Universities;Vulnerable Populations;Work
+current_category: infrastructure
+---
+application_id: 11179501
+activity_code: U54
+title: Administrative Core
+org_name: NORTHEASTERN ILLINOIS UNIVERSITY
+phr: N/A
+terms: Adherence;Advanced Malignant Neoplasm;Advisory Committees;anti-cancer research;Award;Budgets;cancer health disparity;Cancer health equity;career;career development;Chicago;Clinical;Collaborations;Communication;Communities;Comprehensive Cancer Center;conflict resolution;Decision Making;early-career faculty;Education;Ensure;Equity;Evaluation;experience;Faculty;Foundations;Goals;Guidelines;Illinois;improved;Individual;Infrastructure;Institution;Institutional Policy;interest;Lead;Leadership;Logic;Malignant Neoplasms;Manuals;meetings;member;Mentors;Minority;Minority-Serving Institution;Modeling;operation;outreach;Process;programs;Protocols documentation;recruit;Reporting;Research;research facility;Resources;Solid;Stream;Structure;Student recruitment;Students;success;Talents;Time;tool;Universities;Work
+current_category: infrastructure
+---
+application_id: 10907728
+activity_code: U54
+title: Biospecimen and Pathology Core
+org_name: INDIANA UNIVERSITY INDIANAPOLIS
+phr: NARRATIVE – BIOSPECIMEN/PATHOLOGY CORE This core will store all samples collected in the three projects in a central location. This core will also coordinate uniform evaluation of all samples in a pathology laboratory. This core will also send samples, as directed, for analysis within the SPORE and also to researchers worldwide.
+terms: Address;Anatomy;Animals;Award;biobank;Biological;Biological Specimen Banks;Blood specimen;Catalogs;Central Nervous System Neoplasms;Clinic;Communication;Communication Tools;Communities;Data;Development;Diagnosis;Diagnostic;digital pathology;disease model;Disease susceptibility;Electronics;Ensure;Evaluation;Fatty acid glycerol esters;Future;Genomics;geographic barrier;Goals;Human;hyperactive Ras;Image;imaging study;In Vitro;Laboratories;Lead;leukemogenesis;Location;Malignant Childhood Neoplasm;Malignant Neoplasms;Microscopy;Molecular;Mus;Necrosis;Neurofibromatosis 1;Normal tissue morphology;novel therapeutics;Organ;Pathogenesis;Pathologic;Pathologist;Pathology;pathology imaging;Patients;Peripheral Nervous System;Photomicrography;Play;Procedures;programs;Protocols documentation;Quality Control;Recurrent disease;Research;Research Personnel;Residual state;Resources;Retrieval;Risk;Role;Sampling;Sarcoma;Signal Pathway;Stains;Standardization;success;Technology;Text;Time;Tissue Sample;Tissue Stains;Tissues;treatment response;tumor;Update;virtual;web site
+current_category: infrastructure
+---
+application_id: 10923884
+activity_code: U19
+title: MDM2 inhibitor therapy for TP53 wild-type GBM
+org_name: MAYO CLINIC ROCHESTER
+phr: N/A
+terms: Animals;Apoptosis;Apoptotic;Blood - brain barrier anatomy;Brain;Brain Neoplasms;cancer cell;cancer therapy;CDKN2A gene;Cell Cycle Arrest;Cellular Stress;Chemotherapy and/or radiation;Clinical;clinical development;Code;Collaborations;combinatorial;Combined Modality Therapy;conventional therapy;Data;Digit structure;DNA Damage;DNA Repair;Dose;Double Minutes;drug distribution;Drug Kinetics;Drug Targeting;Feedback;first-in-human;fractionated radiation;Genes;Genetic Transcription;genome integrity;Genomic Instability;Genotoxic Stress;genotoxicity;Glioblastoma;Half-Life;Heel;improved outcome;In Vitro;in vivo;inhibitor;inhibitor therapy;innovation;Isocitrate Dehydrogenase;kinase inhibitor;Link;Malignant Neoplasms;Mediating;MGMT gene;Modeling;Mus;Mutation;nanomolar;Newly Diagnosed;novel therapeutic intervention;Pathway interactions;patient derived xenograft model;Patients;Pharmaceutical Preparations;pharmacodynamic biomarker;Pharmacodynamics;pharmacokinetics and pharmacodynamics;pharmacologic;Phase;Phase 0 Trial;Phase I Clinical Trials;Plasma;pre-clinical;prevent;Radiation;Radiation therapy;Regimen;Regulation;Resistance;response;restoration;Sampling Studies;senescence;Series;Signal Pathway;Signal Transduction;small molecule;small molecule inhibitor;Structure;success;temozolomide;Testing;Therapeutic;therapeutic target;Tissues;TP53 gene;Transcriptional Regulation;Treatment Efficacy;tumor;Tumor Suppressor Proteins;tumorigenesis;Ubiquitination
+current_category: therapeutics
+---
+application_id: 10854749
+activity_code: P30
+title: Center for Appalachian Research in Environmental Sciences-Integrated Health Sciences Facility Core (IHSFC)
+org_name: UNIVERSITY OF KENTUCKY
+phr: N/A
+terms: Address;Analytical Chemistry;Appalachian Region;Area;Back;biobank;career development;Categories;Clinical;Clinical Data;clinical practice;Clinical Research;Clinical Sciences;cohort;Collaborations;Communication;Communication Research;Communities;community academic partnership;community building;community collaboration;community engagement;community partners;Consultations;Core Facility;Data;Data Analyses;data management;Data Science;Development;Dimensions;Disasters;Educational workshop;Elements;Environmental Exposure;Environmental Health;Environmental Science;Evaluation;Fostering;Funding;Goals;Growth;Health;health assessment;health communication;health science research;Health Sciences;health training;high risk;Human;improved;Infrastructure;innovation;Institution;Institutional Review Boards;Integrative Medicine;Kentucky;Laboratories;Leadership;Link;meetings;member;Methodology;Methods;Modeling;Molecular Toxicology;multidisciplinary;National Institute of Environmental Health Sciences;novel;novel strategies;operation;Output;Patients;Peer Review;Pilot Projects;Policy Maker;prevent;Process;Program Development;Public Health;Public Health Practice;Publishing;Reporting;repository;Research;Research Activity;Research Methodology;Research Personnel;Research Project Grants;Research Support;Resources;response;Review Literature;Role;Sampling;Science;Scientist;service coordination;Services;Statistical Data Interpretation;Strategic Planning;Structure;success;Testing;Toxicology;Training;translational health science;translational impact;translational pipeline;Translational Research;Universities;Water;waterborne;Work
+current_category: infrastructure
+---
+application_id: 10706584
+activity_code: P01
+title: Regulation of Peripheral EC Cytoskeletal Remodeling, Gap Closure and Barrier Restoration by nmMLCK/MYLK and Cortactin/CTTN
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: Acceleration;Acute Respiratory Distress Syndrome;Address;Adhesions;Agonist;antagonist;Attenuated;Binding;Binding Proteins;Biophysics;Black Populations;Blood Vessels;Cell Line;Cells;Clustered Regularly Interspaced Short Palindromic Repeats;Code;Cytoskeletal Proteins;Cytoskeleton;design;DNA Methylation;DOCK1 gene;EMS1 gene;Endothelial Cells;Endothelium;Engineering;epigenetic regulation;Extracellular Matrix;Family suidae;Focal Adhesions;Genes;Genetic;genetic regulatory protein;Genetic study;genetic variant;Glycolysis;Goals;Guanosine Triphosphate Phosphohydrolases;health disparity;Human Genetics;Hypoxia;hypoxia inducible factor 1;Image;imaging modality;in vivo;Inflammation;Inflammatory;inhibitor;insight;Integrins;Leukocyte Trafficking;Link;Liposomes;Lung;Mechanical Stress;Mediating;Modality;Modeling;mortality;Multiple Organ Failure;Mus;Myosin Light Chain Kinase;non-muscle myosin;novel;novel therapeutics;Peptides;Peripheral;Permeability;Phosphorylation;porcine model;pre-clinical;Pre-Clinical Model;Predisposition;Process;promoter;Protein Isoforms;Proteins;Proteomics;Publishing;Pyruvate Kinase;Rattus;receptor;Receptor Activation;Regulation;response;restoration;Risk;RNA Splicing;Sepsis;Signal Transduction;Simvastatin;Structure;Surface;Systems Biology;Therapeutic;therapeutic target;therapeutically effective;TLR1 gene;TLR4 gene;transcription factor;Translating;translational approach;Trauma;Tyrosine;Tyrosine Phosphorylation;ultra high resolution;Variant;vascular inflammation;Vascular Permeabilities;Ventilator;Work
+current_category: basic_research
+---
+application_id: 10923851
+activity_code: U54
+title: Biospecimen-Core
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: N/A
+terms: Age;Aging;beta-Galactosidase;biobank;Biological;Biological Assay;Blinded;Bronchoalveolar Lavage;Cell Line;Cell Separation;Cells;Classification;Clinical;Collection;Consent;Data;Data Analyses;Dimensions;Drug or chemical Tissue Distribution;Ensure;Environmental Exposure;Ethics;Evaluation;Exclusion;Exhibits;experimental study;global health;Goals;Health;Heart;Heart Diseases;heart function;Heterogeneity;high throughput analysis;Histologic;Histology;Histopathology;Human;Human body;human tissue;Immune;Immunofluorescence Immunologic;Individual;Infection;Inferior;Institutional Review Boards;interoperability;Ischemia;Label;Legal;life span;Lung;Lung Diseases;lymph nodes;Maps;Medical center;Metadata;Morbidity - disease rate;Morphologic artifacts;mortality;multimodality;Nature;Ohio;Organ;Pathologic;Pathology;Phase;Population;Procedures;Process;Proteomics;Protocols documentation;pulmonary function;Quality Control;Reagent;Research;Research Personnel;Resolution;Resources;Sampling;senescence;senescent cell;single-cell RNA sequencing;Site;Slice;Specimen;Technology;Tissue atlas;Tissue Banks;tissue mapping;tissue processing;Tissue Procurements;Tissue Sample;Tissues;transcriptomics;Trauma;United States National Institutes of Health;Universities;Update
+current_category: infrastructure
+---
+application_id: 10976954
+activity_code: U2C
+title: Technical Assistance Core
+org_name: GEORGE MASON UNIVERSITY
+phr: N/A
+terms: Abate;Access to Information;Address;Adopted;Adoption;Affect;Area;arm;Awareness;Caring;Chicago;Collaborations;Communities;community organizations;Consultations;County;court;cultural competence;Data;Data Collection;design;Development;disadvantaged background;Dissemination and Implementation;E-learning;education research;Empirical Research;empowerment;Epidemic;Equity;Evaluation;Evaluation Studies;evidence base;Funding;Government Agencies;Health;health equity;health inequalities;health organization;Helping to End Addiction Long-term;Historically Black Colleges and Universities;implementation facilitation;implementation strategy;improved;Individual;innovation;interest;Interview;Justice;Knowledge;Lead;learning community;Legal system;Local Government;marginalization;Measures;member;minority communities;Minority Groups;Needs Assessment;Neighborhoods;Nonprofit Organizations;online course;Opiate Addiction;Opioid;opioid misuse;Organizational Innovation;Outcome;outreach;Overdose;overdose prevention;Overdose reduction;Paper;peer;Phase;podcast;Policies;Policy Maker;Prevention;Process;process improvement;programs;Public Health;Recommendation;Research;Research Methodology;Research Personnel;research to practice;Resources;response;service delivery;Services;Speed;State Government;Strategic Planning;substance use;Substance Use Disorder;symposium;System;Texas;tool;Training;Translations;tribal community;United States National Institutes of Health;Universities;uptake;Vertebral column;Veterans;violence prevention;Vision;web site;webinar;Work
+current_category: infrastructure
+---
+application_id: 10923847
+activity_code: U54
+title: USC Tobacco Center of Regulatory Science
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: Address;Advisory Committees;Applications Grants;Award;base;career;Collaborations;Communication;community engagement;Community Outreach;Complement;data sharing;Development;Digital Libraries;Doctor of Philosophy;Electronic Mail;Ensure;Evaluation;Expenditure;Face;Faculty;Fostering;Funding;General Population;Goals;Human Resources;Individual;Leadership;Marketing;Measures;meetings;member;Mentors;Methodology;Methods;Mission;Modeling;Monitor;novel;Persons;Pilot Projects;Policies;Press Releases;Process;Productivity;Program Evaluation;programs;Publications;Recommendation;Regulation;Reporting;Research;Research Personnel;Resources;response;Science;Series;social media;Strategic Planning;success;Supervision;synergism;System;theories;Time;Tobacco;tobacco products;tobacco regulatory science;Traumeel S;trend;United States National Institutes of Health;web site;working group
+current_category: infrastructure
+---
+application_id: 10923822
+activity_code: U54
+title: Project 3
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: absorption;abuse liability;addiction;Address;Adolescent;Affinity;Age;aged;Area;Behavior;Behavioral;behavioral economics;career;Categories;cisgender;computerized data processing;Data;Data Analyses;design;Dose;Electronic cigarette;electronic cigarette use;electronic cigarette user;Equity;Evaluation;experience;Flavoring;follow-up;Fruit;gender minority group;Genus Mentha;Health;Heterosexuals;improved;indexing;Intake;Intention;interest;irritation;Marketing;Masks;Measures;Menthol;Modeling;Motivation;Nicotine;Nicotine Dependence;nicotine gum;nicotine use;novel;Oral;Oral cavity;Oral Characters;Oral Examination;oral irritation;Participant;Pattern;Persons;Pharmaceutical Preparations;Predisposition;prevent;Randomized;recruit;Regulation;residence;Rewards;Sampling;Science;Self Administration;Sensory;Sexual and Gender Minorities;Standardization;Surveys;Testing;Tobacco;Tobacco use;vaper;vaping;virtual;virtual laboratory;Visit;Vulnerable Populations;willingness;Withdrawal;Work;young adult
+current_category: infrastructure
+---
+application_id: 10923813
+activity_code: U54
+title: Project 2
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: addiction;Address;Adolescent;Adolescent and Young Adult;Age;Area;Automobile Driving;Behavior;California;Characteristics;cohort;Cohort Studies;combustible tobacco;computerized data processing;Data;Data Analyses;Dependence;design;Dose;Electronic cigarette;electronic cigarette use;emerging adult;Frequencies;Fruit;gender minority status;Genus Mentha;health disparity;high risk;high school;Hybrids;Ice;Longitudinal cohort study;low socioeconomic status;marginalization;marginalized population;Marketing;Measures;Menthol;Modeling;Names;Nicotine;nicotine use;ninth grade;novel;Oral;Outcome;Participant;Pattern;Policies;Population;Population Heterogeneity;preference;programs;progression risk;Prospective cohort;Prospective, cohort study;recruit;Regulation;Research;Rewards;Risk;Role;Schools;Science;Sexual and Gender Minorities;sexual minority status;Smoking;socioeconomics;Surveys;Symptoms;synergism;Testing;Time;Tobacco;tobacco flavor;tobacco products;Tobacco use;twelfth grade;vaping;young adult;Youth
+current_category: other
+---
+application_id: 10923856
+activity_code: U54
+title: DPAC
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: Biometry;California;Code;Collaborations;Collection;Common Data Element;Communication;Computer software;computerized data processing;Consultations;cost effective;Cross-Sectional Studies;Custom;Data;Data Analyses;data cleaning;Data Collection;data integration;data management;data platform;Data Science;Data Set;data sharing;Data Storage and Retrieval;data streams;Databases;design;Development;Ensure;experience;experimental study;Future;Generations;Goals;Human Resources;Informatics;Interdisciplinary Study;Investigation;longitudinal analysis;Longitudinal Studies;Manuscripts;Marketing;member;Methodology;Michigan;Modernization;Monitor;multidisciplinary;multilevel analysis;Output;Participant;Policies;Principal Investigator;Process;process optimization;programs;Protocols documentation;Publications;Publishing;Regulation;Reporting;Research;Research Design;Research Personnel;research study;Science;Services;Specialist;Statistical Methods;Surveys;Text;Tobacco;tobacco products;tool;Translations;Universities;usability;user-friendly;Work
+current_category: infrastructure
+---
+application_id: 10845597
+activity_code: U54
+title: RCMI Investigator Development Core
+org_name: UNIVERSITY OF HOUSTON
+phr: N/A
+terms: Acceleration;addiction;Address;Adopted;Applications Grants;Award;Budgets;Cancer Center;cancer prevention;career;college;Communication;Communities;community engagement;community research;Complex;Creativeness;Data;Development;Disparity;Ensure;Evaluation;experience;Extramural Activities;Feedback;Fostering;Funding;Funding Mechanisms;Generations;Goals;Grant;Health;health disparity;health disparity populations;health equity;Health equity research;health outcome disparity;Health Sciences;Incubators;innovation;interdisciplinary collaboration;Investments;Leadership;marginalized community;Medical center;Medicine;Mentors;Mentorship;metropolitan;minority health;minority health disparity;Minority-Serving Institution;Mission;Monitor;National Institute on Minority Health and Health Disparities;next generation;Outcome;Pathway interactions;Pilot Projects;Postdoctoral Fellow;Process;professor;programs;Public Health;Reporting;Research;Research Infrastructure;Research Personnel;Research Project Grants;research study;Research Support;Resources;Science;Scientist;Secure;Shapes;success;Texas;Underrepresented Minority;underserved community;United States National Institutes of Health;Universities;Work;Workforce Development
+current_category: infrastructure
+---
+application_id: 10845594
+activity_code: U54
+title: RCMI Research Infrastructure Core
+org_name: UNIVERSITY OF HOUSTON
+phr: N/A
+terms: Acceleration;addiction;Area;behavioral health;Biometry;cancer prevention;Collaborations;college;Communities;Complex;cost;cost effective;Data;data management;Discipline;Disparity;Electronics;Endowment;Environment;Ethics;ethnic diversity;experience;Faculty;Funding;Gifts;Health;Health Disparities Research;health disparity populations;health equity;Health Sciences;Health Services;Incubators;Individual;Infrastructure;innovation;integrated care;Investments;Laboratories;Leadership;Link;marginalized community;Marketing;metropolitan;Mission;Monitor;Names;National Center for Advancing Translational Sciences;National Institute on Minority Health and Health Disparities;novel;Output;Physical therapy;Postdoctoral Fellow;Prevention Research;Primary Care;Productivity;Public Health Informatics;Publications;Recovery;Reproducibility;Research;Research Infrastructure;Research Methodology;Research Personnel;Resources;responsible research conduct;satisfaction;Scanning;Science;Scientist;service utilization;Services;System;Techniques;Technology;Time;Trust;underserved community;Underserved Population;United States National Institutes of Health;Universities;user-friendly;Vision;Work
+current_category: infrastructure
+---
+application_id: 11082250
+activity_code: U19
+title: Administrative/Biostatistics Core
+org_name: UNIVERSITY OF CHICAGO
+phr: N/A
+terms: Accountability;Achievement;Biometry;Biostatistics Core;Clinical;Cognitive;cohort;Collaborations;Data;Data Analyses;Data Collection;data collection site;data dictionary;data integration;data management;data quality;Data Reporting;data repository;data sharing;data submission;Database Management Systems;Databases;Development;Ensure;Episodic memory;Extramural Activities;Funding;Future;Genetic;Goals;Human Resources;Image;Infrastructure;Investigation;Leadership;Link;meetings;Monitor;multidisciplinary;Nature;Network-based;neuropathology;operation;Participant;Pathway interactions;Performance;Play;Productivity;programs;Publications;quality assurance;Recommendation;Reporting;Research;Research Personnel;Research Project Grants;research study;resilience in aging;Resources;Role;Safety;Sample Size;Site;Statistical Models;success;Sum;super ager;Tissues;training opportunity;U-Series Cooperative Agreements;United States National Institutes of Health;Universities;Work
+current_category: infrastructure
+---
+application_id: 10923860
+activity_code: U54
+title: MMC
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: abuse liability;Address;Adolescent;Behavior;Calibration;Characteristics;Chemicals;cognitive interview;Communities;computerized data processing;Creativeness;crowdsourcing;Data;Data Analyses;Data Collection;Databases;design verification;Development;Documentation;Electronic cigarette;Ensure;experimental study;Flavoring;flexibility;Fruit;Future;Goals;Grant;Hybrids;Ice;Internet;JUUL;Manuscripts;Marketing;Measures;meetings;Methodology;Nicotine;novel;Online Systems;Oral;Participant;Patient Self-Report;Pilot Projects;Policies;Population;Population Heterogeneity;Prevalence;Property;Psychometrics;public policy on tobacco;Readability;Regulation;Reporting;Research;Research Personnel;Research Project Grants;Respondent;Sales;Sampling;Science;Scientist;Sensory;Services;social media;Source;Stimulus;Surveys;symposium;Terminology;Testing;text searching;Time;Tobacco;tobacco advertising;tobacco products;tobacco regulatory science;Tobacco Surveillance;Tobacco use;tool;trend;vaping;Variant;web site;Work
+current_category: infrastructure
+---
+application_id: 11111329
+activity_code: U54
+title: Evaluation of Soluble Fiber as a Strategy to Decrease Asthma Morbidity in Pediatric Populations
+org_name: NORTHERN ARIZONA UNIVERSITY
+phr: N/A
+terms: Accident and Emergency department;Acetates;Address;Adherence;airway inflammation;allergic airway inflammation;Allergy;Area;Arizona;Asthma;asthma exacerbation;asthmatic;asthmatic patient;Blood;Butyrates;Carbohydrates;cell type;Cells;Child;Childhood;Childhood Asthma;Chronic;Clinic;Clinical Trials;cohort;Colon;community partnership;Complex;Consumption;coping;County;Dendritic Cells;Development;Diagnosis;Diet;dietary;Dietary Fiber;Dietary intake;Dietary Intervention;Dietary Practices;Disease;Ecology;Environmental Exposure;Enzymes;eosinophil;Evaluation;experience;Fermentation;Fiber;Funding;genetic risk factor;Goals;good diet;gut microbiome;gut microbiota;Health;health care burden;Homing;host microbiota;host-associated microbial communities;host-microbe interactions;Human;Immune;Immune system;improved;improved outcome;In Vitro;in vivo;Incidence;Individual;Inflammation;Inflammatory;Inflammatory Bowel Diseases;Intake;Intervention;Link;Location;Lung;Measures;Mediating;Metabolic;Metabolism;metropolitan;microbial;microbial composition;microbiome;microbiome composition;microbiota;microbiota metabolites;migration;Morbidity - disease rate;Mus;nasal microbiota;Nutrient;Nutrition;Nutritional;Obesity;patient population;Patients;Pediatric Hospitals;Peripheral;Persons;Phenotype;Physiological;Pilot Projects;Play;polarized cell;Population;preclinical study;Prevalence;Preventive;Process;Production;Propionates;Protocols documentation;Public Health;Recommendation;recruit;reduce symptoms;Reducing diet;Reporting;Research;Resources;respiratory microbiome;Risk;Risk Factors;Role;Scientist;Site;skills;Small Intestines;soluble fiber;Supplementation;T-Lymphocyte;Travel;urban area;Urban Population;urban residence;Visit;Volatile Fatty Acids
+current_category: basic_research
+---
+application_id: 10797611
+activity_code: U54
+title: Testing Bridges to Better Health and Wellness for People Living with Serious Mental Illness in Puerto Rico
+org_name: PONCE SCHOOL OF MEDICINE
+phr: N/A
+terms: Address;Adoption;Attention;barrier to care;Behavioral;behavioral health;Biological;Bipolar Disorder;Body mass index;Cardiovascular Diseases;care coordination;Caribbean region;Caring;Case Manager;Chronic Disease;Clinical Psychology;COVID-19 pandemic;Diabetes Mellitus;disorder prevention;disorder risk;Disparity;Early Intervention;Earthquakes;Effectiveness;effectiveness testing;effectiveness-implementation RCT;Exhibits;follow-up;General Population;Glycosylated hemoglobin A;graduate student;Health;health care availability;health care settings;health disparity;health literacy;Health Sciences;Health Services;Healthcare;Healthcare Systems;Human Resources;Hurricane;Hybrids;improved;internalized stigma;Intervention;intervention delivery;Intervention Studies;Latinx;Latinx population;Light;Lipids;Maintenance;Measures;Medical;Methods;Morbidity - disease rate;mortality;National Institute on Minority Health and Health Disparities;Obesity;Overweight;Participant;Patients;Persons;Physical activity;physical conditioning;physical inactivity;physical symptom;Physicians;Play;Premature Mortality;Prevention;Preventive;Preventive care;Primary Care;Primary Care Physician;primary care services;primary health service;primary outcome;Provider;Public Health;Puerto Rican;Puerto Rico;Randomized;Reach, Effectiveness, Adoption, Implementation, and Maintenance;Research;Risk Factors;Schizophrenia;screening;secondary outcome;Services;severe mental illness;Smoking;social culture;social stigma;Specialized Center;Target Populations;Testing;treatment as usual;United States;Universities;Vaccination;Wait Time;Work
+current_category: other
+---
+application_id: 10925344
+activity_code: U54
+title: Cancer Outreach Core
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: N/A
+terms: Academia;Acceleration;Address;Affect;anti-cancer research;Applications Grants;Area;biobank;Bioinformatics Shared Resource;Biometry;Black race;Cancer Burden;cancer care;Cancer Center;cancer health disparity;Cancer health equity;cancer prevention;cancer risk;Censuses;Clinical;Clinical Research;Clinical Trials;Collaborations;Communication;Communities;community advisory board;community building;community collaboration;community engaged research;community engagement;community organizations;Community Outreach;community partners;community research;County;design;Development;Dissemination and Implementation;dissemination science;Education and Outreach;education research;Educational Materials;Ensure;Equity;ethnic minority;Evaluation;evidence base;Faculty;Feedback;Fostering;Foundations;Funding;Goals;Grant;health equity;Health equity research;health inequalities;Healthcare;implementation science;innovation;Institution;interest;Knowledge;Learning;Learning Module;Maintenance;Malignant neoplasm of ovary;Malignant neoplasm of prostate;Malignant Neoplasms;medical schools;meetings;member;men;Mentorship;Methodology;metropolitan;Minority Participation;mobile application;mortality disparity;Multicultural Education;new technology;online resource;outreach;Outreach Research;Ownership;Participant;Pathology;Patients;Pilot Projects;Policies;Population;Population Research;Prevention;Process;programs;Public Health Education;racial minority;Research;Research Personnel;Research Project Grants;research study;Resource Sharing;Resources;Rural Community;Scanning;social media;Source;Students;Support Groups;survivorship;Technology;Tennessee;Testing;Training Activity;training opportunity;underserved community;Universities;web-based tool;Work
+current_category: infrastructure
+---
+application_id: 10925331
+activity_code: U54
+title: Administrative Core
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: N/A
+terms: Advisory Committees;Annual Reports;anti-cancer research;Basic Science;Belief;Cancer Center;cancer health disparity;career development;Clinical;Clinical Sciences;Collaborations;Communication;Community Outreach;Data;Disparity;Doctor of Philosophy;Educational workshop;Ensure;Ethnic Origin;Evaluation;Expenditure;experience;Faculty;faculty mentor;Faculty Recruitment;Fostering;Funding;Funding Agency;Funding Opportunities;Geography;Goals;Growth and Development function;Guidelines;Human Resources;implementation strategy;Infrastructure;innovation;Institution;Leadership;Malignant Neoplasms;medical schools;Mentorship;Mission;Monitor;National Cancer Institute;Occupational activity of managing finances;Office of Administrative Management;Phase;Population Sciences;Preparation;Principal Investigator;Process;Productivity;programs;Progress Reports;Race;recruit;Regulation;Reporting;Reproducibility;Research;Research Activity;Research Personnel;Research Project Grants;Resource Sharing;Resources;responsible research conduct;Services;Socioeconomic Status;Strategic vision;symposium;synergism;Tennessee;Training and Education;United States National Institutes of Health;Universities;Vision;Work
+current_category: infrastructure
+---
+application_id: 10925334
+activity_code: U54
+title: Planning and Evaluation Core
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: N/A
+terms: Advanced Malignant Neoplasm;Advisory Committees;Cancer Center;cancer health disparity;Cancer health equity;Collaborations;Collection;Communication;Data;Data Analyses;Data Collection;data management;Data Reporting;Decision Making;design;Development;Education;Ensure;Evaluation;Feedback;Fostering;Funding;Goals;Grant;Health;health inequalities;improved;innovation;Institution;Investments;Leadership;Logic;Malignant Neoplasms;Measurable;Measures;medical schools;Methods;Modeling;Monitor;Nature;Outcome;Output;Performance;Practice Management;Principal Investigator;Process;Program Evaluation;programs;Publications;Quality of life;Recommendation;recruit;Research;Research Personnel;Resources;Respondent;Services;Students;success;Teacher Professional Development;Techniques;Tennessee;The Vanderbilt-Ingram Cancer Center at the Vanderbilt University;theories;Time;tool;Universities;Work
+current_category: infrastructure
+---
+application_id: 10925349
+activity_code: U54
+title: Core 3: Translational Pathology Shared Resource Core
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: N/A
+terms: Advocacy;African American;African American population;Anatomy;animal tissue;anti-cancer research;Antigens;Awareness;Basic Science;Bioinformatics Shared Resource;Biological Markers;Biometry;Biopsy Specimen;Blood;Cancer Center;cancer health disparity;Cells;clinical diagnostics;Clinical Trials;Collaborations;Collection;Communities;Consultations;design;Development;DNA;Doctor of Philosophy;Drug or chemical Tissue Distribution;Education;Equity;Fee-for-Service Plans;Fluorescence;Formalin;Foundations;Future;General Hospitals;Genomics;Goals;Histologic;Histology;Histopathology;Human;human tissue;imaging capabilities;Immune;In Situ;Institution;liquid biopsy;Malignant Neoplasms;Medical Research;medical schools;Messenger RNA;microscopic imaging;Minority Groups;Molecular Biology;molecular diagnostics;Morphology;neoplastic;Normal tissue morphology;Operative Surgical Procedures;outreach;Paraffin Embedding;Pathology;Pilot Projects;Population;Population Research;Process;Proteomics;repository;Research;Research Personnel;Research Project Grants;Resource Sharing;Role;Services;Slide;Stains;Techniques;Technology;Tennessee;Time;Tissue Banks;tissue processing;Tissue Sample;Tissues;Translational Research;Universities;Work
+current_category: infrastructure
+---
+application_id: 10933554
+activity_code: U54
+title: Planning and Evaluation Core
+org_name: PONCE SCHOOL OF MEDICINE
+phr: N/A
+terms: Accountability;Advanced Malignant Neoplasm;Advisory Committees;Area;Cancer Center;cancer health disparity;Cancer health equity;Collaborations;Collection;Communication;Community Outreach;Data;Development;Education and Outreach;effectiveness evaluation;Elements;Ensure;Evaluation;Evolution;Feedback;flexibility;Florida;Funding;Goals;Grant;Growth;Health Sciences;Hispanic;improved;Information Systems;innovation;Institution;Journals;Knowledge;Latino Population;Logic;meetings;member;Modeling;Monitor;National Cancer Institute;novel;Online Systems;Outcome;Output;Process;programs;Progress Reports;Publications;Puerto Rico;Recommendation;Research;Research Personnel;Research Project Grants;Resources;Science;special interest group;Strategic Planning;Structure;success;Surveys;Time;Universities;Update;Work
+current_category: infrastructure
+---
+application_id: 10997303
+activity_code: P40
+title: Resources at the Caribbean Primate Research Center
+org_name: UNIVERSITY OF PUERTO RICO MED SCIENCES
+phr: Narrative The major goal of this application is to maintain the CPRC as a relevant national and international research resource for the support of comparative studies in the biomedical and behavioral sciences.This proposal is seeking support to make available to the research community valuable conventional and SPF IO rhesus, and related resources. With continued NIH support, the CPRC will remain a significant national research resource and will be able to provide healthy Indian-origin rhesus mon
+terms: Affect;Agreement;Anatomy;Animal Experimentation;Animals;Applied Research;Area;Behavior;Behavioral;Behavioral Sciences;behavioral study;biodefense;Biological;Biological Warfare;Biology;Biomedical Research;Breeding;Caribbean region;Caring;Collaborations;Collection;Communities;Comparative Study;computerized;COVID-19;COVID-19 pandemic;Databases;design;Development;Developmental Biology;DNA Sequence;drug development;Drug Targeting;Ensure;Exhibits;Funding;Gene Mutation;Genes;Genetic;genetic analysis;Genetic Variation;Genome;Goals;Grant;Health;Human;human disease;improved;India;Infrastructure;Institution;intergenerational;International;Island;Laboratories;Life Cycle Stages;Macaca;Macaca mulatta;Medical;member;Microsatellite Repeats;Modeling;Monitor;Monkeys;Morphology;multidisciplinary;Neurosciences;Neurosciences Research;nonhuman primate;nonhuman primate models;operation;Orthologous Gene;Pathologic;Pathology;Personal Satisfaction;Physiological;Population;Pre-Clinical Model;Primates;programs;Publications;reference genome;Research;Research Project Grants;Resources;Rhesus;Science;skeletal;Skeleton;Stress;stressor;Structure;Translational Research;United States National Institutes of Health;vaccine development;virology;Well in self
+current_category: other
+---
+application_id: 10933544
+activity_code: U54
+title: Puerto Rico BioBank Core
+org_name: PONCE SCHOOL OF MEDICINE
+phr: N/A
+terms: Acceleration;Address;anti-cancer research;Awareness;biobank;Blood;Breast;Breast Cancer Genetics;breast cancer genomics;Cancer Center;cancer diagnosis;cancer health disparity;cancer therapy;cancer type;Caribbean region;Clinical;Clinical Data;Clinical Trials;Collaborations;Colon;Colorectal Cancer;Communities;Community Health;Community Health Education;Community Outreach;Consent;Data;data registry;Data Set;Databases;Dedications;Demographic Survey;Development;DNA;Education;Education and Outreach;education research;exome sequencing;Funding;Future;Genetic;Genome;Germ Lines;Grant;Gynecologist;Health Disparities Research;health disparity;Health Educators;Health Sciences;Historical Survey;Hospitals;improved;Individual;innovation;International;Island;Latin America;Latin American;Latino;Logistics;Lung;Malignant Breast Neoplasm;Malignant neoplasm of ovary;Malignant neoplasm of prostate;Malignant Neoplasms;medical schools;Medical Students;Minority Participation;Molecular;molecular phenotype;Molecular Profiling;neoplasm registry;novel;Oncologist;Organoids;outreach;Ovarian;patient derived xenograft model;Patient Education;Patient Recruitments;Patient Selection;Patients;Physicians;Physicians&apos; Offices;Play;Population;precision medicine;Prevalence;Principal Investigator;Process;Prostate;Publications;Puerto Rican;Puerto Rico;recruit;Reporting;Research;Research Personnel;Research Project Grants;Research Support;Resource Sharing;Resources;RNA;Role;Science;Services;Specimen;Surgeon;System;targeted treatment;Techniques;Tissue Donations;Tissue Microarray;Tissues;Training;transcriptome sequencing;Translation Initiation;translational cancer research;Underrepresented Minority;Universities;Urologist
+current_category: infrastructure
+---
+application_id: 10845043
+activity_code: U19
+title: Regulation of B cell Responses in SLE and Other Autoimmune Diseases
+org_name: EMORY UNIVERSITY
+phr: Project Narrative Not required for this component.
+terms: 2019-nCoV;Abnormal Cell;Acute;Affinity;age related;Antigens;Autoantibodies;Autoantigens;Autoimmune Diseases;Autoimmune Responses;Autoimmunity;autoreactive B cell;autoreactivity;B-Lymphocytes;Black race;Blood;cancer immunotherapy;Cell Physiology;cell type;Cells;Chronic;cytokine;Derivation procedure;Disease;Distant;Effector Cell;Epigenetic Process;Exposure to;Flare;Flow Cytometry;Functional disorder;Generations;Genetic Predisposition to Disease;Genetic Transcription;Heterogeneity;HIV;Human;Hyperactivity;Immune response;Immune System Diseases;immunogenic;Immunoglobulin-Secreting Cells;imprint;Infectious Agent;insight;Interferon Type II;Interferons;interleukin-21;ITGAX gene;Kidney;Knowledge;Light;Lupus;lymph nodes;Measures;Memory;Memory B-Lymphocyte;microbiome;Molecular;molecular diagnostics;multiple omics;Pathogenesis;pathogenic autoantibodies;Pathogenicity;Pathway interactions;Patients;Phenotype;Pilot Projects;Population;Precision therapeutics;Process;programs;Property;Protocols documentation;Reaction;Regulation;Reporting;Research Personnel;response;SARS-CoV-2 infection;segregation;severe COVID-19;Stimulus;Structure of germinal center of lymph node;systemic autoimmune disease;Systemic Lupus Erythematosus;Tissues;TLR7 gene;treatment response;Vaccination
+current_category: basic_research
+---
+application_id: 10933547
+activity_code: U54
+title: Quantitative Sciences Core
+org_name: PONCE SCHOOL OF MEDICINE
+phr: N/A
+terms: Address;Admixture;analytical tool;ancestry analysis;Area;Big Data;biobank;Bioinformatics;Biometry;Cancer Center;cancer health disparity;Cell Line;cohort;Collaborations;Communication;Consent;Data;Data Analyses;Data Collection;data integration;data management;Data Scientist;design;Development;Disparity;DNA;Education;education research;Ensure;Environment;Evaluation;experience;Future;Genetic;Genome;genomic data;Genomics;Grant;Health Disparities Research;Health Sciences;high dimensionality;Hispanic;Hispanic-serving Institution;Improve Access;improved;Informatics;Infrastructure;infrastructure development;innovation;Institution;Latino;Latino Population;Lead;Life Cycle Stages;member;Molecular;Molecular Profiling;novel;Oncology;online resource;Online Systems;Participant;Phase;Physicians;precision medicine;Proteomics;Puerto Rico;Reproducibility;Research;Research Design;Research Personnel;Research Project Grants;research study;Research Support;Resources;Sample Size;Sampling;Science;Services;skills;software infrastructure;statistics;Students;synergism;System;The Cancer Genome Atlas;Tissues;tool;Training;transcriptome sequencing;Translations;Universities;Vision;Visualization software
+current_category: infrastructure
+---
+application_id: 10933542
+activity_code: U54
+title: Administrative  Core
+org_name: PONCE SCHOOL OF MEDICINE
+phr: N/A
+terms: Advisory Committees;Affect;anti-cancer research;Area;Brassicaceae;Budgets;Cancer Center;cancer health disparity;career;career development;Career Mobility;Categories;Collaborations;Committee Members;Communication;Communities;Community Health;conflict resolution;COVID-19 pandemic;Development;Doctor of Philosophy;driving force;Earthquakes;education research;Ensure;expectation;experience;Faculty;Fostering;Funding;Funding Agency;Future;Goals;Grant;Growth;Guidelines;Health Disparities Research;Health Educators;Health Sciences;Hispanic;Hurricane;Incubators;Infrastructure;innovation;Institution;Knowledge;Latino;Leadership;member;Mentors;minority engagement;minority health;pandemic disease;Persons;Preparation;Productivity;programs;Progress Reports;Publications;Puerto Rico;recruit;Recruitment Activity;Research;Research Activity;Research Personnel;Research Project Grants;resilience;Resource Development;Resource Sharing;Resources;Scientist;Source;success;Supervision;Training Activity;Underrepresented Minority;United States National Institutes of Health;Universities;virtual;Work
+current_category: infrastructure
+---
+application_id: 10933555
+activity_code: U54
+title: Research Education Core
+org_name: PONCE SCHOOL OF MEDICINE
+phr: N/A
+terms: Address;American Society of Clinical Oncology;anti-cancer research;Basic Cancer Research;Biometry;Bone Marrow Transplantation;Cancer Center;cancer clinical trial;cancer health disparity;cancer therapy;career;Career Choice;career development;Career Mobility;Caring;Clinical;Clinical Oncology;clinical practice;clinical training;Clinical Trials;Communities;cultural competence;design;Development;Diagnosis;Doctor of Philosophy;doctoral student;Education;education research;Educational workshop;Effectiveness;Evaluation;experience;Exposure to;Faculty;faculty mentor;Feedback;Fellowship Program;Florida;Goals;graduate school;Grant;Health Disparities Research;health disparity;Health Sciences;Hematology;Hispanic;Immersion;improved;Industry;interest;Interest Group;investigator training;Island;Latino;Latino Population;Malignant Neoplasms;Medical;Medical Students;Mentors;Mentorship;minority health;Needs Assessment;Oncologist;Oncology;Operative Surgical Procedures;Outcome;Participant;patient engagement;peer coaching;Population;Positioning Attribute;post-doctoral training;Postdoctoral Fellow;pre-doctoral;Prevention;programs;Puerto Rican;Puerto Rico;recruit;Research;Research Personnel;Residencies;Rotation;Scholarship;Science, Technology, Engineering and Mathematics;Scientist;senior faculty;Series;Site;STEM research;Students;success;summer research;Surgical Oncology;Training;tumor;undergraduate student;Universities;Urology;Vision;Writing
+current_category: infrastructure
+---
+application_id: 10933553
+activity_code: U54
+title: Fostering Cervical Cancer Screening Promotion for Latinx Trans Men Among Medical Students
+org_name: PONCE SCHOOL OF MEDICINE
+phr: N/A
+terms: Active Learning;Address;assigned female at birth;Attitude;Automobile Driving;Behavior;Behavioral;Birth;Body part;Cancer Center;cancer health disparity;Caring;Cervical Cancer Education;cervical cancer prevention;Cervical Cancer Screening;cisgender;Clinical;Collaborations;Communities;Competence;Data;design;disease disparity;Disparity;effective intervention;Effectiveness of Interventions;effectiveness testing;Emotional;ethnic minority;Ethnic Origin;Ethnic Population;Exhibits;experience;Feasibility Studies;Florida;Fostering;Funding;Gender;gender affirmation;gender expression;Gender Identity;gender minority;Guidelines;health disparity;Health Knowledge Attitudes Practice;Health Personnel;Health Sciences;Healthcare;high risk;Hispanic Populations;implementation measures;implementation outcomes;implementation strategy;improved;Incidence;Individual;Interdisciplinary Study;intersectionality;Intervention;intervention effect;Interview;Knowledge;Latino Population;Latinx;male;Malignant neoplasm of cervix uteri;Malignant Neoplasms;man;Masculine;Measures;Medical Education;medical schools;Medical Students;Modeling;Nature;nonbinary;online intervention;Participant;Patient Self-Report;Patient Simulation;Patients;Persons;Politics;Population;Prevention;Prevention Guidelines;Provider;provider behavior;Puerto Rico;Randomized, Controlled Trials;Recommendation;Reduce health disparities;Research;Research Design;Research Personnel;Research Project Grants;screening;Screening for cancer;Services;simulation;skills;social;social cognitive theory;Standardization;Stigmatization;student training;Testing;theories;tool;transgender men;Treatment Efficacy;Universities;women patients;Work
+current_category: diagnostics
+---
+application_id: 10844633
+activity_code: U45
+title: HWW
+org_name: STEELWORKER CHARITABLE/EDUCATIONAL ORG
+phr: N/A
+terms: Address;Advocacy;Advocate;arm;Automobiles;Cementation;Cessation of life;Chemicals;Climate;climate change;climate science;Coeur D&apos;Alene;Collaborations;college;Communication;Communities;Competence;Country;Dental Pulp;Doctor of Medicine;Doctor of Philosophy;Education;Educational Curriculum;Elements;Emergency medical service;Emergency Situation;Environment;Evaluation;Explosion;Exposure to;Fire - disasters;Foundations;Funding;Hazardous Chemicals;Hazardous Substances;Health;Health education;Healthcare;high risk;Hour;Immigrant;Immigrant worker;improved;Industrialization;Injury;International;Investigation;Lead;Leadership;Link;Longterm Follow-up;manufacture;Medical;member;Mentors;Mentorship;Metals;Mining;Modeling;Needs Assessment;New Jersey;New York;Nuclear Energy;Occupational injury;Occupations;Oils;Opioid;opioid use disorder;Paper;patient home care;peer;Pharmacologic Substance;pilot test;Plants;Plastics;Police;Policies;Population;prescription opioid;prevent;preventable death;Prevention;Prevention program;Program Development;programs;Readiness;Research;response;Risk;Rubber;Safety;safety education;Services;Site;Spanish;Spanish/English;Stress;System;Target Populations;Telecommunications;tool;Trainers Training;Training;Training Activity;training project;Transportation;tribal community;Tribal Council;tribal lands;tribal member;Tribes;Umatilla;Universities;wasting;Work;Workplace;Yakama Indian
+current_category: training

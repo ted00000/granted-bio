@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10845564
+activity_code: U19
+title: Administrative Core
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Administrator;Communicable Diseases;Communication;Communities;computerized data processing;Creativeness;data management;Educational workshop;Ensure;Evaluation;experience;Faculty;Goals;Grant;Group Meetings;Human Resources;Individual;Leadership;Maintenance;meetings;member;Occupational activity of managing finances;Office of Administrative Management;Operating System;operation;pathogen;Pathogenesis;Procedures;Productivity;programs;Protocols documentation;quality assurance;Quality Control;Research;Research Personnel;Research Project Grants;Resources;Schedule;Scientific Inquiry;Site;Structure;synergism;United States National Institutes of Health;Variant;web site;Work
+current_category: infrastructure
+---
+application_id: 10867507
+activity_code: P50
+title: Methods for Optimizing the Integration of Adaptive Human-Delivered and Digital SUD/HIV Services
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: N/A
+terms: Acceleration;adaptive intervention;Address;AIDS prevention;analytical method;Area;Behavioral;Clinical;Collaborations;Computer software;Data;Data Analytics;design;Development;digital;digital delivery;digital intervention;digital technology;Drug usage;Educational workshop;Effectiveness;Electronic Health Record;Experimental Designs;experimental study;flexibility;Generations;Goals;Hand;Health Technology;HIV;Human;Hybrids;Individual;individualized prevention;innovation;Intervention;intervention program;Joints;Journals;Methodology;Methods;mHealth;Modality;Monitor;Motivation;multimodality;National Institute of Drug Abuse;novel;Patients;Peer Review;Persons;prevention service;Publishing;Randomized;randomized trial;recovery services;Risk;Sample Size;scaffold;Scientist;Sequential Multiple Assignment Randomized Trial;service delivery;Services;Software Tools;Specialist;Statistical Methods;substance use;Substance Use Disorder;synergism;telehealth;Therapeutic;Time;tool;Training;treatment services;trial design;user friendly software;user-friendly;Work
+current_category: infrastructure
+---
+application_id: 10867498
+activity_code: P50
+title: Dissemination and Training Core
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: N/A
+terms: adaptive intervention;Address;Adopted;Adoption;analytical method;analytical tool;Area;Award;career;Clinic;Code;Collaborations;combat;Communities;Computer software;Data;Data Analyses;Data Analytics;Development;Documentation;Electronics;empowerment;Ethics;Experimental Designs;Fostering;Goals;graduate student;Grant;HIV;individualized prevention;innovation;interest;Intervention;Learning;meetings;Mentors;Mentorship;method development;Methodology;Methods;Nature;Newsletter;next generation;novel;online course;online repository;online resource;Pilot Projects;pilot test;Postdoctoral Fellow;prevention service;programs;recovery services;repository;Research;Research Personnel;Research Project Grants;Resources;responsible research conduct;Sampling;Science;Scientist;Services;software development;software repository;Substance Use Disorder;success;tool;Training;Translation Process;treatment services;trial design;United States National Institutes of Health;Vacuum;web site;webinar;Work
+current_category: infrastructure
+---
+application_id: 10845570
+activity_code: U19
+title: Systems Biology, Bioinformatics, & Data Integration
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Area;Bioinformatics;Biological;clinical phenotype;complex data;Coupled;Data;Data Analyses;data complexity;data integration;Data Set;Databases;Disease;diverse data;experimental study;Gene Targeting;Genes;Genetic;genetic variant;genome wide association study;genome-wide;Genomics;Goals;Human;Individual;innovation;insight;Interdisciplinary Study;Laboratory Organism;Lung;Macrophage;Methods;model organism;Modeling;multiple omics;Mus;Mycobacterium tuberculosis;novel;Overlapping Genes;pathogen;pathogen genome;Pathogenesis;Pathway Analysis;Pathway interactions;Pattern;Phenotype;Process;Proteins;Proteomics;Research;Research Methodology;Research Priority;Resistance;Signal Transduction;Source;synergism;Systems Biology;Testing;transcriptome;transcriptome sequencing;Tuberculosis;Uganda;Variant;Vietnam
+current_category: basic_research
+---
+application_id: 10867512
+activity_code: P50
+title: Continual Optimization and Personalization of Just-in-Time Adaptive Interventions for SUD  Prevention, Treatment, and Recovery
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: N/A
+terms: adaptive intervention;Adult;Affect;AIDS prevention;Algorithms;Artificial Intelligence;Bayesian Method;Behavioral Medicine;Behavioral Sciences;Cellular Phone;Collaborations;Computer software;COVID-19;craving;Data;delivery vehicle;design;digital;digital delivery;digital health;digital intervention;digital technology;disorder prevention;Drug usage;Educational workshop;effective intervention;Effectiveness;Effectiveness of Interventions;Explosion;Generations;Goals;Health Technology;HIV;Individual;individualized prevention;Intervention;intervention cost;intervention delivery;Journals;Learning;Location;Methodology;mhealth interventions;Modernization;Motivation;opioid epidemic;overpopulation;Participant;Peer Review;person centered;Persons;Play;Population;population based;post-pandemic;prevention service;Prevention strategy;preventive intervention;Psychological reinforcement;Publishing;Recovery;recovery services;Research;response;Role;Scientist;service intervention;Services;simulation;smart device;smart watch;Societies;Stress;substance use;Substance Use Disorder;Testing;therapy design;Time;Training;treatment response;treatment services;trend;unnecessary treatment;user friendly software;user-friendly;Variant;wearable device;Work;Writing;young adult;Youth
+current_category: infrastructure
+---
+application_id: 10886087
+activity_code: P50
+title: Research Project 3: Intergenerational Transmission of Neuroimmune Vulnerabilities for Addictive Behaviors among African American Youth: A Three Generation Study
+org_name: UNIVERSITY OF GEORGIA
+phr: N/A
+terms: addiction;Addictive Behavior;Adolescent;Adult;Affect;African American;African American population;Age;Alcohol consumption;Attenuated;Behavior;behavior test;behavioral outcome;Brain;Cardiometabolic Disease;cardiometabolic risk;cardiometabolism;Caregivers;Centers of Research Excellence;Child;Child Rearing;Chronic;Chronic stress;Collection;Communication;Consumption;contextual factors;Data;design;Development;Diet Habits;Discipline;Drug abuse;drug development;drug misuse;Drug usage;Eating;Economics;emotion regulation;Emotions;Empirical Research;Etiology;executive function;Exposure to;Family;Fatty acid glycerol esters;Food;Funding;Generations;Genetic;Glucose Intolerance;grandparent;Health;Hypertension;Immunology;Individual;Inflammation;insight;Insulin Resistance;intergenerational;Investigation;Link;Lipids;Longitudinal cohort study;Modeling;Monitor;National Institute of Drug Abuse;network models;neural circuit;Neurocognitive;Neuroimmune;Neurosciences;next generation;Nicotine;novel;Obesity;Parents;Pathway interactions;Peripheral;Persons;Pharmaceutical Preparations;Poverty;preadolescence;prevent;Prevention;Prevention program;Preventive;primary endpoint;Process;programs;protective effect;psychosocial outcome;Race;racial discrimination;randomized trial;recruit;Research Project Grants;resilience;Resource-limited setting;reward processing;Risk;Risk Factors;rural African American;Rural Community;Sampling;Science;social adversity;social influence;Socialization;Stress;stressor;substance use prevention;sugar;System;Testing;transmission process;Unemployment;Unhealthy Diet;virtual;Youth
+current_category: infrastructure
+---
+application_id: 10886083
+activity_code: P50
+title: Research Project 1: Neuroimmune Mechanisms, Addictive Behaviors, and Cardiometabolic Health among African American Emerging Adults: A Prospective Study
+org_name: UNIVERSITY OF GEORGIA
+phr: N/A
+terms: addiction;Addictive Behavior;Address;Adolescence;Affect;African American;African American population;Age;Amygdaloid structure;Attenuated;Behavior;Behavioral;biobehavior;Biological;Biology;Blood;Body System;Brain;Cardiometabolic Disease;cardiometabolic risk;cardiometabolism;Childhood;Chronic;Chronic stress;Communities;Consensus;Consumption;Corpus striatum structure;Data;design;Development;Diet;Diet Habits;Disparity;Drug abuse;drug abuse prevention;Drug usage;drug use vulnerability;Eating;Eating Behavior;emerging adult;emotion regulation;Emotions;Enrollment;Etiology;executive function;Exposure to;Fatty acid glycerol esters;Food;Functional disorder;functional MRI scan;Funding;Generations;Health;health disparity;High Fat Diet;Immune system;Immunology;Individual;Inflammation;Investigation;Link;Low income;Modeling;National Institute of Drug Abuse;negative affect;network models;neural;neural circuit;Neurobiology;Neuroimmune;Neuroimmunomodulation;neuroregulation;Neurosciences;neurotransmission;next generation;Outcome;Participant;Pathway interactions;Peripheral;Persons;Phenotype;Physiological;Population;Poverty;Prevention;Prevention program;Preventive;preventive intervention;primary caregiver;Process;programs;prospective;Prospective Studies;Public Health;public health relevance;Regulation;Research;Research Project Grants;Research Support;resilience;Resource-limited setting;reward circuitry;reward processing;Rewards;Risk;Sampling;Science;Scientist;Signal Transduction;Skin;social adversity;social influence;Specific qualifier value;Stress;stressor;Structure;substance misuse;substance use;sugar;System;Testing;theories;Time;transition to adulthood;Universities;Work;Youth
+current_category: infrastructure
+---
+application_id: 10886085
+activity_code: P50
+title: Research Project 2: Can Family-Centered Prevention Programming Reduce Neuroimmune Vulnerabilities for Drug Use and Health Risk among African American Adolescents?: A Randomized Prevention Trial
+org_name: UNIVERSITY OF GEORGIA
+phr: N/A
+terms: Addictive Behavior;Address;Adolescence;Adolescent;African American;African American population;Age;Attenuated;Behavior;Behavioral;Biological;biological adaptation to stress;Blood;Brain;cardiometabolic risk;cardiometabolism;Child Rearing;Childhood;Chronic;Chronic stress;Consensus;Corpus striatum structure;Data;Decision Making;design;Disparity;drug abuse prevention;Drug usage;drug use vulnerability;dysphoria;early onset substance use;Eating;emotion regulation;Etiology;executive function;experience;Exposure to;Family;Family Relationship;follow-up;Functional disorder;Functional Magnetic Resonance Imaging;Future;Health;health disparity;Hormones;Immune system;Immunology;indexing;Individual;Inflammation;Inflammatory;Intervention;Investigation;Link;Long-Term Effects;Longterm Follow-up;lower income families;Measures;Mediating;Modeling;network models;neural;neural circuit;Neurobiology;neurochemistry;Neurocognitive;Neuroimmune;Neurosciences;neurotransmission;Outcome;Parents;Participant;Peripheral;Physiological;Play;Population;prevent;Prevention;Prevention program;Prevention trial;Process;programs;psychosocial;Randomized;Randomized, Controlled Trials;Research Project Grants;Research Support;reward circuitry;reward processing;Rewards;Risk;Risk Factors;Risk Marker;Role;Science;Scientist;Series;Signal Transduction;Skin;social adversity;Specific qualifier value;Stress;stressor;Structure;substance misuse;System;Testing;transition to adulthood;Unhealthy Diet;Work;young adult;Youth
+current_category: infrastructure
+---
+application_id: 10886079
+activity_code: P50
+title: Research Support Core
+org_name: UNIVERSITY OF GEORGIA
+phr: N/A
+terms: Acceleration;Addictive Behavior;Affect;Affective;African American;African American population;Behavior;Biological Assay;Biological Markers;Biometry;Brain;Capital;Cardiometabolic Disease;cardiometabolic risk;cardiometabolism;Centers of Research Excellence;Chronic stress;Cognitive;Collaborations;Communities;Consultations;Consumption;contextual factors;Data;data analysis pipeline;Data Analytics;data exchange;data management;design;Development;Drug abuse;Drug usage;drug use vulnerability;Education;Educational workshop;emotion regulation;ethnic minority;Etiology;experience;Exposure to;Family;Fatty acid glycerol esters;Food;Functional Magnetic Resonance Imaging;Funding;Generations;Goals;Health;imaging facilities;Immune signaling;Immunology;Inflammation;Inflammatory;inflammatory marker;Intervention;Investigation;Low income;member;minority communities;Mission;Motivation;National Institute of Drug Abuse;network models;neural circuit;Neurobiology;Neurocognitive;neuroimaging;Neuroimmune;Neurosciences;next generation;Participant;Peripheral;Persons;Physiological;Pilot Projects;Population;prevent;Prevention;Preventive;Process;Productivity;programs;protocol development;Protocols documentation;psychosocial;Research;Research Personnel;Research Project Grants;Research Support;resilience;resilience factor;Resource-limited setting;Resources;Risk;Risk Factors;Sampling;Science;Scientist;Services;Skin;social adversity;social influence;Specific qualifier value;Specimen;Stress;Structure;substance misuse;substance misuse prevention;substance use;sugar;symposium;System;Targeted Research;Testing;therapy development;Training and Education;Universities;working group;Youth
+current_category: infrastructure
+---
+application_id: 10877050
+activity_code: P50
+title: Data and Methods Core
+org_name: RAND CORPORATION
+phr: N/A
+terms: 2019-nCoV;Acceleration;Address;Affect;Area;Attention;Censuses;Communication;Communities;Community Health;community-level factor;Complex;coronavirus disease;County;Data;data library;data resource;Data Set;Development;drug misuse;education resources;Educational Materials;Educational workshop;Effectiveness;effectiveness evaluation;Ensure;Environment;Ethnic Origin;Evaluation;experience;Explosion;Health Insurance;high risk;Housing;Human Resources;illicit opioid;improved;Income;Infrastructure;innovation;Insurance Coverage;Interruption;Investigation;Knowledge;Light;Literature;Measurement;Measures;Mentors;Methodology;Methods;mindfulness;Nature;Neighborhoods;non-opioid analgesic;Occupations;Opioid;opioid epidemic;opioid misuse;opioid policy;Outcome;Persons;Play;Policies;Policy Maker;Public Health;Publishing;Race;repository;Research;Research Personnel;Resources;Review Literature;Risk;Role;Scanning;Scientist;Shapes;social;social disparities;social structure;Socioeconomic Status;socioeconomics;Speed;structural determinants;Structural Racism;substance misuse;Techniques;Testing;Time Series Analysis;timeline;tool;Training;treatment effect;Trust;Update;vulnerable community;Wages;Work
+current_category: infrastructure
+---
+application_id: 10877057
+activity_code: P50
+title: Measuring the Longer Term Social Burdens of the Opioid Crisis on Local Communities
+org_name: RAND CORPORATION
+phr: N/A
+terms: absorption;Affect;Area;Black race;Characteristics;Child Abuse and Neglect;child protective service;Child Welfare;Communities;cost;Cost Analysis;Cost Measures;Cost-Benefit Analysis;Country;County;COVID-19 pandemic;Crime;Databases;Dependence;design;Direct Costs;divorce/separation;Drug user;economic outcome;Economics;Education;Equity;Ethnic Origin;Event;experience;Facilities and Administrative Costs;Fentanyl;Fertility;foster care;Foundations;Future;Geography;grandparent;Growth;Health;Health Policy;Heroin;HIV/AIDS;Homicide;Household;Household and Family;Hypertension;Imprisonment;improved;indexing;insight;intergenerational;labor force participation;Legal;Life;Link;Literature;Love;Low income;manufacture;Marketing;Measures;medication for opioid use disorder;Methods;Modeling;Natural Disasters;Not Hispanic or Latino;novel;Opioid;opioid epidemic;opioid misuse;opioid policy;opioid use;opioid use disorder;Out-Migrations;Outcome;Outcome Study;Overdose;overdose death;Pharmaceutical Preparations;Pneumonia;Police;Policies;Policy Maker;polysubstance use;prescription opioid;Procedures;Public Health;public health emergency;Race;Reporting;Research;Research Personnel;resilience;resilience factor;Resource Allocation;Resources;response;Rural;rural area;social;Social outcome;societal costs;Socioeconomic Status;stem;stressor;Substance Use Disorder;Time;United States;Variant;Widowhood
+current_category: infrastructure
+---
+application_id: 10837337
+activity_code: U19
+title: Administrative Core
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Area;Central Africa;Collaborations;Communication;Computer Models;Data Analytics;data management;data modeling;Educational workshop;Ensure;Epidemiology;experience;financial relationship;Foundations;Goals;innovation;Institution;international center;Intervention;Leadership;Malaria;meetings;National Institute of Allergy and Infectious Disease;Occupational activity of managing finances;Performance;programs;Reporting;Research;Research Activity;Research Institute;Resources;Site;Southern Africa;success;timeline;transmission process;Tropical Disease;Trust;Work;Zambia
+current_category: infrastructure
+---
+application_id: 10877053
+activity_code: P50
+title: A Framework for Understanding Mechanisms of Policy Change: The Opioid Policy Taxonomy
+org_name: RAND CORPORATION
+phr: N/A
+terms: 2019-nCoV;addiction;Address;Adopted;Adoption;Area;Attention;Behavior;Behavioral Sciences;Categories;Classification;Communities;COVID-19 pandemic;Criminal Justice;Data;Data Collection;data infrastructure;data resource;Data Set;Development;Drug usage;Employment;Environment;Epidemiology;Evidence based treatment;Evolution;Fentanyl;Future;Goals;Government;Grant;Health;Health Services Accessibility;Healthcare;Heroin;Housing;illicit opioid;implementation determinants;implementation science;Improve Access;improved;Individual;Laws;Legal;manufacture;Maps;Measures;Methods;Modeling;Morbidity - disease rate;mortality;Opioid;Opioid Analgesics;opioid epidemic;opioid misuse;opioid overdose;opioid policy;opioid use disorder;opioid user;Organizational Policy;Outcome;overdose death;overdose prevention;Pattern;Personal Satisfaction;Pharmaceutical Preparations;Policies;Policy Developments;Policy Maker;Policy Making;prescription drug abuse;prescription monitoring program;prescription opioid;prevent;Public Health;Publishing;Race;racial disparity;rapid growth;Reporting;Research;Research Personnel;residential segregation;Resources;response;Risk;Role;Shapes;social;Social Policies;Stimulant;Structural Racism;substance misuse;substance use;Substance Use Disorder;success;synthetic opioid;System;Taxonomy;Time;Training Programs;Work
+current_category: infrastructure
+---
+application_id: 10830985
+activity_code: U19
+title: Admin Core
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: N/A
+terms: Agreement;analytical tool;bean;Clinical Data;Clinical Management;Collaborations;Collection;Communication;Computational Biology;Data;Data Analyses;Data Coordinating Center;data exchange;data management;data sharing;Data Storage and Retrieval;Databases;Funding;Goals;Infection;Infrastructure;Institution;meetings;member;Monitor;Names;National Institute of Allergy and Infectious Disease;Office of Administrative Management;Policies;Procedures;programs;Progress Reports;Recording of previous events;Relapse;Reporting;Research;Resolution;Resources;sample collection;Sampling;Scientist;Shipping;success;synergism;Technology;Testing;Time;United States National Institutes of Health;Work
+current_category: infrastructure
+---
+application_id: 10837340
+activity_code: U19
+title: Development and Application of Innovative Malaria Surveillance Data Streams and Tools in Three Transmission Settings in Zambia
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Address;Africa South of the Sahara;analytical method;Anti-malarials;Area;Artificial Intelligence;Automobile Driving;Behavior;Behavioral;Biological Factors;Caring;Case Management;Central Africa;climate change;clinical care;Collaborations;combat;Communities;computerized tools;Computing Methodologies;Country;Data;Data Analytics;data pipeline;Data Set;data streams;data tools;Development;Drug resistance;Environment;Epidemiology;evidence base;Failure;Genomics;Genotype;Health care facility;Health system;Hospitalized Child;Household;Human;improved;Infection;innovation;Insecticide Resistance;Insecticides;insight;Intervention;Link;Location;Longitudinal cohort;Machine Learning;Malaria;malaria transmission;Maps;mathematical model;Measurement;Measures;mobile computing;Molecular;molecular marker;Morbidity - disease rate;mortality;Movement;movement analysis;novel;Parasites;Pattern;peri-urban;Population;Positioning Attribute;programs;Research;Residual state;Risk;Risk Factors;Southern Africa;spatiotemporal;surveillance data;Surveys;System;Testing;tool;transmission process;Travel;urban setting;Urbanization;vector;Work;World Health Organization;Zambia
+current_category: infrastructure
+---
+application_id: 10837160
+activity_code: U19
+title: Data Management, Statistical Support and Modelling Core
+org_name: WALTER AND ELIZA HALL INST MEDICAL RES
+phr: N/A
+terms: Acceleration;Address;Affect;Area;Asia;Biological;Brazil;Cambodia;co-infection;Collaborations;Collection;Communities;Complex;complex data;Computer software;Computers;Country;dashboard;Data;data cleaning;data complexity;data dashboard;data integration;data management;Data Management Resources;data quality;data repository;Data Set;data sharing;database design;Databases;design;Development;Drops;Educational workshop;electronic data;electronic data capture system;Epidemiology;evidence base;experience;Expert Opinion;field study;flexibility;Formulation;General Population;handheld equipment;Health Personnel;Heterogeneity;Immunologics;improved;in silico;Individual;infectious disease model;interest;Intervention;Joints;Knowledge;knowledge translation;Laboratories;Link;Local Government;Location;Malaria;malaria transmission;Manuals;mathematical model;Mathematics;Measures;Modeling;Molecular;network models;novel;novel strategies;Online Systems;Outcome;Paper;Paris, France;Participant;Plasmodium;Plasmodium falciparum;Plasmodium vivax;Play;point of care;Policies;Policy Maker;Policy Making;Population;Probability;Procedures;Process;programs;Public Health;public health intervention;public repository;Randomized, Controlled Trials;Research;Research Personnel;Resource Allocation;response;Role;Running;Sentinel;Site;Statistical Data Interpretation;Statistical Models;Study models;support network;System;Tablets;Testing;Time;time use;tool;Translating;Translations;transmission process;Tupaia;Universities;vector;Work
+current_category: infrastructure
+---
+application_id: 10932778
+activity_code: P50
+title: Impact of Cannabinoid Across the Lifespan (ICAL)
+org_name: UNIVERSITY OF CALIFORNIA-IRVINE
+phr: N/A
+terms: Adolescence;Adolescent;Adult;Analytical Chemistry;anandamide;Animals;Architecture;Behavior;Behavioral;Biocompatible Materials;Biological Assay;cannabinoid drug;Cannabinoids;Cognition;Drug Kinetics;drug metabolism;Endocannabinoids;endogenous cannabinoid system;Epigenetic Process;Equipment;experience;Exposure to;Funding;Genetic Processes;graduate student;Human;innovation;instrumentation;life span;Lipids;Liquid Chromatography;Long-Term Effects;Maintenance;marijuana use;Methods;Molecular;Molecular Structure;motivated behavior;Mus;National Institute of Drug Abuse;Neuroanatomy;Neuronal Plasticity;novel;novel strategies;pharmacokinetics and pharmacodynamics;Postdoctoral Fellow;Preparation;Process;Property;Publications;Rattus;Sampling;Schedule;Series;sex;Synapses;synaptic function;System;tandem mass spectrometry;Teenagers;Testing;Tetrahydrocannabinol;Tissues;Training;Treatment Protocols
+current_category: infrastructure
+---
+application_id: 10837391
+activity_code: U19
+title: Epidemiological and Entomological Factors Shaping Persistent Malaria Transmission
+org_name: UNIVERSITY OF SOUTH FLORIDA
+phr: N/A
+terms: Acceleration;Address;Affect;Anopheles Genus;Automobile Driving;Beds;Behavior;Biological Assay;Bite;Breeding;Cameroon;Characteristics;Chemoprevention;Child;Climate;Clinical;Communities;Complex;Country;Culicidae;design;Development;Disease;Drug resistance;Ecology;Environmental Risk Factor;Epidemic;Epidemiology;Evaluation;evidence base;Evolution;experimental study;Failure;feeding;Genetic;genomic tools;Genomics;Goals;Human;Incidence;Infection;Insecticide Resistance;Insecticides;insight;interdisciplinary approach;Intervention;Knowledge;Longitudinal cohort study;Malaria;malaria transmission;Measures;Membrane;Methods;Molecular;Morbidity - disease rate;mortality;Nature;Parasites;Pattern;Plasmodium falciparum;Plasmodium vivax;Population;Pregnant Women;Prevalence;Preventive treatment;programs;rational design;Research;Resources;response;Seasons;Shapes;Site;spatiotemporal;study population;System;Testing;Time;tool;transmission process;Vaccines;vector;Vectorial capacity;Vivax Malaria;World Health Organization
+current_category: medical_device
+---
+application_id: 10889211
+activity_code: U19
+title: Advanced Bioaerosols Technology Core
+org_name: UNIV OF MARYLAND, COLLEGE PARK
+phr: N/A
+terms: Address;Aerosols;ambient particle;Biocompatible Materials;Biological Assay;Biomedical Engineering;Cell Culture Techniques;Cell Line;Clinical;Clinical Research;Collection;Controlled Environment;Coupled;density;design;Development;Devices;digital;Engineering;Environment;Evaluation;Exhalation;Exhibits;Ferrets;flu transmission;Fractionation;Gelatin;Goals;Growth;Heterogeneity;Human;Hydrogels;improved;Individual;Influenza;influenzavirus;innovation;innovative technologies;instrument;Investigation;Liquid substance;Lung;Methods;Microfluidics;model development;Modeling;Monitor;Mucins;Mucous body substance;novel;pandemic potential;particle;Particle Size;Physical condensation;Population;prevent;Property;Research;Research Project Grants;Resolution;respiratory;Respiratory System;Reverse Transcriptase Polymerase Chain Reaction;Risk;Risk Assessment;Route;sample collection;Sampling;Solid;Source;Support System;Surface;System;Techniques;Technology;tool;transmission process;Variant;Viral;viral pandemic;Virion;virology;Virus;water channel
+current_category: infrastructure
+---
+application_id: 10932777
+activity_code: P50
+title: Impact of Cannabinoid Across the Lifespan (ICAL)
+org_name: UNIVERSITY OF CALIFORNIA-IRVINE
+phr: N/A
+terms: Adolescence;Adolescent;Adult;Affect;Animals;Behavioral;Biological;Brain;Cannabinoids;Cannabis;Cells;CNR1 gene;Cognition;Collaborations;Communities;Complex;Consumption;Data Analyses;Development;Drug Kinetics;drug metabolism;Electronic Mail;endocannabinoid signaling;endogenous cannabinoid system;Ensure;Enterobacteria phage P1 Cre recombinase;Equipment and supply inventories;experimental study;Exposure to;fatty acid amide hydrolase;Female;Freezing;Funding;Gene Modified;Human;Immune;indexing;International;intraperitoneal;Investigation;Laboratories;Life;life span;LoxP-flanked allele;male;marijuana use;Media Campaign;Metabolic;Modeling;Molecular;motivated behavior;Motivation;mouse development;Mus;mutant;National Institute of Drug Abuse;Nociception;Organ;Pattern;Periodicals;Peripheral;Pharmacodynamics;Phenotype;Physiological Processes;Pilot Projects;Preparation;Process;programs;Protocols documentation;public repository;Publishing;Rattus;Research;Research Personnel;Resources;response;Rodent;Sampling;Scientist;Services;sex;Signal Transduction;social media;Specimen;Standardization;Synapses;System;Teenagers;Testing;THC exposure;Tissue Banks;Tissues;Treatment Protocols;web site;Work
+current_category: infrastructure
+---
+application_id: 10889205
+activity_code: U19
+title: Administrative Core
+org_name: UNIV OF MARYLAND, COLLEGE PARK
+phr: N/A
+terms: Accountability;Achievement;Address;aerosolized;Aerosols;Air;Applications Grants;Area;Biological Assay;Biomedical Engineering;Biostatistics Core;Clinical;Clinical Research;Clinical Trials;Collaborations;Communication;Controlled Environment;design;Development;Devices;Disparity;Educational Status;Ensure;Environmental Risk Factor;Evaluation Research;Faculty;flu transmission;Fostering;Fractionation;Goals;Human;Immunology;improved;Individual;Infectious Disease Epidemiology;Influenza;influenzavirus;Information Dissemination;innovation;innovative technologies;Interdisciplinary Study;Knowledge;Language;Leadership;Liquid substance;meetings;Methods;Modeling;multidisciplinary;new technology;particle;Process;program dissemination;programs;Publications;Randomized, Controlled Trials;Report (document);Research;Research Personnel;Research Project Grants;Research Support;Resources;response;Role;Sampling;Science;sound;Standardization;Structure;Students;success;Sum;synergism;Technology;Viral;virology;Work
+current_category: infrastructure
+---
+application_id: 10837341
+activity_code: U19
+title: Human and Vector Drivers of Transmission and Enhanced Surveillance for Early Outbreak Detection and Monitoring Progress Toward Elimination
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Address;Africa South of the Sahara;Anopheles Genus;Area;Beds;Behavior;Behavioral;Bite;Blood;Blood specimen;Case Management;Central Africa;Chemicals;Child;Clinical;Collection;Country;Coupled;Culicidae;Data;data dashboard;data visualization;Decision Making;design;Detection;Development;Disease Outbreaks;Environment;Epidemiology;Foundations;Genotype;Health care facility;high risk;Household;Human;Human Characteristics;Individual;innovation;Insecticides;international center;Intervention;Investigation;Knowledge;Link;Malaria;malaria transmission;Methods;Molecular;Monitor;mortality;novel;Parasites;Pattern;peri-urban;Plasmodium falciparum;programs;rapid detection;rapid technique;Reporting;Research;Research Design;Research Infrastructure;Residual state;Risk;Risk Behaviors;risk mitigation;Rural;rural dwellers;rural environment;Rural Health;Seasons;serosurveillance;Site;Southern Africa;spatiotemporal;Surveillance Methods;surveillance strategy;Surveys;System;Testing;Time;tool;transmission process;urban setting;vector;vector control;Vector Ecology;vector mosquito;Zambia
+current_category: infrastructure
+---
+application_id: 10932780
+activity_code: P50
+title: Impact of Cannabinoid Across the Lifespan (ICAL)
+org_name: UNIVERSITY OF CALIFORNIA-IRVINE
+phr: N/A
+terms: Ablation;Acceleration;Adolescence;Adolescent;adolescent substance use;Affect;antagonist;Attention;base;Behavior;Behavioral;brain dysfunction;Brain region;cannabinoid receptor antagonist;Cannabinoids;Cannabis;cell type;Cells;CNR1 gene;Cognition;cognitive ability;Collaborations;Complex;Cytometry;Data Analyses;Data Set;density;Development;Electrophysiology (science);endocannabinoid signaling;Endocannabinoids;endogenous cannabinoid system;Environment;Enzymes;epidemiologic data;epidemiology study;Epigenetic Process;Episodic memory;Etiology;Event;Exhibits;experimental study;Exposure to;fatty acid amide hydrolase;Female;Fostering;Foundations;Functional disorder;Funding;Gene Deletion;Genetic;Genetic Transcription;Goals;Health;health assessment;Hippocampus;Homeostasis;Host Defense;Image;Impairment;Incidence;Infection;laboratory experiment;life span;Link;Long-Term Potentiation;male;marijuana use;Mediating;Medicine;Memory;Mental disorders;microbial;Microglia;Molecular;Morphology;motivated behavior;Mus;National Institute of Drug Abuse;Nature;neural;neurobehavioral;Neuronal Plasticity;Neurons;Neurotransmitters;Opioid;Outcome;Pharmaceutical Preparations;pharmacologic;Prefrontal Cortex;prevent;Process;programs;Property;Psychosocial Stress;Rattus;receptor;Reporting;Research;Research Activity;response;Rewards;Risk;Route;Series;sex;Signal Transduction;single nucleus RNA-sequencing;social stress;Structure;substance use;Synapses;Synaptic plasticity;System;Techniques;Teenagers;Testing;Tetrahydrocannabinol;THC exposure;Time
+current_category: infrastructure
+---
+application_id: 10932781
+activity_code: P50
+title: Impact of Cannabinoid Across the Lifespan (ICAL)
+org_name: UNIVERSITY OF CALIFORNIA-IRVINE
+phr: N/A
+terms: 2-arachidonylglycerol;Ablation;Actins;Adolescence;Adolescent;Adult;Affect;Age;age related;antagonist;base;Behavioral;Cannabinoids;cell type;Cells;CNR1 gene;cognitive function;conditional knockout;Cytoskeleton;dentate gyrus;Development;early adolescence;Elements;Endocannabinoids;Engineering;Episodic memory;estrogen disruption;Estrogen Receptors;Estrogens;Excision;Excitatory Synapse;Exposure to;F-Actin;fatty acid amide hydrolase;Female;Fluorescence;Functional disorder;Genetic;Goals;Hippocampus;Impairment;Individual;Knockout Mice;Lateral;Learning;life span;Link;Long-Term Potentiation;Macrophage Colony-Stimulating Factor Receptor;male;marijuana use;Mediating;Memory;Memory impairment;Microglia;Molecular;Mus;Mutant Strains Mice;Neurobiology;novel;Pattern;Perforant Pathway;Pharmaceutical Preparations;pharmacologic;Population;prevent;Process;programs;Proteins;Rattus;Receptor Activation;Receptor Signaling;Research;response;Rodent;Role;sex;Sex Differences;sexual dimorphism;Signal Transduction;stem cells;Synapses;Synaptic plasticity;System;Testing;THC exposure;tomography;treatment strategy;Vertebral column;Work
+current_category: infrastructure
+---
+application_id: 11060104
+activity_code: P30
+title: Proteogenomics Shared Resource
+org_name: UNIVERSITY OF MINNESOTA
+phr: N/A
+terms: Amino Acid Sequence;Analytical Biochemistry;anti-cancer research;Antibodies;Applications Grants;Base Sequence;Basic Science;Bioinformatics;bioinformatics tool;Biological Markers;Cancer Center Support Grant;cancer genomics;cancer type;carcinogenesis;Clinical;Clinical Research;Collaborations;Coupled;Data;data integration;Development;Diagnosis;diagnostic biomarker;DNA;DNA Sequence;Doctor of Philosophy;Environment;Experimental Designs;flexibility;Follow-Up Studies;Funding;Galaxy;Generations;Genetic;genomic locus;Genomics Shared Resource;host-microbe interactions;Immune response;Immune system;immunogenicity;Immunooncology;Immunotherapeutic agent;improved;Informatics;Malignant Neoplasms;Mass Spectrum Analysis;member;metabolomics;Metagenomics;metaproteomics;Microbe;microbial community;microbiome;microbiome research;Minnesota;Molecular;Multiomic Data;multiple omics;neoantigens;next generation;next generation sequencing;novel;Peptides;predictive tools;programs;Proteins;proteogenomics;Proteome;Proteomics;Records;Research;Research Design;Research Personnel;research study;Resolution;Resource Sharing;Resources;RNA Sequences;Sampling;Services;Software Validation;success;Supercomputing;Technology;tool;transcriptome sequencing;Translational Research;translational study;Universities;Variant;Work
+current_category: infrastructure
+---
+application_id: 10844407
+activity_code: P20
+title: Omics Core
+org_name: UNIVERSITY OF LOUISVILLE
+phr: N/A
+terms: Address;Applications Grants;Attention;Award;Bioinformatics;Biological;Biological Assay;career;career development;Centers of Research Excellence;Chemicals;Chromatography;clinical infrastructure;Clinical Research;Communities;Complex Mixtures;Continuing Education;Data;Data Analyses;Data Collection;Data Reporting;data sharing;Derivation procedure;design;Development;Dimensions;Disease;Drug Interactions;Education;Ensure;Environment;epitranscriptomics;Equipment;experimental study;fatty liver disease;Fee-for-Service Plans;Funding;Future;Goals;Health Sciences;Hepatology;Human Resources;Individual;Infrastructure;innovation;Institution;instrument;Intervention Studies;Leadership;Liver;liver development;Liver diseases;Liver Dysfunction;liver injury;Malignant neoplasm of liver;Mass Spectrum Analysis;meetings;member;metabolomics;method development;Methods;Modality;Modeling;Modification;Molecular Evolution;molecular marker;non-alcoholic;novel;nutrition;operation;Peptides;Performance;Phase;Preparation;Privatization;problem drinker;Procedures;programs;Protein Analysis;Protein Fragment;Proteins;Proteomics;Protocols documentation;Reagent;Research;Research Activity;Research Personnel;Research Support;Resources;RNA;S10 grant;sample collection;Sampling;Science;Services;small molecule;Standardization;Statistical Data Interpretation;success;Techniques;Technology;theories;tool;toxicant;Toxicology;Training;Training and Education;Translational Research;United States National Institutes of Health;Universities
+current_category: infrastructure
+---
+application_id: 11009909
+activity_code: U19
+title: Administrative Core
+org_name: DUKE UNIVERSITY
+phr: N/A
+terms: Acceleration;Accounting;Advisory Committees;Agreement;Antibodies;Antigens;B-Lymphocytes;Budgets;Cell Lineage;Clinical Trials;Communication;conflict resolution;Data;Data Analyses;data management;Data Provenance;data sharing;Development;Ensure;expectation;Expenditure;experience;Experimental Designs;Ferritin;Funding;Goals;Good Manufacturing Process;Grant;Guidelines;HIV-1;HIV-1 vaccine;Human;Human Resources;IACUC;Immune response;Infrastructure;Institution;Institutional Policy;interest;Lead;Measures;meetings;member;Monitor;nanoparticle;National Institute of Allergy and Infectious Disease;next generation sequencing;Occupational activity of managing finances;Outcome;Participant;Phase I Clinical Trials;Policies;Practice Guidelines;Preparation;Production;programs;Proteins;Protocols documentation;Publications;quality assurance;Regulation;Reporting;Research;Research Personnel;Resources;Rights;Risk;Site;sortase;Supervision;Testing;United States Food and Drug Administration;United States National Institutes of Health;Universities;vaccine development;vaccine platform;Vaccine Research;Vaccines
+current_category: infrastructure
+---
+application_id: 11009923
+activity_code: U19
+title: Project 2. cGMP manufacture of HIV-1 Env trimer sortase A-conjugated nanoparticles
+org_name: DUKE UNIVERSITY
+phr: N/A
+terms: 2019-nCoV;Acceleration;Adopted;Affinity;Antibodies;Antibody Response;Antigens;Binding;Binding Sites;Cell Line;cGMP production;Chimeric Proteins;Clinical Trials;Complex;Consumption;cost;Cyclic GMP;design;Development;Enzymes;Evaluation;expectation;experimental study;Ferritin;Funding;Future;Generations;Genes;Goals;Grant;HIV Vaccine Trials Network;HIV-1;HIV-1 vaccine;Human;human pathogen;Immune response;Immune system;immunogenicity;Immunology;Infection;innovation;iterative design;Link;manufacture;Methods;misfolded protein;Molecular Conformation;nanoparticle;nanoparticle drug;Nature;neutralizing antibody;pathogen;Pharmaceutical Preparations;Phase I Clinical Trials;phase I trial;polypeptide;preservation;Process;Production;programs;Protein Engineering;Proteins;Recombinants;Regimen;Reproducibility;Research;research clinical testing;response;Safety;safety and feasibility;Series;sortase;Specificity;stability testing;Staphylococcus aureus;Surface;System;Testing;Time;Toxicology;Translating;Vaccination;vaccine candidate;Vaccine Design;vaccine development;Vaccines;Viral Vaccines;Work
+current_category: therapeutics
+---
+application_id: 10836999
+activity_code: P50
+title: Project 1: Maternal Prenatal Exposure to Environmental and Psychosocial Stressors and Long-term Risk of Depression
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: Acculturation;Adolescence;Affect;Air Pollutants;Air Pollution;ambient air pollution;Animals;Awareness;Biological;Brain;Cell Physiology;Chronic stress;cohort;coping;Country;critical period;cytokine;depressive symptoms;design;Development;disadvantaged women;Disease;Environmental Exposure;Environmental Risk Factor;environmental stressor;Epigenetic Process;Epinephrine;Exposure to;Fetal Development;fine particles;Functional disorder;Gene Expression;Gene Targeting;Genetic Predisposition to Disease;health care service;health disparity populations;Hispanic;Hispanic Women;Hormonal;Hormones;Human;Hydrocortisone;improved;Individual;Inflammatory;inflammatory marker;Interleukin-6;Language;Los Angeles;Major Depressive Disorder;maternal depression;maternal risk;Mediating;Mediator;men;Mental Depression;Mental disorders;Mental Health;Mental Health Services;MicroRNAs;middle age;modifiable risk;Morbidity - disease rate;neighborhood disadvantage;neuroinflammation;Neurosecretory Systems;Norepinephrine;Not Hispanic or Latino;Pathway interactions;perceived stress;Persons;Policies;Population;Postpartum Depression;Postpartum Period;Predisposition;preference;Pregnancy;prenatal;prenatal exposure;psychosocial;psychosocial stressors;public health priorities;Recording of previous events;Recurrence;Regulator Genes;Reproductive Periods;response;Risk;Risk Factors;Role;social;social disparities;Social status;social stressor;socioeconomic disadvantage;Stress;Stressful Event;Subgroup;Symptoms;Testing;Victimization;Woman;Women&apos;s prevalence
+current_category: infrastructure
+---
+application_id: 11009914
+activity_code: U19
+title: Project 1. Optimization and in vivo evaluation of HIV-1 Env trimer sortase A-conjugated nanoparticles
+org_name: DUKE UNIVERSITY
+phr: N/A
+terms: Adopted;Affinity;Antibodies;Antibody Affinity;Antibody Binding Sites;Antibody Formation;Antibody Response;Antigens;Autologous;B-Cell Antigen Receptor;B-Lymphocytes;Binding Sites;booster vaccine;Cell Lineage;Cloning;Codon Nucleotides;cross reactivity;Cyclic GMP;design;Development;Effectiveness;Engineering;Enzymes;expectation;Failure;Ferritin;Genes;HIV Antigens;HIV-1;Human;humanized mouse;Immunization;Immunize;immunogenicity;in vivo evaluation;innovation;Knock-in Mouse;Link;Macaca;manufacture;member;Molecular Conformation;Monoclonal Antibodies;mouse model;Mutation;nanoparticle;neutralizing antibody;next generation sequencing;non-Native;nonhuman primate;novel;phase I trial;Phenotype;Positioning Attribute;Probability;Process;Production;Protein Subunits;Proteins;Reaction;Recombinants;Regimen;Research;research clinical testing;Running;self assembly;Serum;Somatic Mutation;sortase;Surface;Technology;transpeptidation;vaccination strategy;Vaccine Design;Vaccines;Virus
+current_category: therapeutics
+---
+application_id: 10738742
+activity_code: U19
+title: Project 2. cGMP manufacture of HIV-1 Env trimer sortase A-conjugated nanoparticles
+org_name: DUKE UNIVERSITY
+phr: N/A
+terms: 2019-nCoV;Acceleration;Adopted;Affinity;Antibodies;Antibody Response;Antigens;Binding;Binding Sites;Cell Line;cGMP production;Chimeric Proteins;Clinical Trials;Complex;Consumption;cost;Cyclic GMP;design;Development;Enzymes;Evaluation;expectation;experimental study;Ferritin;Funding;Future;Generations;Genes;Goals;Grant;HIV Vaccine Trials Network;HIV-1;HIV-1 vaccine;Human;human pathogen;Immune response;Immune system;immunogenicity;Immunology;Infection;innovation;iterative design;Link;manufacture;Methods;misfolded protein;Molecular Conformation;nanoparticle;nanoparticle drug;Nature;neutralizing antibody;pathogen;Pharmaceutical Preparations;Phase I Clinical Trials;phase I trial;polypeptide;preservation;Process;Production;programs;Protein Engineering;Proteins;Recombinants;Regimen;Reproducibility;Research;research clinical testing;response;Safety;safety and feasibility;Series;sortase;Specificity;stability testing;Staphylococcus aureus;Surface;System;Testing;Time;Toxicology;Translating;Vaccination;vaccine candidate;Vaccine Design;vaccine development;Vaccines;Viral Vaccines;Work
+current_category: therapeutics
+---
+application_id: 10738738
+activity_code: U19
+title: Administrative Core
+org_name: DUKE UNIVERSITY
+phr: N/A
+terms: Acceleration;Accounting;Advisory Committees;Agreement;Antibodies;Antigens;B-Lymphocytes;Budgets;Cell Lineage;Clinical Trials;Communication;conflict resolution;Data;Data Analyses;data management;Data Provenance;data sharing;Development;Ensure;expectation;Expenditure;experience;Experimental Designs;Ferritin;Funding;Goals;Good Manufacturing Process;Grant;Guidelines;HIV-1;HIV-1 vaccine;Human;Human Resources;IACUC;Immune response;Infrastructure;Institution;Institutional Policy;interest;Lead;Measures;meetings;member;Monitor;nanoparticle;National Institute of Allergy and Infectious Disease;next generation sequencing;Occupational activity of managing finances;Outcome;Participant;Phase I Clinical Trials;Policies;Practice Guidelines;Preparation;Production;programs;Proteins;Protocols documentation;Publications;quality assurance;Regulation;Reporting;Research;Research Personnel;Resources;Rights;Risk;Site;sortase;Supervision;Testing;United States Food and Drug Administration;United States National Institutes of Health;Universities;vaccine development;vaccine platform;Vaccine Research;Vaccines
+current_category: infrastructure
+---
+application_id: 10908699
+activity_code: U54
+title: Administrative Core
+org_name: UNIV OF MASSACHUSETTS MED SCH WORCESTER
+phr: N/A
+terms: Advisory Committees;Blood;Businesses;Clinical;Collaborations;commercialization;Communication;Communities;Community Health;Complex;Developmental Process;Device or Instrument Development;Diagnosis;Engineering;experience;Foundations;Funding;Goals;health equity;health organization;Health Personnel;Health system;Heart;Heart Diseases;Hematological Disease;Home;improved;Incubators;Industry;industry partner;International;Knowledge;Leadership;Lung;Lung Diseases;Massachusetts;Medical;Medical Device;medical schools;Modeling;novel;organizational structure;patient advocacy group;patient oriented;point of care;Point of Care Technology;Principal Investigator;product development;programs;RADx Tech;Research;Research Personnel;Resources;Role;Running;Services;Site;Sleep;Sleep Disorders;Structure;technological innovation;Technology;technology development;technology research and development;Testing;United States National Institutes of Health;Universities;usability;Validation;Work
+current_category: infrastructure
+---
+application_id: 10917018
+activity_code: P50
+title: Training Core
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: 3-Dimensional;Acrylamides;Alzheimer&apos;s Disease;Anatomy;autism spectrum disorder;awake;Behavior;Behavioral;Biological;Brain;brain tissue;career;Categories;Cells;Charge;Chemistry;Communities;cost;design;Devices;Drug abuse;drug action;drug of abuse;dynamic system;Education;Educational workshop;Electrophysiology (science);Elements;Excision;Fertilization;Fiber;Fiber Optics;free behavior;Genes;Genetic;Goals;Human;Human Resources;Hydrogels;in vivo;Infrastructure;interest;Intervention;Intramural Research Program;Label;Laboratories;Lasers;Learning;Light;Link;Mental Depression;Methods;microbial;millisecond;Mission;Modeling;Modernization;Molecular;Multiple Sclerosis;National Institute of Drug Abuse;Nervous System;neural circuit;Neurons;Neurosciences;next generation;Opsin;Optics;optogenetics;outreach;Paper;Parkinsonian Disorders;Participant;Pharmaceutical Preparations;Photometry;Polymers;Positioning Attribute;pre-clinical;Recovery;Research;Research Personnel;Resolution;Rodent;Scientist;Series;Structure;success;Technology;Time;Tissues;tool;Training;Training and Infrastructure;transcriptomics;Variant;Vision;Visit;Work
+current_category: infrastructure
+---
+application_id: 10917023
+activity_code: P50
+title: Brain-wide circuits for drug-induced changes to cognition
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Acute;Animals;Behavior;Behavioral;Brain;brain behavior;Brain region;Cell Nucleus;Code;Cognition;Cognitive;cognitive process;Complex;Dissociation;drug action;Drug Addiction;drug of abuse;drug seeking behavior;Drug usage;Electrophysiology (science);entorhinal cortex;Environment;experience;Genetic;HCN1 channel;HCN1 gene;Hippocampus;hypnotic;Impairment;in vivo;insight;interest;Ketamine;Knock-out;Knockout Mice;Left;Link;Location;Long-Term Effects;Measures;Medial;Memory;Methamphetamine;Molecular;Molecular Target;Morphine;Movement;Mus;Nature;neural;neural circuit;neural correlate;Neurons;NR2A NMDA receptor;operation;Parietal;Persons;Pharmaceutical Preparations;Physiological;Positioning Attribute;Prevalence;Property;psychologic;Relapse;response;Rewards;Running;Site;Space Perception;spatial memory;Speed;System;Techniques;Technology;Therapeutic;Therapeutic Agents;Training;Update;Viral;virtual reality environment;Visual;way finding;Work
+current_category: infrastructure
+---
+application_id: 10807084
+activity_code: U19
+title: Structure-guided vaccine design of HCV E1E2 to induce broadly neutralizing antibodies (bNAbs)
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Achievement;Address;Adjuvant;Affinity;Alberta province;Animal Experiments;Antibodies;Antibody Response;Antibody titer measurement;Antigens;B-Lymphocytes;Back;Benchmarking;Binding;Bone Marrow;Cavia;chronic infection;Collaborations;Databases;design;Elements;Epitope Mapping;Epitopes;flexibility;Foundations;Genotype;Glycoengineering;glycosylation;Goals;Hepatitis C Vaccine;Hepatitis C virus;Human;human monoclonal antibodies;Immune;Immune Sera;Immunity;immunogenic;immunogenicity;Immunologics;improved;in vivo;Liver;Maps;Measures;Modeling;Molecular;Molecular Conformation;molecular dynamics;molecular modeling;mouse model;Mus;mutant;neutralizing antibody;Pan Genus;Plasma Cells;Plasmablast;polyclonal antibody;Polysaccharides;Predisposition;preservation;prevent;Process;Production;Property;Protein Engineering;Proteins;rational design;Recombinants;Resistance;Resolution;response;Series;Structure;Study models;synergism;T cell response;T-Lymphocyte;Testing;Transmembrane Domain;Vaccinated;Vaccine Design;vaccine development;Vaccines;Viral;Virus;Work
+current_category: therapeutics
+---
+application_id: 10807087
+activity_code: U19
+title: Structural analysis of HCV E1E2 glycoproteins
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Animals;Antibodies;Antigens;Architecture;B-Lymphocytes;Binding;Bioinformatics;Biology;Biophysics;Cavia;CD81 gene;Complex;Computer Models;Cryo-electron tomography;Cryoelectron Microscopy;Crystallography;Data;design;Electron Microscopy Facility;Engineering;Epitopes;experience;Flavivirus;Genotype;Glycoproteins;glycosylation;Goals;Hepatitis C;Hepatitis C Vaccine;Hepatitis C virus;Human;human pathogen;Immunity;Immunology procedure;in vivo evaluation;insight;Laboratories;lead candidate;Length;Mediating;Membrane Glycoproteins;Methods;Modification;Molecular Conformation;molecular modeling;Molecular Virology;Mutation;nanodisk;Nature;neutralizing antibody;nonhuman primate;novel;Outcome;particle;plasmid DNA;Polysaccharides;Preparation;Production;programs;Proteins;Protocols documentation;receptor;receptor binding;Recombinant Proteins;Recombinants;Research;Resolution;response;Role;structural biology;Structure;Surface;Synchrotrons;T-Lymphocyte;Testing;tool;Transmembrane Domain;Vaccine Design;Vaccines;Viral;Viral Pathogenesis;Virion;Virus;Virus Receptors;Work;X-Ray Crystallography
+current_category: basic_research
+---
+application_id: 10807086
+activity_code: U19
+title: Immunogenicity to B and T cell vaccines in non-human primates (NHPs)
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: adaptive immune response;Adjuvant;Affinity;Agonist;aluminum sulfate;Anti-viral Response;Antibodies;Antibody Response;Antibody titer measurement;Antigens;B-Lymphocytes;biological systems;Blood;Bone Marrow;CD8-Positive T-Lymphocytes;CD8B1 gene;Cells;Collaborations;design;Environment;Epitopes;Evaluation;Gene Expression Profiling;Genes;Genotype;Glycoproteins;Goals;Hepatitis C Vaccine;Hepatitis C virus;Hepatocyte;Home;Human;Immune response;Immunity;Immunization;Immunize;immunogenicity;Infection;Innate Immune Response;Learning;Ligands;Lipid A;Liposomes;Liver;Molecular;Monoclonal Antibodies;mosaic;Mucous Membrane;Mus;Myeloid Cells;neutralizing antibody;nonhuman primate;novel;Phase I Clinical Trials;Plasma Cells;QS21;response;Saponins;scaffold;Shapes;Somatic Mutation;Specificity;synergism;T cell response;T-Lymphocyte;Testing;tissue resident memory T cell;TLR4 gene;TLR7 gene;Vaccination;vaccination strategy;Vaccine Design;vaccine development;Vaccines;Variant;Viral;Viral Vaccines;Viral Vector;Work
+current_category: therapeutics
+---
+application_id: 10885143
+activity_code: P01
+title: Project 1 - Microglial activation in DNRAb-mediated brain pathology in mice
+org_name: FEINSTEIN INSTITUTE FOR MEDICAL RESEARCH
+phr: Project 1 Narrative: We will study the mechanism of neuronal dysfunction and microglial activation in an antibody-mediated model of neuropsychiatric lupus, identify therapeutic approaches, and determine their mechanism of action.
+terms: Acute;Adult;Albumins;Angiotensin Receptor;Angiotensin-Converting Enzyme Inhibitors;Animals;Antibodies;Antigen-Antibody Complex;Apoptotic;Autoantibody binding;Autoimmune;Binding;Blood - brain barrier anatomy;Brain;brain dysfunction;Brain Injuries;Brain Pathology;brain tissue;Cells;Central Nervous System;central nervous system injury;Cerebrospinal Fluid;Chronic;Circulation;Clinical;Clinical Trials;cognitive function;Complement 1q;Cross Reactions;cytokine;Dendrites;Development;Disease;DNA;druggable target;ds-DNA;Enzyme Inhibition;excitotoxicity;Exhibits;Exposure to;Fc Receptor;fetal;Functional disorder;Genetic Transcription;glial activation;Hippocampus;HMGB1 gene;human disease;Immune;Immunize;Impaired cognition;Impairment;In Vitro;in vivo;Ingestion;Injury;insight;Interferon Type I;Ligand Binding;Lipopolysaccharides;longitudinal analysis;Lupus;Mediating;Meta-Analysis;Methodology;Microglia;Modeling;Molecular;mouse model;Mus;N-Methyl-D-Aspartate Receptors;nerve injury;Nervous System Physiology;neuroimaging;neuron loss;Neuronal Dysfunction;neuronal survival;Neurons;neuropsychiatric symptom;Neuropsychiatric Systemic Lupus Erythematosus;Oligoclonal IgG;Pathology;Pathway interactions;Patients;pediatric patients;Penetration;Peptidyl-Dipeptidase A;Pharmaceutical Preparations;Porosity;Positron-Emission Tomography;prevent;programs;Property;Receptor Activation;reconstitution;release factor;risk variant;Serum;single nucleus RNA-sequencing;Site;Slice;spatial memory;Stress;Study models;Synapses;Systemic Lupus Erythematosus;targeted agent;Testing;Therapeutic;therapeutic target;Time;TLR4 gene
+current_category: basic_research
+---
+application_id: 10835990
+activity_code: U19
+title: Mechanisms of antibody-mediated control of repeated hepatitis C virus infection in humans
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: adaptive immunity;Affinity;Animal Model;Antibodies;Antibody Response;Antibody titer measurement;Antigenic Variation;Antigens;Autologous;Automobile Driving;B cell repertoire;B-Cell Activation;B-cell receptor repertoire sequencing;B-Lymphocytes;Binding;Binding Sites;Biological Assay;Blocking Antibodies;CD4 Positive T Lymphocytes;CD81 gene;Cells;Chronic;chronic infection;Clone Cells;Collaborations;Complex;Development;Disease Outcome;env Gene Products;Epitopes;Evolution;Exposure to;Flow Cytometry;Functional disorder;Hepatitis C;Hepatitis C Antibodies;Hepatitis C Vaccine;Hepatitis C virus;high dimensionality;HIV-1;Human;human subject;Immune;Immune response;Immunoglobulin Somatic Hypermutation;In Vitro;in vivo;Individual;Infection;Infusion procedures;Link;Measures;Mediating;Modeling;Monoclonal Antibodies;neutralizing antibody;novel;Participant;Phenotype;Plasma;Play;pressure;Primary Infection;Probability;Proteins;Resistance;response;Role;single-cell RNA sequencing;Site;Stimulus;Study Subject;T cell response;T-Lymphocyte;Testing;Time;vaccine candidate;vaccine development;vaccine response;Vaccines;Variant;Viral;Viral Physiology;Viremia;Virus;Virus Diseases;Work
+current_category: therapeutics
+---
+application_id: 10917016
+activity_code: P50
+title: Technology Core
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: 3-Dimensional;Address;Adult;Anatomy;Attention;Axon;Back;Behavior;Behavioral;Brain;Brain region;brain volume;cell type;Cells;Chemistry;Collaborations;Communities;data streams;design;Development;Devices;Diameter;Disease;dopaminergic neuron;Drug abuse;drug action;Drug Modulation;drug of abuse;Elements;Equipment;experience;experimental study;Fiber;Goals;Head;Health;Hydrogels;Image;Individual;insight;Investigation;Joints;Light;Link;Mammals;Maps;member;Methods;Microscope;Modeling;Molecular;Motor;National Institute of Drug Abuse;Neocortex;neural;neural circuit;Neurons;Neurosciences;new technology;next generation;Noise;Optics;optogenetics;Organism;Photometry;Population;preservation;Process;real world application;Research;Research Project Grants;Resolution;Rodent;Scientist;Sensory;Signal Transduction;single-cell RNA sequencing;Site;Specific qualifier value;Speed;Structure;Structure-Activity Relationship;Technology;technology validation;Tissues;tool;Training;transcriptomics;two-photon;Ventral Tegmental Area;Visit
+current_category: infrastructure
+---
+application_id: 10917015
+activity_code: P50
+title: Administrative Core
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Accounting;Administrative Coordination;Animals;Brain;Caring;Charge;clinical center;Communication;Communities;Complex;cost effective;data dissemination;Data Set;data sharing;data streams;Deposition;Drug abuse;drug action;Drug usage;Education;Educational process of instructing;Electrical Engineering;Elements;experience;Goals;graduate student;Human;Human Resources;Human Subject Research;Infrastructure;Ion Channel;Ion Pumps;Laboratories;Light;Logistics;Measures;meetings;member;National Institute of Drug Abuse;neural circuit;Neurosciences;next generation;Occupational activity of managing finances;outreach;Persons;Postdoctoral Fellow;Progress Reports;Protocols documentation;Psychiatry;Publications;Reagent;Regulation;Reporting;Research;Research Personnel;Resources;Safety;Safety Management;Schedule;Science;Scientist;Shipping;Shoulder;Site;Source Code;Subgroup;success;Technology;Training;Training Activity;Universities;University resources;vector;Visit;web page;wiki
+current_category: infrastructure
+---
+application_id: 10836009
+activity_code: U19
+title: The development and pre-clinical assessment of novel HCV vaccines to generate T and B cell immunity
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Acute;Address;Adenovirus Vector;Adjuvant;anti-hepatitis C;Antibody Response;Antigens;antiviral immunity;B-Lymphocytes;Bioinformatics;booster vaccine;CD8-Positive T-Lymphocytes;chronic infection;Cicatrix;Clinical Trials;Conserved Sequence;COVID-19 vaccine;cross reactivity;Data;design;Detection;Development;E protein;efficacy trial;Epitopes;Future;Genetic;Genetic Variation;Genotype;Goals;Head;Hepatitis C;Hepatitis C Antibodies;Hepatitis C Antiviral;Hepatitis C Vaccine;Hepatitis C virus;HLA A*0201 antigen;HLA Antigens;HLA-A3 Antigen;Human;humanized mouse;Immune response;Immunity;Immunization;immunogenic;immunogenicity;Immunology;in silico;Inbreeding;Individual;Infection;Infection prevention;invariant chain;Length;Link;Liver;Macaca mulatta;Malignant Neoplasms;Mediating;memory recall;Methods;Modeling;Modified Vaccinia Virus Ankara;mosaic;Mus;nanoparticle;neutralizing antibody;nonhuman primate;novel;novel strategies;novel vaccines;Pan Genus;particle;Persons;pre-clinical;pre-clinical assessment;preclinical study;prevent;Primary Infection;Proteins;Proteome;Regimen;secondary infection;T cell response;T memory cell;T-Cell Depletion;T-Lymphocyte;T-Lymphocyte Epitopes;Testing;tool;transgene expression;Transgenic Mice;Vaccination;vaccination strategy;vaccine candidate;Vaccine Design;vaccine immunogenicity;vaccine strategy;Vaccines;Variant;vector;vector vaccine;Viral;viral RNA;Viral Vector;virus envelope;virus genetics;World Health Organization
+current_category: therapeutics
+---
+application_id: 10835977
+activity_code: U19
+title: Mechanisms of spontaneous and vaccine mediated hepatitis C virus control to direct rational development of a novel HCV vaccine
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Adherence;Agreement;animal safety;Annual Reports;Award;Back;Budgets;central database;cohort;Collaborations;Communication;Communities;Coordination and Collaboration;Data;Data Analyses;data integrity;data management;data sharing;Development;Ensure;Environment;Fertilization;Fostering;Goals;Guidelines;Hepatitis C Vaccine;Hepatitis C virus;Human;human subject;Individual;Joints;Leadership;Legal patent;Location;Macaca;Manuscripts;Mediating;meetings;Methods;Mus;National Institute of Allergy and Infectious Disease;novel;operation;outreach;Plasma;Preparation;Privacy;Problem Solving;Productivity;programs;Progress Reports;Regulation;Reporting;Reproducibility;Research;Research Activity;Research Personnel;Research Project Grants;Resources;Role;Sampling;Science;Scientist;Secure;Serology test;Serum;Specimen;Structure;success;synergism;Travel;United States National Institutes of Health;Vaccine Research;Vaccines;Work
+current_category: basic_research
+---
+application_id: 10835025
+activity_code: U19
+title: Correlates of protective immunity to HCV and rational vaccine design: Clinical Core
+org_name: EMORY UNIVERSITY
+phr: Narrative The objective of this clinical core is to establish a biobank of samples from two unique cohorts: one North American cohort of people who inject drugs who cleared one hepatitis C infection and experience reinfection, and one cohort of chronically infected subjects from Egypt undergoing antiviral treatment against hepatitis C.
+terms: Acute;American;Anti-viral Agents;Anti-viral Therapy;biobank;Blood;Blood specimen;Cells;Chronic;chronic infection;chronic liver disease;Clinical;Clinical Data;Clinical Trials;cohort;Collaborations;Country;Cytoprotection;Databases;Developing Countries;Development;Diagnosis;Disease Progression;Egypt;experience;experimental study;Exposure to;follow-up;Future;Genotype;Goals;healthy volunteer;Hepatitis C;Hepatitis C Prevalence;Hepatitis C Vaccine;Hepatitis C virus;High Prevalence;high risk;high risk population;Human Resources;Immune;Immune response;Immunity;immunogenic;immunogenicity;Immunologic Factors;Income;Individual;Infection;infection risk;Injecting drug user;injection drug use;Injections;International;Knowledge;Laboratories;Life;Liver;Liver diseases;Measures;Mediating;Medical;Modeling;North America;novel vaccines;opioid epidemic;Patients;Persons;Phase;phase II trial;Populations at Risk;Pre-Clinical Model;prevent;Procedures;Process;Public Health;public health priorities;reconstitution;recruit;Research;Research Personnel;response;Rest;Risk;Sampling;screening;seropositive;Source;Specimen;success;T-Lymphocyte;Time;Training;transmission process;vaccine candidate;Vaccine Design;vaccine evaluation;vaccine response;Vaccines;Viral;Virus
+current_category: infrastructure
+---
+application_id: 10835039
+activity_code: U19
+title: Correlates of protective immunity to HCV and rational vaccine design: Project 3
+org_name: EMORY UNIVERSITY
+phr: Hepatitis C virus (HCV) continues to infect ~71 million people worldwide with an estimated 1.5 to 2 million new infections each year. A complete eradication of HCV infection warrants development of an effective vaccine that can rapidly induce a durable anti-viral immunity and prevent infection. The overall goal of this Project 3 is to develop an effective prophylactic vaccine against HCV.
+terms: Adjuvant;Antibody Response;Antigens;antiviral immunity;B-Lymphocytes;Blood;booster vaccine;CD8-Positive T-Lymphocytes;Cellular Immunity;Combined Vaccines;Comparative Study;cross reactivity;delivery vehicle;design;Development;DNA;experience;Genotype;Glycoproteins;Goals;Helper-Inducer T-Lymphocyte;Hepatitis C;Hepatitis C virus;HIV;HIV vaccine;Human;Humoral Immunities;Immune response;Immunity;Immunization;improved;In Vitro;Infection;Infection prevention;insight;Liver;Membrane;Modality;Modified Vaccinia Virus Ankara;Molecular;neutralizing antibody;nonhuman primate;Nonstructural Protein;Persons;preservation;Preventive vaccine;prospective;protein expression;Proteins;Recombinants;Regimen;Reporting;response;Role;Series;Site;Structure;T cell response;T-Lymphocyte;Testing;Tissues;TNFSF5 gene;Vaccination;vaccination strategy;Vaccine Design;vaccine trial;Vaccines;Viral;Viral Antigens;Viral Proteins;Virion;virus core;Virus Diseases;Virus Replication;Virus-like particle
+current_category: therapeutics
+---
+application_id: 10835028
+activity_code: U19
+title: Correlates of protective immunity to HCV and rational vaccine design: Project 1
+org_name: EMORY UNIVERSITY
+phr: Narrative The main goal of this project is to characterize at high-resolution the protective signature of CD4 helper T cells during HCV reinfection in a cohort of people who inject drugs from Montreal, Canada and to examine their recovery/reconstitution following direct acting antiviral therapy in subject with chronic HCV from Egypt and Montreal.
+terms: Acceleration;Aftercare;Anti-viral Agents;Anti-viral Therapy;Antibody Response;antiviral drug development;B-Lymphocytes;Benchmarking;Biological Assay;Blood;Canada;CD4 Positive T Lymphocytes;CD8-Positive T-Lymphocytes;Chemicals;Chronic;Chronic Hepatitis C;Chronic Phase;Clinical Trials;Coculture Techniques;cohort;Country;cytokine;Cytoprotection;Defect;Developing Countries;Development;Egypt;enzyme linked immunospot assay;Exhibits;Exposure to;Flow Cytometry;Genomics;Goals;Hepatitis C;Hepatitis C Prevalence;Hepatitis C virus;High Prevalence;Immune;immune function;Immune response;Immunity;immunogenicity;Immunologic Factors;Individual;Infection;Injecting drug user;Interferon Type II;Kinetics;Knowledge;Leukocytes;Liver;Liver diseases;Maintenance;marginalized population;Measures;Mediating;Mediator;memory CD4 T lymphocyte;Modeling;Molecular Profiling;neutralizing antibody;North America;novel vaccines;opioid epidemic;Pan Genus;pandemic disease;Pathway interactions;Patients;Phase;Phenotype;Predisposition;Production;protective pathway;Public Health;public health priorities;Quantitative Reverse Transcriptase PCR;reconstitution;Recovery;Resolution;response;Risk;RNA;Role;Sampling;single-cell RNA sequencing;Sorting;Source;Stains;T cell response;T memory cell;T-Cell Proliferation;T-cell receptor repertoire;T-Lymphocyte;Target Populations;Technology;Time;transmission process;Vaccination;vaccine candidate;Vaccine Design;Vaccines;Viral;Virus
+current_category: therapeutics
+---
+application_id: 10835034
+activity_code: U19
+title: Correlates of protective immunity to HCV and rational vaccine design: Project 2
+org_name: EMORY UNIVERSITY
+phr: Narrative In this Project, we propose to determine the correlates of protection in individuals that spontaneously clear multiple hepatitis C virus infection episodes. Understanding the immune responses in these individuals will provide us with valuable information to develop an effective vaccine strategy that would emulate the successful responses generated during a natural challenge with hepatitis C virus infection.
+terms: Acceleration;Adoption;Affinity;Anti-viral Agents;Anti-viral Therapy;Antibodies;Antibody Response;Antigens;Attenuated;Autologous;B cell differentiation;B cell repertoire;B-Lymphocyte Subsets;B-Lymphocytes;Biological Assay;Canada;CD4 Positive T Lymphocytes;Cell Separation;chronic infection;Clinical;cohort;Contracts;Data;Drug usage;Egypt;Epitopes;Escape Mutant;Exhibits;experience;Flow Cytometry;Gene Expression Profile;Genetic Transcription;Glycoproteins;Helper-Inducer T-Lymphocyte;Hepatitis C;Hepatitis C virus;Immune;Immune response;Immunity;Immunoglobulin-Secreting Cells;Individual;Infection;Infection prevention;Injecting drug user;longitudinal analysis;Mediating;Memory B-Lymphocyte;Monoclonal Antibodies;Mutation;neutralizing antibody;new epidemic;Outcome;Peripheral Blood Mononuclear Cell;Phenotype;Plasma;Plasma Cells;polyclonal antibody;Population;Predisposition;prevent;Primary Infection;programs;Proliferating;Public Health;recruit;Resolution;response;Sampling;secondary infection;Secondary to;single-cell RNA sequencing;stem;T memory cell;transcriptome sequencing;Vaccination;Vaccine Design;vaccine strategy;Vaccines;Viral;Viral Antigens;Viremia;Virus Diseases
+current_category: therapeutics
+---
+application_id: 10835023
+activity_code: U19
+title: Correlates of protective immunity to HCV and rational vaccine design: Admin Core
+org_name: EMORY UNIVERSITY
+phr: Narrative This Administrative Core will provide the coordination necessary to make effective and efficient use of resources and intermediate results from this collaborative effort. The primary function will be to facilitate scientific interactions between the Project leaders as well as Core leaders and to ensure milestones are met.
+terms: Address;Annual Reports;antigen-specific T cells;B-Lymphocytes;Biometry;Budgets;Clinical;Collaborations;Communities;Complex;Consultations;data management;data sharing;Databases;Dedications;design;Development;Ensure;Goals;graduate student;Hepatitis C;Hepatitis C virus;Human;Immune response;Immunity;Individual;Infection;Infrastructure;Institution;Intellectual Property;Leadership;meetings;Methodology;Modification;nonhuman primate;novel vaccines;Outcome;Patients;Postdoctoral Fellow;Productivity;programs;Publications;Publishing;Research;Research Personnel;Research Project Grants;Resolution;Resource Allocation;Resources;response;Role;Scientist;Services;symposium;Technology Transfer;United States National Institutes of Health;Universities;vaccination strategy;Vaccine Design;Work
+current_category: infrastructure
+---
+application_id: 10810851
+activity_code: U19
+title: Omics/Clinical Core
+org_name: UNIVERSITY OF MARYLAND BALTIMORE
+phr: N/A
+terms: 3-Dimensional;Automobile Driving;Bacteria;bacterial community;Base Sequence;Bioinformatics;Biological;Biomimetics;Biopsy;Catalogs;Cell Line;cell type;Cells;Cervical;cervicovaginal;chemokine;Chlamydia trachomatis;Clinical;Clinical Research;Communities;cost;cost effective;cytokine;Data;Data Analyses;data framework;Data Set;data sharing;DNA;Engineering;Ensure;Environment;experience;Exposure to;Genes;Genetic;Genitalia;genome sciences;Genomics;Goals;Guidelines;High-Throughput Nucleotide Sequencing;host microbiota;Human;Immune;Immunity;Infection;Infrastructure;innovation;Knowledge;Laboratories;Laboratory Research;Laboratory Study;Maintenance;Maryland;medical schools;Metadata;metatranscriptomics;microbiome;microbiota;Modeling;Modernization;Mucous Membrane;Neisseria gonorrhoeae;novel;open data;Organ;pathogen;programs;Protocols documentation;Qualitative Evaluations;Reproducibility;Research;Resolution;Resource Sharing;Resources;response;Rest;RNA;Running;Sampling;Services;Sexually Transmitted Diseases;Specimen;Structure;Swab;System;Technology;Testing;Time;Tissues;tool;Training;transcriptome;transcriptome sequencing;transcriptomics;United States National Institutes of Health;Universities;Vagina
+current_category: infrastructure

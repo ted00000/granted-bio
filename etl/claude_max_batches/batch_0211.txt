@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10914220
+activity_code: P01
+title: Human Genetic Disease Modeling and Physiology Core
+org_name: UNIV OF MASSACHUSETTS MED SCH WORCESTER
+phr: Project Narrative Not Applicable.
+terms: Albumins;Alleles;alpha 1-Antitrypsin Deficiency;Animal Model;Benchmarking;Biological Assay;Blood;Breeding;Bronchoalveolar Lavage;Capsid;Clinical;clinically relevant;Collaborations;Disadvantaged;disease model;Disease Progression;Dose;Elastases;Engraftment;Enterobacteria phage P1 Cre recombinase;Ferrets;gene therapy;gene-editing approach;Genes;genome editing;Growth;Hepatocyte;Human;Human Genetics;humanized mouse;immunodeficiency;Iowa;Knock-in Mouse;Knockout Mice;Laboratories;Libraries;Liver;LoxP-flanked allele;Lung;Lung Diseases;Modeling;mouse genetics;mouse model;Mus;Mutation;novel;Patients;Phenotype;Physiological;Physiology;Play;Production;promoter;pulmonary function;Pulmonary function tests;Residual state;response;Rodent;Role;screening;Serotyping;success;Testing;Therapeutic;therapeutic evaluation;Therapeutic Intervention;Time;Transgenes;Treatment Efficacy;Universities;Veterinary Medicine;Veterinary Schools;Work;X-Ray Computed Tomography
+current_category: infrastructure
+---
+application_id: 10881807
+activity_code: P01
+title: Core C:  Experimental Models
+org_name: CLEVELAND CLINIC LERNER COM-CWRU
+phr: PROJECT NARRATIVE  The Experimental Models Core is responsible for curation, tracking, quality control, and distribution of all  glioblastoma (GBM) animal models (patient-derived xenograft (PDX) models, PDX-derived organoids, syngeneic  mouse and genetically engineered mice) for experimental studies in all Projects and biospecimens from humans  for validation across multiple institutions. The Core will also be responsible for the generation of organoids from  these models, for two-photon in vivo
+terms: Animal Model;Astrocytes;autosome;base;Behavior;biobank;Blood;Brain Neoplasms;cancer imaging;cell transformation;Cells;Cellular Indexing of Transcriptomes and Epitopes by Sequencing;Characteristics;Clinic;Clinical Data;clinically relevant;Collection;cost effective;Data;data sharing;Databases;DNA;Dominant-Negative Mutation;Electroporation;Engineering;Event;Experimental Models;experimental study;Female;Four Core Genotypes;Freezing;FTH1 gene;Generations;Genes;Genetic;Genetically Engineered Mouse;genomic profiling;Glioblastoma;Glioma;Goals;Gonadal Steroid Hormones;Growth;Guidelines;H ferritin;Heterogeneity;Human;human subject;human tissue;IACUC;imaging platform;Implant;in utero;in vivo;in vivo imaging;in vivo two-photon imaging;Individual;Informatics;Infrastructure;innovation;Institution;Institutional Review Boards;Iron;junctional adhesion molecule;Karyotype determination procedure;Knock-out;Knockout Mice;Label;LCN2 gene;male;model development;Modeling;mouse model;Mus;neoplastic cell;Neurofibromatosis 1;neuropathology;Organoids;Outcome;Paraffin;pathology imaging;patient derived xenograft model;Patients;Performance;Ploidies;Population;Pre-Clinical Model;Preclinical Testing;quality assurance;Quality Control;radiological imaging;Reporter;Research Personnel;Resources;response;Secure;Services;sex;Sex Chromosomes;Sex Differences;Specimen;sry Genes;Standardization;Technology;Testing;Testis;Tissue Banks;tissue fixing;Tissues;TP53 gene;transcriptome sequencing;transcriptomics;Treatment outcome;Tumor Cell Line;tumor microenvironment;two photon microscopy;Universities;University Hospitals;Validation;Xenograft procedure;Y Chromosome
+current_category: infrastructure
+---
+application_id: 10881804
+activity_code: P01
+title: Core A:  Administrative Core
+org_name: CLEVELAND CLINIC LERNER COM-CWRU
+phr: N/A
+terms: Accounting;Animal Experimentation;Animals;Awareness;Bioinformatics;Biometry;Cancer Biology;Collaborations;Communication;Core Facility;Data;Data Set;Development Plans;Documentation;drug metabolism;Drug Screening;Ensure;Epigenetic Process;experience;Experimental Models;Feedback;Funding;Glioma;Goals;Grant;Human;Human Resources;human subject;Human Subject Research;Individual;innovation;Institution;Iron;Leadership;Manuscripts;meetings;Microglia;Modeling;Monitor;National Cancer Advisory Board;National Cancer Institute;Office of Administrative Management;operation;Oral;Performance;Postdoctoral Fellow;Preparation;Program Research Project Grants;programs;Progress Reports;recruit;Research;Research Personnel;Resources;Schedule;Scientist;Services;Sex Differences;stem;Study Subject;System;Time;Training;tumor microenvironment;Work;Writing
+current_category: infrastructure
+---
+application_id: 10819567
+activity_code: P01
+title: Administration and Coordination Core
+org_name: UNIVERSITY OF VERMONT & ST AGRIC COLLEGE
+phr: NARRATIVE  Administration and Coordination Core Gary Stein, Core Leader; Janet Stein, Co-Leader The Administration and Coordination Core will provide scientific leadership and management, program coordination and communication, and administrative and fiscal support for the Program to maximize collaborative pursuit of epigenetic mechanisms that impact genome organization and gene expression in the context of biological control and cancer. This Core has an important role in facilitating integratio
+terms: Advisory Committees;Animals;Biological;Budgets;college;Committee Members;Communication;Communities;community organizations;data management;design;Documentation;Epigenetic Process;Evaluation;Gene Expression;Genome;Health;Health Benefit;Health Insurance;Health Sciences;Human;Immigration;Institution;Leadership;Logistics;Malignant Neoplasms;Manuscripts;meetings;Occupational activity of managing finances;Personnel Management;Pharmacy facility;Preparation;programs;Progress Reports;Protocols documentation;Reagent;recruit;Reporting;Research;Research Personnel;Research Project Grants;Resource Sharing;Role;Schedule;Site;Specimen;Travel;Universities;Vermont
+current_category: infrastructure
+---
+application_id: 10819564
+activity_code: P01
+title: Project 3: MANCR Mediates Epigenetic Mechanisms for Survival of Advanced Breast Cancer
+org_name: UNIVERSITY OF VERMONT & ST AGRIC COLLEGE
+phr: NARRATIVE  MANCR Mediates Epigenetic Mechanisms for Survival of Advanced Breast Cancer Cancer cells are characterized by altered rearrangements of chromosomal interactions with regulatory factors that contribute to expression of genes promoting tumor growth and metastasis to distal organs—the devastating end stage of breast cancer (BCa). Long non-coding RNAs (lncRNAs) are epigenetic regulators that support the genomic properties of normal and BCa cells through chromatin interactions with their t
+terms: 3-Dimensional;Accounting;Address;advanced breast cancer;aggressive breast cancer;ATAC-seq;Binding Sites;Biological Markers;Biopsy;Biopsy Specimen;bone;Breast Cancer Cell;Breast Cancer cell line;Breast Cancer Patient;Breast Cancer Prevention;breast cancer survival;Breast Cancer Treatment;Breast Epithelial Cells;cancer cell;cancer invasiveness;Cell Death;Cell Death Induction;Cell Line;Cell Proliferation;Cell Survival;Cells;Chromatin;chromatin isolation by RNA purification sequencing;Chromosomal Rearrangement;Chromosome Structures;clinical candidate;clinically significant;Clustered Regularly Interspaced Short Palindromic Repeats;cofactor;Coupled;CRISPR interference;CRISPR/Cas technology;Data;design;Development;Diagnosis;Distal;DNA Repair;Effectiveness;Environment;Epigenetic Process;ESR1 gene;Estradiol;Estrogen receptor positive;Estrogens;Fatty acid glycerol esters;Gene Expression;Genes;Genetic Transcription;Genome;Genome Stability;genomic locus;Genomic Segment;Genomics;Goals;Hi-C;hormone therapy;in vivo;in vivo Model;innovation;insight;Intervention;Investigation;knock-down;Literature;Lung;Malignant Breast Neoplasm;Malignant Neoplasms;mammary;Maps;MCF10A cells;MCF7 cell;MDA MB 231;Mediating;Mediator;Metastatic breast cancer;Mitosis;Mitotic;Mus;Names;Necrosis;Neoplasm Metastasis;neoplastic cell;Non-Malignant;Normal Cell;Normal tissue morphology;Oncogenic;Organ;organoid transplantation;Organoids;Outcome;overexpression;Patients;Phenotype;pre-clinical;Pre-Clinical Model;prevent;Primary Neoplasm;Prognosis;Property;protein complex;Publishing;Regulation;Regulatory Element;Resected;Resistance;Resolution;RNA Binding;RNA purification;RUNX1 gene;Signal Transduction;Site;Spleen;Supporting Cell;Tamoxifen;Testing;Testis;Therapeutic Intervention;therapeutic target;Tissue Microarray;translational goal;Transplantation;triple-negative invasive breast carcinoma;tumor;tumor growth;Tumor Promotion;Tumor Suppressor Proteins;Tumor Tissue;Untranslated RNA;Xenograft Model;Xenograft procedure
+current_category: basic_research
+---
+application_id: 10819557
+activity_code: P01
+title: Project 1: Mitotic Gene Bookmarking as an Epigenetic Mechanism to Maintain the Mammary Epithelial Phenotype
+org_name: UNIVERSITY OF VERMONT & ST AGRIC COLLEGE
+phr: PROJECT 1 | NARRATIVE Breast cancer is a leading cause of death for women in the United States and around the globe. An early event in development of breast cancer is the epithelial-to-mesenchymal transition (EMT) when mammary cells lose their normal structure and function and gain migratory and invasive properties. Project 1 studies will investigate mitotic gene bookmarking—mitotic retention of transcription factors with target genes on chromosomes for transcriptional regulation in progeny cell
+terms: acute myeloid leukemia 1 protein;Biological;Breast Cancer Cell;Breast Cancer cell line;Breast Cancer Patient;breast cancer progression;Breast Epithelial Cells;cancer cell;cancer initiation;Cause of Death;Cell division;Cell Line;Cell Proliferation;Cells;ChIP-seq;Chromatin;Chromosomes;Clinical;clinically relevant;Collaborations;CRISPR screen;Data;Development;Developmental Process;Dimensions;DNA Binding;Epigenetic Process;epigenome;Epithelial Cell Proliferation;Epithelial Cells;epithelial to mesenchymal transition;Epithelium;Equilibrium;Estrogen receptor positive;Estrogen Receptors;Estrogens;Event;Gene Expression;Genes;Genetic Transcription;Genome;Genomic approach;Genomic Segment;Genomics;Growth;Hi-C;histone modification;Histones;in vivo;innovation;Knowledge;Link;live cell microscopy;loss of function;Maintenance;Malignant Breast Neoplasm;Malignant Neoplasms;mammary;mammary epithelium;Mammary Neoplasms;Maps;Mediating;Mitosis;Mitotic;Mitotic Chromosome;Modeling;Molecular;Mutation;Neighborhoods;novel;novel strategies;nuclease;Outcome;pharmacologic;Phenotype;Physiological;Play;Precision Run-On Sequencing;preservation;prevent;programs;Property;Receptor Signaling;Regulation;Research Personnel;Resolution;Role;RUNX1 gene;Signal Transduction;Specimen;Structure;Supporting Cell;Testing;therapeutic target;transcription factor;Transcriptional Regulation;transcriptome;tumor;tumor progression;United States;Validation;Women&apos;s mortality
+current_category: basic_research
+---
+application_id: 10898584
+activity_code: P01
+title: Core B – Human Biospecimen and Advanced Sequencing Core
+org_name: MEDICAL UNIVERSITY OF SOUTH CAROLINA
+phr: PROJECT NARRATIVE: CORE B This program will define molecular and cellular interactions between immune system modulators and different cell and tissue types in the development and progression of pancreatic cancer and in the accompanying systemic wasting syndrome known as cachexia. This Core resource will collect and provide human tissue samples from and disease-related data from consenting patients with pancreatic cancer and perform isolation of cells and nuclei from tumor, blood, adipose and mus
+terms: Address;Adipocytes;Adipose tissue;Automobile Driving;Benign;Biometry;Blood;Body Weight decreased;Cachexia;Cancer Cachexia;Cell Nucleus;Cell Separation;Cells;Clinical;Clinical Data;clinical translation;Comprehensive Cancer Center;Consent;Data;Dedications;Development;Diagnosis;Disease;DNA Sequencing Facility;effective therapy;Ensure;Exhibits;Fibroblasts;Gene Expression;Gene Expression Profiling;Goals;Histologic;Human;human data;human tissue;Immune system;improved;Indiana;Individual;Infrastructure;Interleukin-6;Knowledge;Macrophage;Malignant neoplasm of pancreas;Malignant Neoplasms;Metabolic;Molecular;Morbidity - disease rate;mortality;mouse model;Mus;Muscle;Muscular Atrophy;neoplastic cell;NF-kappa B;novel;Operative Surgical Procedures;pancreatic cancer patients;Pancreatic Ductal Adenocarcinoma;Pathology;Patients;Peripheral;Phenotype;Preparation;preservation;Process;programs;Protocols documentation;Quality of life;receptor;Reporting;Research;Research Personnel;Resolution;Resources;Role;sample collection;Sampling;Sequence Analysis;Signal Transduction;single cell analysis;single nucleus RNA-sequencing;single-cell RNA sequencing;Skeletal Muscle;Specimen;STAT3 gene;success;Technology;Testing;Tissue Sample;Tissues;transcriptome sequencing;transcriptomic profiling;translational potential;treatment response;Treatment-related toxicity;tumor;Tumor Biology;tumor microenvironment;Tumor Promotion;Universities;wasting;Wasting Syndrome;Work
+current_category: infrastructure
+---
+application_id: 10898580
+activity_code: P01
+title: Core A - Administration
+org_name: MEDICAL UNIVERSITY OF SOUTH CAROLINA
+phr: PROJECT NARRATIVE: CORE A The Administrative Core is essential to facilitate efficient and effective functioning of all components of this Program Project. Together, the several program components linked through the Administrative Core serve as an engine for discovery in the three separate but integrated cancer cachexia signaling pathways and for translating these basic discoveries into novel therapies for the treatment of this debilitating condition.
+terms: Accounting;Achievement;Affect;Authorship;Budgets;Cancer Cachexia;Collaborations;Communication;computerized data processing;Coordination and Collaboration;data sharing;design;Development;Effectiveness;Evaluation;Evaluation Research;Expenditure;Feedback;Grant;Human Resources;Indiana;Investigation;Laboratories;Leadership;Link;Malignant neoplasm of pancreas;Medical;meetings;member;novel;novel strategies;novel therapeutics;Online Systems;operation;Outcome;Participant;Policies;Process;programs;Publications;Recommendation;Reporting;Research;Research Personnel;Resolution;Resources;Role;Schedule;Services;Signal Pathway;South Carolina;symposium;Time;tool;Translating;Universities;verbal
+current_category: infrastructure
+---
+application_id: 10876421
+activity_code: P01
+title: Core 3: Mouse GBM models and Imaging Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: Narrative Core 3 will provide services to Projects 2, 3 and 4 by providing well characterized mouse GBM cells and by performing the intracranial implantation procedures to establish GBMs in mouse brains. Monitoring of GBM growth will be performed utilizing small animal MRIs and bioluminescence imaging.
+terms: Animals;bioluminescence imaging;Brain;Cells;Clinical;Collaborations;comparative;Development;Engineering;Ensure;exome sequencing;experimental study;Glioblastoma;Goals;Grant;Growth;Human Resources;Image;immune checkpoint;Immune checkpoint inhibitor;Immunology;Immunosuppression;Immunotherapy;Implant;implantation;Implantation procedure;improved;Individual;Infection;Institution;interest;Intracranial Neoplasms;Investigational Therapies;Luciferases;Magnetic Resonance Imaging;Maintenance;member;Modeling;Modification;Molecular;Monitor;Mouse Cell Line;Mus;neoantigens;Oncolytic;Oncolytic viruses;Operative Surgical Procedures;Performance;programs;Quality Control;receptor;repository;Reproducibility;Research;Research Personnel;Research Project Grants;Resistance;Resources;Sampling Biases;serial imaging;Service provision;Services;Signal Transduction;Simplexvirus;T-Lymphocyte;Technical Expertise;Techniques;Testing;Time;Transgenes;tumor;Tumorigenicity;United States National Institutes of Health;Validation
+current_category: infrastructure
+---
+application_id: 10876412
+activity_code: P01
+title: Proj 4: Triggers for the Induction of T Cell Dysfunction on T cells in Glioblastoma
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: PROJECT NARRATIVE Glioblastome multiforme (GBM) is a deadly form of brain cancer that is not benefitting from current advances in immune-based therapies. This could be due to the inherent state of immune suppression that serves to prevent unwanted inflammation in the brain. The proposed studies will advance our knowledge of how immunoregulatory cytokine signaling acts together with steroid hormone signaling to suppress anti-tumor immune responses in GBM.
+terms: anti-CTLA4;anti-PD-1;anti-tumor immune response;Automobile Driving;biocomputing;Brain;cancer immunotherapy;CD4 Positive T Lymphocytes;CD8-Positive T-Lymphocytes;Cell Physiology;Cells;Cerebral Edema;checkpoint receptors;Clinical Management;Clinical Trials;Collaborations;Complement;CTLA4 gene;cytokine;Cytokine Signaling;Data;Dexamethasone;Dose;effector T cell;Excision;exhaustion;Failure;fighting;Functional disorder;Gene Expression;Genes;Glioblastoma;Glucocorticoids;hormonal signals;Human;Immune;immune cell infiltrate;immune checkpoint;immune checkpoint blockade;Immune response;Immune system;immunoregulation;Immunosuppression;Immunosuppressive Agents;Immunotherapy;improved;Individual;Inflammation;Investigation;KLRB1 gene;Knowledge;Malignant neoplasm of brain;Malignant neoplasm of lung;Malignant Neoplasms;Mediating;Mediator;Melanoma;Modeling;mouse model;Mus;novel;Operative Surgical Procedures;Pathway interactions;Patients;Play;Population;Pre-Clinical Model;prevent;programmed cell death protein 1;programs;receptor;receptor expression;receptor function;Regulatory T-Lymphocyte;Renal Carcinoma;Reporter;Resistance;response;RNA;Role;Signal Transduction;single-cell RNA sequencing;Site;Statistical Data Interpretation;steroid hormone;success;synergism;T-Lymphocyte;Testing;Therapeutic;Time;Treatment outcome;tumor;tumor growth;tumor microenvironment;Tumor-Infiltrating Lymphocytes;Vaccines
+current_category: basic_research
+---
+application_id: 10876406
+activity_code: P01
+title: Proj. 1 Targeting Tumor-Specific Neoepitopes for Glioblastoma Immunotherapy
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: Narrative Project 1 will conduct a clinical trial to evaluate NeoVax, a novel individualized neoantigen vaccine platform developed at the Dana-Farber Cancer Institute, together with PD-1 blockade as a strategy to enhance anti-tumor immune responses and improve outcome for patients with newly diagnosed glioblastoma. The trial will focus on the evaluation of the impact of timing of administering PD-1 blockade relative to vaccination on the generation long-term T cell memory responses, which we thi
+terms: Address;Affect;anti-PD-1;anti-PD1 therapy;anti-tumor immune response;Antigen Targeting;antigen-specific T cells;Antigens;cancer infiltrating T cells;CD4 Positive T Lymphocytes;CD8-Positive T-Lymphocytes;Cells;central tolerance;Clinical;Clinical Trials;Clonality;cohort;Collaborations;Combined Modality Therapy;Computer Analysis;Dana-Farber Cancer Institute;Data;design;Development;Diagnosis;Effector Cell;effector T cell;exhaustion;Exhibits;Gene Expression;Generations;Glioblastoma;high risk;Immune;Immune response;Immunize;Immunofluorescence Immunologic;immunogenic;immunogenicity;Immunologic Adjuvants;Immunologics;immunoregulation;Immunosuppression;Immunotherapeutic agent;Immunotherapy;Impact evaluation;improved outcome;long term memory;Malignant - descriptor;Malignant neoplasm of brain;Malignant Neoplasms;Manuscripts;Melanoma;Melanoma patient;Memory;mutant;Mutation;Nature;neoantigen vaccination;neoantigen vaccine;neoantigens;Newly Diagnosed;novel;Oncology;Operative Surgical Procedures;Outcome;palliative;Patient-Focused Outcomes;Patients;PD-1 blockade;Peptides;peripheral blood;Peripheral Blood Mononuclear Cell;Phase Ib Clinical Trial;Phase Ib Trial;Phenotype;Pilot Projects;Poly ICLC;Population;preservation;Production;programmed cell death protein 1;Radiation;Radiation therapy;Recurrence;Research Personnel;Resources;response;Rest;Safety;Sampling;Schedule;Signal Transduction;Specificity;Statistical Data Interpretation;T cell infiltration;T cell response;T memory cell;T-Cell Immunologic Specificity;T-Lymphocyte;Therapeutic;transcriptome;tumor;Tumor Antigens;tumor heterogeneity;tumor microenvironment;tumor specificity;Tumor Tissue;Tumor-infiltrating immune cells;Up-Regulation;Vaccinated;Vaccination;vaccine platform;vaccine strategy;Vaccines;Work
+current_category: therapeutics
+---
+application_id: 10876415
+activity_code: P01
+title: Administrative Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: N/A
+terms: Accounting;Achievement;Affect;Authorship;Budgets;Clinical;Collaborations;Communication;computerized data processing;Coordination and Collaboration;Data;data sharing;design;Development;Effectiveness;Ensure;Evaluation;Evaluation Research;Expenditure;Glioblastoma;Grant;Immunosuppression;immunotherapy clinical trials;Individual;Institution;Investigation;Laboratories;meetings;member;Monitor;novel;Online Systems;operation;Outcome;Program Research Project Grants;programs;Publications;Reagent;Recommendation;Reporting;Research;Research Personnel;Resolution;Resources;Services;symposium;T-Lymphocyte;Telephone;Time;tool;verbal
+current_category: infrastructure
+---
+application_id: 10876419
+activity_code: P01
+title: Core 2: Biocomputational and Biostatistics Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: PROJECT NARRATIVE— Core 2 Biocomputation and Biostatistics The goal of Core 2 Biocomputation and Biostatistics is to assure that all experiments conducted through this P01 focused on T cell activation and attenuation in glioblastoma multiforme have access to state-of-the-art computational support for the single cell RNA sequencing analyses which are critical to each of the projects, and to state-of-the-art statistical support for design and analysis of all clinical, correlative, murine, and basi
+terms: Address;Algorithms;Animal Experiments;Animal Model;Animals;attenuation;B-Lymphocytes;Basic Science;biocomputing;Biological Assay;Biometry;Biostatistics Core;Cell Communication;Cell Line;cell type;Cells;Classification;Clinical;Clinical Research;Clinical Trials;clinically relevant;Clonality;Clone Cells;Collaborations;computational pipelines;computerized data processing;Correlative Study;Data;Data Analyses;data sharing;design;Ecosystem;Ensure;Experimental Designs;experimental study;Genes;Genetic;genetic manipulation;Genetic Variation;Genomics;Glioblastoma;Goals;Human;human data;immunological intervention;Immunosuppression;Immunotherapy;Individual;insight;Intervention;Investigation;Laboratories;laboratory experiment;Lead;Malignant - descriptor;Maps;Measurement;mouse model;Mus;Noise;Non-Malignant;Patients;Peer Review;Physiological;power analysis;Prediction of Response to Therapy;Process;profiles in patients;programs;Reproducibility;Resources;Scheme;single nucleus RNA-sequencing;single-cell RNA sequencing;Specimen;T-Cell Activation;T-Lymphocyte;Techniques;temporal measurement;treatment response;tumor;tumor-immune system interactions;Visualization;Work
+current_category: infrastructure
+---
+application_id: 10876407
+activity_code: P01
+title: Proj. 2: Combining immune checkpoint blockade with T cell activation
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: Narrative – Project 2 Project 2 will evaluate the ability of vaccination, oncolytic viruses or targeted therapies to improve Immune checkpoint blockade (CPB) therapy using immune competent GBM mouse models and determine how CPB timing and sequence in these combinatorial approaches affects T cell memory and therapeutic efficacy. These studies will inform rational selection of therapies for augmenting effects of CPB in GBM patients.
+terms: Adult;Affect;anti-CTLA-4 therapy;anti-PD-1;anti-PD1 therapy;anti-tumor immune response;Biological Assay;Caring;CD8-Positive T-Lymphocytes;CDK4 gene;Cell Cycle;cell population study;cell type;Cells;checkpoint inhibition;Clinical Trials;combinatorial;Combined Modality Therapy;CTLA4 blockade;CTLA4 gene;Data;design;Development;efficacy testing;expectation;Future;Genetic Transcription;Glioblastoma;Goals;Harvest;Immune;immune checkpoint blockade;Immunocompetent;immunogenic cell death;Immunologic Memory;Immunologics;Immunosuppression;improved;insight;KLRB1 gene;Maintenance;Malignant neoplasm of brain;Malignant Neoplasms;Mediator;Memory;Modeling;mouse model;Mus;novel therapeutics;Oncolytic;Oncolytic viruses;Outcome;Pathway interactions;Patient-Focused Outcomes;Patients;PD-1 blockade;peptide vaccination;Peptide Vaccines;Phase I Clinical Trials;pre-clinical;Prognosis;programmed cell death ligand 1;programmed cell death protein 1;rational design;Regimen;response;Selection for Treatments;small molecule;T cell differentiation;T cell infiltration;T cell response;T memory cell;T-Cell Activation;T-Lymphocyte;targeted treatment;Testing;Therapeutic;Therapeutic Effect;Treatment Efficacy;tumor;tumor microenvironment;tumor-immune system interactions;Vaccination;Vaccine Therapy;Vaccines
+current_category: therapeutics
+---
+application_id: 10909370
+activity_code: P30
+title: Community Liaison and Recruitment Core (CLRC)
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: N/A
+terms: Address;Adult;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Area;Behavior Therapy;behavioral health;Behavioral Research;Black Populations;Black race;Boston;Caregivers;Caring;Common Data Element;Communities;community collaboration;community engagement;comparative effectiveness;Consensus;Data;Data Element;Dementia;dementia risk;Development;digital;digital divide;education research;Educational Curriculum;Enrollment;Evaluable Disease;Evaluation;Event;Federally Qualified Health Center;Fostering;Funding;Future;Health;health disparity;health empowerment;Health Personnel;high risk;Hospitals;implementation evaluation;Individual;Intervention Studies;Latino;Latino Population;Learning;literacy;Massachusetts;Measures;member;Mentors;Methods;Minority;Minority Groups;Minority Health Research;Modeling;Neighborhoods;New England;Newsletter;Ontology;Participant;participant enrollment;Patients;personalized approach;PhenX Toolkit;Pilot Projects;Population;Prevention;primary outcome;Procedures;Protocols documentation;Publishing;Randomized;recruit;recruitment science;Reporting;Research;Research Personnel;Resources;retention rate;Risk;Science;Scientist;screening;Sequential Multiple Assignment Randomized Trial;Series;Site;social health determinants;Statistical Methods;Telephone;Testing;Training;Translating;trial design;Trust;United States National Institutes of Health;Universities;Work
+current_category: infrastructure
+---
+application_id: 10807095
+activity_code: U19
+title: Systems biological assessment of T cell responses to vaccination
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: 2019-nCoV;adaptive immunity;Adjuvant;Adult;Algorithms;Alleles;Allergic Reaction;Antibiotics;Antibody Binding Sites;antigen-specific T cells;B-Lymphocytes;biological systems;Blood;Cells;Clinical Trials;cohort;combinatorial;complementarity-determining region 3;COVID-19;COVID-19 vaccination;COVID-19 vaccine;Defect;draining lymph node;Epitopes;Exposure to;falls;Ferritin;Frequencies;Goals;Grouping;gut microbiota;Human;Hypersensitivity;Immune;Immunologics;Individual;influenza virus vaccine;Label;Lymphocyte;Messenger RNA;Methods;microbiome;microbiota;Natural Immunity;novel;Organoids;Peptide/MHC Complex;Peptides;Pfizer-BioNTech COVID-19 vaccine;Phenotype;phenotypic biomarker;Probability;Rabies Vaccines;Reporting;response;RNA vaccination;RNA vaccine;Sampling;SARS-CoV-2 spike protein;seasonal influenza;Sequence Analysis;Specificity;Stains;Subunit Vaccines;success;Surveys;T cell response;T-cell receptor repertoire;T-Lymphocyte;Techniques;Technology;tool;Universities;Vaccination;vaccine response;Vaccines;Vertebral column;young adult
+current_category: therapeutics
+---
+application_id: 10911985
+activity_code: P01
+title: Core A: Administrative Core
+org_name: KAISER FOUNDATION RESEARCH INSTITUTE
+phr: N/A
+terms: Adolescent and Young Adult;Adolescent and young adult cancer patients;Advocacy;Agreement;American Cancer Society;Ancillary Study;Area;Biometry;Budgets;California;Cancer Survivor;Cancer Survivorship;Caregivers;Clinical;clinical care;Committee Members;Committee Membership;Communication;Communities;Contracts;Dana-Farber Cancer Institute;Data;data acquisition;Data Analyses;data resource;Development;Disparate;Ensure;experience;Financial Hardship;Growth;Health;Healthcare;Hospitals;Individual;insight;Institution;Institutional Review Boards;interest;Leadership;Los Angeles;Malignant Neoplasms;Manuscripts;member;Methods;Michigan;Modification;North Carolina;organizational structure;patient engagement;Patients;Pediatric Hospitals;Population;Principal Investigator;programs;Provider;psychosocial;Publications;Quality of life;Research;Research Personnel;Resource Allocation;Resource Sharing;Resources;Robin bird;Saint Jude Children&apos;s Research Hospital;Site;Source;Surveys;Survivors;synergism;timeline;Universities;Washington;Work
+current_category: infrastructure
+---
+application_id: 11193615
+activity_code: P01
+title: Targeting Cancer Stem Cells
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 11193622
+activity_code: P01
+title: Cell Therapy Core
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 11193618
+activity_code: P01
+title: BMT in Solid Tumors
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 10796883
+activity_code: U19
+title: Proteomics and Metabolomics Core: IDEAL shapes vaccine response, susceptibility to respiratory infectious disease and asthma
+org_name: BOSTON CHILDREN'S HOSPITAL
+phr: N/A
+terms: Affect;Aliquot;Antibody Response;Asthma;Biological;Biological Markers;biomarker identification;Birth;Blood;Cells;chemokine;Child;Childhood;Clinical;clinical phenotype;clinically relevant;Communicable Diseases;comorbidity;Complement;Consumption;COVID-19;COVID-19 patient;cytokine;Data;data management;Development;Diagnosis;Dimensions;Disease;early childhood;Early treatment;endophenotype;Epigenetic Process;Exhibits;Extravasation;Frequencies;Goals;Growth;Health;high risk;Hospitalization;Hour;Human;Immune;Immune system;Immunologics;Immunology;Immunophenotyping;immunoregulation;Impairment;In Vitro;infancy;Infant;Infection;Infrastructure;insight;interest;Intervention;Life;liquid chromatography mass spectrometry;Maps;Measurement;metabolome;metabolomics;Methods;Microbe;Molecular;Molecular Profiling;Mucous body substance;Nasal cavity;Nasopharynx;National Institute of Allergy and Infectious Disease;neonate;Newborn Infant;Nose;novel strategies;Outcome;pathogen;Pathway interactions;Pattern;Pharyngeal structure;Phenotype;Plasma;Predisposition;Prevention;Process;Prognosis;Proteins;Proteome;Proteomics;PRTN3 gene;Publishing;Research;Resolution;respiratory;Respiratory System;Respiratory Tract Infections;Risk;Role;Sampling;Services;Shapes;System;Testing;Time;Tissues;Vaccination;vaccine immunogenicity;vaccine response;Vaccines
+current_category: infrastructure
+---
+application_id: 11193616
+activity_code: P01
+title: Marrow-Infiltrating Lymphocytes
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 11193621
+activity_code: P01
+title: Immune Monitoring Core
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10909254
+activity_code: P30
+title: Metabolic & Molecular Physiology
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: N/A
+terms: Acceleration;Acute;adipokines;Aerobic;Animal Model;Animals;Architecture;Area;Arterial Fatty Streak;ATP Synthesis Pathway;base;bench to bedside;biobank;Biogenic Amines;Biological Assay;Biology;Body Composition;California;cell bank;Cell Respiration;cell type;Cells;Cellular Metabolic Process;chemokine;Chronic;Collaborations;Complications of Diabetes Mellitus;Consultations;cost;cost effective;cytokine;Data;Data Analyses;data integration;data repository;Databases;Diabetes Mellitus;diabetes pathogenesis;Disease;Dual-Energy X-Ray Absorptiometry;Environment;Epigenetic Process;Evaluation;Evolution;Exercise;Experimental Designs;Faculty;fatty acid metabolism;Feeding behaviors;Fertilization;Flow Cytometry;Fostering;functional genomics;Gene Expression Profiling;Genetic Engineering;Genetically Engineered Mouse;Genomics;Genus Hippocampus;Glucose;Glucose Clamp;Goals;Homeostasis;hormone metabolism;hormone sensitivity;Hormones;Human;Hyperinsulinism;Image;imager;improved;In Situ;in vivo;Indirect Calorimetry;Individual;Inflammation;Inflammatory;insight;Institution;instrument;instrumentation;Insulin;Insulin Resistance;insulin sensitivity;Investigation;Label;Laboratories;laser capture microdissection;Leadership;Magnetic Resonance Imaging;Maintenance;man;Mass Spectrum Analysis;Measures;media use;member;Metabolic;metabolic abnormality assessment;Metabolic Pathway;metabolic phenotype;Metabolism;Methodology;Microscopy;Mitochondria;Molecular;Molecular Target;Morphology;Movement;Mus;Muscle;new technology;Nuclear Receptors;Obesity;Organelles;Outcome;Oxygen Consumption;Pathway Analysis;Pathway interactions;Performance;Phenotype;Physiological;Physiology;Plasma;Procedures;Production;Productivity;Protocols documentation;Publications;receptor;recruit;Research;Research Personnel;Resolution;Resources;Rodent;Role;Sampling;Scientific Advances and Accomplishments;Series;Services;Signal Pathway;Signal Transduction;Spirometry;Standardization;success;synergism;Techniques;Technology;Time;tissue preparation;Tissues;Tracer;Training;Translational Research;Travel;United States National Institutes of Health;Update;Work
+current_category: infrastructure
+---
+application_id: 10732087
+activity_code: P01
+title: WHCOHH Administrative Core
+org_name: WOODS HOLE OCEANOGRAPHIC INSTITUTION
+phr: N/A
+terms: Address;Advisory Committees;Affect;archive data;Asia;Biological;Climate;climate change;climate data;Collaborations;Communication;Communities;community engagement;Community Health Education;Community Outreach;Computers and Advanced Instrumentation;contaminated seafood;data archive;data communication;data exchange;data submission;Development;Discipline;early life exposure;Ensure;Europe;Evaluation;exposed human population;Exposure to;Goals;Grant;harmful algal blooms;Health;health data;Health Personnel;Health Professional;Human;human model;Information Dissemination;Institution;International;Joints;Kinetics;Measurement;meetings;member;Methods;Mission;Modeling;Modernization;Monitor;National Institute of Environmental Health Sciences;neurobehavioral;Oceanography;Oceans;outreach;Policies;Privatization;Process;programs;Public Health;Recommendation;Records;Reporting;Research;Research Personnel;Research Project Grants;Resources;Risk;Role;Sampling;Science;Seafood;Series;Shellfish;Structure;success;synergism;Testing;Time;Toxin;web page;Work
+current_category: infrastructure
+---
+application_id: 10770566
+activity_code: P01
+title: "Project 3" Defining the in vivo function of ncRNAs during MHV68 latency and lymphomagenesis
+org_name: UNIVERSITY OF FLORIDA
+phr: Project Narrative The transforming human gammaherpesviruses EBV and KSHV establish stable latent infections in B cells, providing a lifelong reservoir of virus that can contribute to the development of malignant disease. Thus, defining the mechanisms that govern long-term latency and tumorigenesis is critical for designing rational strategies to prevent disease. In work here, we will use a mouse model of gammaherpesvirus infection and tumorigenesis to defined the mechanisms by which viral noncod
+terms: Acceleration;Acquired Immunodeficiency Syndrome;Animal Model;B-Cell Lymphomas;B-Lymphocytes;Biological;Biological Models;Biology;Cell Physiology;Chronic;chronic infection;Code;Collaborations;Comparative Study;Data;defined contribution;Development;digital;Disease;Epstein-Barr virus encoded RNA 1;Epstein-Barr virus encoded RNA 2;Event;experimental study;Foundations;gammaherpesvirus;Genes;Genetic Transcription;Goals;Hematogenous;Herpesviridae;HIV;Human;Human Herpesvirus 4;Human Herpesvirus 8;Hyperplasia;Immunocompromised Host;Immunologics;in vivo;in vivo evaluation;infected B cell;Infection;innovation;latent infection;Lesion;Link;Lymphoma;Lymphomagenesis;Lymphoproliferative Disorders;Malignant - descriptor;Malignant Neoplasms;Messenger RNA;MicroRNAs;Molecular;mouse model;Mus;mutant;Nature;novel;Outcome;Pathogenesis;Pathway interactions;Peripheral;Phenotype;Play;prevent;programs;Proteins;rational design;recombinant virus;Regulation;Reporting;Repression;RNA;Role;Shapes;Signal Pathway;Site;small hairpin RNA;Small RNA;Surface;System;Technology;Testing;Transcript;Transfer RNA;Translations;tumor;tumor progression;tumorigenesis;Untranslated RNA;Viral;Viral Physiology;Viral reservoir;Virus;Work
+current_category: basic_research
+---
+application_id: 11373016
+activity_code: UC2
+title: Project-002
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: N/A
+terms: Back Pain;Behavioral;Biological;Biomechanics;Caring;Characteristics;Chronic;Chronic low back pain;chronic pain;Classification;Clinical;clinical application;Clinical assessments;cohort;Collaborations;Complex;Data;Data Set;Databases;Dimensions;disability;Evaluation;Evolution;experience;Fibromyalgia;follow-up;Funding;Future;Goals;healing;Health;health disparity;Helping to End Addiction Long-term;Hip Osteoarthritis;Individual;Infrastructure;innovation;interdisciplinary approach;International;Knee;Knowledge;large datasets;Lived experience;Longitudinal cohort;Low Back Pain;Measures;Modeling;Musculoskeletal;Musculoskeletal Diseases;Nature;novel;opioid use disorder;Outcome;Pain;Pain management;pain model;pain patient;Pain Research;Participant;Pathway interactions;patient oriented;Patients;Persons;Phenotype;phenotypic data;precision medicine;Prediction of Response to Therapy;predictive modeling;preference;programs;Quality of life;Research;Research Infrastructure;Research Personnel;Selection for Treatments;success;Temporomandibular Joint Disorders;Theoretical model;Time;Treatment outcome;treatment response;United States National Institutes of Health;Universities;whole health;Work
+current_category: other
+---
+application_id: 10770562
+activity_code: P01
+title: "Project 1" KSHV short and long noncoding RNAs and alteration of host IncRNA expression
+org_name: UNIVERSITY OF FLORIDA
+phr: NARRATIVE Kaposi’s sarcoma-associated herpesvirus (KSHV) causes Kaposi’s Sarcoma and B cell lymphomas. KSHV expresses 12 miRNA genes and a number of viral long noncoding RNAs, including anti-sense and circular RNAs. Using ribonomcs techniques we demonstrated that KSHV infection leads to de-regulation of cellular lncRNAs in a miRNA-dependent and -independent fashion. The main focus of this project is to increase our understanding of how viral short and long noncoding RNAs contribute to viral dise
+terms: Acceleration;Acquired Immunodeficiency Syndrome;Address;AIDS related cancer;angiogenesis;B-Cell Lymphomas;B-Lymphocytes;Binding Proteins;bioinformatics pipeline;Biological Assay;Biology;Cells;circular RNA;Code;Collaborations;comparative;Comparative Study;Complex;CRISPR interference;crosslink;Data;Data Analyses;Data Set;density;Development;Endothelial Cells;Experimental Designs;Funding;gammaherpesvirus;gene regulatory network;Generations;Genes;Genetic;Genetic Transcription;Global Change;glucose metabolism;Goals;Growth;Herpesviridae;Herpesviridae Infections;Human;Human Herpesvirus 4;Human Herpesvirus 8;Hybrids;In Vitro;in vivo;in vivo Model;innovation;Investigation;Kaposi Sarcoma;Knock-out;Laboratories;Link;Lymphoproliferative Disorders;lytic replication;MALAT1 gene;Malignant Neoplasms;Messenger RNA;Methods;MicroRNAs;migration;miRNA expression profiling;Modeling;Multiomic Data;multiple omics;Mus;mutant;novel;novel therapeutic intervention;Pathogenicity;Pathway interactions;Phenotype;primary effusion lymphoma;programs;Proliferating;Proteins;Protocols documentation;Publications;Publishing;Reporting;RNA;RNA Splicing;Role;Sampling;Signal Pathway;South Africa;Specimen;Structure;success;System;Techniques;tissue culture;Transcript;transcriptome;transcriptome sequencing;transcriptomics;Treatment Protocols;tumor;Tumor Suppressor Proteins;tumorigenesis;Universities;Untranslated RNA;Validation;Viral;viral interferon regulatory factor;Viral Pathogenesis;viral RNA;Virus;Virus Diseases;virus genetics;Work;Xenograft procedure
+current_category: basic_research
+---
+application_id: 11014475
+activity_code: P01
+title: "Core C" Recombinant Virus Core
+org_name: UNIVERSITY OF FLORIDA
+phr: Narrative The Recombinant Virus Core C provides an efficient, quality controlled, and cost-efficient research core that generates recombinant gamma-herpesviruses with defined mutations. This core will support the identification of lncRNA-dependent phenotypes for the oncogenic herpesviruses KSHV, EBV, and MHV68.
+terms: Acquired Immunodeficiency Syndrome;Archives;Bacteria;Biology;Cell Line;Clustered Regularly Interspaced Short Palindromic Repeats;Communities;cost efficient;CRISPR interference;CRISPR/Cas technology;design;Development;DNA Resequencing;DsRed;experience;Financial Support;Funding;gammaherpesvirus;Generations;Genes;Genetic Recombination;genome-wide;Genomics;Goals;Herpesviridae;Human Herpesvirus 4;Human Herpesvirus 8;innovation;Institution;Malignant Neoplasms;MicroRNAs;Mutagenesis;Mutagens;mutant;Mutation;Oncogenic;Phenotype;programs;Protocols documentation;Publications;recombinant virus;Recombinants;Research;Resource Sharing;response;Role;Services;Techniques;Training;Untranslated RNA;Viral;Viral Genes;Virus Diseases
+current_category: infrastructure
+---
+application_id: 10909117
+activity_code: P30
+title: Cellular and Molecular Biology Core
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: N/A
+terms: Cell Culture Techniques;Cell Line;Cells;Cellular biology;Cloning;Core Grant;cost;Cultured Cells;design;DNA;DNA sequencing;Equipment;experimental study;Flow Cytometry;Goals;Histologic;Histology;Individual;instrument;instrumentation;laser capture microdissection;MicroRNAs;Molecular Biology;Morphology;Organ Culture Techniques;Protein Analysis;Proteomics;Research;Research Personnel;Services;skills;Specimen;stem cells;Time;Tissues;Transfection;Viral Packaging;Viral Vector;virology;Vision research
+current_category: infrastructure
+---
+application_id: 11234769
+activity_code: U54
+title: Testing an Adapted Diabetes Self-Management Education and Support (DSMES) Digital Health Intervention among Mexican Origin Hispanics to Increase Access and Participation
+org_name: UNIVERSITY OF TEXAS EL PASO
+phr: N/A
+terms: 18 year old;Address;Adult;Age;Behavior;bilingualism;Biomedical Research;Blindness;Caring;Cause of Death;Certification;Child Care;Community Health Aides;Complications of Diabetes Mellitus;Control Groups;cost;Cost of Illness;Development;diabetes management;Diabetes Mellitus;diabetes self-management;diabetic;Diagnosis;digital;digital health;Direct Costs;Disease Management;Education;Educational Curriculum;Educational process of instructing;Effectiveness;empowerment;End stage renal failure;Ethnic Origin;evidence base;Facilities and Administrative Costs;foot;Glycosylated hemoglobin A;Goals;Health Personnel;Hispanic Populations;Homebound Persons;Hospitalization;improved;Insulin;Intervention;Kidney Diseases;Kidney Failure;Knowledge;Location;Long-Term Care for Elderly;Methods;Mexican;Monitor;mortality;Non-Insulin-Dependent Diabetes Mellitus;Not Hispanic or Latino;Occupations;Patients;person centered;Persons;programs;Randomized;Recommendation;Reporting;Risk;Risk Reduction;Rural Community;Rural Population;Self Efficacy;Self Management;Spanish/English;Specialist;Stress;Technology;Testing;Training;Training Activity;Transportation;United States;Wages;Work
+current_category: digital_health
+---
+application_id: 11014464
+activity_code: P01
+title: "Project 2" Microprocessor overload in gamma-herpesviral oncogenesis
+org_name: UNIVERSITY OF FLORIDA
+phr: Project narrative The Epstein Barr virus (EBV) is a primary causative agent in HIV-associated lymphomas. Based on preliminary studies in tissue culture and clinical models, we hypothesize that two large EBV miRNA clusters are critical players in eliciting the tumor phenotype through altering the immune cell microenvironment via their canonical functions and cell growth and/or protection against cell death through a previously unknown non-canonical mechanism.
+terms: Acquired Immunodeficiency Syndrome;adaptive immune response;Affinity;AIDS related cancer;AIDS-Related Lymphoma;Animal Model;Autoimmune Diseases;Binding;Biogenesis;Bioinformatics;Biology;biophysical analysis;Burkitt Lymphoma;Cancer Patient;cancer type;Cell Death;cell growth;Cell Survival;Cells;Clinical;co-infection;Collaborations;Cytoprotection;Data;Data Set;density;DNA Sequence Alteration;Down-Regulation;driver mutation;Epitopes;Epstein Barr Virus associated tumor;Epstein-Barr virus encoded RNA 1;Epstein-Barr Virus Infections;Epstein-Barr Virus-Related Lymphoma;Etiology;expression vector;gammaherpesvirus;Gene Expression;Genes;Genetic Materials;Herpesviridae;HIV;Hodgkin Disease;Human Herpesvirus 4;Human Herpesvirus 8;humanized mouse;Hybrids;Immune;immune cell infiltrate;Immune response;Immune Targeting;in vivo;Infection;Innate Immune Response;Interferon Type II;Introns;Malignant Neoplasms;malignant stomach neoplasm;Mediating;Messenger RNA;Microprocessor;MicroRNAs;Modeling;mouse model;Mus;Nasopharynx Carcinoma;neoplastic cell;Non-Hodgkin&apos;s Lymphoma;Oncogenes;Oncogenic;Pathway interactions;Patients;Phenotype;Production;Property;reconstitution;Regulatory Pathway;Resources;Risk;RNA;Role;Sampling;SCID Mice;Signal Pathway;Signal Transduction;Specimen;T-Cell Receptor;Testing;Time;tissue culture;Transcript;transcriptome;transcriptome sequencing;Transfection;tumor;Tumor Suppressor Proteins;tumorigenesis;Untranslated RNA;Viral;Viral Genes;viral RNA;Virus Diseases;virus genetics;Work;Xenograft procedure
+current_category: basic_research
+---
+application_id: 10770564
+activity_code: P01
+title: "Project 2" Microprocessor overload in gamma-herpesviral oncogenesis
+org_name: UNIVERSITY OF FLORIDA
+phr: Project narrative The Epstein Barr virus (EBV) is a primary causative agent in HIV-associated lymphomas. Based on preliminary studies in tissue culture and clinical models, we hypothesize that two large EBV miRNA clusters are critical players in eliciting the tumor phenotype through altering the immune cell microenvironment via their canonical functions and cell growth and/or protection against cell death through a previously unknown non-canonical mechanism.
+terms: Acquired Immunodeficiency Syndrome;adaptive immune response;Affinity;AIDS related cancer;AIDS-Related Lymphoma;Animal Model;Autoimmune Diseases;Binding;Biogenesis;Bioinformatics;Biology;biophysical analysis;Burkitt Lymphoma;Cancer Patient;cancer type;Cell Death;cell growth;Cell Survival;Cells;Clinical;co-infection;Collaborations;Cytoprotection;Data;Data Set;density;Down-Regulation;driver mutation;Epitopes;Epstein Barr Virus associated tumor;Epstein-Barr virus encoded RNA 1;Epstein-Barr Virus Infections;Epstein-Barr Virus-Related Lymphoma;Etiology;expression vector;gammaherpesvirus;Gene Expression;Genes;Genetic Materials;Herpesviridae;HIV;Hodgkin Disease;Human Herpesvirus 4;Human Herpesvirus 8;humanized mouse;Hybrids;Immune;immune cell infiltrate;Immune response;Immune Targeting;in vivo;Infection;Innate Immune Response;Interferon Type II;Introns;Malignant Neoplasms;malignant stomach neoplasm;Mediating;Messenger RNA;Microprocessor;MicroRNAs;Modeling;mouse model;Mus;Mutation;Nasopharynx Carcinoma;neoplastic cell;Non-Hodgkin&apos;s Lymphoma;Oncogenes;Oncogenic;Pathway interactions;Patients;Phenotype;Production;Property;reconstitution;Regulatory Pathway;Resources;Risk;RNA;Role;Sampling;SCID Mice;Signal Pathway;Signal Transduction;Specimen;T-Cell Receptor;Testing;Time;tissue culture;Transcript;transcriptome;transcriptome sequencing;Transfection;tumor;Tumor Suppressor Proteins;tumorigenesis;Untranslated RNA;Viral;Viral Genes;viral RNA;Virus Diseases;virus genetics;Work;Xenograft procedure
+current_category: basic_research
+---
+application_id: 11109503
+activity_code: P41
+title: Tissue Engineering Resource Center: Admin-Core
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: Adherence;Administrator;Adoption;Awareness;Biotechnology;Budgets;Clinical;Collaborations;Commercial Sectors;commercialization;Communication;Communities;data sharing;design;Development;Emerging Technologies;Engineering;Ensure;Ethics;experience;Faculty;Feedback;Financial Support;Fostering;Future;Grant;Individual;innovation;Journals;Lead;Licensing;Logistics;Medical center;meetings;member;Mentors;Middle School Student;Mission;Modality;Modification;Monitor;next generation;novel;operation;Outcome;outreach;Positioning Attribute;Postdoctoral Fellow;Press Releases;Protocols documentation;Publications;recruit;Regenerative Medicine;Research;Research Personnel;Resources;Role;Scientist;Services;Strategic Planning;Structure;success;synergism;Talents;Technology;Tissue Engineering;Training;translational impact;Translations;Underserved Population;Universities;web site
+current_category: other
+---
+application_id: 10930874
+activity_code: P50
+title: UMN Udall Clinical Core
+org_name: UNIVERSITY OF MINNESOTA
+phr: N/A
+terms: Adverse event;Behavioral;Biological Markers;Biometry;Biostatistics Core;catalyst;Clinical;Clinical assessments;clinical center;Clinical Data;cohort;Collaborations;Common Data Element;Consent;Data;Data Element;Data Management Resources;Data Set;Dedications;Deep Brain Stimulation;Devices;Doctor of Philosophy;Dopa;Electrophysiology (science);Ensure;experience;follow-up;Future;Goals;Home;human subject;Image;Manufacturer;Marketing;Microelectrodes;Minnesota;Monitor;Motor;Movement Disorders;National Institute of Neurological Disorders and Stroke;Neurologic;Neuropsychology;Operating Rooms;Operative Surgical Procedures;Outcome;Parkinson Disease;participant enrollment;Patient Education;Patients;Physiological;Postoperative Period;programs;Protocols documentation;recruit;repository;Research;Resistance;Schedule;sensor technology;smartphone application;Standardization;success;Symptoms;Time;Universities;wearable device;Work
+current_category: infrastructure
+---
+application_id: 10909119
+activity_code: P30
+title: Animal Services Core
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: N/A
+terms: animal colony;animal facility;Animal Model;Animals;Core Grant;Development;Equipment;Evaluation;Experimental Animal Model;Eye;Eye diseases;Generations;Genotype;Goals;Image;knockin animal;knockout gene;novel therapeutics;Pathologic;Performance;Procedures;Production;Research Personnel;Resources;Services;Structure;Testing;Therapeutic Agents;Tissue Harvesting;Transgenic Organisms;Translational Research;translational scientist;Universities;Vision research
+current_category: infrastructure
+---
+application_id: 10830090
+activity_code: P30
+title: Chemical Analysis & Detection
+org_name: RUTGERS BIOMEDICAL AND HEALTH SCIENCES
+phr: N/A
+terms: Ablation;Address;advanced analytics;air monitoring;air sampling;analytical method;analytical tool;Applications Grants;Biological;Biological Assay;Biological Markers;Blood;career;Chemicals;Collaborations;Communities;community engagement;community partners;Complement;Consultations;Core Facility;cost;Data Analyses;design;Detection;detection method;Development;Devices;Disasters;Disease;Doctor of Philosophy;Dust;Elements;Endocrine Disruptors;Environment;Environmental Exposure;Environmental Health;Environmental Pollutants;experience;Experimental Designs;Faculty;Goals;graduate student;Grant;Growth;Hair;Hazard Assessment;Health;Human;Individual;Inductively Coupled Plasma Mass Spectrometry;instrument;instrumentation;Interdisciplinary Study;interest;Laboratories;Lasers;Link;liquid chromatography mass spectrometry;Manuscripts;Mass Fragmentography;Mass Spectrum Analysis;Measurement;Measures;member;Metabolism;Metals;method development;Methodology;Methods;Molecular;Monitor;National Institute of Environmental Health Sciences;Needles;New Jersey;novel;organic contaminant;Paper;Pathogenesis;Performance;Phase;Poly-fluoroalkyl substances;Postdoctoral Fellow;Preparation;Procedures;Publications;Publishing;quality assurance;Quality Control;Research;Research Personnel;Research Project Grants;Research Support;response;Role;Running;sample collection;Sampling;Science;Scientist;sensor;small molecule;Soil;Solid;Sputum;Students;Supervision;Technology;Therapeutic Agents;Time;Tissue Sample;Tooth structure;toxicant;Training;Translational Research;Translations;undergraduate student;Urine;vapor;Volatilization;Water;Work;wristband
+current_category: infrastructure
+---
+application_id: 10909088
+activity_code: U19
+title: THE ADMINISTRATION CORE (AC)
+org_name: WASHINGTON UNIVERSITY
+phr: NARRATIVE FOR ADMINISTATIVE CORE The Aging Adult Brain Connectome (AABC) builds on the existing infrastructure previously developed through the Human Connectome Project (HCP) Aging consortium. The AABC will acquire demographic, genetic, physi- ologic, health, and neurocognitive information in conjunction with cutting edge functional and structural neuroim- aging data (magnetic resonance imaging (MRI) and now magnetic resonance spectroscopy (MRS)) from a large cohort of individuals (n=1,000) acro
+terms: Address;Adult;Advisory Committees;Affect;aged;Aging;aging brain;allostatic load;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Ancillary Study;Behavior;Blood;Brain;California;Centenarian;Clinical;cohort;Collaborations;Communication;Communities;connectome;Consult;Data;data acquisition;Data Analyses;data integration;data management center;Decision Making;Development;Ensure;Environment;Evaluation;General Hospitals;Genetic;Genetic Risk;Goals;Health;Human;Impaired cognition;Individual;Informatics;Infrastructure;Institution;late life;later life;Leadership;life span;Life Style;Los Angeles;Magnetic Resonance Imaging;Magnetic Resonance Spectroscopy;Massachusetts;meetings;Menopausal Symptom;Menopause;middle age;Minnesota;Monitor;multiple omics;neural;Neurocognitive;neuroimaging;Neuropsychology;Participant;Pathologic;Phase Transition;Physical activity;Physiological;programs;Progress Reports;recruit;Research Personnel;resilience;resilience biomarker;Resistance;Resources;senescence associated secretory phenotype;Site;Specimen;statistics core;Stress;Teleconferences;Time;Training;Underrepresented Populations;United States National Institutes of Health;Universities;vasomotor symptoms;Washington;Work
+current_category: infrastructure
+---
+application_id: 10912520
+activity_code: P01
+title: Pathology
+org_name: DANA-FARBER CANCER INST
+phr: Project Narrative The mission of the Pathology Core (2) is to characterize and bank tumor samples from RS patients representing a full range of biologic characteristics, as well as from engineered RS mouse models of disease. This tissue resource will enable the fundamental discoveries required to understand the pathogenesis of the disease and move toward improved therapies and eventual cure. As part of this effort, the Pathology Core will provide central review and resources for human and mouse 
+terms: Address;Area;Automobile Driving;B-Cell Antigen Receptor;Biologic Characteristic;Biological;Biology;biomarker identification;Biopsy;candidate validation;cell bank;Cell Line;Cells;Chemotherapy-Oncologic Procedure;chromosome 13q loss;Chronic Lymphocytic Leukemia;Clinical;Clinical Trials;Collaborations;Complication;Credentialing;Data;del(17p13);design;Development;Diagnosis;Diagnostic;Disease;disease model;Dissection;Doctor of Philosophy;Documentation;Drug resistance;effective therapy;Engineering;Engraftment;Evaluation;experimental study;Fibrous capsule of kidney;Formalin;Foundations;Freezing;Future;Genetic;Genetic Polymorphism;Genome;genome editing;Genomics;Goals;Grant;Hematologic Neoplasms;Hematopathology;Hematopoietic stem cells;Histologic;Histopathology;Human;Human Resources;Immunocompromised Host;Immunodeficient Mouse;Immunohistochemistry;Implant;implantation;improved;In Vitro;in vivo;in vivo Model;Infrastructure;Injections;innovation;Institution;interest;large cell Diffuse non-Hodgkin&apos;s lymphoma;Lesion;lymphoid neoplasm;Lymphoma;Malignant Neoplasms;Mission;Modeling;Molecular;Morphology;mouse model;MS4A1 gene;Mus;novel;novel marker;Operative Surgical Procedures;Paraffin Embedding;participant enrollment;Pathogenesis;Pathologic;Pathology;Pathway interactions;patient derived xenograft model;Patient-Focused Outcomes;Patients;phenome;Phenotype;pre-clinical;Preparation;Procedures;Process;programs;prospective;Proteomics;PTPRC gene;Receptor Gene;Refractory;Reporting;Research;Research Personnel;Research Support;Resources;Rest;Richter&apos;s Syndrome;Risk;sample archive;Sampling;Signal Transduction;Site;Slide;Small-Cell Lymphoma;Solid;Specimen;Stereotyping;Study Section;subcutaneous;Tail;Testing;therapeutic target;Tissue Microarray;tissue resource;Tissues;tool;transcriptomics;Translations;Transplantation;treatment response;tumor;Tumor Bank;tumor microenvironment;Validation;Variant;Veins
+current_category: basic_research
+---
+application_id: 10912494
+activity_code: P01
+title: Defining the determinants of response and resistance to therapy for Richter's Syndrome
+org_name: DANA-FARBER CANCER INST
+phr: Narrative A serious complication of chronic lymphocytic leukemia (CLL) is the transformation from this relatively slow- growing malignancy to a highly aggressive lymphoma-like disease, called Richter's Syndrome (RS). Since newer therapies for RS are beginning to show promise in the treatment of this deadly entity, we propose to perform a parallel analysis of evolution of both RS cells and their surrounding immune cells over time and in relationship to these novel therapeutic strategies. By emplo
+terms: Address;Allogenic;American Society of Clinical Oncology;analytical tool;Animal Model;Antigens;BCL2 gene;biomarker identification;Cell Shape;Cells;Cessation of life;Characteristics;chemotherapy;Chronic Lymphocytic Leukemia;Clinical;clinical investigation;Clinical Investigator;Clinical Trials;Combined Modality Therapy;Complication;CRISPR/Cas technology;curative treatments;Data;Detection;Development;Disease;Disease remission;disorder control;Dissection;DNA sequencing;Engineering;Enrollment;Evolution;exome sequencing;experience;Flow Cytometry;Funding;Genetic;Genetically Engineered Mouse;Genome;Genomics;Hematopoietic Stem Cell Transplantation;human disease;Immune;immune cell infiltrate;immune checkpoint blockade;Immunity;Immunogenomics;Immunohistochemistry;improved;in vivo;Incidence;Individual;Infiltration;inhibitor;innovation;insight;Link;longitudinal analysis;loss of function;lymph nodes;Lymphoma;Malignant Neoplasms;Marrow;Mediating;Modeling;Molecular;Mus;Mutation;neoplastic cell;novel;novel therapeutic intervention;novel therapeutics;Outcome;Pathway interactions;patient response;Patient-Focused Outcomes;Patients;phenome;Phenotype;Population;predicting response;programmed cell death protein 1;Proteins;Regimen;Research Personnel;Resistance;responders and non-responders;response;Richter&apos;s Syndrome;Role;Sampling;Shapes;single-cell RNA sequencing;Specificity;Specimen;Statistical Data Interpretation;T cell infiltration;T-cell receptor repertoire;T-Lymphocyte;Therapeutic;Therapeutic Agents;therapeutic development;Therapeutic Trials;therapy resistant;Time;Tissue Microarray;Tissues;tool;TP53 gene;transcriptome;transcriptome sequencing;treatment response;tumor;tumor-immune system interactions;Validation
+current_category: therapeutics
+---
+application_id: 10910897
+activity_code: P01
+title: Data Science Core: Interventions to improve alcohol-related comorbidities along the gut-brain axis in persons with HIV infection
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: alcohol abstinence;Alcohol consumption;alcohol effect;alcohol measurement;Alcoholic beverage heavy drinker;Alcohols;Artificial Intelligence;artificial intelligence model;Bacterial Translocation;Big Data;Biological Markers;Characteristics;clinical practice;Clinical Trials;Clinical Trials Design;cohort;Collaborations;comorbidity;Complement;Data;Data Analyses;Data Collection;data harmonization;data management;Data Management Resources;Data Pooling;data resource;Data Science Core;Data Security;data sharing;Databases;deep learning;design;Development;Disease;electronic data capture system;Ensure;Equity;Ethics;Etiology;experience;Faculty;Goals;gut microbiome;gut-brain axis;Health Policy;Heavy Drinking;HIV;HIV Infections;Human Resources;improved;Individual;Intervention;intervention effect;Intervention Studies;Intestinal permeability;Learning;Lobe;Machine Learning;machine learning model;Measurement;Mediation;Methodology;Methods;microbial;microbiome;Modeling;multimodal neuroimaging;Neurocognitive;neuroimaging;novel;Online Systems;Outcome;Pathogenicity;Pathway interactions;Patients;personalized intervention;Persons;population health;power analysis;predictive modeling;predictive tools;Prevention strategy;Procedures;Protocols documentation;Public Health;Public Policy;Publications;Qualifying;Quality Control;Randomized;randomized, clinical trials;Recommendation;reduced alcohol use;Research;research data dissemination;Research Design;Research Personnel;Research Project Grants;Resources;risk mitigation;Sample Size;Scheme;Series;Services;Site;Source;Statistical Data Interpretation;statistical learning;success;System;systemic inflammatory response;Techniques;Testing;Tissues;tool;Training;Training Programs;Translational Research;trial design;Validation;Wit;Work
+current_category: infrastructure
+---
+application_id: 10930875
+activity_code: P50
+title: Pathophysiology-based approaches to deep brain stimulation for Parkinson's disease
+org_name: UNIVERSITY OF MINNESOTA
+phr: N/A
+terms: Affect;Agreement;Algorithms;Anatomy;Area;Basal Ganglia;Biological Markers;Bradykinesia;Cells;Clinical;Cognition;Cognitive;cognitive function;Cortical Synchronization;Coupling;Decision Making;Deep Brain Stimulation;Development;Devices;Disease;effective therapy;Electrocorticogram;Electrophysiology (science);Frequencies;Functional disorder;Future;Globus Pallidus;Goals;High Frequency Oscillation;high resolution imaging;Imaging Techniques;improved;Individual;insight;Lead;Levodopa;Location;Maps;Microelectrodes;Motor;motor disorder;Movement;Neurodegenerative Disorders;Neurons;Outcome;Parkinson Disease;Pathologic;Patients;Pattern;Performance;Persons;Phase;Phenotype;Physiological;Play;Postoperative Period;Prefrontal Cortex;Preparation;Rest;Role;Sensory;Severities;Shapes;Short-Term Memory;Site;STN stimulation;Structure of subthalamic nucleus;Therapeutic
+current_category: infrastructure
+---
+application_id: 10912524
+activity_code: P01
+title: Biostatistics
+org_name: DANA-FARBER CANCER INST
+phr: PROJECT NARRATIVE - Core 4 Biostatistics The goal of Core 4 Biostatistics is to assure that all experiments conducted through this P01, centered around chronic lymphocytic leukemia and Richter's Syndrome, have access to state-of-the-art statistical support for their design and analysis. This extends to the basic science and murine experiments described as well as to the clinical and correlative studies undertaken by all the Projects, as well as the Cores. This assures that the work performed on 
+terms: Animal Experimentation;Animals;Basic Science;Biological Assay;Biometry;Blinded;Chronic Lymphocytic Leukemia;Clinical;Clinical Data;Clinical Research;Correlative Study;Data;Data Set;design;Disease;Dissection;Epigenetic Process;experimental analysis;experimental study;Genetic;Genome;Germ Lines;Goals;improved;insight;Laboratories;Laboratory Research;member;Molecular;Mus;Mutation;novel;novel therapeutics;Outcome;Patient-Focused Outcomes;Patients;personalized therapeutic;Pharmaceutical Preparations;phenome;programs;Proteomics;repository;Reproducibility;Research Personnel;Research Project Grants;research study;Resistance;Resources;response;Richter&apos;s Syndrome;Sampling;Services;single cell analysis;single cell technology;Source;Techniques;Therapeutic Studies;tumor;Work
+current_category: basic_research
+---
+application_id: 10912522
+activity_code: P01
+title: Proteomics
+org_name: DANA-FARBER CANCER INST
+phr: Narrative The overarching goal of the Proteomics Core (Core 3) is to provide state-of-the-art, mass spectrometry-based- proteomics and phosphoproteomics data and analyses in support of Projects 1-3; proteomics data will help to identify cancer-relevant pathways triggered by somatic DNA variants or DNA copy number alterations (CNAs) and help to narrow target selection for potential therapeutic intervention of Richter's syndrome and related cancers. The resulting proteomic data, including the crit
+terms: Acceleration;Amino Acids;Apoptotic;B-Lymphocytes;Biocompatible Materials;biocomputing;bioinformatics tool;Biological Assay;Blood;cancer cell;Cells;Chronic Lymphocytic Leukemia;cloud based;Communities;Data;data integration;Data Set;Dependence;Disease;Disease Progression;Dissection;DNA;DNA copy number;Doctor of Philosophy;experimental study;Functional disorder;Gene set enrichment analysis;Genes;Genome;genomic data;Genomics;Goals;Guidelines;Human;improved;insight;interest;Investigation;Label;large cell Diffuse non-Hodgkin&apos;s lymphoma;Liquid Chromatography;Malignant Neoplasms;Maps;Mass Spectrum Analysis;Measures;Messenger RNA;Methods;Modification;Molecular;molecular sequence database;mouse model;multiple omics;Mus;Mutation;novel;Pathway Analysis;Pathway interactions;Patient-Focused Outcomes;Patients;Peptides;personalized genomics;Pharmaceutical Preparations;Phase;phenome;Phosphopeptides;Phosphoproteins;phosphoproteomics;Phosphorylation;Post Translational Modification Analysis;Post-Translational Protein Processing;pre-clinical;Pre-Clinical Model;profiles in patients;Protein Analysis;Protein Isoforms;Proteins;proteogenomics;Proteome;Proteomics;Relapse;Resistance;Resources;response;Richter&apos;s Syndrome;RNA;RNA Splicing;Sampling;Signal Transduction;Site;Solid Neoplasm;Specificity;stable isotope;Stable Isotope Labeling;Structure;tandem mass spectrometry;targeted treatment;Technology;Therapeutic Intervention;therapy resistant;Transcript;transcriptomics;treatment response;tumor;Variant;Work
+current_category: basic_research
+---
+application_id: 10912513
+activity_code: P01
+title: Administrative Core
+org_name: DANA-FARBER CANCER INST
+phr: Core A Project Narrative The Administrative Core will oversee the administrative responsibilities of the various laboratory studies outlined in the three Projects, by providing high-level organizational support for the Projects. These include provision of necessary resources, fiscal oversight, adherence to institutional and NIH guidelines/regulations, and the coordination of regular joint meetings to disseminate results, discuss scientific challenges, and discover innovative solutions to advance
+terms: Address;Adherence;Administrative Coordination;Allogenic;Biology;Chronic Lymphocytic Leukemia;Clinical;clinical care;Clinical Trials;combinatorial;Communication;Communities;Data Collection;data dissemination;data sharing;Dedications;Disease remission;disorder subtype;Dissection;Factor Analysis;Fostering;Generations;Genome;Genomics;Goals;Guidelines;Hematopoietic;Heterogeneity;Immunotherapy;improved;individual patient;innovation;Institution;Joints;Laboratory Study;Maintenance;Malignant Neoplasms;Maps;meetings;member;Molecular;Motivation;mouse model;novel;novel therapeutics;Outcome;Patient Care;Patient-Focused Outcomes;Patients;phenome;programs;prospective;Proteomics;Regulation;Research;Research Personnel;Resolution;Resource Sharing;Resources;Retrieval;Richter&apos;s Syndrome;sample collection;Sampling;Science;Services;stem;Stem cell transplant;targeted agent;Therapeutic;Tissue Sample;translational goal;Translations;United States National Institutes of Health;Vision
+current_category: infrastructure
+---
+application_id: 11000746
+activity_code: U54
+title: Development and Therapeutic Efficacy of a Novel Lactate Transporter inhibitor (MCT4) CB-202 in tumors that overexpress MCT4, such as Triple-Negative Breast Cancer (TNBC) and Acute Myeloid Leukemia (AL
+org_name: CHARLES R. DREW UNIVERSITY OF MED & SCI
+phr: N/A
+terms: absorption;Acceleration;Acute Myelocytic Leukemia;acute myeloid leukemia cell;Address;Affect;African American population;African American Women;analog;Animal Model;Animals;anti-cancer;anticancer activity;Apoptosis;Biological Assay;Black race;cancer care;Cancer cell line;cancer therapy;Categories;Cell Proliferation;Cells;Chemoresistance;chemotherapy;clinical application;Clinical Trials;Cohort Studies;combat;Combined Modality Therapy;design;Development;Disease;Dose;Drug Targeting;efficacy evaluation;Equilibrium;ethnic minority;Excretory function;Exhibits;Future;Germ-Line Mutation;Health;health disparity;high standard;Hispanic;improved;Incidence;inhibitor;innovation;insight;Lactate Transporter;leukemia;Leukemic Cell;Leukocytes;Link;Malignant Breast Neoplasm;Malignant Neoplasms;Marketing;MDA MB 231;Metabolism;Methods;mouse model;Mus;Neoplasm Metastasis;novel;Outcome;overexpression;Patient-derived xenograft models of breast cancer;Patients;personalized approach;personalized medicine;Pharmaceutical Preparations;Phase;Phloretin;preclinical study;Process;Production;Prognosis;Recurrence;Research;Resources;Role;Safety;small molecule inhibitor;Specificity;Statistical Data Interpretation;success;Survival Rate;targeted treatment;Testing;Therapeutic;therapy outcome;Thinness;Toxic effect;Translational Research;Treatment Efficacy;Treatment outcome;treatment strategy;triple-negative invasive breast carcinoma;tumor;Xenograft procedure;young woman
+current_category: therapeutics
+---
+application_id: 10701863
+activity_code: U54
+title: CARE4Kids: Blood Biomarker Core
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: N/A
+terms: Acute;Adolescence;Adolescent;Affect;Age;age group;Algorithms;American;axon injury;biobank;Biochemical;Biological;Biological Markers;Blood;Blood specimen;blood-based biomarker;Brain;Brain Concussion;Caring;Categories;Clinical;Clinical Management;Clinical Treatment;Clinical Trials;cognitive function;Collection;Common Data Element;critical period;cytokine;Data;data quality;Dedications;design;Development;Dizziness;Early identification;emotional functioning;endophenotype;Evaluation;executive function;experience;falls;Future;genetic analysis;Goals;Headache;high risk;Human Resources;Image;imaging biomarker;improved;Inflammation;Inflammatory;Injury;Intervention;Lipids;Long term disability;Measurement;Measures;medical specialties;Membrane;Memory;Methods;Mission;Molecular;Monitor;National Institute of Neurological Disorders and Stroke;neurodevelopment;neuroimaging;Neurons;Neuropeptides;neurotransmission;Neurotransmitters;novel;Oxidative Stress;Pathway interactions;Peptides;peripheral blood;Phenotype;Physiological;Physiological Processes;Populations at Risk;Post-Concussion Syndrome;prediction algorithm;prevent;preventive intervention;Procedures;Process;prospective;Protein Analysis;Proteins;Protocols documentation;Psychophysiology;Publishing;Quality Control;Radiology Specialty;Recovery;Reporting;repository;Reproducibility;Research Personnel;Research Project Grants;Resources;Risk;risk prediction;risk stratification;sample collection;Schools;Site;social;specific biomarkers;Standardization;success;Symptoms;targeted treatment;Technical Expertise;Techniques;Time;Training;trait;white matter change;Work;young adult;Youth
+current_category: infrastructure
+---
+application_id: 11131048
+activity_code: UC7
+title: Facility Management, Maintenance and Operation Core
+org_name: UNIVERSITY OF TENNESSEE HEALTH SCI CTR
+phr: N/A
+terms: Air Purifying Respirators;Animals;Basic Science;biocontainment facility;biodefense;Carbon Dioxide;Certification;Client;Containment;Contract Services;Contracts;Core Facility;Decontamination;Development;end of life;Engineering;Equipment;Failure;Goals;Health Sciences;improved;Incubators;Individual;Infectious Agent;Infrastructure;Interruption;laboratory facility;Life Expectancy;life span;Maintenance;Mechanics;Medical;Mission;Monitor;Mus;Occupational Exposure;operation;Outcome;Periodicals;prevent;Procedures;Process;Productivity;programs;promote resilience;Regulation;Research;Research Personnel;Research Support;Services;System;Tennessee;Translational Research;Universities;Validation
+current_category: infrastructure
+---
+application_id: 10919201
+activity_code: P01
+title: Emerging Products Core
+org_name: MEDICAL UNIVERSITY OF SOUTH CAROLINA
+phr: NARRATIVE The Emerging Products Core (EPC) will provide timely data to Project Leaders about the state of the tobacco product market. Using multiple data sources, the EPC will identify and track emerging products in each country. It will then use physical and chemical analyses of those products to examine differences relevant to regulations.
+terms: Adopted;Advertising;Calibration;Categories;Characteristics;Chemicals;Cigarette;combustible cigarette;Country;Data;Data Sources;design;Development;Emerging Communicable Diseases;Future;Goals;Grant;heated tobacco products;improved;Ingredients and Chemicals;International;Internet;Japanese;JUUL;Label;Legal patent;Marketing;Modeling;multiple data sources;Nicotine;nicotine use;novel;Pattern;Perception;Performance;Policies;preference;Price;Production;Regulation;Reporting;Research;Research Personnel;Sales;Scanning;Security;Smoker;social media;Study models;Surveys;Testing;Tobacco;Tobacco Industry;tobacco products;Twitter;uptake;vaping;Youth
+current_category: infrastructure
+---
+application_id: 10993606
+activity_code: UM2
+title: RP4 LEAP
+org_name: FLORIDA STATE UNIVERSITY
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;Adherence;Adolescent and Young Adult;Adolescent Medicine Trials Network;AIDS prevention;antiretroviral therapy;arm;Behavioral;Biological;Biological Markers;Black race;care outcomes;care systems;Caring;children of color;Clinic;community partnership;consistent condom use;Consultations;Continuity of Patient Care;cost;Cost Effectiveness Analysis;Data;Development;Discrimination;Drops;economic need;Economics;Education;Effectiveness;effectiveness testing;effectiveness/implementation design;effectiveness/implementation study;Employment;Environment;Epidemic;ethnic disparity;evidence base;experience;food insecurity;Gender;gender affirmation;gender diverse;Geography;Goals;Grant;Health;Health Care;health equity;Heterogeneity;HIV;HIV diagnosis;HIV disparities;HIV Infections;HIV risk;HIV Seronegativity;HIV/AIDS;Homelessness;Housing;Human immunodeficiency virus test;Hybrids;implementation framework;implementation process;Imprisonment;improved;Income;Individual;Inequity;insight;Intervention;Latinx;Lawyers;Leadership;Legal;Legal system;Link;Measures;Mediator;Mentors;Modeling;multi-component intervention;multidisciplinary;Names;Outcome;Participant;Patient Self-Report;peer;peer support;perceived discrimination;Personal Satisfaction;Persons;Population;pre-exposure prophylaxis;prevention service;process evaluation;programs;prospective;Race;racism;Randomized;Recording of previous events;recruit;Research;Resources;Risk;scale up;Schools;Services;Sex Behavior;sexual risk behavior;sexual risk reduction;Site;social determinants;social health determinants;System;theories;therapy design;transgender;Translations;transmission process;treatment effect;Treatment outcome;Trust;United States;uptake;Viral;Viral Load result;Work;young adult;Youth
+current_category: other

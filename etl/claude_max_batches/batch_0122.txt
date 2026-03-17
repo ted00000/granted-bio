@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10905003
+activity_code: U54
+title: Stanford Breast Metastasis Center Administrative Core
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: Advisory Committees;Advocate;Archives;Bioinformatics;Breast;breast cancer metastasis;Calendar;Cancer Biology;Communication;Communities;Computational Biology;dashboard;Data;data exchange;design;Ensure;Evaluation;Event;experience;flexibility;Fostering;functional genomics;Future;Hearing;Immunology;Interdisciplinary Study;Link;Logistics;Medical Oncology;meetings;Metastatic breast cancer;Methods;Modeling;Monitor;multidisciplinary;Neoplasm Metastasis;Operative Surgical Procedures;organizational structure;Pathology;Patients;Performance;Process;Productivity;programs;Progress Reports;Recommendation;repository;Research;Research Personnel;Resolution;Site;statistics;success;Update;web site;Work;working group
+current_category: infrastructure
+---
+application_id: 10887431
+activity_code: P30
+title: Leadership, Planning and Evaluation
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: anti-cancer research;Antineoplastic Agents;Appointment;Area;Attention;Award;Basic Science;Cancer health equity;Catchment Area;chimeric antigen receptor T cells;Clinical;Clinical Research;Clinical Sciences;Collaborations;Communities;community advisory board;community collaboration;community engagement;Community Outreach;Consensus;Development;Doctor of Philosophy;drug discovery;Education;Education and Outreach;Effectiveness;Epidemiology;Evaluation;Faculty Recruitment;Feedback;Funding;Goals;Grant;Growth;innovation;investigator-initiated trial;Lead;Leadership;Malignant Neoplasms;member;Mentors;Mission;Peer Review;Policies;population health;Population Sciences;Positioning Attribute;Process;Productivity;programs;Publications;recruit;Research;Research Support;Resource Sharing;Role;Strategic Planning;Structure;success;Surveys;Training;Training and Education;Translational Research;treatment trial;Underrepresented Minority;Update
+current_category: infrastructure
+---
+application_id: 10714247
+activity_code: P40
+title: Viper Resource Grant at Texas A&M University-Kingsville
+org_name: TEXAS A&M UNIVERSITY-KINGSVILLE
+phr: N/A
+terms: American;Antivenins;Area;Award;Awareness;base;biological research;Biomedical Research;career;Collection;Communities;community engagement;Education;Education and Outreach;Funding;Goals;Grant;Growth;Health Occupations;Heart;Income;innovation;Institution;International;Letters;Marketing;minority student;Minority-Serving Institution;Modeling;novel therapeutics;Occupational activity of managing finances;operation;outreach program;Paper;Performance;programs;Proteins;Recombinants;Reproducibility;Research;Research Infrastructure;Research Support;Resources;Scientist;service programs;Services;skills;Snake Venoms;Snakes;Societies;sound;Source;STEM research;Talents;Texas;Time;Toxin;Toxinology;Universities;Venoms
+current_category: therapeutics
+---
+application_id: 10925245
+activity_code: U54
+title: Optimizing systemic immunotherapy for personalized brain metastasis treatment
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: 3-Dimensional;Ablation;Adoptive Transfer;Air;anti-PD-1;anti-PD1 therapy;anti-tumor immune response;Antigen Presentation;Antigen-Presenting Cells;Antigens;Antitumor Response;Autologous;Biological Assay;Brain;Brain Drains;Brain Neoplasms;Breast;Breast Cancer Cell;cancer cell;Cancer cell line;cancer infiltrating T cells;CD8-Positive T-Lymphocytes;Cell Communication;Cells;Cephalic;cytotoxic;Cytotoxic T-Lymphocytes;Data;design;Distal;draining lymph node;Drops;Exhibits;Flow Cytometry;Future;Immune;immune checkpoint;immune checkpoint blockade;Immune checkpoint inhibitor;Immune response;Immunity;Immunomodulators;immunoregulation;Immunosuppression;Immunotherapy;induced pluripotent stem cell;Infiltration;inhibitor;Injections;insight;Interferon Type II;Interruption;Intracranial Neoplasms;ITGAM gene;Kidney;Knock-out;Knockout Mice;Lesion;Liquid substance;Lung;lung cancer cell;lymph nodes;Lymphocyte;Malignant Neoplasms;Measurement;Measures;Mediating;Melanoma;Metastatic malignant neoplasm to brain;Metastatic Melanoma;migration;Modeling;Monitor;mouse model;Mus;Myelogenous;Myeloid Cells;Neoplasm Metastasis;Neuroimmune;novel;Organoids;Pathologic;Pathway interactions;Patients;Peripheral Blood Mononuclear Cell;personalized immunotherapy;Positron-Emission Tomography;Production;Prognosis;Proliferating;reconstitution;recruit;Role;Signal Transduction;Site;Skin;spatiotemporal;Specimen;Splenocyte;subcutaneous;synergism;T cell clonality;T-Cell Activation;T-Cell Proliferation;T-Lymphocyte;Testing;Therapeutic;Transforming Growth Factor beta;Transgenic Mice;treatment strategy;Tropism;tumor;tumor progression;Tumor-associated macrophages;Vaccinated;Vaccination;vaccination strategy;Vaccines
+current_category: therapeutics
+---
+application_id: 10925239
+activity_code: U54
+title: Determine the mechanisms of acquired brain-tropism
+org_name: STANFORD UNIVERSITY
+phr: N/A
+terms: 3-Dimensional;Address;Advanced Malignant Neoplasm;Anti-CD47;biobank;Biological;Biological Models;Brain;brain cell;Brain Neoplasms;cancer genome;cancer type;cell type;Cells;Cellular Tropism;Characteristics;Clinical;Computer Models;Data;Data Set;differential expression;Disease Progression;Early Diagnosis;Foundations;functional status;Genes;genomic biomarker;genomic data;Genomic Instability;genomic predictors;genomic signature;Genomics;Goals;Growth;high risk;imaging modality;Immune;Immunologic Surveillance;in vitro testing;Incidence;insight;Interruption;Link;Macrophage;Magnetic Resonance Imaging;Maintenance;Malignant neoplasm of brain;Malignant Neoplasms;Metastatic malignant neoplasm to brain;Metastatic Neoplasm to the Central Nervous System;Microglia;Modeling;Molecular;Morbidity - disease rate;mortality;multiple omics;Mutation;Neoplasm Metastasis;Neuroimmune;Neurologic;neuropathology;Operative Surgical Procedures;Organoids;Outcome;Pathway interactions;Patients;Peripheral;Play;Prediction of Response to Therapy;predictive marker;predictive modeling;pressure;Primary Neoplasm;Prognostic Marker;programs;Radiation;Radiation therapy;Radiation Tolerance;radioresistant;Recording of previous events;Resected;Resources;response;Risk;Role;Sampling;screening;Selection for Treatments;single cell genomics;standard of care;Statistical Models;Testing;translational study;Treatment Efficacy;Treatment outcome;treatment response;Tropism;tumor;tumor microenvironment;tumor-immune system interactions
+current_category: basic_research
+---
+application_id: 10928784
+activity_code: U54
+title: Clinical Core
+org_name: RICE UNIVERSITY
+phr: According to Instructions for the Submission of Mulit-Component Applications in PAR-22-203, for Administrative, Technology, Clinical and Dissemination Cores: “Project Narrative: Do not complete. Note: ASSIST screens will show an asterisk for this attachment indicating it is required. However, eRA systems only enforce this requirement in the Overall component and applications will not receive an error if omitted in other components.”
+terms: Acceleration;Address;Adopted;Adoption;Africa;Animals;Benchmarking;Biometry;Brazil;Budgets;cancer care;cancer health disparity;cancer prevention;Caring;Cessation of life;Characteristics;China;Clinic;Clinical;Clinical Trials;Collaborations;college;commercialization;Communities;Community Health Aides;Comparative Biology;cost effective;cost effectiveness;Country;design;Development;Devices;Diagnosis;Disease;Early Diagnosis;Effectiveness;Engineering;Ensure;Environmental Exposure;Equity;Europe;Evaluation;experience;Face;Family;Feedback;Genetic;Goals;Health system;Healthcare;Home;implementation evaluation;implementation facilitation;implementation facilitators;implementation outcomes;improved;Income;India;Infrastructure;innovation;Instruction;International;Laboratories;Latin America;Lesion;low and middle-income countries;Malignant Neoplasms;Medical center;Medicine;models and simulation;Morbidity - disease rate;mortality;Mozambique;multidisciplinary;Pathologist;Pathology;Patients;Performance;Point of Care Technology;point of care testing;Population Heterogeneity;premalignant;Prevention;Prevention strategy;prototype;Provider;Race;recruit;Research;research clinical testing;Research Design;Research Personnel;Resource-limited setting;Resources;scale up;screening;Screening for cancer;Services;simulation;socioeconomics;System;Technology;technology development;technology validation;Texas;tool;Translating;Translations;underserved area;usability;Validation;Veterinarians;Visit;Work
+current_category: infrastructure
+---
+application_id: 10886522
+activity_code: P30
+title: Omics, Bioinformatics and Flow Cytometry Core
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: CORE C – OMICS, BIOINFORMATICS AND FLOW CYTOMETRY CORE PROJECT NARRATIVE Obesity, cardiorenal and metabolic diseases are significant health issues in the United States, especially in Mississippi. The objective of Core C - Omics, Bioinformatics and Flow Cytometry of the Cardiorenal and Metabolic Diseases Research Center (CMDRC) is to provide to researchers access to state-of-the-art cell sorting/flow cytometry and omics technologies to generate unique cellular and molecular insights into these di
+terms: African American population;Apoptosis;Bioinformatics;Biological;Biological Assay;Biological Process;Cardiorenal syndrome;Cell Cycle;Cell Nucleus;Cell Proliferation;Cell Separation;cell type;Cells;Centers of Research Excellence;Clinical;Complement;complex data;Consultations;Country;Data Set;Disease;Enhancement Technology;Ensure;epigenome;Equipment;Faculty;Faculty Workshop;Flow Cytometry;Funding;Gene Expression;Generations;Genetic;genome sequencing;genomic data;Genomics;glucose uptake;Goals;Health;High Prevalence;Historically Black Colleges and Universities;Immune;improved;Infrastructure;insight;Institution;Instruction;instrument;instrumentation;Maintenance;Mass Spectrum Analysis;meetings;Metabolic Diseases;Methodology;Mississippi;Molecular;Molecular Analysis;Molecular Biology;Morbidity - disease rate;mortality;multidisciplinary;multiple omics;Names;next generation sequencing;Nucleic Acids;Obesity;Phase;Phenotype;Pilot Projects;Population;programs;Proteomics;Quality Control;release of sequestered calcium ion into cytoplasm;Research;Research Personnel;Research Project Grants;Resources;Scientific Advances and Accomplishments;Scientist;service delivery;Services;single-cell RNA sequencing;Small RNA;Sorting;Students;Supervision;Systems Biology;Technical Expertise;Techniques;Technology;Training and Education;training opportunity;transcriptome;transcriptome sequencing;transcriptomics;undergraduate student;United States;whole genome;Work;XCL1 gene
+current_category: infrastructure
+---
+application_id: 11190561
+activity_code: U54
+title: Project 3: The role of microenvironmental metabolites on metastatic progression
+org_name: ROCKEFELLER UNIVERSITY
+phr: The MetNet Center for Systems-level Study of Metastasis will elucidate how dynamic interactions between neuronal cells, localized lymphatics, metabolites and cancer cells collectively contribute to the emergence of metastatic disease - thereby identifying critical genes as therapeutic targets for its eradication.
+terms: Address;Breast Cancer Cell;breast cancer metastasis;cancer cell;cancer heterogeneity;Cancer Model;Cell Communication;cell type;Cells;Clinical;Clustered Regularly Interspaced Short Palindromic Repeats;Computational Biology;CRISPR screen;Dependence;Disease;Distant;Environment;extracellular;Extracellular Matrix;gain of function;Gene Expression Profile;Genes;Genetic;Liver;loss of function;lung colonization;Lymphatic;Maps;Metabolic;Metabolism;metabolomics;Metastatic Neoplasm to the Lung;Modeling;Molecular;multidisciplinary;Neoplasm Circulating Cells;Neoplasm Metastasis;neoplastic cell;Neurons;Normal Cell;Nutrient;Nutrient availability;Organ;Oxygen;Pathway interactions;Population;Process;programs;Repression;Role;single cell sequencing;Site;Starvation;System;Techniques;Testing;Therapeutic;therapeutic target;transcriptomics;treatment response;tumor;tumor metabolism;Work
+current_category: basic_research
+---
+application_id: 10909183
+activity_code: U54
+title: Project 3: The role of microenvironmental metabolites on metastatic progression
+org_name: ROCKEFELLER UNIVERSITY
+phr: N/A
+terms: 4T1;Address;Affinity;Area;Breast;Breast Cancer Cell;breast cancer metastasis;cancer cell;cancer heterogeneity;Cancer Model;Cell Communication;cell type;Cells;Clinical;Clustered Regularly Interspaced Short Palindromic Repeats;Colon Carcinoma;Computational Biology;CRISPR screen;CRISPR/Cas technology;Dependence;Distant;Environment;Enzymes;epigenome;experience;extracellular;gain of function;Gene Expression Profile;Genes;Genetic;genetic approach;Genetic Screening;Goals;in vivo;innovation;Knowledge;Liver;loss of function;Lung;lung colonization;Maps;MC38;Metabolic;Metabolic stress;Metabolism;metabolomics;Metastatic Neoplasm to the Liver;Metastatic Neoplasm to the Lung;Methods;Modeling;Molecular;multidisciplinary;multiphoton microscopy;multiple omics;Neoplasm Circulating Cells;Neoplasm Metastasis;neoplastic cell;Non-Malignant;Normal Cell;Nutrient;Nutrient availability;Organ;Organelles;Oxygen;Pathway interactions;photoactivation;Population;Process;programs;Repression;Role;single cell sequencing;Site;small molecule;Starvation;System;Techniques;Testing;Therapeutic;Tissues;transcriptome;transcriptomics;treatment response;tumor;Work
+current_category: basic_research
+---
+application_id: 10911868
+activity_code: U54
+title: Admin: Mechanical determinants of organ-selective metastatic colonization, dormancy and outgrowth
+org_name: MASSACHUSETTS INSTITUTE OF TECHNOLOGY
+phr: N/A
+terms: Achievement;Address;Administrator;Advisory Committees;Advocate;Agreement;anti-cancer research;Applications Grants;Award;Biochemical;Breast Cancer Patient;Cells;Cessation of life;Chromatin;Chromatin Structure;Circulation;Clinical Data;Collaborations;Communication;Communities;Computer Models;Dana-Farber Cancer Institute;Data;Data Commons;data quality;Data Set;data sharing;Development;Disease;Disease Progression;Disseminated Malignant Neoplasm;Ensure;Environment;Evaluation;Exposure to;Fostering;Gene Expression Profile;Grant;high resolution imaging;in silico;In Vitro;in vivo;Institution;Intervention;Knowledge;Lead;Leadership;Malignant Neoplasms;Mechanics;meetings;member;metadata standards;Mission;Modeling;Molecular;Monitor;multidisciplinary;Neoplasm Circulating Cells;Neoplasm Metastasis;neoplastic cell;Organ;Pathology;Patients;Pennsylvania;Phenotype;Pilot Projects;Program Reviews;programs;Proliferating;Protocols documentation;Publications;Quality Control;Records;Reporting;repository;Reproducibility;Research;research data dissemination;Research Personnel;Research Project Grants;Resource Sharing;response;Schedule;Scientist;Series;Signal Transduction;Site Visit;skill acquisition;Source;Stress;stressor;Stromal Cells;Structure;symposium;Technology;Texas;timeline;Tissues;transcriptome;transcriptomics;tumor microenvironment;Universities;Validation;Videoconferencing;virtual;Visit;web site;webinar;working group
+current_category: infrastructure
+---
+application_id: 10698194
+activity_code: U19
+title: Project 2: Menopause, Midlife and Cardiovascular Health in Early Old Age
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: PROJECT NARRATIVE SWAN-Aging will fill important gaps in understanding the role of the menopausal transition, menopause related health changes and midlife aging on women’s health and functioning in early old age. Accordingly, it will provide useful information to guide clinical decisions in midlife and later life in women who have diverse life experiences and socioeconomic and racial/ethnic characteristics.
+terms: Acceleration;Affect;African American;Age;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease risk;Attention;Blood Vessels;Brain natriuretic peptide;Cardiac;Cardiac health;Cardiovascular Diseases;cardiovascular disorder prevention;cardiovascular disorder risk;cardiovascular health;Cardiovascular system;Cause of Death;Characteristics;Chinese;Clinical;cognitive function;cohort;Cohort Studies;critical period;Dementia;dementia risk;Diabetes Mellitus;disability;disability risk;Disparity;Echocardiography;effective therapy;EFRAC;Equilibrium;Estradiol;ethnic difference;Ethnic Origin;Etiology;Event;experience;Female;Follicle Stimulating Hormone;follow-up;Functional disorder;Functional impairment;Goals;Gonadal Steroid Hormones;Health;Health Personnel;healthy aging;Heart failure;heart function;high risk;High Risk Woman;Hispanic Women;Hormones;Hospitalization;human old age (65+);Hypertension;Impaired cognition;improved;indexing;Inflammatory;Intervention;Japanese;Knowledge;late life;Life;Life Experience;life span;Link;Longitudinal cohort study;Measures;men;Menopause;middle age;Midlife women;mild cognitive impairment;mortality;multi-ethnic;multi-racial;Myocardial dysfunction;N-terminal;Natural History;new epidemic;Not Hispanic or Latino;Outcome;Participant;Pattern;Perimenopause;Phenotype;Physical Function;physical impairment;physically handicapped;Play;poor sleep;Population;pre-clinical;preservation;prevent;Prevention;prospective;Provider;psychosocial;Race;racial difference;Resources;Risk;Risk Factors;risk stratification;Role;Seminal;socioeconomics;Structure;Study of Women&apos;s Health Across the Nation;Symptoms;Testing;Thinking;Translating;Vascular Dementia;vasomotor symptoms;Woman;Women&apos;s Health;Women&apos;s mortality;Women&apos;s study;Work
+current_category: other
+---
+application_id: 11191096
+activity_code: U54
+title: Community Outreach Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10866372
+activity_code: U54
+title: Project 2: Rapid Case Ascertainment as a Tool for Epidemiologic Investigation and Efficient Linkage to Care in HIV-infected Patients Diagnosed with Kaposi Sarcoma in East Africa
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: In sub-Saharan Africa, the cancer known as Kaposi’s sarcoma (KS) remains a significant problem among HIV-infected patients. Diagnosis often does not occur until patients develop advanced disease and survival is poor. We will apply a technique known as Rapid Case Ascertainment (RCA) to inform efforts aimed at controlling KS; improve our understanding of why KS still occurs despite antiretroviral therapy; and evaluate novel strategies for KS diagnosis and linkage of patients newly diagnosed with K
+terms: Address;Adult;advanced disease;Africa;Africa South of the Sahara;African;AIDS related cancer;Algorithms;antiretroviral therapy;Biological;Biological Markers;cancer care;career development;Caring;CD4 Positive T Lymphocytes;Cell Count;Cervical dysplasia;Cessation of life;chemotherapy;Clinic;clinically relevant;Collection;Control Groups;Coupled;Data;deep learning algorithm;Development;Diagnosis;Digital Photography;Disease;Early Diagnosis;Epidemiology;epidemiology study;Evaluation;experience;follow-up;Funding;Geographic Locations;Goals;Guidelines;HIV;HIV Infections;Human Herpesvirus 8;Image;immune activation;improved;Incidence;Institution;Intervention;Kaposi Sarcoma;Kenya;Leadership;Link;Localized Malignant Neoplasm;Malignant - descriptor;Malignant Neoplasms;Measurement;Mediating;Mentorship;Monitor;National Comprehensive Cancer Network;Newly Diagnosed;novel;novel strategies;oncology service;Outcome;Participant;Pathogenesis;Patient imaging;patient navigation;Patients;Persons;Photography;Plasma;Prevention;Process;rapid diagnosis;Reporting;Research;Research Personnel;Research Project Grants;Resources;RNA;Role;Scientist;Services;skin biopsy;skin lesion;systemic inflammatory response;Tanzania;Techniques;Testing;Time;tool;Uganda;United States;virus related cancer
+current_category: biotools
+---
+application_id: 10895421
+activity_code: U54
+title: Biostatistics & Clinical Research Core
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Pediatric HIV/AIDS & Infection-Related Malignancies Research Consortium for Sub-Saharan Africa (PARCA): Biostatistics & Clinical Research Core (Core C) The responsibilities of the Biostatistics & Clinical Research Core (Core C) include support of the individual projects and other cores, as well as the overall data management for the Consortium as a whole. To accomplish these objectives, Biostatistics & Clinical Research Core will oversee data management, study design, statistical analyses, and q
+terms: Africa South of the Sahara;Biometry;Clinical Research;college;Comprehensive Cancer Center;Computer software;Data;data management;data quality;Data Security;Databases;design;Documentation;Ensure;Ethics;experimental study;Health Sciences;HIV/AIDS;improved;Individual;infection related cancer;Information Retrieval;International;Laboratories;lecturer;Medicine;Monitor;Pathologic;pediatric human immunodeficiency virus;Pilot Projects;professor;Public Health Schools;quality assurance;Reporting;Research;Research Design;Research Project Grants;Resource Sharing;Sample Size;Science;Services;Statistical Data Interpretation;Universities;Update;Work
+current_category: infrastructure
+---
+application_id: 10895419
+activity_code: U54
+title: Developmental Core
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Pediatric HIV/AIDS & Infection-Related Malignancies Research Consortium for Sub-Saharan Africa (PARCA): Developmental Core (Core B) PROJECT NARRATIVE Multi-disciplinary training and mentoring are critical components to build capacity for pediatric HIV-related cancer research and care. It will be the responsibility of the Developmental Core to establish a cross- institutional training and mentoring program to provide PARCA investigators the training opportunities required to develop their careers
+terms: Address;Africa South of the Sahara;anti-cancer research;Area;cancer care;Cancer Center;career;Childhood;Clinical;Clinical Research;Communicable Diseases;Department chair;design;Development;Discipline;Education;Educational Materials;Ethics;Fellowship;Fellowship Program;Goals;HIV/AIDS;Human;infection related cancer;Institution;International;investigator training;Malignant Childhood Neoplasm;Malignant Neoplasms;Mentors;multidisciplinary;Oncology;Participant;Pathology;pediatric department;Pediatric Hematology;pediatric human immunodeficiency virus;Pediatric Oncology;Physician Executives;Pilot Projects;Procedures;professor;programs;Qualifying;recruit;Research;Research Personnel;Science;Textbooks;Training;Training and Education;training opportunity;translational oncology;translational scientist;Universities
+current_category: infrastructure
+---
+application_id: 10895417
+activity_code: U54
+title: Administrative Core
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: ADMINISTRATIVE CORE (CORE A) – Pediatric HIV/AIDS & Infection-Related Malignancies Research Consortium for Sub-Saharan Africa (PARCA) The PARCA Administrative Core (Core A) will provide administrative support for the individual projects and cores, as well as their integration into the Consortium. This core has overall fiscal and scientific responsibility for the entire Consortium, including employment of key personnel to oversee its efficient operation.
+terms: Africa South of the Sahara;Annual Reports;Budgets;Communication;cost;Data;design;editorial;Educational Materials;Employment;Ensure;Expenditure;Feedback;HIV/AIDS;Human Resources;Individual;infection related cancer;Institutional Review Boards;instrument;Job Description;Leadership;Manuscripts;meetings;member;Monitor;operation;pediatric human immunodeficiency virus;Preparation;Progress Reports;Protocols documentation;Quality Control;Questionnaires;Reporting;Research;Site;Surveys;Teleconferences;videoconference
+current_category: infrastructure
+---
+application_id: 10895426
+activity_code: U54
+title: Establishing a Platform for Clinical Improvement for Children with HIV-Associated Malignancies in Sub-Saharan Africa
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: PROJECT 3: Establishing a Platform for Clinical Improvement for Children with HIV-Associated Malignancies in Sub-Saharan Africa Outcomes for children with cancer in sub-Saharan Africa (SSA) are unacceptable, with fewer than 20% of those diagnosed surviving. The overall goal of Project 3 is to establish a standardized multi-site strategy to deliver safe and effective disease-specific and risk-stratified care to children with HIV-associated malignancies in SSA.
+terms: Acquired Immunodeficiency Syndrome;Address;Adopted;Adoption;Affect;Africa South of the Sahara;AIDS related cancer;antiretroviral therapy;Awareness;B-Cell NonHodgkins Lymphoma;Biologic Characteristic;Biology;Bone Marrow;Botswana;Caring;Central Africa;Cerebrospinal Fluid;Child;Child Care;Childhood;chronic infection;Clinical;clinical care;clinical center;clinical practice;Clinical Research;Clinical Treatment;Clinical Trials Network;clinically significant;Collaborations;college;comorbidity;Complex;Conduct Clinical Trials;cytokine;Development;Diagnosis;Diagnostic Imaging;Disease;Eastern Africa;Epidemic;Evaluation;Event;evidence base;experience;feasibility testing;Foundations;Frequencies;Future;Goals;Health;Hematology;high risk;HIV;HIV Infections;HIV Seronegativity;HIV/AIDS;Hospitals;Human Herpesvirus 4;Human Herpesvirus 8;Human Resources;implementation barriers;improved;improved outcome;Incidence;infection related cancer;Inferior;Infrastructure;International;Kaposi Sarcoma;Lactate Dehydrogenase;Malawi;Malignant Childhood Neoplasm;Malignant Neoplasms;Malnutrition;Mature B-Lymphocyte;Medicine;Methods;Modeling;multidisciplinary;novel strategies;Outcome;Pathology;Patients;Pediatric Hospitals;pediatric human immunodeficiency virus;Pediatric Oncology;Pediatric Oncology Group;Phenotype;Plasma;Poverty;Prediction of Response to Therapy;programs;Regimen;Research;response;Risk;risk stratification;Site;skills;Staging;Standardization;standardized care;Supportive care;survival outcome;Texas;Toxic effect;Treatment Protocols;treatment strategy;tumor;Tumor Markers;Uganda;United States
+current_category: biotools
+---
+application_id: 10895422
+activity_code: U54
+title: Diagnostics & Laboratory Core
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Diagnostic & Laboratory Core (Core D) The responsibilities of the Diagnostic & Laboratory Core (Core D) include support for the processing of all biospecimens generated from the Projects and for implementing improvements in the pediatric cancer diagnosis algorithm at the SSA sites.
+terms: accurate diagnosis;Africa;Africa South of the Sahara;Algorithms;B-Cell NonHodgkins Lymphoma;cancer diagnosis;Caring;Characteristics;Chemistry;Clinical;clinical care;clinical diagnosis;clinical diagnostics;Collection;Development;Diagnosis;Diagnostic;diagnostic algorithm;Disease;Education;Ensure;experience;feasibility testing;Flow Cytometry;Funding;Histologic;HIV;HIV/AIDS;Immunohistochemistry;improved;infection related cancer;Kaposi Sarcoma;Laboratories;Laboratory Personnel;large cell Diffuse non-Hodgkin&apos;s lymphoma;low and middle-income countries;Malawi;Malignant Childhood Neoplasm;Medicine;Methodology;Pathologist;Pathology;Patient Monitoring;Patients;pediatric human immunodeficiency virus;Preparation;Process;prospective;Protocols documentation;rapid diagnosis;Research;research study;Sampling;Services;Shipping;Site;Standardization;Testing;Training;Uganda;Utilization Review;Validation;virtual
+current_category: infrastructure
+---
+application_id: 11191095
+activity_code: U54
+title: Research Education Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10904979
+activity_code: U54
+title: Molecular determinants of lung cancer in HIV infected and uninfected individuals in Uganda and Tanzania
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: RELEVANCE – Project 2 The molecular risks of lung cancer mutation and co-incidence of HIV and accelerated aging as a factor in lung cancer incidence and progression in two East African countries will be assessed. We will characterize lung cancer somatic mutations, link them to HIV subtype/viral load/CD4 T cell counts, and explore the hypothesized role of DNA methylome aging in HIV-infected versus HIV-uninfected individuals. We will also train and transfer technological equipment to build capacit
+terms: Address;Adenocarcinoma;advanced disease;Africa;Africa South of the Sahara;African;Age;age acceleration;Aging;antiretroviral therapy;base;Biological Markers;Blood Cells;Cancer Patient;cancer risk;CD4 Positive T Lymphocytes;Cell Count;cohort;cooking;Country;Data;Development;Diagnosis;Disease;Disease Outcome;Disease Progression;DNA;DNA Methylation;Eastern Cooperative Oncology Group;Environmental Risk Factor;environmental tobacco smoke;Epidemiologic Factors;Epidemiology;Equipment;Future;Genomics;Genotype;Histology;HIV;HIV Infections;HIV-1;Home;Image;Immune;Immunosuppression;Incidence;Individual;Indoor Air Pollution;Infection;International;Link;Lung Capacity;Malignant neoplasm of lung;Malignant Neoplasms;Measures;Medical center;Methylation;methylation pattern;methylome;Molecular;Molecular Profiling;Multivariate Analysis;Mutation;Mutation Analysis;Outcome;Pathologic;Patients;Performance Status;Persons;Policies;Premature aging syndrome;prospective;Relative Risks;Reporting;Risk;Risk Factors;Role;Sampling;screening;Smoker;Smoking;Somatic Mutation;South Africa;Squamous cell carcinoma;standard of care;Tanzania;Technology;Technology Transfer;therapeutically effective;Tobacco smoking behavior;Training;Transference;Tuberculosis;Tyrosine Kinase Inhibitor;Uganda;University Hospitals;Viral Load result;Virus Diseases;World Health Organization
+current_category: basic_research
+---
+application_id: 10904980
+activity_code: U54
+title: Artificial Intelligence for Lung Cancer Characterization in HIV affected populations in Uganda and Tanzania
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: RELEVANCE – Project 3 In this project, we will develop a radiomics based machine classifier called LunIRiS (Lung Image Risk Score) for predicting risk of malignancy for a nodule on a chest computed tomography (CT) or X-ray scan for use in patients in Uganda and Tanzania which has a higher prevalence of tuberculosis (TB) and hence TB- induced granulomas. Additionally, we will seek to employ these tools to identify possibly differences in the radiographic phenotype on CT and chest X-rays between H
+terms: 3-Dimensional;Affect;Africa;Age;Appearance;Architecture;Area;Artificial Intelligence;Benign;Biological Markers;Biopsy;Blood Vessels;Cancer Patient;Cells;Chest;chest computed tomography;Chronic;Clinical;cohort;Computer-Assisted Diagnosis;computerized;Decision Support Model;Detection;Development;Diagnosis;Diagnostic Specificity;Discrimination;Epidemiology;Granuloma;Granulomatous;Health;High Prevalence;HIV;HIV-1;HIV/AIDS;Human;Human Resources;Image;imaging biomarker;Immune;Immune response;improved;Incidence;Incidental Findings;Infection;innovation;Link;low dose computed tomography;Lung;lung cancer screening;lung imaging;Lung nodule;Malignant - descriptor;Malignant neoplasm of lung;Malignant Neoplasms;Measurement;Medical center;Modeling;Molecular;Morphology;Nodule;novel;Online Systems;Outcome;Patients;Pattern;Persons;Phenotype;Population;radiological imaging;radiologist;Radiology Specialty;radiomics;Reaction;Reader;Reporting;respiratory;Risk;risk prediction;ROC Curve;Roentgen Rays;Scanning;screening;screening program;Sensitivity and Specificity;Services;Shapes;skills;Specificity;Specimen;Standardization;success;support tools;Surface;symptomatology;Tanzania;Technology;Teleradiology;Texture;Thoracic Radiography;Tissues;tool;Transference;Tuberculosis;Uganda;Validation;web portal;X-Ray Computed Tomography
+current_category: diagnostics
+---
+application_id: 10903766
+activity_code: U54
+title: H2A Admin Core
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Accounting;Advocate;Africa;Africa South of the Sahara;African;Age;Biological Specimen Banks;Cell Nucleus;chronic infection;Clinical;Collaborations;Communication;Communities;community advisory board;Computer software;Country;Data Collection;data harmonization;data sharing;Database Management Systems;Development;Documentation;Education;Electronic Mail;Ensure;Equity;expectation;Face;Generations;Goals;Grant;Hepatitis B Infection;Hepatitis C virus;HIV;Human;human subject protection;Infection;International;Interruption;Lead;Leadership;Link;Malignant Neoplasms;Medical;meetings;Mentors;Monitor;Online Systems;organizational structure;participant retention;Patient Recruitments;Patients;Peer Review;Periodicals;Policies;Preparation;Primary carcinoma of the liver cells;Problem Solving;programs;Progress Reports;Public Relations;Publications;Reporting;Research;Research Personnel;Resources;Review Literature;Risk Factors;Role;Schistosoma mansonii infection;Senegal;Site;Structure;Supervision;symposium;Training;Uganda;Universities;web site;Work
+current_category: infrastructure
+---
+application_id: 11191094
+activity_code: U54
+title: Planning and Evaluation Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10886077
+activity_code: P50
+title: Administrative Core
+org_name: UNIVERSITY OF GEORGIA
+phr: N/A
+terms: Addictive Behavior;Administrative Efficiency;adolescent drug use;Affect;African American;African American population;Applications Grants;Attenuated;Basic Science;Behavioral;Biological;Biological Assay;Biological Process;Budgets;Cardiometabolic Disease;cardiometabolism;career;Chronic;Chronic stress;Collaborations;Collection;Communication;Communities;Data;design;Development;Discipline;drug abuse prevention;drug abuse vulnerability;drug resource;Drug usage;Ensure;ethnic minority population;Etiology;experience;Exposure to;Fostering;Funding;General Population;Generations;Grant;Health;Immunologics;Immunology;Inflammatory;Influentials;Infrastructure;innovation;Institution;inter-institutional;interest;Investigation;Laboratories;Mentors;Modeling;network models;neural;Neurobiology;Neurocognitive;Neuroimmune;Neurosciences;next generation;novel;operation;outreach;outreach program;Participant;Peer Review;Persons;Pilot Projects;Population;Poverty;Predisposition;Prevention;Prevention Research;Preventive;preventive intervention;Procedures;Process;Productivity;programs;Protocols documentation;Provider;Publishing;Research;Research Personnel;Research Project Grants;Research Support;resilience;resilience factor;Resource Sharing;Resource-limited setting;Resources;Risk;Science;Scientist;Signal Transduction;social adversity;Specialized Center;Structure;synergism;System;Testing;Training;United States National Institutes of Health;Universities;working group
+current_category: infrastructure
+---
+application_id: 10886072
+activity_code: P50
+title: MOLECULAR MECHANISMS UNDERLYING INTELLECTUAL DISABILITY CAUSED BY MUTATIONS IN THE CHROMATIN MODIFIER KDM5C 
+org_name: ALBERT EINSTEIN COLLEGE OF MEDICINE
+phr: PROJECT NARRATIVE  Intellectual developmental disabilities (IDD) are frequently diagnosed during early childhood and have dramatic  quality of life consequences for the affected individual and their caregiver(s). Significant insight into brain  mechanisms of IDDs can be gained by studying single gene mutation IDD conditions such as the one we focus  on here, KDM5C, with the use of animal models and human cerebral organoids. In addition to providing critical  information regarding the etiology of
+terms: Address;Affect;Alleles;analytical tool;Animal Model;Attenuated;behavioral phenotyping;Biological Assay;Biological Models;Brain;Caregivers;Cell Line;Cell model;Cells;Cerebrum;Chromatin;chromatin immunoprecipitation;chromatin modification;Chromatin Remodeling Factor;Clinical;clinical database;clinically relevant;Code;Cognition;Cognitive;Cognitive deficits;cohort;comorbidity;Complement;Core Facility;CRISPR/Cas technology;database of Genotypes and Phenotypes;Defect;Development;Developmental Disabilities;Diagnosis;Disease;disease model;Drosophila genus;Drosophila melanogaster;early childhood;Epigenetic Process;Etiology;fetal;fly;Fragile X Syndrome;Gene Expression;Gene Mutation;Gene Proteins;Genes;Genetic;Genetic Transcription;Genomics;Goals;grasp;histone demethylase;Histone H3;Homeostasis;Homologous Gene;House mice;Human;human induced pluripotent stem cells;improved;In Vitro;in vitro testing;in vivo;Individual;induced pluripotent stem cell;Induced pluripotent stem cell derived neurons;Inherited;innovation;innovative technologies;insight;Intellectual and Developmental Disabilities Research Centers;Intellectual functioning disability;Interdisciplinary Study;Jordan;Knockout Mice;Knowledge;Lead;Link;loss of function mutation;Lysine;Massive Parallel Sequencing;Mediating;Methylation;model organism;Modeling;Molecular;Morphology;mouse model;multiple omics;Mus;Mutation;mutation correction;Neurodevelopmental Disorder;Neurologic;Neurologic Deficit;neuronal circuitry;Neurons;novel therapeutics;Organoids;Pathologic;Patients;pharmacologic;Phenotype;Play;Process;programs;Proteins;Publications;Publishing;Quality of life;recruit;Regulation;Research;Research Project Grants;Ribosomal Proteins;ribosome profiling;Role;single-cell RNA sequencing;Source;System;Techniques;Testing;tool;Transcript;transcriptomics;Translational Regulation;Translations;Work
+current_category: infrastructure
+---
+application_id: 10903776
+activity_code: U54
+title: Interaction of Schistosomiasis mansoni and hepatitis B virus infections on hepatocellular carcinoma
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Advocate;Affect;Africa;Africa South of the Sahara;African;Aftercare;Age;Animal Model;Antigens;Cancer Etiology;carcinogenicity;CD4 Positive T Lymphocytes;CD8-Positive T-Lymphocytes;Chronic;Chronic Care;Chronic Hepatitis B;chronic infection;Circulation;Clinical;Collaborations;Country;cytokine;Data;DNA Double Strand Break;egg;Eligibility Determination;Genes;Genetic;Goals;HBV Genotype;Hepatic;Hepatitis B Infection;Hepatitis B Surface Antigens;Hepatitis B Virus;Hepatitis C virus;Hepatocyte;HIV;HIV Infections;Human;Human Herpesvirus 4;Human Herpesvirus 8;Human Papillomavirus;Immune response;Immunity;Immunologics;Immunology;improved;In Vitro;Income;Infection;Inflammation;Inflammatory;inflammatory milieu;insight;Interruption;Investigation;JUN gene;Light;Liver;liver biopsy;Macrophage;Malignant Neoplasms;Measures;Medical;Mentors;Mesentery;mortality;novel;Oncogenes;Oncogenic;Pathway interactions;Patients;Persons;Physiological;Plasma;Praziquantel;Primary carcinoma of the liver cells;Proto-Oncogenes;Public Health;Research;Residual state;response;Risk;Risk Factors;Schistosoma mansoni;Schistosoma mansonii infection;Senegal;Site;standard of care;System;T cell response;Testing;Time;Tissues;Treatment Efficacy;Uganda;Universities;Venous;viral DNA;Virus Diseases;Virus Replication
+current_category: infrastructure
+---
+application_id: 10928245
+activity_code: U42
+title: Genome Editing and Biological Effects Testing: Somatic Cell Gene Editing Testing
+org_name: UNIVERSITY OF MISSOURI-COLUMBIA
+phr: N/A
+terms: Address;Alleles;Animal Experiments;Animal Model;Animal Testing;Animals;Basic Science;Biological;Breeding;Cells;clinical application;Clinical Trials;cohort;Communication;Cryopreservation;Data;design;Development;disease model;Drug Kinetics;Ensure;Evaluation;Evolution;expectation;Family suidae;Genes;Genome;genome editing;Human;human disease;Individual;Methods;Mission;Missouri;Modeling;Monitor;Movement;novel;Pharmacodynamics;Phenotype;Physiological;porcine model;pre-clinical;pre-clinical research;preservation;Procedures;programs;Reagent;reagent testing;Reporter;Reporting;Research Personnel;Resources;Role;Safety;Services;somatic cell gene editing;Standardization;Technology;Testing;testing services;Therapeutic;Tissues;Toxic effect;Translating;Translational Research;Translations;Universities;Work
+current_category: therapeutics
+---
+application_id: 10897812
+activity_code: U54
+title: Project 1-Preventing cervical cancer in HIV-infected women
+org_name: INDIANA UNIVERSITY INDIANAPOLIS
+phr: Narrative Our objective is to help eradicate cervical cancer in HIV-infected Kenyan/Ugandan women by 1) evaluating HPV DNA testing of self-collected vaginal swabs combined with VIA in screening, and 2) determine if aflatoxin is a risk factor for oncogenic HPV detection and cervical cancer.
+terms: Acceleration;Acetic Acids;Aflatoxins;Africa;Africa South of the Sahara;AIDS related cancer;antiretroviral therapy;Biopsy;carcinogenicity;Caring;CD4 Lymphocyte Count;Cervical Cancer Screening;Cervical dysplasia;Cervical Intraepithelial Neoplasia;Clinical;cofactor;cost;Cost Effectiveness Analysis;Country;Data;Databases;design;Detection;DNA;experience;Exposure to;HIV;HIV/AIDS;HPV screening;HPV-High Risk;Human papilloma virus infection;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;immune reconstitution;Immune system;Immunosuppression;Immunosuppressive Agents;Impairment;improved;Incidence;Infrastructure;insight;Kenya;Literature;Malignant neoplasm of cervix uteri;Malignant Neoplasms;Medical;Methods;Mycotoxins;Natural History;Oncogenic;Outcome;Plasma;Policies;Prevalence;prevent;programs;Research;Risk;Risk Factors;screening;Screening procedure;Swab;Testing;Training;Uganda;Vagina;Viral load measurement;Virus;Visual;Woman
+current_category: diagnostics
+---
+application_id: 10897804
+activity_code: U54
+title: Administrative Core
+org_name: INDIANA UNIVERSITY INDIANAPOLIS
+phr: Narrative The overall goal of the Administrative and Coordination Core is to oversee the administration of the East Africa Consortium for HPV and Cervical Cancer (EACHC) in Women Living with HIV/AIDS. The A&C Core also coordinates the activities of all investigators involved on three projects and the three additional cores, and to facilitate communication within and between the North American, Ugandan and Kenyan institutions and other organizations in which the EACHC will directly interact.
+terms: adjudication;Advisory Committees;Africa;AIDS related cancer;American;Biology;Biometry;Collaborations;Communication;Communities;community engagement;Community Outreach;Country;Data;data management;Development;Goals;HIV/AIDS;Human Papilloma Virus-Related Malignant Neoplasm;Information Dissemination;Institution;inter-institutional;Malignant neoplasm of cervix uteri;member;Morbidity - disease rate;mortality;North America;Participant;Pilot Projects;Research;Research Infrastructure;Research Personnel;Services;Woman
+current_category: infrastructure
+---
+application_id: 11183115
+activity_code: U54
+title: Project-001
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Acetic Acids;Address;Age;Algorithms;automated visual evaluation;cancer prevention;Caribbean region;Cervical;cervical cancer prevention;Cervical Cancer Screening;Cessation of life;Child;Clinical Trials;Colposcopy;Communities;Detection;Diagnosis;Disproportionately impacts women;Dominican Republic;Dose;Enrollment;experience;Goals;Health;high risk;HIV;HIV Infections;HPV E7;Human Papilloma Virus Vaccine;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;Imaging technology;Immune;Immunoprevention;implementation facilitation;Improve Access;improved;improved outcome;Incidence;Infrastructure;International;Latin America;Lesion;low and middle-income countries;Malignant neoplasm of cervix uteri;Malignant Neoplasms;Methods;new technology;Operative Surgical Procedures;overtreatment;Pap smear;Papillomavirus Transforming Protein E6;Patients;Persons;Peru;point of care;Population;Populations at Risk;premalignant;prevent;Prevention;programs;progression risk;Provider;Quality of life;Research;Resources;response;Schedule;screening;Sirolimus;Site;standard of care;Testing;Time;treatment strategy;Triage;Vaccination;Visual;Woman;Youth
+current_category: therapeutics
+---
+application_id: 11191093
+activity_code: U54
+title: Pilot Project 5
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 11191092
+activity_code: U54
+title: Project 4 LUNG
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: N/A
+current_category: other
+---
+application_id: 10846851
+activity_code: P01
+title: Project 3 - In vivo pharmacology of cannabinoid receptor probes
+org_name: NORTHEASTERN UNIVERSITY
+phr: N/A
+terms: 2-arachidonylglycerol;Active Sites;Affinity;Agonist;anandamide;animal pain;antagonist;Anxiety;Binding;Binding Sites;Biological;cannabimimetics;cannabinoid receptor;cannabinoid treatment;Cannabinoids;Cessation of life;Chemicals;Chemotherapy-induced peripheral neuropathy;Chronic;clinical translation;Clinical Trials;CNR1 gene;CNR2 gene;Complex;cost;Development;Dose;drug development;drug discovery;endocannabinoid signaling;Endocannabinoids;endogenous cannabinoid system;Exhibits;Failure;Future;G-Protein-Coupled Receptors;Human;improved;In Vitro;in vivo;in vivo evaluation;insight;Intoxication;Knockout Mice;Knowledge;knowledge base;Ligands;Medicine;Modeling;mu opioid receptors;Mus;negative affect;Neuropathy;Nociception;novel;Pain;pain model;Pathologic;Pathway interactions;Pharmaceutical Preparations;pharmacologic;Pharmacology;Physical Dependence;positive allosteric modulator;pre-clinical research;preclinical study;preservation;Property;Proteins;Receptor Signaling;Research;side effect;Signal Pathway;Signal Transduction;Site;Stress;System;Testing;Therapeutic;therapeutic target;Translating;Translations;Treatment Efficacy
+current_category: basic_research
+---
+application_id: 11183113
+activity_code: U54
+title: Data Management and Statistical Core
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Address;Age;Algorithms;Appointment;automated visual evaluation;Bioinformatics;Biometry;cancer prevention;Caribbean region;cervical cancer prevention;Child;clinical center;Clinical Data;clinical database;Clinical Trials;Clinical Trials Unit;co-clinical trial;Collaborations;collaborative environment;Colposcopy;Communicable Diseases;Data;Data Collection;data management;Data Management Resources;design;Dominican Republic;Dose;electronic data;Enrollment;Ensure;Epidemiology;flexibility;Goals;Health Sciences;HIV;HIV/AIDS;HPV E7;Human Papilloma Virus Vaccination;Human Papilloma Virus Vaccine;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;Immune;immunogenicity;Immunotherapy;improved;Individual;Information Dissemination;Infrastructure;innovation;International;Interruption;Latin America;Leadership;Lesion;Malignant neoplasm of cervix uteri;member;Methods;Mission;Monitor;new technology;Operative Surgical Procedures;Pap smear;Papillomavirus Transforming Protein E6;Persons;Peru;Physical environment;Play;point of care;Politics;premalignant;Prevention;Prevention Research;Preventive Medicine;primary endpoint;professor;programs;Public Health;Publications;Reporting;Research;Resource-limited setting;response;Role;Safety;Schedule;Science;Scientific Advances and Accomplishments;screening;secondary endpoint;Secure;Security;Services;Sirolimus;standard of care;statistical center;Statistical Data Interpretation;Statistical Methods;Testing;Time;tool;treatment strategy;Triage;trial design;Universities;Vaccination;Vaccines;Visual;Vulnerable Populations;Washington;Woman;women&apos;s diagnosis;Work;Youth
+current_category: infrastructure
+---
+application_id: 11183114
+activity_code: U54
+title: Central Laboratory Core
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Anatomy;Anogenital cancer;anti-tumor immune response;Antibodies;Award;Binding;Biological;Biological Assay;Biological Specimen Banks;biomarker development;Biopsy;Blood specimen;Board Certification;cancer prevention;Cells;Cervical;Clinical Data;clinically relevant;Collection;Communication;Complex;Correlative Study;DNA Viruses;Drug or chemical Tissue Distribution;Ensure;epidemiology study;experience;Fred Hutchinson Cancer Research Center;Future;Genotype;Grant;high risk;Histology;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;Human Resources;Immune;Immune Tolerance;Immunohistochemistry;Immunooncology;immunopathology;Industry;Institution;Laboratories;laboratory experience;Laboratory Research;Laboratory Scientists;Laboratory Study;Leadership;Malignant Neoplasms;Memory B-Lymphocyte;Mission;Names;Papillomavirus;Pathologist;Pathology;Peripheral Blood Mononuclear Cell;Phenotype;Play;predicting response;Procedures;Protocols documentation;quality assurance;Quality Control;Recurrence;Research Personnel;Resource Sharing;response;Role;Running;Sampling;Sampling Studies;Serology test;Services;Shipping;Site;Specific qualifier value;Specimen;Stress;Techniques;Technology Transfer;Testing;Tissue Banks;Tissue Sample;Tissues;Training;tumor;tumor microenvironment;Work
+current_category: infrastructure
+---
+application_id: 10915694
+activity_code: U54
+title: Administrative and Coordinating Core
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Acceleration;Accountability;Adoption;Advocate;Biological Assay;Cancer Burden;cancer prevention;cancer risk;Caribbean region;cervical cancer prevention;Cessation of life;Child;CLC Gene;Clinical;Clinical Services;Clinical Trials;co-clinical trial;Communication;community partners;Country;Credentialing;Data;data management;Disproportionately impacts women;Dominican Republic;experience;Fostering;Goals;Grant;Guidelines;Heart;HIV;Human papilloma virus infection;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;human subject;improved;Income;Information Dissemination;Infrastructure;Institution;International;Interruption;Laboratories;Laboratory Procedures;Latin American;Lead;Leadership;Lesion;Malignant neoplasm of cervix uteri;meetings;member;Methods;Modeling;Monitor;novel strategies;Outcome;Paper;participant safety;patient safety;Periodicals;Persons;Peru;Policies;Population;premalignant;prevent;Preventative vaccination;Prevention;Primary Prevention;Problem Solving;Productivity;Protocols documentation;Publications;Publishing;Qualifying;Quality Control;Records;recruit;Reporting;Research;Research Personnel;Resources;Risk;Safety;Schedule;Science;Scientific Advances and Accomplishments;screening;Secondary Prevention;Services;Site;skills training;Structure;success;tertiary prevention;tool;Training;Translating;Triage;Update;Vaccination;Woman;Work
+current_category: infrastructure
+---
+application_id: 11183112
+activity_code: U54
+title: Clinical Trials Program
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: FOREIGN JUSTIFICATION The funding opportunity announcement requires that we partner with Latin American/Caribbean countries. We  have chosen the Dominican Republic and Peru to partner with us. Dr. Robinson Ceballo at Via Libre, in Peru  will act as a multi-PI on this grant, Dr. Lenka Kolevic, at Via Libre, in Peru will co-chair Trial 1, and Dr. Yeyce  Donastorg at Instituto Dermatologico Dominicano y Cirugia, in Santo Domingo, Dominican Republic will co-chair Trials 2 and 3.
+terms: Acetic Acids;Address;Adjuvant;Age;Algorithms;Area;automated visual evaluation;Biological Assay;booster vaccine;cancer prevention;Caribbean region;Cervical;cervical cancer prevention;Cervical Cancer Screening;Cervical Intraepithelial Neoplasia;Cessation of life;Child;Clinical;Clinical Trials;Colposcopy;Communities;Correlative Study;Country;Cytology;design;Detection;Disease;Disproportionately impacts women;Dominican Republic;Dose;Enrollment;experience;Funding Opportunities;girls;Goals;Grant;Health;high risk;HIV;HIV Infections;HPV E7;Human papilloma virus infection;Human Papilloma Virus Vaccination;Human Papilloma Virus Vaccine;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;Imaging technology;Immune;Immunoprevention;implementation facilitation;Improve Access;improved;improved outcome;Incidence;Infrastructure;International;Latin America;Latin American;Lesion;Licensing;low and middle-income countries;Malignant neoplasm of cervix uteri;Malignant Neoplasms;Measures;Memory B-Lymphocyte;Methods;Monoclonal Antibodies;new technology;novel;Operative Surgical Procedures;Outcome;overtreatment;Pap smear;Papillomavirus Transforming Protein E6;Participant;Patients;Persons;Peru;point of care;Population;Populations at Risk;premalignant;prevent;Prevention;prevention service;programs;progression risk;Provider;Quality of life;Randomized, Controlled Trials;Recurrence;Regimen;Repeat Surgery;Reproducibility;Research;Resources;response;Risk;Schedule;screening;Sirolimus;Site;standard of care;Testing;Time;treatment strategy;Triage;tumor microenvironment;Vaccination;Vaccines;Visual;Woman;women&apos;s diagnosis;Youth
+current_category: therapeutics
+---
+application_id: 11183116
+activity_code: U54
+title: Project-002
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Acetic Acids;Address;Age;Algorithms;automated visual evaluation;cancer prevention;Caribbean region;Cervical;cervical cancer prevention;Cervical Cancer Screening;Cessation of life;Child;Clinical Trials;Colposcopy;Communities;Detection;Diagnosis;Disproportionately impacts women;Dominican Republic;Dose;Enrollment;experience;Goals;Health;high risk;HIV;HIV Infections;HPV E7;Human Papilloma Virus Vaccine;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;Imaging technology;Immune;Immunoprevention;implementation facilitation;Improve Access;improved;improved outcome;Incidence;Infrastructure;International;Latin America;Lesion;low and middle-income countries;Malignant neoplasm of cervix uteri;Malignant Neoplasms;Methods;new technology;Operative Surgical Procedures;overtreatment;Pap smear;Papillomavirus Transforming Protein E6;Patients;Persons;Peru;point of care;Population;Populations at Risk;premalignant;prevent;Prevention;programs;progression risk;Provider;Quality of life;Research;Resources;response;Schedule;screening;Sirolimus;Site;standard of care;Testing;Time;treatment strategy;Triage;Vaccination;Visual;Woman;Youth
+current_category: therapeutics
+---
+application_id: 11400896
+activity_code: U54
+title: Administrative and Coordinating Core
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Acceleration;Accountability;Adoption;Advocate;Biological Assay;Cancer Burden;cancer prevention;cancer risk;Caribbean region;cervical cancer prevention;Cessation of life;Child;CLC Gene;Clinical;Clinical Services;Clinical Trials;co-clinical trial;Communication;community partners;Country;Credentialing;Data;data management;Disproportionately impacts women;Dominican Republic;experience;Fostering;Goals;Grant;Guidelines;HIV;HPV prevention;Human papilloma virus infection;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;human subject;improved;Income;Information Dissemination;Infrastructure;Institution;International;Interruption;Laboratories;Laboratory Procedures;Latin American;Lead;Leadership;Lesion;Malignant neoplasm of cervix uteri;meetings;member;Methods;Modeling;Monitor;novel strategies;Outcome;Paper;participant safety;patient safety;Periodicals;Persons;Peru;Policies;Population;premalignant;Preventative vaccination;Prevention;Primary Prevention;Problem Solving;Productivity;Protocols documentation;Publications;Publishing;Qualifying;Quality Control;Records;recruit;Reporting;Research;Research Personnel;Resources;Risk;Safety;Schedule;Science;Scientific Advances and Accomplishments;screening;Secondary Prevention;Services;Site;skills training;Structure;success;tertiary prevention;tool;Training;Translating;Triage;Update;Vaccination;Woman;Work
+current_category: infrastructure
+---
+application_id: 11400875
+activity_code: U54
+title: Administrative and Coordinating Core
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Acceleration;Accountability;Adoption;Advocate;Biological Assay;Cancer Burden;cancer prevention;cancer risk;Caribbean region;cervical cancer prevention;Cessation of life;Child;CLC Gene;Clinical;Clinical Services;Clinical Trials;co-clinical trial;Communication;community partners;Country;Credentialing;Data;data management;Disproportionately impacts women;Dominican Republic;experience;Fostering;Goals;Grant;Guidelines;HIV;HPV prevention;Human papilloma virus infection;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;human subject;improved;Income;Information Dissemination;Infrastructure;Institution;International;Interruption;Laboratories;Laboratory Procedures;Latin American;Lead;Leadership;Lesion;Malignant neoplasm of cervix uteri;meetings;member;Methods;Modeling;Monitor;novel strategies;Outcome;Paper;participant safety;patient safety;Periodicals;Persons;Peru;Policies;Population;premalignant;Preventative vaccination;Prevention;Primary Prevention;Problem Solving;Productivity;Protocols documentation;Publications;Publishing;Qualifying;Quality Control;Records;recruit;Reporting;Research;Research Personnel;Resources;Risk;Safety;Schedule;Science;Scientific Advances and Accomplishments;screening;Secondary Prevention;Services;Site;skills training;Structure;success;tertiary prevention;tool;Training;Translating;Triage;Update;Vaccination;Woman;Work
+current_category: infrastructure
+---
+application_id: 11400889
+activity_code: U54
+title: Administrative and Coordinating Core
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Acceleration;Accountability;Adoption;Advocate;Biological Assay;Cancer Burden;cancer prevention;cancer risk;Caribbean region;cervical cancer prevention;Cessation of life;Child;CLC Gene;Clinical;Clinical Services;Clinical Trials;co-clinical trial;Communication;community partners;Country;Credentialing;Data;data management;Disproportionately impacts women;Dominican Republic;experience;Fostering;Goals;Grant;Guidelines;HIV;HPV prevention;Human papilloma virus infection;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;human subject;improved;Income;Information Dissemination;Infrastructure;Institution;International;Interruption;Laboratories;Laboratory Procedures;Latin American;Lead;Leadership;Lesion;Malignant neoplasm of cervix uteri;meetings;member;Methods;Modeling;Monitor;novel strategies;Outcome;Paper;participant safety;patient safety;Periodicals;Persons;Peru;Policies;Population;premalignant;Preventative vaccination;Prevention;Primary Prevention;Problem Solving;Productivity;Protocols documentation;Publications;Publishing;Qualifying;Quality Control;Records;recruit;Reporting;Research;Research Personnel;Resources;Risk;Safety;Schedule;Science;Scientific Advances and Accomplishments;screening;Secondary Prevention;Services;Site;skills training;Structure;success;tertiary prevention;tool;Training;Translating;Triage;Update;Vaccination;Woman;Work
+current_category: infrastructure
+---
+application_id: 11177200
+activity_code: U54
+title: CAMPO Administrative and Coordinating Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: NARRATIVE FOR ADMINISTRATIVE AND COORDINATING CORE The Administrative and Coordinating Core (ACC) will bring together investigators, institutions, community  liaisons, and resources in an inclusive environment to ensure the success of the CAMPO Consortium. The  ACC will oversee Consortium activities, monitor progress, and ensure that all components of the Consortium  are working together effectively. The ACC will provide guidance to the Executive Committee, which is  comprised of the three Princ
+terms: Adenoviruses;Algorithms;Anus;California;career;career development;Cervical;cervical cancer prevention;Clinical Research;Clinical Trials;Collaborations;Communication;Communities;community advisory board;data management;Decision Making;Development;DNA;Ensure;Environment;Goals;HIV;HIV Seropositivity;HPV-High Risk;Human Papilloma Virus-Related Malignant Neoplasm;Immune response;Infrastructure;Institution;interest;international partnership;Laboratories;Latin America;Lesion;member;men;Mexico;microbiota profiles;Monitor;Policy Maker;Population;Prevention;Principal Investigator;Probiotics;programs;Puerto Rico;Research;Research Infrastructure;Research Personnel;research study;Resources;Safety;screening;Specific qualifier value;Squamous intraepithelial lesion;statistics;success;therapeutic HPV vaccine;United States National Institutes of Health;Woman
+current_category: infrastructure
+---
+application_id: 11399232
+activity_code: U54
+title: Administrative and Coordinating Core
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Acceleration;Accountability;Adoption;Advocate;Biological Assay;Cancer Burden;cancer risk;Caribbean region;cervical cancer prevention;Cessation of life;Child;CLC Gene;Clinical;Clinical Services;Clinical Trials;co-clinical trial;Communication;community partners;Country;Credentialing;Data;data management;Disproportionately impacts women;Dominican Republic;experience;Fostering;Goals;Grant;Guidelines;HIV;HPV prevention;Human papilloma virus infection;Human Papilloma Virus-Related Malignant Neoplasm;Human Papillomavirus;human subject;improved;Income;Information Dissemination;Infrastructure;Institution;International;Interruption;Laboratories;Laboratory Procedures;Latin American;Lead;Leadership;Lesion;Malignant neoplasm of cervix uteri;meetings;member;Methods;Modeling;Monitor;novel strategies;Outcome;Paper;participant safety;patient safety;Periodicals;Persons;Peru;Policies;Population;premalignant;Preventative vaccination;Prevention;Primary Prevention;Problem Solving;Productivity;Protocols documentation;Publications;Publishing;Qualifying;Quality Control;Records;recruit;Reporting;Research;Research Personnel;Resources;Risk;Safety;Schedule;Science;Scientific Advances and Accomplishments;screening;Secondary Prevention;Services;Site;skills training;Structure;success;tertiary prevention;tool;Training;Translating;Triage;Update;Vaccination;Woman;Work
+current_category: infrastructure
+---
+application_id: 10932248
+activity_code: U54
+title: Full Project 4
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: 3-Dimensional;Address;Affect;African American;African American population;alpelisib;Alveolar;alveolar epithelium;Amides;Angiogenesis Inhibition;anti-cancer research;anti-cancer therapeutic;BAY 54-9085;Bioinformatics;Biological;Biological Factors;Biological Models;Biomedical Engineering;Black American;black men;Black Populations;Black race;black women;bone;BRAF gene;Bronchiolo-Alveolar Adenocarcinoma;California;cancer cell;cancer health disparity;Carcinogens;Caring;Cell Line;Cell Survival;Cells;Collection;Combined Modality Therapy;cytotoxicity;Data Analyses;Development;Disparity;DNA;Doctor of Philosophy;driver mutation;Drug Combinations;drug development;Education;effective therapy;Epidermal Growth Factor Receptor;Epithelial Cells;Erlotinib;Ethnic Origin;Ethnic Population;exome sequencing;exposure to cigarette smoke;Florida;follow-up;Formalin;Funding;Gel;Gelatin;Gene Mutation;Genes;Genetic;Growth;health disparity;health equity;high risk;In Vitro;in vitro Model;Individual;Inhalation;inhibitor;innovation;interdisciplinary collaboration;Invaded;Knowledge;KRAS2 gene;Leukocytes;Lung Adenocarcinoma;Malignant Bone Neoplasm;Malignant neoplasm of lung;Malignant Neoplasms;MAP Kinase Gene;Measures;Medicine;member;men;Metabolism;Metastatic Neoplasm to the Bone;Methodology;Methods;migration;Modeling;Molecular;mutant;Mutate;Mutation;Neoplasm Metastasis;neoplasm registry;Nicotine;novel;novel therapeutics;Organoids;osteogenic;Paraffin Embedding;Pathway interactions;Patients;Pattern;Perfusion;Pharmaceutical Preparations;PIK3CG gene;Porosity;Printing;progenitor;Race;racial difference;racial population;Resources;response;Risk Factors;Sampling;Site;Source;STK11 gene;System;targeted treatment;Testing;Therapeutic;therapeutic evaluation;therapeutic target;Time;Tissue Model;Tobacco smoke;tool;TP53 gene;Treatment Efficacy;treatment response;two-dimensional;Variant;Vascular Endothelial Cell;Woman;Work
+current_category: other
+---
+application_id: 10932250
+activity_code: U54
+title: Pilot Project 5
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: Address;African American population;anti-cancer research;anticancer activity;Black Bear;Black race;California;Cancer Etiology;Caring;Cells;Cessation of life;chemotherapy;cohort;Cytidine Deaminase;Data Set;DCK gene;Deoxycytidine Kinase;design;Diagnosis;Drug Kinetics;Drug usage;Education;efficacy evaluation;efficacy testing;enzyme activity;Epidermal Growth Factor Receptor;Epigenetic Process;ethnic diversity;experience;experimental study;Exposure to;Fc Receptor;Florida;Fluorouracil;Formulation;gemcitabine;Gene Expression;Genetic;Goals;health equity;High Prevalence;Human;improved;in vivo;Incidence;Investigation;irinotecan;Leucovorin;lipophilicity;Malignant Neoplasms;Measures;Metabolism;Modeling;mortality;mouse model;multi-ethnic;Mus;nanoparticle;Nucleoside Transporter;Operative Surgical Procedures;Organoids;oxaliplatin;Pancreas;Pancreatic Ductal Adenocarcinoma;pancreatic ductal adenocarcinoma cell;pancreatic neoplasm;pancreatic PDX models;patient derived xenograft model;patient stratification;Patients;personalized chemotherapy;Phosphorylation;Pilot Projects;Population Heterogeneity;protein expression;Proteins;Publishing;racial difference;racial diversity;Resistance;response;Risk;RNA;Safety;Sampling;SNP genotyping;Solubility;subcutaneous;Surface;Survival Rate;Systemic Therapy;targeted delivery;Testing;therapy outcome;Toxic effect;treatment choice;Treatment Efficacy;tumor;tumor growth;tumor xenograft;uptake;Variant;Wild Type Mouse
+current_category: therapeutics
+---
+application_id: 10932242
+activity_code: U54
+title: Bioinformatics, Statistical and Methodological Core
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: Achievement;Address;Advanced Malignant Neoplasm;African American;anti-cancer research;Bioinformatics;Biological;Biometry;Black American;California;cancer health disparity;Cancer health equity;Cancer Research Project;Caring;Clinical;Communities;Community Outreach;Comprehensive Cancer Center;computerized data processing;computing resources;Data;Data Analyses;data cleaning;Data Collection;data management;Data Management Resources;data repository;Data Science;Data Set;data sharing;Data Storage and Retrieval;Databases;design;Development;Doctor of Philosophy;drug development;E-learning;Education;education research;Educational Materials;Educational workshop;Ensure;Environmental Exposure;Evaluation;Event;exome sequencing;experimental study;federated data;Florida;Funding;Future;Gene Expression Profiling;genomic data;Goals;Grant;Health;Health Disparities Research;health equity;high dimensionality;High-Throughput Nucleotide Sequencing;Hispanic;human data;Individual;innovation;Institution;Laboratories;lectures;Malignant Neoplasms;Manuscripts;meetings;member;Methodology;Methods;mortality;Mutation;Mutation Analysis;novel;Occupations;outreach;Pilot Projects;Population;Preparation;Procedures;public database;Publications;Quality Control;Reproducibility;Research;Research Design;Research Personnel;Research Project Grants;Resource Sharing;Resources;Schedule;Science;Series;Services;single cell sequencing;software as a service;software development;Source;System;Techniques;Tissue Model;Training;Training Support;transcriptome sequencing;Triage;Underserved Population;Universities;University of Southern California Norris Cancer Center;web site;Work
+current_category: infrastructure
+---
+application_id: 11400883
+activity_code: U54
+title: CAMPO Administrative and Coordinating Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: NARRATIVE FOR ADMINISTRATIVE AND COORDINATING CORE The Administrative and Coordinating Core (ACC) will bring together investigators, institutions, community  liaisons, and resources in an inclusive environment to ensure the success of the CAMPO Consortium. The  ACC will oversee Consortium activities, monitor progress, and ensure that all components of the Consortium  are working together effectively. The ACC will provide guidance to the Executive Committee, which is  comprised of the three Princ
+terms: Adenoviruses;Algorithms;Anus;California;career;career development;Cervical;cervical cancer prevention;Clinical Research;Clinical Trials;Collaborations;Communication;Communities;community advisory board;data management;Decision Making;Development;DNA;Ensure;Environment;Goals;HIV;HIV Seropositivity;HPV prevention;HPV-High Risk;Human Papilloma Virus-Related Malignant Neoplasm;Immune response;Infrastructure;Institution;interest;international partnership;Laboratories;Latin America;Lesion;member;men;Mexico;microbiota profiles;Monitor;Policy Maker;Population;Principal Investigator;Probiotics;programs;Puerto Rico;Research;Research Infrastructure;Research Personnel;research study;Resources;Safety;screening;Specific qualifier value;Squamous intraepithelial lesion;statistics core;success;therapeutic HPV vaccine;United States National Institutes of Health;Woman
+current_category: infrastructure
+---
+application_id: 11191090
+activity_code: U54
+title: Tissue Modeling & Drug Development Shared Resources Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10931558
+activity_code: U54
+title: Community Outreach Core
+org_name: UNIVERSITY OF FLORIDA
+phr: N/A
+terms: Academy;Adult;Advisory Committees;Advocacy;Advocate;African American;anti-cancer research;behavior change;Benchmarking;Black American;Black church;Black Populations;Black race;California;cancer health disparity;cancer risk;Cancer Survivor;Caring;catalyst;Church;Clinical Research;Clinical Trials;Collaborations;Communication;Communities;community advisory board;community engaged research;Community Outreach;community-centered;Comprehensive Cancer Center;Country;Data;design;Development;Diagnosis;Diffusion of Innovation;Education;education research;Educational Activities;Educational Materials;Evaluation;evidence base;experience;Feedback;Florida;Funding;General Population;Goals;handbook;Health;health belief;health equity;Health Professional;Hispanic;Human;improved outcome;Individual;innovation;Institution;Knowledge;Latino;low socioeconomic status;Malignant neoplasm of lung;Malignant neoplasm of pancreas;Malignant neoplasm of prostate;Malignant Neoplasms;Measures;member;men;Mission;Modeling;Multimedia;Pancreas;Persons;Policy Maker;Population;Population Heterogeneity;programs;Prostate;Reporting;Research;Research Personnel;Research Project Grants;Resources;Risk;Scientist;Spanish/English;Technology;Theoretical model;theories;tool;Training;Training Programs;Universities;University of Southern California Norris Cancer Center;Voice;web site;webinar;Work;Writing
+current_category: infrastructure
+---
+application_id: 10886062
+activity_code: P50
+title: NEURAL CELL ENGINEERING AND IMAGING CORE 
+org_name: ALBERT EINSTEIN COLLEGE OF MEDICINE
+phr: N/A
+terms: Address;Anatomy;Animal Experiments;Animals;Back;base;behavioral phenotyping;Biological Assay;Brain;brain cell;Cell Line;Cell model;cell preparation;Cell Separation;Cells;cellular engineering;cellular imaging;clinical phenotype;Cognitive;college;Computer software;Computer Workstations;computerized data processing;Consultations;Correlation Studies;Coupled;Custom;data acquisition;Data Analyses;design;differentiation protocol;Disease;Dissection;Electrophysiology (science);Embryo;Epigenetic Process;Equipment;Evaluation;Experimental Designs;Faculty;fetus cell;Funding;Gene Expression;Gene Targeting;gene therapy;Generations;Genetic;Goals;Grant;high end computer;high standard;Human;human induced pluripotent stem cells;Image;Image Analysis;image processing;image reconstruction;imaging software;In Situ;In Vitro;in vivo;Individual;induced pluripotent stem cell;Injections;innovation;instrument;Intellectual and Developmental Disabilities Research Centers;Intellectual functioning disability;interest;Investigation;Investments;Laboratories;Lasers;Leadership;Microscope;Microscopy;Modernization;Modification;Molecular;Monitor;mouse model;Mutation;Names;neural;neurogenomics;neuroimaging;Neuronal Differentiation;Neurons;Neurosciences;optogenetics;Organoids;Patients;Phenotype;Physiological;Preparation;Printing;Production;Productivity;Proteins;Proteomics;Protocols documentation;Publications;Quality Control;reconstruction;Research;Research Personnel;Research Project Grants;Resolution;Resource Sharing;Resources;RNA;Sampling;Schedule;Services;Slice;Specimen;Structure;Surveys;synergism;therapeutic evaluation;Therapeutic Intervention;Time;Tissue Engineering;Tissue Model;tissue preparation;tissue/cell culture;Tissues;tool;Training;translational study;treatment strategy;ultra high resolution;United States National Institutes of Health;Work
+current_category: infrastructure

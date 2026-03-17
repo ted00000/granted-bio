@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10874268
+activity_code: P30
+title: Administrative Core
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: The goal of our proposed Roybal Center is to speed up the pace and increase the impact of scientific discoveries about how to change health behaviors to prevent premature aging. To do this, we focus on three innovative strategies: design thinking to incorporate the experiences of older adults; online platforms that help us conduct large-scale studies easily; and dynamic adaptation, which allows us quickly learn how different interventions work for different populations. With these strategies, we
+terms: acceptability and feasibility;Advisory Committees;American;American Heart Association;Behavior;behavior change;Behavior Therapy;behavioral economics;behavioral health;Behavioral Mechanisms;behavioral study;Blue Cross;Collaborations;Communities;design;Development;digital platform;Dissemination and Implementation;Drops;editorial;Effectiveness;effectiveness study;Engineering;Ensure;experience;Faculty;field study;Fostering;Future;Generations;Goals;Health;Health behavior;Health behavior change;health care service organization;Health Insurance;Health system;Healthcare;improved;Incentives;Individual;Infrastructure;innovation;insight;Institution;Intervention;Journals;Leadership;Learning;Medicine;member;Modeling;Monitor;multidisciplinary;older adult;Participant;Pathway interactions;Pennsylvania;Pilot Projects;Population;Population Heterogeneity;Premature aging syndrome;prevent;Private Sector;Progress Reports;Public Policy;Public Sector;Reporting;Research;Research Personnel;research to practice;Role;Science;Secure;service organization;Services;Speed;symposium;Technology;Testing;therapy development;Thinking;Training Support;Translating;translational potential;Translational Research;United States;United States National Academy of Sciences;United States National Institutes of Health;Universities;user centered design;voltage;Weight;Work
+current_category: infrastructure
+---
+application_id: 11289747
+activity_code: U10
+title: Statistics Core
+org_name: MAYO CLINIC ROCHESTER
+phr: The Alliance Statistics and Data Management Center is responsible for the statistical, data management, and information technology activities that support the scientific agenda of the Alliance for Clinical Trials in Oncology, a national cancer research organization. Successful execution of these activities had led to and will continue to lead to the translation of basic and clinical research into trials of new therapies that have the potential to change clinical practice, resulting in improved o
+terms: American College of Surgeons Oncology Group;anti-cancer research;Basic Science;Bioinformatics;Biological Markers;Cancer and Leukemia Group B;cancer clinical trial;Cancer Patient;Cessation of life;Clinic;clinical practice;Clinical Research;Clinical Trials;Clinical Trials Design;Collaborations;Computer software;Correlative Study;Data;Data Collection;data management;data management center;data quality;design;Development;editorial;Evaluation;Experimental Designs;Faculty;follow-up;genomic biomarker;genomic predictors;improved outcome;individual patient;Information Systems;Information Technology;Infrastructure;innovation;International;Leadership;Location;Manuscripts;Medidata;member;Methodology;Methods;Mission;Monitor;multidimensional data;North Central Cancer Treatment Group;novel;novel therapeutics;Oncology;Oncology Group;Paper;Patients;Phase I Clinical Trials;Positioning Attribute;Precision Medicine Initiative;Preparation;Process;prospective;Publications;Publishing;Randomized;Reporting;Research;Retrospective Studies;Sample Size;Scheme;Source;statistics;statistics core;Surrogate Endpoint;System;Technology;timeline;tool;Translations;treatment trial;Validation
+current_category: infrastructure
+---
+application_id: 11289748
+activity_code: U10
+title: Data Management Core
+org_name: MAYO CLINIC ROCHESTER
+phr: The Alliance Statistics and Data Management Center is responsible for the statistical, data management, and information technology activities that support the scientific agenda of the Alliance for Clinical Trials in Oncology, a national cancer research organization. Successful execution of these activities had led to and will continue to lead to the translation of basic and clinical research into trials of new therapies that have the potential to change clinical practice, resulting in improved o
+terms: American College of Surgeons Oncology Group;anti-cancer research;Basic Science;Bioinformatics;Biological Markers;Cancer and Leukemia Group B;cancer clinical trial;Cancer Patient;Cessation of life;Clinic;clinical practice;Clinical Research;Clinical Trials;Clinical Trials Design;Collaborations;Computer software;Correlative Study;Data;Data Collection;data management;data management center;data quality;design;Development;editorial;electronic data;Ensure;Evaluation;Faculty;follow-up;genomic biomarker;genomic predictors;improved outcome;individual patient;Information Systems;Information Technology;Infrastructure;innovation;instrument;International;Leadership;Location;Manuscripts;Medidata;member;Methodology;Methods;Mission;Monitor;North Central Cancer Treatment Group;novel;novel therapeutics;Oncology;Oncology Group;Paper;Patients;Phase I Clinical Trials;Policies;Positioning Attribute;Precision Medicine Initiative;Preparation;Procedures;Process;prospective;Publications;Publishing;quality assurance;Regulation;Reporting;Retrospective Studies;Secure;Source;statistics;Support System;Surrogate Endpoint;System;Technology;timeline;tool;Training Programs;Translational Research;Translations;treatment trial
+current_category: infrastructure
+---
+application_id: 11299076
+activity_code: U10
+title: NRG Oncology Network Group Operations Center
+org_name: NRG ONCOLOGY FOUNDATION, INC.
+phr: N/A
+terms: Adolescent and Young Adult;African ancestry;Alaska Native;American;base;Clinical Research;Communication;Country;Credentialing;data quality;Discipline of Nursing;Disease;Enrollment;General Population;Grant;Guidelines;Hispanic;Image;improved;innovation;Institution;Latino;Malignant Neoplasms;member;Mission;Monitor;Monitoring Clinical Trials;National Clinical Trials Network;Native American;Native Hawaiian;Oncology;operation;Pacific Island population;participant enrollment;Patients;Performance;Process;programs;Protocols documentation;Puerto Rico;Qualifying;quality assurance;Radiation Oncology;Radiation therapy;rare cancer;Review Committee;Science;Site;Time;Translational Research;Update;Washington
+current_category: therapeutics
+---
+application_id: 10758246
+activity_code: P30
+title: Developmental Funds
+org_name: WAYNE STATE UNIVERSITY
+phr: N/A
+terms: Address;anti-cancer research;Area;Award;Basic Science;Cancer Biology;Cancer Center;Cancer Center Support Grant;cancer health disparity;Catchment Area;Clinical Investigator;Clinical Sciences;Clinical Trials;community engagement;community partners;Development;disparity reduction;Evaluation;Extramural Activities;Faculty;Faculty Recruitment;Funding;Funding Agency;Future;Goals;Grant;Immunology;Immunotherapy;innovation;Institution;Intervention Studies;investigator-initiated trial;Investments;Leadership;Measures;member;metabolomics;Peer Review;Physicians;Pilot Projects;Population Sciences;Principal Investigator;Process;programs;Publications;Publishing;recruit;Research;Research Personnel;Research Project Grants;Risk;Role;Scientist;Secure;Strategic Planning;Strategic vision;success;survivorship;trend;tumor metabolism
+current_category: infrastructure
+---
+application_id: 11299075
+activity_code: U10
+title: NRG Oncology Network Group Operations Center
+org_name: NRG ONCOLOGY FOUNDATION, INC.
+phr: N/A
+terms: Advocate;Amendment;Cancer Therapy Evaluation Program;Clinical Trials;Clinical Trials Data Monitoring Committees;Committee Members;Complex;data management center;design;Development;Disease;experience;Goals;Infrastructure;Institution;International;investigator training;Knowledge;Leadership;Malignant Neoplasms;member;Mentorship;Mission;Multi-Institutional Clinical Trial;Oncology;Oncology Group;operation;Patients;Phase;Physicians;Program Development;programs;prospective;protocol development;Publications;Regulatory Affairs;Research;Research Activity;Research Personnel;Safety;Site;statistics;success;Support Groups;Translational trial;Work
+current_category: therapeutics
+---
+application_id: 10816416
+activity_code: U10
+title: NRG Oncology Network Group Operations Center
+org_name: NRG ONCOLOGY FOUNDATION, INC.
+phr: N/A
+terms: Adolescent and Young Adult;African ancestry;Alaska Native;American;base;Clinical Research;Communication;Country;Credentialing;data quality;Discipline of Nursing;Disease;Enrollment;General Population;Grant;Guidelines;health disparity;Hispanic;Image;improved;innovation;Institution;Latino;Malignant Neoplasms;member;Mission;Monitor;Monitoring Clinical Trials;National Clinical Trials Network;Native Americans;Native Hawaiian;Oncology;operation;Pacific Islander;participant enrollment;Patients;Performance;Process;programs;Protocols documentation;Puerto Rico;Qualifying;quality assurance;Radiation Oncology;Radiation therapy;rare cancer;Review Committee;Science;Site;Time;Translational Research;Underrepresented Populations;Update;Washington
+current_category: infrastructure
+---
+application_id: 11004307
+activity_code: P30
+title: Research Education Core (REC) - WA LHS E-STAR
+org_name: KAISER FOUNDATION RESEARCH INSTITUTE
+phr: Project Narrative not required for this component.
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10896261
+activity_code: U19
+title: PROJECT 2: HEREDITARY TYROSINEMIA TYPE 1 (HT1)
+org_name: CHILDREN'S HOSP OF PHILADELPHIA
+phr: N/A
+terms: Adenine;Adherence;autosome;base editing;base editor;Biodistribution;Birth;Cause of Death;Cell Line;Clinical Trials;Coagulation Process;Cytosine;dietary;dietary restriction;Dioxygenases;Disease;disease model;Dose;Drug Kinetics;Early treatment;Enzymes;fetal;Fumarylacetoacetase;Funding;Genes;genome editing;Germ-Line Mutation;Goals;Guide RNA;Hepatocyte;Herbicides;high risk;Human;Impairment;in utero;in vivo;Lead;Life;lipid nanoparticle;Liver;Liver diseases;Liver Failure;liver transplantation;Medical;meetings;Messenger RNA;Metabolic;Metabolic Diseases;Mus;Mutation;nanoparticle delivery;Neonatal;neonatal period;Neurologic;non-compliance;Nonsense Mutation;novel strategies;Outcome;Pathogenicity;Pathology;Pathway interactions;Patients;Pharmaceutical Preparations;pharmacologic;Pharmacology and Toxicology;Phenotype;Phenylalanine;postnatal;pre-Investigational New Drug meeting;preclinical study;prenatal;Primary carcinoma of the liver cells;Prior Therapy;Proteins;Proximal Kidney Tubules;renal tubular dysfunction;response;Risk;RNA Splicing;Safety;Sheep;Site;somatic cell gene editing;standard of care;succinylacetone;Therapeutic;therapeutic genome editing;Tyrosine;Tyrosinemias;United States Food and Drug Administration
+current_category: therapeutics
+---
+application_id: 11299071
+activity_code: U10
+title: Canadian Cancer Trials Group - Canadian Collaborating Clinical Trials Network
+org_name: QUEEN'S UNIVERSITY AT KINGSTON
+phr: N/A
+terms: Acceleration;Adolescent;Adolescent and Young Adult;Adult;Advisory Committees;Area;Big Data;Brain;Breast;Canada;Cancer Biology;cancer therapy;Cell Therapy;Child;clinical development;clinical research site;Clinical Trials;Clinical Trials Design;Clinical Trials Network;Clinical Trials Unit;Collaborations;Collection;Communication;Data;data management;Data Set;data sharing;Development;Diagnosis;digital health;Ensure;experience;Head and Neck Cancer;Hematology;Image;Immunooncology;improved;Information Technology;innovation;interest;International;Intervention;Leadership;lifestyle intervention;Lung;Malignant neoplasm of gastrointestinal tract;Malignant Neoplasms;method development;Molecular;novel therapeutics;operation;Operative Surgical Procedures;organizational structure;Patients;Pharmacotherapy;Policies;Population;precision medicine;Process;programs;rare cancer;Regulation;Research;research clinical testing;Research Personnel;Research Project Grants;Resources;Role;Scientific Advances and Accomplishments;Site;Skin;statistics;Structure;Technology;technology development;Testing;Translational Research;Translations;urologic;working group
+current_category: therapeutics
+---
+application_id: 11004312
+activity_code: P30
+title: Learning Health System Embedded Scientist Training and Research Center - REC
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10814937
+activity_code: U10
+title: Canadian Cancer Trials Group - Canadian Collaborating Clinical Trials Network
+org_name: QUEEN'S UNIVERSITY AT KINGSTON
+phr: N/A
+terms: Acceleration;Adolescent;Adolescent and Young Adult;Adult;Advisory Committees;Area;Big Data;Brain;Breast;Canada;Cancer Biology;cancer therapy;Cell Therapy;Child;clinical development;clinical research site;Clinical Trials;Clinical Trials Design;Clinical Trials Network;Clinical Trials Unit;Collaborations;Collection;Communication;Data;data management;Data Set;data sharing;Development;Diagnosis;digital health;Ensure;experience;Head and Neck Cancer;Hematology;Image;Immunooncology;improved;Information Technology;innovation;interest;International;Intervention;Leadership;lifestyle intervention;Lung;Malignant neoplasm of gastrointestinal tract;Malignant Neoplasms;method development;Molecular;novel therapeutics;operation;Operative Surgical Procedures;organizational structure;Patients;Pharmacotherapy;Policies;Population;precision medicine;Process;programs;rare cancer;Regulation;Research;research clinical testing;Research Personnel;Research Project Grants;Resources;Role;Scientific Advances and Accomplishments;Site;Skin;statistics;Structure;Technology;technology development;Testing;Translational Research;Translations;urologic;working group
+current_category: infrastructure
+---
+application_id: 10896247
+activity_code: P30
+title: Imaging, Histology and Functional Diagnostics Core
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: 3D Print;Achievement;Adult;Angiography;Animal Disease Models;Animal Experimentation;animal facility;Animal Model;Animals;Area;Brain;brain pathway;Buffers;Clinical;clinical application;Clinical Research;Collaborations;Color;Computer software;Core Facility;Core Grant;Cornea;cost;cryostat;Dedications;Development;Diagnostic;Diagnostic tests;Disease;Doctor of Philosophy;Electroretinography;Embryo;Ensure;Equipment;equipment acquisition;Equipment and Supplies;experience;Eye;Faculty;Film;Fixatives;Floor;Funding;Fundus;fundus imaging;Glaucoma;Goals;graduate student;Histologic;Histological Techniques;Histology;Human Resources;Human Subject Research;Image;Imaging Device;in vivo;in vivo imaging;Individual;instrument;instrumentation;Investigation;Knowledge;Laboratory Technicians;Lasers;Learning;lens;Letters;Light;Maintenance;Microscopic;Microtome - medical device;Mission;Modality;Molds;Monkeys;multimodality;Mus;Neonatal;Nursing Faculty;Ophthalmology;Ophthalmoscopes;Optical Coherence Tomography;Oryctolagus cuniculus;Paraffin;pathogen;Pathology;Patients;Pattern;Photoreceptors;Postdoctoral Fellow;postnatal;Preparation;Procedures;Productivity;programs;Protocols documentation;Qualifying;Rattus;recruit;repaired;Research;research faculty;Research Personnel;Resolution;Resources;Retina;Retinal Ganglion Cells;Retirement;Rodent;Role;Scanning;Schedule;Scientist;Services;skills;Sparrows;Specialist;Stains;Structure;Structure of retinal pigment epithelium;student training;Students;Study Section;System;Techniques;Testing;Thick;Thinness;time use;tissue preparation;tissue processing;Tissues;tool;Training;Translational Research;translational study;transmission process;United States National Institutes of Health;Universities;Vision;Vision research;Water;Work
+current_category: infrastructure
+---
+application_id: 11299074
+activity_code: U10
+title: NRG Oncology Network Group Operations Center
+org_name: NRG ONCOLOGY FOUNDATION, INC.
+phr: N/A
+terms: Address;Adult;Advisory Committees;Biological Specimen Banks;Cancer Patient;Clinical Trials;cohort;Collaborations;data management center;Development;experience;Fostering;Goals;improved;Infrastructure;Lead;Leadership;member;Mentors;Mission;Modeling;Modernization;National Clinical Trials Network;Oncology;operation;organizational structure;Population;Productivity;programs;remote monitoring;Research;Site;statistics;success
+current_category: therapeutics
+---
+application_id: 11289742
+activity_code: U10
+title: Admin Core
+org_name: UNIVERSITY OF CHICAGO
+phr: N/A
+terms: Adherence;Clinical Research;clinical trial analysis;Clinical Trials;Collaborations;Cooperative Group Program;Data;data management center;Databases;Decision Making;design;Development;Ensure;experience;follow-up;Geography;Goals;Human Resources;Lead;Leadership;Libraries;Malignant Neoplasms;member;Methodology;Mission;Monitor;National Clinical Trials Network;Oncology;oncology trial;operation;Pharmacologic Substance;primary endpoint;Procedures;Productivity;programs;Publications;quality assurance;Reporting;Research;Research Personnel;Research Support;Resources;secondary endpoint;Site;skills;statistics;Strategic Planning;Structure;success;Training;Work
+current_category: training
+---
+application_id: 10807975
+activity_code: U10
+title: Data Management Core
+org_name: UNIVERSITY OF CHICAGO
+phr: N/A
+terms: Biometry;Calendar;cancer clinical trial;Clinical;clinical trial analysis;Code;Collaborations;Computer software;Cooperative Group Program;Custom;Data;Data Collection;Data Coordinating Center;data harmonization;data management;data quality;data submission;Database Management Systems;Databases;design;Development;distributed model;Electronic Mail;Ensure;Environment;follow-up;Geography;Human Resources;Image;Imaging technology;Information Technology;Internet;Malignant Neoplasms;Medidata;member;Methods;Mission;National Clinical Trials Network;Oncology;operation;Performance;primary endpoint;Principal Investigator;Procedures;Process;Productivity;programs;protocol development;Protocols documentation;Publications;Qualifying;quality assurance;Quality Control;Radiation therapy;Reporting;Research;Research Design;secondary endpoint;software development;statistics;success;System;Systems Analysis;Testing;tool;web services;web-based tool;working group
+current_category: infrastructure
+---
+application_id: 10807971
+activity_code: U10
+title: Statistics Core
+org_name: UNIVERSITY OF CHICAGO
+phr: N/A
+terms: Address;analytical method;Area;Biological Markers;cancer clinical trial;clinical trial analysis;Clinical Trials;Clinical Trials Design;Collaborations;Conduct Clinical Trials;Data Collection;Data Coordinating Center;data curation;data management;data sharing;design;Development;Disease;follow-up;Human Resources;Individual;Information Technology;innovation;Maintenance;member;Methodology;Methods;Mission;Modernization;Monitor;National Clinical Trials Network;novel;Oncology;oncology trial;operation;Patient Care;Phase;phase III trial;primary endpoint;Productivity;programs;protocol development;Publications;Reporting;Research;Research Personnel;Role;secondary endpoint;Secure;Site;statistics;timeline;trial design;Work
+current_category: infrastructure
+---
+application_id: 10807966
+activity_code: U10
+title: Admin Core
+org_name: UNIVERSITY OF CHICAGO
+phr: N/A
+terms: Adherence;Clinical Research;clinical trial analysis;Clinical Trials;Collaborations;Cooperative Group Program;Data;Data Coordinating Center;Databases;Decision Making;design;Development;Ensure;experience;follow-up;Geography;Goals;Human Resources;Lead;Leadership;Libraries;Malignant Neoplasms;member;Methodology;Mission;Monitor;National Clinical Trials Network;Oncology;oncology trial;operation;Pharmacologic Substance;primary endpoint;Procedures;Productivity;programs;Publications;quality assurance;Reporting;Research;Research Personnel;Research Support;Resources;secondary endpoint;Site;skills;statistics;Strategic Planning;Structure;success;Training;Work
+current_category: training
+---
+application_id: 11289744
+activity_code: U10
+title: Data Management Core
+org_name: UNIVERSITY OF CHICAGO
+phr: N/A
+terms: Biometry;Calendar;cancer clinical trial;Clinical;clinical trial analysis;Code;Collaborations;Computer software;Cooperative Group Program;Custom;Data;Data Collection;data harmonization;data management;data management center;data quality;data submission;Database Management Systems;Databases;design;Development;distributed model;Electronic Mail;Ensure;Environment;follow-up;Geography;Human Resources;Image;Imaging technology;Information Technology;Internet;Malignant Neoplasms;Medidata;member;Methods;Mission;National Clinical Trials Network;Oncology;operation;Performance;primary endpoint;Principal Investigator;Procedures;Process;Productivity;programs;protocol development;Protocols documentation;Publications;Qualifying;quality assurance;Quality Control;Radiation therapy;Reporting;Research;Research Design;secondary endpoint;software development;statistics;statistics core;success;System;Systems Analysis;Testing;tool;web services;web-based tool;working group
+current_category: infrastructure
+---
+application_id: 11004347
+activity_code: P30
+title: Learning Health systems training to improve Disability and chronic condition care (LeaHD) Research Education Core
+org_name: BROWN UNIVERSITY
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 11289743
+activity_code: U10
+title: Statistics Core
+org_name: UNIVERSITY OF CHICAGO
+phr: N/A
+terms: Address;analytical method;Area;Biological Markers;cancer clinical trial;clinical trial analysis;Clinical Trials;Clinical Trials Design;Collaborations;Conduct Clinical Trials;Data Collection;data curation;data management;data management center;data sharing;design;Development;Disease;follow-up;Human Resources;Individual;Information Technology;innovation;Maintenance;member;Methodology;Methods;Mission;Modernization;Monitor;National Clinical Trials Network;novel;Oncology;oncology trial;operation;Patient Care;Phase;phase III trial;primary endpoint;Productivity;programs;protocol development;Publications;Reporting;Research;Research Personnel;Role;secondary endpoint;Secure;Site;statistics;statistics core;timeline;trial design;Work
+current_category: infrastructure
+---
+application_id: 10747936
+activity_code: P30
+title: Immune Monitoring and Flow Cytometry (IMFC)
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: analysis pipeline;B-Lymphocytes;Biological Assay;Biotechnology;Blood;Budgets;Cancer Center Support Grant;cancer clinical trial;cancer immunotherapy;Cell Separation;Cells;chimeric antigen receptor T cells;Client;Clinical Trials;Collaborations;college;Color;Communities;Conduct Clinical Trials;Consent;Consultations;Cryopreservation;cytokine;Cytometry;Data;Data Analyses;design;Development;Equipment;Excision;Experimental Designs;extracellular;Flow Cytometry;Flow Cytometry Shared Resource;Fluorescence;Frequencies;Funding;Genus Hippocampus;Grant;Guidelines;Human;Immune;Immune checkpoint inhibitor;Immune system;Immunoassay;Immunologic Monitoring;Immunologics;Immunology;improved;Individual;instrument;Laboratories;laboratory experience;Lasers;Leukocytes;Maintenance;Malignant Neoplasms;Measurement;Measures;Melanoma;member;metabolic abnormality assessment;Mission;monocyte;Mus;NCI Center for Cancer Research;Norris Cotton Cancer Center;novel strategies;novel therapeutics;Operative Surgical Procedures;Patients;Peer Review;Performance;Peripheral Blood Mononuclear Cell;Phenotype;programs;Publications;Reader;Recommendation;recruit;repository;Research;Research Personnel;Resource Sharing;Running;Scientist;Services;skills;Skin;Specimen Handling;Stains;Students;success;T-Lymphocyte;Technology;Testing;Time;tissue resident memory T cell;Tissues;TNFRSF5 gene;TNFSF5 gene;Training;Translational Research;Venous blood sampling;Whole Blood
+current_category: infrastructure
+---
+application_id: 10907833
+activity_code: P30
+title: Research Education Component
+org_name: UNIVERSITY OF TEXAS RIO GRANDE VALLEY
+phr: N/A
+terms: Address;Advisory Committees;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Alzheimer&apos;s disease risk;American;Area;Award;Behavior Therapy;Behavioral;Belief;Budgets;career;career development;Career Mobility;Caring;Classification;cohort;Communities;community engaged research;Country;Data Analyses;Dementia;design;Development;Development Plans;Diabetes Mellitus;disability;Doctor of Philosophy;education research;equity, diversity, and inclusion;Ethnic Origin;Evaluation;experience;Extramural Activities;Faculty;Funding;geographic population;Goals;Grant;Health;Health Disparities Research;health disparity;high risk;Hispanic;Hispanic Americans;hispanic community;Hispanic Populations;improved;Information Dissemination;Infrastructure;innovation;Interdisciplinary Study;investigator training;Ions;Knowledge;Leadership;Logistics;medically underserved;Medically Underserved Area;member;Mentors;Mexican Americans;Mexico;Minority;Minority Groups;Neurosciences;Not Hispanic or Latino;Obesity;Persons;Pilot Projects;Population;Positioning Attribute;Poverty;Preparation;Prevalence;Problem behavior;programs;Publications;Race;recruit;Reduce health disparities;Research;Research Personnel;Research Project Summaries;Research Support;Resources;responsible research conduct;Science;Scientist;senior faculty;Series;Services;social;Social Problems;South Texas;Statistical Data Interpretation;Surveys;symposium;Texas;therapy development;Training;translational impact;Underrepresented Minority;underserved community;Universities;Work;Writing;years of life lost
+current_category: infrastructure
+---
+application_id: 11299070
+activity_code: U10
+title: Member Site Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: The Project Narrative has been addressed in the Overall Component per the RFA
+terms: Address;Adolescent and young adult cancer patients;American College of Surgeons Oncology Group;Cancer and Leukemia Group B;Clinical;Clinical Research;Clinical Trials;Community Clinical Oncology Program;design;Education;Effectiveness;Enrollment;Ensure;Fostering;Funding;Goals;Health Care Systems;Infrastructure;Institution;Lead;Leadership;Malignant Neoplasms;member;North Central Cancer Treatment Group;older patient;Oncology;operation;patient population;Patients;Policies;Principal Investigator;programs;rare cancer;recruit;Research;Research Personnel;Research Priority;Services;Site;Surgeon;translational cancer research;Translational Research;translational scientist;U-Series Cooperative Agreements;Work
+current_category: infrastructure
+---
+application_id: 10808979
+activity_code: U10
+title: Administrative Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: The Project Narrative has been addressed in the Overall Component per the RFA
+terms: Academic Medical Centers;Address;American College of Surgeons;American College of Surgeons Oncology Group;Cancer and Leukemia Group B;Clinical Research;Clinical Trials;Collaborations;Community Clinical Oncology Program;conflict resolution;Decision Making;design;Development;Effectiveness;Ensure;Environment;Funding;Goals;health care delivery;Infrastructure;innovation;Institution;Leadership;Malignant Neoplasms;meetings;member;North Central Cancer Treatment Group;Oncology;operation;Operative Surgical Procedures;organizational structure;Policies;Positioning Attribute;Principal Investigator;Procedures;Process;Productivity;programs;Research;Research Personnel;Research Priority;response;rural setting;Structure;success;symptom management;System;Time;Translational Research;treatment group;urban setting
+current_category: infrastructure
+---
+application_id: 10808984
+activity_code: U10
+title: Clinical Trials Development Core
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: The Project Narrative has been addressed in the Overall Component per the RFA
+terms: Address;Area;Basic Science;Biological Markers;Clinical;Clinical Investigator;Clinical Research;clinical translation;Clinical Trials;Collaborations;Combined Modality Therapy;Committee Members;Complex;design;Development;Discipline;Disease;early phase trial;Environment;Fostering;Funding Agency;Goals;imaging study;improved;Industry;industry partner;Information Systems;Infrastructure;innovation;inter-institutional;Investigational Therapies;Knowledge;Leadership;Malignant Neoplasms;meetings;Mission;multidisciplinary;New Drug Approvals;new therapeutic target;next generation;Oncology;operation;Patients;performance site;Pharmaceutical Preparations;Principal Investigator;Process;Productivity;Program Development;programs;rare cancer;Research;Research Design;Research Personnel;Resources;response;Science;Secure;Special Population;Special Populations Research;Structure;Therapeutic Trials;timeline;tool;Training;Translational Research;translational scientist;trial design;Update;Work
+current_category: infrastructure
+---
+application_id: 11299065
+activity_code: U10
+title: Administrative Core
+org_name: ECOG-ACRIN MEDICAL RESEARCH FOUNDATION
+phr: N/A
+terms: Adult;American College of Radiology Imaging Network;anti-cancer research;biobank;Biological;Biological Markers;Biometry;Cancer Biology;Cancer Center;cancer clinical trial;Cancer Patient;cancer therapy;Cancer Therapy Evaluation Program;care outcomes;Center for Translational Science Activities;clinical biomarkers;Clinical Research;Clinical Trials;Clinical Trials Network;Collaborations;Communication;Communities;Community Clinical Oncology Program;Community Practice;Complex;Dana-Farber Cancer Institute;Data;Data Analyses;data management center;Databases;Development;Eastern Cooperative Oncology Group;Environment;Funding;Generations;Goals;Group Structure;Image;imaging study;Immunologics;improved;improved outcome;Industry;Infrastructure;innovation;Investigational Therapies;Laboratories;Lead;Leadership;Malignant Neoplasms;Mentorship;Modeling;next generation;novel;operation;Participant;Patients;Population;Positioning Attribute;Prevalence;programs;Protocols documentation;quantitative imaging;Research;Research Personnel;Resources;Role;Science;scientific organization;Site;Specialized Program of Research Excellence;Structure;System;Translating;treatment effect;Universities
+current_category: infrastructure
+---
+application_id: 11308772
+activity_code: U10
+title: Member Site Core
+org_name: ECOG-ACRIN MEDICAL RESEARCH FOUNDATION
+phr: N/A
+terms: Address;Adult;American College of Radiology Imaging Network;anti-cancer research;Area;biobank;Biological;Biological Markers;Biometry;Cancer Biology;cancer care;Cancer Center;cancer clinical trial;Cancer Patient;cancer therapy;Cancer Therapy Evaluation Program;care outcomes;Categories;Center for Translational Science Activities;clinical biomarkers;Clinical Research;Clinical Trials;Clinical Trials Network;Collaborations;Communities;Community Clinical Oncology Program;Community Practice;Complex;Credentialing;Dana-Farber Cancer Institute;Data;Data Analyses;data management center;Databases;Developmental Therapeutics Program;Disease;Eastern Cooperative Oncology Group;Environment;Evaluation;Fostering;Funding;Genomics;Goals;Image;imaging study;Immunologics;improved;improved outcome;Infrastructure;innovation;Institution;Investigational Therapies;Laboratories;Lead;Malignant Neoplasms;member;Mentorship;Modeling;Monitor;next generation;novel;operation;Participant;Patients;peer;Population;Positioning Attribute;Prevalence;Process;programs;quantitative imaging;rare cancer;Research;Research Personnel;Science;scientific organization;Site;Special Population;Specialized Program of Research Excellence;Structure;System;Tissues;Translating;treatment effect;Universities
+current_category: infrastructure
+---
+application_id: 10758199
+activity_code: P30
+title: Cancer Center Administration
+org_name: WAYNE STATE UNIVERSITY
+phr: N/A
+terms: Achievement;Address;anti-cancer research;Area;Award;Basic Science;Budgets;Cancer Biology;Cancer Center;Cancer Center Support Grant;cancer health disparity;Cancer Science;Communication;community center;Continuing Education;Data;data management;Databases;Decision Making;Development;Direct Costs;Discipline;disparity reduction;Documentation;Environment;experience;Extramural Activities;Faculty;Fostering;Funding;Goals;Grant;Home;Immunology;Immunotherapy;Infrastructure;Intervention Studies;Laboratories;laboratory equipment;Leadership;Maintenance;Malignant Neoplasms;Marketing;meetings;member;metabolomics;Michigan;Mission;Monitor;operation;Pilot Projects;Play;Policies;Process;programs;Prostate;Publications;Recommendation;recruit;Reporting;repository;Research;Research Personnel;Resource Development;Resource Sharing;Resources;Risk;Role;Science;Scientist;Services;shared decision making;skills;Strategic Planning;Surveys;survivorship;tumor metabolism;Vision
+current_category: infrastructure
+---
+application_id: 10796907
+activity_code: U10
+title: Administrative Core
+org_name: ECOG-ACRIN MEDICAL RESEARCH FOUNDATION
+phr: N/A
+terms: Adult;American College of Radiology Imaging Network;anti-cancer research;biobank;Biological;Biological Markers;Biometry;Cancer Biology;Cancer Center;cancer clinical trial;Cancer Patient;cancer therapy;Cancer Therapy Evaluation Program;care outcomes;Center for Translational Science Activities;Clinical Markers;Clinical Research;Clinical Trials;Clinical Trials Network;Collaborations;Communication;Communities;Community Clinical Oncology Program;Community Practice;Complex;Dana-Farber Cancer Institute;Data;Data Analyses;Data Coordinating Center;Databases;Development;Eastern Cooperative Oncology Group;Environment;Funding;Generations;Goals;Group Structure;Image;imaging study;Immunologics;improved;improved outcome;Industry;Infrastructure;innovation;Investigational Therapies;Laboratories;Lead;Leadership;Malignant Neoplasms;Mentorship;Modeling;next generation;novel;operation;Participant;Patients;Population;Positioning Attribute;Prevalence;programs;Protocols documentation;quantitative imaging;Research;Research Personnel;Resources;Role;Science;scientific organization;Site;Specialized Program of Research Excellence;Structure;System;Translating;treatment effect;Universities
+current_category: infrastructure
+---
+application_id: 11004287
+activity_code: P30
+title: MIELHSS - Admin Core
+org_name: BETH ISRAEL DEACONESS MEDICAL CENTER
+phr: Administrative Core Narrative The Administrative Core of the Massachusetts Institute for Equity-focused Learning Health System Science (MIELHSS) coordinates and manages all Institute activities across its Research Education and Research Data Cores. The role of the Administrative Core is to: 1) Provide leadership, direction, and oversight of MIELHSS; 2) Foster internal and external communications and engagement across health systems, community and stakeholder partners, scholars, mentors, projects
+terms: N/A
+current_category: infrastructure
+---
+application_id: 11004270
+activity_code: P30
+title: Research Education Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 11053694
+activity_code: U10
+title: Clinical Trials Development Core
+org_name: ECOG-ACRIN MEDICAL RESEARCH FOUNDATION
+phr: N/A
+terms: Acceleration;Adult;American College of Radiology Imaging Network;anti-cancer research;biobank;Biological;Biological Markers;Biometry;Cancer Biology;Cancer Center;cancer clinical trial;Cancer Patient;cancer therapy;Cancer Therapy Evaluation Program;care outcomes;Center for Translational Science Activities;Clinical Markers;Clinical Research;Clinical Trials;Clinical Trials Network;Collaborations;Communities;Community Clinical Oncology Program;Community Practice;Complex;Conduct Clinical Trials;Dana-Farber Cancer Institute;Data;Data Analyses;Data Coordinating Center;Databases;Development;Disease;Eastern Cooperative Oncology Group;Environment;Funding;Generations;Goals;Image;imaging study;Immunologics;improved;improved outcome;Infrastructure;innovation;Investigational Therapies;Laboratories;Lead;Malignant Neoplasms;Mentorship;Modeling;next generation;novel;operation;Participant;Patients;Population;Positioning Attribute;Prevalence;Procedures;programs;Protocols documentation;quantitative imaging;Reporting;Research;Research Personnel;Resources;Science;scientific organization;Site;Specialized Program of Research Excellence;Structure;System;Translating;treatment effect;Universities
+current_category: infrastructure
+---
+application_id: 10758248
+activity_code: P30
+title: Shared Resource Management
+org_name: WAYNE STATE UNIVERSITY
+phr: N/A
+terms: Accountability;Address;Advisory Committees;Animal Model;Behavioral;biobank;Bioinformatics;Biometry;Businesses;Cancer Center;Cancer Center Support Grant;Clinical Research;cost effective;Cyclotrons;Cytometry;Dedications;Development;Ensure;epidemiology study;Evaluation;Fee-for-Service Plans;Feedback;Funding;Future;Goals;Image;improved;innovation;Institution;instrumentation;Investments;Leadership;Malignant Neoplasms;member;metabolomics;Microscopy;Monitor;Peer Review;Performance;Pharmacology;Policies;pre-clinical research;Price;Productivity;Proteomics;Publishing;Radiochemistry;radiotracer;Reporting;Research;Research Technics;Resource Sharing;Resources;satisfaction;Science;service utilization;Services;Strategic Planning;Structure;success;Surveys;Technology;therapeutic evaluation;tool;Universities;Work
+current_category: infrastructure
+---
+application_id: 11289740
+activity_code: U10
+title: Statistics Core for SWOG SDMC
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Adherence;Biological Markers;Cancer Science;cancer therapy;clinical translation;Clinical Trials;Clinical Trials Design;Collaborations;Complex;Computer software;data management center;Databases;design;Development;Ensure;Evaluation;Faculty;Goals;Immunotherapeutic agent;Information Dissemination;innovation;Lead;Manuscripts;Monitor;novel therapeutics;Phase;phase II trial;phase III trial;Process;Property;Reproducibility of Results;Research Methodology;research study;secondary analysis;software development;Software Tools;sound;Southwest Oncology Group;Standardization;Statistical Data Interpretation;Statistical Methods;statistics;statistics core;System;targeted agent;Testing;translational medicine;trial design
+current_category: infrastructure
+---
+application_id: 10814845
+activity_code: U10
+title: Statistics Core for SWOG SDMC
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Adherence;Biological Markers;Cancer Science;cancer therapy;clinical translation;Clinical Trials;Clinical Trials Design;Collaborations;Computer software;Data Coordinating Center;Databases;design;Development;Ensure;Evaluation;Faculty;Goals;Immunotherapeutic agent;Information Dissemination;innovation;Lead;Manuscripts;Monitor;novel therapeutics;Phase;phase II trial;phase III trial;Process;Property;Reproducibility of Results;Research Methodology;research study;secondary analysis;software development;Software Tools;sound;Southwest Oncology Group;Standardization;Statistical Data Interpretation;Statistical Methods;statistics;System;targeted agent;Testing;translational medicine;trial design
+current_category: infrastructure
+---
+application_id: 10814842
+activity_code: U10
+title: Administrative Core for SWOG SDMC
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Advisory Committees;anti-cancer research;Area;biobank;biological specimen archives;Biometry;Child;Clinical Data;clinical development;Clinical Medicine;Clinical Sciences;clinical trial analysis;Clinical Trials;Clinical Trials Design;Collaborations;Communities;Data;Data Analyses;Data Coordinating Center;data management;data science management;data sharing;Decision Making;design;Development;Ensure;Faculty;Fred Hutchinson Cancer Research Center;Genomics;Homes for the Aged;Hospitals;Immunotherapy;interest;Leadership;meetings;member;Methods;Monitor;multidimensional data;National Clinical Trials Network;NCI Center for Cancer Research;novel;organizational structure;precision medicine;programs;Research;Research Methodology;Research Personnel;Safety;Southwest Oncology Group;Statistical Methods;statistics;translational medicine;user-friendly;working group
+current_category: infrastructure
+---
+application_id: 11289739
+activity_code: U10
+title: Administrative Core for SWOG SDMC
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Advisory Committees;anti-cancer research;Area;biobank;biological specimen archives;Biometry;Child;Clinical Data;clinical development;Clinical Medicine;Clinical Sciences;clinical trial analysis;Clinical Trials;Clinical Trials Design;Collaborations;Communities;Complex;Data;Data Analyses;data management;data management center;data science management;data sharing;Decision Making;design;Development;Ensure;Faculty;Fred Hutchinson Cancer Research Center;Genomics;Homes for the Aged;Hospitals;Immunotherapy;interest;Leadership;meetings;member;Methods;Monitor;multidimensional data;National Clinical Trials Network;NCI Center for Cancer Research;novel;organizational structure;precision medicine;programs;Research;Research Methodology;Research Personnel;Safety;Southwest Oncology Group;Statistical Methods;statistics;translational medicine;user-friendly;working group
+current_category: infrastructure
+---
+application_id: 11289741
+activity_code: U10
+title: Data Management Core for SWOG SDMC
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: adverse event monitoring;biobank;Clinical Trials;Collection;Communities;Complex;Computer software;Data;Data Collection;data management;data management center;data quality;data standards;Databases;Education;electronic data;Ensure;Goals;improved;innovation;International;Medidata;Monitor;Oncology;Patients;Procedures;Process;programs;Publications;Recording of previous events;Reporting;Research;Research Personnel;Retrieval;Secure;Site;software development;Southwest Oncology Group;Specimen;Standardization;statistics;System;tool;Toxic effect;translational medicine;welfare
+current_category: training
+---
+application_id: 11289737
+activity_code: U10
+title: Statistics Core
+org_name: DANA-FARBER CANCER INST
+phr: N/A
+terms: Address;American College of Radiology Imaging Network;Biometry;Collaborations;Computational Biology;Dana-Farber Cancer Institute;Data Analyses;data management center;Data Reporting;design;Development;Diagnostic;Eastern Cooperative Oncology Group;experience;imaging study;Lead;Leadership;Manuscripts;Methodology;Mission;Monitor;Outcome;Process;programs;Reporting;Research;Research Personnel;Research Support;Safety;statistics;statistics core;Structure;Therapeutic Trials;Translational Research;Universities;Work
+current_category: infrastructure
+---
+application_id: 10796901
+activity_code: U10
+title: Data Management Core
+org_name: DANA-FARBER CANCER INST
+phr: N/A
+terms: Adverse event;American College of Radiology;American College of Radiology Imaging Network;anti-cancer research;Biometry;Cancer Therapy Evaluation Program;Clinical;Clinical Data;Clinical Data Update System;Collection;Common Terminology Criteria for Adverse Events;Communication;Complex;Computational Biology;computerized data processing;Dana-Farber Cancer Institute;Data;Data Collection;Data Coordinating Center;Data Element;data management;Data Management Resources;data standards;data submission;Databases;design;Development;Diagnostic;Eastern Cooperative Oncology Group;Eligibility Determination;Ensure;Evaluable Disease;Evaluation;Foundations;high standard;Human Resources;imaging study;informatics tool;Information Systems;Infrastructure;Institution;Libraries;Malignant Neoplasms;Medical;Medical Research;Medidata;Monitor;Oncology;operation;participant enrollment;Patients;Performance;performance site;pilot test;Policies;Procedures;Process;Protocols documentation;Reporting;repository;Research Personnel;Resolution;Security;Site;Source;statistics;Support System;System;Therapeutic Studies;tool;Training and Education;Training Programs;Universities;web interface;Work
+current_category: training
+---
+application_id: 10758253
+activity_code: P30
+title: Clinical Protocol and Data Management
+org_name: WAYNE STATE UNIVERSITY
+phr: N/A
+terms: Adolescent;Cancer Center;Cancer Center Support Grant;Cancer Patient;cancer therapy;Catchment Area;Childhood;Clinical;Clinical Data;Clinical Investigator;Clinical Practice Guideline;Clinical Protocols;Clinical Research;Clinical Research Protocols;Clinical Trials;Code;Collaborations;Communication;Conceptions;Data;data management;Education and Outreach;Ensure;Ethics;Funding;Goals;Good Clinical Practice;Grant;Healthcare;improved;Individual;Industry;Infrastructure;Institution;Institutional Review Boards;International;Intervention Trial;Investigational Drugs;Lead;Life Cycle Stages;life span;Maintenance;Malignant Childhood Neoplasm;Malignant Neoplasms;member;Michigan;Minority;Minority Enrollment;Mission;Monitor;National Clinical Trials Network;Nursing Research;older adult;operation;Participant;Patient Participation;Patients;Pediatric Hospitals;Pediatric Oncology Group;Peer Review;Physicians;Policies;Preparation;Process;process improvement;programs;Protocols documentation;quality assurance;Quality Control;Quality of life;recruit;Regulation;Reporting;Research;Research Personnel;Resource Sharing;Resources;Safety;Services;Site;Specialist;symposium;System;Time;Training;Training and Education;training data;Translational Research;Universities;Vision;Woman
+current_category: infrastructure
+---
+application_id: 11004343
+activity_code: P30
+title: Learning Health systems training to improve Disability and chronic condition care (LeaHD) Administrative Core
+org_name: BROWN UNIVERSITY
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 11004286
+activity_code: P30
+title: RDAC
+org_name: ARIZONA STATE UNIVERSITY-TEMPE CAMPUS
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 11004294
+activity_code: P30
+title: Research Education Core
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: N/A
+terms: N/A
+current_category: infrastructure
+---
+application_id: 10894846
+activity_code: P20
+title: NeuroMAP Phase II - Administrative Core
+org_name: LAUREATE INSTITUTE FOR BRAIN RESEARCH
+phr: N/A
+terms: Address;Advisory Committees;Anxiety Disorders;Applications Grants;Award;base;Behavior;Biological;blood-based biomarker;Brain;Budgets;career;career development;Clinical assessments;Communities;Competence;Complex;computerized data processing;Consultations;Data;Data Analyses;Development;effectiveness research;Eligibility Determination;Ensure;Environment;Evaluation;experience;Faculty;Feedback;Fostering;Foundations;Funding;Future;Genetic;Grant;health assessment;Human Resources;improved;Infrastructure;infrastructure development;Institution;Institutional Review Boards;Laboratories;Leadership;Measures;meetings;Mental Health;Mentors;Mentorship;Modeling;Mood Disorders;neuroimaging;Neurosciences;Oklahoma;operation;organizational structure;Outcome;Persons;Phase;Pilot Projects;Process;Program Development;programs;Questionnaires;recruit;Research;Research Infrastructure;Research Personnel;Research Project Grants;Research Support;Resources;response;Risk;Robin bird;Standardization;Structure;success;Suggestion;Supervision;supportive environment;Talents;Testing;Thinking;Time Management;Training;training opportunity;Travel;United States National Institutes of Health;Universities;Update;virtual;Visit;Work
+current_category: infrastructure
+---
+application_id: 11404635
+activity_code: P30
+title: Cancer Research Training and Education Coordination
+org_name: WAYNE STATE UNIVERSITY
+phr: N/A
+terms: Administrative Supplement;anti-cancer research;Area;Award;Awareness;Cancer Biology;cancer care;cancer education;cancer initiation;career;career development;Career Mobility;career networking;Catchment Area;Clinical;clinical care;Collaborations;Communities;community engagement;Community Health;Community Health Care;Community Outreach;Comprehensive Cancer Center;continuing medical education;Dedications;Development;Direct Costs;early onset;Education;Educational process of instructing;Educational workshop;effectiveness evaluation;Endometrial Carcinoma;Enrollment;Ensure;environmental stressor;Event;Faculty;Fellowship;Fostering;Foundations;Funding;Funding Mechanisms;Future;Gerontology;Goals;graduate student;Health Personnel;Health Professional;high school;High School Student;Infrastructure;Internships;Leadership;leadership development;Malignant Neoplasms;Medical;medical schools;Medical Students;member;Mentors;Molecular Genetics;Molecular Medicine;next generation;novel;Orphan Drugs;Patient Care;Physics;Policies;Postdoctoral Fellow;programs;recruit;Reproducibility;Research;Research Personnel;Resources;response;Schools;Services;skills;Solid;Students;success;symposium;tenure track;Training;Training Activity;Training and Education;Training Programs;training project;Training Support;Translational Research;undergraduate student;United States National Institutes of Health;Universities;Update;Work
+current_category: infrastructure
+---
+application_id: 11004156
+activity_code: U19
+title: Immune and metabolic correlates of Coccidioides disease spectrum and outcomes
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Acute;Antibodies;Bacterial Infections;Biological Markers;biosignature;Blood specimen;Body Fluids;Cell Physiology;Cerebrospinal Fluid;Chronic lung disease;Clinical;Clinical assessments;clinical care;Coccidioides;Coccidioidomycosis;cohort;Data;Data Analyses;Databases;desert fever;Development;Diagnostic;Disease;Disease Outcome;Disease Progression;Disease susceptibility;Enrollment;Eosinophilia;Epitope Mapping;experience;Failure;Future;Goals;high risk;Immune;Immune response;Immune System Diseases;Immunity;Immunologics;Impairment;In Vitro;in vivo;Individual;Infection;Integration Host Factors;Interdisciplinary Study;Investigation;Knowledge;Laboratories;lung development;Lung Diseases;Macrophage;Maps;Measurement;Measures;Meningitis;Metabolic;Metabolic dysfunction;Metabolic Pathway;metabolomics;Molecular;Monitor;Morbidity - disease rate;mortality;mouse model;mutant;Newly Diagnosed;Outcome;pathogen;Pathogenesis;Pathogenicity;Pathway interactions;Patients;peripheral blood;Persons;process evaluation;prognostic;Prospective Studies;Pulmonary Pathology;repository;research clinical testing;Resources;Role;sample collection;Sampling;Severities;Severity of illness;Stream;Symptoms;T cell response;targeted treatment;Therapeutic;therapeutic target;transcriptomics;Treatment Failure;Virus Diseases
+current_category: basic_research
+---
+application_id: 10907746
+activity_code: U54
+title: Career Enhancement Program
+org_name: INDIANA UNIVERSITY INDIANAPOLIS
+phr: PROJECT NARRATIVE – CAREER ENCHANCEMENT PROGRAM The Developmental and HyperActive Ras Tumor (DHART) SPORE Career Enhancement Program (CEP) supports faculty at the Instructor and Assistant Professor levels to engage in translational research focused on developing treatments for tumors characterized by mutations in NF1. The CEP recruits early stage investigators, with a special emphasis on recruiting underrepresented minority investigators, and provides financial and scientific support (via core e
+terms: Acceleration;Address;anti-cancer research;Area;Award;Basic Science;California;Cancer Biology;Cancer Center;cancer therapy;career;career development;Career Mobility;Child;Clinical;Clinical Investigator;clinical outcome assessment;Clinical Sciences;clinical translation;Collaborations;Communication;Communities;Data;Dedications;design;Development;developmental disease;disability;Discipline;Disease;early-career faculty;Education;effective therapy;efficacy validation;Ensure;Ethnic Origin;Extramural Activities;Faculty;faculty support;Feedback;Foundations;Funding;Funding Opportunities;Future;Goals;Health Sciences;Historically Black Colleges and Universities;Human;Human Development;hyperactive Ras;Indiana;Individual;Infrastructure;innovation;Institution;instructor;International;Knowledge;Leadership;Link;Malignant Neoplasms;meetings;member;Memorial Sloan-Kettering Cancer Center;Mentors;Mentorship;minority investigator;Mission;Monitor;Mutation;National Cancer Institute;Nature;neoplasm therapy;neuro-oncology;Neurofibromatoses;next generation;NF1 gene;NF1 mutation;Pathology;Pediatric Hospitals;Pediatric Oncology;Pediatric Oncology Group;pharmacokinetics and pharmacodynamics;Philadelphia;Pre-Clinical Model;preclinical study;Process;Professional Organizations;professor;Program Development;programs;Race;recruit;Request for Applications;Research;Research Personnel;Resources;Role;San Francisco;Schedule;Science;Scientist;senior faculty;Sex Orientation;Signal Transduction;Site;skills;Societies;Structure;success;Talents;Texas;Textiles;Therapeutic;Therapeutic Trials;Training;Training Programs;Translational Research;translational scientist;tumor;Underrepresented Minority;Underrepresented Populations;Universities;Work
+current_category: therapeutics
+---
+application_id: 10893147
+activity_code: P2C
+title: Dev-Core-001
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: N/A
+terms: Address;aging population;Area;behavioral economics;career;Child Development;cognitive development;Collaborations;Communities;data centers;Dedications;Demography;Development;Education;Educational workshop;Endowment;Environment;environmental change;Ethnic Origin;Event;Fertility;Financial Support;Fostering;Funding;Gerontology;Goals;Grant;Growth;Health;Human;Inequality;innovation;Interdisciplinary Study;Internal Migrations;International;International Migrations;Life Cycle Stages;Link;Mentors;Methods;mid-career faculty;Mission;mortality;next generation;outreach;Peer Review;Personal Satisfaction;Philadelphia;Population;Population Dynamics;Population Heterogeneity;Population Research;Population Sciences;Population Study;Postdoctoral Fellow;Production;Productivity;Program Evaluation;programs;Public Policy;Race;recruit;Reproductive Health;Research;Research Personnel;Research Project Grants;Resource Sharing;Resources;Scientist;Services;Social Mobility;Source;Structure;symposium;Universities;Urbanization;Writing
+current_category: infrastructure

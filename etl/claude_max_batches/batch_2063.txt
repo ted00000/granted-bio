@@ -1,0 +1,440 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 11128442
+activity_code: T32
+title: Training grant in hemostasis and thrombosis
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: PROJECT NARRATIVE
+For over 20 years this T32 training grant has supported pre- and post-doctoral trainees interested in
+hemostasis and thrombosis, areas with great clinical importance as heart attacks and strokes remain the
+number one cause of mortality in the western world. We are requesting renewal to maintain our rich history of
+mentoring in this space which is supported by an extra-ordinarily strong environment with an interactive and
+dedicated group of innovative and experienced faculty mem
+terms: <Grant><Hemostasis><Hemostatic function><Thrombosis><Training><thrombotic disease><thrombotic disorder>
+current_category: training
+---
+application_id: 10851670
+activity_code: R34
+title: Treating Respiratory Emergencies in Children (T-RECS) Feasibility Study
+org_name: OREGON HEALTH & SCIENCE UNIVERSITY
+phr: Over 200,000 children have a 911 Emergency Medical Services (EMS) activation for respiratory distress each year, most of whom have acute wheezing. Early treatment in the prehospital setting could more rapidly relieve respiratory distress symptoms, prevent hypoxia, reduce invasive interventions, and reduce the need to be hospitalized, thereby facilitating earlier return to normal daily activities. This proposal is for a pilot trial that implements ipratropium and dexamethasone into a prehospital 
+terms: 2 year old;911 call;acceptability and feasibility;Accident and Emergency department;Acute;Address;Admission activity;Adrenal Cortex Hormones;Advisory Committees;aged;Albuterol;Applied Research;Area;Asthma;care systems;Child;Child health care;Childhood Asthma;Clinical;Clinical Trials;Community Hospitals;Data;design;Dexamethasone;Diagnosis;Early treatment;Effectiveness;Emergency Care;Emergency medical service;Emergency Situation;Ensure;Environment;evidence base;Feasibility Studies;Feedback;Goals;Health;hospital admission rate;Hospitalization;Hospitals;Hybrids;Hypoxia;implementation evaluation;implementation intervention;improved;Inhalation;innovation;interest;Intervention;Intravenous;Ipratropium;Methods;Methylprednisolone;metropolitan;Modeling;Needles;neglect;Oral;Oral Administration;Outcome;Outcome Measure;Paramedical Personnel;participant enrollment;Patient-Focused Outcomes;Patients;pediatric emergency;Pediatric Research;Pharmaceutical Preparations;Phenotype;Pilot Projects;pilot trial;Pre-hospital setting;Pre-hospitalization care;prevent;Protocols documentation;Provider;randomized trial;Reach, Effectiveness, Adoption, Implementation, and Maintenance;Recommendation;Recording of previous events;Research;Research Infrastructure;Resources;respiratory;Respiratory distress;Respiratory Signs and Symptoms;Safety;service organization;service providers;Signs and Symptoms;Site;standard of care;Structure;study population;Surveys;Symptoms;System;Time;Training;Treatment Protocols;treatment risk;treatment services;United States National Institutes of Health;Wheezing
+current_category: therapeutics
+---
+application_id: 10886725
+activity_code: R43
+title: Simple, Home-use, neurostimulAtion tReatment for Parkinson's disease dEmeNtia (SHARPEN)
+org_name: SCION NEUROSTIM, LLC
+phr: PROJECT NARRATIVE Parkinson’s disease dementia has very limited therapeutic options, and current treatments for motor symptoms associated with Parkinson’s disease can worsen dementia symptoms. Data from early clinical studies showed that treatments with a new non-invasive, home-use medical device improved cognition in Parkinson’s disease patients, and therefore, may address a significant unmet need. This study will examine the effect of device treatment on cognition in individuals with Parkinson
+terms: Address;Adherence;adherence rate;Adjuvant Therapy;Adult;Adverse event;Affect;aged;arm;associated symptom;blind;Bradykinesia;Brain;Brain Stem;Caregivers;Cell Nucleus;Clinic;Clinical;clinical development;clinical diagnosis;clinical outcome measures;Clinical Research;Clinical Trials;Cognition;Cognitive;cognitive function;cognitive performance;cognitive testing;Data;Data Analyses;Deep Brain Stimulation;Dementia;design;Devices;Diagnostic;Diagnostic Procedure;Dose Limiting;Double-Blind Method;Economics;Enrollment;Equilibrium;External auditory canal;External Ear;FDA approved;Functional disorder;gastrointestinal;Home;Impaired cognition;improved;Individual;Intention;Kinetics;Levodopa;lifetime risk;Medical Device;Memory;mild cognitive impairment;Moods;Morbidity - disease rate;mortality;Motor;motor deficit;motor function improvement;motor impairment;motor symptom;Neurodegenerative Disorders;Neurons;non-demented;non-motor symptom;novel;novel therapeutics;Organ;Parkinson Disease;Parkinson&apos;s Dementia;Parkinsonian Disorders;Participant;Patient Outcomes Assessments;Patients;Personal Satisfaction;Persons;Phase;Placebos;Population;Probability;Protocols documentation;Quality of life;Randomized, Controlled Trials;Regulation;Reporting;response;Rest Tremor;retention rate;Risk;rivastigmine;Safety;safety and feasibility;Self Administration;side effect;Signs and Symptoms;Site;Sleep;solid state;Standardization;Stimulus;success;Symptoms;Testing;Therapeutic;Time;TNM;treatment adherence;treatment comparison;treatment duration;urinary;Vestibular nucleus structure;vestibular system;Visit
+current_category: therapeutics
+---
+application_id: 11212550
+activity_code: R01
+title: Understanding and targeting mutant splicing factors in pancreatic cancer
+org_name: YALE UNIVERSITY
+phr: PROJECT NARRATIVE
+This project is relevant to public health because identifying mutations that drive pancreatic cancer could reveal
+novel targets to treat this deadly and currently therapeutic-resistant disease. We recently identified a group of
+mutations related to RNA splicing that can be blocked with both existing and emerging therapies that impede
+tumor growth and extend survival in animal models. In the proposed work we will 1) determine the role of these
+mutations in driving pancreatic can
+terms: <Animal Model><Animal Models and Related Studies><Antioncogene Protein p53><Automobile Driving><Biotech><Biotechnology><C-K-RAS><CRISPR><CRISPR/Cas system><Cancer Patient><Cancers><Cell Body><Cell Communication and Signaling><Cell Growth in Number><Cell Line><Cell Multiplication><Cell Proliferation><Cell Signaling><Cell Survival><Cell Viability><CellLine><Cells><Cellular Proliferation><Cellular Tumor Antigen P53><Cessation of life><Clustered Regularly Interspaced Short Palindromic Repeats><DNA mutation><Death><Defect><Development><Disease Resistance><Drugs><Event><Frequencies><Future><GEM model><GEMM model><Gene Transcription><Genetic><Genetic Change><Genetic Transcription><Genetic defect><Genetic mutation><Genetically Engineered Mouse><Genomics><Genotype><Goals><Histologic><Histologically><In Vitro><Intracellular Communication and Signaling><Isoforms><K-RAS2A><K-RAS2B><K-Ras><K-Ras 2A><K-Ras-2 Oncogene><KRAS><KRAS driven oncogenesis><KRAS oncogenesis><KRAS-driven tumorigenesis><KRAS-mediated tumorigenesis><KRAS2><KRAS2 gene><Ki-RAS><Knowledge><Lead><Link><Malignant Neoplasms><Malignant Pancreatic Neoplasm><Malignant Tumor><Malignant neoplasm of pancreas><Measures><Mediating><Medication><Messenger RNA><Methods><Mice><Mice Mammals><Mission><Modality><Modeling><Molecular><Monitor><Murine><Mus><Mutation><Oligo><Oligonucleotides><Oncogene K-Ras><Oncogene Products><Oncogene Proteins><Oncogenesis><Oncogenic><Oncoprotein p53><Oncoproteins><Outcome><P53><PDAC cancer cell><PDAC cell><Pancreas><Pancreas Cancer><Pancreas Ductal Adenocarcinoma><Pancreatic><Pancreatic Cancer><Pancreatic Ductal Adenocarcinoma><Pathogenesis><Pathway interactions><Patient outcome><Patient-Centered Outcomes><Patient-Focused Outcomes><Patients><Pb element><Pharmaceutical Preparations><Pharmacogenomics><Phenocopy><Phosphoprotein P53><Phosphoprotein pp53><Play><Pre-Clinical Model><Precision therapeutics><Preclinical Models><Predisposition><Protein Isoforms><Protein TP53><Public Health><RASK2><RNA Expression><RNA Seq><RNA Splicing><RNA sequencing><RNAseq><Research><Resistance><Role><Sampling><Scientific Advances and Accomplishments><Signal Transduction><Signal Transduction Systems><Signaling><Spliceosomes><Splicing><Strains Cell Lines><Study models><Susceptibility><TP53><TP53 gene><TRP53><Testing><Therapeutic><Therapeutically Targetable><Transcription><Treatment Efficacy><Tumor Protein p53><Tumor Protein p53 Gene><Tumorigenicity><Work><biological signal transduction><chemotherapeutic agent><chemotherapeutic compounds><chemotherapeutic drugs><chemotherapeutic medications><clinical investigation><cultured cell line><design><designing><develop therapy><developmental><driver lesion><driver mutation><driving><drug sensitivity><drug/agent><expression subtypes><gain of function><gain of function mutation><genetically engineered mouse model><genetically engineered murine model><genome mutation><global gene expression><global transcription profile><heavy metal Pb><heavy metal lead><improved><in vivo><inhibitor><innovate><innovation><innovative><intervention development><intervention efficacy><loss of function><mRNA><malignancy><model of animal><molecular sub-types><molecular subsets><molecular subtypes><mouse model><murine model><mutant><neoplasm/cancer><new drug target><new drug treatments><new druggable target><new drugs><new pharmacological therapeutic><new pharmacotherapy target><new therapeutic target><new therapeutics><new therapy><new therapy target><next generation therapeutics><novel><novel drug target><novel drug treatments><novel druggable target><novel drugs><novel pharmaco-therapeutic><novel pharmacological therapeutic><novel pharmacotherapy target><novel therapeutic target><novel therapeutics><novel therapy><novel therapy target><oligos><oncogenic KRAS><p53 Antigen><p53 Genes><p53 Tumor Suppressor><pancreatic cancer patients><pancreatic ductal adenocarcinoma cell><pancreatic malignancy><pathway><patient oriented outcomes><patients with pancreatic cancer><personalization of treatment><personalized medicine><personalized therapy><personalized treatment><precision therapies><precision treatment><protein p53><refractory cancer><resistance to disease><resistance to therapy><resistant><resistant cancer><resistant disease><resistant to disease><resistant to therapy><response><response to therapy><response to treatment><scientific accomplishments><scientific advances><screening><screenings><small molecular inhibitor><small molecule><small molecule inhibitor><social role><synergism><synthetic lethal interaction><synthetic lethality><targeted drug therapy><targeted drug treatments><targeted therapeutic><targeted therapeutic agents><targeted therapy><targeted treatment><therapeutic efficacy><therapeutic outcome><therapeutic resistance><therapeutic response><therapeutic target><therapy development><therapy efficacy><therapy outcome><therapy resistant><therapy response><transcriptome><transcriptome sequencing><transcriptomic sequencing><treatment development><treatment resistance><treatment response><treatment responsiveness><tumor><tumor growth><tumorigenesis><tumorigenic><ultrasound><v-Ki-RAS2 Kirsten Rat Sarcoma 2 Viral Oncogene Homolog>
+current_category: therapeutics
+---
+application_id: 11252276
+activity_code: R35
+title: Materials and Macromolecules Tailored for Micro and Nanoscale Organic Synthesis
+org_name: WAYNE STATE UNIVERSITY
+phr: Public Health Relevance
+This proposal aims develop new materials and macromolecules that are compatible with modern approaches
+in organic synthesis. By addressing limitations of current systems, this work stands to (i) expand the scope of
+accessible molecules for potential application in pharmaceuticals and (ii) accelerate the identification of important
+molecules and (iii) lower the cost of pharmaceutical drugs to the public.
+terms: <Acceleration><Address><Assay><Benchmarking><Best Practice Analysis><Bioassay><Biological Assay><Biology><Carbon><Catalysis><Chemicals><Coupling><Development><Drugs><Engineering><Exclusion><Goals><H-bond><Health><Human><Hydrogen Bonding><Lead><Liquid substance><Medication><Metals><Modern Man><Modernization><Organic Chemistry><Organic Synthesis><Pb element><Pharmaceutical Agent><Pharmaceutical Preparations><Pharmaceuticals><Pharmacologic Substance><Pharmacological Substance><Process><Property><Reaction><Reagent><Research><Site><Suspension substance><Suspensions><System><Work><analog><base><bases><benchmark><catalyst><cost><cytotoxic><design><designing><developmental><drug/agent><experiment><experimental research><experimental study><experiments><fluid><heavy metal Pb><heavy metal lead><innovate><innovation><innovative><liquid><macromolecule><molecular decomposition><nano meter scale><nano meter sized><nanometer scale><nanometer sized><nanoscale><pharmaceutical><public health relevance><tool>
+current_category: biotools
+---
+application_id: 10851686
+activity_code: R34
+title: Voltage dynamics of distinct cortical ensembles in visually guided behavior
+org_name: UNIVERSITY OF MINNESOTA
+phr: PROJECT NARRATIVE
+To dissect the functional roles of distinct neuron-types in animal perception and behavior, targeted recording
+techniques that operate at the physiologically relevant spatiotemporal scales should complement current
+approaches of functional manipulation. Here, we propose to use our new suite of genetically encoded
+fluorescent voltage indicators for concurrent, high-speed, multipopulation recordings to understand the role of
+distinct visual cortical interneuron-types in attention
+terms: <Address><Affect><Animals><Attention><BRAIN initiative><Behavior><Behavioral><Brain><Brain Nervous System><Brain Research through Advancing Innovative Neurotechnologies initiative><Cell Body><Cells><Classification><Complement><Complement Proteins><Computer software><Connector Neuron><Cues><Encephalon><FRET><Fluorescence><Fluorescence Resonance Energy Transfer><Funding><Förster Resonance Energy Transfer><Generations><Genetic><Goals><Illumination><Image><Individual><Intercalary Neuron><Intercalated Neurons><Interneurons><Internuncial Cell><Internuncial Neuron><Lighting><Maps><Measures><Methods><Mice><Mice Mammals><Modality><Modeling><Morphology><Msec><Murine><Mus><Nerve Cells><Nerve Unit><Neural Cell><Neural Pathways><Neurocyte><Neurons><Neurophysiology - biologic function><Neurosciences><Opsin><Optics><Pattern><Perception><Physiologic><Physiological><Population><Population Heterogeneity><Primary visual cortex><Primates><Primates Mammals><Property><Pyramidal Cells><Pyramidal neuron><Reporting><Research><Resolution><Rod-Opsin><Rodent><Rodentia><Rodents Mammals><Role><Running><Sensory><Software><Speed><Stimulus><Striate Cortex><Striate area><Structure><Systematics><Techniques><Testing><Time><Variant><Variation><Visual><Visual Cortex><Visual attention><Work><area striata><attention modulation><attentional modulation><awake><behavior outcome><behavioral outcome><cellular targeting><complementation><diverse populations><electrical property><experiment><experimental research><experimental study><experiments><heterogeneous population><hippocampal pyramidal neuron><image-based method><imaging><imaging method><imaging modality><indexing><insight><instrumentation><meter><millisecond><neural function><neuronal><optical><optogenetics><population diversity><postsynaptic><resolutions><response><selective attention><social role><spatiotemporal><tool><transcriptomics><visual cortical><visual process><visual processing><voltage>
+current_category: basic_research
+---
+application_id: 10840452
+activity_code: R01
+title: Antigenic and virological traits of HIV-1 breakthrough infections in the VRC01 antibody-mediated prevention Phase 2b trial in sub-Saharan Africa
+org_name: UNIVERSITY OF CAPE TOWN
+phr: Narrative: Despite the discovery of new prevention tools, and the expansion of treatment, HIV-1 continues to
+spread. With no effective HIV-1 vaccine available, the passive administration of broadly neutralizing antibodies
+(bNAbs) for prevention is a promising alternative. This project aims to utilize samples from the first proof-of-
+concept antibody-mediated prevention (AMP) study in Africa to gain a deeper understanding of how HIV-1
+diversity might affect prevention efficacy and to determine th
+terms: <AIDS Virus><AIDS prevention><Acquired Immune Deficiency Syndrome Virus><Acquired Immunodeficiency Syndrome Virus><Active Immunization><Active vaccination><Address><Affect><Africa><Africa South of the Sahara><African><Amino Acids><Ancillary Study><Antibodies><Approaches to prevention><Assay><Attenuated><Binding Sites><Bioassay><Biological Assay><Blood Serum><CD4 Lymphocyte Count><CD4+ Cell Counts><CD4+ Counts><Chimera><Chimera organism><Clinical><Clinical Markers><Clinical Trials><Collaborations><Combining Site><Communicable Diseases><Complex><Consensus><Data><Data Coordinating Center><Data Coordination Center><Effectiveness><Envelope Protein><Epidemic><Event><Failure><Fred Hutchinson Cancer Research Center><Future><Genetic Alteration><Genetic Change><Genetic Determinism><Genetic Diversity><Genetic Predisposition><Genetic Predisposition to Disease><Genetic Susceptibility><Genetic Variation><Genetic defect><Genetic propensity><Genotype><Goals><HIV><HIV Infections><HIV Prevention><HIV Vaccine Trials Network><HIV-1><HIV-1 vaccine><HIV-I><HIV/AIDS prevention><HIV1><HIV1 vaccine><HTLV-III Infections><HTLV-III-LAV Infections><HVTN><Human Immunodeficiency Virus Type 1><Human Immunodeficiency Viruses><Human T-Lymphotropic Virus Type III Infections><Human immunodeficiency virus 1><Immune Evasion><Immunization><Infection><Infection prevention><Infectious Disease Pathway><Infectious Diseases><Infectious Disorder><Infusion><Infusion procedures><Inherited Predisposition><Inherited Susceptibility><Institution><Investigation><Investigators><Kinetics><LAV-HTLV-III><Laboratories><Lymphadenopathy-Associated Virus><Measures><Mediating><Mutation><Natural Resistance><Outcome><PBMC><Parents><Passive Immunization><Pathogenesis><Peripheral Blood Mononuclear Cell><Phase><Phenotype><Predisposition><Prevent infection><Prevention><Prevention approach><Prevention trial><Preventive><Protocol><Protocols documentation><Reactive Site><Research Personnel><Researchers><Resistance><Safety><Sampling><Science><Seminal><Serum><Site><South Africa><South African><Standardization><Sub-Saharan Africa><Subsaharan Africa><Susceptibility><T4 Lymphocyte Count><Testing><Training><Transmission><Underrepresented Groups><Underrepresented Populations><Universities><Update><Vaccines><Validation><Viral><Viral Burden><Viral Genetics><Viral Load><Viral Load result><Virus><Virus-HIV><Woman><access to vaccination><access to vaccines><aminoacid><arm><attenuate><attenuates><breakthrough infection><case control><case-controlled><chimeras><cost><data management and coordinating center><data management center><env Antigens><env Gene Products><env Polyproteins><env Protein><fitness><flexibility><flexible><genetic determinant><genetic etiology><genetic mechanism of disease><genetic predictors><genetic resistance><genetic vulnerability><genetically predisposed><genome mutation><immune evasive><improved><in silico><infection rate><infusions><insight><member><mutant><naturally resistant><neutralizing antibody><next generation><novel><parent><passive vaccination><pressure><programs><rate of infection><resistant><secondary analysis><tool><trait><transmission process><under representation of groups><under represented groups><under represented people><under represented populations><underrepresentation of groups><underrepresented people><vaccination access><vaccination availability><vaccine access><vaccine availability><validations><viral fitness><viral transmission><virus genetics><virus transmission>
+current_category: therapeutics
+---
+application_id: 10808962
+activity_code: U34
+title: Transplantation of Discarded Livers Following Normothermic Machine Perfusion: A Multicenter RESTORE Trial
+org_name: WASHINGTON UNIVERSITY
+phr: NARRATIVE This clinical trial will demonstrate the safety and feasibility of transplanting previously discarded sub-optimal livers after improving the liver using a machine perfusion. This new method will increase the number of transplantable livers and help to reduce organ shortage. This study will benefit all patients awaiting life-saving liver transplantation.
+terms: Address;Affect;American;arm;Biliary;Blood;Body Temperature;Case Report Form;Clinical Trials;Colorectal;Communities;conditioning;cost;cost-effectiveness evaluation;Data;Death Rate;Dialysis procedure;Donor person;end stage liver disease;endoplasmic reticulum stress;ethnic diversity;experience;FDA approved;Functional disorder;Funding;Goals;graft function;Graft Survival;Health Care Costs;health care service utilization;hemodynamics;hepatocellular injury;Improve Access;improved;Infrastructure;Infusion Pumps;innovation;Intrahepatic Cholangiocarcinoma;Kidney Failure;Knowledge;Life;Liver;Liver diseases;Liver Dysfunction;liver function;liver transplantation;Malignant neoplasm of liver;Manuals;Mediating;Metabolic;Metastatic Neoplasm to the Liver;Methods;mitochondrial dysfunction;Modeling;Monitor;mortality risk;Multicenter Trials;Nutrient;operation;Operative Surgical Procedures;Organ;organ procurement transplantation network;Organ Procurements;Orphan;Outcome;Patients;Perfusion;Pharmaceutical Preparations;Phase;phase I trial;Phenotype;post-transplant;Primary carcinoma of the liver cells;primary outcome;Probability;Protocols documentation;Quality of life;racial diversity;Reporting;Research Design;retransplantation;Safety;safety and feasibility;secondary outcome;Site;Societies;Solid;Surgeon;Techniques;Testing;transplant centers;Transplant Surgeon;Transplantation;Uncertainty;United States Health Resources and Services Administration;usability;Waiting Lists
+current_category: therapeutics
+---
+application_id: 11192002
+activity_code: ZIA
+title: Discovery of single-domain antibodies targeting CD206
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Adopted;Anti-Inflammatory Agents;antimicrobial;Binding;Blood Vessels;CD47 gene;Cells;Generations;Goals;Immune;Immune response;Inflammatory;Innate Immune Response;Macrophage;nanobodies;National Center for Advancing Translational Sciences;neoplastic cell;pathogenic bacteria;Phenotype;programmed cell death ligand 1;programs;response;Therapeutic;Tissues;tumor;Tumor-associated macrophages;wound healing
+current_category: basic_research
+---
+application_id: 11191974
+activity_code: ZIA
+title: Identification of small molecule inhibitors of USP18
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Affect;anti-cancer;Automobile Driving;Basic Science;Binding;Biological Assay;Cells;Complex;Development;drug candidate;Genes;Goals;Health;high throughput screening;Human;Human Genome;Immune;Immune response;Immunity;improved;Inflammatory Response;Interferon alpha;Interferon Type I;Interferons;ISG15 gene;JAK1 gene;Knock-out;Malignant neoplasm of cervix uteri;Malignant neoplasm of lung;Malignant Neoplasms;Messenger RNA;National Center for Advancing Translational Sciences;Oncogenic;pharmacologic;programs;Proteins;Rare Diseases;receptor;Reporting;Research;Role;screening;Signal Transduction;small molecule inhibitor;small molecule libraries;Specificity;T cell differentiation;Testing;tool;Translations;tumor;tumor growth;tumor microenvironment;ubiquitin-specific protease
+current_category: basic_research
+---
+application_id: 11191977
+activity_code: ZIA
+title: Identifying LC3 binders to develop lysosome-targeting chimeras
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Adaptor Signaling Protein;Automobile Driving;Autophagocytosis;Autophagosome;Basic Science;Binding;Binding Sites;Biological Assay;Cells;Chimera organism;Complement;design;drug candidate;Fluorescence Polarization;Health;high throughput screening;Homeostasis;Human;Human Genome;improved;interest;Lysosomes;National Center for Advancing Translational Sciences;novel;Pathway interactions;pharmacologic;programs;Protac;Rare Diseases;receptor;Recycling;Reporter;Reporting;Research;small molecule;Stress;Testing;tool;Translations;virtual screening
+current_category: basic_research
+---
+application_id: 11191969
+activity_code: ZIA
+title: Screening for small molecule degraders of KDM5A & B
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Adopted;Automobile Driving;Basic Science;Biological Assay;Breast Cancer cell line;Cancer Cell Growth;Cell Differentiation process;Cells;Collection;demethylation;Development;drug candidate;drug repurposing;Drug resistance;Drug Screening;Genes;Goals;Health;histone demethylase;Histone H3;Human;Human Genome;improved;in vivo;KDM5B gene;Libraries;Lysine;Malignant Neoplasms;miniaturize;Monitor;National Center for Advancing Translational Sciences;Neoplasm Metastasis;novel;overexpression;pharmacologic;programs;Proteins;Rare Diseases;Reporter;Reporting;Research;screening;small molecule;small molecule inhibitor;Specificity;tool;Translations;tumor growth;Validation;Western Blotting;Work
+current_category: basic_research
+---
+application_id: 11191964
+activity_code: ZIA
+title: Identification of small molecules that improve trafficking of NLGN4X/Y for autism
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: autism spectrum disorder;Automobile Driving;Basic Science;Cell surface;drug candidate;Health;high throughput screening;Human;Human Genome;improved;Investigation;molecular modeling;National Center for Advancing Translational Sciences;novel;pharmacologic;programs;Proteins;Rare Diseases;Reporting;Research;small molecule;Testing;tool;trafficking;Translations;virtual screening;Work
+current_category: basic_research
+---
+application_id: 11191950
+activity_code: ZIA
+title: Screening for B. burgdorferi borreliacidal/borreliastatic compounds
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Antibiotics;Automobile Driving;Basic Science;Biological Assay;Borrelia;Borrelia burgdorferi;cytotoxicity;Diagnosis;Doxycycline;drug candidate;Focal Infection;Health;Human;Human Genome;improved;interest;Luciferases;Lyme Disease;microbial;Miniaturization;National Center for Advancing Translational Sciences;Pathway interactions;Pharmaceutical Preparations;pharmacologic;programs;Rare Diseases;Recombinants;Reporting;Research;Ribosomes;screening;small molecule libraries;standard care;Structure;Tick-Borne Diseases;tool;Translations;Treatment Protocols;United States;Work
+current_category: basic_research
+---
+application_id: 11191949
+activity_code: ZIA
+title: Screening for small molecule inhibitors of B. burgdorferi HtrA
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Antibiotic Therapy;Antibiotics;antimicrobial;Area;assay development;Awareness;Bacteria;Biological Assay;Borrelia;Borrelia burgdorferi;Caseins;Cells;Characteristics;Chronic;Development;Disease;Enzymes;Etiology;experience;extracellular;Fluorescence Resonance Energy Transfer;fluorophore;Genetic Transcription;Growth;Helicobacter pylori;High temperature of physical object;high throughput screening;Homologous Gene;Immune response;Impairment;inhibitor;Label;Literature;Lyme Disease;Molecular Chaperones;Order Spirochaetales;Pathogenesis;Pathogenicity;Patients;Peptides;periplasm;Post Treatment Lyme Disease Syndrome;Prevalence;Protein Family;Proteins;Quality Control;Recombinants;redshift;Reporting;screening;Series;Serine Protease;small molecule;small molecule inhibitor;Specificity;Surface;Testing;Therapeutic Effect;Tick-Borne Diseases;Tissues;tool;Validation;virtual screening;Virulence
+current_category: basic_research
+---
+application_id: 11191923
+activity_code: ZIA
+title: Identification of small molecule inhibitors of USP15
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: beta catenin;Biological Assay;Biological Process;cancer immunotherapy;cancer type;colon cancer cell line;Development;Disease;Eukaryota;Excision;Family;Genes;Glioblastoma;high throughput screening;Human;human disease;in silico;Inflammatory;inhibitor;interest;Knockout Mice;Lead;Machine Learning;Malignant Breast Neoplasm;Malignant neoplasm of ovary;Malignant Neoplasms;Melanoma;mouse model;Neurodegenerative Disorders;NF-kappa B;overexpression;Pathway interactions;Play;Post-Translational Protein Processing;prospective;Proteins;Role;screening;Signal Pathway;small molecule;small molecule inhibitor;Structure;T-Cell Activation;Testing;TP53 gene;Transforming Growth Factor beta;tumorigenesis;Ubiquitin;ubiquitin isopeptidase;ubiquitin-specific protease;Ubiquitination;Virus Diseases;Work
+current_category: basic_research
+---
+application_id: 11191998
+activity_code: ZIA
+title: Identification of inhibitors of the polyamine transporter ATP13A3
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Adopted;Automobile Driving;Basic Science;Biochemical;Biological Assay;cancer clinical trial;Cell membrane;Cell Physiology;Cells;Colorectal;cytotoxic;Diffuse intrinsic pontine glioma;drug candidate;Early Endosome;Endosomes;Goals;Health;high throughput screening;Human;Human Genome;improved;inhibitor;Malignant Neoplasms;National Center for Advancing Translational Sciences;Neuroblastoma;Oncology;Pancreas;Performance;pharmacologic;Play;Polyamines;polycation;programs;Proteins;Putrescine;Rare Diseases;Recycling;Reporting;Research;Role;small molecule;Specificity;Spermidine;Spermine;System;tool;trafficking;Translations;tumorigenic;uptake;Work
+current_category: basic_research
+---
+application_id: 11192008
+activity_code: ZIA
+title: Discovery of single-domain antibodies targeting DGKq
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Automobile Driving;Basic Science;Cryoelectron Microscopy;Diacylglycerol Kinase;Disease;drug candidate;Enzymes;flexibility;Goals;Health;Human;Human body;Human Genome;Image;improved;Methods;Movement;nanobodies;National Center for Advancing Translational Sciences;pharmacologic;Phosphotransferases;programs;Proteins;Rare Diseases;Research;Resolution;Tertiary Protein Structure;tool;Translations
+current_category: basic_research
+---
+application_id: 11192007
+activity_code: ZIA
+title: Discovery of single-domain antibodies targeting Piezo2
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Automobile Driving;Basic Science;Cells;drug candidate;Dysplasia;Goals;Health;Hip region structure;Human;Human Genome;improved;Ion Channel;Molecular Conformation;Movement;Mutation;nanobodies;nanodisk;National Center for Advancing Translational Sciences;pharmacologic;Piezo 2 ion channel;programs;Proteins;Protocols documentation;Rare Diseases;Research;scoliosis;skeletal abnormality;tool;Touch sensation;Translations
+current_category: basic_research
+---
+application_id: 11192006
+activity_code: ZIA
+title: Discovery of single-domain antibodies targeting SMCHD1
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Automobile Driving;Basic Science;Cryoelectron Microscopy;Disease;Disease Progression;drug candidate;Gene Silencing;Goals;Health;Human;Human Genome;Image;improved;Missense Mutation;Muscular Dystrophies;Mutation;nanobodies;National Center for Advancing Translational Sciences;pharmacologic;programs;Proteins;Rare Diseases;Research;Research Personnel;Resolution;Testing;tool;Translations
+current_category: basic_research
+---
+application_id: 11192005
+activity_code: ZIA
+title: Discovery of single-domain antibodies targeting VGLUT
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Automobile Driving;Basic Science;Biological Assay;Carrier Proteins;Cryoelectron Microscopy;deafness;Development;Disease;Drosophila genus;drug candidate;Family;Glutamates;Goals;Health;Human;Human Genome;improved;In Vitro;in vivo;insight;interest;member;Mutation;nanobodies;National Center for Advancing Translational Sciences;Neurons;pharmacologic;programs;Proteins;Rare Diseases;Research;Structure;Synaptic Vesicles;therapeutic development;tool;Translations;Transportation
+current_category: basic_research
+---
+application_id: 11192000
+activity_code: ZIA
+title: Identification of small molecules for PI4K2a BRET measurements 
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: 1-Phosphatidylinositol 4-Kinase;Automobile Driving;Basic Science;Biological Assay;Cell Therapy;Cells;design;Disease;drug candidate;Endosomes;Enzymes;Gaucher Disease;Generations;Health;Human;Human Genome;improved;Lipids;Measurement;Measures;Membrane;Minor;molecular modeling;National Center for Advancing Translational Sciences;novel;Pharmaceutical Chemistry;pharmacologic;phosphatidylinositol 4-phosphate;Phospholipids;Phosphotransferases;PIK3CG gene;programs;Rare Diseases;Research;small molecule;Specificity;Study models;tool;trafficking;Translations
+current_category: basic_research
+---
+application_id: 11191967
+activity_code: ZIA
+title: New approaches for facilitating transcytosis of biologically active molecules
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Antibodies;Automobile Driving;Basic Science;Blood - brain barrier anatomy;Cerebral endothelium;Chemistry;drug candidate;Encapsulated;exosome;Fc domain;Health;Human;Human Genome;improved;Ligands;Methods;National Center for Advancing Translational Sciences;novel strategies;pharmacologic;Phospholipids;Polysaccharides;programs;Rare Diseases;Research;System;tool;transcytosis;Translations;Vesicle
+current_category: basic_research
+---
+application_id: 11191956
+activity_code: ZIA
+title: Identification of ALPK1 inhibitors
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: autoinflammatory diseases;Biochemical;Biological Assay;Blindness;Cells;Disease;Fever;Goals;Gout;Headache;Helicobacter pylori;high throughput screening;Immune;Inflammation;Inflammatory Bowel Diseases;Inherited;Inhibition of NF-KB activation;inhibitor;Lead;Link;Malignant Neoplasms;Monitor;Mutation;Periodicals;Phosphorylation;Phosphotransferases;Recombinants;reduce symptoms;Reporter;Reporter Genes;Reporting;Role;sensor;Signal Transduction;small molecule;small molecule inhibitor;small molecule libraries
+current_category: basic_research
+---
+application_id: 11191959
+activity_code: ZIA
+title: Assay optimization and screening for measuring the kinetics of antibacterial resistance emergence
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Address;Antibiotic Resistance;Bacterial Drug Resistance;Bacterial Infections;Biological Assay;Clinical;Combined Modality Therapy;Drug Combinations;Drug Kinetics;Drug resistance;Fiber;Infection;Kinetics;Liquid substance;Measures;miniaturize;Modeling;National Center for Advancing Translational Sciences;Pharmaceutical Preparations;Public Health;response;screening;System
+current_category: basic_research
+---
+application_id: 11191976
+activity_code: ZIA
+title: Cytotoxicity profiling of Genesis library in A673 and Jurkat cells
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: anti-cancer;Biological Assay;Bortezomib;Cell Line;cellular targeting;Collaborations;Collection;cytotoxic;cytotoxicity;drug discovery;Ewings sarcoma;FDA approved;Follow-Up Studies;high throughput screening;Jurkat Cells;lactacystin;Libraries;Malignant Neoplasms;multicatalytic endopeptidase complex;National Center for Advancing Translational Sciences;new therapeutic target;Pharmaceutical Preparations;screening;small molecule;small molecule libraries;Source;Technology;Testing;Universities;Work
+current_category: basic_research
+---
+application_id: 11191965
+activity_code: ZIA
+title: Identification of small molecule degraders of XPB for inflammatory diseases
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Affinity;Automobile Driving;Basic Science;cytokine;Disease;drug candidate;ERCC3 gene;Health;high throughput screening;Human;Human Genome;improved;Inflammatory;interest;Methods;National Center for Advancing Translational Sciences;Nuclear Protein;pharmacologic;Phenocopy;Production;programs;Proteins;Proteomics;Rare Diseases;Research;screening;small molecule;Spironolactone;tool;Translations
+current_category: basic_research
+---
+application_id: 11191973
+activity_code: ZIA
+title: Development of inhibitors of RIOK3 for sickle cell anemia
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Binding;Biological Assay;Biophysics;Bone Marrow Transplantation;Development;Disease;Fetal Hemoglobin;Future;high throughput screening;inhibitor;Laboratories;Length;Methods;new therapeutic target;Phosphotransferases;Production;Proteins;Protocols documentation;Reporting;Sickle Cell Anemia;Treatment Cost;Work
+current_category: basic_research
+---
+application_id: 11191961
+activity_code: ZIA
+title: Identification of small molecule inhibitors of Pseudomonas aeruginosa lipoxygease (pLOXA)-induced ferroptosis
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Automobile Driving;Basic Science;Biological Assay;Cells;Cessation of life;drug candidate;Health;Human;Human Genome;improved;Lipoxygenase;National Center for Advancing Translational Sciences;new therapeutic target;pathogenic bacteria;pharmacologic;Polyunsaturated Fatty Acids;programs;Pseudomonas aeruginosa;Rare Diseases;Research;screening;small molecule inhibitor;Theft;tool;Translations;Work
+current_category: basic_research
+---
+application_id: 11191968
+activity_code: ZIA
+title: Screening for small molecule modulators of SCFbTrCP ubiquitin ligase complex
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Adopted;Biological Assay;cancer type;Cell Physiology;Cells;Collection;Complex;Development;Disease;drug repurposing;Drug Screening;Family member;Goals;high throughput screening;Libraries;Mediating;miniaturize;Monitor;multicatalytic endopeptidase complex;nanoluciferase;National Center for Advancing Translational Sciences;Play;Protein Family;Proteins;Publications;Reporter;Reporting;Role;screening;Signal Transduction;small molecule;Triage;ubiquitin ligase;ubiquitin-protein ligase;Validation
+current_category: basic_research
+---
+application_id: 11191931
+activity_code: ZIA
+title: qHTS to Identify Small Molecule GUS Inhibitors
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Bacteria;Beta-glucuronidase;Biochemical;Biological Assay;Cells;Chemicals;Disease;Dose Limiting;Drug toxicity;Enzymes;Exhibits;follow-up;high throughput screening;Homology Modeling;in vitro Assay;inhibitor;Lead;microbiome;miniaturize;National Center for Advancing Translational Sciences;novel;Orthologous Gene;Pharmaceutical Chemistry;Pharmaceutical Preparations;Powder dose form;programs;Series;small molecule;small molecule libraries;Therapeutic;Toxic effect;Validation;virtual screening
+current_category: basic_research
+---
+application_id: 11191945
+activity_code: ZIA
+title: High-throughput screening to identify modulators of PKD2 function
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Automobile Driving;Autosomal Dominant Polycystic Kidney;Basic Science;Cations;Cell membrane;disease-causing mutation;drug candidate;Health;high throughput screening;Human;Human Genome;improved;Integral Membrane Protein;molecular modeling;Mutation;National Center for Advancing Translational Sciences;novel;pharmacologic;polycystic kidney disease 1 protein;programs;Rare Diseases;Research;Testing;tool;Translations;virtual screening
+current_category: basic_research
+---
+application_id: 11191936
+activity_code: ZIA
+title: Selective targeting of immune-specific glucocorticoid-sensitive genes
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Affect;Anti-Inflammatory Agents;Antiinflammatory Effect;Autoimmune Diseases;Automobile Driving;Basic Science;Biological Assay;Body System;cell immortalization;Cell Line;cell type;Cells;Chromosome Mapping;Clinical;Development;Dose Limiting;drug candidate;Drug Prescriptions;Engineering;Exposure to;Gene Expression Profiling;Generations;Genes;Genomics;Glucocorticoids;Goals;Health;healthy volunteer;high throughput screening;Human;Human Genome;Immune;Immune Targeting;Immunosuppression;improved;In Vitro;in vivo Model;Inflammatory;Measures;mimetics;Molecular;monocyte;nanobodies;National Center for Advancing Translational Sciences;novel drug class;Pathway interactions;Performance;Pharmaceutical Preparations;pharmacologic;Production;programs;Protocols documentation;Rare Diseases;Reporter;Reporting;Reproducibility;Research;response;side effect;small molecule;Testing;tool;transcriptome sequencing;Translations;Work
+current_category: basic_research
+---
+application_id: 11191999
+activity_code: ZIA
+title: Targeting MSUT2 binding to polyA mRNA for Alzheimer's disease
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Adopted;Alzheimer&apos;s Disease;Alzheimer&apos;s disease patient;Alzheimer&apos;s disease related dementia;Amyloid;antagonist;Automobile Driving;Basic Science;Binding;Biological Assay;Brain;Cognitive;Dementia;Deposition;Development;Disease;drug candidate;Excision;Goals;Health;high throughput screening;Human;Human Genome;immunotherapy clinical trials;improved;Intervention;Measures;Messenger RNA;miniaturize;National Center for Advancing Translational Sciences;Neurons;Pathologic;Pathology;pharmacologic;Poly(A)+ RNA;Polyadenylation;Predisposition;preservation;programs;Property;Rare Diseases;Research;RNA Binding;Severities;small molecule;small molecule inhibitor;targeted treatment;tau Proteins;Tauopathies;Therapeutic;therapeutic effectiveness;tool;Toxic effect;Translations;Work
+current_category: basic_research
+---
+application_id: 11191972
+activity_code: ZIA
+title: Development of inhibitors of biliverdin reductase for toxic hyperbilirubinemia
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Affect;Bilirubin;Biliverdin reductase;Biliverdine;Binding;Biochemical;Biological Assay;Biophysics;Catabolism;Characteristics;Crigler-Najjar Syndrome;Development;DNA;Heme;high throughput screening;Hyperbilirubinemia;in vivo;inhibitor;Libraries;Neuronal Dysfunction;Newborn Infant;novel;Pharmaceutical Preparations;Production;Proteins;Reporting;screening;Serum;Services;virtual screening
+current_category: basic_research
+---
+application_id: 11191975
+activity_code: ZIA
+title: Identification and development of a small molecule probe for HNMT
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Binding;Biological Availability;Biological Process;Clinic;Collection;Crystallization;Development;Drug Design;Histamine;improved;inhibitor;methyl group;Methyltransferase;Norepinephrine;Oral;Pharmaceutical Chemistry;Pharmaceutical Preparations;Play;Property;Rare Diseases;Reporting;Roentgen Rays;S-Adenosylhomocysteine;S-Adenosylmethionine;Series;Signal Pathway;small molecule;Structure;therapeutic candidate;Transferase;Work
+current_category: basic_research
+---
+application_id: 11191958
+activity_code: ZIA
+title: Identification and development of a small molecule probe for GNMT
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Binding;Biochemical;Biological Assay;Biological Process;Chemicals;Clinic;Collection;Complex;Development;Docking;Enzyme Inhibitor Drugs;enzyme substrate;Epigenetic Process;Histamine;Individual;inhibitor;methyl group;Methyltransferase;Norepinephrine;novel;Pharmaceutical Chemistry;Play;protein structure;Rare Diseases;S-Adenosylhomocysteine;S-Adenosylmethionine;Signal Pathway;simulation;small molecule;small molecule inhibitor;small molecule libraries;Structure;therapeutic candidate;virtual;Work
+current_category: basic_research
+---
+application_id: 11191971
+activity_code: ZIA
+title: Screening for drugs that mobilize ATG9A from the Golgi as a potential therapy for SPG type 47, 50, 51 and 52 diseases
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Alzheimer&apos;s Disease;Amyotrophic Lateral Sclerosis;Autophagocytosis;Biological Assay;Cells;Cluster Analysis;Disease;Drug Screening;Golgi Apparatus;Neurodegenerative Disorders;Parkinson Disease;Pathway interactions;Property;protein aggregation;screening;small molecule;Spastic Paraplegia;Syndrome
+current_category: basic_research
+---
+application_id: 11191966
+activity_code: ZIA
+title: Characterizing molecular interactomes using TurboID
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Automobile Driving;Basic Science;Behavior;Biotin;Biotinylation;Dasatinib;drug candidate;Extramural Activities;Health;Human;Human Genome;improved;Label;Ligase;Mass Spectrum Analysis;Methods;Methotrexate;Molecular;National Center for Advancing Translational Sciences;pharmacologic;programs;Proteins;Rare Diseases;Research;small molecule;System;tool;Translations
+current_category: basic_research
+---
+application_id: 11191962
+activity_code: ZIA
+title: Development of a HT-ATACseq assay to identify epigenetic regulators of Ewing Sarcoma cancer cells (Chemical Biology Consortium/NCI Experimental Therapeutics Collaboration)
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Biological Assay;Biology;cancer cell;Cells;Chemicals;Chromatin;Collaborations;Collection;cost effective;Development;Dose;Enzymes;Epigenetic Process;Ewings sarcoma;Goals;high throughput screening;Investigational Therapies;Measures;National Center for Advancing Translational Sciences;Pattern;Research;response;screening;small molecule;Testing
+current_category: basic_research
+---
+application_id: 11191957
+activity_code: ZIA
+title: HTS screening and identification of HIV-Tat antagonists
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: antagonist;Anti-Retroviral Agents;Biological Assay;brain tissue;Cells;Cerebrospinal Fluid;Combined Modality Therapy;Detection;Diversity Library;Hela Cells;HIV;lead optimization;Miniaturization;National Center for Advancing Translational Sciences;Peripheral Blood Mononuclear Cell;Pharmaceutical Chemistry;Proteins;screening;success;T-Lymphocyte;tat Protein;Transcript;Validation;Viral Load result;Virus;Virus Diseases;Virus Replication;Work
+current_category: basic_research
+---
+application_id: 11192001
+activity_code: ZIA
+title: Incorporating NCATS' single-domain antibodies into the Legobody system
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: 2019-nCoV;Acceleration;Binding;Complex;Cryoelectron Microscopy;drug development;Future;Generations;Goals;Image;insight;interest;Methods;Molecular Weight;Mutation;nanobodies;National Center for Advancing Translational Sciences;Procedures;protein complex;protein structure;Proteins;System
+current_category: basic_research
+---
+application_id: 11191911
+activity_code: ZIA
+title: qHTS to Identify Activators and Inhibitors of Wip1
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: anti-cancer treatment;Apoptotic;Automobile Driving;Basic Science;Binding;Biological Assay;Chemicals;Chemistry;Clinical;Data;DNA Damage;drug candidate;Drug Kinetics;Environment;Family;Fluorescence;Health;Human;Human Genome;improved;inhibitor;lead optimization;lead series;Malignant Neoplasms;Mass Spectrum Analysis;member;National Center for Advancing Translational Sciences;novel;overexpression;pharmacologic;PPM1D gene;Prognosis;programs;protein phosphatase 2C;Protein Serine/Threonine Phosphatase;Proteins;Rare Diseases;Reporter;Research;response;scaffold;screening;small molecule;Surface Plasmon Resonance;Testing;therapeutic development;tool;TP53 gene;Translations;tumor growth;Work
+current_category: basic_research
+---
+application_id: 11191960
+activity_code: ZIA
+title: Challenges in Detecting Synergistic Activity of Phage-Mediated Bacterial Killing with Antibiotics in High-Throughput Format
+org_name: NATIONAL CENTER FOR ADVANCING TRANSLATIONAL SCIENCES
+phr: N/A
+terms: Address;Anti-Bacterial Agents;Antibiotics;Bacterial Infections;Bacteriophages;Biological Assay;Cells;density;Drug Combinations;Emerging infection;Evaluation;Measurement;Mediating;Multi-Drug Resistance;novel;Optics;Pharmaceutical Preparations;preclinical development;Pseudomonas aeruginosa;Risk;screening;Testing;Work
+current_category: basic_research
+---
+application_id: 10823302
+activity_code: R37
+title: Two photon fluorescence microscopy for dermatologic surgery and biopsy
+org_name: UNIVERSITY OF ROCHESTER
+phr: Project Narrative This proposal investigates the use of two photon fluorescence microscopy as tool to evaluate biopsies and surgical margins of nonmelanoma skin cancer. New technology will be developed that accelerates imaging speeds and reduces the cost of treatment. Clinical studies are proposed that will investigate both real-time diagnosis of biopsies and the evaluation of surgical margins using two photon fluorescence microscopy in a dermatology clinic.
+terms: Acceleration;Address;Anesthesia procedures;Basal cell carcinoma;Biopsy;Biopsy Specimen;Cancer Patient;cancer surgery;cancer type;Caring;Clinic;Clinic Visits;Clinical;Clinical Research;Clinical Trials;Collaborations;common treatment;Conduct Clinical Trials;Consent;Consumption;contrast enhanced;Conventional Surgery;cost;cost effective;Dermatologic;Dermatology;Detection;detector;Development;Diagnosis;Diagnostic;Diagnostic Procedure;Dyes;Evaluation;Excision;experience;Fiber;Fluorescence Microscopy;Frozen Sections;Goals;Health Care Costs;Health Services Accessibility;Healthcare Systems;high risk;Histologic;histological image;Histology;Histopathology;human tissue;Image;image guided;Image-Guided Surgery;Imaging technology;improved;Individual;instrument;Label;Lasers;Malignant Neoplasms;Medicare;Methods;microscopic imaging;Microtomy;miniaturize;Mohs Surgery;Molecular;Morbidity - disease rate;multidisciplinary;new technology;Operative Surgical Procedures;Outcome;Paraffin;Patient Schedules;Patients;photomultiplier;Photons;Postoperative Period;Prevalence;Procedures;Process;programs;Protocols documentation;recruit;Recurrence;Recurrent tumor;Research;Resources;Risk;rural area;Sensitivity and Specificity;Silicon;skin biopsy;Skin Cancer;Skin Carcinoma;Slide;Source;Speed;Squamous cell carcinoma;Stains;standard of care;Surgical Management;Surgical margins;Surgical Pathology;surgical risk;System;Technology;Testing;Time;Tissues;tool;Treatment Cost;tumor;two-photon;Variant;Visit
+current_category: therapeutics
+---
+application_id: 11193441
+activity_code: P50
+title: Project 1: Combine Viro-Immunotherapy and Natural Killer Cells for the Treatment of Gliomas
+org_name: UNIVERSITY OF TX MD ANDERSON CAN CTR
+phr: NARRATIVE: PROJECT 1
+In a recent paradigm shift, oncolytic adenoviruses are recognized as new type of cancer immunotherapy,
+suggesting that oncolytic viruses may have powerful synergistic effects when combined with other
+immunotherapeutic strategies. In this project, we explore in pre-clinical models the biological effects of combining
+our novel oncolytic adenovirus, Delta-24-RGD, with home-grown genetically engineered, immunosuppression-
+resistant natural killer cells (called eCB-NK-TR-/GC- cel
+terms: <0-11 years old><21+ years old><Adoptive Cell Transfers><Adrenal Cortex Hormones><Adult><Adult Human><After Care><After-Treatment><Aftercare><Animal Model><Animal Models and Related Studies><Biologic Models><Biological><Biological Models><Biological Response Modifier Therapy><Biological Therapy><Bone-Derived Transforming Growth Factor><Brain Cancer><Bypass><CRISPR><CRISPR/Cas system><Cell Body><Cell Therapy><Cells><Child><Child Youth><Children (0-21)><Clinical><Clinical Trials><Clustered Regularly Interspaced Short Palindromic Repeats><Combined Modality Therapy><Cord Blood><Corticoids><Corticosteroids><Cytotoxic cell><DIPG><Data><Diffuse intrinsic pontine glioma><Dose><Early-Stage Clinical Trials><Engineering><Enrollment><Funding><Genes><Genetic Engineering><Genetic Engineering Biotechnology><Genetic Engineering Molecular Biology><Germ Lines><Glial Cell Tumors><Glial Neoplasm><Glial Tumor><Glioblastoma><Glioma><Glucocorticoid Receptor><Goals><Grade IV Astrocytic Neoplasm><Grade IV Astrocytic Tumor><Grade IV Astrocytoma><Histocompatibility Complex><Histocompatibility Complices><Home><Iatrogenesis><Immune><Immune mediated therapy><Immune response><Immunes><Immunologic Stimulation><Immunological Stimulation><Immunologically Directed Therapy><Immunostimulation><Immunosuppression><Immunosuppression Effect><Immunosuppressive Effect><Immunotherapeutic agent><Immunotherapy><Injections><Innate Immune System><K lymphocyte><Keytruda><Knowledge><Laboratories><Major Histocompatibility Complex><Major Histocompatibility Complices><Malignant Cell><Malignant Glial Neoplasm><Malignant Glial Tumor><Malignant Glioma><Malignant Neuroglial Neoplasm><Malignant Neuroglial Tumor><Malignant Tumor of the Brain><Malignant neoplasm of brain><Memory><Mice><Mice Mammals><Milk Growth Factor><Model System><Modeling><Multi-center trial><Multicenter Trials><Multimodal Therapy><Multimodal Treatment><Murine><Mus><NK Cells><NK cell immune therapy><NK cell immunotherapy><NK cell therapy><NK cell treatment><NK cell-based immune therapy><NK cell-based immunotherapy><NK cell-based therapy><NK cell-based treatment><NK cellular immunotherapy><NK cellular therapy><NK immunotherapy><NK therapy><NK treatment><NR3C1><NR3C1 gene><Natural Killer Cell Immunotherapy><Natural Killer Cells><Natural Resistance><Neuroglial Neoplasm><Neuroglial Tumor><Oncolytic viruses><PD-1 antibody><PD1 antibody><Patient outcome><Patient-Centered Outcomes><Patient-Focused Outcomes><Patients><Phase><Phase 1 Clinical Trials><Phase I Clinical Trials><Platelet Transforming Growth Factor><Position><Positioning Attribute><Pre-Clinical Model><Preclinical Models><Receptor Protein><Recombinant DNA Technology><Recommendation><Recurrence><Recurrent><Research Specimen><Resistance><Safety><Sampling><Shapes><Specimen><TGF B><TGF-beta><TGF-β><TGFbeta><TGFβ><Testing><Therapeutic><Toxic effect><Toxicities><Transforming Growth Factor beta><Transforming Growth Factor-Beta Family Gene><Translating><Umbilical Cord Blood><Viral><Virotherapeutics><Virotherapy><Virus><Work><aPD-1><aPD1><adoptive cell therapy><adoptive cellular therapy><adulthood><anti programmed cell death 1><anti-PD-1><anti-PD-1 Ab><anti-PD-1 antibodies><anti-PD-1 monoclonal antibodies><anti-PD1><anti-PD1 Ab><anti-PD1 antibodies><anti-PD1 monoclonal antibodies><anti-cancer><anti-cancer immunotherapy><anti-programmed cell death protein 1><anti-programmed cell death protein 1 antibodies><anti-programmed death-1 antibody><antiPD-1><anticancer activity><anticancer immunotherapy><arm><biologic><biological therapeutic><biological treatment><biologically based therapeutics><biotherapeutics><biotherapy><cancer cell><cancer immunotherapy><cancer microenvironment><cancer type><cell based intervention><cell mediated intervention><cell mediated therapies><cell-based therapeutic><cell-based therapy><cellular therapeutic><cellular therapy><combination therapy><combined modality treatment><combined treatment><cytokine><engineered NK cell><engineered natural killer cell><enroll><expectation><experiment><experimental research><experimental study><experiments><fetal cord blood><genetically engineered><glial-derived tumor><glioblastoma multiforme><homes><host response><iatrogenic><iatrogenically><iatrogenicity><immune drugs><immune microenvironment><immune suppression><immune suppressive activity><immune suppressive function><immune system response><immune therapeutic approach><immune therapeutic interventions><immune therapeutic regimens><immune therapeutic strategy><immune therapy><immune-based cancer therapies><immune-based therapeutics><immune-based therapies><immune-based treatments><immuno therapy><immunologic therapeutics><immunoresponse><immunosuppressive activity><immunosuppressive function><immunosuppressive microenvironment><immunosuppressive response><immunosuppressive tumor microenvironment><immunotherapeutic virotherapy><immunotherapeutics><immunotherapy agent><immunotherapy for cancer><immunotherapy of cancer><immunovirotherapy><kids><model of animal><mouse model><multi-modal therapy><multi-modal treatment><murine model><natural killer cell based immune therapy><natural killer cell based immunotherapy><natural killer cell therapy><natural killer cell treatment><natural killer cell-based therapy><natural killer cellular therapy><natural killer therapy><naturally resistant><neuroglia neoplasm><neuroglia tumor><new drug treatments><new drugs><new pharmacological therapeutic><new therapeutics><new therapy><next generation therapeutics><novel><novel drug treatments><novel drugs><novel pharmaco-therapeutic><novel pharmacological therapeutic><novel therapeutics><novel therapy><oncolysis><oncolytic adenovirus><patient oriented outcomes><pembrolizumab><phase I protocol><post treatment><pre-clinical><pre-clinical study><preclinical><preclinical study><programs><receptor><recruit><resistant><spongioblastoma multiforme><standard care><standard treatment><success><synergism><tumor><tumor immune microenvironment><tumor microenvironment><tumor-immune system interactions><viroimmunotherapy><youngster><αPD-1><αPD1>
+current_category: infrastructure
+---
+application_id: 11193448
+activity_code: P50
+title: Project 2: Restore Myeloid Phagocytosis in Glioblastoma by Targeting the QKI/PPARb/RXRa Complex
+org_name: UNIVERSITY OF TX MD ANDERSON CAN CTR
+phr: NARRATIVE: PROJECT 2
+Immunotherapy is a powerful anti-cancer strategy, but it has not benefited patients with glioblastoma (GBM)
+largely due to immunosuppressive GBM-associated microglia/macrophages (GAMs), characterized by
+dysfunctional phagocytosis. We discovered that GAM-mediated immunosuppression is driven by downregulation
+of a novel complex, called QKI-PPARβ-RXRα (QPR), which regulates phagocytosis. In this project we overcome
+the immunosuppression of GBMs by restoring GAM phagocytosis usi
+terms: <3-methyl TTNEB><9-cis-Retinoic Acid Receptor><Adaptive Immune System><After Care><After-Treatment><Aftercare><Agonist><Animal Model><Animal Models and Related Studies><Anti-Rejection Therapy><Antigen Presentation><Assay><Automobile Driving><Bexarotene><Bilayer Fluidity><Binding Proteins><Bioassay><Biological><Biological Assay><Brain><Brain Cancer><Brain Nervous System><Cell Body><Cell Communication and Signaling><Cell Function><Cell Membrane Lipids><Cell Physiology><Cell Process><Cell Signaling><Cell-Mediated Lympholytic Cells><Cells><Cellular Function><Cellular Membrane><Cellular Physiology><Cellular Process><Characteristics><Clinical Trials><Complex><Cutaneous T-cell lymphoma><Cytolytic T-Cell><Cytotoxic T Cell><Cytotoxic T-Lymphocytes><DNA><Deoxyribonucleic Acid><Developmental Therapeutics><Developmental Therapeutics Program><Developmental Therapy><Disease><Disorder><Dose><Down-Regulation><Drugs><Early-Stage Clinical Trials><Encephalon><Exhibits><FDA approved><Failure><Family><Generalized Growth><Genes><Glia><Glial Cell Tumors><Glial Cells><Glial Neoplasm><Glial Tumor><Glioblastoma><Glioma><Gliomagenesis><Goals><Grade IV Astrocytic Neoplasm><Grade IV Astrocytic Tumor><Grade IV Astrocytoma><Growth><Hortega cell><Human><Immune><Immune Regulators><Immune infiltrates><Immune mediated therapy><Immunes><Immunologically Directed Therapy><Immunomodulators><Immunosuppression><Immunosuppression Effect><Immunosuppressive Effect><Immunosuppressive Therapy><Immunotherapeutic agent><Immunotherapy><Impairment><In Vitro><Innate Immune System><Innate Immunity><Intracellular Communication and Signaling><Knowledge><Kolliker's reticulum><Ligand Binding Protein><Ligand Binding Protein Gene><Macrophage><Malignant Tumor of the Brain><Malignant neoplasm of brain><Mediating><Medication><Membrane><Membrane Fluidity><Membrane Lipids><Mice><Mice Mammals><Microglia><Modern Man><Molecular><Murine><Mus><Mutate><Myelogenous><Myeloid><Mφ><NR2B1><Native Immunity><Natural Immunity><Neuroglia><Neuroglial Cells><Neuroglial Neoplasm><Neuroglial Tumor><Non-Polyadenylated RNA><Non-Specific Immunity><Non-neuronal cell><Nonneuronal cell><Nonspecific Immunity><Oral><PPAR><Patients><Penetration><Peroxisome Proliferator-Activated Receptors><Phagocytes><Phagocytic Cell><Phagocytosis><Pharmaceutical Preparations><Phase 1 Clinical Trials><Phase I Clinical Trials><Population><Pre-Clinical Model><Preclinical Models><Process><Protein Binding><Proteins><RNA><RNA Gene Products><RXR><RXR Protein><RXR alpha Receptor><RXR-α><RXRA><RXRA gene><Recurrence><Recurrent><Research Specimen><Retinoic Acid Receptor RXR><Retinoic Acid Receptor RXR-Alpha><Retinoid X Receptor A><Retinoid X Receptor alpha><Retinoid X Receptor α><Retinoid X Receptors><Ribonucleic Acid><Safety><Sampling><Signal Transduction><Signal Transduction Systems><Signaling><Specimen><Subcellular Process><T-Cell Activation><Targretin><Teff cell><Testing><Therapeutic><Therapeutic immunosuppression><Time><Tissue Growth><Tissue Sample><Tumor Antigens><Tumor Cell><Tumor-Associated Antigen><Unsaturated Fatty Acids><acquired immune system><activate T cells><adaptive immune response><amebocyte><anti-cancer><artificial immunosuppression><biologic><biological signal transduction><bound protein><cancer antigens><cancer microenvironment><cancer progression><check point blockade><checkpoint blockade><conditional knock-out><conditional knockout><cytokine><driving><drug/agent><effector T cell><fatty acid biosynthesis><gitter cell><glial-derived tumor><glioblastoma multiforme><glioma genesis><immune cell infiltrate><immune check point blockade><immune checkpoint blockade><immune drugs><immune microenvironment><immune modulators><immune suppression><immune suppressive activity><immune suppressive function><immune therapeutic approach><immune therapeutic interventions><immune therapeutic regimens><immune therapeutic strategy><immune therapy><immune-based therapeutics><immune-based therapies><immune-based treatments><immuno therapy><immunologic therapeutics><immunomodulatory molecules><immunoregulator><immunoregulatory molecules><immunosuppression therapy><immunosuppressive activity><immunosuppressive function><immunosuppressive microenvironment><immunosuppressive response><immunosuppressive tumor microenvironment><immunotherapeutics><immunotherapy agent><in vivo><killer T cell><membrane structure><mesoglia><microglial cell><microgliocyte><model of animal><mouse model><murine model><neoplasm progression><neoplastic cell><neoplastic progression><nerve cement><neuroglia neoplasm><neuroglia tumor><novel><ontogeny><perivascular glial cell><phase I protocol><polarized cell><post treatment><pre-clinical><pre-clinical study><preclinical><preclinical study><programs><restoration><scRNA sequencing><scRNA-seq><single cell RNA-seq><single cell RNAseq><single cell expression profiling><single cell transcriptomic profiling><single-cell RNA sequencing><small molecule><spongioblastoma multiforme><tumor><tumor growth><tumor immune microenvironment><tumor microenvironment><tumor progression><tumor-immune system interactions><tumor-specific antigen><tumorigenic>
+current_category: infrastructure
+---
+application_id: 10833668
+activity_code: R01
+title: Determining Computational Principles Governing Neural Circuits Responsible for Feedback and Movement Control of D. Melanogaster Flight
+org_name: CORNELL UNIVERSITY
+phr: PROJECT NARRATIVE The successful moment-to-moment control of movement is contingent upon the function of complex neural microcircuits that reside outside the brain; understanding how these circuits function is critical to being able to treat age-related and developmental diseases in which these circuits are impaired. This proposal will leverage advantages of a highly tractable model system—the fruit fly—to determine how reflex circuits outside the brain enable successful movement and balance. Ul
+terms: Acute;Age;age-related disease;Anatomy;Animals;Architecture;automated image analysis;base;Behavioral;Biological Models;Brain;Cells;Cephalic;Chronic;Complex;Congenital Disorders;design;developmental disease;Disease;Drosophila genus;Drosophila melanogaster;Equilibrium;experimental study;Feedback;fly;Flying body movement;Freedom;Functional Imaging;Grouping;Human;Impairment;Individual;innovation;Insecta;insight;Interneurons;kinematics;Knowledge;Link;Locomotion;Maps;Measurement;Mechanics;Modeling;Motor;motor behavior;motor control;Motor Neurons;Motor output;Movement;Muscle;Musculoskeletal Equilibrium;National Institute of Neurological Disorders and Stroke;Nature;Nerve;Nervous System;neural;neural circuit;Neurons;neuroregulation;novel;optogenetics;Output;Performance;Phase;Population;Reflex action;Reflex control;response;Role;Rotation;sensor;Sensory;sensory input;Spinal Cord;Stroke;Structure;Synapses;System;Techniques;Testing;Transgenic Organisms;transmission process;Trauma;Wing
+current_category: basic_research
+---
+application_id: 10746806
+activity_code: R01
+title: Programmable Microvesicles for Intracellular Macromolecule Delivery
+org_name: UNIVERSITY OF COLORADO
+phr: Project Narrative The goal of this application is to develop a new technology platform for delivering proteins and nucleic acids to the intracellular space to alter cellular or organismic phenotypes transiently or permanently in a dose-dependent manner.
+terms: adaptive immune response;Address;Antibodies;Area;Basic Science;Biological Products;Biomedical Research;Bypass;CD47 gene;Cell Line;Cell membrane;Cell Nucleus;Cells;cellular engineering;Clustered Regularly Interspaced Short Palindromic Repeats;Communities;Complement;Complement component C1;Cytosol;design;Diffusion;Dose;Effectiveness;Electroporation;Encapsulated;Endosomes;Engineering;Enzymes;Exhibits;exosome;Extracellular Space;extracellular vesicles;Gene Delivery;gene function;Goals;GTP-Binding Proteins;Heterogeneity;Human;human disease;Immune response;immunogenicity;improved;In Vitro;in vivo;innovation;interest;Intracellular Space;Knock-out;macromolecule;Measures;Mediating;Methods;Microinjections;microvesicles;Modification;Molecular Weight;nanobodies;nanoengineering;new technology;novel therapeutic intervention;novel therapeutics;Nucleic Acids;Pathway interactions;Phenotype;Production;protein aggregation;protein degradation;protein function;Proteins;Publishing;Research;Resistance;Ribonucleoproteins;RNA Interference;RNA Sequences;Safety;Specificity;success;Surface;System;systemic toxicity;Technology;technology platform;Testing;Therapeutic;Time;tool;Toxic effect;Transfection;translational medicine;treatment strategy;ubiquitin-protein ligase;vesicular stomatitis virus G protein;Viral
+current_category: biotools
+---
+application_id: 11076657
+activity_code: R01
+title: New Molecular Probes For Protein Kinases
+org_name: UNIVERSITY OF WASHINGTON
+phr: This project is focused on characterizing how stabilizing the active sites of protein
+kinases in specific conformations affect their biochemical and cellular properties.
+Kinases are highly pursued therapeutic targets for a number of diseases including
+cancer and chronic inflammation. Exploring how specific active site conformations
+affect the signaling properties of protein kinases will inform the development of
+new therapeutics for cancer and inflammation.
+terms: <ATP-protein phosphotransferase><Active Sites><Affect><Architecture><Binding><Binding Sites><Biochemical><Biochemistry><Biological><Biological Chemistry><CAR T cells><CAR modified T cells><CAR-T><CAR-Ts><Cancers><Cell Body><Cell Communication and Signaling><Cell Locomotion><Cell Migration><Cell Movement><Cell Signaling><Cells><Cellular Migration><Cellular Motility><Cellular biology><Chemicals><Chronic><Clinical><Combining Site><Complement><Complement Proteins><Data Set><Development><Disease><Disorder><Drugs><EPH- and ELK-Related Tyrosine Kinase><EPH-and ELK-Related Kinase><Engineering / Architecture><Enzymatic Biochemistry><Enzymology><Ephrin Type-A Receptor 8><Ephrin Type-A Receptor 8 Precursor><Funding><Generations><Goals><Inflammation><Intracellular Communication and Signaling><Invaded><Kinase Family Gene><Kinases><Logic><Lymphocyte-Specific Protein-Tyrosine Kinase><Lymphocyte-Specific p56LCK Tyrosine Protein Kinase><MHC Receptor><Major Histocompatibility Complex Receptor><Malignant Neoplasms><Malignant Tumor><Medication><Membrane><Methodology><Methods><Molecular><Molecular Analysis><Molecular Configuration><Molecular Conformation><Molecular Interaction><Molecular Probes><Molecular Stereochemistry><N-terminal><NH2-terminal><Output><Pharmaceutical Preparations><Phosphorylation><Phosphotransferase Gene><Phosphotransferases><Play><Property><Protein Cleavage><Protein Kinase><Protein Phosphorylation><Protein Tyrosine Kinase><Protein Tyrosine Kinase EEK><Protein Tyrosine Kinase p56(lck)><Proteolysis><Proto-Oncogene Protein c-lck><Proto-Oncogene Protein lck><Proto-Oncogene Tyrosine-Protein Kinase LCK><Reactive Site><Receptor Signaling><Regulation><Role><Series><Signal Transduction><Signal Transduction Systems><Signaling><Site><Surface><System><T cells for CAR><T-Cell Antigen Receptors><T-Cell Receptor><T-Cell Specific Protein Tyrosine Kinase><Tail><Transphosphorylases><Tyrosine Kinase><Tyrosine-Protein Kinase Receptor EEK><Tyrosine-Specific Protein Kinase><Tyrosylprotein Kinase><Variant><Variation><Yeasts><biologic><biological signal transduction><cell biology><cell motility><chemical genetics><chemoproteomics><chimeric antigen T cell receptor><chimeric antigen receptor (CAR) T cells><chimeric antigen receptor T><chimeric antigen receptor T cells><chimeric antigen receptor fusion protein T-cells><chimeric antigen receptor modified T cells><complementation><conformation><conformational><conformational state><conformationally><conformations><developmental><drug/agent><engineered T cells><genetically engineered T-cells><glycogen synthase a kinase><hydroxyalkyl protein kinase><hydroxyaryl protein kinase><inhibitor><interest><intermolecular interaction><kinase inhibitor><lck Kinase><malignancy><membrane structure><mutant><neoplasm/cancer><new drug treatments><new drugs><new pharmacological therapeutic><new technology><new therapeutics><new therapy><next generation therapeutics><novel drug treatments><novel drugs><novel pharmaco-therapeutic><novel pharmacological therapeutic><novel technologies><novel therapeutics><novel therapy><p56 lck><phosphorylase b kinase kinase><protein function><recruit><scaffold><scaffolding><social role><src Kinases><src Protein-Tyrosine Kinases><src Tyrosine Kinases><src-Family Kinases><src-Family Tyrosine Kinases><therapeutic target><tool><tool development><transgenic T- cells><tyrosyl protein kinase>
+current_category: biotools

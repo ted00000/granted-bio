@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10748098
+activity_code: U54
+title: Training Core
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: N/A
+terms: Academic support;Address;Affect;Behavioral;Biological;Biological Factors;care delivery;career;career development;Centers of Research Excellence;Chicago;Clinical;clinical care;Communities;community engagement;community partners;Data Collection;Decision Making;Development;Disparity;Educational Curriculum;Environmental Risk Factor;Epidemiology;ethnic diversity;Etiology;evidence base;experience;Exposure to;Faculty;falls;Goals;health inequalities;Health Personnel;Illinois;implementation science;improved;Individual;Inequity;innovation;insight;interest;Intervention Studies;Knowledge;knowledge base;Maternal Health;Maternal Mortality;Mentors;Methods;mortality;multidisciplinary;novel;novel strategies;Outcome;Postdoctoral Fellow;Pregnancy;programs;Public Health;Qualitative Research;racial diversity;recruit;Research;Research Activity;Research Assistant;Research Methodology;Research Personnel;research to practice;Research Training;severe maternal morbidity;skills;sociocultural determinant;structural determinants;System;Training;Training Activity;Training Programs;Translating;Universities;Woman;women of color
+current_category: training
+---
+application_id: 10866417
+activity_code: P01
+title: Core A: Administrative Core
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: CORE A Narrative Core Lead: Ronald Hoffman, MD The Administrative Core of this Program Project is designed to provide scientific leadership, effective communication and an administrative support structure, and to ensure the collaborative translational research network that supports and synergizes the laboratory and clinical studies led by MPN-RC investigators is maintained. The essential services provided by the Core include, but are not limited to: administrative support for all of the investig
+terms: Accountability;Address;Budgets;Clinical Investigator;Clinical Research;Clinical Trials;Collaborations;Communication;Communities;Competence;Contracts;design;Development;Educational Activities;Ensure;Equipment;Equipment and Supplies;Financial Support;Foundations;Funding;Geographic Locations;Goals;Human Resources;human subject;Infrastructure;Institution;Laboratory Study;Lead;Leadership;Mediation;meetings;member;Monitor;Myeloproliferative disease;Occupational activity of managing finances;Organization and Administration;patient advocacy group;Patients;Performance;Personnel Management;Pharmaceutical Preparations;Pharmacologic Substance;Process;programs;Progress Reports;Regulation;Research;Research Personnel;Resource Allocation;Resource Sharing;Resources;Schedule;Services;Site;Structure;support network;synergism;Translational Research;United States National Institutes of Health;Update;Vertebrates;Visit;web site;Work
+current_category: infrastructure
+---
+application_id: 10867537
+activity_code: P20
+title: Effects of stroke on cortical synaptic function
+org_name: WEST VIRGINIA UNIVERSITY
+phr: N/A
+terms: Acute;Affect;Agonist;Animals;antagonist;Area;Arousal;Automobile Driving;Behavioral;behavioral outcome;Bilateral;Blood flow;Brain;Brain region;C-terminal;Cannulas;Cells;Centers of Research Excellence;Cephalic;Cessation of life;Chlorides;Chronic;Collection;Compensation;Complex;Dependence;disability;Distant;Dominant-Negative Mutation;Electroencephalography;endocannabinoid signaling;Endocannabinoids;epileptiform;Evolution;Excitatory Synapse;experimental study;extrastriate;Failure;Fiber;Fiber Optics;Frequencies;Future;GABA Receptor;gamma-Aminobutyric Acid;Glutamates;Homeostasis;Hour;Human;human data;Impairment;Implant;Implanted Electrodes;improved;in vivo;Infarction;insight;Interneurons;Ipsilateral;Ischemia;Ischemic Stroke;Laser Speckle Imaging;Left;Lesion;Light;Lighting;Measures;Methods;Middle Cerebral Artery Occlusion;Modeling;Moderate Activity;Modification;Monitor;Motor Cortex;mouse model;Mus;N-Methyl-D-Aspartate Receptors;Nature;Nervous System Physiology;Neurologic;neuron loss;Neurons;non rapid eye movement;optical fiber;Oranges;osmotic minipump;Outcome;patch clamp;Pathologic;Pattern;Periodicity;pharmacologic;Phase;Photobleaching;Photometry;Population;Positioning Attribute;post stroke;postsynaptic;presynaptic;prevent;Prosencephalon;rapid eye movement;Recovery;REM Sleep;Reporter;Reporting;response;Rodent;Role;Rosaniline Dyes;Sensory Deprivation;Signal Transduction;Site;Sleep;Sleep disturbances;Sleep Fragmentations;sleep pattern;sleep quality;Slice;Slide;Somatosensory Cortex;spatiotemporal;Stains;Stroke;stroke outcome;stroke survivor;subcutaneous;Synapses;synaptic function;Synaptic plasticity;Synaptic Transmission;Tertiary Protein Structure;Testing;Time;Tissues;Titrations;Universities;vector;Viral;Visual;visual discrimination;West Virginia
+current_category: infrastructure
+---
+application_id: 10866422
+activity_code: P01
+title: Core C: Biostatistics and Data Management Core
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: CORE C Project Narrative The Biostatistics and Data Management Core will provide the Myeloproliferative Neoplasms Research Consortium (MPN-RC) investigators access to state-of-the-art integrated statistical and data management resources. It provides a mechanism for consistent and compatible data handling and tracking among the projects and cores and ensures the work across the MPN-RC is accomplished in a timely manner with the utmost statistical rigor. Providing oversight of all MPN-RC related s
+terms: arm;Bioinformatics;Biological Markers;Biological Specimen Banks;Biometry;Case Report Form;Clinic;Clinical;Clinical Data;Clinical Investigator;Clinical Research;Clinical Trials;Clinical Trials Data Monitoring Committees;Clinical Trials Design;Collaborations;Communication;Competence;Correlative Study;Coupled;dashboard;Data;Data Analyses;Data Collection;Data Element;data handling;data integration;data management;Data Management Resources;data quality;data repository;data standards;data visualization;design;Doctor of Philosophy;early phase clinical trial;Electronics;Ensure;experience;Experimental Designs;Formulation;Funding;Grant;Hematologic Neoplasms;Individual;Infrastructure;International;Investigational Drugs;Laboratories;Laboratory Study;Leadership;meetings;Monitor;multidimensional data;Myeloproliferative disease;Online Systems;Outcome Study;Participant;Patient Outcomes Assessments;Patient-Focused Outcomes;Patients;Process;programs;Progress Reports;Protocols documentation;Publishing;Questionnaires;Reporting;Research;Research Design;Research Personnel;Research Project Grants;Safety;Specimen;Statistical Data Interpretation;Statistical Models;synergism;Techniques;Time;Tissue Banks;Tissues;tool;Training;Translational Research;translational scientist;translational study;Tumor Bank;United States Food and Drug Administration;Validation;web platform;web site;Work
+current_category: infrastructure
+---
+application_id: 10908534
+activity_code: P01
+title: Tissue-specific roles of FXR in CVD and NASH
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: N/A
+terms: Affect;Agonist;Apolipoproteins;Arterial Fatty Streak;atherogenesis;atheroprotective;Atherosclerosis;Automobile Driving;Bile Acids;Biliary;biobank;Biological;Biological Markers;blood glucose regulation;Blood Vessels;Cardiovascular Diseases;cardiovascular disorder risk;Cardiovascular system;Carotid Artery Ulcerating Plaque;Cells;Cholesterol;Cholesterol Homeostasis;Clinical;Collaborations;comparative;Coronary Arteriosclerosis;Deposition;Development;Dietary Component;Disease;disease model;disorder risk;Epitopes;Excretory function;Extrahepatic;fatty liver disease;FGF19 gene;Fibroblast Growth Factor;Fibrosis;Foam Cells;Functional disorder;gain of function;Genetic;Genetic Transcription;Goals;Hepatic;Hepatitis;High Density Lipoproteins;human disease;hypercholesterolemia;Hyperlipidemia;In Vitro;indexing;Inflammation;insight;Insulin Resistance;Intestines;Lesion;Lipids;Lipoproteins;Liver;Liver diseases;liver injury;loss of function;Lysophosphatidylcholines;Macrophage;Mediating;Metabolism;Modeling;mouse model;Mus;nonalcoholic steatohepatitis;oxidation;Pathway interactions;patient population;Patients;Peptides;pharmacologic;Physiology;pre-clinical;Predictive Value;programs;protective effect;receptor;Receptor Activation;Receptor Cross-Talk;receptor expression;Regulation;repaired;Reporting;repository;reverse cholesterol transport;Risk;Role;Sampling;Serum;Signal Transduction;Steatohepatitis;sterol homeostasis;targeted treatment;Tissues;Triglycerides
+current_category: basic_research
+---
+application_id: 10925211
+activity_code: P01
+title: Core C: Neuropathology Core
+org_name: ST. JUDE CHILDREN'S RESEARCH HOSPITAL
+phr: CORE NARRATIVE A central pathology facility where expertise in histological methods and interpretation is concentrated for the benefit of program investigators is a fundamental element of our Program and is designated the Program Neuropathology Core (Core C).
+terms: Adherence;Anatomy;Animal Model;animal tissue;Area;Biological Assay;Brain;Brain Neoplasms;Budgets;Central Nervous System Neoplasms;Childhood Brain Neoplasm;Childhood Central Nervous System Neoplasm;Childhood Glioma;Chromogenic in situ Hybridization;Classification;Clinical;comparative;Core Facility;Data;Development;Developmental Process;Diagnosis;Diffuse intrinsic pontine glioma;disease model;DNA Sequence Alteration;Elements;Evaluation;experience;Experimental Designs;experimental group;Fluorescence;Foundations;Gene Mutation;Genes;Genetic;Goals;Hematoxylin and Eosin Staining Method;hindbrain;Histologic;Histopathology;Human;human disease;Human Resources;human tissue;Immunohistochemistry;Immunophenotyping;improved;instrument;interest;Investigation;Laboratories;Medulloblastoma;Methods;Modeling;Molecular;molecular marker;Molecular Profiling;Morphology;mouse model;mRNA Expression;Mus;Mutation;Neoplasms;neuropathology;new therapeutic target;novel;Pathologic;Pathologist;Pathology;Patients;Phenotype;Process;programs;protein biomarkers;Protocols documentation;Publications;Reagent;Research;Research Personnel;Research Support;Sampling;Secure;Stains;Standardization;Techniques;Tissue Microarray;Tissue Sample;Tissues;treatment stratification;tumor;tumorigenesis;Variant;Work
+current_category: infrastructure
+---
+application_id: 10925201
+activity_code: P01
+title: CORE A - Administration
+org_name: ST. JUDE CHILDREN'S RESEARCH HOSPITAL
+phr: Core Narrative The Administrative Core functions as a central resource to maximize interactions through efficient coordination of the individual Projects and Core Laboratories so that the Program as a whole can achieve its goals. The Core facilitates interactions between Program members, monitors progress and core usage, and is responsible for administrative oversight and budget management.
+terms: Acceleration;Bioinformatics;Biostatistics Core;Brain;Budgets;Collaborations;Communication;conflict resolution;data integration;Data Set;Development;Ensure;Equity;Fostering;Goals;Grant;Individual;Institution;Investigation;Laboratories;meetings;member;Monitor;Neoplasms;Principal Investigator;Productivity;programs;Progress Reports;Reporting;Research;Research Personnel;Resources;Saint Jude Children&apos;s Research Hospital;Schedule;Site;Strategic Planning;success;synergism;United States National Institutes of Health;Universities;Videoconferencing;Visit;Work
+current_category: infrastructure
+---
+application_id: 10852871
+activity_code: P01
+title: Project 1: Polyploid giant cancer cells are central actuators of tumorigenesis, skeletal metastasis, and therapeutic resistance
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Skeletal metastases associated with advanced prostate cancer continue to kill more than 29,000 men per year in the United States. In this proposal, we identify polyploid giant cancer cells that exist as a subset of cells (1-2%) within a tumor population and act as central actuators of lethal disease by mediating therapeutic resistance and initiating metastasis.
+terms: advanced prostate cancer;androgen independent prostate cancer;Appearance;Autopsy;Biology;Biopsy;Blood;cancer cell;cancer stem cell;Cell Cycle;Cell fusion;Cell Survival;Cells;chemotherapy;Clinical;Cytokinesis;Data;deprivation;Development;Disease;Disease Management;Disseminated Malignant Neoplasm;Drug resistance;Event;Exhibits;G0 Phase;Genomics;Glucose;Human;human tissue;Hypoxia;In Vitro;in vivo Model;Individual;Invaded;Literature;Malignant - descriptor;Malignant neoplasm of prostate;Measures;Mediating;men;Mesenchymal;Metastatic Neoplasm to the Bone;migration;Modeling;Morphologic artifacts;Morphology;Motility;mouse model;Mus;Neoplasm Circulating Cells;Neoplasm Metastasis;neoplastic cell;novel;Patients;Pharmaceutical Preparations;Phenotype;Polyploidy;Population;pressure;Prevalence;prognostic significance;Proliferating;Property;Reporter;Reporting;Research;Resistance;Resistance development;Role;senescence;Source;stem;Stress;stressor;taxane;Therapeutic;Therapeutic Intervention;therapy resistant;Time;tissue culture;Tissue Sample;tissue/cell culture;Tissues;tumor;tumor progression;Tumor Tissue;tumorigenesis;United States;Work
+current_category: therapeutics
+---
+application_id: 10852878
+activity_code: P01
+title: Core A - Administrative Core
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: N/A
+terms: Animal Welfare;Animals;Area;Biology;Biometry;Collaborations;Communication;Communities;Computers;Databases;Dedications;DNA;Ensure;experience;experimental analysis;Experimental Designs;experimental study;Extramural Activities;Funding;Goals;Human Resources;human subject;Laboratory Personnel;Leadership;Malignant neoplasm of prostate;Manuscripts;meetings;member;Metastatic Neoplasm to the Bone;Michigan;Productivity;programs;Radiation;Reporting;repository;Research;Research Personnel;Resource Sharing;Resources;Role;Science;Scientist;Series;Services;United States National Institutes of Health;Universities;Visit
+current_category: infrastructure
+---
+application_id: 10852879
+activity_code: P01
+title: Core B - Animal Core
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Project Narrative Bone metastases are a serious and frequent clinical complication of prostate cancer. This core will provide animal models to help identify mechanisms and targets to attack this important aspect of prostate cancer.
+terms: American;Anesthesia procedures;animal data;Animal Experiments;animal imaging;Animal Model;Animals;Biology;bioluminescence imaging;Board Certification;bone;Bone Density;cancer imaging;Clinical;Collaborations;college;Complication;Data Analyses;Dual-Energy X-Ray Absorptiometry;Ensure;experience;experimental study;Genetically Engineered Mouse;Goals;Grant;Human Resources;Image;Implant;implantation;in vivo;in vivo imaging;Individual;Injections;Internal Medicine;Laboratory Animal Medicine;Laboratory Animals;Maintenance;Malignant neoplasm of prostate;Metastatic Neoplasm to the Bone;Methods;Modeling;Nature;neoplastic cell;Oncologist;Performance;Procedures;programs;Research;Research Personnel;Resource Sharing;Role;Scanning;Services;soft tissue;spine bone structure;Standardization;Translating;tumor;vertebra body;Veterinarians
+current_category: infrastructure
+---
+application_id: 10852876
+activity_code: P01
+title: Project 4: The role of bone marrow macrophages in skeletal metastasis
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Project Narrative It is proposed that cells in the bone marrow known as ‘tumor associated macrophages’ engulf dead and dying cancer cells and in return produce factors that further support tumor growth. This project will identify the critical steps in this process, determine the impact of a specific cell surface signal in the support of tumor growth in the bone marrow, and identify targetable strategies to inhibit the process and provide resolution. Using novel experimental models, these studies
+terms: Abscisic Acid;Acceleration;Affect;Anti-Inflammatory Agents;Antibodies;Apoptotic;Biochemical;Bioinformatics;Biological Response Modifiers;Biology;bone;Bone Marrow;Bone Marrow Neoplasms;cancer cell;Cancer Patient;cancer therapy;carcinogenesis;CD14 gene;Cd68;Cell Death;cell growth;Cell Lineage;Cell surface;Cells;Characteristics;Collaborations;CXCL5 gene;Data;design;Disease;Disseminated Malignant Neoplasm;Experimental Models;Funding;Gatekeeping;Gene Expression Profile;Gene Targeting;Genetic Transcription;Grant;Growth;Homeostasis;Human;Immune response;Immunoglobulins;immunoregulation;Immunosuppression;In Vitro;in vivo;Incidence;Inflammatory;insight;Laboratories;Macrophage;Malignant neoplasm of prostate;Malignant Neoplasms;Marrow;Mediating;Mediator;Metastatic Neoplasm to the Bone;Metastatic Prostate Cancer;Modeling;monocyte;mouse model;Mucins;Myelogenous;Neoplasm Metastasis;neoplastic cell;neutralizing antibody;Normal Cell;novel;Osteocytes;Patients;peripheral blood;Phagocytes;pharmacologic;Phenotype;phosphatidylserine receptor;Phosphatidylserines;Play;Polyploidy;Process;prognostic;programs;prostate cancer cell;prostate cancer metastasis;Prostate Cancer therapy;Relapse;Resolution;response;Role;Serine;Signal Pathway;Signal Transduction;single cell sequencing;single-cell RNA sequencing;skeletal;Supporting Cell;T-Cell Receptor;T-Lymphocyte;targeted cancer therapy;Therapeutic;tumor;Tumor Burden;tumor growth;tumor microenvironment;tumor progression;Tumor-associated macrophages
+current_category: basic_research
+---
+application_id: 10852874
+activity_code: P01
+title: Project 3: The osteocyte-driven GDF15:GFRAL axis promotes prostate cancer bone metastasis
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Project Narrative Prostate cancer (PCa) is the most common cancer of American men and the second leading cause of cancer- related death most often due to bone metastasis. This project will explore how the cancer changes the bone environment so that it becomes conducive to bone metastasis. This will help identify targets to prevent or treat bone metastasis.
+terms: Address;advanced prostate cancer;American;Androgen Antagonists;Apoptosis;Apoptotic;Autophagocytosis;Biology;bone;bone cell;Bone Resorption;cancer cell;Cancer Etiology;Cancer Patient;cancer seeding;Cell fusion;cell growth;Cell Physiology;Cells;Cessation of life;Chemicals;Chemoresistance;Clinical;Collaborations;Data;DNA Damage;Drug Efflux;Drug resistance;efflux pump;Environment;enzalutamide;Family;Feedback;GDF15 gene;Genetic;Growth;improved;In Vitro;in vivo;Ingestion;Invaded;knock-down;Knowledge;Malignant neoplasm of prostate;Malignant Neoplasms;Measures;mechanotransduction;Mediating;Mediator;men;Metastatic Neoplasm to the Bone;mouse model;Neoplasm Metastasis;neoplastic cell;new therapeutic target;novel;Osteoblasts;osteoclastogenesis;Osteoclasts;Osteocytes;Osteolytic;Pathway interactions;Patient Care;PDGFRA gene;Phenotype;Polyploidy;pressure;prevent;Production;Proliferating;prostate cancer cell;prostate cancer metastasis;prostate cancer progression;Proteins;receptor;Resistance;response;Role;Signal Transduction;Site;soft tissue;Stromal Cell-Derived Factor 1;taxane;Testing;therapeutic target;Time;Tissue Microarray;tumor;Writing
+current_category: basic_research
+---
+application_id: 10852873
+activity_code: P01
+title: Project 2: Abscisic Acid Regulates Dormancy of Disseminated Tumor Cells in Bone Marrow
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Project Narrative DTCs may lie dormant for years prior to becoming activated to generate a lethal metastatic disease. This project aims to understand the molecular mechanisms which regulate dormancy. This knowledge will be used to develop a rationale for therapeutic targets focused on dormancy signaling to either prevent relapse or specifically activate tumor growth in an adjuvant setting so that conventional chemotherapeutic agents targeting proliferating cells may be used as adjuvant therapy t
+terms: Abscisic Acid;Adjuvant;Adjuvant Therapy;Aftercare;Agonist;antagonist;Binding;biological adaptation to stress;Biology;BMP4;bone;Bone Marrow;Bone Marrow Aspiration;Cancer Patient;cancer stem cell;cancer survival;Cell Count;Cell Cycle;Cell Cycle Arrest;cell growth;Cell Proliferation;Cell Separation;cell type;Cells;chemotherapeutic agent;chemotherapy;Coculture Techniques;Data;Disease;effective therapy;Genetic Transcription;Growth;hematopoietic stem cell niche;Human;human disease;human model;Immune;improved;in vivo;knock-down;Knowledge;Link;Maintenance;Malignant neoplasm of prostate;Mammalian Cell;Mammals;Marrow;Mediator;Mesenchymal Stem Cells;Metastatic Neoplasm to the Bone;Metastatic Neoplasm to the Bone Marrow;Modeling;Molecular;Neoplasm Metastasis;neoplastic cell;Pathway interactions;Plant Growth Regulators;Plants;Play;Proliferating;prostate cancer cell;prostate cancer cell line;prostate cancer metastasis;receptor;Receptor Signaling;Recurrence;relapse prevention;Resistance;response;Role;Signal Induction;Signal Transduction;Soil;stemness;System;targeted treatment;Testing;Therapeutic;therapeutic target;Treatment outcome;tumor;tumor growth
+current_category: basic_research
+---
+application_id: 10925182
+activity_code: P01
+title: Role of Methyltransferases in MYC-driven Medulloblastoma
+org_name: ST. JUDE CHILDREN'S RESEARCH HOSPITAL
+phr: Project Narrative Medulloblastoma is the most common malignant brain tumor in children. Of the four subgroups, Group3 is the most aggressive and patients invariably experience recurrence with metastases and die of their disease. A better undertstanding of the genes and molecular mechanims that drive Group 3 tumorigenesis may lead to the identification of novel targets for therapeutic intervention to improve survival.
+terms: Acceleration;Address;Affect;Age;Allografting;ATAC-seq;Automobile Driving;Binding Proteins;blood-brain barrier crossing;Brain;Brain Neoplasms;Cell Line;Cell model;chemotherapy;Child;ChIP-seq;Chromatin;Chromatin Remodeling Factor;Chromatin Structure;Classification;Cleavage Under Targets and Release Using Nuclease;Clinical Trials;combinatorial;Complex;Data;Dependence;Development;Disease;Dropout;Enzymes;Epigenetic Process;epigenetic regulation;expectation;experience;EZH2 gene;FDA approved;functional loss;Funding;Future;gain of function;Gene Expression;Genes;genome-wide;Goals;Grant;hindbrain;histone methyltransferase;Histones;Human;Immunoprecipitation;improved;In Vitro;in vivo;Incidence;inhibitor;Knockout Mice;Libraries;loss of function;Luciferases;Lysine;Maintenance;Malignant - descriptor;Malignant Childhood Neoplasm;Malignant neoplasm of brain;Mass Spectrum Analysis;Medulloblastoma;Methylation;Methyltransferase;Modification;Molecular;mouse model;Mus;Mutation;Neoplasm Metastasis;Neoplasms;new therapeutic target;novel;novel therapeutics;Nuclear;Oncogenes;Operative Surgical Procedures;overexpression;Pathway interactions;Patients;Pattern;Pediatric Neoplasm;Pharmaceutical Preparations;pharmacologic;Post-Translational Protein Processing;Prognosis;programs;Proliferating;Proteins;Proteome;Proteomics;Radiation;Recurrence;Repressor Proteins;Role;Shapes;SHH gene;small hairpin RNA;SMYD3 gene;Subgroup;success;Systems Biology;Testing;Therapeutic;Therapeutic Intervention;therapeutic target;transcriptome;transcriptomics;Transgenic Mice;treatment effect;tumor;Tumor Suppressor Proteins;tumorigenesis;Work;Xenograft procedure
+current_category: therapeutics
+---
+application_id: 11014862
+activity_code: P30
+title: Cancer Center Administration
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: N/A
+terms: Advocate;anti-cancer research;Cancer Burden;cancer care;Cancer Center;Cancer Center Support Grant;Caring;Catchment Area;Child;Clinical Research;Clinical Trials;Collaborations;Communities;community engagement;Community Outreach;Data;Development;Direct Costs;Documentation;Ensure;Evaluation;Exclusion;Faculty;Fostering;Foundations;Funding;Glues;Goals;Grant;Guidelines;health disparity;Infrastructure;Institution;Intervention;Intervention Trial;Journals;Lead;Leadership;Maintenance;Malignant Neoplasms;member;Monitor;operation;Output;Patients;Preparation;Process;programs;Publications;Reporting;Research;Research Support;Resource Sharing;Resources;Science;Strategic Planning;success;Sum;System;Time;Training and Education;training project;Universities;Washington
+current_category: infrastructure
+---
+application_id: 10930315
+activity_code: U19
+title: Advanced Nonlinear Imaging
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: N/A
+terms: adaptive optics;Brain Stem;brain tissue;Cell Physiology;cellular imaging;Collaborations;Custom;Fiber;Functional Imaging;Funding;Goals;Image;in vivo;Laser Scanning Microscopy;Lasers;Lead;Maintenance;meter;Microscope;Motor;Motor Cortex;multi-photon;neuronal circuitry;optogenetics;orofacial;Parents;Penetration;performance site;Research Personnel;Resolution;Site;Structure;superior colliculus Corpora quadrigemina;synaptic function;System;Techniques;Technology;Tissues;Training;Travel;two-photon;white matter
+current_category: infrastructure
+---
+application_id: 10930861
+activity_code: U54
+title: Center for Coordination of Analysis, Science, Enhancement, and Logistics (CASEL) in Tobacco Regulatory Science - Dissemination Core
+org_name: WESTAT, INC.
+phr: N/A
+terms: Acceleration;Area;authority;Collaborations;Communication;Communities;Data;Databases;Educational Materials;Educational workshop;Electronic Mail;Ensure;Evaluation;Event;experience;Exposure to;Feedback;Fostering;Funding;Funding Opportunities;Goals;improved;Information Dissemination;Infrastructure;innovation;journal article;Journals;Knowledge;Logistics;Manuscripts;meeting abstracts;meetings;Mission;news;novel;Occupations;Paper;Peer Review;Policies;Policy Maker;Positioning Attribute;Process;Publications;Reporting;Research;Research Personnel;Research Project Grants;Resources;response;Role;Science;Scientist;Secure;Series;Slide;social media;Source;symposium;System;Tobacco;tobacco products;tobacco regulation;tobacco regulatory science;Tobacco Surveillance;tool;Training;United States Food and Drug Administration;Update;uptake;user-friendly;Visual;Visualization;web site;webinar;Work
+current_category: infrastructure
+---
+application_id: 10929395
+activity_code: P01
+title: Project 1: 5FU and Vitamin D as Neoadjuvants for Photodynamic Priming to Enhance Skin Cancer Therapy
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: NARRATIVE – Project 1 This project will advance new therapeutic approaches that use photodynamic therapy (PDT), 5-fluorouracil, and Vitamin D as immune-priming agents, with subsequent addition of immune checkpoint inhibition (ICI) for the treatment of advanced squamous cell carcinoma (SCC) and basal cell carcinoma (BCC), which together represent the most common of all human cancers. Preclinical experiments in mouse models, and clinical studies in patients with SCC and BCC, will be done with the 
+terms: 3-Dimensional;Aminolevulinate;anti-PD1 antibodies;anti-tumor immune response;arm;Basal cell carcinoma;Biological Models;Blood;Blood specimen;Blood Vessels;cancer infiltrating T cells;Cancer Patient;cancer therapy;Cells;checkpoint inhibition;checkpoint therapy;Clinical Research;Clinical Trials;Collaborations;Combined Modality Therapy;comparative;Cytometry;cytotoxic;Data;design;Dimensions;Dose;dosimetry;Ensure;Excision;experimental study;Exposure to;Fluorescence;Fluorouracil;Future;Goals;healthcare burden;Histologic;Human;Image;image guided;Immune;immune activation;immune cell infiltrate;immune checkpoint;Immune checkpoint inhibitor;Immune response;immunogenic cell death;Immunologic Markers;Immunologics;immunomodulatory therapies;Immunotherapy;improved;in vitro Model;Inbred HRS Mice;innovation;Lymphocyte;Macrophage;Malignant Epithelial Cell;Malignant Neoplasms;Measures;Metabolic Clearance Rate;Modeling;Mohs Surgery;Molecular;Mononuclear;Morbidity - disease rate;mortality;mouse model;Mus;Nature;Neoadjuvant Therapy;neoplastic cell;neutrophil;Neutrophil Infiltration;novel strategies;novel therapeutic intervention;Operative Surgical Procedures;Optics;optimal treatments;Oral;organ transplant recipient;Organoids;overexpression;Patient Recruitments;patient subsets;Patients;Pattern;Peripheral Blood Mononuclear Cell;Photosensitizing Agents;Pilot Projects;Population;pre-clinical;preclinical study;programmed cell death protein 1;Proteins;PUVA Photochemotherapy;recruit;Regimen;Risk;Safety;Skin Cancer;Skin Carcinoma;Skin Neoplasms;skin squamous cell carcinoma;Societies;Squamous cell carcinoma;Subgroup;T-Cell Activation;T-Lymphocyte;Techniques;Testing;Therapeutic;therapy resistant;three dimensional cell culture;Three-dimensional analysis;three-dimensional modeling;Time;Tissues;Toxic effect;TP53 gene;Treatment Failure;Treatment outcome;Treatment Protocols;treatment response;tumor;tumor microenvironment;Tumor-infiltrating immune cells;Tumor-Infiltrating Lymphocytes;UV induced;UV Mutagenesis;Verteporfin;Vitamin D
+current_category: therapeutics
+---
+application_id: 10929401
+activity_code: P01
+title: Project 3: Immune Checkpoint Inhibition Therapy Enhanced by Integrated Photodynamic Treatment and Image Guidance in Preclinical Models of Pancreatic Cancer
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: Narrative Pancreatic cancer is a devastating disease with poor response to most therapies, including immunotherapy, which is the new hope for cancer management. Therefore, we propose a new treatment approach to overcome the major obstacle of non-responsiveness of pancreatic cancers to immunotherapy, by transforming non- responding, immunologically “cold” tumors, to “hot” responsive ones using red light activation of a drug already FDA approved with no serious reported toxicities. Combined with a
+terms: 3-Dimensional;Abscopal effect;Animals;anti-PD-1;anti-PD-L1;anti-PD-L1 therapy;anti-PD1 therapy;anti-tumor immune response;Area;Autologous;Bilateral;Biological Markers;Blinded;Blood Vessels;cancer imaging;Categories;Cell Line;Cell Survival;checkpoint inhibition;Chemoresistance;chemotherapy;Clinical;Collaborations;Combination Drug Therapy;Combined Modality Therapy;cytokine;Data;design;Diameter;Dimensions;Disease;dosage;Dose;dosimetry;efficacy evaluation;Eligibility Determination;FDA approved;Fine needle aspiration biopsy;functional status;Future;Generations;Goals;Heterogeneity;high resolution imaging;Human;Image;image guided;imaging capabilities;imaging platform;imaging system;Immune;immune cell infiltrate;immune checkpoint blockade;immune resistance;Immune response;immune-related adverse events;Immunocompetent;immunogenic;immunogenic cell death;Immunologic Monitoring;Immunologics;immunoregulation;Immunotherapeutic agent;Immunotherapy;in vivo;innovation;insight;Intervention;KPC model;Light;Literature;Lymphocytic Infiltrate;Malignant neoplasm of pancreas;Malignant Neoplasms;Measures;Metabolic;Microsatellite Instability;migration;Modeling;Molecular Target;Monitor;mouse model;Mus;Neoplasm Metastasis;neoplastic cell;novel;novel therapeutic intervention;novel therapeutics;Operative Surgical Procedures;Organoids;Outcome;pancreatic cancer model;pancreatic cancer patients;Pancreatic Ductal Adenocarcinoma;pancreatic ductal adenocarcinoma cell;Pathologist;patient population;Patients;PD-1/PD-L1;pembrolizumab;Performance;Peripheral Blood Mononuclear Cell;Permeability;Pharmaceutical Preparations;pharmacologic;Phenotype;Photosensitizing Agents;point of care;Pre-Clinical Model;preclinical study;Process;PUVA Photochemotherapy;Radiation;Radiology Specialty;radioresistant;Receptor Protein-Tyrosine Kinases;Refractory;Reporting;Research;Resolution;response;statistics;Study models;subcutaneous;success;Survival Rate;synergism;Technology;Testing;Therapeutic;therapy design;therapy outcome;three-dimensional modeling;Time;tool;Toxic effect;treatment response;treatment strategy;Treatment-related toxicity;tumor;tumor growth;Tumor Immunity;tumor microenvironment;Tumor Volume;Tumor-infiltrating immune cells;Tumor-Infiltrating Lymphocytes;Tyrosine Kinase Inhibitor;Validation;validation studies;Verteporfin;Visualization
+current_category: therapeutics
+---
+application_id: 10877953
+activity_code: P42
+title: In situ destruction of halogenated Superfund contaminants with biological radical reactions
+org_name: UNIVERSITY OF CALIFORNIA BERKELEY
+phr: PROJECT 3: PROJECT NARRATIVE To remediate mixed contaminant sites including per- and polyfluorinated alkyl substances (PFAS) and other highly halogenated compounds, polychlorinated biphenyls (PCBs), polybrominated biphenyl ethers (PBDEs), and chlorinated solvents, we need new approaches that are selective and highly reactive. This project will apply molecular biology, protein engineering, and high-throughput assays to identify aerobic and anaerobic microbial enzymatic-radical systems that can tr
+terms: Aerobic;analog;Benzene;Bioinformatics;Biological;Biological Response Modifier Therapy;biological systems;Bioremediations;Chemicals;Cobalamin;Communities;Complementary therapies;Complex;Coupled;Coupling;Dioxanes;drinking water;efficacy evaluation;Electron Transport;Engineering;Environment;Environmental Health;Environmental Protection;Enzymes;Food;Future;ground water;halogenation;high throughput screening;Human;In Situ;interest;Laccase;Lead;Mediator;Metabolic Biotransformation;microbial;microbial community;mineralization;Molecular Biology;Molecular Biology Techniques;Nature;novel;novel strategies;Oxidation-Reduction;perfluorooctane sulfonate;Poison;pollutant;Poly-fluoroalkyl substances;polybrominated diphenyl ether;Polychlorinated Biphenyls;Prevalence;Process;Protein Engineering;Reaction;receptor;remediation;Research;response;Risk;Role;S-Adenosylhomocysteine;S-Adenosylmethionine;Site;Solvents;Source;Superfund;superfund site;System;Technology;Testing;tool;Training;Treatment Step;Trichloroethylene;Xylene
+current_category: other
+---
+application_id: 10930313
+activity_code: U19
+title: Data Science Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: N/A
+terms: Collaborations;computerized data processing;Data;Data Analyses;data analysis pipeline;data exchange;data management;data repository;data reuse;Data Science;Data Science Core;Data Set;data sharing;data tools;data visualization;database query;Ensure;Guidelines;Infrastructure;Lead;Motor;orofacial;performance site;Process;Publications;repository;Reproducibility;Research;Research Personnel;Secure;web portal
+current_category: infrastructure
+---
+application_id: 11257477
+activity_code: P01
+title: Core B: Pharmaceutical Production
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: PROJECT NARRATIVE - Core B The radiolabeled antibodies produced under federally approved methods in Core B are critical for use in key clinical trials in patients, which will ultimately lead to development of minimally toxic hematopoietic cell transplant regimens for the treatment of patients with blood-based cancers. Production of these antibodies is made possible through the use of unique facilities at the Fred Hutch and the University of Washington.
+terms: Acute leukemia;Allogenic;Allografting;antibody conjugate;Antibody Formation;Astatine;Biological Assay;Biological Products;Biometry;Blood;Bone Marrow;Calibration;Clinical;Clinical Research;Clinical Trials;Conduct Clinical Trials;Cyclotrons;Data Analyses;data management;Development;Disease;Drug Kinetics;Dysmyelopoietic Syndromes;Equipment;Fred Hutchinson Cancer Research Center;Good Manufacturing Process;Graft-Versus-Tumor Induction;Hematopoietic Stem Cell Transplantation;Human;Human Resources;improved;Individual;Infrastructure;Label;Laboratories;Laboratory Chemicals;Location;Malignant - descriptor;Malignant Neoplasms;manufacture;Materials Testing;Medical;Methods;Monoclonal Antibodies;monoclonal antibody production;Multiple Myeloma;novel;Patients;Pharmaceutical Preparations;Pharmacologic Substance;Plasma Cells;preclinical study;Procedures;Process;Product Labeling;Production;Program Research Project Grants;PTPRC gene;Quality Control;Radiochemistry;Radioimmunoconjugate;Radioimmunotherapy;Radioisotopes;Radiolabeled;Reagent;Regimen;Regulation;relapse prevention;Research;research clinical testing;Research Personnel;Resource Sharing;Resources;Running;sample collection;Sampling;scale up;Services;Site;Stem cell transplant;Sterility;Technical Expertise;Techniques;Testing;Therapeutic;translational scientist;Treatment Protocols;Universities;Vial device;Washington
+current_category: infrastructure
+---
+application_id: 10926939
+activity_code: P01
+title: Admin Core: Administration, Biostatistics and Data Coordinating Center
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: CORE 1 NARRATIVE Allogeneic hematopoietic stem cell transplantation is a potentially curative therapy for many malignant diseases whose applicability has been impeded by the development of its most serious complication, GI GVHD. Strategies that strengthen the target cells in the GI tract will allow for better harnessing of this effective therapeutic modality. Core 1 contains the administrative, biostatistical support and database operations support for all three projects.
+terms: Accountability;Acute Graft Versus Host Disease;Allogenic;Biological Markers;Biometry;Bone Marrow Transplantation;Categories;Cells;Clinical;clinical database;Clinical Trials Design;Committee Members;Complication;cost effective;curative treatments;Data;Data Coordinating Center;data sharing;Databases;Development;Disease;Doctor of Philosophy;Experimental Designs;Experimental Models;Gastrointestinal tract structure;Generations;Hematopoietic Stem Cell Transplantation;Individual;innovation;Laboratories;Malignant - descriptor;Modality;Molecular;Monitor;operation;Patients;Process;programs;Reporting;Research;Sample Size;Services;Statistical Data Interpretation;statistical service;therapeutically effective
+current_category: infrastructure
+---
+application_id: 10926935
+activity_code: P01
+title: Project 1: Mitochondrial Bioenergetics and Metabolism of ISCS in GVHD
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: PROJECT 1 NARRATIVE Allogeneic hematopoietic stem cell transplantation is a potentially curative therapy for many malignant diseases whose applicability has been impeded by the development of its most serious complication, GI GVHD. Strategies that strengthen the target cells in the GI tract will allow for better harnessing of this effective therapeutic modality. Project 1 uses animal models to focus on the bioenergetics abnormalities and mitochondrial damage in intestinal stem cells caused by GV
+terms: Allogenic;Animal Model;Bioenergetics;Biology;Bone Marrow Transplantation;Butyrates;Cells;Complex;Complication;Critical Pathways;curative treatments;Data;Defect;Development;Disease;Electron Transport;Epithelial Cells;gastrointestinal;Gastrointestinal tract structure;Glycolysis;Goals;Hematopoietic Stem Cell Transplantation;Immunosuppression;In Vitro;in vivo;insight;intestinal epithelium;Intestinal Graft Versus Host Disease;Intestines;LGR5 gene;Maintenance;Malignant - descriptor;Mediating;Metabolic;Metabolism;microbial;Mitochondria;Modality;Molecular;Morbidity - disease rate;mortality;novel;Paneth Cells;Play;preservation;prevent;Proliferating;Propionates;Publishing;Regulation;resilience;Role;Seminal;Severities;stem cell function;stem cells;Succinate Dehydrogenase;Testing;therapeutically effective;Tissues;Volatile Fatty Acids;Work
+current_category: basic_research
+---
+application_id: 10935587
+activity_code: P01
+title: Transgenic T cell Therapy for Acute Myeloid Leukemia
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: PROJECT NARRATIVE Acute myeloid leukemia (AML) is a deadly disease, especially for patients who have aggressive disease and who cannot receive a hematopoietic stem cell transplant (HCT). In a new Phase I/II clinical trial we propose to infuse patients who are not HCT candidates with genetically engineered T cells modified to selectively attack AML cells and prevent the disease from coming back. We also propose to perform the pre-clinical laboratory work for adding positive signals to the gene-ed
+terms: Acute leukemia;Acute Myelocytic Leukemia;acute myeloid leukemia cell;Adoptive Transfer;Adult;adult leukemia;Affect;Affinity;Age;Allogenic;analytical method;Antigens;antileukemic activity;Autologous;Azacitidine;Back;Blood Platelets;Bypass;Categories;CD34 gene;CD4 Positive T Lymphocytes;CD8-Positive T-Lymphocytes;CD8B1 gene;Cells;cellular transduction;chemotherapy;Childhood Leukemia;Clinical;clinical efficacy;Clinical Trials;Clone Cells;cohort;comorbidity;conditioning;Consolidation Therapy;Cyclophosphamide;Cytogenetics;Data;design;Development;Disease;Disease remission;engineered T cells;Engineering;Epitopes;European;Failure;Flow Cytometry;fludarabine;Future;Gene Expression;Genes;Genitourinary system;Genomics;graft vs leukemia effect;Guidelines;Hematopoietic;Hematopoietic Stem Cell Transplantation;Hematopoietic stem cells;high dimensionality;high risk;Immune response;Immunohistochemistry;In Vitro;in vivo;Infusion procedures;Laboratories;Lentivirus Vector;leukemia;leukemia relapse;leukemia treatment;Leukemic Cell;Leukocytes;Ligands;Measurable;Mediating;Memory;Morbidity - disease rate;Morphology;mortality;mouse model;Neoadjuvant Therapy;Nephroblastoma;neutrophil;Newly Diagnosed;next generation;Normal Cell;overexpression;patient tolerability;Patients;peripheral blood;Phase;Phase I/II Clinical Trial;Phase I/II Trial;Phenotype;Physiological;pre-clinical;preclinical efficacy;preclinical safety;prevent;Prevention;Probability;Proliferating;Publishing;receptor;Recommendation;Recovery;Regimen;Relapse;relapse risk;Research;Residual Neoplasm;response;Risk;Safety;SELL gene;Signal Transduction;single-cell RNA sequencing;standard of care;stem;stem cells;T cell response;T cell therapy;T memory cell;T-Cell Receptor;T-Lymphocyte;Tissues;Toxic effect;tumor;Tumor Antigens;Work
+current_category: therapeutics
+---
+application_id: 10935588
+activity_code: P01
+title: Core B: Biostatistics and Data Management
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: PROJECT NARRATIVE The activities of this Core involve collaboration with each Project and each Core in the design and biostatistical analysis of all studies support by this Program Project, including observational studies, pre-clinical studies, laboratory studies, and clinical trials. The Core also supports the collection of data from patients enrolled in the associated clinical trial, and makes these data and data required for observational studies available in a relational database.
+terms: adult leukemia;Area;Biometry;Budgets;Clinical;Clinical Research;Clinical Trials;Code;Collaborations;computer cluster;Computer Systems;Data;Data Collection;data management;data repository;Databases;design;Electronics;Funding;Health Sciences;Housing;image archival system;Immunotherapy;immunotherapy clinical trials;Individual;Information Systems;Laboratories;Laboratory Research;Laboratory Study;Maintenance;Manuscripts;Monitor;Observational Study;operation;optical imaging;participant enrollment;Patients;Phase;preclinical study;Preparation;Process;programs;protocol development;Protocols documentation;Public Health;Quality Control;relational database;Reporting;Research;Research Design;Research Personnel;Research Project Grants;research study;Resources;Services;web-accessible;Work
+current_category: infrastructure
+---
+application_id: 10829356
+activity_code: P50
+title: Diet and Exercise Modulate the Sperm Epigenome in Men
+org_name: LUNDQUIST INSTITUTE FOR BIOMEDICAL INNOVATION AT HARBOR-UCLA MEDICAL CENTER
+phr: N/A
+terms: Adult;Animals;cardiovascular disorder risk;Cells;Clinical Trials;Complex;Conceptions;Coupled;Cross-Sectional Studies;design;Development;Diabetes Mellitus;Diet;diet and exercise;Diet Modification;dietary;Disease Outcome;DNA Methylation;Educational Intervention;Environment;Environmental Exposure;Environmental Risk Factor;Epidemic;Epigenetic Process;epigenetic regulation;epigenome;epigenomics;Exercise;exercise training;experience;Fatty acid glycerol esters;Gene Expression;Gene Expression Regulation;Genetic;Genetic Programming;Genome;genome wide association study;Germ Cells;Goals;Health;Heritability;High Fat Diet;High Prevalence;Hispanic;histone modification;Human;human study;Hyperlipidemia;in utero;intergenerational;Intervention;late life;Life;Life Style;lifestyle intervention;Link;male;men;Metabolic;Metabolic Diseases;Metabolic syndrome;Modification;Molecular;Mus;next generation;Non-Insulin-Dependent Diabetes Mellitus;Nutritional;Obesity;obesity development;offspring;Outcome;Overweight;Pathogenesis;Pattern;Phenotype;physical inactivity;Population;Pre-Clinical Model;Prevalence;prevent;Randomized;recruit;Reporting;reproductive;Research Design;Research Personnel;resistance exercise;response;Risk;Single Nucleotide Polymorphism;sperm cell;Thinness;Translating;Translations;transmission process;Unhealthy Diet;unhealthy lifestyle;United States;Untranslated RNA;young man;young woman
+current_category: infrastructure
+---
+application_id: 10935586
+activity_code: P01
+title: Engineering Effective T cell Immunity to Multiple Myeloma
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: PROJECT NARRATIVE Multiple myeloma is diagnosed in 35000 Americans each year. New drugs and chimeric antigen receptor modified T cells (CAR-T) have improved response rates for myeloma and prolonged survival for many patients, but most patients eventually die of disease progression. This project will develop new tumor targeting receptors and methods for adoptive T cell therapies to overcome mechanisms by which myeloma cells resist eradication.
+terms: Acceleration;Adoptive Cell Transfers;Adoptive Transfer;adult leukemia;Aftercare;American;Antigen Targeting;Antigens;Architecture;Autologous;Autologous Stem Cell Transplantation;Binding;Biological Products;blood resource;Bone Marrow;Bone Marrow Neoplasms;cancer therapy;CAR T cell therapy;Cell Physiology;Cell surface;Cells;chimeric antigen receptor;chimeric antigen receptor T cells;clinical translation;curative treatments;Cytogenetics;Data;density;design;Development;Diagnosis;dimensional analysis;Disease;Disease Progression;Disease remission;engineered T cells;Engineering;Epigenetic Process;Extramedullary;Functional disorder;gamma secretase;Gene Transfer;Generations;Genetic Transcription;genetically modified cells;Hematopoietic Stem Cell Transplantation;Heterogeneity;high dimensionality;high risk;Human;Hybrids;immune modulating agents;Immunity;Immunologic Techniques;Immunotherapy;Impairment;improved;In complete remission;In Vitro;in vivo;Infusion procedures;inhibitor;insight;International;Ligands;Maintenance;Mediating;Memory;Methods;Monoclonal Antibodies;mouse model;Multiple Myeloma;Mus;neoplastic cell;novel;novel strategies;novel therapeutics;Oral Administration;Outcome;Patients;Pharmaceutical Preparations;Pharmacotherapy;phase I trial;Phenotype;Pre-Clinical Model;prevent;Prior Therapy;Progression-Free Survivals;Proteasome Inhibitor;receptor;Receptor Signaling;Recurrent disease;Refractory;Refractory Disease;Relapse;Research;Resistance development;resistance mechanism;response;Sampling;secretase;Signal Transduction;Specificity;Staging System;stem cells;stemness;Surface;synthetic biology;T cell therapy;T-Cell Activation;T-Cell Receptor;T-Lymphocyte;targeted treatment;Techniques;Testing;Therapeutic;therapy resistant;Time;TNFRSF17 gene;Treatment Efficacy;Treatment Failure;tumor;Tumor Burden;Tumor Escape;tumor microenvironment;Work
+current_category: therapeutics
+---
+application_id: 11299080
+activity_code: U10
+title: SWOG Network Group Operations Center of the NCTN
+org_name: OREGON HEALTH & SCIENCE UNIVERSITY
+phr: N/A
+terms: cancer clinical trial;Communication;Ensure;improved;member;Monitor;operation;Patient advocacy;Patients;rare cancer;Recruitment Activity;Research;Resources;Site;Southwest Oncology Group;Special Population;Work
+current_category: therapeutics
+---
+application_id: 11015062
+activity_code: P01
+title: Core-002 - Non-Human Primate Core
+org_name: SCRIPPS RESEARCH INSTITUTE, THE
+phr: N/A
+terms: Affect;Animal Euthanasia;Animal Model;Animals;Antibodies;Antibody Response;Antigens;Awareness;biobank;Biomedical Research;Blood;Blood specimen;Breeding;Callithrix;Chronic;Chronic Hepatitis C;chronic infection;Clinical;Collaborations;Collection;Complex;Computing Methodologies;Data;design;Diagnosis;Experimental Designs;experimental study;Genetic;Germ Lines;Goals;Hepatitis C Vaccine;Hepatitis C virus;Human;Immune;Immune response;Immunization;immunogenicity;Individual;Institution;Laboratories;Liver Cirrhosis;Macaca mulatta;Malignant neoplasm of liver;member;Modeling;nanoparticle;nonhuman primate;nonhuman primate models;novel;novel vaccines;Papio;Parents;Persons;Preclinical Testing;Predictive Value;prevent;Primates;Procedures;programs;protocol development;rational design;Recording of previous events;Regimen;Research;Research Institute;Research Personnel;Research Project Grants;Resources;Rhesus macaque colony;Safety;Sampling;self assembly;Site;Structure;Testing;Texas;Tissue Sample;Tissues;Toxic effect;Training;Vaccinated;Vaccination;Vaccine Antigen;vaccine candidate;Vaccine Research;Vaccines;Viral Antigens
+current_category: infrastructure
+---
+application_id: 10773030
+activity_code: P01
+title: Core D: Next-Gen Sequencing and Bioinformatics
+org_name: COLD SPRING HARBOR LABORATORY
+phr: CORE D - NEXT-GEN SEQUENCING AND BIOINFORMATICS PROJECT NARRATIVE Genomics and Bioinformatics are essential tools in cancer research. Core D provides services in high-throughput sequencing and bioinformatic analysis to identify changes in transcription, splicing, and chromatin that drive the growth and maintenance of cancer. Bioinformatic tools will be continuously developed by this Core to support the evolving needs of the Projects.
+terms: Address;Algorithms;anti-cancer research;Area;Awareness;base;biobank;Bioinformatics;bioinformatics tool;Biological Sciences;bisulfite sequencing;cancer cell;Cancer Center at Cold Spring Harbor Laboratory;cancer genome;Cells;ChIP-seq;Chromatin;chromatin isolation by RNA purification sequencing;Cleavage Under Targets and Release Using Nuclease;Clustered Regularly Interspaced Short Palindromic Repeats;Collaborations;Collection;Communities;Complementary DNA;Computer software;cost;Data;Data Set;Databases;Detection;Development;Devices;DNA;DNA sequencing;DNA Sequencing Facility;exome;exome sequencing;Experimental Designs;Fostering;Funding;fusion gene;Galaxy;Generations;Genes;Genetic Screening;Genetic Transcription;Genome;genome sequencing;Genomics;Goals;Growth;High-Throughput Nucleotide Sequencing;Individual;innovation;instrument;Investigation;Investments;Link;Maintenance;Malignant Neoplasms;Maps;Mediating;member;Methods;Methylation;Mission;Modification;nanopore;next generation sequencing;novel;novel sequencing technology;Nucleotides;Organoids;Pattern;Performance;posttranscriptional;programs;Protein Isoforms;Publications;Research;Research Personnel;Research Project Grants;Resource Sharing;Resources;RNA;RNA Sequences;RNA Splicing;RNA-Binding Proteins;Running;sequencing platform;Services;single cell sequencing;single-cell RNA sequencing;Software Tools;Statistical Methods;targeted sequencing;Technology;technology development;Testing;Time;tool;transcriptome;transcriptome sequencing;Untranslated RNA;web site;whole genome;Work
+current_category: infrastructure
+---
+application_id: 11051112
+activity_code: P01
+title: Project 2: Splicing Dysregulation in Cancer
+org_name: COLD SPRING HARBOR LABORATORY
+phr: PROJECT 2 – RNA-SPLICING DYSREGULATION IN CANCER PROJECT NARRATIVE RNA splicing is a fundamental step in the normal function of genes. In cancer cells, this process is altered in ways that can contribute to tumor growth. By studying dysregulated splicing in cancer, unique vulnerabilities of cancer cells will be uncovered, and potential therapeutic targets revealed.
+terms: Acceleration;aerobic glycolysis;Affect;Alternative Splicing;Antisense Oligonucleotide Therapy;Antisense Oligonucleotides;Antisense Technology;Breast Epithelial Cells;cancer cell;Cancer Model;Carcinoma;Cell Reprogramming;cell transformation;cell type;Cells;Cellular Metabolic Process;Chemicals;Clinical;Computer Analysis;Dependence;Ductal Epithelial Cell;Event;Exhibits;Exons;Future;gene function;Genes;Genetic;Genetic Transcription;Goals;High-Throughput RNA Sequencing;Human;IL1R1 gene;In Vitro;in vivo;in vivo Model;Individual;Investigation;KRAS2 gene;Malignant Breast Neoplasm;Malignant neoplasm of pancreas;Malignant Neoplasms;Mammary gland;mammary gland development;MDM2 gene;Mediating;Modeling;Modification;mouse model;mRNA Precursor;mutant;Mutation;Neoplasm Metastasis;Normal Cell;oncogene induced senescence;Oncogenic;Oncoproteins;Organoids;overexpression;pancreatic cancer model;Pancreatic duct;Pancreatic Ductal Adenocarcinoma;pancreatic ductal adenocarcinoma model;Pathway interactions;Phenotype;posttranscriptional;pre-clinical;Process;Protein Isoforms;Proteins;Pyruvate Kinase;receptor;Recurrence;Regulation;RNA Splicing;RNA-Binding Proteins;Role;Route;Scaffolding Protein;Site;Spliced Genes;Spliceosome Assembly Pathway;Spliceosomes;targeted treatment;Testing;Therapeutic;therapeutic evaluation;therapeutic target;three dimensional cell culture;TP53 gene;Transcriptional Regulation;tumor;tumor growth;tumor metabolism;tumorigenesis;Untranslated RNA;Upregulation;uptake;Warburg Effect;Work
+current_category: basic_research
+---
+application_id: 11015058
+activity_code: P01
+title: Admin Core
+org_name: SCRIPPS RESEARCH INSTITUTE, THE
+phr: N/A
+terms: Area;Budgets;Collaborations;Communication;Communities;cost effective;Data;Ensure;Equilibrium;Fostering;Goals;Hepatitis C Transmission;Hepatitis C Vaccine;Infrastructure;Manuscripts;meetings;member;Monitor;nonhuman primate;outreach;Preparation;Primates;Productivity;Program Research Project Grants;programs;Publications;Reagent;Research;Research Activity;Research Personnel;Research Project Grants;Research Support;Sampling;Site;synergism;United States National Institutes of Health;Vaccine Antigen;Vaccines;Work
+current_category: infrastructure
+---
+application_id: 10862289
+activity_code: P01
+title: Clinical Coordination Core
+org_name: TUFTS UNIVERSITY BOSTON
+phr: NARRATIVE: CLINICAL COORDINATION CORE Persistent symptoms following antibiotic treatment for early Lyme disease cause debilitating illness in some patients. The CCC is designed to support a series of research projects targeted to determine the causes of persistent symptoms in Lyme disease. It will accomplish this goal by enrolling the largest number of persons with early Lyme disease ever studied in North America and by ensuring that the clinical information and research samples needed to answer
+terms: Acute;Address;Anaplasma phagocytophilum;Antibiotic Therapy;Antibodies;Area;Arthralgia;biobank;Biological;Biological Markers;biomarker identification;Black-legged Tick;Blood;Blood specimen;Borrelia burgdorferi;Borrelia miyamotoi;brain fog;Carditis;care providers;Clinical;Clinical Data;clinical database;Clinical Management;Clinical Research;clinical research site;cohort;Collaborations;Collection;Data;Data Management Resources;Databases;design;Diagnostic;Disease;Early treatment;Enrollment;Ensure;erythema migrans;experience;Exposure to;Fatigue;follow-up;Future;Generations;Geographic Distribution;Geographic Locations;Goals;Growth;high risk;Hospitals;Immunologic Markers;Impaired cognition;Incidence;Infrastructure;Institution;Investigation;Leadership;Length;Link;Lyme Disease;Maine;Massachusetts;Medical;medical schools;meetings;Meningitis;Mental Health;Molecular;Monitor;Myalgia;Neurologic;New England;North America;operation;organizational structure;Outpatients;participant enrollment;Pathogenesis;patient population;Patients;persistent symptom;Persons;physical conditioning;Population;Post Treatment Lyme Disease Syndrome;Powassan virus;Practice Management;Prevalence Study;Primary Care;programs;prospective;Prospective Studies;Protocols documentation;Recording of previous events;Research;Research Personnel;Research Project Grants;Resolution;Resources;sample collection;Sample Size;Sampling;Scientist;Series;seropositive;serosurvey;SF-36;Site;skin biopsy;Specific qualifier value;Specimen;Specimen Handling;Structure;Surveys;Symptoms;Syndrome;Systems Integration;Technology;Testing;tick transmission;Tick-Borne Infections;tick-borne pathogen;Time;Tissue Sample;Tissues;Universities;urgent care;Urine;Venous blood sampling;Visit;Work
+current_category: infrastructure
+---
+application_id: 10930076
+activity_code: U54
+title: Administrative Core
+org_name: UNIVERSITY OF HAWAII AT MANOA
+phr: N/A
+terms: Address;Administrator;Advisory Committees;Advocate;Budgets;Burn injury;Cancer Center;Cancer health equity;career development;Catchment Area;Centers of Research Excellence;Collaborations;college;Communication;Communities;community advisory board;Core Facility;Development;disease disparity;Disease Outcome;disorder risk;Employee;Ensure;Equipment;Equipment and supply inventories;ethnic difference;ethnic diversity;Evaluation;expectation;experience;Fostering;Foundations;Funding;Genome;Genomics;Goals;Grant;Growth;Hawaii;Human Resources;Individual;Infrastructure;innovation;Institution;Leadership;Maintenance;medical schools;meetings;member;Modification;Office of Administrative Management;operation;Pacific Islands;Patients;Play;Process;Productivity;Program Evaluation;programs;Progress Reports;Protocols documentation;Race;racial difference;Records;Regulation;Reporting;Research;Research Activity;Research Personnel;Research Project Grants;Research Support;Resources;Role;Schools;Science;Senior Scientist;skills;Specific qualifier value;Strategic vision;Structure;Subgroup;success;survivorship;System;timeline;tool;Training;United States National Institutes of Health;Universities;webinar;Work
+current_category: infrastructure
+---
+application_id: 10862288
+activity_code: P01
+title: Administrative Core
+org_name: TUFTS UNIVERSITY BOSTON
+phr: NARRATIVE: ADMINISTRATIVE CORE Crucial to any complex clinical study is coordination of all of the different parts of the team that need to function together to make the project a success. The Administrative Core will be in charge of overseeing the functioning of the project and ensuring that the different parts work well together and are communicating with each other. Communication between members of the Project as well as from the Project to the Public will use multiple different avenues inclu
+terms: Academic Medical Centers;Achievement;Area;Charge;Clinical;Clinical Research;Communication;Communities;Complex;data exchange;design;Diagnostic;Diagnostic Trial;Disease;Enrollment;Ensure;Evaluation;Evaluation Reports;experience;Faculty;Feedback;Future;Goals;Health;Human;Human Resources;improved;Individual;Infection;Information Dissemination;Infrastructure;Institution;Knowledge;Lead;Leadership;Lyme Disease;medical schools;meetings;member;Microbiology;Misinformation;Mission;Modeling;Molecular Biology;multimodality;National Institute of Allergy and Infectious Disease;New England;Newly Diagnosed;Occupational activity of managing finances;Participant;Patients;persistent symptom;Post Treatment Lyme Disease Syndrome;Process;Productivity;programs;Progress Reports;prospective;Prospective Studies;Protocols documentation;Public Health;Publications;Recommendation;Recording of previous events;recruit;Regulation;Reporting;Research;Research Personnel;Resolution;Resource Sharing;Resources;Role;Sampling;Schedule;Seminal;social media;success;symposium;Symptoms;synergism;Tilia;Training;treatment trial;United States National Institutes of Health;Universities;vaccine trial;web site;Work
+current_category: infrastructure
+---
+application_id: 10862292
+activity_code: P01
+title: Immunology of Post-Treatment Lyme Disease Syndrome
+org_name: TUFTS UNIVERSITY BOSTON
+phr: NARRATIVE: Project 2, Immunology of Post-treatment Lyme Disease Syndrome The human immune response plays an important role in protecting us from disease but can also cause disease when not responding properly. In this Project, we will use new technologies to identify how immune responses may differ between people who recover from Lyme disease versus those who have persistent symptoms. Understanding the differences may lead us to new diagnostics and strategies for treating people with persistent 
+terms: Acute;Acute-Phase Proteins;Aftercare;Alleles;Antibodies;Antibody Response;Antigens;Autoantibodies;Autoantigens;Autoimmune Diseases;Autoimmunity;autoreactive T cell;bacterial genetics;Binding;Bioinformatics;Biological Assay;Borrelia burgdorferi;candidate identification;Categories;CCL19 gene;CD8B1 gene;cell type;chemokine;Chronic Fatigue Syndrome;Clinical;cohort;Communicable Diseases;cytokine;Data;Development;Diagnostic;Disease;Fatigue;Fibromyalgia;Flow Cytometry;Gene Expression;Gene Expression Profile;Genes;Genetic;Goals;high dimensionality;HLA-DR Antigens;Human;Human Genetics;Immune;immune activation;Immune response;Immune system;Immunity;Immunologics;Immunology;Immunoprecipitation;Infection;Inflammatory;inflammatory marker;Inflammatory Response;Interferon alpha;interleukin-23;Joints;Lead;Libraries;Link;Long COVID;Lyme Arthritis;Lyme Disease;Mass Spectrum Analysis;Measurement;Memory Loss;Methods;Modeling;multimodal modeling;Myalgia;nano-liquid chromatography;neural;Neurons;new technology;novel diagnostics;novel marker;pathogen;Pathway interactions;patient response;Patients;Peptides;persistent symptom;Persons;Phage Display;Phospholipids;Play;Positioning Attribute;Post Treatment Lyme Disease Syndrome;Predisposition;Production;prospective;Prospective Studies;protein expression;receptor;Regulation;Regulatory T-Lymphocyte;response;Role;Sampling;screening;Serum;Stimulus;Symptoms;Syndrome;T cell response;T-Lymphocyte;tandem mass spectrometry;Technology;Testing;Tissues;transcriptome sequencing
+current_category: therapeutics
+---
+application_id: 10794290
+activity_code: U19
+title: Admin Core - Britton
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: N/A
+terms: Antibiotic Resistance;Antimicrobial Resistance;Bacteriophages;college;combat;Communication;Communities;community center;Coordination and Collaboration;Data;Decision Making;design;experience;Fostering;Funding;Grant;International;Medical center;Medicine;meetings;microbiome;microbiota;Mission;Monitor;Mucous Membrane;National Institute of Allergy and Infectious Disease;outreach;Pathway interactions;Pilot Projects;programs;Reagent;Research;Research Personnel;Research Project Grants;Source;Structure;Surface;synergism;Technology;Texas;timeline;United States National Institutes of Health;Work
+current_category: infrastructure
+---
+application_id: 10930064
+activity_code: U19
+title: Data Core
+org_name: UNIVERSITY OF TEXAS DALLAS
+phr: N/A
+terms: Age;Algorithms;analysis pipeline;Archives;ATAC-seq;Bar Codes;bioinformatics tool;Biological Assay;Cell Nucleus;cell type;Cells;chronic painful condition;clinical phenotype;Code;cohort;Collaborations;Communities;computational pipelines;Computer software;Data;Data Analyses;Data Coordinating Center;data format;data infrastructure;data management;Data Set;data sharing;data standards;Data Storage and Retrieval;database of Genotypes and Phenotypes;Databases;Decision Making;demographics;Detection;differential expression;DNA sequencing;Encyclopedias;Ensure;Excision;Experimental Designs;Genes;Genetic Markers;Genetic Transcription;Genotype-Tissue Expression Project;Goals;Grant;Helping to End Addiction Long-term;high throughput screening;Human;improved;Informatics;insight;interoperability;Laboratories;Low Back Pain;Maps;Metadata;Mission;Molecular;Molecular Profiling;nanopore;Neck Pain;Neurons;Neurosciences;Nociceptors;Organ Donor;Output;Pain;Pain Disorder;Pain management;painful neuropathy;Pathway interactions;Patients;Peripheral Nerves;peripheral pain;Phenotype;phenotypic data;Policies;Process;protocol development;Protocols documentation;Quality Control;Records;reference genome;Reproducibility;Research;Research Design;Research Personnel;Research Project Grants;Research Support;Resources;Ribosomes;RNA;Secure;Services;sex;Site;Software Tools;Spinal Cord;Spinal Ganglia;Spine pain;Standardization;Synapses;System;Testing;Tissue imaging;tissue processing;Tissue Procurements;Tissues;tool;transcriptome;transcriptomics;United States National Institutes of Health;University of Texas M D Anderson Cancer Center;usability;Vision;web site;Work
+current_category: infrastructure
+---
+application_id: 10861329
+activity_code: P01
+title: Project 1 Immunometabolic Determinants of Susceptibility
+org_name: UNIV OF MASSACHUSETTS MED SCH WORCESTER
+phr: N/A
+terms: Anatomy;Animal Model;Animals;Bar Codes;Biology;Blood;Cell model;Cells;Clinical;clinically relevant;Clustered Regularly Interspaced Short Palindromic Repeats;cohort;Collaborations;computer framework;cytokine;Development;Disease;Disease Marker;Disease Progression;DNA;efficacy testing;Engineering;Genes;Genetic;genetic variant;genome wide association study;genome-wide;Goals;Heterogeneity;Human;human data;Immune;Immune response;Immunity;Immunologics;immunoregulation;Immunotherapy;Individual;Infection;Inflammatory;Inflammatory Response;insight;Libraries;Link;Lung;Lung infections;Macrophage;Mediator;Metabolic;Metabolism;Methods;Mitochondria;Modeling;Mus;Mutagenesis;Mycobacterium tuberculosis;Myelogenous;Myeloid Cells;Myeloid Progenitor Cells;novel;Outcome;pathogen;Pathology;Pathway interactions;Peripheral Blood Mononuclear Cell;Phenotype;Population;Predisposition;Process;Production;programs;Progressive Disease;Proteins;Respiration;response;Role;Shapes;Signal Transduction;single cell technology;Site;Source;Stress;success;System;Testing;transcriptomics;Tuberculosis;Variant
+current_category: basic_research
+---
+application_id: 10837608
+activity_code: P01
+title: Administrative Support Core
+org_name: DANA-FARBER CANCER INST
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;Antigens;Basic Science;biobank;Boston;Budgets;Chimera organism;clinical development;Communication;Data;data sharing;Decision Making;design;Education;Ensure;Fostering;Future;Goals;Group Meetings;HIV-1;immunogenicity;Infection;Institution;Intellectual Property;Link;Logistics;Manuscripts;meetings;Molecular;multidisciplinary;National Institute of Allergy and Infectious Disease;neutralizing antibody;operation;Outcome;Persons;pre-clinical;Preventive vaccine;Productivity;programs;Progress Reports;Proteins;Protomer;Publications;Reagent;Research;Research Personnel;Resource Allocation;Resource Sharing;Resources;RNA;RNA vaccine;Series;Site;Structure;symposium;Technology;Teleconferences;timeline;transmission process;Travel;vaccine delivery;vaccine discovery;Vaccines;Viral
+current_category: infrastructure
+---
+application_id: 10763694
+activity_code: P01
+title: Gnotobiotic Core
+org_name: SLOAN-KETTERING INST CAN RESEARCH
+phr: PROJECT NARRATIVE As per this program announcement (PAR-22-225), a Project Narrative should only be uploaded to the Overall component but not to the individual projects and cores.
+terms: Address;Animal Experiments;Autoimmune Diseases;Bacteria;bacteriome;Bone Marrow Transplantation;Candida;Cells;Collaborations;colonization resistance;Communities;Complex;Data;Derivation procedure;Disease;Dissection;Elements;Embryo Transfer;Experimental Models;experimental study;fungus;Gene Modified;Genetic Engineering;Germ-Free;Gnotobiotic;Goals;gut colonization;gut microbiota;Health;host microbiota;Human;immune activation;Immune system;Immunity;Immunocompromised Host;immunodeficiency;in vivo;Individual;Inflammatory;Infrastructure;insight;Integration Host Factors;intestinal barrier;Intestines;Knowledge;microbiota;Mission;Modeling;Molecular;mouse model;Mouse Strains;Mus;Mutant Strains Mice;NIH Program Announcements;novel;Patients;Program Research Project Grants;Publishing;Resistance;System;Testing;Transplantation
+current_category: infrastructure
+---
+application_id: 11040329
+activity_code: P20
+title: Core C-Research Computing, Bioinformatics, and Biostatistics
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: N/A
+terms: Address;Algorithms;analysis pipeline;Applications Grants;Bioinformatics;Biological;Biometry;Body System;cell type;Cells;Complex;Computational Biology;Consultations;Custom;Data;Data Collection;data integration;Data Science;Data Set;database design;Dedications;Disease;Education;education planning;Educational workshop;Ensure;Epigenetic Process;epigenomics;Event;Experimental Designs;Extramural Activities;Faculty;Functional disorder;Genes;Genetic Predisposition to Disease;Genomics;Goals;Health;High Performance Computing;human subject;improved;Individual;Infrastructure;innovation;insight;Leadership;Manuscripts;Maps;Medical center;meetings;Mentors;Mentorship;metabolomics;Methodology;Mission;Mississippi;Molecular;multidisciplinary;novel;novel strategies;Onset of illness;Organ;Organism;Performance;Phase;Physiological;Physiology;Pilot Projects;population health;power analysis;Preparation;Program Description;programs;Proteomics;Reporting;Reproducibility;Research;Research Personnel;Schools;service delivery;Services;spatial transcriptomics;Statistical Data Interpretation;Statistical Models;Students;success;Systems Biology;Systems Development;Technical Expertise;technological innovation;Technology;Tissues;Training;Training and Education;training opportunity;transcriptomics;Universities;Variant
+current_category: infrastructure
+---
+application_id: 10930041
+activity_code: U54
+title: Lysosomal Disease Network Administrative Core
+org_name: UNIVERSITY OF MINNESOTA
+phr: N/A
+terms: Advisory Committees;Advocacy;Affect;Age of Onset;Attenuated;autosome;Biochemical;Birth;career;Categories;Characteristics;Clinical;Communication;data management;Defect;Disease;Early Diagnosis;Ensure;Enzymes;Fellowship;Frequencies;Gangliosidoses;Gene Mutation;gene therapy;gene-editing approach;Genes;Genotype;Glycoproteins;Glycosaminoglycans;Goals;Group Affiliation;Human Resources;improved outcome;Incidence;Individual;Inheritance Patterns;Inherited;Institutional Review Boards;Life;Link;lipid metabolism;Live Birth;Lysosomal Storage Diseases;Lysosomes;meetings;Metabolic;Mucopolysaccharidosis I;Mutation;Neurologic Dysfunctions;Newborn Infant;next generation;Occupational activity of managing finances;Office of Administrative Management;Online Systems;Outcome Study;Participant;patient advocacy group;Patient Recruitments;Persons;Pharmacotherapy;Phenotype;Pilot Projects;Principal Investigator;programs;Protocols documentation;Research;Research Project Grants;Research Support;Scientist;Severities;Stem cell transplant;Structure;success;Symptoms;Therapeutic;web site;Work
+current_category: infrastructure
+---
+application_id: 10763720
+activity_code: P01
+title: Project 1 - BIDMC
+org_name: BETH ISRAEL DEACONESS MEDICAL CENTER
+phr: A quarter to more than one half of the ~ one million people with systemic lupus will either present with lupus nephritis or they will develop lupus nephritis at some point in the course of their disease. The available treatment approaches and tools to record response to treatment are limited. The project proposes studies in people and mice with lupus nephritis to improve our understanding of pathogenesis, develop precision treatment approaches and high-fidelity biomarkers.
+terms: Address;Adult;artificial intelligence model;Autoantibodies;Autoimmune;Autoimmune Diseases;Autoimmune Responses;autoinflammatory;belimumab;Biological Markers;Biological Products;Ca(2+)-Calmodulin Dependent Protein Kinase;Calcineurin inhibitor;Calcium;Cells;chemokine;Child;Clinical;Clinical Data;Clinical Research;cohort;conditional knockout;Cyclophosphamide;cytokine;Data;Development;Diagnosis;Disease;Dose;Drug Delivery Systems;Elements;Environment;Epithelial Cells;experimental study;Exposure to;Genetic;Guide RNA;Hemorrhage;Human;IL17 gene;Immune;immunoregulation;Immunosuppressive Agents;improved;Infection;Inflammation;Inflammatory;Injury;insight;Interleukin-2;interleukin-23;interstitial;Intravenous;Kidney;kidney biopsy;kidney cell;Kidney Diseases;kinase inhibitor;Knockout Mice;Laboratories;Lupus;Lupus Nephritis;lupus prone mice;Measurement;Medicine;metabolic profile;Molecular;Molecular Abnormality;Monitor;Mus;mycophenolate mofetil;nanoparticle delivery;Needles;nephrogenesis;North America;novel;Oral;Pain;Pathogenesis;Pathology;Patients;Peripheral;Persons;Pharmaceutical Preparations;podocyte;precision medicine;Precision therapeutics;prevent;Probability;Production;Program Research Project Grants;Protein-Serine-Threonine Kinases;Proteins;receptor;Receptor Up-Regulation;receptor upregulation;renal damage;Research;response;Risk;Serine;side effect;single-cell RNA sequencing;Steroids;systemic autoimmunity;Systemic Lupus Erythematosus;T-Lymphocyte;targeted delivery;Testing;Tissues;tool;transcriptomics;treatment response;Tubular formation;Up-Regulation;Urine
+current_category: basic_research
+---
+application_id: 10763717
+activity_code: P01
+title: Core A - Admin Core
+org_name: BETH ISRAEL DEACONESS MEDICAL CENTER
+phr: PROJECT NARRATIVE – Administrative Core A Core A will be responsible for the coordination of all administrative and regulatory aspects of the proposed research.
+terms: Accounting;Adherence;Administrator;animal care;Animal Welfare;Bibliography;Biometry;Budgets;Communication;Data;data integration;data sharing;Disputes;Ensure;Expenditure;Funding;Generations;Goals;Grant;Human;IACUC;Individual;insight;Institution;Institutional Review Boards;Laboratories;Lupus Nephritis;Maintenance;Manuscripts;medical schools;meetings;member;Monitor;novel;Occupational activity of managing finances;Pathogenesis;Performance;performance site;Preparation;preservation;programs;Progress Reports;Protocols documentation;Records;Regulation;Research;Research Personnel;Resolution;Schedule;Scientific Advances and Accomplishments;scientific organization;Secure;Specialist;Structure;success;symposium;synergism;Travel;United States National Institutes of Health;Work
+current_category: infrastructure
+---
+application_id: 10762662
+activity_code: P01
+title: Project 2: Neuroimmune Interaction Mechanisms in Food Allergy
+org_name: FOOD ALLERGY SCIENCE INITIATIVE, INC.
+phr: N/A
+terms: Ablation;Afferent Neurons;Allergens;Allergic Reaction;allergic response;Anaphylaxis;Anatomy;Atlases;avoidance behavior;Behavior;Behavioral;Brain;Breathing;Calcium;Cells;Communication;Complex;Coughing;Data;Desire for food;Dorsal;Electric Stimulation;Esthesia;Fever;Fiber;fighting;food allergen;Food Hypersensitivity;Foundations;GDF15 gene;Genetic;gut-brain axis;Heart Rate;Image;Immune;immune function;Immune response;Immune system;in vivo imaging;Infection;Inflammatory;influenza infection;Knock-in Mouse;Lethargies;Maps;Measures;Mediating;Medical;Modeling;Motility;Motor;Motor Neurons;Nausea;Nervous System;neural circuit;neurogenetics;Neuroimmune;neuronal circuitry;Neurons;optogenetics;Organ;Outcome;Pain;Parasympathetic Nervous System;pathogen;Pathway interactions;Photometry;Physiological;Physiology;Play;programs;receptor;Reflex action;response;Rest;Role;Sensory;sensory input;sensory mechanism;Stereotyping;Structure of area postrema;Sympathetic Nervous System;Symptoms;therapy design;Toxin;transmission process;Vagus nerve structure;Visceral;Work
+current_category: basic_research
+---
+application_id: 10762659
+activity_code: P01
+title: Administrative Core
+org_name: FOOD ALLERGY SCIENCE INITIATIVE, INC.
+phr: N/A
+terms: Advisory Committees;Agreement;Allergic Disease;Bioinformatics;cohesion;Collaborations;Communication;Data Storage and Retrieval;Discipline;Disputes;Doctor of Philosophy;Ensure;Expenditure;Experimental Designs;Food Hypersensitivity;food science;Fostering;Foundations;Goals;Grant;Guidelines;Hand;Immune system;insight;Institution;Israel;Leadership;Logistics;Medical center;medical schools;meetings;member;migration;Monitor;Nervous System;Neuroimmune;new technology;Office of Administrative Management;Outcome;Participant;Pathway interactions;Persons;Play;Productivity;Program Research Project Grants;programs;Progress Reports;Quality Control;Recording of previous events;Reporting;Research Personnel;Resource Sharing;Resources;Role;Science;Scientist;Strategic Planning;success;symposium;synergism;technology/technique;Therapeutic;Transgenic Organisms;Travel;United States National Institutes of Health;Universities;virtual;Work
+current_category: infrastructure
+---
+application_id: 11002227
+activity_code: U54
+title: RP-Villodas: Reducing Disparities in Access to Evidence-based Services for ADHD Through Technology
+org_name: SAN DIEGO STATE UNIVERSITY
+phr: N/A
+terms: access disparities;Address;Administrator;Affect;Attention deficit hyperactivity disorder;Behavior;Behavior Therapy;Behavioral;Calendar;Caregivers;Child;Child Care;Clinical Trials;Cluster randomized trial;Communication;community advisory board;Consultations;County;Data;Data Collection;design;Development;disparity reduction;Ethnic Origin;evidence base;Evidence based intervention;Family;feasibility trial;Feedback;fifth grade;Focus Groups;Future;Goals;Graph;Health Disparities Research;Health Personnel;Health Technology;Home;Hybrids;Impairment;implementation intervention;implementation outcomes;improved;Individual;interest;Intervention;intervention mapping;Interview;Lead;Learning;Life;Link;low socioeconomic status;Mediating;meetings;Mental Health;mHealth;minority children;mobile application;Mobile Health Application;Modeling;Monitor;Online Systems;Outcome;parenting intervention;Parents;Perception;Performance;Persons;Pilot Projects;Population;Practice Management;Process;Program Effectiveness;programs;Protocols documentation;prototype;Provider;racial minority;racial minority population;recruit;Reporting;Research;Research Project Grants;Research Project Summaries;Resources;Role;Rural;rural setting;Schedule;school district;School-Age Population;Schools;Series;Services;skills;skills training;social;social stigma;Socioeconomic Status;Symptoms;Target Populations;teacher;Technology;technology validation;Testing;Time;tool;Training;Transportation;treatment as usual;treatment planning;urban school;usability;Videoconferencing;web app;Work
+current_category: other
+---
+application_id: 10880707
+activity_code: P01
+title: MOIR - Machine Learning and Modeling Core
+org_name: EMORY UNIVERSITY
+phr: N/A
+terms: Acceleration;Adaptive Immune System;anti-PD1 antibodies;antibody immunotherapy;Binding;Bioinformatics;Biological Assay;Biological Models;Biological Process;Biometry;CCR5 gene;CD4 Positive T Lymphocytes;Cells;Clinical Data;Data;data management;Data Set;Diet;DNA;Environment;Environmental Risk Factor;Epigenetic Process;epigenome;experimental study;FAIR principles;Future;Generations;Genes;Heterogeneity;HIV;HIV-1;Human;immune function;immunological intervention;immunoregulation;Individual;Infection;Infusion procedures;Innate Immune System;insight;large scale data;Machine Learning;Maintenance;Maps;metabolome;Microbe;microbiome;Mission;Modeling;multiple omics;National Institute of Allergy and Infectious Disease;neutralizing antibody;novel;Outcome;power analysis;Process;programs;Proteins;public repository;Publications;Recurrence;Regulation;Reproducibility;Research;Resources;Sampling;Services;Therapeutic;Therapeutic Intervention;transcriptome;Validation;Viral Load result;viral rebound;Virus Replication;Visualization
+current_category: infrastructure

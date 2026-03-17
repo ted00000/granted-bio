@@ -1,0 +1,402 @@
+Classify these 50 NIH grants. Return a JSON array with classifications.
+
+---
+application_id: 10843053
+activity_code: P30
+title: Integrated Cancer Genomics Core
+org_name: DUKE UNIVERSITY
+phr: N/A
+terms: Accounting;Advanced Malignant Neoplasm;Alternative Splicing;analysis pipeline;anti-cancer research;Binding Sites;Bioinformatics Shared Resource;Biological Assay;Cancer Center;Cancer Center Support Grant;cancer genomics;Cells;chromatin modification;Clinical;Clinical Trials;Collaborations;Computational Biology;Consultations;Core Facility;Correlative Study;cost;Data Analyses;data management;data quality;Databases;Development;DNA Methylation;Education;Educational workshop;Ensure;Epigenetic Process;equipment acquisition;Event;exome sequencing;experience;Experimental Designs;Fees;flexibility;Formalin;Genes;Genomics;Genomics Shared Resource;Goals;Grant;Guidelines;Immune system;improved;Information Dissemination;Infrastructure;innovative technologies;Institution;instrumentation;Journals;Knowledge;Learning;Malignant Neoplasms;Manuscripts;Maps;Measures;medical schools;member;Messenger RNA;microbial;microbiome;Molecular;nano-string;neoplastic cell;new technology;novel;Paraffin Embedding;Physiology;Preparation;Procedures;programs;Protocols documentation;Publications;Quality Control;Recovery;Research;research and development;Research Institute;Research Personnel;Resource Sharing;Resources;Reverse Transcriptase Polymerase Chain Reaction;sample collection;Sampling;Schedule;Services;single cell sequencing;Statistical Data Interpretation;Structure;success;Technology;technology platform;Time;tool;Training;Training and Education;transcription factor;transcriptome;transcriptomics;Update;Vendor;Work
+current_category: infrastructure
+---
+application_id: 10714248
+activity_code: P40
+title: Viper Resource Grant at Texas A&M University-Kingsville
+org_name: TEXAS A&M UNIVERSITY-KINGSVILLE
+phr: N/A
+terms: acquired immunity;Animals;Antibodies;Antidotes;Antivenins;Applied Research;aptamer;Area;Biological Assay;Biological Products;Blood Vessels;Cell-Mediated Cytolysis;Cells;Cessation of life;Communities;crosslink;Crotalid;Crotalus;Development;Didelphidae;effective therapy;extracellular vesicles;Fractionation;Functional disorder;Genomics;global health;Goals;Grant;Hemorrhage;Hemostatic function;improved;In Vitro;inhibitor;interest;Lymphatic;Mammals;Medical;Methods;Molecular;molecular marker;Monodelphis Domestica;Morbidity - disease rate;mortality;Natural Products;Natural Resistance;Neotomas;new therapeutic target;next generation;novel;novel strategies;Permeability;Pharmaceutical Preparations;Post-Translational Protein Processing;Production;programs;Proteins;Proteomics;Recombinant Proteins;Recombinants;Recording of previous events;Reporting;Research;Resistance;Resources;response;screening;Serum;Services;Signal Pathway;Snake Bites;Snake Venoms;Snakes;Technology;Testing;Texas;Therapeutic;Thrombosis;Time;tool;Toxicity Tests;Toxin;transcriptome sequencing;Universities;Validation;Venoms;World Health Organization
+current_category: basic_research
+---
+application_id: 10932319
+activity_code: U54
+title: Research Capacity Core
+org_name: MOREHOUSE SCHOOL OF MEDICINE
+phr: N/A
+terms: Advisory Committees;Award;Behavioral;behavioral health;Behavioral Sciences;Biomedical Research;Center for Translational Science Activities;college;Communication;community engagement;Community Health;Complement;cost;COVID-19 pandemic;COVID-19 testing;COVID-19 vaccine;Development;environmental disparity;expectation;Faculty;Funding;Future;Goals;Grant;health communication;Health Disparities Research;health disparity;Health Services Research;Image;Industry;Infrastructure;Inherited;innovation;Institution;Justice;Laboratories;Morehouse School of Medicine;multidisciplinary;Pilot Projects;Population;population health;Productivity;programs;Recovery;Research;Research Infrastructure;Research Personnel;Research Project Grants;Resources;Rodent;Role;Series;Structure;success;Suggestion;Testing;Translations;United States National Institutes of Health;Universities;Vaccination;vaccine distribution;Vaccines
+current_category: infrastructure
+---
+application_id: 10850348
+activity_code: P40
+title: The National Resource for Aplysia-Curation & Informatics.
+org_name: UNIVERSITY OF MIAMI ROSENTEIL SCHOOL
+phr: The California sea hare, Aplysia californica, is a large marine snail that has proven to be an outstanding model for studies of how the nervous system functions, particularly in memory and learning, as well as in understanding human diseases that affect these functions. The National Resource for Aplysia raises and ships 8,000-10,000 animals per year to research laboratories. This proposal would continue the production of these animals and expand their usefulness for studies of the mechanisms of 
+terms: Abdomen;Adult;Affect;Age;age effect;aged;animal resource;Animals;Aplysia;Aplysia species;Applied Research;Area;Awareness;Bar Codes;Behavior;Biological Models;Biomedical Research;California;Cardiac;Cardiovascular Diseases;Cerebral Ischemia;Characteristics;Child;cohort;Communities;Computer software;cost;Data;Databases;design;Development;Diet;DNA;Education;Education and Outreach;Educational process of instructing;egg;Equipment and supply inventories;Exposure to;Ganglia;General Population;graduate student;Grant;Harvest;Health;Heart;heart function;Human;human disease;Hypoxia;improved;Informatics;Injury;innovation;Internet;Ischemia;Laboratory Research;Learning;Life;life span;marine;Memory;Mission;Mitochondria;model organism;Modeling;Molecular;Monitor;Myocardial Reperfusion Injury;Nervous System;Nervous System Physiology;neural;Neurosciences Research;novel;Oceans;Organism;outreach;payment;Planet Earth;Play;Predisposition;Production;programs;Publications;Reperfusion Injury;Reperfusion Therapy;Reporting;Research;Research Personnel;Research Project Grants;Resistance;resistance mechanism;Resources;RNA;Role;Sales;Schools;science teacher;searchable database;Shipping;Ships;slug;Snails;Stroke;Study models;System;Time;Tissues;Training;Training and Education;training opportunity;undergraduate student;Universities;Variant;Virus;web interface;web site
+current_category: biotools
+---
+application_id: 10850349
+activity_code: P40
+title: The National Resource for Aplysia - Applied Research
+org_name: UNIVERSITY OF MIAMI ROSENTEIL SCHOOL
+phr: The California sea hare, Aplysia californica, is a large marine snail that has proven to be an outstanding model for studies of how the nervous system functions, particularly in memory and learning, as well as in understanding human diseases that affect these functions. The National Resource for Aplysia raises and ships 8,000-10,000 animals per year to research laboratories. This proposal would continue the production of these animals and expand their usefulness for studies of the mechanisms of 
+terms: Abdomen;Adult;Affect;Age;age effect;aged;Aging;Animals;Aplysia;Aplysia species;Applied Research;Behavior;Biological Models;Biomedical Research;California;Cardiac;cardiac aging;Cardiovascular Diseases;Cardiovascular system;Cerebral Ischemia;Characteristics;cohort;Complex;cost;Diet;DNA;Education;Educational process of instructing;egg;Elderly;Exposure to;Ganglia;Glutamates;graduate student;Harvest;Health;Heart;heart function;Human;human disease;Hypoxia;improved;Individual;Informatics;Injury;innovation;Investigation;Ischemia;Ischemic Stroke;Laboratory Research;Learning;Life;life span;marine;Memory;Mission;Mitochondria;model organism;Modeling;Molecular;Monitor;Mus;Myocardial Reperfusion Injury;Nervous System;Nervous System Physiology;neural;Neurons;Norepinephrine;novel;Organism;outreach;Play;Predisposition;Preventive therapy;Preventive treatment;Process;Production;programs;Rattus;Reperfusion Injury;Reperfusion Therapy;Research;Research Personnel;Research Project Grants;Resistance;resistance mechanism;Resources;response;Risk Factors;RNA;Rodent Model;Role;Sales;senescence;Ships;Snails;Stroke;Study models;System;targeted treatment;Tissues;training opportunity;transcriptomics;undergraduate student;Universities;Variant;Vertebrates;Virus;web interface;web site
+current_category: biotools
+---
+application_id: 10850347
+activity_code: P40
+title: National Resource for Aplysia - Resources
+org_name: UNIVERSITY OF MIAMI ROSENTEIL SCHOOL
+phr: The California sea hare, Aplysia californica, is a large marine snail that has proven to be an outstanding model for studies of how the nervous system functions, particularly in memory and learning, as well as in understanding human diseases that affect these functions. The National Resource for Aplysia raises and ships 8,000-10,000 animals per year to research laboratories. This proposal would continue the production of these animals and expand their usefulness for studies of the mechanisms of 
+terms: Abdomen;Adult;Affect;Age;age effect;aged;animal old age;Animals;Aplysia;Aplysia species;Applied Research;Behavior;Biological Assay;Biological Models;Biomedical Research;California;Caloric Restriction;Cardiac;Cardiovascular Diseases;Cerebral Ischemia;Characteristics;cohort;Communities;cost;Development;Diet;Disease;DNA;Education;Educational process of instructing;egg;Embryo;Environment;Exposure to;Ganglia;Goals;graduate student;Harvest;Health;Heart;heart function;Human;human disease;Hypoxia;improved;Individual;Informatics;Injury;innovation;Ischemia;juvenile animal;Laboratory Research;Larva;Learning;Life;life span;marine;mature animal;Measures;Memory;Methods;Mission;Mitochondria;model organism;Modeling;Molecular;Monitor;Myocardial Reperfusion Injury;Nervous System;Nervous System Physiology;neural;novel;Organism;outreach;Photoperiod;Play;Population;Predisposition;Production;programs;Reperfusion Injury;Reperfusion Therapy;Research;Research Personnel;Research Project Grants;Resistance;resistance mechanism;Resources;RNA;Role;Sales;Sampling;screening;senescence;Services;Ships;Siblings;Snails;Stroke;Study models;System;Temperature;Testing;Time;Tissues;training opportunity;transmission process;undergraduate student;Universities;Variant;viral RNA;Virus;water quality;web interface;web site
+current_category: biotools
+---
+application_id: 10791980
+activity_code: P40
+title: DROSOPHILA GENOMICS RESOURCE CENTER
+org_name: TRUSTEES OF INDIANA UNIVERSITY
+phr: N/A
+terms: aerobic glycolysis;Anterior;Applied Research;Archives;Behavior;Biological Models;Biological Process;Biomedical Research;Catalogs;cDNA Library;Cell Cycle;Cell Line;Cells;Cessation of life;Chromatin Modeling;Clinical Sciences;Collaborations;Communities;Complementary DNA;cost;Coupled;COVID-19 pandemic;CRISPR/Cas technology;Data;Data Management Resources;Development;Disease;Drosophila genome;Drosophila genus;Drosophila melanogaster;Epigenetic Process;Erinaceidae;Evolution;fundamental research;Funding Agency;gene conservation;Gene Expression Regulation;gene replacement;Genes;Genetic;Genome;genome resource;Genomics;Goals;Grant;Homeostasis;Homologous Gene;Human;human disease;improved;Indiana;Individual;Informatics;International;Link;Malignant Neoplasms;Meiosis;Metabolic;Metadata;Mission;Mitosis;Modeling;Nerve Degeneration;neural;Neurobiology;neuroblast;notch protein;Pathway interactions;Pattern;Plasmid Cloning Vector;Population;preservation;Process;programs;Protocols documentation;Quality Control;Reagent;Receptor Protein-Tyrosine Kinases;recombinase-mediated cassette exchange;Recovery;repository;Reproducibility;Research;Resources;RNA Interference;Scientist;sensor;Signal Pathway;Signal Transduction;Specific qualifier value;success;Synapses;Technology;Translational Research;United States National Institutes of Health;Universities;Update;vector;web interface;Work
+current_category: basic_research
+---
+application_id: 10925511
+activity_code: P30
+title: Stigma Measurement Core
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Affect;Alcohol dependence;Anxiety;Area;Behavior;Biometry;community advisory board;Development;Diagnosis;empowerment;Engineering;Epidemic;epidemic response;Epidemiology;epidemiology study;experience;Faculty;Feedback;Fostering;gender minority health;Goals;Grant;Grant Review;health inequalities;Health Sciences;high risk;HIV;implementation science;improved;Individual;Injecting drug user;Institution;interdisciplinary collaboration;Intervention;Intervention Studies;Libraries;Manuals;Measurement;Measures;meetings;Mental Depression;Mental Health;Mentorship;Methods;minority stressor;multidisciplinary;Outcome;Pathway interactions;Persons;Pharmaceutical Preparations;Population;Preparation;Prevention;Process;programs;Proliferating;Research;Research Personnel;response;Services;sex;Sexual and Gender Minorities;skills;Social Sciences;social stigma;Standardization;structural determinants;substance use;System;Testing;tool;Universities;Validation
+current_category: infrastructure
+---
+application_id: 10925510
+activity_code: P30
+title: Development Core
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;Affect;Area;Attention;Award;career development;Collaborations;Communities;community academic partnership;Community Actions;community engagement;Community of Practice;community partners;Compensation;Computer software;Data;data repository;Data Set;Development;Discrimination;empowerment;Ensure;Epidemic;Equity;experience;Fellowship;Fostering;Funding;Funding Opportunities;Future;gaps in access;Grant;Grant Review;Health;health equity;Health equity research;HIV;implementation science;improved;innovation;Intervention;Investments;Journals;Leadership;Manuscripts;marginalization;Measurement;Measures;meetings;Mentorship;Modeling;multidisciplinary;Nature;next generation;Outcome;Phase;Population;Prevention;Process;Proliferating;Public Health Education;Reporting;Research;Research Personnel;Research Proposals;response;rural setting;Science;Scientific Advances and Accomplishments;Scientist;Series;service providers;Services;Sexual and Gender Minorities;social stigma;Stigmatization;structural determinants;structural health determinants;success;symposium;synergism;System;Text;Training Programs;Universities;urban setting;Vertebral column;Woman;Work;Writing
+current_category: infrastructure
+---
+application_id: 11019168
+activity_code: P20
+title: Core 1: Administrative Core
+org_name: BROWN UNIVERSITY
+phr: N/A
+terms: Achievement;Administrative Coordination;Advisory Committees;Amino Acids;Biology;career;career development;Centers of Research Excellence;Code;cohort;Communication;Communities;community building;Community Networks;Development;Diabetes Mellitus;Discipline;Disease;DNA;Embryonic Development;Engineering;Ensure;Evaluation Reports;Fertility;formative assessment;Fostering;Funding;Future;Gene Expression;Genetic;genetic information;Genetic Transcription;Genome;Goals;Grant;Health;Heart Diseases;Hospitals;Human;human DNA sequencing;Human Genome;improved;Individual;Institution;Interdisciplinary Study;interest;Knowledge;Lead;Leadership;Learning;Malignant Neoplasms;Mammalian Cell;Medical;Medicine;Mentors;Molecular;multidisciplinary;novel therapeutics;outreach;Peer Review;Physiological;Preventive Medicine;Principal Investigator;Program Evaluation;programs;Proteins;Public Health Schools;Recommendation;recruit;Research;Research Infrastructure;Research Personnel;Research Project Grants;research study;Research Support;Resources;Rhode Island;Ribosomes;RNA;Schedule;Schools;Science;Strategic Planning;success;synergism;Technology;Translating;Universities;Vaccines
+current_category: infrastructure
+---
+application_id: 11019171
+activity_code: P20
+title: Project 2: Developing Statistical Methods and Computational Tools for Inferring Gene Co-expression Networks in Spatial Transcriptomics Studies
+org_name: BROWN UNIVERSITY
+phr: N/A
+terms: Biological;Biological Phenomena;Biological Process;Biology;cell type;Cells;Centers of Research Excellence;Chromatin;Complex;computational pipelines;computerized tools;Data;Data Analyses;Data Set;Dependence;design;Development;Dimensions;Disease;empowerment;epigenome;Gene Expression;Gene Expression Profile;Gene Expression Profiling;Gene Expression Regulation;gene interaction;Genes;Genomics;Goals;Health;Human;human disease;imaging approach;improved;In Situ Hybridization;in situ sequencing;innovation;insight;intercellular communication;large scale data;Location;Methods;Mission;Molecular;multimodality;Names;next generation sequencing;novel;Pathway Analysis;Pattern;preservation;Research;Research Personnel;Research Project Grants;RNA;Sampling;Slice;Slide;spatial integration;spatial omics;spatial transcriptomics;Spottings;Statistical Methods;Structure;Technology;Tissues;tool;transcriptome;United States National Institutes of Health;Variant
+current_category: biotools
+---
+application_id: 10910198
+activity_code: UC7
+title: Facility Management, Maintenance and Operation Core
+org_name: COLORADO STATE UNIVERSITY
+phr: N/A
+terms: 2019-nCoV;Academia;Address;Administrative Supplement;Advocate;aged;Aging;Animal Husbandry;Basic Science;biocontainment facility;biodefense;Biological;Biological Sciences;biosafety level 3 facility;biosecurity;Burkholderia pseudomallei;Calibration;Capital;Career Choice;Categories;Certification;Client;Collaborations;college;Colorado;Communicable Diseases;Communication;Conflict (Psychology);cost;Cyclic GMP;Data;Dedications;design;Discipline;Disease;Eastern Equine Encephalitis Virus;Economic Burden;Education;Emerging Communicable Diseases;emerging pathogen;Ensure;Entrepreneurship;Environment;Equipment;Evaluation;faculty research;Fees;Foundations;Francisella tularensis;Funding;Genus Mycobacterium;Goals;Good Manufacturing Process;Government Agencies;Grant;Hazardous Chemicals;Hazardous Substances;health economics;Human Resources;improved;Industry;Infectious disease threat;Infectious Diseases Research;Information Systems;Information Technology;Infrastructure;Institution;instrument;Investments;Laboratories;laboratory facility;Leadership;Leprosy;Maintenance;manufacture;Melioidosis;Middle East Respiratory Syndrome Coronavirus;Mission;Modernization;Monkeypox;National Institute of Allergy and Infectious Disease;non-tuberculosis mycobacteria;operation;Operations Research;pandemic disease;pandemic potential;parent project;pathogen;pathogenic bacteria;Pharmacologic Substance;Plague;Process;professional atmosphere;programs;Public Health;repaired;Research;Research Personnel;Research Support;Resolution;Resource Allocation;Resource Development;Resources;response;Risk;Science;Services;Site;socioeconomics;Structure;System;Training;Translational Research;Tuberculosis;Tularemia;Universities;Update;usability;Venezuelan Equine Encephalomyelitis;Vertebral column;Veterinary Medicine;viral pandemic;Vision;visiting scholar;Work;Workforce Development
+current_category: infrastructure
+---
+application_id: 11195859
+activity_code: P20
+title: Protective and Risk Factors for Cognitive Function in the Menopause Transition
+org_name: UNIVERSITY OF KANSAS LAWRENCE
+phr: N/A
+terms: Big Data;bioinformatics tool;cardiometabolic risk;Chronic;Cognition;cognitive benefits;cognitive function;cognitive performance;cognitive testing;effective therapy;Electronic Health Record;exercise intervention;Future;Goals;Health;Impairment;improved;innovation;Intervention;Measurement;Measures;Mediating;Menopause;moderate-to-vigorous physical activity;Neurobehavioral Manifestations;Participant;Patient Self-Report;Performance at work;Perimenopause;Physical activity;Physiological;Postmenopause;protective factors;Psychological Factors;psychological symptom;recruit;Reporting;Research;Risk;Risk Factors;Sampling;Sleep;Sleep disturbances;Societies;Symptoms;United States National Institutes of Health;vasomotor symptoms;Woman;Women&apos;s Health
+current_category: other
+---
+application_id: 11019321
+activity_code: P20
+title: Artificial Intelligence and Machine Learning Core
+org_name: OKLAHOMA MEDICAL RESEARCH FOUNDATION
+phr: N/A
+terms: Adopted;Adoption;Advanced Development;Antibodies;Area;Artificial Intelligence;artificial intelligence analysis;Artificial Intelligence enhanced;ATAC-seq;Award;Binding;Bioinformatics;Biological;Biomedical Research;Businesses;Centers of Research Excellence;ChatGPT;ChIP-seq;Chromatin;Classification;Cleavage Under Targets and Release Using Nuclease;Communities;Complex;computer infrastructure;Computer software;convolutional neural network;Cytology;Data;Data Analyses;data integration;Data Set;deep learning;denoising;Development;dimension reduction;DNA;DNA Sequence;Ensure;Epigenetic Process;Evaluation;experimental study;Fluorescent in Situ Hybridization;Generations;Genetic Transcription;Genomic Segment;Genomics;Grant;Growth;high throughput analysis;histone modification;Human;Image;Image Analysis;image classification model;improved;interest;Machine Learning;Methods;Modeling;Molecular Conformation;Multiomic Data;multiple omics;Oklahoma;Pathway Analysis;Pathway interactions;Pattern;Phase;Pilot Projects;Property;Proteins;Proteomics;Regulation;Regulatory Element;Research;Research Personnel;Research Project Grants;Research Support;Resources;Scientific Advances and Accomplishments;Secure;Services;skills;Societies;software development;spatial relationship;statistical service;success;System;Technology;Testing;tool;transcriptomics;Work;Writing
+current_category: infrastructure
+---
+application_id: 11019320
+activity_code: P20
+title: Epigenomics Core
+org_name: OKLAHOMA MEDICAL RESEARCH FOUNDATION
+phr: N/A
+terms: Address;Applications Grants;archive data;Area;Artificial Intelligence;Award;Biological;biomedical data science;Cell Physiology;Centers of Research Excellence;ChIP-seq;Chromatin;Cleavage Under Targets and Release Using Nuclease;Clinical;Communities;cost;Creativeness;Data;Data Analyses;data archive;Dedications;Development;DNA;DNA Modification Process;DNA-Binding Proteins;epigenomics;experience;experimental study;Fostering;Funding;Generations;Genes;Genetic;genome-wide;Genomics;Goals;Growth;High-Throughput Nucleotide Sequencing;Human;Human Resources;Immunity;Immunogenetics;Individual;informatics tool;innovation;insight;Institution;instrumentation;Investigation;Laboratories;large datasets;Libraries;long-read sequencing;Metadata;Methods;Molecular Conformation;nanopore sequencing;new technology;next generation sequencing;Oklahoma;Output;Pilot Projects;Post-Translational Protein Processing;Preparation;Process;programs;Protein Analysis;Protocols documentation;Reagent;Regulation;Reproducibility;Research;Research Design;Research Personnel;Research Project Grants;Resources;Retrieval;RNA;Sampling;sequencing platform;Services;skills;Speed;success;Talents;Techniques;Technology;tool;Training;transcriptome sequencing;Work
+current_category: infrastructure
+---
+application_id: 10824502
+activity_code: U19
+title: Core C: Immune Monitoring Core
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: Project Narrative Non-genetic influences, like viral infections and environmental factors, shape the human immune system. It is not, however, clear how this heterogeneity influences responses future events, like vaccination or immunotherapy. Core C will perform high dimensional immune profiling with integrated analysis on all clinical samples to identify immunotypes associated with disease.
+terms: 2019-nCoV;Acute;anti-PD-1;anti-PD1 therapy;Antibodies;antigen-specific T cells;Antigens;Autoantibodies;Autoantigens;B-Lymphocytes;Bar Codes;Blood;CD8-Positive T-Lymphocytes;cell type;Cells;Cellular Indexing of Transcriptomes and Epitopes by Sequencing;chronic infection;Cicatrix;Clinical;Collection;cytokine;Cytomegalovirus;Cytometry;Data;Data Analyses;data infrastructure;Data Reporting;deep neural network;Disease;Environmental Risk Factor;Event;fitness;flu;Fluorescence;Foundations;Freeze Drying;Freezing;Frequencies;Funding;Future;Goals;Grant;Hepatitis C;Hepatitis C virus;Heterogeneity;high dimensionality;Human;Human Herpesvirus 4;Immune;immune health;Immune response;Immune system;Immunoglobulin Somatic Hypermutation;Immunologic Monitoring;Immunotherapy;Infection;inflammatory milieu;Influenza;Infrastructure;Intervention;Leukocytes;Libraries;Link;Maps;Measurement;Measures;Mission;Monoclonal Antibodies;Multicenter Studies;Myeloid Cells;non-genetic;Oligonucleotides;Pathway Analysis;Pathway interactions;Patients;Pharmaceutical Preparations;Phenotype;Population;Post-Acute Sequelae of SARS-CoV-2 Infection;programs;Quality Control;receptor binding;Recording of previous events;recurrent neural network;Reporting;repository;response;RNA vaccination;Sampling;Serology;Serum;Services;Shapes;single cell analysis;single cell sequencing;Specificity;Standardization;statistics;Structure of germinal center of lymph node;Study Subject;systemic inflammatory response;T-Cell Immunologic Specificity;Testing;Time;Tube;Vaccination;vaccine trial;vaccine-induced antibodies;Vaccines;Variant;Viral;Viral Antibodies;Virus;Virus Diseases
+current_category: infrastructure
+---
+application_id: 11019324
+activity_code: P20
+title: Mapping heterochromatin organization with high-throughput imaging
+org_name: OKLAHOMA MEDICAL RESEARCH FOUNDATION
+phr: N/A
+terms: Address;Alcohols;Architecture;Automobile Driving;Base Pairing;Behavior;biophysical properties;Cell Nucleus;Cells;Characteristics;Chromatin;Chromatin Fiber;Clustered Regularly Interspaced Short Palindromic Repeats;Development;Diffuse;Disease;Distant;DNA;Elements;Epigenetic Process;Fluorescent in Situ Hybridization;Foundations;Frequencies;Gene Expression Regulation;Genes;Genetic Transcription;Genome;Genomics;Goals;Heterochromatin;histone modification;Human;human disease;Human Genome;Image;Imaging Techniques;Individual;innovation;insight;Interphase;Kinetics;live cell imaging;Location;Longitudinal Studies;Machine Learning;Maps;Measures;Mediating;Movement;Mutagenesis;Nature;novel;Nuclear Lamin;Peripheral;Phase;Polycomb;Polyhomeotic;Positioning Attribute;Process;Protein Dynamics;Protein Region;protein structure;Proteins;Regulation;Research;RNA Interference;scaffold;Structure;Techniques;Testing;Time Factors;tool;Viral;Work
+current_category: digital_health
+---
+application_id: 10932244
+activity_code: U54
+title: Tissue Modeling Core
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: N/A
+terms: Address;African American;anti-cancer research;Archives;Basic Science;biobank;Biocompatible Materials;Bioinformatics;Black race;California;cancer health disparity;cancer type;career development;Caring;Cell Line;Chemistry;clinical database;clinical translation;Collaborations;Collection;Complex;Conscious;crosslink;Data;Databases;Development;Development Plans;Disparity;drug development;Education;Ensure;ethnic diversity;Evaluation;experience;FDA approved;First Independent Research Support and Transition Awards;Florida;Funding;Future;genomic data;Genomics;Goals;health equity;Hispanic;Human;Implant;Individual;Institution;Latinx;Latinx population;Lead;Leadership;Link;Malignant neoplasm of pancreas;Malignant neoplasm of prostate;Malignant Neoplasms;Medical Research;member;Mentorship;Methodology;Mission;Modeling;Molecular;neoplasm registry;Normal tissue morphology;novel;Organoids;Outcome;pancreatic cancer patients;Pathologic;patient derived xenograft model;patient population;Patients;Pharmaceutical Chemistry;Pharmaceutical Preparations;Pilot Projects;Plasma;Population;Prostate;Race;racial diversity;recruit;repository;Research;research and development;Research Personnel;Research Project Grants;Residual state;Resource Sharing;Resources;response;RNA;Role;Sampling;Scientist;Serum;skills;Specimen;success;Technology;technology development;Testing;Tissue Banks;Tissue Model;Tissue Sample;Tissues;Translational Research;tumor;Tumor Tissue;Universities;virtual
+current_category: infrastructure
+---
+application_id: 11019322
+activity_code: P20
+title: Elucidating pBAF-complex functions by chemical genetics and epigenome editing
+org_name: OKLAHOMA MEDICAL RESEARCH FOUNDATION
+phr: N/A
+terms: 3-Dimensional;Affect;Alleles;Biochemical;cancer genomics;cancer subtypes;cancer type;Cell Nucleus;Cell Physiology;Cells;cellular development;chemical genetics;Chemicals;Chromatin;Chromatin Remodeling Factor;Chromatin Structure;combinatorial;Complex;Development;developmental disease;Disease;DNA;DNA Repair;DNA-Binding Proteins;Enhancers;epigenome editing;Equilibrium;Euchromatin;Family;Fiber;Fire - disasters;gain of function;Gene Expression;gene repression;Genes;Genetic Transcription;Genome;Genome Stability;genome-wide;Genomic approach;genomic locus;Genomics;Goals;Health;Heterochromatin;histone modification;Histones;homologous recombination;Hour;Human;human disease;interest;loss of function;Malignant Neoplasms;Mammals;Mediating;Modeling;Mouse Embryonic Stem Cells;Mus;mutant;Mutation;Nervous System Disorder;NKX2H gene;novel;Oncogenic;Organizational Change;Outcome;Pathogenesis;patient response;Patient-Focused Outcomes;Pattern;personalized care;pharmacologic;Play;pluripotency;polybromo;Polycomb;Process;promoter;Proteins;recruit;Regulation;repaired;Research;Role;Site;Specificity;stem cells;SWI/SNF Family Complex;System;Testing;Therapeutic;Tissues;transcription factor;Transcriptional Activation;Transcriptional Regulation;translational impact;Work
+current_category: basic_research
+---
+application_id: 11019338
+activity_code: P20
+title: Implementation of DPYD gene sequencing as an adaptation of pharmacogenetic screening to prevent severe toxicity during cancer treatment with fluoropyrimidine chemotherapy
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Adverse drug event;Adverse event;Asian;Asian population;Biological Assay;Biomedical Research;Black Populations;Black race;Blood;cancer care;Cancer Center;cancer therapy;capecitabine;care delivery;Cessation of life;Characteristics;chemotherapy;Clinical;clinical decision-making;clinical implementation;colorectal cancer treatment;Consensus;Data;Diagnostic;Dihydropyrimidine Dehydrogenase;Dose;DPYD gene;Drug usage;Effectiveness;effectiveness evaluation;Eligibility Determination;Equity;Europe;European;evidence base;Evidence based practice;experience;fluoropyrimidine;Fluorouracil;Genes;genetic variant;Genotype;Health Personnel;Hispanic;Hispanic Populations;Hybrids;implementation determinants;implementation efforts;implementation evaluation;implementation facilitators;implementation outcomes;Implementation readiness;implementation science;implementation strategy;improved;Incidence;Knowledge;Laboratories;Learning;Malignant Breast Neoplasm;Malignant neoplasm of pancreas;Measurement;Methods;Minority Groups;Modeling;Monitor;novel strategies;Oncologist;patient population;patient safety;patient screening;Patients;Persons;Pharmaceutical Preparations;Pharmacists;Pharmacogenetics;Phenotype;Plasma;Policies;Population;practice setting;prevent;prospective;Research;Risk;Role;Safety;screening;Screening Result;screening uptake;Serious Adverse Event;side effect;Specimen;Testing;Time;tool;Toxic effect;Toxicity due to chemotherapy;Uncertainty;Underrepresented Populations;United States;Uracil;Variant;Work
+current_category: therapeutics
+---
+application_id: 10839290
+activity_code: P01
+title: Administrative Core
+org_name: YALE UNIVERSITY
+phr: N/A
+terms: Address;Autoimmunity;Communication;Consultations;cost effective;Data;data sharing;Data Storage and Retrieval;Decision Making;Ensure;Goals;Institution;Intellectual Property;Monitor;program dissemination;programs;Publications;Research;Research Project Grants;Resources;Technology
+current_category: infrastructure
+---
+application_id: 10857300
+activity_code: P01
+title: Glucose Regulation and Cognitive Function in Type 2 Diabetes
+org_name: ALBERT EINSTEIN COLLEGE OF MEDICINE
+phr: PROJECT NARRATIVE: Type 2 diabetes is a risk factor for Alzheimer’s disease and related dementias, vascular dementia, mild cognitive impairment and accelerated cognitive decline. We proposed to expand the scope of science by incorporating continuous glucose monitoring paired with ambulatory cognitive assessments by smartphone to rigorously assess the relationships between blood glucose regulation and cognitive function in a racially and ethnically diverse at-risk population of older adults. This
+terms: Acceleration;Acute;adaptive intervention;Address;Adult;Age;Aging;aging population;Air Pollution;Alzheimer&apos;s disease related dementia;Alzheimer&apos;s disease risk;Alzheimer’s disease biomarker;Amyloid;Autophagocytosis;biobehavior;Biological Markers;Blinded;Blood Glucose;blood glucose regulation;Blood Vessels;Caring;Cellular Phone;Characteristics;Clinical;clinical care;Cognition;Cognitive;cognitive change;cognitive function;cognitive performance;cognitive testing;Communities;Continuous Glucose Monitor;Coupled;Data;Data Collection;depressive symptoms;design;Development;Diabetes Mellitus;Ecological momentary assessment;Education;Enrollment;ethnic diversity;ethnic minority;Ethnic Origin;Exposure to;Failure;Fatigue;follow-up;Funding;glycemic control;Glycosylated hemoglobin A;Goals;Health;Hypoglycemia;Impaired cognition;indexing;Individual;individual patient;individualized medicine;Inflammation;innovation;Intervention;Link;Long-Term Effects;Measurement;Measures;Mediator;Mental Depression;mild cognitive impairment;Modeling;Monitor;negative affect;Non-Insulin-Dependent Diabetes Mellitus;novel strategies;Obesity Epidemic;older adult;Outcome;Parents;Participant;Patients;Persons;Physical activity;Population;Populations at Risk;Prevalence;Quality of life;Race;racial diversity;racial minority;Recommendation;recruit;Reporting;Research;Research Personnel;Risk;Risk Factors;Risk Reduction;Sampling;Science;sex;Sleep;sleep quality;socioeconomic disadvantage;standard measure;Surveys;tau Proteins;Technology;Time;Time Series Analysis;underserved community;Variant;Vascular Dementia;Vascular Diseases;Work
+current_category: basic_research
+---
+application_id: 10784698
+activity_code: P30
+title: Integrated Care Core
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Acceleration;Acquired Immunodeficiency Syndrome;Advanced Development;AIDS education;AIDS prevention;Anxiety;Applications Grants;Award;Behavioral Sciences;care providers;Caring;Clinical;clinically relevant;Collaborations;common treatment;community engagement;community partners;community partnership;community-centered;Complex;Consultations;cost effective;Country;Development;Educational workshop;Epidemic;evidence base;Faculty;follow-up;Funding;global health;Grant;Health;HIV;Hygiene;implementation research;improved;Incentives;Infrastructure;innovation;Institute of Medicine (U.S.);integrated care;Interdisciplinary Study;International;Intervention;Joints;Journals;learning network;London;Manuscripts;Maps;Medical;Medicine;meetings;Mental Depression;Mental disorders;Mental Health;mental health center;Mental Health Services;Meta-Analysis;Modeling;multidisciplinary;multiple chronic conditions;Needs Assessment;Outcome;Patients;peer;peer learning;Persons;Policies;Post-Traumatic Stress Disorders;prevention service;Process;programs;Provider;Psychiatry;psychologic;psychosocial;Publications;Ramp;Reporting;Research;Research Infrastructure;Research Personnel;Research Proposals;Research Support;Risk;Risk Factors;Schools;Series;Services;Site;social;Societies;Structure;symposium;System;systematic review;testing services;Training and Education;treatment services;Underrepresented Populations;United States Health Resources and Services Administration;United States National Institutes of Health;Universities;Washington;webinar;World Health Organization;Writing
+current_category: infrastructure
+---
+application_id: 10784703
+activity_code: P30
+title: Methods Core
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;adaptive intervention;Applications Grants;Automobile Driving;Award;Behavior;Behavioral;Behavioral Research;Behavioral Sciences;Biometry;Clinical Sciences;Collaborations;Communication;Communities;Complement;Complex;complex data;Computer software;Consult;Consultations;Data;Data Analyses;Data Collection;data management;Data Set;data visualization;design;Development;Educational workshop;Ensure;Epidemic;Ethics;Evaluation;experience;Faculty;Funding;Grant;HIV;improved;Incentives;innovation;instrumentation;integrated care;interest;Intervention;Knowledge;Leadership;Measurement;meetings;Mental Health;mental health center;Mentors;Methodology;Methods;Mission;Modeling;multidisciplinary;next generation;novel;Outcome;Paper;Pattern;Positioning Attribute;power analysis;Preparation;Process;Publications;Publishing;Qualitative Research;Reproducibility;Research;Research Design;Research Methodology;Research Personnel;Research Support;Resources;response;Science;Site;skills;smartphone based device;Statistical Data Interpretation;Statistical Models;statistics;Students;Techniques;Time;Training;Translational Research;Underrepresented Populations;Universities;Visit;visiting scholar;Washington;wearable device;Work;Writing
+current_category: infrastructure
+---
+application_id: 10784690
+activity_code: P30
+title: Administrative Core
+org_name: UNIVERSITY OF WASHINGTON
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;Advertising;Attention;Award;Budgets;Collaborations;Communication;Communities;Community Actions;community partners;Compensation;Databases;Decision Making;Development;digital technology;Discipline;Educational workshop;Ensure;Environment;Epidemic;equity, diversity, and inclusion;Faculty;flexibility;Fostering;Funding;Funding Opportunities;Goals;Government;Guidelines;Health;health administration;HIV;Human Resources;Individual;innovation;Institution;International;Leadership;meetings;member;mental health center;Mission;Modification;Monitor;multidisciplinary;Multimedia;Needs Assessment;Newsletter;next generation;novel;operation;Outcome;outreach;Personnel Management;Policies;Positioning Attribute;Preparation;Procedures;programs;Progress Reports;Publishing;Recommendation;Reporting;Research;Research Infrastructure;Research Personnel;Resources;response;Scanning;Science;Scientific Advances and Accomplishments;service gap;Services;Site Visit;social media;Social Network;State Government;Strategic Planning;Strategic vision;Surveys;symposium;System;timeline;Training;Travel;trend;Twitter;Universities;Update;Vision;Washington;web site;Writing
+current_category: infrastructure
+---
+application_id: 10932221
+activity_code: P30
+title: Leadership, Planning and Evaluation
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Address;Advisory Committees;anti-cancer research;authority;Breast Oncology;Cancer Center;Cancer Center Support Grant;Cancer Control;cancer immunotherapy;Clinical Sciences;clinical translation;community advisory board;community engagement;Data;design;disparity reduction;Doctor of Philosophy;Education;equity, diversity, and inclusion;Evaluation;Goals;Health;improved;Individual;Institution;Intervention;Joints;Laboratory Research;Leadership;Malignant Childhood Neoplasm;Malignant neoplasm of prostate;Malignant Neoplasms;Measures;Medical;Medicine;meetings;member;Mission;molecular oncology;Neurologic Oncology;operation;outcome disparities;Output;Participant;Performance;Physicians;Population Sciences;programs;Research;Resource Sharing;Resources;Role;Services;Site;Strategic Planning;Structure;success;Translational Research;tumor immunology
+current_category: infrastructure
+---
+application_id: 11019336
+activity_code: P20
+title: Center for Implementation Science: Implementation Research Core
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: Acceleration;Address;Adoption;Area;Attention;Biomedical Research;care costs;care systems;Centers of Research Excellence;Clinical;college;Consolidated Framework for Implementation Research;Consultations;contextual factors;cost;Data Collection;data harmonization;data repository;Dedications;design;Dissemination and Implementation;Documentation;Educational Curriculum;Educational workshop;Effectiveness;Evaluation;evidence base;Evidence based intervention;Faculty;Fostering;Foundations;Future;Goals;Health;Health Care Costs;Hybrids;implementation barriers;implementation determinants;implementation evaluation;implementation framework;implementation intervention;implementation outcomes;implementation research;implementation science;implementation strategy;improved;Individual;Infrastructure;innovation;insight;Institution;Interdisciplinary Study;Intervention;Intervention Strategies;Knowledge;knowledge base;Leadership;Learning;Low income;Maintenance;Measurement;Mentors;Mentorship;Methods;Mission;Modification;Morbidity - disease rate;mortality;next generation;Outcome;Persons;population health;Process;programs;Reach, Effectiveness, Adoption, Implementation, and Maintenance;Reporting;Reproducibility;Research;Research Personnel;Research Project Grants;Resources;Rural;satisfaction;Science;Services;skills;success;System;systemic barrier;Technology;tool;Training;Translating;Translations;uptake;user centered design;virtual;web site;Work
+current_category: infrastructure
+---
+application_id: 10838621
+activity_code: P30
+title: Core G - Biostatistics Core
+org_name: MIRIAM HOSPITAL
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;Applications Grants;Archives;Basic Science;Biometry;Biostatistical Methods;Biostatistics Core;Boston;Clinical Research;Collaborations;comorbidity;complex data;Computer software;Continuing Education;cost effective;Data;Data Analyses;Data Collection;data format;data management;Databases;design;Development;Educational workshop;Electronic Health Record;Ensure;Epidemic;Epidemiologic Methods;Epidemiology;Faculty;Feedback;Funding;Goals;Grant;HIV;Hospitals;Immunology;Infrastructure;innovation;International;Internships;Journals;Justice;Knowledge;life span;Manuscripts;meetings;member;men who have sex with men;Mentors;method development;Methodology;Methods;Mission;Molecular;Needs Assessment;novel;Peer Review;Persons;Play;Policies;Population;Postdoctoral Fellow;pre-doctoral;programs;Reproducibility;Research;Research Design;Research Methodology;Research Personnel;Resources;Risk;Role;Rotation;Sampling;Scientific Advances and Accomplishments;Scientist;Secure;Statistical Methods;Structure;substance use;Training;Translational Research;United States National Institutes of Health;Universities;Update;Vulnerable Populations;Woman;Writing;Youth
+current_category: infrastructure
+---
+application_id: 10873684
+activity_code: P30
+title: NeuroHIV and Community Partnership and Disparity Core for Institution # 269291
+org_name: TEMPLE UNIV OF THE COMMONWEALTH
+phr: N/A
+terms: Address;Affect;antiretroviral therapy;Applications Grants;Awareness;Basic Science;Bioinformatics;care systems;Caring;Cellular biology;Clinical;Clinical Research;Communication;Communities;community empowerment;community engaged research;community engagement;community organizations;community partners;community partnership;comorbidity;Complement;Consultations;Continuity of Patient Care;cultural competence;Development;Discipline;Disease;Disparity;ethnic minority population;executive function;experience;Fostering;Friends;gender minority group;Goals;health disparity;health inequalities;Health Services;HIV;HIV diagnosis;HIV disparities;HIV/AIDS;Impairment;Inequity;Infection;Infrastructure;innovation;Institution;interdisciplinary collaboration;Intervention;Knowledge;Manuscripts;marginalized population;member;Memory;Mental Depression;Mentors;Mentorship;minority investigator;Needs Assessment;neuroAIDS;neurobehavioral;Neurobehavioral Manifestations;Neurocognitive;Neurocognitive Deficit;Participant;patient population;Persons;Population;Positioning Attribute;Poverty;prevent;Prevention;Publications;racial minority population;recruit;Research;Research Infrastructure;Research Personnel;Research Support;Resources;Risk;Science;Scientist;Services;sexual minority group;social determinants;social health determinants;social media;social service provider;social stigma;structural determinants;symposium;synergism;Time;Translating;Translational Research;treatment adherence;Twitter;Underrepresented Minority;Underrepresented Populations;Universities;Viral;Viral Genes;Viremia;web page;Work
+current_category: infrastructure
+---
+application_id: 10932314
+activity_code: U54
+title: "Family Diabetes Risk Reduction"
+org_name: MOREHOUSE SCHOOL OF MEDICINE
+phr: N/A
+terms: 2 arm randomized control trial;20 year old;Adult;African American;African American population;arm;Black Populations;Blood Glucose;Blood Pressure;Body mass index;Body Weight decreased;cardiometabolic risk;Center for Translational Science Activities;Central obesity;Cessation of life;Child;Communities;community collaboration;community engaged research;community engagement;design;Diabetes Mellitus;Diabetes prevention;diabetes prevention program;diabetes risk;Diet;Dyslipidemias;Educational Curriculum;effective intervention;efficacy evaluation;Enrollment;Evaluation;Evidence based program;Family;Fasting;Focus Groups;Future Generations;Goals;Health;Health Benefit;health disparity;high risk;high risk parents;implementation study;improved;Incidence;Intervention;intervention program;Interview;Life Style Modification;lifestyle intervention;Maintenance;Measurement;member;Meta-Analysis;metabolic profile;Morbidity - disease rate;mortality;Non-Insulin-Dependent Diabetes Mellitus;Not Hispanic or Latino;Parents;Participant;Physical activity;Population;Prediabetes syndrome;Prevalence;Preventive;primary outcome;Program Sustainability;programs;Randomized, Controlled Trials;Research Personnel;Resource-limited setting;Resources;Risk;Risk Factors;Risk Reduction;rural area;Rural Community;secondary outcome;sedentary lifestyle;systematic review;Testing;Therapeutic;treatment arm;United States;uptake;Waiting Lists;Weight
+current_category: therapeutics
+---
+application_id: 11019339
+activity_code: P20
+title: Implementation Science-Guided Pilot Study of Trauma-Focused Cognitive Behavioral Therapy for Autistic Youth in Community Mental Health Settings
+org_name: DARTMOUTH COLLEGE
+phr: N/A
+terms: acceptability and feasibility;Address;adolescent with autism spectrum disorder;Affect;Area;associated symptom;autism spectrum disorder;autistic;Behavioral;career development;Caring;Child;Child Development;Clinical;Clinical Treatment;Cognition;Cognitive Therapy;Collection;Communities;community based care;community engagement;Community Mental Health Centers;community partners;community setting;contextual factors;Data;design;Development;Effectiveness;effectiveness evaluation;effectiveness/implementation trial;emotion regulation;Event;Evidence based intervention;experience;Face;Family;flexibility;Future;Goals;Health;Health Services Accessibility;Health Services Research;implementation design;implementation determinants;implementation evaluation;implementation intervention;implementation outcomes;implementation science;implementation strategy;Individual;individuals with autism spectrum disorder;innovation;Intervention;Knowledge;Leadership;Learning;Maps;Medically Underserved Area;Mental Health;Mental Health Services;Mentors;Methods;Modeling;Modification;Mood Disorders;Needs Assessment;Outcome;Persons;Phase;physical conditioning;Pilot Projects;pilot test;pilot trial;Population;Positioning Attribute;Post-Traumatic Stress Disorders;Preparation;Prevalence;Process;Provider;Quality of life;recruit;Reporting;Research;research and development;Research Priority;Research Project Grants;Risk;Sampling;Self Efficacy;Site;social communication;Symptoms;System;Testing;therapy design;therapy development;Translations;Trauma;trauma exposure;trauma symptom;Underserved Population;Youth
+current_category: other
+---
+application_id: 11019395
+activity_code: P20
+title: Dissemination & Implementation Science Core
+org_name: MEDICAL UNIVERSITY OF SOUTH CAROLINA
+phr: N/A
+terms: Address;Businesses;Centers of Research Excellence;Collaborations;commercialization;Communication;Communities;community engagement;Consultations;contextual factors;cost;data dissemination;Dedications;Development;digital health;Dissemination and Implementation;dissemination science;Education;Entrepreneurship;experience;Extramural Activities;Funding;Goals;Growth;Health;health care quality;health care service utilization;health difference;Household;implementation science;Improve Access;improved;Individual;innovation;Interdisciplinary Study;Intervention;Knowledge;life span;Low income;Medical;medically underserved population;Mental disorders;Mentorship;Methods;novel;novel strategies;Online Systems;operation;Outcome;Patients;Pilot Projects;poor health outcome;Population;practical application;Preparation;programs;promote resilience;Public Health;Publications;Research;Research Personnel;Research Priority;Research Project Grants;Research Support;research to practice;Resources;Risk;Role;Rural;Series;Services;social;South Carolina;System;Testing;Text;tool;Training;training opportunity;Training Programs;Translations;Trauma;Trauma Research;traumatic stress;United States;United States National Institutes of Health;Variant;Violence;web site;Work;Workforce Development
+current_category: infrastructure
+---
+application_id: 10913432
+activity_code: U19
+title: Studying Human Gut Microbiome for Osteoporosis Risk
+org_name: TULANE UNIVERSITY OF LOUISIANA
+phr: N/A
+terms: 16S ribosomal RNA sequencing;Age;Aging;Animals;Bacteria;Bayesian Analysis;Bioinformatics;Biological Assay;Biological Markers;Biomechanics;Blood;bone;Bone Density;bone loss;bone mass;bone metabolism;bone quality;Bone structure;bone turnover;Cell Lineage;Clinical;clinical predictors;cohort;Computer Analysis;Crohn&apos;s disease;Data;data archive;Deterioration;Diabetes Mellitus;Disease;Dissection;epigenome;Estrogens;ethnic difference;Ethnic Origin;Exhibits;Feces;Finite Element Analysis;Genes;Genetic;Genetic Determinism;genetic variant;Genome;genome wide association study;Genomics;Germ-Free;Goals;Gonadal Steroid Hormones;gut bacteria;gut metagenome;gut microbiome;gut microbiota;Heritability;Hip region structure;Human;human disease;Human Genome;in vivo;insight;Intervention;Lactobacillus reuteri;Louisiana;Mendelian randomization;Metabolic Bone Diseases;metabolome;metagenome;Metagenomics;microbial;microbial signature;microbiota;Modeling;Molecular;mouse model;multiple omics;Mus;normal microbiota;novel;Obesity;old mice;Oral;Osteoblasts;Osteoclasts;Osteoporosis;osteoporosis with pathological fracture;Osteoporotic;Outcome;Ovariectomy;Pathway interactions;Patients;Persons;Phenotype;Physiology;Pilot Projects;prevent;Probiotics;Property;recruit;Research;Rest;Rheumatoid Arthritis;Risk;Role;sample archive;Sampling;Serum;sex;Sex Differences;Solid;Taxonomy;Testing;Trabecular Bone Score;trait;transcriptome;Trauma
+current_category: basic_research
+---
+application_id: 11062394
+activity_code: P30
+title: Administrative Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: N/A
+terms: Address;Advocate;assessment application;Charge;cohort;Collaborations;Communication;Communities;Consult;Data;data management;Decision Making;design;Ensure;Evaluation;federal policy;Feedback;Fostering;Future;Goals;Grant;HIV;Home;human subject;Information Dissemination;Information Systems;Institution;Institutional Policy;Institutional Review Boards;Interdisciplinary Study;interest;Leadership;lectures;Longitudinal cohort;Maintenance;Manuscripts;method development;Modality;Monitor;neuroAIDS;neurobehavioral;operation;Participant;participant retention;Policies;Preparation;Process;Provider;Recommendation;recruit;Registries;Reporting;Research;Research Personnel;Research Project Grants;Resource Allocation;Resources;Review Committee;Services;Statistical Methods;statistical service;statistics;Strategic Planning;Structure;student mentoring;Study Subject;United States National Institutes of Health;Universities;Videoconferencing;Vision;web site;working group
+current_category: infrastructure
+---
+application_id: 11171500
+activity_code: UC7
+title: Operations Core
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: N/A
+terms: Acceleration;Address;Adherence;Administrator;animal resource;Animals;arm;biocontainment facility;biodefense;Biological;Biology;biosafety level 3 facility;biosecurity;Bioterrorism;Businesses;Certification;cohort;Collaborations;Complex;continuous monitoring;cost;Creativeness;Decontamination;Development;Discipline;Effectiveness;Emergency Situation;Emerging Communicable Diseases;emerging pathogen;Engineering;Ensure;Environmental Health;Event;Evolution;Goals;high standard;Human Resources;improved;Infection;Information Technology;Infrastructure;International;Intervention;Laboratories;Laboratory Animals;Logistics;Maintenance;medical countermeasure;member;Mission;Modeling;Modernization;Monitor;National Institute of Allergy and Infectious Disease;novel;operation;pandemic disease;pandemic preparedness;pathogen;Pathogenesis;preclinical development;pressure;programs;quality assurance;Regulation;repaired;Research;Research Activity;research facility;response;Rest;Running;Safety;Scientist;Secure;Security;Services;Structure;System;Time;Toxin;transmission process;Universities;Vaccine Research;Veterinarians;Viral;Vision;Work
+current_category: infrastructure
+---
+application_id: 11062397
+activity_code: P30
+title: Developmental Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;addiction;Aging;Applications Grants;Area;Award;career;Career Mobility;Central Nervous System;Clinical Psychology;Clinical Research;Cognition;cohort;Consultations;Data;Data Collection;Development;Education;education resources;Elements;Environment;experience;Extramural Activities;Feedback;Fellowship;Fostering;Funding;Goals;Grant;HIV;HIV/AIDS;Infrastructure;innovation;Interdisciplinary Study;Investments;Joints;K-Series Research Career Programs;Lead;Leadership;Link;Manuscripts;meetings;Mental Depression;Methods;microbiome;multidisciplinary;National Institute of Mental Health;neuroAIDS;neurobehavioral;Neurovirology;next generation;NIH Program Announcements;Participant;Pathogenesis;peer coaching;Peer Review;Performance;Phenotype;Preparation;programs;Publications;Request for Applications;Research;Research Design;Research Methodology;Research Personnel;Research Priority;Research Project Grants;Research Support;Resources;Schools;Series;Specimen;Study Section;symposium;tool;Training;Training Programs;Translational Research;United States National Institutes of Health;Work
+current_category: infrastructure
+---
+application_id: 11019410
+activity_code: P20
+title: Neurophysiology Core
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: N/A
+terms: Acceleration;Acoustics;Address;Advanced Development;Alzheimer&apos;s Disease;Animals;Area;Auditory;Auditory Brainstem Responses;awake;Behavioral;blast exposure;blast trauma;Brain Concussion;Chimera organism;Communication;Comprehension;Consultations;data acquisition;Data Analyses;Dedications;design;Development;Diagnosis;Doctor of Philosophy;Enhancement Technology;Ensure;equilibration disorder;Equilibrium;Evoked Potentials;Experimental Designs;Faculty;Faculty Workshop;falls;Fiber;Goals;Head;head impact;Hearing;hearing impairment;Human;Image;improved;Infrastructure;Injury;inner ear injury;innovation;insight;Instruction;Labyrinth;Maintenance;Mentorship;Modeling;Molecular;Mus;Neurodegenerative Disorders;neurophysiology;Neurosciences;noise trauma;novel diagnostics;novel therapeutics;Organ;otoacoustic emission;otoconia;Pathology;Perception;Peripheral;Personal Satisfaction;Phase;Physiological;Pilot Projects;Play;Posture;prepulse inhibition;Quality of life;Rattus;Reflex action;Research;Research Personnel;Research Project Grants;Resources;Rodent;Role;Screening procedure;Sensory;service delivery;Services;Space Perception;Startle Reaction;Students;Supervision;Techniques;Technology;Testing;Tinnitus;Training;Training and Education;training opportunity;Trauma;Trauma Research;Traumatic Brain Injury;Vestibular dysfunction;vestibular system;vestibulo-ocular reflex;Work
+current_category: infrastructure
+---
+application_id: 11019409
+activity_code: P20
+title: Molecular Neuroscience and Imaging Core
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: N/A
+terms: Alleles;Anatomy;Animals;arm;Auditory;base;Capital;Communities;Computer software;Confocal Microscopy;cost;cost effective;Cryopreservation;cryostat;Data;Data Analyses;Data Collection;Deep South;Dental Schools;Development;Doctor of Philosophy;Electron Microscopy;Elements;Ensure;Enterobacteria phage P1 Cre recombinase;Environment;Equilibrium;Event;Experimental Designs;experimental study;Faculty;faculty support;Fostering;Future;Gene Modified;Genes;Genotype;Goals;Hearing;Hurricane;Hybrids;Image;Image Analysis;Individual;innovation;Institution;Investigation;Light;LoxP-flanked allele;Maintenance;meetings;Mentorship;microscopic imaging;Microscopy;Microtome - medical device;Molecular;Molecular Neurobiology;Mus;Mutant Strains Mice;Neurosciences;Neurosciences Research;novel;novel diagnostics;novel therapeutics;Outcome;Outsourcing;Paraffin;Participant;Partner in relationship;Phase;Physiological;Positioning Attribute;Preparation;preservation;Price;Procedures;programs;promoter;quantitative imaging;Reaction;Reproducibility;Research;Research Personnel;Running;Sampling;Scanning Electron Microscopy;Schedule;Slide;Specimen;sperm cell;sperm cryopreservation;Students;Tornadoes;Training;two-photon;ultra high resolution;Universities;vestibular system
+current_category: infrastructure
+---
+application_id: 11019413
+activity_code: P20
+title: Project 3: Mechanism of Cochlear Radial Patterning
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: N/A
+terms: Acquired Deafness;Actomyosin;Affect;alpha catenin;Apical;Area;Auditory;Automobile Driving;beta catenin;Bone Morphogenetic Proteins;brain cell;candidate identification;Cell Adhesion;Cell Count;Cell Cycle;Cell Density;cell type;Cells;Chemicals;Cochlea;cochlear development;Complex;congenital hearing loss;Data;Defect;Detection;Development;Diagnosis;Disease;Embryonic Development;Environment;Equilibrium;ETV1 gene;ETV4 gene;experimental study;Fibroblast Growth Factor;Future;Genetic Transcription;Goals;Hair;Hair Cells;Hearing;hearing impairment;hearing loss treatment;Hereditary Disease;human old age (65+);Image;In Situ Hybridization;In Vitro;in vivo;Infant;Infiltration;inhibitor;inner ear development;Inner Hair Cells;Knowledge;Lateral;Live Birth;Medial;method development;Modeling;Molecular;morphogens;mouse model;Mus;mutant;Mutant Strains Mice;notch protein;Organ;Organ of Corti;organizational structure;Outer Hair Cells;Pattern;Persons;Phenotype;Pillar Cell;Play;Presbycusis;progenitor;Publications;Radial;repaired;Research;Role;Sensorineural Hearing Loss;Sensory;Sensory Hair;Signal Pathway;Signal Transduction;single-cell RNA sequencing;sound;Specific qualifier value;Supporting Cell;Testing;Time;Tissues;transcription factor;United States
+current_category: basic_research
+---
+application_id: 10932317
+activity_code: U54
+title: Investigator Development Core
+org_name: MOREHOUSE SCHOOL OF MEDICINE
+phr: N/A
+terms: Academy;Applications Grants;Area;Award;Basic Science;Behavioral;behavioral health;Behavioral Sciences;career development;Center for Translational Science Activities;Clinical Sciences;Collaborations;Communication;Communities;Complement;COVID-19;Data;Data Collection;design;Development;Discipline;Disparity;Educational workshop;experience;Faculty;Fostering;Funding;Funding Opportunities;global health;Goals;Grant;Growth;Health Disparities Research;health disparity;health disparity populations;health equity;implementation research;Infrastructure;innovation;Institution;Institutional Review Boards;instructor;Joints;meetings;Mentors;Mentorship;minority health;minority health disparity;Mission;Morehouse School of Medicine;new growth;pandemic disease;Pilot Projects;population health;Postdoctoral Fellow;Principal Investigator;professor;programs;Reporting;Research;research and development;Research Personnel;Research Project Grants;Resources;Rural Community;Scientist;Social Distance;social science research;Strategic Planning;success;Support Groups;Teacher Professional Development;tenure track;Training;Translational Research;United States National Institutes of Health;Urban Community;virtual;Work;Writing
+current_category: infrastructure
+---
+application_id: 10915027
+activity_code: P30
+title: Developmental Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Accountability;Acquired Immunodeficiency Syndrome;Address;Affect;AIDS prevention;Applications Grants;Area;Behavioral;Behavioral Research;Biomedical Research;burnout;career;catalyst;Clinical Research;cohesion;Collaborations;Communities;Competence;Creativeness;Development;Discipline;Effectiveness;Ensure;Environment;Epidemic;equity, diversity, and inclusion;Evaluation;Faculty;Fostering;Funding;Future;Goals;Grant;Growth;Health;Health system;HIV;Incubators;Individual;Influentials;innovation;Institution;Interdisciplinary Study;interest;Learning;Link;Manuscripts;Mentors;minority scientist;Mission;novel;Peer Review;Personal Satisfaction;Pilot Projects;Policy Maker;Positioning Attribute;prevent;Prevention;Productivity;programs;Public Health;Recording of previous events;Research;Research Personnel;Resources;Science;Scientific Advances and Accomplishments;Scientist;Services;skills;social;Strategic Planning;Structure;success;synergism;System;Time Management;Training;Training Programs;Underrepresented Minority;Underrepresented Populations;United States National Institutes of Health;Universities;Work;Writing
+current_category: infrastructure
+---
+application_id: 10915030
+activity_code: P30
+title: Research Project: Community Engagement Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Acceleration;Acquired Immunodeficiency Syndrome;Address;Affect;AIDS prevention;base;Caring;Clinic;Clinical;Collaborations;Communities;community advisory board;community engaged approach;community engaged research;community engagement;Community Health Systems;community organizations;Community Participation;community research;Community Services;design;empowerment;Ensure;Epidemic;Equity;evidence base;experience;Fostering;Government;Health;health disparity;Health Personnel;Health Policy;Health system;HIV;Human Resources;improved;innovation;International;member;Methods;Mission;Personal Satisfaction;Persons;Phase;Policies;Policy Maker;Population;Prevention;Prevention Research;Process;programs;Public Health;Research;Research Personnel;Research Project Grants;Science;Scientific Advances and Accomplishments;Scientist;service providers;Service setting;theories;Training;Translating;translational approach;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 10915024
+activity_code: P30
+title: Administrative Core
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;Administrative Efficiency;catalyst;Collaborations;Collection;Communities;community advisory board;community partners;Decision Making;design;Ensure;Environment;Ethics;experience;Fostering;Funding;Goals;Health system;HIV;Infrastructure;innovation;Institution;Interdisciplinary Study;International;Leadership;Learning;Mission;Monitor;operation;Organizational Culture;Organizational Productivity;poor health outcome;Population;Positioning Attribute;Prevention;Process;Productivity;Public Health;Research;Research Project Grants;research study;Research Support;Resources;response;scale up;Science;Scientific Advances and Accomplishments;Scientist;Strategic Planning;Structure;success;Sum;synergism;System;Systems Theory;transmission process;Work
+current_category: infrastructure
+---
+application_id: 10755349
+activity_code: P30
+title: Combination Prevention Core
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;Affect;AIDS clinical trial group;AIDS prevention;antiretroviral therapy;Behavior Therapy;Behavioral;Caring;Collaborations;Communities;Community Health Education;comorbidity;COVID-19;COVID-19 Prevention Network;cultural competence;Development;diversity and inclusion;Epidemic;evaluation/testing;experience;Faculty;Goals;Health;HIV;HIV Vaccine Trials Network;improved;Incidence;Individual;Inequity;innovation;integrated care;interest;Intervention;Lead;Leadership;Medical;meetings;member;Mental disorders;Mental Health;Mentors;Mentorship;Mission;mobile application;Movement;National Institute of Mental Health;next generation;Outcome;Persons;Population;prevent;Prevention;Prevention approach;Prevention Research;prevention service;Prevention strategy;preventive intervention;protective factors;Protocols documentation;Provider;Public Health;Research;Research Personnel;resilience;Risk;scale up;Science;Scientist;service organization;skills;social determinants;social health determinants;social media;social stigma;structural determinants;structural health determinants;substance use;Substance Use Disorder;symposium;Technology;Text Messaging;Therapeutic;therapy design;therapy development;Training;transmission process;treatment research;treatment services;Underrepresented Minority;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 11019408
+activity_code: P20
+title: Administrative Core
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: N/A
+terms: Academy;Address;Advisory Committees;Affect;Area;Auditory;Behavioral;Birth;career;career development;Centers of Research Excellence;childhood hearing loss;Chronic;Collaborations;comorbidity;Congenital Disorders;Core Facility;Counseling;Creativeness;Dementia;Doctor of Philosophy;Education;Effectiveness;Ensure;Environment;equilibration disorder;Equilibrium;Evaluation;Extramural Activities;Faculty;Faculty Recruitment;falls;Feedback;Fostering;Funding;Genes;Genetic;Goals;Health;Hearing;hearing impairment;Hearing problem;Human Resources;Impaired cognition;improved;innovation;Intervention;Labyrinth;Leadership;Medical;Medical center;meetings;member;Mentors;Mentorship;Methodology;Mississippi;modifiable risk;Molecular;Morbidity - disease rate;mortality;multidisciplinary;neurophysiology;Neurosciences;older adult;Phase;Physician Executives;Pilot Projects;Policies;professor;Program Development;programs;Quality of life;recruit;Reporting;Research;Research Personnel;Research Project Grants;Risk Factors;Structure;Technology;Training;Training and Education;Training Programs;Translations;Traumatic Brain Injury;Universities;Vestibular dysfunction;vestibular system;Work
+current_category: infrastructure
+---
+application_id: 11019411
+activity_code: P20
+title: Project 1:Investigations into Residual Function Following Unilateral Hearing Loss
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: N/A
+terms: Ablation;Acoustic Nerve;Address;Adult;Affect;aging population;Agreement;Anatomy;Auditory;Auditory area;Auditory Brainstem Responses;auditory pathway;Auditory Physiology;Bilateral;biological adaptation to stress;Birth;Brain region;Brain Stem;Cell Nucleus;Cells;Cellular Stress;Cessation of life;Cochlea;Cochlear duct;Cochlear nucleus;comorbidity;Compensation;Complex;Conductive hearing loss;Contralateral;corticotropin releasing factor-binding protein;Corticotropin-Releasing Hormone;cranial vestibular nucleus structure;Craniocerebral Trauma;CRF receptor type 1;Data;deafening;design;Drug Targeting;druggable target;Ear;Electrophysiology (science);Epithelial Cells;equilibration disorder;Equilibrium;Etiology;Event;Excision;fall risk;Fiber;Functional disorder;Future;Genetic;Glial Fibrillary Acidic Protein;Hearing;hearing impairment;Hospitalization;Hour;hypothalamic-pituitary-adrenal axis;Immune;Immune system;Immune Targeting;Infection;Inferior Colliculus;Inflammation;Inner Hair Cells;Investigation;Ipsilateral;Knowledge;Labyrinth;labyrinthectomy;lateral vestibular nucleus;Lesion;macroglia;Macrophage;Maps;mast cell;medial vestibular nucleus;Mediating;Membrane;Metabolic;Microglia;migration;Modeling;Morphology;Mus;nerve damage;Nerve Fibers;neural;neuron loss;Neurons;neutrophil;noise exposure;Nuclear;Organ;Outcome;Pathologic Nystagmus;Pathway interactions;Patients;Physiological;Physiology;Posture;Property;protein expression;Proteoglycan;Protocols documentation;recruit;Reporting;Research;Residual state;response;Rest;Sensorineural Hearing Loss;Sensory;Series;Side;Signal Transduction;Synapses;Synaptic plasticity;Synaptic Vesicles;Testing;Time;tumor;Unilateral Hearing Loss;United States;Upregulation;Vestibular function;Vestibular ganglion;Vestibular Nerve;vestibular pathway;vestibular system;vestibulo-ocular reflex;Work
+current_category: basic_research
+---
+application_id: 11000277
+activity_code: P30
+title: Development Core
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;AIDS prevention;Award;Behavioral;care systems;career;Caring;Collaborations;Communities;comorbidity;COVID-19;cultural competence;data access;Data Set;design;Development;diversity and equity;Educational workshop;equity, diversity, and inclusion;Ethnic Origin;Event;experience;Faculty;Fellowship Program;Fostering;Funding;Funding Mechanisms;Gender;Grant;HIV;HIV Infections;implementation science;improved;Incidence;innovation;Institution;Interdisciplinary Study;interest;Investigation;Investments;Leadership;Link;Mental Health;Mentors;Mentorship;Mission;multidisciplinary;National Institute of Mental Health;next generation;novel;Peer Review;Persons;Policy Maker;Postdoctoral Fellow;prevent;Prevention Research;prevention service;professor;programs;Provider;Publications;Qualifying;Race;Research;Research Activity;Research Personnel;resilience;Risk;Role;Science;Scientist;senior faculty;Services;Sexual and Gender Minorities;social determinants;structural health determinants;Students;Substance Use Disorder;success;symposium;Targeted Research;Technology;Training;Training Activity;Training Programs;treatment services;United States National Institutes of Health;Viral;Work
+current_category: infrastructure
+---
+application_id: 11000270
+activity_code: P30
+title: Administrative Core
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: N/A
+terms: Accountability;Acquired Immunodeficiency Syndrome;Address;AIDS prevention;Collaborations;Communication;Communities;community advisory board;community partners;comorbidity;Consultations;Country;cultural competence;Data;Decision Making;Dedications;Doctor of Philosophy;Ensure;Epidemic;Evaluation;Faculty;Fostering;Goals;Health;HIV;improved;Incidence;Infrastructure;innovation;Institution;International;Leadership;Measures;meetings;member;Mental Health;Mentors;Mission;Monitor;multidisciplinary;National Institute of Mental Health;Persons;Population;Prevalence;Prevention program;prevention service;Prevention strategy;Procedures;Process;Productivity;Program Evaluation;programs;Research;Research Personnel;Resources;Risk;scale up;Science;Scientist;Services;social determinants;social media platform;Strategic Planning;structural health determinants;Substance Use Disorder;Sum;support network;synergism;therapy development;Training Activity;transmission process;treatment services;United States National Institutes of Health;web site;Work
+current_category: infrastructure
+---
+application_id: 11000297
+activity_code: P30
+title: Combination Prevention Core
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: N/A
+terms: Acquired Immunodeficiency Syndrome;Address;Affect;AIDS clinical trial group;AIDS prevention;antiretroviral therapy;Behavior Therapy;Behavioral;Caring;Collaborations;Communities;Community Health Education;comorbidity;COVID-19;COVID-19 Prevention Network;cultural competence;Development;diversity and inclusion;Epidemic;evaluation/testing;experience;Faculty;Goals;Health;HIV;HIV Vaccine Trials Network;improved;Incidence;Individual;Inequity;innovation;integrated care;interest;Intervention;Lead;Leadership;Medical;meetings;member;Mental disorders;Mental Health;Mentors;Mentorship;Mission;mobile application;Movement;National Institute of Mental Health;next generation;Outcome;Persons;Population;prevent;Prevention;Prevention approach;Prevention Research;prevention service;Prevention strategy;preventive intervention;protective factors;Protocols documentation;Provider;Public Health;Research;Research Personnel;resilience;Risk;scale up;Science;Scientist;service organization;skills;social determinants;social health determinants;social media;social stigma;structural determinants;structural health determinants;substance use;Substance Use Disorder;symposium;Technology;Text Messaging;Therapeutic;therapy design;therapy development;Training;transmission process;treatment research;treatment services;Underrepresented Minority;United States National Institutes of Health
+current_category: infrastructure
+---
+application_id: 11018036
+activity_code: P20
+title: Administrative Core
+org_name: RHODE ISLAND HOSPITAL
+phr: N/A
+terms: Address;Advisory Committees;Benchmarking;Biometry;Centers of Research Excellence;Cessation of life;Child;cohort;Collaborations;Communicable Diseases;Communities;Disease;drug development;Drug Evaluation;Ebola Hemorrhagic Fever;Effectiveness;Evaluation;Faculty;Financial Support;Fortification;Fostering;Funding;Goals;Hospitals;human pathogen;Immersion;Infection;infectious disease model;innovation;Institution;Leadership;Malaria;Mentors;Methodology;Morbidity - disease rate;mortality;Occupational activity of managing finances;Office of Administrative Management;pathogen;Pharmacology;Principal Investigator;programs;Research;Research Personnel;Research Project Grants;research study;Research Support;Rhode Island;Schistosomiasis;scientific hub;Services;Structure;symposium;translational approach;Tuberculosis;Vision;Visit;Work
+current_category: infrastructure
