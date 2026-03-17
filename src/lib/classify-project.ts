@@ -168,6 +168,12 @@ Disease application vs disease treatment:
 - "Drug to treat Alzheimer's" → therapeutics (treatment is the product)
 - "Developing a therapy for cancer" → therapeutics (intervention for patients)
 
+Lab devices vs Medical devices:
+- "Cell isolation device for research labs" → biotools (research use, sold to labs)
+- "Blood processing device for researchers" → biotools (research use)
+- "Implantable cardiac device for patients" → medical_device (clinical use, treats patients)
+- "Surgical robot for operations" → medical_device (used on patients)
+
 Organization Type Definitions:
 - company: Commercial entities (Inc., LLC, SBIR/STTR)
 - university: Academic institutions
