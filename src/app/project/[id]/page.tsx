@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Bookmark, ChevronLeft, FileText, Heart, BookOpen, Lightbulb, Activity } from 'lucide-react'
+import { Bookmark, ChevronLeft, FileText, Heart, BookOpen, Lightbulb, Activity, Pencil } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
+import { CategoryEditModal } from '@/components/CategoryEditModal'
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 interface Project {
   id: string
@@ -98,6 +100,25 @@ export default function ProjectPage() {
   const [returnUrl, setReturnUrl] = useState('/chat')
   const [isSaved, setIsSaved] = useState(false)
   const [savingProject, setSavingProject] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
+  const [showCategoryModal, setShowCategoryModal] = useState(false)
+
+  // Check if user is admin
+  useEffect(() => {
+    const supabase = createBrowserSupabaseClient()
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        supabase
+          .from('user_profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+          .then(({ data: profile }) => {
+            setIsAdmin(profile?.role === 'admin')
+          })
+      }
+    })
+  }, [])
 
   // Read return URL from sessionStorage
   useEffect(() => {
@@ -148,6 +169,31 @@ export default function ProjectPage() {
       console.error('Error toggling save:', e)
     } finally {
       setSavingProject(false)
+    }
+  }
+
+  const handleSaveCategory = async (category: string, confidence: number) => {
+    const response = await fetch(`/api/admin/project/${data?.project.application_id}/category`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ category, confidence })
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || 'Failed to save category')
+    }
+
+    // Update local state
+    if (data) {
+      setData({
+        ...data,
+        project: {
+          ...data.project,
+          primary_category: category,
+          primary_category_confidence: confidence
+        }
+      })
     }
   }
 
@@ -277,8 +323,25 @@ export default function ProjectPage() {
                   </span>
                 )}
                 {project.primary_category && (
-                  <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
-                    {project.primary_category.replace(/_/g, ' ')}
+                  <span className="inline-flex items-center gap-1">
+                    <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
+                      {project.primary_category.replace(/_/g, ' ')}
+                    </span>
+                    {project.primary_category_confidence && (
+                      <span className={`w-2 h-2 rounded-full ${
+                        project.primary_category_confidence >= 80 ? 'bg-green-400' :
+                        project.primary_category_confidence >= 50 ? 'bg-yellow-400' : 'bg-red-400'
+                      }`} title={`${project.primary_category_confidence}% confidence`} />
+                    )}
+                    {isAdmin && (
+                      <button
+                        onClick={() => setShowCategoryModal(true)}
+                        className="p-0.5 text-gray-400 hover:text-[#E07A5F] transition-colors"
+                        title="Edit category"
+                      >
+                        <Pencil className="w-3 h-3" />
+                      </button>
+                    )}
                   </span>
                 )}
                 {project.org_type && (
@@ -514,6 +577,16 @@ export default function ProjectPage() {
         </div>
         </div>
       </div>
+
+      {/* Category Edit Modal (Admin only) */}
+      <CategoryEditModal
+        isOpen={showCategoryModal}
+        onClose={() => setShowCategoryModal(false)}
+        onSave={handleSaveCategory}
+        currentCategory={project.primary_category}
+        currentConfidence={project.primary_category_confidence}
+        projectTitle={project.title}
+      />
     </AppLayout>
   )
 }
