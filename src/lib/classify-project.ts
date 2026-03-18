@@ -131,7 +131,7 @@ Return JSON in this exact format:
 ## ACTIVITY CODE PRE-FILTER (Check FIRST!)
 
 Always → training: T32, T34, T35, T90, TL1, TL4, F30-F33, F99, K01-K99 series, D43, D71, R25, R90
-Always → infrastructure: P30, P50, P51, S10, G20, U13, R13, U24, U2C
+Always → infrastructure: P30, P41, P42, P50, P51, S10, G20, U13, R13, U24, U2C
 
 ## THE 9 CATEGORIES
 
