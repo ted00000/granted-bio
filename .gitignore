@@ -56,3 +56,14 @@ venv/
 scripts/check-states.ts
 scripts/count-projects.ts
 scripts/test-search.ts
+
+# ETL data files (large JSON/RTF exports)
+etl/classifications.json
+etl/*_disagreements*.json
+etl/*_disagreements*.txt
+etl/*.rtf
+etl/claude_max_batches/outputs/
+etl/classification_batches/*.txt
+etl/claude_max_batches/*.txt
+etl/claude_max_batches/classifications.json
+etl/test_minimal.txt
