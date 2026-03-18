@@ -5,9 +5,14 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import type { ProjectsAgentOutput, ProjectItem } from '../types'
 
-// Aligned with UI search threshold
-const SEMANTIC_THRESHOLD = 0.2
-const MAX_PROJECTS = 100
+// Match tier thresholds (aligned with UI - tools.ts:1067)
+const THRESHOLD_BROAD = 0.20    // Low precision
+const THRESHOLD_BALANCED = 0.35 // Medium precision - report population
+const THRESHOLD_PRECISE = 0.50  // High precision - weighted more heavily
+
+// Fetch at broad threshold, filter to balanced for analysis
+const SEMANTIC_THRESHOLD = 0.15
+const MAX_PROJECTS = 200  // Fetch more, filter to balanced subset
 
 /**
  * Run the Projects Agent to gather project data for a topic
@@ -76,12 +81,30 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
 }
 
 /**
+ * Determine match tier based on similarity score
+ */
+function getMatchTier(similarity: number): 'precise' | 'balanced' | 'broad' {
+  if (similarity >= THRESHOLD_PRECISE) return 'precise'
+  if (similarity >= THRESHOLD_BALANCED) return 'balanced'
+  return 'broad'
+}
+
+/**
  * Process raw search results into agent output
+ * Filters to balanced+ matches only (similarity >= 0.35)
  */
 function processResults(rawResults: Array<RawProjectResult & { similarity?: number }>): ProjectsAgentOutput {
-  // Map to ProjectItem format
+  // Filter to balanced threshold - this is the report population
+  const balancedResults = rawResults.filter(p => (p.similarity || 0) >= THRESHOLD_BALANCED)
+
+  console.log(
+    `[Projects Agent] Filtering to balanced+ matches: ${balancedResults.length} of ${rawResults.length} ` +
+    `(${rawResults.filter(p => (p.similarity || 0) >= THRESHOLD_PRECISE).length} precise)`
+  )
+
+  // Map to ProjectItem format with similarity and tier
   // Note: 'phr' field is the public health relevance (abstract equivalent)
-  const items: ProjectItem[] = rawResults.map((p) => ({
+  const items: ProjectItem[] = balancedResults.map((p) => ({
     application_id: p.application_id,
     project_number: p.project_number || null,
     title: p.title,
@@ -91,6 +114,8 @@ function processResults(rawResults: Array<RawProjectResult & { similarity?: numb
     total_cost: p.total_cost || null,
     fiscal_year: p.fiscal_year || null,
     primary_category: p.primary_category || null,
+    similarity: p.similarity || null,
+    match_tier: p.similarity ? getMatchTier(p.similarity) : null,
   }))
 
   // Calculate total funding

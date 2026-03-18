@@ -72,6 +72,23 @@ Goal: Agent-generated reports on research topics, companies, or therapeutic area
 
 ---
 
+## Admin Dashboard Review
+
+**Status**: Low priority - category editor works, that's the main need
+
+**Issues identified (Mar 18, 2026):**
+
+1. **Category links don't work** - `/projects?category=X` goes to "My Saved Projects" page, not a filtered database view
+   - Options: (a) link to `/chat` with pre-filled search, (b) remove links (stats only), (c) create browse page
+
+2. **Upload Data page** - exists at `/admin/upload`, needs testing
+
+3. **View Jobs page** - exists at `/admin/jobs`, needs testing
+
+4. **Users page** - exists at `/admin/users` but not linked from dashboard (role management)
+
+---
+
 ## Future Ideas
 
 (Add items here as they come up)

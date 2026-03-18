@@ -72,11 +72,9 @@ async function generateExecutiveSummary(
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
 
-  // Prepare substantive research content from abstracts - use all projects (up to 100) for deep analysis
-  const projectAbstracts = agentOutputs.projects.items
-    .slice(0, 100)
-    .map((p, i) => `[${i + 1}] ${p.title}\nPI: ${p.pi_names?.split(';')[0] || 'N/A'} | Org: ${p.org_name || 'N/A'} | ${formatCurrency(p.total_cost || 0)}\n${p.abstract || 'No abstract available'}`)
-    .join('\n\n---\n\n')
+  // Count precise matches for Claude's context
+  const preciseCount = agentOutputs.projects.items.filter(p => p.match_tier === 'precise').length
+  const balancedCount = agentOutputs.projects.items.filter(p => p.match_tier === 'balanced').length
 
   const trialSummaries = agentOutputs.trials.items
     .slice(0, 25)
@@ -85,14 +83,20 @@ async function generateExecutiveSummary(
 
   const prompt = `You are writing an executive summary for a research intelligence report on "${topic}".
 
-CRITICAL FRAMING: This data represents a CURATED SAMPLE of ${context.fundingStats.projectCount} high-confidence NIH-funded projects, not the complete population. Use sample-appropriate language.
+CRITICAL FRAMING: This data represents a CURATED SAMPLE of ${context.fundingStats.projectCount} high-confidence NIH-funded projects (balanced+ match threshold), not the complete population. Use sample-appropriate language.
+
+MATCH QUALITY TIERS:
+- PRECISE (similarity ≥0.50): Highly relevant - weight these most heavily
+- BALANCED (similarity ≥0.35): Relevant - standard weight
+Each project below shows its match tier. Projects are ranked by relevance (most relevant first).
 
 ## RESEARCH CONTENT (analyze these abstracts for substantive insights)
 
-${projectAbstracts}
+${formatProjectsWithTiers(agentOutputs.projects.items)}
 
 ## SAMPLE STATISTICS
-- Projects: ${context.fundingStats.projectCount} | Funding: ${formatCurrency(context.fundingStats.total)}
+- Projects Analyzed: ${context.fundingStats.projectCount} (${preciseCount} precise, ${balancedCount} balanced)
+- Total Funding: ${formatCurrency(context.fundingStats.total)}
 - Organizations: ${context.fundingStats.orgCount} | PIs: ${context.fundingStats.piCount}
 - Categories: ${context.fundingStats.byCategory.slice(0, 5).map(c => `${c.category} (${c.projects})`).join(', ')}
 
@@ -153,17 +157,6 @@ async function generateSectionInsights(
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
 
-  // Prepare ALL project abstracts for substantive analysis (up to 100)
-  const projectAbstracts = agentOutputs.projects.items
-    .slice(0, 100)
-    .map((p, i) => {
-      const pi = p.pi_names?.split(';')[0] || 'N/A'
-      const org = p.org_name || 'N/A'
-      const category = p.primary_category?.replace(/_/g, ' ') || 'N/A'
-      return `[${i + 1}] "${p.title}" (${pi}, ${org})\nCategory: ${category} | Funding: ${formatCurrency(p.total_cost || 0)}\n${p.abstract || 'No abstract'}`
-    })
-    .join('\n\n---\n\n')
-
   // Prepare ALL patent abstracts for substantive analysis (full throttle: 25)
   const patentAbstracts = agentOutputs.patents.items
     .slice(0, 25)
@@ -192,15 +185,21 @@ async function generateSectionInsights(
 
   const prompt = `You are analyzing research data for "${topic}" to generate substantive section insights for a research intelligence report.
 
-CRITICAL FRAMING: This data represents a CURATED SAMPLE of ${context.fundingStats.projectCount} high-confidence NIH-funded projects, not the complete population. Use sample-appropriate language.
+CRITICAL FRAMING: This data represents a CURATED SAMPLE of ${context.fundingStats.projectCount} high-confidence NIH-funded projects (balanced+ match threshold), not the complete population. Use sample-appropriate language.
+
+MATCH QUALITY TIERS:
+- [PRECISE] (similarity ≥50%): Highly relevant to "${topic}" - weight these most heavily
+- [BALANCED] (similarity ≥35%): Relevant - standard weight
+Projects are ranked by relevance. Give more emphasis to insights from [PRECISE] and early-numbered projects.
 
 ---
 
 ## PROJECT ABSTRACTS (analyze for funding insight)
 
-${projectAbstracts || 'No project abstracts available'}
+${formatProjectsWithTiers(agentOutputs.projects.items) || 'No project abstracts available'}
 
 **Sample Statistics:**
+- Projects: ${context.fundingStats.projectCount} (${agentOutputs.projects.items.filter(p => p.match_tier === 'precise').length} precise, ${agentOutputs.projects.items.filter(p => p.match_tier === 'balanced').length} balanced)
 - Total Funding in Sample: ${formatCurrency(context.fundingStats.total)}
 - Organizations: ${context.fundingStats.orgCount} | PIs: ${context.fundingStats.piCount}
 - Top Categories: ${context.fundingStats.byCategory.slice(0, 3).map(c => `${c.category.replace(/_/g, ' ')} (${c.projects})`).join(', ')}
@@ -380,19 +379,39 @@ ${renderResearchers(context.topResearchers)}
 
 ### Methodology
 
-This report analyzes a curated subset of NIH-funded research projects most relevant to **${topic}**. Projects were identified using semantic search (AI-based conceptual matching) combined with keyword search, then filtered to include only high-confidence matches based on similarity scoring.
+This report analyzes a curated subset of NIH-funded research projects most relevant to **${topic}**. Projects were identified using semantic search (AI-based conceptual matching) and filtered by match quality.
+
+**Match Quality Tiers:**
+
+Projects are scored by semantic similarity to your search topic and classified into tiers:
+
+| Tier | Similarity | Description |
+|------|------------|-------------|
+| **Precise** | ≥50% | Highly relevant — directly addresses the topic |
+| **Balanced** | ≥35% | Relevant — related research with clear connection |
+
+Only Balanced and Precise matches are included in this analysis. This ensures the report focuses on genuinely relevant research rather than tangentially related projects.
 
 **Sample Composition:**
 
 | Metric | Value |
 |--------|-------|
 | Projects Analyzed | ${context.fundingStats.projectCount.toLocaleString()} |
+| Precise Matches | ${agentOutputs.projects.items.filter(p => p.match_tier === 'precise').length} |
+| Balanced Matches | ${agentOutputs.projects.items.filter(p => p.match_tier === 'balanced').length} |
 | Total Funding | ${formatCurrency(context.fundingStats.total)} |
 | Organizations | ${context.fundingStats.orgCount.toLocaleString()} |
 | Principal Investigators | ${context.fundingStats.piCount.toLocaleString()} |
-| Clinical Trials | ${agentOutputs.trials.items.length} |
-| Patents | ${agentOutputs.patents.items.length} |
-| Publications | ${agentOutputs.publications.items.length} |
+
+**Linked Data:**
+
+Patents, clinical trials, and publications are sourced from the projects above — only items directly linked to these NIH grants are included:
+
+| Data Type | Count | Source |
+|-----------|-------|--------|
+| Clinical Trials | ${agentOutputs.trials.items.length} | ClinicalTrials.gov (linked to project numbers) |
+| Patents | ${agentOutputs.patents.items.length} | USPTO (linked to project numbers) |
+| Publications | ${agentOutputs.publications.items.length} | PubMed (linked to project numbers) |
 
 **Data Sources:**
 
@@ -656,6 +675,20 @@ function renderResearchers(researchers: ResearcherStats[]): string {
 }
 
 // --- Formatting helpers ---
+
+/**
+ * Format projects with tier indicators for Claude
+ */
+function formatProjectsWithTiers(projects: ProjectItem[]): string {
+  return projects
+    .slice(0, 100)
+    .map((p, i) => {
+      const tier = p.match_tier === 'precise' ? '[PRECISE]' : '[BALANCED]'
+      const sim = p.similarity ? ` (${(p.similarity * 100).toFixed(0)}%)` : ''
+      return `[${i + 1}] ${tier}${sim} ${p.title}\nPI: ${p.pi_names?.split(';')[0] || 'N/A'} | Org: ${p.org_name || 'N/A'} | ${formatCurrency(p.total_cost || 0)}\n${p.abstract || 'No abstract available'}`
+    })
+    .join('\n\n---\n\n')
+}
 
 function formatCurrency(amount: number): string {
   if (amount >= 1_000_000_000) return `$${(amount / 1_000_000_000).toFixed(1)}B`

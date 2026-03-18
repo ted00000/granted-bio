@@ -37,6 +37,8 @@ export interface ProjectItem {
   total_cost: number | null
   fiscal_year: number | null
   primary_category: string | null
+  similarity: number | null  // Semantic similarity score (0-1)
+  match_tier: 'precise' | 'balanced' | 'broad' | null  // Match quality tier
 }
 
 export interface TrialItem {
