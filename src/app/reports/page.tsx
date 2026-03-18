@@ -18,12 +18,15 @@ interface Report {
   updated_at: string
 }
 
-function formatDate(dateString: string): string {
+function formatDateTime(dateString: string): string {
   const date = new Date(dateString)
-  return date.toLocaleDateString('en-US', {
+  return date.toLocaleString('en-US', {
     month: 'short',
     day: 'numeric',
     year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
   })
 }
 
@@ -160,7 +163,7 @@ export default function ReportsPage() {
                     <StatusBadge status={report.status} />
                   </div>
                   <div className="flex items-center gap-2 text-xs text-gray-400">
-                    <span>{formatDate(report.created_at)}</span>
+                    <span>{formatDateTime(report.created_at)}</span>
                     {report.project_count !== null && (
                       <>
                         <span>•</span>
