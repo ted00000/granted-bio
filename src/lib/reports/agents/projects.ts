@@ -83,15 +83,6 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
   // Results come back sorted by similarity (highest first)
   const rawResults = semanticResults as Array<RawProjectResult & { similarity?: number }>
 
-  // Collect ALL project_numbers BEFORE deduplication
-  // This is critical for finding linked trials/patents which may be under different project variants
-  // e.g., "5R44MH136894-02" and "1R44MH136894-01" are the same project but linked data could be under either
-  const allProjectNumbers = rawResults
-    .map(p => p.project_number)
-    .filter((pn): pn is string => pn !== null && pn !== undefined && pn.trim() !== '')
-
-  console.log(`[Projects Agent] Collected ${allProjectNumbers.length} project_number variants for linked data lookup`)
-
   // Deduplicate by core project number (aligned with UI deduplication)
   // This strips budget period suffixes so "5R44MH136894-02" and "1R44MH136894-01" are treated as same project
   const seenProjects = new Map<string, RawProjectResult & { similarity?: number }>()
@@ -107,6 +98,33 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
     // Re-sort by similarity after deduplication
     .sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
 
+  // Filter to balanced threshold FIRST - this defines the report population
+  const balancedResults = uniqueResults.filter(p => (p.similarity || 0) >= THRESHOLD_BALANCED)
+
+  // Get core project numbers from the BALANCED subset only
+  const balancedCoreNumbers = new Set<string>()
+  for (const project of balancedResults) {
+    const core = getCoreProjectNumber(project.project_number || null)
+    if (core) balancedCoreNumbers.add(core)
+  }
+
+  // Now collect ALL project_number variants from raw results, but ONLY for projects
+  // whose core number is in the balanced subset. This ensures we find linked data
+  // under any variant (e.g., "5R44MH136894-02" or "1R44MH136894-01") but ONLY for
+  // projects that passed the relevance threshold.
+  const allProjectNumbers = rawResults
+    .map(p => p.project_number)
+    .filter((pn): pn is string => {
+      if (!pn || pn.trim() === '') return false
+      const core = getCoreProjectNumber(pn)
+      return balancedCoreNumbers.has(core)
+    })
+
+  console.log(
+    `[Projects Agent] Collected ${allProjectNumbers.length} project_number variants ` +
+    `for ${balancedCoreNumbers.size} balanced projects`
+  )
+
   // Log similarity distribution
   const similarities = uniqueResults.map(p => p.similarity || 0)
   const minSim = Math.min(...similarities)
@@ -118,7 +136,7 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
       `(similarity: ${minSim.toFixed(3)} - ${maxSim.toFixed(3)}, avg: ${avgSim.toFixed(3)})`
   )
 
-  return processResults(uniqueResults, allProjectNumbers)
+  return processResults(balancedResults, allProjectNumbers)
 }
 
 /**
@@ -131,21 +149,19 @@ function getMatchTier(similarity: number): 'precise' | 'balanced' | 'broad' {
 }
 
 /**
- * Process raw search results into agent output
- * Filters to balanced+ matches only (similarity >= 0.35)
- * @param rawResults - Deduplicated search results
- * @param allProjectNumbers - ALL project_number variants from pre-deduplication for linked data lookup
+ * Process balanced search results into agent output
+ * @param balancedResults - Deduplicated search results already filtered to balanced+ threshold
+ * @param allProjectNumbers - Project_number variants for balanced projects (for linked data lookup)
  */
 function processResults(
-  rawResults: Array<RawProjectResult & { similarity?: number }>,
+  balancedResults: Array<RawProjectResult & { similarity?: number }>,
   allProjectNumbers: string[]
 ): ProjectsAgentOutput {
-  // Filter to balanced threshold - this is the report population
-  const balancedResults = rawResults.filter(p => (p.similarity || 0) >= THRESHOLD_BALANCED)
+  const preciseCount = balancedResults.filter(p => (p.similarity || 0) >= THRESHOLD_PRECISE).length
 
   console.log(
-    `[Projects Agent] Filtering to balanced+ matches: ${balancedResults.length} of ${rawResults.length} ` +
-    `(${rawResults.filter(p => (p.similarity || 0) >= THRESHOLD_PRECISE).length} precise)`
+    `[Projects Agent] Processing ${balancedResults.length} balanced+ matches ` +
+    `(${preciseCount} precise, ${balancedResults.length - preciseCount} balanced)`
   )
 
   // Map to ProjectItem format with similarity and tier
@@ -208,7 +224,7 @@ function processResults(
     .slice(0, 15)
 
   // Calculate average similarity for quality reporting
-  const avgSimilarity = rawResults.reduce((sum, p) => sum + (p.similarity || 0), 0) / rawResults.length
+  const avgSimilarity = balancedResults.reduce((sum, p) => sum + (p.similarity || 0), 0) / balancedResults.length
 
   console.log(
     `[Projects Agent] Processed ${items.length} projects, ` +
