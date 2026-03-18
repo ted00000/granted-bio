@@ -83,6 +83,15 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
   // Results come back sorted by similarity (highest first)
   const rawResults = semanticResults as Array<RawProjectResult & { similarity?: number }>
 
+  // Collect ALL project_numbers BEFORE deduplication
+  // This is critical for finding linked trials/patents which may be under different project variants
+  // e.g., "5R44MH136894-02" and "1R44MH136894-01" are the same project but linked data could be under either
+  const allProjectNumbers = rawResults
+    .map(p => p.project_number)
+    .filter((pn): pn is string => pn !== null && pn !== undefined && pn.trim() !== '')
+
+  console.log(`[Projects Agent] Collected ${allProjectNumbers.length} project_number variants for linked data lookup`)
+
   // Deduplicate by core project number (aligned with UI deduplication)
   // This strips budget period suffixes so "5R44MH136894-02" and "1R44MH136894-01" are treated as same project
   const seenProjects = new Map<string, RawProjectResult & { similarity?: number }>()
@@ -109,7 +118,7 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
       `(similarity: ${minSim.toFixed(3)} - ${maxSim.toFixed(3)}, avg: ${avgSim.toFixed(3)})`
   )
 
-  return processResults(uniqueResults)
+  return processResults(uniqueResults, allProjectNumbers)
 }
 
 /**
@@ -124,8 +133,13 @@ function getMatchTier(similarity: number): 'precise' | 'balanced' | 'broad' {
 /**
  * Process raw search results into agent output
  * Filters to balanced+ matches only (similarity >= 0.35)
+ * @param rawResults - Deduplicated search results
+ * @param allProjectNumbers - ALL project_number variants from pre-deduplication for linked data lookup
  */
-function processResults(rawResults: Array<RawProjectResult & { similarity?: number }>): ProjectsAgentOutput {
+function processResults(
+  rawResults: Array<RawProjectResult & { similarity?: number }>,
+  allProjectNumbers: string[]
+): ProjectsAgentOutput {
   // Filter to balanced threshold - this is the report population
   const balancedResults = rawResults.filter(p => (p.similarity || 0) >= THRESHOLD_BALANCED)
 
@@ -208,6 +222,7 @@ function processResults(rawResults: Array<RawProjectResult & { similarity?: numb
     byYear,
     byCategory,
     byOrg,
+    allProjectNumbers,
   }
 }
 
@@ -218,6 +233,7 @@ function emptyOutput(): ProjectsAgentOutput {
   return {
     items: [],
     totalFunding: 0,
+    allProjectNumbers: [],
     byYear: [],
     byCategory: [],
     byOrg: [],

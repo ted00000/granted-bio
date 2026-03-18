@@ -74,12 +74,12 @@ export async function generateTopicReport(
     const projectsOutput = await runProjectsAgent(topic)
     console.log(`[Report ${reportId}] Projects agent complete: ${projectsOutput.items.length} projects`)
 
-    // Extract project numbers for dependent agents
-    const projectNumbers = projectsOutput.items
-      .map((p) => p.project_number)
-      .filter((pn): pn is string => pn !== null && pn !== undefined)
+    // Use all project_number variants from pre-deduplication for linked data lookup
+    // This ensures we find trials/patents linked to any variant of a deduplicated project
+    // e.g., "5R44MH136894-02" and "1R44MH136894-01" are the same project but linked data could be under either
+    const projectNumbers = projectsOutput.allProjectNumbers
 
-    console.log(`[Report ${reportId}] Found ${projectNumbers.length} project numbers for linked data`)
+    console.log(`[Report ${reportId}] Found ${projectNumbers.length} project_number variants for linked data lookup`)
 
     // Phase 1b: Run dependent agents in parallel (they all use project numbers)
     // Market agent runs independently (doesn't need project numbers)

@@ -100,6 +100,9 @@ export interface ProjectsAgentOutput {
   byYear: Array<{ year: number; projects: number; funding: number }>
   byCategory: Array<{ category: string; projects: number; funding: number }>
   byOrg: Array<{ org: string; projects: number; funding: number }>
+  // All project_number variants (before deduplication) for linked data lookup
+  // This ensures we find trials/patents linked to any variant of a deduplicated project
+  allProjectNumbers: string[]
 }
 
 export interface TrialsAgentOutput {

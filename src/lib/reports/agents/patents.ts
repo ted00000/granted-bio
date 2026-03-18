@@ -16,11 +16,31 @@ export async function runPatentsAgent(projectNumbers: string[]): Promise<Patents
     return emptyOutput()
   }
 
-  // Get patents linked to these specific projects
+  // Get patent IDs from junction table for these specific projects
+  const { data: links, error: linkError } = await supabaseAdmin
+    .from('project_patents')
+    .select('patent_id')
+    .in('project_number', projectNumbers)
+
+  if (linkError) {
+    console.error('[Patents Agent] Error fetching patent links:', linkError)
+    return emptyOutput()
+  }
+
+  if (!links || links.length === 0) {
+    console.log('[Patents Agent] No patents found for these projects')
+    return emptyOutput()
+  }
+
+  // Deduplicate patent IDs (a patent may be linked to multiple projects)
+  const uniquePatentIds = [...new Set(links.map((l) => l.patent_id))]
+  console.log(`[Patents Agent] Found ${uniquePatentIds.length} unique patent IDs (from ${links.length} linked)`)
+
+  // Fetch full patent details
   const { data: linkedPatents, error } = await supabaseAdmin
     .from('patents')
-    .select('patent_id, patent_title, patent_org, issue_date, filing_date, project_number, abstract')
-    .in('project_number', projectNumbers)
+    .select('patent_id, patent_title, patent_org, issue_date, filing_date, abstract')
+    .in('patent_id', uniquePatentIds)
     .order('issue_date', { ascending: false, nullsFirst: false })
 
   if (error) {
@@ -200,6 +220,5 @@ interface RawPatentResult {
   patent_org?: string | null
   issue_date?: string | null
   filing_date?: string | null
-  project_number?: string | null
   abstract?: string | null
 }
