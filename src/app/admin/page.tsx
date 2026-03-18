@@ -1,24 +1,46 @@
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import Link from 'next/link'
 
+const CATEGORIES = [
+  { key: 'basic_research', label: 'Basic Research', color: 'blue' },
+  { key: 'therapeutics', label: 'Therapeutics', color: 'rose' },
+  { key: 'training', label: 'Training', color: 'amber' },
+  { key: 'infrastructure', label: 'Infrastructure', color: 'slate' },
+  { key: 'biotools', label: 'Biotools', color: 'green' },
+  { key: 'other', label: 'Other', color: 'gray' },
+  { key: 'digital_health', label: 'Digital Health', color: 'cyan' },
+  { key: 'diagnostics', label: 'Diagnostics', color: 'purple' },
+  { key: 'medical_device', label: 'Medical Device', color: 'orange' },
+]
+
 export default async function AdminDashboard() {
   const supabase = await createServerSupabaseClient()
 
-  // Fetch stats
+  // Fetch overall stats
   const [
     { count: projectCount },
-    { count: biotoolsCount },
     { count: publicationCount },
     { count: patentCount },
+    { count: trialCount },
   ] = await Promise.all([
     supabase.from('projects').select('*', { count: 'exact', head: true }),
+    supabase.from('publications').select('*', { count: 'exact', head: true }),
+    supabase.from('patents').select('*', { count: 'exact', head: true }),
+    supabase.from('clinical_studies').select('*', { count: 'exact', head: true }),
+  ])
+
+  // Fetch category counts
+  const categoryPromises = CATEGORIES.map(cat =>
     supabase
       .from('projects')
       .select('*', { count: 'exact', head: true })
-      .gte('biotools_confidence', 50),
-    supabase.from('publications').select('*', { count: 'exact', head: true }),
-    supabase.from('patents').select('*', { count: 'exact', head: true }),
-  ])
+      .eq('primary_category', cat.key)
+  )
+  const categoryResults = await Promise.all(categoryPromises)
+  const categoryCounts = CATEGORIES.map((cat, i) => ({
+    ...cat,
+    count: categoryResults[i].count || 0
+  }))
 
   // Fetch recent jobs
   const { data: recentJobs } = await supabase
@@ -32,36 +54,59 @@ export default async function AdminDashboard() {
       <div>
         <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
         <p className="mt-1 text-sm text-gray-500">
-          Overview of your granted.bio database
+          Overview of granted.bio database
         </p>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="text-sm font-medium text-gray-500">Total Projects</div>
-          <div className="mt-2 text-3xl font-bold text-gray-900">
+      {/* Overall Stats */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-lg shadow p-5">
+          <div className="text-sm font-medium text-gray-500">Projects</div>
+          <div className="mt-1 text-2xl font-bold text-gray-900">
             {projectCount?.toLocaleString() || 0}
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="text-sm font-medium text-gray-500">
-            Biotools Companies (50%+)
-          </div>
-          <div className="mt-2 text-3xl font-bold text-green-600">
-            {biotoolsCount?.toLocaleString() || 0}
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-5">
           <div className="text-sm font-medium text-gray-500">Publications</div>
-          <div className="mt-2 text-3xl font-bold text-purple-600">
+          <div className="mt-1 text-2xl font-bold text-purple-600">
             {publicationCount?.toLocaleString() || 0}
           </div>
         </div>
-        <div className="bg-white rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-5">
           <div className="text-sm font-medium text-gray-500">Patents</div>
-          <div className="mt-2 text-3xl font-bold text-orange-600">
+          <div className="mt-1 text-2xl font-bold text-orange-600">
             {patentCount?.toLocaleString() || 0}
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-5">
+          <div className="text-sm font-medium text-gray-500">Clinical Trials</div>
+          <div className="mt-1 text-2xl font-bold text-cyan-600">
+            {trialCount?.toLocaleString() || 0}
+          </div>
+        </div>
+      </div>
+
+      {/* Category Distribution */}
+      <div className="bg-white rounded-lg shadow">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">Category Distribution</h2>
+        </div>
+        <div className="p-6">
+          <div className="grid grid-cols-3 md:grid-cols-5 gap-4">
+            {categoryCounts
+              .sort((a, b) => b.count - a.count)
+              .map((cat) => (
+                <Link
+                  key={cat.key}
+                  href={`/projects?category=${cat.key}`}
+                  className="text-center p-3 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <div className="text-2xl font-bold text-gray-900">
+                    {cat.count.toLocaleString()}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">{cat.label}</div>
+                </Link>
+              ))}
           </div>
         </div>
       </div>
