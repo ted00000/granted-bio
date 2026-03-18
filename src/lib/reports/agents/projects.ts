@@ -15,6 +15,37 @@ const SEMANTIC_THRESHOLD = 0.15
 const MAX_PROJECTS = 200  // Fetch more, filter to balanced subset
 
 /**
+ * Extract core project number for deduplication
+ * Strips support type prefix and budget period suffix
+ * Example: "5R44MH136894-02" → "R44MH136894"
+ * (Aligned with UI - tools.ts:11)
+ */
+function getCoreProjectNumber(projectNumber: string | null): string {
+  if (!projectNumber) return ''
+  let core = projectNumber.trim().toUpperCase()
+  // Remove leading digit (support type indicator)
+  core = core.replace(/^[0-9]/, '')
+  // Remove suffix after hyphen (-01, -02, etc.) - budget period indicator
+  core = core.replace(/-\d+$/, '')
+  // Also handle alternative suffix formats like -S1, -A1
+  core = core.replace(/-[A-Z]\d+$/, '')
+  return core
+}
+
+/**
+ * Generate a deduplication key for a project
+ * Uses core project number when available, otherwise falls back to title + org_name
+ */
+function getProjectDedupeKey(project: { project_number?: string; title: string; org_name?: string }): string {
+  const coreKey = getCoreProjectNumber(project.project_number || null)
+  if (coreKey) return coreKey
+  // Fallback: use normalized title + org_name
+  const titleKey = (project.title || '').toLowerCase().trim()
+  const orgKey = (project.org_name || '').toLowerCase().trim()
+  return `${titleKey}|${orgKey}`
+}
+
+/**
  * Run the Projects Agent to gather project data for a topic
  * Uses pure semantic search aligned with UI for consistency
  * Returns up to 100 projects sorted by similarity (most relevant first)
@@ -52,10 +83,11 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
   // Results come back sorted by similarity (highest first)
   const rawResults = semanticResults as Array<RawProjectResult & { similarity?: number }>
 
-  // Deduplicate by project_number, keeping most recent fiscal year
+  // Deduplicate by core project number (aligned with UI deduplication)
+  // This strips budget period suffixes so "5R44MH136894-02" and "1R44MH136894-01" are treated as same project
   const seenProjects = new Map<string, RawProjectResult & { similarity?: number }>()
   for (const project of rawResults) {
-    const key = project.project_number || project.application_id
+    const key = getProjectDedupeKey(project)
     const existing = seenProjects.get(key)
     if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
       seenProjects.set(key, project)
