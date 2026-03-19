@@ -1934,7 +1934,14 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                 {/* User query */}
                 <div className="flex items-start gap-2">
                   <Search className="w-4 h-4 text-[#E07A5F] flex-shrink-0 mt-0.5" />
-                  <span className="text-sm font-medium text-gray-900">{userQuery}</span>
+                  <div>
+                    <span className="text-sm font-medium text-gray-900">{userQuery}</span>
+                    {searchContext?.semanticQuery && (
+                      <div className="text-[10px] text-gray-400 mt-0.5" title={searchContext.semanticQuery}>
+                        → {searchContext.semanticQuery}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Persona switching tabs - only show after results load */}
