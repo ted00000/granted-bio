@@ -259,7 +259,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               <div className="text-xs text-gray-500 truncate">
                 {searchContext.keywordQuery}
               </div>
-              {searchContext.semanticQuery && searchContext.semanticQuery !== searchContext.keywordQuery && (
+              {searchContext.semanticQuery && (
                 <div className="text-[10px] text-gray-400 truncate mt-0.5" title={searchContext.semanticQuery}>
                   → {searchContext.semanticQuery}
                 </div>
@@ -546,7 +546,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               <div className="text-xs text-gray-500 truncate">
                 {searchContext.keywordQuery}
               </div>
-              {searchContext.semanticQuery && searchContext.semanticQuery !== searchContext.keywordQuery && (
+              {searchContext.semanticQuery && (
                 <div className="text-[10px] text-gray-400 truncate mt-0.5" title={searchContext.semanticQuery}>
                   → {searchContext.semanticQuery}
                 </div>
