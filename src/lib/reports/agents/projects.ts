@@ -46,6 +46,29 @@ function getProjectDedupeKey(project: { project_number?: string; title: string; 
 }
 
 /**
+ * Transform a topic into a semantic query optimized for embedding search
+ * Mirrors the transformation Claude applies in the UI chat flow
+ * Key insight: adding "research" and context words improves semantic matching
+ */
+function buildSemanticQuery(topic: string): string {
+  const lowerTopic = topic.toLowerCase()
+
+  // Skip transformation if already has research context
+  const hasResearchContext = [
+    'research', 'development', 'study', 'studies', 'investigation',
+    'analysis', 'project', 'projects', 'grant', 'grants'
+  ].some(word => lowerTopic.includes(word))
+
+  if (hasResearchContext) {
+    return topic
+  }
+
+  // Add research context to improve semantic matching
+  // This aligns with how Claude transforms queries in the UI
+  return `${topic} research and development`
+}
+
+/**
  * Run the Projects Agent to gather project data for a topic
  * Uses pure semantic search aligned with UI for consistency
  * Returns up to 100 projects sorted by similarity (most relevant first)
@@ -53,8 +76,12 @@ function getProjectDedupeKey(project: { project_number?: string; title: string; 
 export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutput> {
   console.log(`[Projects Agent] Searching for "${topic}"`)
 
+  // Transform topic into optimized semantic query (aligned with UI)
+  const semanticQuery = buildSemanticQuery(topic)
+  console.log(`[Projects Agent] Semantic query: "${semanticQuery}"`)
+
   // Generate embedding for semantic search
-  const queryEmbedding = await generateEmbedding(topic)
+  const queryEmbedding = await generateEmbedding(semanticQuery)
 
   // Pure semantic search - aligned with UI approach
   const { data: semanticResults, error } = await supabaseAdmin.rpc('search_projects_filtered', {
