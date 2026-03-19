@@ -48,36 +48,64 @@ function getProjectDedupeKey(project: { project_number?: string; title: string; 
   return `${titleKey}|${orgKey}`
 }
 
-/**
- * Transform a topic into a semantic query using Claude
- * This ensures reports use the exact same query transformation as the UI chat
- */
-async function buildSemanticQuery(topic: string): Promise<string> {
-  const prompt = `You are transforming a user's search topic into a semantic query for NIH project search.
+// System prompt matching the UI chat (from prompts.ts)
+// This ensures reports generate the exact same semantic queries as UI searches
+const QUERY_SYSTEM_PROMPT = `=== HOW SEARCH WORKS ===
+search_projects takes TWO separate queries:
+1. keyword_query: For text matching. Use pipes for synonyms: "neural|brain|cerebral organoid|organoids"
+2. semantic_query: Natural language for embedding search: "neural organoid platforms for studying brain diseases"
 
-The semantic query should be natural language optimized for embedding search. Include context words like "research", "development", "approaches", etc.
+=== QUERY OPTIMIZATION ===
+keyword_query: ONLY core scientific terms. Add synonyms with pipes.
+- SKIP these generic words: platform, approach, development, research, tools, method, technique, system, application
+- These words go in semantic_query only
+
+semantic_query: Full natural language with ALL words including generic ones.
 
 Examples:
-- "neural organoid platform" → "neural organoid platforms for brain research and disease modeling"
-- "CRISPR gene therapy" → "CRISPR-based gene therapy approaches for treating genetic diseases"
-- "mass spec for proteomics" → "mass spectrometry techniques for proteomics analysis"
-- "CAR-T solid tumors" → "CAR-T cell therapy development for solid tumor cancers"
-- "brain organoid electrophysiology" → "brain organoid electrophysiology research for neural activity and disease modeling"
+- User: "neural organoid platform"
+  keyword_query: "neural|brain|cerebral organoid|organoids"
+  semantic_query: "neural organoid platforms for brain research and disease modeling"
 
-User's topic: "${topic}"
+- User: "CRISPR gene therapy"
+  keyword_query: "CRISPR|Cas9 gene therapy|gene editing"
+  semantic_query: "CRISPR-based gene therapy approaches for treating genetic diseases"
 
-Respond with ONLY the semantic query, nothing else.`
+- User: "mass spec for proteomics"
+  keyword_query: "mass spectrometry|mass spec|MS proteomics|proteomic"
+  semantic_query: "mass spectrometry techniques for proteomics analysis"
 
+- User: "CAR-T solid tumors"
+  keyword_query: "CAR-T|CAR T cell solid tumor|tumors"
+  semantic_query: "CAR-T cell therapy development for solid tumor cancers"`
+
+/**
+ * Transform a topic into a semantic query using Claude
+ * Uses the exact same system prompt as the UI chat to ensure identical results
+ */
+async function buildSemanticQuery(topic: string): Promise<string> {
   try {
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 100,
-      messages: [{ role: 'user', content: prompt }]
+      max_tokens: 500,
+      temperature: 0, // Deterministic output
+      system: QUERY_SYSTEM_PROMPT,
+      messages: [{
+        role: 'user',
+        content: `Search for: ${topic}\n\nRespond with JSON only: {"keyword_query": "...", "semantic_query": "..."}`
+      }]
     })
 
     const text = response.content[0]
     if (text.type === 'text') {
-      return text.text.trim()
+      try {
+        const parsed = JSON.parse(text.text.trim())
+        return parsed.semantic_query
+      } catch {
+        // If JSON parse fails, try to extract semantic_query
+        const match = text.text.match(/"semantic_query":\s*"([^"]+)"/)
+        if (match) return match[1]
+      }
     }
   } catch (error) {
     console.error('[Projects Agent] Claude query transformation failed:', error)
