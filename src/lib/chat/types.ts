@@ -132,6 +132,8 @@ export interface SearchResultProject {
 export interface KeywordSearchResult {
   summary: string // Natural language summary for Claude to read
   search_query: string // The actual query that was searched
+  keyword_query?: string // Claude's keyword query (for display)
+  semantic_query?: string // Claude's semantic query (for display)
   total_count: number
   showing_count: number // How many results are actually being shown (may be capped)
   by_category: Record<string, number>

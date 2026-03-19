@@ -1061,7 +1061,7 @@ export async function searchProjectsSemantic(
   params: HybridSearchParams,
   userAccess: UserAccess
 ): Promise<KeywordSearchResult> {
-  const { semantic_query, filters, limit = 100 } = params
+  const { keyword_query, semantic_query, filters, limit = 100 } = params
   const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
   // Low threshold - with probes=100, semantic search should have good recall
   // Client-side can filter by similarity for precision (Low: >0.20, Med: >0.35, High: >0.50)
@@ -1234,6 +1234,8 @@ export async function searchProjectsSemantic(
     return {
       summary,
       search_query: semantic_query,
+      keyword_query,
+      semantic_query,
       total_count: totalBeforeCap,
       showing_count: Math.min(totalBeforeCap, 100),
       by_category: byCategory,

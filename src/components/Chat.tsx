@@ -255,8 +255,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             {isFiltered && ' (filtered)'}
           </div>
           {searchContext && (
-            <div className="text-xs text-gray-400 mt-2 truncate" title={`Keyword: ${searchContext.keywordQuery}\nSemantic: ${searchContext.semanticQuery}`}>
-              Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
+            <div className="mt-2">
+              <div className="text-xs text-gray-500 truncate">
+                {searchContext.keywordQuery}
+              </div>
+              {searchContext.semanticQuery && searchContext.semanticQuery !== searchContext.keywordQuery && (
+                <div className="text-[10px] text-gray-400 truncate mt-0.5" title={searchContext.semanticQuery}>
+                  → {searchContext.semanticQuery}
+                </div>
+              )}
             </div>
           )}
           {/* Precision filter - hidden on desktop when shown in middle column */}
@@ -535,8 +542,15 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             {isFiltered && ' (filtered)'}
           </div>
           {searchContext && (
-            <div className="text-xs text-gray-400 mt-2 truncate" title={`Keyword: ${searchContext.keywordQuery}\nSemantic: ${searchContext.semanticQuery}`}>
-              Searched: {searchContext.semanticQuery || searchContext.keywordQuery}
+            <div className="mt-2">
+              <div className="text-xs text-gray-500 truncate">
+                {searchContext.keywordQuery}
+              </div>
+              {searchContext.semanticQuery && searchContext.semanticQuery !== searchContext.keywordQuery && (
+                <div className="text-[10px] text-gray-400 truncate mt-0.5" title={searchContext.semanticQuery}>
+                  → {searchContext.semanticQuery}
+                </div>
+              )}
             </div>
           )}
           {/* Precision filter - hidden on desktop when shown in middle column */}
@@ -1646,8 +1660,8 @@ export function Chat({ persona, initialQuery }: ChatProps) {
                 if (parsed.name === 'search_projects' || parsed.name === 'keyword_search') {
                   const resultData = parsed.data as KeywordSearchResult
                   setSearchContext({
-                    keywordQuery: resultData.search_query || '',
-                    semanticQuery: resultData.search_query || '', // Same for legacy; new dual-query will differentiate
+                    keywordQuery: resultData.keyword_query || resultData.search_query || '',
+                    semanticQuery: resultData.semantic_query || resultData.search_query || '',
                     originalResults: resultData
                   })
                   setFilteredResults(null) // Clear any previous filters
