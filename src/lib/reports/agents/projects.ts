@@ -3,7 +3,10 @@
 // Returns up to 100 projects sorted by relevance
 
 import { supabaseAdmin } from '@/lib/supabase'
+import Anthropic from '@anthropic-ai/sdk'
 import type { ProjectsAgentOutput, ProjectItem } from '../types'
+
+const anthropic = new Anthropic()
 
 // Match tier thresholds (aligned with UI - tools.ts:1067)
 const THRESHOLD_BROAD = 0.20    // Low precision
@@ -46,25 +49,41 @@ function getProjectDedupeKey(project: { project_number?: string; title: string; 
 }
 
 /**
- * Transform a topic into a semantic query optimized for embedding search
- * Mirrors the transformation Claude applies in the UI chat flow
- * Key insight: adding "research" and context words improves semantic matching
+ * Transform a topic into a semantic query using Claude
+ * This ensures reports use the exact same query transformation as the UI chat
  */
-function buildSemanticQuery(topic: string): string {
-  const lowerTopic = topic.toLowerCase()
+async function buildSemanticQuery(topic: string): Promise<string> {
+  const prompt = `You are transforming a user's search topic into a semantic query for NIH project search.
 
-  // Skip transformation if already has research context
-  const hasResearchContext = [
-    'research', 'development', 'study', 'studies', 'investigation',
-    'analysis', 'project', 'projects', 'grant', 'grants'
-  ].some(word => lowerTopic.includes(word))
+The semantic query should be natural language optimized for embedding search. Include context words like "research", "development", "approaches", etc.
 
-  if (hasResearchContext) {
-    return topic
+Examples:
+- "neural organoid platform" → "neural organoid platforms for brain research and disease modeling"
+- "CRISPR gene therapy" → "CRISPR-based gene therapy approaches for treating genetic diseases"
+- "mass spec for proteomics" → "mass spectrometry techniques for proteomics analysis"
+- "CAR-T solid tumors" → "CAR-T cell therapy development for solid tumor cancers"
+- "brain organoid electrophysiology" → "brain organoid electrophysiology research for neural activity and disease modeling"
+
+User's topic: "${topic}"
+
+Respond with ONLY the semantic query, nothing else.`
+
+  try {
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 100,
+      messages: [{ role: 'user', content: prompt }]
+    })
+
+    const text = response.content[0]
+    if (text.type === 'text') {
+      return text.text.trim()
+    }
+  } catch (error) {
+    console.error('[Projects Agent] Claude query transformation failed:', error)
   }
 
-  // Add research context to improve semantic matching
-  // This aligns with how Claude transforms queries in the UI
+  // Fallback: add simple context
   return `${topic} research and development`
 }
 
@@ -76,8 +95,8 @@ function buildSemanticQuery(topic: string): string {
 export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutput> {
   console.log(`[Projects Agent] Searching for "${topic}"`)
 
-  // Transform topic into optimized semantic query (aligned with UI)
-  const semanticQuery = buildSemanticQuery(topic)
+  // Transform topic into optimized semantic query using Claude (aligned with UI)
+  const semanticQuery = await buildSemanticQuery(topic)
   console.log(`[Projects Agent] Semantic query: "${semanticQuery}"`)
 
   // Generate embedding for semantic search
