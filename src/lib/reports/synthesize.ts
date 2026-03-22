@@ -168,6 +168,12 @@ Instead, answer these questions in narrative form:
 
 Write in confident, analytical prose. Be specific about what you observed but don't repeat raw numbers.
 
+SAMPLE-BASED LANGUAGE: This analysis covers NIH-linked research, not the complete market. Use confident but appropriately hedged language:
+- "Among the projects analyzed..." not "The field has..."
+- "This pattern suggests..." or "These findings indicate..."
+- "The data shows strong correlation with..." or "appears likely based on..."
+- Avoid definitive claims; prefer "may indicate", "suggests", "the sample reveals"
+
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.`
 
   const response = await client.messages.create({
@@ -294,9 +300,12 @@ Generate substantive insights for each section by analyzing the ACTUAL CONTENT a
 4. **Publications**: What scientific questions are being addressed? What methodological advances are being published? What journals suggest the field's maturity?
 
 LANGUAGE REQUIREMENTS:
-- Use "our analysis reveals", "among the examined projects", "the research content shows"
-- AVOID "the field has X total" or other population-level claims
-- Be SPECIFIC about what you learned from the abstracts - cite actual approaches, targets, methods observed
+- Use "our analysis reveals", "among the examined projects", "the sample shows"
+- AVOID definitive claims like "the field has X total" or "this proves"
+- Use confident hedged language: "suggests", "indicates", "appears likely", "may reflect"
+- "Among the linked patents..." not "The IP landscape is..."
+- "This concentration pattern suggests..." not "Stanford controls..."
+- Be SPECIFIC about observations but acknowledge this is a high-confidence sample, not complete census
 - Each insight should be 3-4 sentences with real substance
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
@@ -402,6 +411,12 @@ ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 20))}
 
 Generate INVESTOR-FOCUSED signals analysis.
 
+SAMPLE-BASED LANGUAGE: This covers NIH-linked data only, not complete market IP/trials. Use confident but hedged language:
+- "Among the linked patents..." not "The IP landscape is..."
+- "This pattern suggests..." or "The concentration may indicate..."
+- "Based on the NIH sample, freedom to operate appears..." not definitive FTO claims
+- Acknowledge limitations while providing actionable insight
+
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
 Return JSON only:
@@ -439,6 +454,12 @@ ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 25))}
 ---
 
 Generate RESEARCHER-FOCUSED signals analysis.
+
+SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this space. Use confident but hedged language:
+- "Among the funded projects..." not "The field is..."
+- "This pattern suggests..." or "The funding distribution indicates..."
+- "Based on this sample, gaps may exist in..." not definitive claims
+- Acknowledge this represents publicly-funded academic research primarily
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
@@ -556,6 +577,11 @@ Rewrite the market overview to INTEGRATE the NIH funding data. The new overview 
 3. Identify any gaps between research activity and commercial development
 4. Keep the best insights from the original overview
 
+SAMPLE-BASED LANGUAGE: NIH data represents publicly-funded academic research. Use hedged integration:
+- "NIH funding patterns suggest..." not "The market is..."
+- "This public investment may indicate..." or "appears to correlate with..."
+- Acknowledge NIH sample doesn't capture private/industry R&D
+
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
 Return JSON only:
@@ -642,6 +668,8 @@ For each, explain WHY it matters. Consider:
 - Methodological advances that enabled new research
 - Recent breakthroughs with translational potential
 - Reviews that provide comprehensive understanding
+
+SAMPLE-BASED LANGUAGE: These are publications linked to NIH-funded projects in our sample. Use language like "among the linked publications" rather than claiming these are the definitive papers in the field.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
@@ -751,6 +779,11 @@ TRL Reference:
 - TRL 5-6: Technology demonstration, prototype
 - TRL 7-8: System complete, operational
 - TRL 9: Full deployment/commercialization
+
+SAMPLE-BASED LANGUAGE: These metrics come from NIH-linked data. Use confident but hedged language:
+- "Based on the linked trials and patents, the technology appears to be at..."
+- "The sample suggests TRL..." not "The technology is at TRL..."
+- "This pattern may indicate..." or "suggests maturity level of..."
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
@@ -883,6 +916,11 @@ For each cluster, list:
 3. Maturity level (Nascent/Emerging/Maturing/Mature)
 4. Brief commercial readiness note
 
+SAMPLE-BASED LANGUAGE: This analysis covers NIH-funded academic research. Use hedged language:
+- "Among the funded projects, distinct approaches include..."
+- "Based on the sample, key academic players appear to be..."
+- Commercial players may exist outside NIH-linked data; acknowledge this limitation
+
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
 Return JSON only:
@@ -1004,15 +1042,22 @@ Assess the IP landscape. Consider:
 3. Freedom to operate: What are FTO concerns for a new entrant?
 4. Recent activity: Is patenting accelerating or declining?
 
+SAMPLE-BASED LANGUAGE: CRITICAL - These are only patents linked to NIH projects, NOT the complete IP landscape. Commercial patents (e.g., from Axion, MaxWell) may not appear. Use appropriately hedged language:
+- "Among the NIH-linked patents..." not "The IP landscape is..."
+- "This concentration pattern suggests..." not "Stanford controls the space"
+- "Based on linked patents, FTO concerns may include..." not definitive FTO claims
+- "The sample indicates..." or "appears to show..." not absolute statements
+- Explicitly note that commercial/international patents may exist outside this sample
+
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
 Return JSON only:
 {
   "concentration": "fragmented" | "moderately_concentrated" | "highly_concentrated",
-  "dominantAssignees": ["Top 3-5 patent holders"],
-  "freedomToOperate": "2-3 sentences assessing FTO concerns for someone entering this space",
-  "recentActivityTrend": "One sentence on whether patenting is accelerating, stable, or declining",
-  "narrative": "2-3 sentences synthesizing what the IP landscape means for commercial development"
+  "dominantAssignees": ["Top 3-5 patent holders among linked patents"],
+  "freedomToOperate": "2-3 sentences assessing potential FTO concerns based on the NIH-linked sample",
+  "recentActivityTrend": "One sentence on patent activity trend within the linked sample",
+  "narrative": "2-3 sentences on what the linked patent pattern may suggest for commercial development"
 }`
 
   try {
