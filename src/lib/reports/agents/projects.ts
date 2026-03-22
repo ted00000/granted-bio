@@ -48,6 +48,25 @@ function getProjectDedupeKey(project: { project_number?: string; title: string; 
   return `${titleKey}|${orgKey}`
 }
 
+/**
+ * Generate a secondary deduplication key based on normalized title + PI name
+ * This catches cases where the same PI has multiple grants with similar titles
+ */
+function getTitlePiDedupeKey(project: { title: string; pi_names?: string }): string {
+  // Normalize title: lowercase, remove punctuation, collapse whitespace
+  const normalizedTitle = (project.title || '')
+    .toLowerCase()
+    .replace(/[^\w\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+  // Extract first PI name (before semicolon)
+  const firstPi = (project.pi_names || '')
+    .split(';')[0]
+    .toLowerCase()
+    .trim()
+  return `${normalizedTitle}|${firstPi}`
+}
+
 // System prompt matching the UI chat (from prompts.ts)
 // This ensures reports generate the exact same semantic queries as UI searches
 const QUERY_SYSTEM_PROMPT = `=== HOW SEARCH WORKS ===
@@ -86,7 +105,7 @@ Examples:
 async function buildSemanticQuery(topic: string): Promise<string> {
   try {
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 500,
       temperature: 0, // Deterministic output
       system: QUERY_SYSTEM_PROMPT,
@@ -157,7 +176,7 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
   // Results come back sorted by similarity (highest first)
   const rawResults = semanticResults as Array<RawProjectResult & { similarity?: number }>
 
-  // Deduplicate by core project number (aligned with UI deduplication)
+  // PASS 1: Deduplicate by core project number (aligned with UI deduplication)
   // This strips budget period suffixes so "5R44MH136894-02" and "1R44MH136894-01" are treated as same project
   const seenProjects = new Map<string, RawProjectResult & { similarity?: number }>()
   for (const project of rawResults) {
@@ -168,7 +187,36 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
     }
   }
 
-  const uniqueResults = Array.from(seenProjects.values())
+  // PASS 2: Deduplicate by title + PI name
+  // This catches cases where the same PI has multiple grants (different project numbers) with identical titles
+  // Keep the higher-funded one (larger grants are typically primary), or most recent if funding is equal
+  const pass1Results = Array.from(seenProjects.values())
+  const seenTitlePi = new Map<string, RawProjectResult & { similarity?: number }>()
+  for (const project of pass1Results) {
+    const key = getTitlePiDedupeKey(project)
+    const existing = seenTitlePi.get(key)
+    if (!existing) {
+      seenTitlePi.set(key, project)
+    } else {
+      // Keep the higher-funded project (typically the primary grant vs. supplemental)
+      // If funding is equal, keep the most recent fiscal year
+      const existingFunding = existing.total_cost || 0
+      const projectFunding = project.total_cost || 0
+      if (projectFunding > existingFunding ||
+          (projectFunding === existingFunding && (project.fiscal_year || 0) > (existing.fiscal_year || 0))) {
+        seenTitlePi.set(key, project)
+      }
+    }
+  }
+
+  const deduplicatedResults = Array.from(seenTitlePi.values())
+  const pass2Removed = pass1Results.length - deduplicatedResults.length
+  if (pass2Removed > 0) {
+    console.log(`[Projects Agent] Title+PI deduplication removed ${pass2Removed} additional duplicates`)
+  }
+
+  // Use fully deduplicated results (both passes applied)
+  const uniqueResults = deduplicatedResults
     // Re-sort by similarity after deduplication
     .sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
 

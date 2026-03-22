@@ -57,7 +57,7 @@ Format your response as JSON with this structure:
 Only include information you are confident about. If you're not sure about something, omit it or mark as uncertain.`
 
   const response = await client.messages.create({
-    model: 'claude-opus-4-20250514',
+    model: 'claude-sonnet-4-6',
     max_tokens: 2000,
     messages: [
       {

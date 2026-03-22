@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { X, AlertTriangle, Loader2, FileText } from 'lucide-react'
+import { X, AlertTriangle, Loader2, FileText, FlaskConical, TrendingUp } from 'lucide-react'
+
+type Persona = 'researcher' | 'investor'
 
 interface GenerateReportDialogProps {
   onClose: () => void
@@ -13,6 +15,7 @@ export function GenerateReportDialog({
   onGenerated,
 }: GenerateReportDialogProps) {
   const [topic, setTopic] = useState('')
+  const [persona, setPersona] = useState<Persona>('researcher')
   const [step, setStep] = useState<'input' | 'checking' | 'confirm' | 'generating'>('input')
   const [projectCount, setProjectCount] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -60,6 +63,7 @@ export function GenerateReportDialog({
           report_type: 'topic',
           topic: topic.trim(),
           data_limited: dataLimited,
+          persona,
         }),
       })
 
@@ -107,6 +111,46 @@ export function GenerateReportDialog({
               <p className="text-sm text-gray-600 mb-4">
                 Create comprehensive topic-focused intelligence reports synthesizing research activity, funding, clinical trials, patents, and publications.
               </p>
+
+              {/* Persona Selection */}
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Report Type
+              </label>
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <button
+                  onClick={() => setPersona('researcher')}
+                  className={`flex items-center gap-2 p-3 rounded-lg border-2 transition-all ${
+                    persona === 'researcher'
+                      ? 'border-[#E07A5F] bg-[#E07A5F]/5'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <FlaskConical className={`w-5 h-5 ${persona === 'researcher' ? 'text-[#E07A5F]' : 'text-gray-400'}`} />
+                  <div className="text-left">
+                    <div className={`text-sm font-medium ${persona === 'researcher' ? 'text-[#E07A5F]' : 'text-gray-700'}`}>
+                      Research
+                    </div>
+                    <div className="text-xs text-gray-500">Competitive intel</div>
+                  </div>
+                </button>
+                <button
+                  onClick={() => setPersona('investor')}
+                  className={`flex items-center gap-2 p-3 rounded-lg border-2 transition-all ${
+                    persona === 'investor'
+                      ? 'border-[#E07A5F] bg-[#E07A5F]/5'
+                      : 'border-gray-200 hover:border-gray-300'
+                  }`}
+                >
+                  <TrendingUp className={`w-5 h-5 ${persona === 'investor' ? 'text-[#E07A5F]' : 'text-gray-400'}`} />
+                  <div className="text-left">
+                    <div className={`text-sm font-medium ${persona === 'investor' ? 'text-[#E07A5F]' : 'text-gray-700'}`}>
+                      Investment
+                    </div>
+                    <div className="text-xs text-gray-500">Risk/opportunity</div>
+                  </div>
+                </button>
+              </div>
+
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Research Topic
               </label>

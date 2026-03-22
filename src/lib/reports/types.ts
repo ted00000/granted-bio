@@ -2,6 +2,7 @@
 
 export type ReportType = 'topic' | 'portfolio'
 export type ReportStatus = 'generating' | 'complete' | 'failed'
+export type ReportPersona = 'researcher' | 'investor'
 
 export interface ReportMetadata {
   id: string
@@ -135,6 +136,75 @@ export interface AllAgentOutputs {
   market: MarketAgentOutput
 }
 
+// Structured investor risk factors
+export interface InvestorRiskFactors {
+  scientific: string | null     // Scientific/technical risks
+  regulatory: string | null     // Regulatory pathway risks
+  competitive: string | null    // Competitive/market timing risks
+  execution: string | null      // Execution/team/capability risks
+  overall: string               // Summary of most critical risk
+}
+
+// Signals analysis for persona-aware interpretation
+export interface SignalsAnalysis {
+  // Researcher-focused signals
+  positioningMap: string        // Who's doing what approach
+  collaborationSignals: string  // Co-PI patterns, institutional links
+  methodologicalTrends: string  // Emerging techniques, declining approaches
+  gapAnalysis: string           // What's NOT being funded/studied
+
+  // Investor-focused signals
+  trlAssessment: string         // Technology readiness breakdown
+  commercialReadiness: string   // How close to market
+  ipConcentration: string       // Who owns the IP landscape
+  riskFactors: string | InvestorRiskFactors  // Key risks (string for legacy, structured for new)
+  comparables: string           // Similar technologies/companies
+}
+
+// Curated publication with explanation
+export interface CuratedPublication {
+  pmid: string
+  title: string
+  journal: string | null
+  year: number | null
+  significance: string          // Why this paper matters
+  keyFinding: string            // One sentence takeaway
+}
+
+// Field Maturity Assessment - synthesizes preprint ratio, trial phases, patent activity
+export interface FieldMaturityAssessment {
+  trlEstimate: string           // e.g., "TRL 3-4" or "Early Research (TRL 1-3)"
+  maturityNarrative: string     // 2-3 sentence explanation
+  evidenceSummary: {
+    preprintRatio: string       // e.g., "35% preprints signals emerging field"
+    trialProgression: string    // e.g., "No late-stage trials observed"
+    patentActivity: string      // e.g., "0 patents in last 2 years"
+  }
+  overallAssessment: 'nascent' | 'emerging' | 'maturing' | 'established'
+}
+
+// Competitive Topology - methodological clusters
+export interface CompetitiveTopologyCluster {
+  approach: string              // e.g., "MEA-based recording"
+  keyPlayers: string[]          // Academic + commercial
+  maturityLevel: string         // e.g., "Mature", "Emerging", "Nascent"
+  commercialReadiness: string   // Brief assessment
+}
+
+export interface CompetitiveTopology {
+  clusters: CompetitiveTopologyCluster[]
+  narrative: string             // Brief synthesis
+}
+
+// IP Landscape Assessment
+export interface IPLandscapeAssessment {
+  concentration: 'fragmented' | 'moderately_concentrated' | 'highly_concentrated'
+  dominantAssignees: string[]
+  freedomToOperate: string      // Assessment of FTO concerns
+  recentActivityTrend: string   // e.g., "Declining - 0 patents in 2 years"
+  narrative: string             // 2-3 sentences
+}
+
 export interface ReportData {
   executiveSummary: string
   marketContext: MarketContext
@@ -146,6 +216,14 @@ export interface ReportData {
   topOrganizations: OrgStats[]
   topResearchers: ResearcherStats[]
   markdownContent: string
+  // New persona-aware fields
+  persona?: ReportPersona
+  signalsAnalysis?: SignalsAnalysis
+  curatedPublications?: CuratedPublication[]
+  // New assessment fields
+  fieldMaturity?: FieldMaturityAssessment
+  competitiveTopology?: CompetitiveTopology
+  ipLandscape?: IPLandscapeAssessment
 }
 
 export interface GenerateReportOptions {
@@ -153,4 +231,5 @@ export interface GenerateReportOptions {
   topic?: string
   userId: string
   dataLimited?: boolean
+  persona?: ReportPersona  // Defaults to 'researcher'
 }

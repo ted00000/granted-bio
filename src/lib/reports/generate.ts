@@ -4,6 +4,7 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import type {
   ReportType,
+  ReportPersona,
   ReportData,
   AllAgentOutputs,
   GenerateReportOptions,
@@ -44,18 +45,20 @@ export async function checkProjectCount(topic: string): Promise<number> {
 export async function generateTopicReport(
   userId: string,
   topic: string,
-  dataLimited: boolean = false
+  dataLimited: boolean = false,
+  persona: ReportPersona = 'researcher'
 ): Promise<string> {
   // Create report record with 'generating' status
   const { data: report, error: insertError } = await supabaseAdmin
     .from('user_reports')
     .insert({
       user_id: userId,
-      title: `${topic} Research Landscape`,
+      title: `${topic} ${persona === 'investor' ? 'Investment' : 'Research'} Intelligence`,
       report_type: 'topic' as ReportType,
       topic,
       status: 'generating',
       data_limited: dataLimited,
+      persona,
     })
     .select('id')
     .single()
@@ -110,13 +113,14 @@ export async function generateTopicReport(
     const topResearchers = aggregateResearchers(projectsOutput)
 
     // Phase 3: Synthesis - generate executive summary and markdown report
-    console.log(`[Report ${reportId}] Synthesizing report...`)
+    console.log(`[Report ${reportId}] Synthesizing report for ${persona} persona...`)
 
     const reportData = await synthesizeReport(topic, agentOutputs, {
       fundingStats,
       topOrganizations: topOrgs,
       topResearchers,
       dataLimited,
+      persona,
     })
 
     // Save completed report
@@ -136,6 +140,9 @@ export async function generateTopicReport(
         markdown_content: reportData.markdownContent,
         agent_outputs: agentOutputs,
         project_count: projectsOutput.items.length,
+        persona,
+        signals_analysis: reportData.signalsAnalysis,
+        curated_publications: reportData.curatedPublications,
         updated_at: new Date().toISOString(),
       })
       .eq('id', reportId)

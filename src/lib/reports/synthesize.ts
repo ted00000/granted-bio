@@ -4,6 +4,7 @@
 import type {
   AllAgentOutputs,
   ReportData,
+  ReportPersona,
   FundingStats,
   OrgStats,
   ResearcherStats,
@@ -12,6 +13,12 @@ import type {
   PatentItem,
   PublicationItem,
   MarketContext,
+  SignalsAnalysis,
+  InvestorRiskFactors,
+  CuratedPublication,
+  FieldMaturityAssessment,
+  CompetitiveTopology,
+  IPLandscapeAssessment,
 } from './types'
 
 interface SynthesisContext {
@@ -19,6 +26,7 @@ interface SynthesisContext {
   topOrganizations: OrgStats[]
   topResearchers: ResearcherStats[]
   dataLimited?: boolean
+  persona?: ReportPersona
 }
 
 interface SectionInsights {
@@ -36,16 +44,26 @@ export async function synthesizeReport(
   agentOutputs: AllAgentOutputs,
   context: SynthesisContext
 ): Promise<ReportData> {
-  console.log(`[Synthesis Agent] Generating report for "${topic}"`)
+  const persona = context.persona || 'researcher'
+  console.log(`[Synthesis Agent] Generating ${persona} report for "${topic}"`)
 
-  // Generate executive summary and section insights in parallel
-  const [executiveSummary, sectionInsights] = await Promise.all([
+  // Generate all LLM content in parallel
+  const [executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, enhancedMarketContext, fieldMaturity, competitiveTopology, ipLandscape] = await Promise.all([
     generateExecutiveSummary(topic, agentOutputs, context),
     generateSectionInsights(topic, agentOutputs, context),
+    generateSignalsAnalysis(topic, agentOutputs, context),
+    generateCuratedPublications(topic, agentOutputs, context),
+    enhanceMarketContext(topic, agentOutputs.market.context, context),
+    generateFieldMaturityAssessment(topic, agentOutputs, context),
+    generateCompetitiveTopology(topic, agentOutputs, context),
+    generateIPLandscapeAssessment(topic, agentOutputs, context),
   ])
 
-  // Assemble markdown report
-  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights)
+  // Replace raw market context with enhanced version
+  agentOutputs.market.context = enhancedMarketContext
+
+  // Assemble markdown report with persona-aware structure
+  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape)
 
   return {
     executiveSummary,
@@ -58,11 +76,18 @@ export async function synthesizeReport(
     topOrganizations: context.topOrganizations,
     topResearchers: context.topResearchers,
     markdownContent,
+    persona,
+    signalsAnalysis,
+    curatedPublications,
+    fieldMaturity,
+    competitiveTopology,
+    ipLandscape,
   }
 }
 
 /**
  * Generate executive summary using LLM
+ * Focused on STRATEGIC insights, not data repetition
  */
 async function generateExecutiveSummary(
   topic: string,
@@ -71,64 +96,81 @@ async function generateExecutiveSummary(
 ): Promise<string> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
+  const persona = context.persona || 'researcher'
 
   // Count precise matches for Claude's context
   const preciseCount = agentOutputs.projects.items.filter(p => p.match_tier === 'precise').length
   const balancedCount = agentOutputs.projects.items.filter(p => p.match_tier === 'balanced').length
 
+  // Determine dominant category for context
+  const topCategory = context.fundingStats.byCategory[0]?.category || 'research'
+
   const trialSummaries = agentOutputs.trials.items
-    .slice(0, 25)
+    .slice(0, 15)
     .map((t) => `- ${t.study_title} (${t.phase || 'Phase N/A'}, ${t.study_status || 'Status N/A'}) - ${t.lead_sponsor || 'Sponsor N/A'}`)
     .join('\n')
 
-  const prompt = `You are writing an executive summary for a research intelligence report on "${topic}".
+  const patentSummaries = agentOutputs.patents.items
+    .slice(0, 10)
+    .map((p) => `- ${p.patent_title} (${p.assignee || 'Unknown'})`)
+    .join('\n')
 
-CRITICAL FRAMING: This data represents a CURATED SAMPLE of ${context.fundingStats.projectCount} high-confidence NIH-funded projects (balanced+ match threshold), not the complete population. Use sample-appropriate language.
+  // Persona-specific framing
+  const personaContext = persona === 'investor'
+    ? `You are writing for an INVESTOR evaluating commercial opportunity. Focus on:
+- Market opportunity signals (where is money flowing, what's being protected)
+- Technology readiness (how close to commercialization)
+- Competitive dynamics (who's ahead, who's differentiated)
+- Risk factors (what could prevent success)`
+    : `You are writing for a RESEARCHER understanding the competitive landscape. Focus on:
+- Scientific positioning (what approaches exist, where are gaps)
+- Collaboration opportunities (who's doing complementary work)
+- Methodological trends (what techniques are emerging)
+- Field momentum (accelerating, maturing, or stalling)`
 
-MATCH QUALITY TIERS:
-- PRECISE (similarity ≥0.50): Highly relevant - weight these most heavily
-- BALANCED (similarity ≥0.35): Relevant - standard weight
-Each project below shows its match tier. Projects are ranked by relevance (most relevant first).
+  const prompt = `${personaContext}
 
-## RESEARCH CONTENT (analyze these abstracts for substantive insights)
+## TOPIC: ${topic}
 
-${formatProjectsWithTiers(agentOutputs.projects.items)}
+## DATA SUMMARY (do NOT repeat these numbers - interpret what they MEAN)
+- ${context.fundingStats.projectCount} projects analyzed (${preciseCount} highly relevant, ${balancedCount} relevant)
+- ${formatCurrency(context.fundingStats.total)} in funding across ${context.fundingStats.orgCount} organizations
+- ${agentOutputs.trials.items.length} clinical trials | ${agentOutputs.patents.items.length} patents
+- Dominant category: ${formatCategory(topCategory)}
 
-## SAMPLE STATISTICS
-- Projects Analyzed: ${context.fundingStats.projectCount} (${preciseCount} precise, ${balancedCount} balanced)
-- Total Funding: ${formatCurrency(context.fundingStats.total)}
-- Organizations: ${context.fundingStats.orgCount} | PIs: ${context.fundingStats.piCount}
-- Categories: ${context.fundingStats.byCategory.slice(0, 5).map(c => `${c.category} (${c.projects})`).join(', ')}
+## RESEARCH ABSTRACTS (scan for patterns, don't describe individual projects)
+${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 30))}
 
-## CLINICAL PIPELINE (${agentOutputs.trials.items.length} trials identified)
+## CLINICAL DEVELOPMENT
 ${trialSummaries || 'No trials identified'}
 
-## MARKET CONTEXT (population-level, from external research)
+## IP ACTIVITY
+${patentSummaries || 'No patents identified'}
+
+## MARKET CONTEXT
 ${agentOutputs.market.context.overview}
 
-${context.dataLimited ? '\nNote: Limited data available for this topic.' : ''}
+---
 
-## YOUR TASK
+## YOUR TASK: Write a 3-4 paragraph STRATEGIC executive summary
 
-Analyze the ACTUAL RESEARCH CONTENT above to write a substantive executive summary. Focus on:
+DO NOT repeat statistics from the body - those appear later in the report.
 
-1. **What researchers are actually working on**: Key scientific approaches, methodologies, therapeutic targets, mechanisms being explored
-2. **Innovation themes**: Novel approaches, emerging techniques, differentiated strategies observed across the projects
-3. **Translational potential**: How basic research is progressing toward clinical application, gaps between research and trials
-4. **Key players and their focus areas**: Which institutions are leading, what are they specifically contributing
-5. **Transformational opportunities**: Where the sample suggests breakthrough potential or unmet needs
+Instead, answer these questions in narrative form:
 
-LANGUAGE REQUIREMENTS:
-- Use "our analysis reveals", "among the examined projects", "the research content shows"
-- For market context, you CAN use population-level language
-- For sample data, frame as findings from analysis
-- Be SPECIFIC about what you learned from the abstracts - don't just restate numbers
+1. **Opportunity Signal** (1-2 sentences): What does this research landscape reveal about ${persona === 'investor' ? 'commercial/translational opportunity' : 'scientific opportunity and positioning'}?
 
-Write 4-5 substantive paragraphs with real insights from the research content. Professional, analytical tone.`
+2. **Competitive Positioning** (2-3 sentences): Who are the leaders and what differentiates their approaches? Where are the gaps or white spaces?
+
+3. **Momentum Indicators** (2-3 sentences): Is this field accelerating, maturing, or stalling? What evidence supports this from funding trends, trial progression, or publication patterns?
+
+4. **Key ${persona === 'investor' ? 'Risks/Opportunities' : 'Strategic Considerations'}** (2-3 sentences): What should a ${persona} watch for or prioritize?
+
+Write in confident, analytical prose. Be specific about what you observed but don't repeat raw numbers.`
 
   const response = await client.messages.create({
-    model: 'claude-opus-4-20250514',
-    max_tokens: 2500, // Increased for deeper analysis of 50 projects
+    model: 'claude-sonnet-4-6',
+    max_tokens: 2000,
     messages: [
       {
         role: 'user',
@@ -265,7 +307,7 @@ Return JSON only, no markdown:
 
   try {
     const response = await client.messages.create({
-      model: 'claude-opus-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1500, // Increased for richer section insights
       messages: [{ role: 'user', content: prompt }],
     })
@@ -298,6 +340,707 @@ function defaultInsights(): SectionInsights {
 }
 
 /**
+ * Generate persona-specific signals analysis
+ */
+async function generateSignalsAnalysis(
+  topic: string,
+  agentOutputs: AllAgentOutputs,
+  context: SynthesisContext
+): Promise<SignalsAnalysis> {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
+  const persona = context.persona || 'researcher'
+
+  // Prepare data summaries for analysis
+  const topCategory = context.fundingStats.byCategory[0]?.category || 'research'
+
+  const orgFundingList = context.fundingStats.byOrg
+    .slice(0, 10)
+    .map((o) => `${o.org}: ${formatCurrency(o.funding)} (${o.projects} projects)`)
+    .join('\n')
+
+  const patentAssignees = agentOutputs.patents.byAssignee
+    .slice(0, 10)
+    .map((a) => `${a.assignee}: ${a.count} patents`)
+    .join('\n')
+
+  const trialPhases = Object.entries(agentOutputs.trials.byPhase)
+    .map(([phase, count]) => `${phase}: ${count}`)
+    .join(', ')
+
+  const yearTrend = context.fundingStats.byYear
+    .slice(0, 5)
+    .map((y) => `${y.year}: ${formatCurrency(y.funding)}`)
+    .join(', ')
+
+  const prompt = persona === 'investor'
+    ? `Analyze this research landscape for "${topic}" from an INVESTOR perspective.
+
+## DATA CONTEXT
+- ${context.fundingStats.projectCount} NIH projects, ${formatCurrency(context.fundingStats.total)} total funding
+- Dominant category: ${formatCategory(topCategory)}
+- Clinical trials: ${agentOutputs.trials.items.length} (${trialPhases || 'none'})
+- Patents: ${agentOutputs.patents.items.length} (recent 2yr: ${agentOutputs.patents.recentCount})
+
+## FUNDING BY ORG
+${orgFundingList}
+
+## FUNDING TREND
+${yearTrend}
+
+## IP CONCENTRATION
+${patentAssignees || 'No patent assignee data'}
+
+## PROJECT ABSTRACTS (sample for technology assessment)
+${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 20))}
+
+---
+
+Generate INVESTOR-FOCUSED signals analysis. Return JSON only:
+
+{
+  "trlAssessment": "2-3 sentences: Assess technology readiness. What percentage appears early-stage vs. clinical-ready? Are there clear paths to product?",
+  "commercialReadiness": "2-3 sentences: How close to market? What's missing for commercialization? Any existing products?",
+  "ipConcentration": "2-3 sentences: Who owns the IP landscape? Is it fragmented or concentrated? Freedom to operate concerns?",
+  "riskFactors": {
+    "scientific": "One sentence describing key scientific/technical risk (or null if none)",
+    "regulatory": "One sentence describing regulatory pathway risk (or null if none)",
+    "competitive": "One sentence describing competitive/market timing risk (or null if none)",
+    "execution": "One sentence describing execution/team/capability risk (or null if none)",
+    "overall": "One sentence summary of the most critical risk for investors"
+  },
+  "comparables": "2-3 sentences: What comparable technologies or companies exist? How have similar investments performed?"
+}`
+    : `Analyze this research landscape for "${topic}" from a RESEARCHER perspective.
+
+## DATA CONTEXT
+- ${context.fundingStats.projectCount} NIH projects, ${formatCurrency(context.fundingStats.total)} total funding
+- Dominant category: ${formatCategory(topCategory)}
+- Clinical trials: ${agentOutputs.trials.items.length}
+- Publications: ${agentOutputs.publications.items.length}
+
+## FUNDING BY ORG
+${orgFundingList}
+
+## FUNDING TREND
+${yearTrend}
+
+## PROJECT ABSTRACTS (analyze for positioning)
+${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 25))}
+
+---
+
+Generate RESEARCHER-FOCUSED signals analysis. Return JSON only:
+
+{
+  "positioningMap": "2-3 sentences: What distinct approaches exist in this space? How might a new entrant differentiate?",
+  "collaborationSignals": "2-3 sentences: Are there patterns of collaboration (multi-PI grants, institutional partnerships)? Who might be good collaborators?",
+  "methodologicalTrends": "2-3 sentences: What techniques are emerging vs. mature? What methodological gaps exist?",
+  "gapAnalysis": "2-3 sentences: What's NOT being funded or studied? Where are the white spaces?"
+}`
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1500,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const textContent = response.content.find((c) => c.type === 'text')
+    if (!textContent || textContent.type !== 'text') {
+      return defaultSignals()
+    }
+
+    const parsed = JSON.parse(textContent.text)
+
+    if (persona === 'investor') {
+      return {
+        positioningMap: '',
+        collaborationSignals: '',
+        methodologicalTrends: '',
+        gapAnalysis: '',
+        trlAssessment: parsed.trlAssessment || '',
+        commercialReadiness: parsed.commercialReadiness || '',
+        ipConcentration: parsed.ipConcentration || '',
+        riskFactors: parsed.riskFactors || '',
+        comparables: parsed.comparables || '',
+      }
+    } else {
+      return {
+        positioningMap: parsed.positioningMap || '',
+        collaborationSignals: parsed.collaborationSignals || '',
+        methodologicalTrends: parsed.methodologicalTrends || '',
+        gapAnalysis: parsed.gapAnalysis || '',
+        trlAssessment: '',
+        commercialReadiness: '',
+        ipConcentration: '',
+        riskFactors: '',
+        comparables: '',
+      }
+    }
+  } catch (error) {
+    console.warn('[Synthesis Agent] Failed to generate signals analysis:', error)
+    return defaultSignals()
+  }
+}
+
+function defaultSignals(): SignalsAnalysis {
+  return {
+    positioningMap: '',
+    collaborationSignals: '',
+    methodologicalTrends: '',
+    gapAnalysis: '',
+    trlAssessment: '',
+    commercialReadiness: '',
+    ipConcentration: '',
+    riskFactors: '',
+    comparables: '',
+  }
+}
+
+/**
+ * Enhance market context by integrating NIH funding data
+ */
+async function enhanceMarketContext(
+  topic: string,
+  rawContext: MarketContext,
+  context: SynthesisContext
+): Promise<MarketContext> {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
+
+  const topCategory = context.fundingStats.byCategory[0]?.category || 'research'
+  const topOrgs = context.fundingStats.byOrg.slice(0, 5).map(o => o.org).join(', ')
+  const yearTrend = context.fundingStats.byYear.slice(0, 3).map(y => `${y.year}: ${formatCurrency(y.funding)}`).join(', ')
+
+  const prompt = `You are integrating market research with NIH funding data for "${topic}".
+
+## EXISTING MARKET OVERVIEW (from general knowledge)
+${rawContext.overview}
+
+## NIH FUNDING CONTEXT (from our analysis)
+- Total NIH funding in sample: ${formatCurrency(context.fundingStats.total)}
+- Projects analyzed: ${context.fundingStats.projectCount}
+- Primary research category: ${formatCategory(topCategory)}
+- Top funded organizations: ${topOrgs}
+- Recent funding trend: ${yearTrend}
+
+## TASK
+
+Rewrite the market overview to INTEGRATE the NIH funding data. The new overview should:
+1. Connect public funding patterns to commercial activity
+2. Note if academic vs. industry focus is apparent
+3. Identify any gaps between research activity and commercial development
+4. Keep the best insights from the original overview
+
+Return JSON only:
+{
+  "overview": "2-3 paragraphs integrating market + NIH funding insights"
+}
+
+Keep existing key players, market size, and recent developments unchanged.`
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6', // Use Sonnet for efficiency
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const textContent = response.content.find((c) => c.type === 'text')
+    if (!textContent || textContent.type !== 'text') {
+      return rawContext
+    }
+
+    // Parse JSON
+    let jsonText = textContent.text.trim()
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
+    }
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      return rawContext
+    }
+
+    const parsed = JSON.parse(jsonMatch[0])
+
+    return {
+      ...rawContext,
+      overview: parsed.overview || rawContext.overview,
+      sources: [...rawContext.sources, 'NIH RePORTER funding analysis'],
+    }
+  } catch (error) {
+    console.warn('[Synthesis Agent] Failed to enhance market context:', error)
+    return rawContext
+  }
+}
+
+/**
+ * Generate curated publications with explanations
+ */
+async function generateCuratedPublications(
+  topic: string,
+  agentOutputs: AllAgentOutputs,
+  context: SynthesisContext
+): Promise<CuratedPublication[]> {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
+  const persona = context.persona || 'researcher'
+
+  if (agentOutputs.publications.items.length === 0) {
+    return []
+  }
+
+  // Prepare publication details for curation
+  const pubDetails = agentOutputs.publications.items
+    .slice(0, 25)
+    .map((p, i) => {
+      const year = p.publication_date ? new Date(p.publication_date).getFullYear() : 'N/A'
+      return `[${i + 1}] PMID: ${p.pmid}
+Title: ${p.publication_title}
+Journal: ${p.journal || 'N/A'} | Year: ${year}
+Authors: ${p.authors || 'N/A'}
+Abstract: ${p.abstract || 'No abstract available'}`
+    })
+    .join('\n\n---\n\n')
+
+  const prompt = `From these ${agentOutputs.publications.items.length} publications linked to "${topic}" research:
+
+${pubDetails}
+
+---
+
+Select the 3-5 MOST SIGNIFICANT publications for a ${persona === 'investor' ? 'life science investor' : 'researcher entering this field'}.
+
+For each, explain WHY it matters. Consider:
+- Foundational papers that define the field
+- Methodological advances that enabled new research
+- Recent breakthroughs with translational potential
+- Reviews that provide comprehensive understanding
+
+Return JSON only (array of 3-5 items):
+[
+  {
+    "pmid": "12345678",
+    "title": "Paper title",
+    "journal": "Journal Name",
+    "year": 2024,
+    "significance": "1-2 sentences on why this paper matters for the field",
+    "keyFinding": "One sentence key takeaway"
+  }
+]`
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1500,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const textContent = response.content.find((c) => c.type === 'text')
+    if (!textContent || textContent.type !== 'text') {
+      return []
+    }
+
+    // Parse JSON from response (handle markdown code blocks)
+    let jsonText = textContent.text.trim()
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
+    }
+
+    const parsed = JSON.parse(jsonText)
+    return Array.isArray(parsed) ? parsed : []
+  } catch (error) {
+    console.warn('[Synthesis Agent] Failed to generate curated publications:', error)
+    return []
+  }
+}
+
+/**
+ * Generate Field Maturity Assessment
+ * Synthesizes preprint ratio, trial phases, and patent activity into TRL-style assessment
+ */
+async function generateFieldMaturityAssessment(
+  topic: string,
+  agentOutputs: AllAgentOutputs,
+  context: SynthesisContext
+): Promise<FieldMaturityAssessment> {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
+
+  // Calculate preprint ratio (estimate - publications from preprint servers)
+  const totalPubs = agentOutputs.publications.items.length
+  const preprintKeywords = ['biorxiv', 'medrxiv', 'arxiv', 'preprint', 'ssrn']
+  const preprintCount = agentOutputs.publications.items.filter(p => {
+    const journal = (p.journal || '').toLowerCase()
+    return preprintKeywords.some(kw => journal.includes(kw))
+  }).length
+  const preprintRatio = totalPubs > 0 ? preprintCount / totalPubs : 0
+
+  // Analyze trial phases
+  const trialPhases = agentOutputs.trials.byPhase
+  const hasLatePhase = (trialPhases['Phase 3'] || 0) > 0 || (trialPhases['Phase 4'] || 0) > 0
+  const hasMidPhase = (trialPhases['Phase 2'] || 0) > 0
+  const hasEarlyPhase = (trialPhases['Phase 1'] || 0) > 0 || (trialPhases['Early Phase 1'] || 0) > 0
+  const totalTrials = agentOutputs.trials.items.length
+
+  // Analyze patent recency
+  const recentPatents = agentOutputs.patents.recentCount
+  const totalPatents = agentOutputs.patents.items.length
+  const patentRecencyRatio = totalPatents > 0 ? recentPatents / totalPatents : 0
+
+  const prompt = `Assess the FIELD MATURITY / TECHNOLOGY READINESS for "${topic}" based on these quantitative signals:
+
+## PUBLICATION SIGNALS
+- Total linked publications: ${totalPubs}
+- Preprint ratio: ${(preprintRatio * 100).toFixed(0)}% (${preprintCount} preprints)
+- Note: Higher preprint ratio suggests emerging field; established fields have more peer-reviewed pubs
+
+## CLINICAL TRIAL SIGNALS
+- Total trials: ${totalTrials}
+- Phase distribution: ${JSON.stringify(trialPhases)}
+- Has late-stage (Phase 3/4): ${hasLatePhase ? 'Yes' : 'No'}
+- Has mid-stage (Phase 2): ${hasMidPhase ? 'Yes' : 'No'}
+- Has early-stage (Phase 1): ${hasEarlyPhase ? 'Yes' : 'No'}
+
+## PATENT SIGNALS
+- Total patents: ${totalPatents}
+- Recent (last 2 years): ${recentPatents}
+- Recency ratio: ${(patentRecencyRatio * 100).toFixed(0)}%
+- Note: High recent activity = accelerating; low recent = established or stalling
+
+## RESEARCH CONTEXT
+- NIH projects: ${context.fundingStats.projectCount}
+- Total funding: $${(context.fundingStats.total / 1000000).toFixed(1)}M
+- Top category: ${context.fundingStats.byCategory[0]?.category || 'research'}
+
+---
+
+Based on these signals, provide a Technology Readiness Level (TRL) assessment.
+
+TRL Reference:
+- TRL 1-2: Basic research, phenomena observed
+- TRL 3-4: Proof of concept, lab validation
+- TRL 5-6: Technology demonstration, prototype
+- TRL 7-8: System complete, operational
+- TRL 9: Full deployment/commercialization
+
+Return JSON only:
+{
+  "trlEstimate": "TRL X-Y" or narrative like "Early Research (TRL 1-3)",
+  "maturityNarrative": "2-3 sentences explaining the overall maturity assessment and what it means for someone entering this space",
+  "evidenceSummary": {
+    "preprintRatio": "One sentence interpreting what the ${(preprintRatio * 100).toFixed(0)}% preprint ratio signals",
+    "trialProgression": "One sentence interpreting what the trial phase distribution signals",
+    "patentActivity": "One sentence interpreting what the patent recency (${recentPatents} in 2 years) signals"
+  },
+  "overallAssessment": "nascent" | "emerging" | "maturing" | "established"
+}`
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const textContent = response.content.find((c) => c.type === 'text')
+    if (!textContent || textContent.type !== 'text') {
+      return defaultFieldMaturity()
+    }
+
+    // Parse JSON from response
+    let jsonText = textContent.text.trim()
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
+    }
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      return defaultFieldMaturity()
+    }
+
+    const parsed = JSON.parse(jsonMatch[0])
+    return {
+      trlEstimate: parsed.trlEstimate || 'Unknown',
+      maturityNarrative: parsed.maturityNarrative || '',
+      evidenceSummary: {
+        preprintRatio: parsed.evidenceSummary?.preprintRatio || '',
+        trialProgression: parsed.evidenceSummary?.trialProgression || '',
+        patentActivity: parsed.evidenceSummary?.patentActivity || '',
+      },
+      overallAssessment: parsed.overallAssessment || 'emerging',
+    }
+  } catch (error) {
+    console.warn('[Synthesis Agent] Failed to generate field maturity assessment:', error)
+    return defaultFieldMaturity()
+  }
+}
+
+function defaultFieldMaturity(): FieldMaturityAssessment {
+  return {
+    trlEstimate: 'Unknown',
+    maturityNarrative: 'Field maturity assessment not available.',
+    evidenceSummary: {
+      preprintRatio: '',
+      trialProgression: '',
+      patentActivity: '',
+    },
+    overallAssessment: 'emerging',
+  }
+}
+
+/**
+ * Generate Competitive Topology
+ * Identifies methodological clusters: Approach | Players | Maturity
+ */
+async function generateCompetitiveTopology(
+  topic: string,
+  agentOutputs: AllAgentOutputs,
+  context: SynthesisContext
+): Promise<CompetitiveTopology> {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
+
+  // Prepare project abstracts for analysis
+  const projectSummaries = agentOutputs.projects.items
+    .slice(0, 30)
+    .map((p, i) => {
+      const tier = p.match_tier === 'precise' ? '[PRECISE]' : '[BALANCED]'
+      return `[${i + 1}] ${tier} ${p.title}\nOrg: ${p.org_name || 'N/A'}\nAbstract: ${p.abstract || 'N/A'}`
+    })
+    .join('\n\n')
+
+  // Prepare patent info for commercial angle
+  const patentSummaries = agentOutputs.patents.items
+    .slice(0, 15)
+    .map((p) => `${p.patent_title} (${p.assignee || 'Unknown'})`)
+    .join('\n')
+
+  // Prepare trial info
+  const trialSummaries = agentOutputs.trials.items
+    .slice(0, 10)
+    .map((t) => `${t.study_title} - ${t.lead_sponsor || 'N/A'} (${t.phase || 'Phase N/A'})`)
+    .join('\n')
+
+  const prompt = `Analyze the competitive topology for "${topic}" research.
+
+Your task: Identify 3-5 DISTINCT METHODOLOGICAL APPROACHES or technology clusters, NOT organizational groupings.
+
+## PROJECT ABSTRACTS
+${projectSummaries}
+
+## PATENT LANDSCAPE
+${patentSummaries || 'No patents identified'}
+
+## CLINICAL DEVELOPMENT
+${trialSummaries || 'No trials identified'}
+
+## TOP ORGANIZATIONS BY FUNDING
+${context.fundingStats.byOrg.slice(0, 10).map(o => `${o.org}: $${(o.funding/1000000).toFixed(1)}M`).join('\n')}
+
+---
+
+Identify methodological clusters. Each cluster should represent a TECHNICAL APPROACH, not an organization.
+
+Examples of good clusters:
+- "MEA-based electrophysiology" (technique)
+- "iPSC-derived organoids" (platform)
+- "Optogenetic stimulation" (method)
+- "Computational modeling" (approach)
+
+For each cluster, list:
+1. The approach/methodology
+2. Key players (mix of academic institutions AND companies if applicable)
+3. Maturity level (Nascent/Emerging/Maturing/Mature)
+4. Brief commercial readiness note
+
+Return JSON only:
+{
+  "clusters": [
+    {
+      "approach": "Name of the methodological approach",
+      "keyPlayers": ["Stanford", "MIT", "Company X"],
+      "maturityLevel": "Emerging",
+      "commercialReadiness": "One sentence on commercialization status"
+    }
+  ],
+  "narrative": "2-3 sentences synthesizing the competitive topology - what are the main competing approaches and how do they relate?"
+}`
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1500,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const textContent = response.content.find((c) => c.type === 'text')
+    if (!textContent || textContent.type !== 'text') {
+      return defaultCompetitiveTopology()
+    }
+
+    // Parse JSON from response
+    let jsonText = textContent.text.trim()
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
+    }
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      return defaultCompetitiveTopology()
+    }
+
+    const parsed = JSON.parse(jsonMatch[0])
+    return {
+      clusters: Array.isArray(parsed.clusters) ? parsed.clusters : [],
+      narrative: parsed.narrative || '',
+    }
+  } catch (error) {
+    console.warn('[Synthesis Agent] Failed to generate competitive topology:', error)
+    return defaultCompetitiveTopology()
+  }
+}
+
+function defaultCompetitiveTopology(): CompetitiveTopology {
+  return {
+    clusters: [],
+    narrative: 'Competitive topology analysis not available.',
+  }
+}
+
+/**
+ * Generate IP Landscape Assessment
+ * Analyzes patent concentration and freedom-to-operate signals
+ */
+async function generateIPLandscapeAssessment(
+  topic: string,
+  agentOutputs: AllAgentOutputs,
+  _context: SynthesisContext
+): Promise<IPLandscapeAssessment> {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
+
+  const totalPatents = agentOutputs.patents.items.length
+  const recentPatents = agentOutputs.patents.recentCount
+  const topAssignees = agentOutputs.patents.byAssignee.slice(0, 10)
+
+  // Calculate concentration metrics
+  const topAssigneeCount = topAssignees.length > 0 ? topAssignees[0].count : 0
+  const concentrationRatio = totalPatents > 0 ? topAssigneeCount / totalPatents : 0
+
+  // Determine if academic or commercial dominant
+  const academicKeywords = ['university', 'institute', 'college', 'research', 'foundation', 'hospital']
+  const academicPatents = agentOutputs.patents.items.filter(p => {
+    const assignee = (p.assignee || '').toLowerCase()
+    return academicKeywords.some(kw => assignee.includes(kw))
+  }).length
+  const academicRatio = totalPatents > 0 ? academicPatents / totalPatents : 0
+
+  // Prepare patent details for analysis
+  const patentDetails = agentOutputs.patents.items
+    .slice(0, 20)
+    .map((p) => `${p.patent_title} | ${p.assignee || 'Unknown'} | ${p.patent_date || 'N/A'}`)
+    .join('\n')
+
+  if (totalPatents === 0) {
+    return {
+      concentration: 'fragmented',
+      dominantAssignees: [],
+      freedomToOperate: 'No patents identified in this space, suggesting either early-stage research or limited commercial interest.',
+      recentActivityTrend: 'No patent activity observed',
+      narrative: 'The absence of patents may indicate this is an emerging research area without commercial protection yet, or the technology may be published openly.',
+    }
+  }
+
+  const prompt = `Analyze the IP landscape for "${topic}" based on patent data.
+
+## PATENT STATISTICS
+- Total patents: ${totalPatents}
+- Recent (last 2 years): ${recentPatents}
+- Top assignee holds: ${topAssigneeCount} patents (${(concentrationRatio * 100).toFixed(0)}% of total)
+- Academic vs commercial: ${(academicRatio * 100).toFixed(0)}% appear academic
+
+## TOP ASSIGNEES
+${topAssignees.map((a, i) => `${i + 1}. ${a.assignee}: ${a.count} patents`).join('\n')}
+
+## PATENT SAMPLE
+${patentDetails}
+
+---
+
+Assess the IP landscape. Consider:
+1. Concentration: Is IP fragmented across many players or concentrated with few?
+2. Dominant players: Who controls the key patents?
+3. Freedom to operate: What are FTO concerns for a new entrant?
+4. Recent activity: Is patenting accelerating or declining?
+
+Return JSON only:
+{
+  "concentration": "fragmented" | "moderately_concentrated" | "highly_concentrated",
+  "dominantAssignees": ["Top 3-5 patent holders"],
+  "freedomToOperate": "2-3 sentences assessing FTO concerns for someone entering this space",
+  "recentActivityTrend": "One sentence on whether patenting is accelerating, stable, or declining",
+  "narrative": "2-3 sentences synthesizing what the IP landscape means for commercial development"
+}`
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1000,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const textContent = response.content.find((c) => c.type === 'text')
+    if (!textContent || textContent.type !== 'text') {
+      return defaultIPLandscape()
+    }
+
+    // Parse JSON from response
+    let jsonText = textContent.text.trim()
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
+    }
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      return defaultIPLandscape()
+    }
+
+    const parsed = JSON.parse(jsonMatch[0])
+    return {
+      concentration: parsed.concentration || 'fragmented',
+      dominantAssignees: Array.isArray(parsed.dominantAssignees) ? parsed.dominantAssignees : [],
+      freedomToOperate: parsed.freedomToOperate || '',
+      recentActivityTrend: parsed.recentActivityTrend || '',
+      narrative: parsed.narrative || '',
+    }
+  } catch (error) {
+    console.warn('[Synthesis Agent] Failed to generate IP landscape assessment:', error)
+    return defaultIPLandscape()
+  }
+}
+
+function defaultIPLandscape(): IPLandscapeAssessment {
+  return {
+    concentration: 'fragmented',
+    dominantAssignees: [],
+    freedomToOperate: 'IP landscape assessment not available.',
+    recentActivityTrend: '',
+    narrative: '',
+  }
+}
+
+/**
+ * Determine contextual section title based on topic category
+ */
+function getClinicalSectionTitle(topCategory: string, trialCount: number): string | null {
+  if (trialCount === 0) return null
+  if (topCategory === 'biotools') return 'Research Tool Applications'
+  if (topCategory === 'therapeutics') return 'Clinical Development Pipeline'
+  if (topCategory === 'diagnostics') return 'Clinical Validation Status'
+  if (topCategory === 'medical_device') return 'Device Development Pipeline'
+  return 'Clinical & Translational Activity'
+}
+
+/**
  * Assemble the full markdown report
  */
 function assembleMarkdown(
@@ -305,17 +1048,32 @@ function assembleMarkdown(
   agentOutputs: AllAgentOutputs,
   context: SynthesisContext,
   executiveSummary: string,
-  insights: SectionInsights
+  insights: SectionInsights,
+  signalsAnalysis: SignalsAnalysis,
+  curatedPublications: CuratedPublication[],
+  fieldMaturity: FieldMaturityAssessment,
+  competitiveTopology: CompetitiveTopology,
+  ipLandscape: IPLandscapeAssessment
 ): string {
+  const persona = context.persona || 'researcher'
   const now = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   })
 
-  let md = `# ${topic} Research Landscape
+  const topCategory = context.fundingStats.byCategory[0]?.category || 'research'
+  const clinicalSectionTitle = getClinicalSectionTitle(topCategory, agentOutputs.trials.items.length)
+
+  // Header - persona-aware title
+  const reportTitle = persona === 'investor'
+    ? `${topic} Investment Intelligence`
+    : `${topic} Research Landscape`
+
+  let md = `# ${reportTitle}
 
 **Generated:** ${now}
+**Report Type:** ${persona === 'investor' ? 'Investment Intelligence' : 'Research Intelligence'}
 **Data Sources:** NIH RePORTER, ClinicalTrials.gov, USPTO, PubMed
 ${context.dataLimited ? '\n**Note:** This report has limited data available for this topic.\n' : ''}
 
@@ -327,9 +1085,83 @@ ${executiveSummary}
 
 ---
 
+## Field Maturity Assessment
+
+${renderFieldMaturity(fieldMaturity)}
+
+---
+
+## Competitive Topology
+
+${renderCompetitiveTopology(competitiveTopology)}
+
+---
+
+`
+
+  // PERSONA-SPECIFIC SECTIONS
+  if (persona === 'investor') {
+    // INVESTOR REPORT STRUCTURE
+    md += `## Investment Signals
+
+${renderInvestorSignals(signalsAnalysis)}
+
+---
+
 ## Market Context
 
 ${renderMarketContext(agentOutputs.market.context)}
+
+---
+
+## IP Landscape
+
+${renderIPLandscape(ipLandscape, agentOutputs.patents, insights.patents)}
+
+---
+
+## NIH Funding Analysis
+
+${renderFundingLandscape(context.fundingStats, insights.funding)}
+
+---
+
+## Key Research Projects
+
+${renderProjects(agentOutputs.projects.items.slice(0, 10))}
+
+---
+
+`
+    // Clinical section with dynamic title (only if there are trials)
+    if (clinicalSectionTitle) {
+      md += `## ${clinicalSectionTitle}
+
+${renderClinicalPipeline(agentOutputs.trials, insights.clinicalPipeline)}
+
+---
+
+`
+    }
+
+    md += `## Key Organizations
+
+${renderOrganizations(context.topOrganizations)}
+
+---
+
+## Key Publications
+
+${renderCuratedPublications(curatedPublications, agentOutputs.publications)}
+
+---
+
+`
+  } else {
+    // RESEARCHER REPORT STRUCTURE
+    md += `## Research Positioning
+
+${renderResearcherSignals(signalsAnalysis)}
 
 ---
 
@@ -341,25 +1173,37 @@ ${renderFundingLandscape(context.fundingStats, insights.funding)}
 
 ## Key Research Projects
 
-${renderProjects(agentOutputs.projects.items.slice(0, 15))}
+${renderProjects(agentOutputs.projects.items.slice(0, 10))}
 
 ---
 
-## Clinical Pipeline
+## Market Context
+
+${renderMarketContext(agentOutputs.market.context)}
+
+---
+
+`
+    // Clinical section with dynamic title (only if there are trials)
+    if (clinicalSectionTitle) {
+      md += `## ${clinicalSectionTitle}
 
 ${renderClinicalPipeline(agentOutputs.trials, insights.clinicalPipeline)}
 
 ---
 
-## Patent Activity
+`
+    }
+
+    md += `## Patent Activity
 
 ${renderPatents(agentOutputs.patents, insights.patents)}
 
 ---
 
-## Publication Trends
+## Key Publications
 
-${renderPublications(agentOutputs.publications, insights.publications)}
+${renderCuratedPublications(curatedPublications, agentOutputs.publications)}
 
 ---
 
@@ -375,22 +1219,24 @@ ${renderResearchers(context.topResearchers)}
 
 ---
 
-## About This Report
+`
+  }
+
+  // METHODOLOGY (same for both personas)
+  md += `## About This Report
 
 ### Methodology
 
 This report analyzes a curated subset of NIH-funded research projects most relevant to **${topic}**. Projects were identified using semantic search (AI-based conceptual matching) and filtered by match quality.
 
-**Match Quality Tiers:**
+**Important Note on Funding Figures:** All funding amounts shown represent the most recent fiscal year award for each project, NOT the total project cost across all years. Multi-year projects will have higher cumulative funding than the FY award shown.
 
-Projects are scored by semantic similarity to your search topic and classified into tiers:
+**Match Quality Tiers:**
 
 | Tier | Similarity | Description |
 |------|------------|-------------|
 | **Precise** | ≥50% | Highly relevant — directly addresses the topic |
 | **Balanced** | ≥35% | Relevant — related research with clear connection |
-
-Only Balanced and Precise matches are included in this analysis. This ensures the report focuses on genuinely relevant research rather than tangentially related projects.
 
 **Sample Composition:**
 
@@ -399,37 +1245,21 @@ Only Balanced and Precise matches are included in this analysis. This ensures th
 | Projects Analyzed | ${context.fundingStats.projectCount.toLocaleString()} |
 | Precise Matches | ${agentOutputs.projects.items.filter(p => p.match_tier === 'precise').length} |
 | Balanced Matches | ${agentOutputs.projects.items.filter(p => p.match_tier === 'balanced').length} |
-| Total Funding | ${formatCurrency(context.fundingStats.total)} |
+| Total FY Awards | ${formatCurrency(context.fundingStats.total)} |
 | Organizations | ${context.fundingStats.orgCount.toLocaleString()} |
 | Principal Investigators | ${context.fundingStats.piCount.toLocaleString()} |
 
 **Linked Data:**
 
-Patents, clinical trials, and publications are sourced from the projects above — only items directly linked to these NIH grants are included:
-
 | Data Type | Count | Source |
 |-----------|-------|--------|
-| Clinical Trials | ${agentOutputs.trials.items.length} | ClinicalTrials.gov (linked to project numbers) |
-| Patents | ${agentOutputs.patents.items.length} | USPTO (linked to project numbers) |
-| Publications | ${agentOutputs.publications.items.length} | PubMed (linked to project numbers) |
-
-**Data Sources:**
-
-- **NIH RePORTER** — Funded research projects (FY2015-2025)
-- **ClinicalTrials.gov** — Clinical studies linked to NIH projects
-- **USPTO** — Patents linked to NIH projects
-- **PubMed** — Publications linked to NIH projects
-- **AI Synthesis** — Market context and executive summary
+| Clinical Trials | ${agentOutputs.trials.items.length} | ClinicalTrials.gov |
+| Patents | ${agentOutputs.patents.items.length} | USPTO |
+| Publications | ${agentOutputs.publications.items.length} | PubMed |
 
 ### Limitations
 
-This analysis focuses on **depth over breadth**. It represents a statistically meaningful sample of the most relevant NIH-funded research, providing detailed insights rather than exhaustive coverage. The data captures publicly-funded academic and institutional research with high confidence, but does not include:
-
-- Privately-funded industry R&D
-- International research outside NIH grants
-- Projects not semantically related to the search topic
-
-For comprehensive population-level data, consult [NIH RePORTER](https://reporter.nih.gov) directly.
+This analysis focuses on **depth over breadth**, capturing publicly-funded academic research. It does not include privately-funded industry R&D or international research outside NIH grants.
 
 *Data current as of ${now}.*
 `
@@ -438,6 +1268,259 @@ For comprehensive population-level data, consult [NIH RePORTER](https://reporter
 }
 
 // --- Render functions ---
+
+function renderFieldMaturity(maturity: FieldMaturityAssessment): string {
+  let md = ''
+
+  // Overall assessment badge/indicator
+  const assessmentLabels: Record<string, string> = {
+    nascent: 'Nascent - Early basic research',
+    emerging: 'Emerging - Proof of concept stage',
+    maturing: 'Maturing - Technology validation underway',
+    established: 'Established - Commercial applications exist',
+  }
+
+  md += `**Technology Readiness:** ${maturity.trlEstimate}\n\n`
+  md += `**Overall Assessment:** ${assessmentLabels[maturity.overallAssessment] || maturity.overallAssessment}\n\n`
+
+  if (maturity.maturityNarrative) {
+    md += maturity.maturityNarrative + '\n\n'
+  }
+
+  // Evidence summary as a structured list
+  if (maturity.evidenceSummary.preprintRatio || maturity.evidenceSummary.trialProgression || maturity.evidenceSummary.patentActivity) {
+    md += '### Supporting Evidence\n\n'
+
+    if (maturity.evidenceSummary.preprintRatio) {
+      md += `- **Publication Maturity:** ${maturity.evidenceSummary.preprintRatio}\n`
+    }
+    if (maturity.evidenceSummary.trialProgression) {
+      md += `- **Clinical Progression:** ${maturity.evidenceSummary.trialProgression}\n`
+    }
+    if (maturity.evidenceSummary.patentActivity) {
+      md += `- **IP Activity:** ${maturity.evidenceSummary.patentActivity}\n`
+    }
+    md += '\n'
+  }
+
+  return md || 'Field maturity assessment not available.\n'
+}
+
+function renderCompetitiveTopology(topology: CompetitiveTopology): string {
+  if (topology.clusters.length === 0) {
+    return 'Competitive topology analysis not available.\n'
+  }
+
+  let md = ''
+
+  if (topology.narrative) {
+    md += topology.narrative + '\n\n'
+  }
+
+  // Render as a proper 3-column table
+  md += '### Methodological Clusters\n\n'
+  md += '| Approach | Key Players | Maturity | Commercial Readiness |\n'
+  md += '|----------|-------------|----------|---------------------|\n'
+
+  topology.clusters.forEach((cluster) => {
+    const players = cluster.keyPlayers.slice(0, 4).join(', ')
+    const playersDisplay = cluster.keyPlayers.length > 4 ? `${players}, ...` : players
+    md += `| **${cluster.approach}** | ${playersDisplay} | ${cluster.maturityLevel} | ${cluster.commercialReadiness} |\n`
+  })
+
+  md += '\n'
+
+  return md
+}
+
+function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOutputs['patents'], insight: string): string {
+  let md = ''
+
+  // Add the strategic IP assessment first
+  const concentrationLabels: Record<string, string> = {
+    fragmented: 'Fragmented - Many players, no dominant owner',
+    moderately_concentrated: 'Moderately Concentrated - Several key players',
+    highly_concentrated: 'Highly Concentrated - Few dominant owners',
+  }
+
+  md += `**IP Concentration:** ${concentrationLabels[landscape.concentration] || landscape.concentration}\n\n`
+
+  if (landscape.dominantAssignees.length > 0) {
+    md += `**Dominant Patent Holders:** ${landscape.dominantAssignees.join(', ')}\n\n`
+  }
+
+  if (landscape.recentActivityTrend) {
+    md += `**Recent Activity:** ${landscape.recentActivityTrend}\n\n`
+  }
+
+  if (landscape.freedomToOperate) {
+    md += '### Freedom to Operate Assessment\n\n'
+    md += landscape.freedomToOperate + '\n\n'
+  }
+
+  if (landscape.narrative) {
+    md += landscape.narrative + '\n\n'
+  }
+
+  // Then add the standard patent section with insight and details
+  if (insight) {
+    md += '### Patent Analysis\n\n'
+    md += insight + '\n\n'
+  }
+
+  md += '### Patent Summary\n\n'
+  md += '| Metric | Value |\n'
+  md += '|--------|-------|\n'
+  md += `| Total Patents | ${patents.items.length} |\n`
+  md += `| Unique Assignees | ${patents.byAssignee.length} |\n`
+  md += `| Recent (2 years) | ${patents.recentCount} |\n\n`
+
+  if (patents.items.length > 0) {
+    md += '### Key Patents\n\n'
+    patents.items.slice(0, 10).forEach((p) => {
+      md += `#### ${p.patent_title || 'Untitled Patent'}\n`
+      md += `- **Patent #:** [${p.patent_id}](/patent/${p.patent_id})\n`
+      if (p.assignee) md += `- **Assignee:** ${p.assignee}\n`
+      if (p.patent_date) md += `- **Date:** ${p.patent_date}\n`
+      if (p.patent_abstract) {
+        const excerpt = p.patent_abstract.substring(0, 200) + (p.patent_abstract.length > 200 ? '...' : '')
+        md += `\n> ${excerpt}\n`
+      }
+      md += '\n'
+    })
+  }
+
+  return md
+}
+
+function renderInvestorSignals(signals: SignalsAnalysis): string {
+  let md = ''
+
+  if (signals.trlAssessment) {
+    md += '### Technology Readiness Assessment\n\n'
+    md += signals.trlAssessment + '\n\n'
+  }
+
+  if (signals.commercialReadiness) {
+    md += '### Commercial Readiness\n\n'
+    md += signals.commercialReadiness + '\n\n'
+  }
+
+  if (signals.ipConcentration) {
+    md += '### IP Concentration\n\n'
+    md += signals.ipConcentration + '\n\n'
+  }
+
+  // Render risk factors as explicit bullet list
+  if (signals.riskFactors) {
+    md += '### Investment Risk Flags\n\n'
+
+    // Check if riskFactors is structured (object) or legacy (string)
+    if (typeof signals.riskFactors === 'object') {
+      const risks = signals.riskFactors as InvestorRiskFactors
+
+      // Overall summary first
+      if (risks.overall) {
+        md += `**Key Risk:** ${risks.overall}\n\n`
+      }
+
+      // Categorized risks as explicit bullets
+      const riskCategories: Array<{ key: keyof InvestorRiskFactors; icon: string; label: string }> = [
+        { key: 'scientific', icon: '🔬', label: 'Scientific/Technical' },
+        { key: 'regulatory', icon: '📋', label: 'Regulatory' },
+        { key: 'competitive', icon: '⚔️', label: 'Competitive/Market' },
+        { key: 'execution', icon: '👥', label: 'Execution' },
+      ]
+
+      const activeRisks = riskCategories.filter(
+        cat => cat.key !== 'overall' && risks[cat.key]
+      )
+
+      if (activeRisks.length > 0) {
+        activeRisks.forEach(({ icon, label, key }) => {
+          const value = risks[key]
+          if (value && key !== 'overall') {
+            md += `- **${icon} ${label}:** ${value}\n`
+          }
+        })
+        md += '\n'
+      }
+    } else {
+      // Legacy string format
+      md += signals.riskFactors + '\n\n'
+    }
+  }
+
+  if (signals.comparables) {
+    md += '### Comparable Technologies\n\n'
+    md += signals.comparables + '\n\n'
+  }
+
+  return md || 'Investment signals analysis not available.\n'
+}
+
+function renderResearcherSignals(signals: SignalsAnalysis): string {
+  let md = ''
+
+  if (signals.positioningMap) {
+    md += '### Competitive Positioning\n\n'
+    md += signals.positioningMap + '\n\n'
+  }
+
+  if (signals.collaborationSignals) {
+    md += '### Collaboration Opportunities\n\n'
+    md += signals.collaborationSignals + '\n\n'
+  }
+
+  if (signals.methodologicalTrends) {
+    md += '### Methodological Trends\n\n'
+    md += signals.methodologicalTrends + '\n\n'
+  }
+
+  if (signals.gapAnalysis) {
+    md += '### Gap Analysis\n\n'
+    md += signals.gapAnalysis + '\n\n'
+  }
+
+  return md || 'Research positioning analysis not available.\n'
+}
+
+function renderCuratedPublications(curated: CuratedPublication[], allPubs: AllAgentOutputs['publications']): string {
+  if (curated.length === 0 && allPubs.items.length === 0) {
+    return 'No publications found for this topic.\n'
+  }
+
+  let md = ''
+
+  // Show curated publications if available
+  if (curated.length > 0) {
+    md += '### Must-Read Publications\n\n'
+    curated.forEach((pub, i) => {
+      md += `#### ${i + 1}. ${pub.title}\n`
+      md += `- **Journal:** ${pub.journal || 'N/A'} | **Year:** ${pub.year || 'N/A'}\n`
+      md += `- **PMID:** [${pub.pmid}](https://pubmed.ncbi.nlm.nih.gov/${pub.pmid})\n`
+      md += `\n**Why it matters:** ${pub.significance}\n`
+      md += `\n**Key finding:** ${pub.keyFinding}\n\n`
+    })
+  }
+
+  // Show publication stats
+  if (allPubs.items.length > 0) {
+    md += '### Publication Summary\n\n'
+    md += `- Total linked publications: ${allPubs.items.length}\n`
+    md += `- Unique journals: ${allPubs.byJournal.length}\n\n`
+
+    if (allPubs.byJournal.length > 0) {
+      md += '**Top Journals:**\n\n'
+      allPubs.byJournal.slice(0, 5).forEach((j) => {
+        md += `- ${j.journal} (${j.count})\n`
+      })
+      md += '\n'
+    }
+  }
+
+  return md
+}
 
 function renderMarketContext(market: MarketContext): string {
   let md = '### Market Overview\n\n'
@@ -477,9 +1560,10 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
     md += insight + '\n\n'
   }
   md += '### Funding Summary\n\n'
+  md += '*Amounts reflect most recent fiscal year awards per project.*\n\n'
   md += '| Metric | Value |\n'
   md += '|--------|-------|\n'
-  md += `| Total Funding | ${formatCurrency(stats.total)} |\n`
+  md += `| Total FY Awards | ${formatCurrency(stats.total)} |\n`
   md += `| Active Projects | ${stats.projectCount.toLocaleString()} |\n`
   md += `| Funding Organizations | ${stats.orgCount.toLocaleString()} |\n`
   md += `| Principal Investigators | ${stats.piCount.toLocaleString()} |\n\n`
@@ -513,13 +1597,14 @@ function renderProjects(projects: ProjectItem[]): string {
   }
 
   let md = '### Top Funded Projects\n\n'
+  md += '*Note: Funding figures shown are the most recent fiscal year award, not total project cost across all years.*\n\n'
 
   projects.forEach((p, i) => {
     md += `#### ${i + 1}. ${p.title}\n`
     md += `- **PI:** ${p.pi_names?.split(';')[0]?.trim() || 'N/A'}`
     if (p.org_name) md += `, ${p.org_name}`
     md += '\n'
-    md += `- **Funding:** ${formatCurrency(p.total_cost || 0)}`
+    md += `- **FY Award:** ${formatCurrency(p.total_cost || 0)}`
     if (p.fiscal_year) md += ` (FY${p.fiscal_year})`
     md += '\n'
     if (p.primary_category) {

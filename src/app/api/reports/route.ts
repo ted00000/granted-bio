@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { generateTopicReport, generatePortfolioReport } from '@/lib/reports'
+import type { ReportPersona } from '@/lib/reports/types'
 
 // GET - List user's reports
 export async function GET() {
@@ -17,7 +18,7 @@ export async function GET() {
 
     const { data: reports, error } = await supabase
       .from('user_reports')
-      .select('id, title, report_type, topic, status, project_count, data_limited, created_at, updated_at')
+      .select('id, title, report_type, topic, status, project_count, data_limited, persona, created_at, updated_at')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
 
@@ -47,7 +48,8 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { report_type, topic, data_limited } = body
+    const { report_type, topic, data_limited, persona } = body
+    const reportPersona: ReportPersona = persona === 'investor' ? 'investor' : 'researcher'
 
     if (!report_type) {
       return NextResponse.json({ error: 'report_type is required' }, { status: 400 })
@@ -61,7 +63,7 @@ export async function POST(request: NextRequest) {
     let reportId: string
 
     if (report_type === 'topic') {
-      reportId = await generateTopicReport(user.id, topic, data_limited ?? false)
+      reportId = await generateTopicReport(user.id, topic, data_limited ?? false, reportPersona)
     } else if (report_type === 'portfolio') {
       reportId = await generatePortfolioReport(user.id)
     } else {
