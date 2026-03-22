@@ -53,7 +53,7 @@ export async function generateTopicReport(
     .from('user_reports')
     .insert({
       user_id: userId,
-      title: `${topic.charAt(0).toUpperCase() + topic.slice(1)} ${persona === 'investor' ? 'Investment' : 'Research'} Intelligence`,
+      title: `${topic.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ')} ${persona === 'investor' ? 'Investment' : 'Research'} Intelligence`,
       report_type: 'topic' as ReportType,
       topic,
       status: 'generating',
