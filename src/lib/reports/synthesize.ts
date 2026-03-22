@@ -463,7 +463,18 @@ Return JSON only:
       return defaultSignals()
     }
 
-    const parsed = JSON.parse(textContent.text)
+    // Parse JSON from response (handle markdown code blocks)
+    let jsonText = textContent.text.trim()
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
+    }
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      console.warn('[Synthesis Agent] No JSON object found in signals response')
+      return defaultSignals()
+    }
+
+    const parsed = JSON.parse(jsonMatch[0])
 
     if (persona === 'investor') {
       return {
