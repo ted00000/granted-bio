@@ -54,7 +54,9 @@ Format your response as JSON with this structure:
   "competitiveLandscape": "Brief competitive analysis paragraph"
 }
 
-Only include information you are confident about. If you're not sure about something, omit it or mark as uncertain.`
+Only include information you are confident about. If you're not sure about something, omit it or mark as uncertain.
+
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.`
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',

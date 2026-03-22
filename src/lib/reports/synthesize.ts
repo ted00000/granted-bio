@@ -166,7 +166,9 @@ Instead, answer these questions in narrative form:
 
 4. **Key ${persona === 'investor' ? 'Risks/Opportunities' : 'Strategic Considerations'}** (2-3 sentences): What should a ${persona} watch for or prioritize?
 
-Write in confident, analytical prose. Be specific about what you observed but don't repeat raw numbers.`
+Write in confident, analytical prose. Be specific about what you observed but don't repeat raw numbers.
+
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.`
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
@@ -297,6 +299,8 @@ LANGUAGE REQUIREMENTS:
 - Be SPECIFIC about what you learned from the abstracts - cite actual approaches, targets, methods observed
 - Each insight should be 3-4 sentences with real substance
 
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+
 Return JSON only, no markdown:
 {
   "funding": "3-4 sentences analyzing what researchers are actually working on and what the funding patterns reveal about scientific priorities",
@@ -396,7 +400,11 @@ ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 20))}
 
 ---
 
-Generate INVESTOR-FOCUSED signals analysis. Return JSON only:
+Generate INVESTOR-FOCUSED signals analysis.
+
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+
+Return JSON only:
 
 {
   "trlAssessment": "2-3 sentences: Assess technology readiness. What percentage appears early-stage vs. clinical-ready? Are there clear paths to product?",
@@ -430,7 +438,11 @@ ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 25))}
 
 ---
 
-Generate RESEARCHER-FOCUSED signals analysis. Return JSON only:
+Generate RESEARCHER-FOCUSED signals analysis.
+
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+
+Return JSON only:
 
 {
   "positioningMap": "2-3 sentences: What distinct approaches exist in this space? How might a new entrant differentiate?",
@@ -533,6 +545,8 @@ Rewrite the market overview to INTEGRATE the NIH funding data. The new overview 
 3. Identify any gaps between research activity and commercial development
 4. Keep the best insights from the original overview
 
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+
 Return JSON only:
 {
   "overview": "2-3 paragraphs integrating market + NIH funding insights"
@@ -617,6 +631,8 @@ For each, explain WHY it matters. Consider:
 - Methodological advances that enabled new research
 - Recent breakthroughs with translational potential
 - Reviews that provide comprehensive understanding
+
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
 Return JSON only (array of 3-5 items):
 [
@@ -724,6 +740,8 @@ TRL Reference:
 - TRL 5-6: Technology demonstration, prototype
 - TRL 7-8: System complete, operational
 - TRL 9: Full deployment/commercialization
+
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
 Return JSON only:
 {
@@ -854,6 +872,8 @@ For each cluster, list:
 3. Maturity level (Nascent/Emerging/Maturing/Mature)
 4. Brief commercial readiness note
 
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+
 Return JSON only:
 {
   "clusters": [
@@ -972,6 +992,8 @@ Assess the IP landscape. Consider:
 2. Dominant players: Who controls the key patents?
 3. Freedom to operate: What are FTO concerns for a new entrant?
 4. Recent activity: Is patenting accelerating or declining?
+
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
 Return JSON only:
 {
