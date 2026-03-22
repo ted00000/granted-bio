@@ -1098,10 +1098,14 @@ function assembleMarkdown(
   const topCategory = context.fundingStats.byCategory[0]?.category || 'research'
   const clinicalSectionTitle = getClinicalSectionTitle(topCategory, agentOutputs.trials.items.length)
 
-  // Header - persona-aware title
+  // Header - persona-aware title (with title case)
+  const titleCaseTopic = topic
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(' ')
   const reportTitle = persona === 'investor'
-    ? `${topic} Investment Intelligence`
-    : `${topic} Research Landscape`
+    ? `${titleCaseTopic} Investment Intelligence`
+    : `${titleCaseTopic} Research Landscape`
 
   let md = `# ${reportTitle}
 
