@@ -168,9 +168,9 @@ function AuthFormFallback() {
 }
 
 const stats = [
-  { label: 'NIH Projects', value: '129K' },
-  { label: 'Patents', value: '46K' },
-  { label: 'Publications', value: '203K' },
+  { label: 'NIH Projects', value: '154K' },
+  { label: 'Patents', value: '49K' },
+  { label: 'Publications', value: '207K' },
   { label: 'Clinical Trials', value: '38K' },
 ]
 
@@ -385,7 +385,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">NIH RePORTER</h3>
-                    <p className="text-xs text-gray-500">129K projects indexed</p>
+                    <p className="text-xs text-gray-500">154K projects indexed</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">
@@ -401,7 +401,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">ClinicalTrials.gov</h3>
-                    <p className="text-xs text-gray-500">38K trials indexed</p>
+                    <p className="text-xs text-gray-500">38K+ trials indexed</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">
@@ -417,7 +417,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">PubMed</h3>
-                    <p className="text-xs text-gray-500">203K publications indexed</p>
+                    <p className="text-xs text-gray-500">207K publications indexed</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">
@@ -433,7 +433,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">USPTO Patents</h3>
-                    <p className="text-xs text-gray-500">46K patents indexed</p>
+                    <p className="text-xs text-gray-500">49K patents indexed</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">
