@@ -526,25 +526,25 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Business Development */}
+              {/* Business Intelligence */}
               <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
                 <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-5 text-white">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
                       <Briefcase className="w-5 h-5 text-white" />
                     </div>
-                    <h3 className="font-semibold">Business Development</h3>
+                    <h3 className="font-semibold">Business Intelligence</h3>
                   </div>
                 </div>
                 <div className="p-5">
                   <ul className="space-y-3 text-sm text-gray-600">
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                      Build qualified lead lists
+                      Identify key players and organizations
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                      Find partnership opportunities
+                      Discover partnership opportunities
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
@@ -552,7 +552,7 @@ export default function Home() {
                     </li>
                     <li className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                      Track key accounts and targets
+                      Track funded projects by area
                     </li>
                   </ul>
                 </div>
