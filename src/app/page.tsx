@@ -168,10 +168,18 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="px-6 py-4">
-        <nav className="max-w-6xl mx-auto">
+        <nav className="max-w-6xl mx-auto flex items-center justify-between">
           <span className="text-2xl font-semibold tracking-tight text-gray-900">
             granted<span className="text-[#E07A5F]">.bio</span>
           </span>
+          <div className="flex items-center gap-6 text-sm">
+            <Link href="/reports" className="text-gray-600 hover:text-gray-900 transition-colors">
+              Reports
+            </Link>
+            <Link href="/pricing" className="text-gray-600 hover:text-gray-900 transition-colors">
+              Pricing
+            </Link>
+          </div>
         </nav>
       </header>
 
@@ -183,21 +191,58 @@ export default function Home() {
             <div className="space-y-8">
               <div className="space-y-4">
                 <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 leading-tight">
-                  Life Sciences Grant Intelligence
+                  Stop keyword-searching.<br />
+                  Start finding.
                 </h1>
                 <p className="text-lg text-gray-500 leading-relaxed">
-                  Search across NIH grants, patents, publications, and clinical trials with natural language. Find funded research, discover competitors, and build qualified leads.
+                  Skip hours of hit-or-miss searching across NIH RePORTER, ClinicalTrials.gov,
+                  PubMed, and USPTO. Our AI understands your topic semantically and surfaces
+                  what actually matters - in minutes.
                 </p>
               </div>
 
+              {/* Value props */}
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#E07A5F]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-3.5 h-3.5 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <p className="text-gray-600">
+                    <span className="font-medium text-gray-900">Semantic search</span> - finds relevant projects even when terminology differs
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#E07A5F]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-3.5 h-3.5 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <p className="text-gray-600">
+                    <span className="font-medium text-gray-900">4 databases unified</span> - grants, patents, publications, trials in one search
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-[#E07A5F]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-3.5 h-3.5 text-[#E07A5F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <p className="text-gray-600">
+                    <span className="font-medium text-gray-900">Intelligence reports</span> - comprehensive analysis on any topic for $99
+                  </p>
+                </div>
+              </div>
+
               {/* Stats */}
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-4 gap-4 pt-4 border-t border-gray-100">
                 {stats.map((stat) => (
                   <div key={stat.label}>
-                    <div className="text-3xl font-semibold text-gray-900">
+                    <div className="text-2xl font-semibold text-gray-900">
                       {stat.value}
                     </div>
-                    <div className="text-sm text-gray-500">{stat.label}</div>
+                    <div className="text-xs text-gray-500">{stat.label}</div>
                   </div>
                 ))}
               </div>
