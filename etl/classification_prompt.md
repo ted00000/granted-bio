@@ -6,7 +6,7 @@ Use this prompt in Claude.com Projects with the exported CSV.
 
 ## SYSTEM INSTRUCTIONS
 
-You are classifying NIH-funded research projects into 9 categories. Your task requires careful reading and expert judgment - not simple pattern matching.
+You are classifying NIH-funded research projects into 8 categories. Your task requires careful reading and expert judgment - not simple pattern matching.
 
 **Your advantages:**
 - You have deep knowledge of biomedical research, life sciences, and the NIH funding landscape
@@ -22,14 +22,7 @@ You are classifying NIH-funded research projects into 9 categories. Your task re
 
 ### PASS 1: Deterministic (Activity Code Lookup) — CHECK FIRST!
 
-These are binary and should be resolved FIRST, before any content analysis. Projects matching these codes get classified immediately and SKIP Pass 2 entirely.
-
-**Always → training (regardless of title/abstract):**
-- T32, T34, T35, T90, TL1, TL4 → Institutional training grants
-- F30, F31, F32, F33, F99 → Individual fellowships
-- K01, K02, K05, K07, K08, K12, K22, K23, K24, K25, K26, K43, K76, K99, KL2 → Career development
-- D43, D71 → International training
-- R25, R90 → Education/training programs
+Only **infrastructure** grants are deterministic. All other grants (including training mechanisms like F/K/T awards) should be classified by scientific content.
 
 **Always → infrastructure (regardless of title/abstract):**
 - P30, P50, P51 → Center grants
@@ -37,11 +30,13 @@ These are binary and should be resolved FIRST, before any content analysis. Proj
 - U13, R13 → Conference grants
 - U24, U2C → Resource/coordination grants
 
-**If activity code matches above → classify immediately, skip Pass 2.**
+**If activity code matches above → classify immediately as infrastructure, skip Pass 2.**
 
-### PASS 2: Content Analysis (Remaining 7 Categories)
+### PASS 2: Content Analysis (All Other Grants)
 
-For all other activity codes (R01, R21, R41-R44, U01, etc.), apply content analysis using the decision tree and disambiguation rules below.
+For all other activity codes (R01, R21, R41-R44, U01, F30, F31, K01, T32, etc.), apply content analysis using the decision tree and disambiguation rules below.
+
+**Note on training mechanisms (F/K/T awards):** These should be classified by SCIENTIFIC CONTENT, not administrative purpose. An F31 developing a novel imaging platform is **biotools**. A K01 studying disease mechanisms is **basic_research**. Classify what the research IS, not who receives the funding.
 
 ---
 
@@ -126,25 +121,9 @@ Examples of true "other": health policy research, health economics, epidemiologi
 
 ---
 
-## THE 9 CATEGORIES
+## THE 8 CATEGORIES
 
-### 1. training
-**Definition:** Programs focused on training, education, or career development of researchers.
-
-**Deterministic rules:**
-- Activity codes T32, T34, T35, T90, TL1, TL4 → ALWAYS training
-- Activity codes F30, F31, F32, F33, F99 → ALWAYS training
-- Activity codes K01-K99 series → ALWAYS training
-- Activity codes D43, D71, R25, R90 → ALWAYS training
-
-**Content signals (for edge cases):**
-- "Training Program", "Fellowship", "Career Development"
-- "Mentor", "mentee", "trainee", "postdoc training"
-- "NRSA", "Ruth L. Kirschstein"
-
----
-
-### 2. infrastructure
+### 1. infrastructure
 **Definition:** Core facilities, center grants, equipment, resources, and coordination grants that support research but are not research themselves.
 
 **Deterministic rules:**
@@ -401,7 +380,7 @@ Then process all data rows. Only output CSV data, no explanations.
 
 For each project, reason through this sequence:
 
-1. **Check activity code FIRST** — Does it match training (T/F/K/D/R25/R90) or infrastructure (P30/P50/P51/S10/G20/U13/R13/U24/U2C)? If yes → classify immediately, stop.
+1. **Check activity code FIRST** — Does it match infrastructure (P30/P50/P51/S10/G20/U13/R13/U24/U2C)? If yes → classify as infrastructure immediately, stop.
 
 2. **Read the title and abstract** — What is the researchers actually doing?
 
@@ -419,23 +398,34 @@ For each project, reason through this sequence:
 
 ## EXAMPLES
 
-### Deterministic (by activity code)
+### Deterministic (infrastructure by activity code)
 
 ```
-Input: "NRSA Hepatology Training Grant","UCSF","T32"
-Output: [app_id],training,95,university
-
-Input: "Postdoctoral Training in Cancer Biology","DANA-FARBER","T32"
-Output: [app_id],training,95,research_institute
-
-Input: "Career Development in Neuroscience","MIT","K01"
-Output: [app_id],training,95,university
-
 Input: "Cancer Center Support Grant","FRED HUTCHINSON","P30"
 Output: [app_id],infrastructure,95,research_institute
 
 Input: "Shared Instrumentation Grant","STANFORD","S10"
 Output: [app_id],infrastructure,95,university
+```
+
+### Training mechanism grants (classify by content, not mechanism)
+
+```
+Input: "T32 - Development of Novel Single-Cell RNA Sequencing Methods","BROAD INSTITUTE","T32"
+Reasoning: The T32 trainees are developing tools for researchers → biotools
+Output: [app_id],biotools,85,research_institute
+
+Input: "F31 - Biomaterial-Directed Organoid Patterning Technology","STANFORD","F31"
+Reasoning: Developing biomaterial delivery technology → biotools
+Output: [app_id],biotools,85,university
+
+Input: "K01 - Understanding Mechanisms of Drug Resistance in Glioblastoma","UCSF","K01"
+Reasoning: Mechanism study, knowledge output → basic_research
+Output: [app_id],basic_research,80,university
+
+Input: "F32 - CAR-NK Cell Therapy for Solid Tumors","CITY OF HOPE","F32"
+Reasoning: Therapeutic development → therapeutics
+Output: [app_id],therapeutics,85,research_institute
 ```
 
 ### Content-based classification (showing reasoning)

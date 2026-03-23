@@ -203,17 +203,17 @@ export default function Home() {
               <div className="space-y-8">
                 <div className="space-y-4">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#E07A5F]/10 text-[#E07A5F] rounded-full text-sm font-medium">
-                    <Search className="w-4 h-4" />
-                    Life Science Intelligence
+                    <Database className="w-4 h-4" />
+                    Research Intelligence Platform
                   </div>
                   <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 leading-tight">
-                    Stop keyword-searching.<br />
-                    Start finding.
+                    See how research<br />
+                    becomes reality.
                   </h1>
                   <p className="text-lg text-gray-500 leading-relaxed">
-                    Skip hours of hit-or-miss searching across NIH RePORTER, ClinicalTrials.gov,
-                    PubMed, and USPTO. Our AI understands your topic semantically and surfaces
-                    what actually matters - in minutes.
+                    154K NIH projects, their publications, patents, and clinical trials - all connected
+                    in one platform. Covering 2024-2026, understand the full trajectory of recent research
+                    to write better grants, make smarter investments, and find the right partners.
                   </p>
                 </div>
 
