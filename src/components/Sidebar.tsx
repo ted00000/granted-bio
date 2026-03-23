@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Lock, Users } from 'lucide-react'
+import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Lock, Users, Settings } from 'lucide-react'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import type { PersonaType } from '@/lib/chat/types'
 
@@ -227,6 +227,24 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
               {userName}
             </div>
           )}
+          <Link
+            href="/account"
+            onClick={() => setIsOpen(false)}
+            className={`
+              w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+              transition-all duration-150
+              ${pathname === '/account'
+                ? 'bg-gray-50 text-gray-900'
+                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+              }
+            `}
+          >
+            <Settings
+              className={`w-5 h-5 flex-shrink-0 ${pathname === '/account' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+              strokeWidth={pathname === '/account' ? 2 : 1.5}
+            />
+            <span className={`text-sm ${pathname === '/account' ? 'font-medium' : ''}`}>Account</span>
+          </Link>
           <button
             onClick={handleSignOut}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all"

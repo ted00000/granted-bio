@@ -6,6 +6,7 @@ import { Search, TrendingUp, Users, Activity, Bookmark, Download, FlaskConical }
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
+import { UpgradePrompt } from './billing/UpgradePrompt'
 
 const ICONS = {
   search: Search,
@@ -1183,6 +1184,8 @@ export function Chat({ persona, initialQuery }: ChatProps) {
   const [restoredFromStorage, setRestoredFromStorage] = useState(false)
   const [showMobileResults, setShowMobileResults] = useState(true)  // Delay mobile results during restoration
   const [initialQueryProcessed, setInitialQueryProcessed] = useState(false)
+  const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
+  const [upgradeInfo, setUpgradeInfo] = useState<{ tier: 'free' | 'pro'; limit: number } | null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -1621,6 +1624,19 @@ export function Chat({ persona, initialQuery }: ChatProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona })
       })
+
+      // Handle search limit exceeded
+      if (response.status === 402) {
+        const data = await response.json()
+        if (data.type === 'search_limit') {
+          setUpgradeInfo({ tier: data.tier, limit: data.limit })
+          setShowUpgradePrompt(true)
+          // Remove the empty assistant message we added
+          setMessages(prev => prev.filter(m => m.id !== assistantId))
+          setIsLoading(false)
+          return
+        }
+      }
 
       if (!response.ok) throw new Error('Chat request failed')
 
@@ -2229,6 +2245,16 @@ export function Chat({ persona, initialQuery }: ChatProps) {
             </div>
           </div>
         </>
+      )}
+
+      {/* Upgrade Prompt Modal */}
+      {showUpgradePrompt && upgradeInfo && (
+        <UpgradePrompt
+          type="search_limit"
+          tier={upgradeInfo.tier}
+          limit={upgradeInfo.limit}
+          onClose={() => setShowUpgradePrompt(false)}
+        />
       )}
     </div>
   )

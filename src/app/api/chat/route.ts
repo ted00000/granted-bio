@@ -4,6 +4,8 @@ import { PERSONA_PROMPTS } from '@/lib/chat/prompts'
 import { AGENT_TOOLS, executeTool } from '@/lib/chat/tools'
 import type { PersonaType, UserAccess } from '@/lib/chat/types'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { checkAndIncrementSearch } from '@/lib/billing/usage'
+import { TIER_LIMITS, type BillingTier } from '@/lib/stripe/config'
 
 export const runtime = 'nodejs'
 export const maxDuration = 60
@@ -12,26 +14,16 @@ const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY
 })
 
-// Get user access level from database or session
-async function getUserAccess(userId: string | null): Promise<UserAccess> {
-  if (!userId) {
-    return {
-      tier: 'free',
-      resultsLimit: 25,
-      canExport: false,
-      canSeeEmails: false,
-      canSeeAbstracts: false,
-      searchesPerMonth: 10
-    }
-  }
-
+// Get user access level from tier
+function getUserAccessFromTier(tier: BillingTier): UserAccess {
+  const limits = TIER_LIMITS[tier]
   return {
-    tier: 'unlimited',
-    resultsLimit: 100,
-    canExport: true,
-    canSeeEmails: true,
-    canSeeAbstracts: true,
-    searchesPerMonth: null
+    tier: tier === 'pro' ? 'unlimited' : 'free',
+    resultsLimit: limits.resultsLimit,
+    canExport: limits.canExport,
+    canSeeEmails: limits.canSeeEmails,
+    canSeeAbstracts: limits.canSeeAbstracts,
+    searchesPerMonth: limits.searchesPerMonth
   }
 }
 
@@ -60,7 +52,31 @@ export async function POST(request: NextRequest) {
     // Get user from session
     const supabase = await createServerSupabaseClient()
     const { data: { user } } = await supabase.auth.getUser()
-    const userAccess = await getUserAccess(user?.id || null)
+
+    if (!user) {
+      return new Response(
+        JSON.stringify({ error: 'Unauthorized', type: 'auth_required' }),
+        { status: 401, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    // Check and increment search quota
+    const usageCheck = await checkAndIncrementSearch(user.id)
+
+    if (!usageCheck.allowed) {
+      return new Response(
+        JSON.stringify({
+          error: 'Search limit reached',
+          type: 'search_limit',
+          tier: usageCheck.tier,
+          limit: usageCheck.limit,
+          upgradeUrl: '/pricing',
+        }),
+        { status: 402, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
+    const userAccess = getUserAccessFromTier(usageCheck.tier)
 
     // Get system prompt for this persona
     const systemPrompt = PERSONA_PROMPTS[persona]

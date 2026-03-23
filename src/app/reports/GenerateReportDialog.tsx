@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { X, AlertTriangle, Loader2, FileText, FlaskConical, TrendingUp } from 'lucide-react'
+import { X, AlertTriangle, Loader2, FileText, FlaskConical, TrendingUp, CreditCard } from 'lucide-react'
 
 type Persona = 'researcher' | 'investor'
 
@@ -16,7 +16,7 @@ export function GenerateReportDialog({
 }: GenerateReportDialogProps) {
   const [topic, setTopic] = useState('')
   const [persona, setPersona] = useState<Persona>('researcher')
-  const [step, setStep] = useState<'input' | 'checking' | 'confirm' | 'generating'>('input')
+  const [step, setStep] = useState<'input' | 'checking' | 'confirm' | 'purchasing'>('input')
   const [projectCount, setProjectCount] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
 
@@ -41,8 +41,8 @@ export function GenerateReportDialog({
       if (data.project_count < 5) {
         setStep('confirm')
       } else {
-        // Enough data, proceed directly
-        await generateReport(false)
+        // Enough data, proceed to purchase
+        await purchaseReport(false)
       }
     } catch (e) {
       console.error('Error checking topic:', e)
@@ -51,32 +51,41 @@ export function GenerateReportDialog({
     }
   }
 
-  const generateReport = async (dataLimited: boolean) => {
-    setStep('generating')
+  const purchaseReport = async (dataLimited: boolean) => {
+    setStep('purchasing')
     setError(null)
 
     try {
-      const response = await fetch('/api/reports', {
+      // Create Stripe checkout session for report purchase
+      const response = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          report_type: 'topic',
+          type: 'report',
           topic: topic.trim(),
-          data_limited: dataLimited,
           persona,
+          dataLimited,
         }),
       })
 
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate report')
+        if (response.status === 401) {
+          // User not logged in
+          window.location.href = '/?redirect=/reports'
+          return
+        }
+        throw new Error(data.error || 'Failed to start checkout')
       }
 
-      onGenerated()
+      if (data.url) {
+        // Redirect to Stripe checkout
+        window.location.href = data.url
+      }
     } catch (e) {
-      console.error('Error generating report:', e)
-      setError(e instanceof Error ? e.message : 'Failed to generate report')
+      console.error('Error starting checkout:', e)
+      setError(e instanceof Error ? e.message : 'Failed to start checkout')
       setStep('input')
     }
   }
@@ -195,18 +204,17 @@ export function GenerateReportDialog({
             </div>
           )}
 
-          {step === 'generating' && (
+          {step === 'purchasing' && (
             <div className="flex flex-col items-center py-8">
               <div className="relative mb-4">
-                <FileText className="w-12 h-12 text-[#E07A5F]" strokeWidth={1.5} />
+                <CreditCard className="w-12 h-12 text-[#E07A5F]" strokeWidth={1.5} />
                 <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center">
                   <Loader2 className="w-4 h-4 text-[#E07A5F] animate-spin" />
                 </div>
               </div>
-              <p className="text-gray-900 font-medium mb-1">Generating Report</p>
+              <p className="text-gray-900 font-medium mb-1">Redirecting to Checkout</p>
               <p className="text-sm text-gray-500 text-center">
-                This may take a few minutes. You can close this dialog
-                and check back later.
+                You will be redirected to complete your purchase.
               </p>
             </div>
           )}
@@ -225,9 +233,10 @@ export function GenerateReportDialog({
               <button
                 onClick={checkTopic}
                 disabled={!topic.trim()}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Generate Report
+                <CreditCard className="w-4 h-4" />
+                Purchase Report - $99
               </button>
             </>
           )}
@@ -241,20 +250,21 @@ export function GenerateReportDialog({
                 Cancel
               </button>
               <button
-                onClick={() => generateReport(true)}
-                className="px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors"
+                onClick={() => purchaseReport(true)}
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors"
               >
-                Proceed with Limited Data
+                <CreditCard className="w-4 h-4" />
+                Purchase Anyway - $99
               </button>
             </>
           )}
 
-          {step === 'generating' && (
+          {step === 'purchasing' && (
             <button
-              onClick={onGenerated}
-              className="px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors"
+              onClick={onClose}
+              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
             >
-              Done
+              Cancel
             </button>
           )}
         </div>
