@@ -577,7 +577,7 @@ export default function Home() {
                   <p className="text-gray-300 mb-6">
                     Get comprehensive intelligence reports on any topic. Our AI synthesizes
                     funding patterns, competitive dynamics, IP landscape, and clinical development
-                    into actionable insights - in minutes, not weeks.
+                    into actionable insights - in minutes, not hours.
                   </p>
                   <Link
                     href="/reports"
