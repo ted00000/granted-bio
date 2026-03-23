@@ -1507,11 +1507,11 @@ function renderInvestorSignals(signals: SignalsAnalysis): string {
       }
 
       // Categorized risks as explicit bullets
-      const riskCategories: Array<{ key: keyof InvestorRiskFactors; icon: string; label: string }> = [
-        { key: 'scientific', icon: '🔬', label: 'Scientific/Technical' },
-        { key: 'regulatory', icon: '📋', label: 'Regulatory' },
-        { key: 'competitive', icon: '⚔️', label: 'Competitive/Market' },
-        { key: 'execution', icon: '👥', label: 'Execution' },
+      const riskCategories: Array<{ key: keyof InvestorRiskFactors; label: string }> = [
+        { key: 'scientific', label: 'Scientific/Technical' },
+        { key: 'regulatory', label: 'Regulatory' },
+        { key: 'competitive', label: 'Competitive/Market' },
+        { key: 'execution', label: 'Execution' },
       ]
 
       const activeRisks = riskCategories.filter(
@@ -1519,10 +1519,10 @@ function renderInvestorSignals(signals: SignalsAnalysis): string {
       )
 
       if (activeRisks.length > 0) {
-        activeRisks.forEach(({ icon, label, key }) => {
+        activeRisks.forEach(({ label, key }) => {
           const value = risks[key]
           if (value && key !== 'overall') {
-            md += `- **${icon} ${label}:** ${value}\n`
+            md += `- **${label}:** ${value}\n`
           }
         })
         md += '\n'
