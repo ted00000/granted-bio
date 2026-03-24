@@ -21,6 +21,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
+    router.refresh()
     router.push('/')
   }
 

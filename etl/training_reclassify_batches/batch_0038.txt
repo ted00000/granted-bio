@@ -1,0 +1,458 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 38 of 459 (50 projects):
+
+---
+application_id: 10934082
+activity_code: T32
+title: Predoctoral Training Grant in Pharmacology
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: PROJECT NARRATIVE
+This predoctoral Pharmacology Training Program includes education, research opportunities and professional
+development to provide a multifaceted doctoral training program. The combination of cutting-edge research
+and a curriculum that provides both depth and breadth in many areas of Pharmacology will prepare students
+as leaders in pharmacological sciences in academia, government, and industry.
+terms: <Grant><Pharmacology><Training><pre-doc><pre-doctoral>
+---
+application_id: 10935021
+activity_code: T32
+title: Biomedical Engineering Training Program
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: PROJECT NARRATIVE
+The purpose of the Biomedical Engineering Ph.D. program is to train outstanding scientists who will engineer
+the future of medicine. This goal is achieved through a rigorous, extensive, broad-based curriculum involving a
+hybrid of science and engineering and independent research in a basic science and/or engineering laboratory.
+This type of training is essential for understanding and innovating treatments for human disease at a
+fundamental level and allows our students to enter the biomedical/engineering workforce, where they
+contribute to breakthroughs in biomedical engineering and modern medicine.
+terms: <Biomedical Engineering><Training Programs><bio-engineered><bio-engineers><bioengineering><biological engineering>
+---
+application_id: 10934754
+activity_code: T32
+title: Michigan State University College of Osteopathic Medicine Medical Scientist Training Program (MSTP)
+org_name: HENRY FORD HEALTH + MICHIGAN STATE UNIVERSITY HEALTH SCIENCES
+phr: The fastest growing sector of all health professions nationally is in those seeking the Doctor of Osteopathic Medical (DO) degree. While DO’s represent 11% of physicians today, 28% of all medical students in the US are attending a DO medical school, and by 2030, 20% of all physicians in the US will be a DO. The Medical Scientist Training Program at Michigan State University College of Osteopathic Medicine will deploy innovative educational practices, and will capitalize on the strength of MSU as a TOP 100 research institution, to develop osteopathic physician scientists in their quest to uniquely address contemporary problems in health preservation and disease treatments.
+terms: <Medical><Michigan><Osteopathic><Osteopathic Medicine><Osteopathy><Scientist><Training Programs><Universities><college><collegiate>
+---
+application_id: 10758518
+activity_code: F31
+title: Novel Role of Peroxisome Proliferator Activated Receptor Beta/Delta in X-Linked Adrenoleukodystrophy
+org_name: UNIVERSITY OF TX MD ANDERSON CAN CTR
+phr: Project Narrative Adrenoleukodystrophy (ALD) is a neurometabolic disorder that causes irreparable brain and spinal cord degeneration in both children and adults, with a wide spectrum of outcomes ranging from chronic disability to the total collapse of the brain’s major functions. The underlying cause for ALD is a defective break down of fatty acids which leads to an accumulation of fats that are deleterious to various tissues. I hypothesize that a nuclear receptor, Pparβ/δ, can be targeted to counterbalance multiple disease processes in ALD, and will determine how Pparβ/δ mitigates underlying disruptions in lipid metabolism in order to identify novel therapies in ALD.
+terms: Address;Adrenoleukodystrophy;Adult;Adverse effects;Aging;Agonist;alternative treatment;Animal Model;Atrophic;Attenuated;Binding;Biological Models;Bone Marrow Transplantation;Brain;brain cell;brain tissue;Cell Culture System;cell type;Cells;Central Nervous System;Cerebrum;Child;Cholesterol Homeostasis;Chronic disability;Clinical;Compensation;Complex;Cuprizone;Defect;Demyelinations;Deterioration;Development;Disease;Disease Progression;Disorder of neurometabolic regulation;Early Diagnosis;experience;Experimental Designs;Fatty acid glycerol esters;fatty acid metabolism;fatty acid oxidation;Fatty Acids;Fiber;Functional disorder;Gene Targeting;Genes;Genetically Engineered Mouse;Hematopoietic Stem Cell Transplantation;Heterodimerization;high risk;Homeostasis;Immune;Immune response;Impairment;improved;Inborn Errors of Metabolism;Individual;Inflammation;Inflammatory;Injury;innovation;Innovative Therapy;insight;Intervention;Knowledge;Learning;lipid metabolism;Lipids;Maintenance;Mediating;member;Metabolic;Metabolic Diseases;Metabolic Pathway;Metabolism;Methods;Microglia;Mitochondria;mitochondrial dysfunction;Modeling;Molecular;Molecular Target;mouse model;multiple datasets;Mutation;Myelin;Neonatal Screening;Nerve Fibers;neuroinflammation;novel;novel therapeutics;Nuclear Receptors;Oligodendroglia;Onset of illness;Organelles;Outcome;oxidation;Oxidative Stress;Pathway interactions;patient subsets;Patients;Penetrance;peroxisome;Peroxisome Proliferator-Activated Receptors;Phenotype;Physicians;Primary Cell Cultures;Process;Prognosis;Protein Isoforms;receptor;remyelination;Reporting;Role;Scientist;Secondary to;Signal Pathway;skills;Spinal Cord;stressor;Therapeutic;therapeutic target;Tissues;Training;Up-Regulation;Vegetative States;Very Long Chain Fatty Acid;Work
+---
+application_id: 10935403
+activity_code: T32
+title: Dual-mentored training for collaborative molecular biophysics
+org_name: UNIVERSITY OF CHICAGO
+phr: The Graduate Program in Biophysical Sciences provides an innovative training model designed for bold students
+with strong physical science backgrounds to prepare them for careers in biomedical research. Using a distinctive
+dual-mentor approach, that involves pairing faculty from across a wide range of disciplines, the Program trains
+individuals to develop and apply new approaches in molecular biophysics to a variety of biomedical topics. The
+funds will also contribute to public health by supporting innovative coursework and community-building activities
+to improve how science is taught, first locally, and then as a national model of training for the national Biomedical
+Research Workforce.
+terms: <Biophysics><Mentors><Molecular><Training><biophysical foundation><biophysical principles><biophysical sciences>
+---
+application_id: 10758790
+activity_code: F31
+title: Exploring a Risk Phenotype for Maternal Distress Characterized by Regulatory Focus
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: PROJECT NARRATIVE A more comprehensive understanding of the underlying mechanisms associated with elevated maternal distress and caregiving deficits is necessary for early detection, care management, and effective treatment options during the immediate postpartum period. This study will explore a risk phenotype for maternal distress by analyzing neurological changes in reward responsivity, caregiving behaviors, and the maternal experience of goal pursuit and perceived daily functioning in postpartum mothers. Outcomes of this project will support future work on the bidirectional nature of the maternal-child relationship as it relates to Regulatory Focus Theory, and lead to improvements in postpartum care and intervention development.
+terms: Activities of Daily Living;Address;Anhedonia;anxiety symptoms;associated symptom;Behavior;Behavioral;Brain;Caregivers;caregiving;Child;Child Health;Child Rearing;Childbirth;Clinical assessments;Code;Cognitive;daily functioning;Data;debilitating symptom;depressive symptoms;Developmental Disabilities;digital;Disease remission;Distress;Early Diagnosis;effective therapy;Emotional;Equipment and supply inventories;Estrogens;experience;financial incentive;Foundations;Functional disorder;Functional Magnetic Resonance Imaging;Future;Goals;Health Professional;Hormonal;Hormones;Image;Impairment;improved;Incidence;Infant;Infant Development;Informal Social Control;innovation;Interview;Left;Link;Managed Care;maternal caregiving;Measures;Methods;Modeling;Moods;Morbidity - disease rate;Mother-Child Relations;motherhood;Mothers;Nature;neural;neural correlate;Neural Pathways;neural stimulation;Neurologic;Neurons;novel strategies;Nurses;Nursing Research;Outcome;Participant;Pathway interactions;Patient Self-Report;Pattern;Phase;Phenotype;Play;postpartum care;Postpartum Period;Prefrontal Cortex;Pregnant Women;prevent;Prevention;Prevention strategy;Process;Progesterone;programs;prospective;Research;Research Training;response;Rewards;Risk;Role;secondary analysis;Self Management;Severities;Sleep;stressor;symptom management;symptom science;Symptoms;System;theories;therapy development;Time;Variant;Ventral Striatum;Withdrawal;Woman;Work
+---
+application_id: 10938786
+activity_code: T32
+title: Integrated Training in Pharmacological Sciences
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: PROJECT NARRATIVE
+The Integrated Training in Pharmacological Sciences Program at the Icahn School of Medicine at Mount Sinai
+aims to develop the next generation of leaders in therapeutics discovery. Predoctoral students receive rigorous,
+quantitative coursework covering different aspects of drug development, and are mentored by a diverse cadre
+of faculty members who are leaders in their respective research areas. Trainees who complete the program are
+poised for success in fields such as molecular pharmacology, chemical biology, and structure-based drug design.
+terms: <Science><Training><pharmacologic>
+---
+application_id: 10898048
+activity_code: F30
+title: Characterizing the Genomic Basis of Immune-Mediated Resilience Against Tuberculosis in an Admixed Peruvian Population
+org_name: HARVARD MEDICAL SCHOOL
+phr: Project Narrative This project will characterize genetic variants that alter immune function and thereby decrease the risk that a tuberculosis-infected patient will progress to active symptoms, which can inform the development of therapeutic and vaccine strategies that augment resilience against progression. Elucidating how immune phenotypes are altered by genetic background will also refine our understanding of basic immune physiology and shed greater functional light on the genetic component of risk for other infectious and inflammatory illnesses. Finally, this work will produce a powerful novel method for association testing in single-cell datasets—Covarying Neighborhood Analysis—that represents a marked advancement in our ability to characterize disease states, therapeutic mechanisms, ...
+terms: Accounting;African ancestry;Automobile Driving;Bioinformatics;career;Cause of Death;cell type;Cells;Cessation of life;Clinical;clinical phenotype;cohort;Communicable Diseases;Complex Genetic Trait;Data;Data Set;Development;differential expression;Disease;Disease Management;Disease Outcome;Environment;Environmental Risk Factor;European;European ancestry;experience;Exposure to;Familiarity;Fellowship;flexibility;Flow Cytometry;Funding;Gene Expression;Gene Expression Profiling;Genes;Genetic;Genetic study;genetic variant;genome wide association study;Genomics;Genotype;genotyped patients;global health;Haplotypes;Heritability;Immune;immune function;Immune response;immunoregulation;improved;Individual;Infection;Infectious Agent;Inflammatory;interest;Knowledge;latent infection;Light;Link;Linkage Disequilibrium;Maps;Mediating;Mediation;Medicine;meetings;Mentorship;Messenger RNA;method development;Methodology;Methods;monocyte;mRNA sequencing;National Institute of Allergy and Infectious Disease;Neighborhoods;novel;Outcome;pathogen;Pathway interactions;Patients;Persons;Peru;Peruvian;Phenotype;Physiology;Population;power analysis;prevent;programs;progression risk;Research;resilience;Risk;simulation;single cell analysis;social factors;Source;Symptoms;T-Lymphocyte;Testing;Therapeutic;therapeutic development;Therapeutic Effect;Tissues;Training;transcriptome;Tuberculosis;vaccine strategy;Vaccines;Validation;Variant;Work
+---
+application_id: 11014852
+activity_code: T32
+title: Training in Molecular Pharmacology and Therapeutics
+org_name: UNIVERSITY OF MINNESOTA
+phr: PROJECT NARRATIVE
+This is a new application to support the Molecular Pharmacology and Therapeutics (MPaT) graduate program
+at the University of Minnesota. The mission of the MPaT program is to cultivate the next generation of
+pharmacologists who will lead or contribute to efforts yielding new therapeutic approaches for cancer, infectious
+disease, neurological disorders, diseases of aging, metabolic disease, and immune disorders. With NIGMS
+support, MPaT leadership seeks to transform the graduate program so that it better prepares its students for
+success in the rapidly evolving biomedical workforce, while making it more flexible and tailored to individual
+trainee interests and needs.
+terms: <Molecular><Pharmacology><Therapeutic><Training>
+---
+application_id: 10872217
+activity_code: F31
+title: Individual-level determinants and clinical outcomes of head impact exposure in youth hockey
+org_name: WAKE FOREST UNIVERSITY HEALTH SCIENCES
+phr: Project Narrative: Boys’ and men’s ice hockey is a collision sport, and women’s and girl’s hockey a contact sport with a high rate of injury and exposure to repetitive head impacts. Recent studies have shown that repetitive head impacts sustained in collision and contact sports may be related to brain changes, even in the absence of clinically diagnosed concussion. The proposed F31 award will evaluate youth athlete performance metrics as a potential determinant of head impact exposure, and will use a postural control assessment to measure clinical outcomes of cumulative exposure to head impacts; the didactic, mentor-guided fellowship proposed will prepare the applicant towards a career as an independent investigator utilizing a joint background in neuroscience and injury biomechanics towar...
+terms: 3-Dimensional;Adverse effects;Affect;Age;Award;Biomechanics;boys;Brain;Brain Concussion;Brain imaging;Brain Injuries;career;Cephalometry;Characteristics;Clinical;clinical diagnosis;clinical outcome measures;cognitive function;cohort;contact sports;Custom;Data;design;Diagnosis;Equilibrium;Evidence based intervention;experience;Exposure to;Fellowship;Female;Frequencies;Functional impairment;Future;Gait;girls;Goals;Head;head impact;Hockey;Ice;Ice Hockey;improved;Incidence;Individual;Injury;instrument;Intervention;Intervention Studies;Joints;kinematics;male;Measures;men;Mentors;Mentorship;Methods;Modeling;Musculoskeletal Equilibrium;Neurocognitive;Neurosciences;Outcome;Performance;Play;Policies;Protocols documentation;Recording of previous events;Research;Research Personnel;risk mitigation;Role;Safety;Seasons;sensor;sex;skill acquisition;skills;Speed;Sports;Structure;subconcussion;Subgroup;Testing;therapy design;therapy development;Time;Woman;Youth;youth sports
+---
+application_id: 11013602
+activity_code: T32
+title: Pre-Doctoral Pharmacology Training Program
+org_name: YALE UNIVERSITY
+phr: Project Narrative
+The Pre-Doctoral Pharmacology Training Program (PPTP) at Yale University will provide rigorous, advanced
+training in the pharmacological sciences by employing innovative teaching methodologies and cutting-edge
+technologies. The PPTP will prepare students for research and research-related careers in academia, industry,
+and the non-profit sector.
+terms: <Pharmacology><Training Programs><pre-doc><pre-doctoral>
+---
+application_id: 11014167
+activity_code: T32
+title: Michigan Medical Scientist Training Program 2025-2030
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Trainees receive an MD degree and a PhD in a medically-relevant field of research. Program graduates will be optimally prepared to establish research-based careers in which the goal is to improve understanding of human disease and provide new treatment approaches that will improve public health.
+terms: <Medical><Michigan><Scientist><Training Programs>
+---
+application_id: 11014688
+activity_code: T32
+title: T32 Transdisciplinary Training in Biomedical Science and Bioengineering at the University of Rhode Island
+org_name: UNIVERSITY OF RHODE ISLAND
+phr: The fields of Biomedical Sciences and Bioengineering are at the forefront of health research, pharmaceutical development, and technological innovation. At the University of Rhode Island, we train predoctoral students to be skilled scientists across a range of disciplines. We propose to build a collaborative graduate training program that trains predoctoral students in Biomedical Sciences and Bioengineering for workforce development, supports their professional development, and fosters transdisciplinary training across the broad field of life sciences.
+terms: <Biomedical Engineering><Rhode Island><Science><Training><Universities><bio-engineered><bio-engineers><bioengineering><biological engineering>
+---
+application_id: 10862682
+activity_code: F31
+title: Functional characterization of an amygdala to accumbens nociceptive circuit
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: Chronic pain disorders negative impact over 100 million Americans who suffer with the persistence of nociceptive sensory and negative affective symptoms. Presently available pain treatments fall short in providing safe and effective analgesia and often result in detrimental side effects due to their lack of specificity. This proposal aims to characterize a negative affective brain circuit in healthy and chronic pain states with the aim of informing the development of targeted treatments to alleviate the emotional unpleasantness of pain perception.
+terms: Absence of pain sensation;Acute;Affect;Affective;Affective Symptoms;American;Amygdaloid structure;Animals;Appetitive Behavior;Automobile Driving;avoidance behavior;awake;Axon;Behavior;Behavioral;Brain;Brain region;Calcium;calcium indicator;career;cell type;Chronic;chronic pain;chronic pain patient;chronic painful condition;Clinical Research;Complement;Corpus striatum structure;Data;Desire for food;Development;Diagnostic Imaging;Diagnostic tests;Emotional;Emotions;experience;Fellowship;Functional disorder;functional group;Future;Glutamates;Goals;Horns;Human;Hyperactivity;Hypersensitivity;Image;Imaging Device;Implant;in vivo calcium imaging;Individual;injured;Injury;Light;Medial;Mentors;Motivation;Mus;negative affect;Negative Valence;neural;neural circuit;neuronal cell body;Neurons;Neuropathy;neuropsychiatric disorder;Neurosciences;neurotransmission;Nociception;Nociceptive Stimulus;Nucleus Accumbens;Operative Surgical Procedures;Opsin;optical fiber;optogenetics;Outcome;Output;Pain;pain chronification;Pain management;pain perception;Pain Research;Pathologic;persistent symptom;Population;preclinical study;Presynaptic Terminals;Process;Research;Resolution;response;Role;Sensory;sensory stimulus;side effect;Specificity;Stimulus;Structure;System;Technical Expertise;Training;transcriptomics;Translational Research;transmission process;Viral;Visualization
+---
+application_id: 11015387
+activity_code: T32
+title: Medical Scientist Training Program
+org_name: UNIVERSITY OF VIRGINIA
+phr: NARRATIVE
+The Medical Scientist Training Program (MSTP) at the University of Virginia (UVA) aims to provide trainees with
+an integrated educational program incorporating innovative clinical training with intensive, cutting edge
+biomedical research. Its mission is to train individuals to be both outstanding biomedical scientists and data-
+driven physicians who pioneer major advances in medical practice through research. By pursuing rigorous
+training in an exceptional research and clinical environment at UVA, graduates of the MSTP will be positioned to
+become outstanding scientists and leaders in the biomedical field with a lifelong passion for research and its
+integration with medical practice.
+terms: <Medical><Scientist><Training Programs>
+---
+application_id: 10904935
+activity_code: F31
+title: Microglia and S1PR1 Signaling in Multiple Sclerosis Associated Neuropathic Pain
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: Project Narrative Neuropathic pain in multiple sclerosis (MS) afflicts over 50% of patients; however, currently available analgesic drugs are inadequate, due in part to a lack of understanding about the underlying mechanisms that drive multiple sclerosis-associated neuropathic pain (MSNP). This proposal aims to use cellular manipulations and pharmacologic interventions to elucidate microglial mechanisms that will guide future development of non-opioid therapeutics to treat MSNP. We focus on the FDA-approved S1PR1 agonist, fingolimod, not only for its disease modifying properties, but also as a treatment for the pain of MS.
+terms: Affect;Agonist;allodynia;Analgesics;antagonist;Attenuated;Behavior;Behavioral;behavioral pharmacology;Binding;Biological Assay;Central Nervous System;chronic pain;CNS autoimmune disease;Cognitive deficits;comorbidity;comparison control;Coupling;cytokine;Data Analyses;Demyelinations;design;Development;Disease;Experimental Autoimmune Encephalomyelitis;Experimental Designs;experimental study;FDA approved;Functional disorder;Future;G-Protein-Coupled Receptors;Genes;Genetic;glial activation;Goals;GTP-Binding Proteins;Hyperalgesia;In Situ;In Vitro;Inflammation;Inflammatory;Intervention;intraperitoneal;Intrathecal Injections;Knock-out;Knowledge;Laboratories;Learning;Macrophage-1 Antigen;Mediating;Methods;Microglia;Modeling;Motor;motor symptom;mouse model;Multiple Sclerosis;multiple sclerosis treatment;Mus;Neuroimmune system;non-opioid analgesic;Oranges;pain behavior;Pain management;pain relief;painful neuropathy;Pathway interactions;Patients;Peripheral;Persons;Pharmaceutical Preparations;pharmacologic;prevent;Primary Cell Cultures;Property;Proteins;Publications;Reporting;Research Personnel;Rodent Model;Sensory;Signal Transduction;Site;Sphingosine-1-Phosphate Receptor;Spinal;Spinal Cord;Testing;Training;Up-Regulation
+---
+application_id: 11015216
+activity_code: T32
+title: Invent@SC Clinical Pharmacology of Biotherapeutics
+org_name: SEATTLE CHILDREN'S HOSPITAL
+phr: Among all drugs approved by the FDA, the fraction that are biotherapeutics has risen by double digits in recent years. Clinical pharmacology principles are critical for biotherapeutics, such as peptides, multispecifics, oligonucleotides, antibody-derived therapeutics, and even gene and cellular therapeutics. The Invent@SC Clinical Pharmacology of Biotherapeutics T32 training program aspires to be an international leader in educating the next generation of clinicians to successfully guide biotherapeutic discovery and development based on sound clinical pharmacology principles.
+terms: <Biological Response Modifier Therapy><Biological Therapy><Clinical Pharmacology><biological therapeutic><biological treatment><biologically based therapeutics><biotherapeutics><biotherapy><invention>
+---
+application_id: 11015973
+activity_code: T32
+title: University of Florida Genetics Training Program
+org_name: UNIVERSITY OF FLORIDA
+phr: Project Narrative
+The goal of the University of Florida Genetics Training Program is to develop next generation leaders of
+biomedical scientists who will address the most significant scientific challenges in the field of Genetics. This
+program leverages the unique research and educational environment at the University of Florida to provide
+graduate students with access to 7 colleges and 51 departments to develop skills and career opportunities
+working collaboratively in interdisciplinary teams. Students will be trained as experts in genetic knowledge
+domains and will make an impact on health-related research needs.
+terms: <Florida><Genetic><Training Programs><Universities>
+---
+application_id: 11094260
+activity_code: T32
+title: Graduate Training at The Chemistry Biology Interface
+org_name: UNIVERSITY OF MARYLAND BALTIMORE COUNTY
+phr: Project Narrative
+ The UMBC-UMB CBI has an objective to provide a pathway to produce Ph.D.-level scientists trained
+across disciplines who are strong leaders capable of tackling the broad challenges of the 21st century in, or
+adjacent to, the biomedical sciences including the fields of chemistry, biology, biochemistry, and pharmaceutical
+sciences. The participating students, faculty, and mentors come from programs in Chemistry & Biochemistry,
+Biological Sciences, and Pharmaceutical Sciences and are involved in many different areas of research relating
+to human health and disease. The key training components of this program include didactic instruction at the
+chemistry-biology interface, hands-on cross-disciplinary research, and support for national and international
+conferences that combin...
+terms: <Biology><Chemistry><Training>
+---
+application_id: 11094370
+activity_code: T32
+title: Predoctoral Training in Molecular Biophysics
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: This Molecular Biophysics Training Program (MBTP) will provide comprehensive instruction and theoretical/practical skills to talented graduate students interested in quantitative problem- solving in biology, bringing together trainees and trainers from biological and physical backgrounds, with the opportunity to exchange ideas and collaborate within a stimulating environment. As a result of their graduate experience within the program, our trainees will learn to become independent thinkers and acquire the ability to choose important problems and answer compelling questions at the interface between physics, chemistry, engineering and biology. The objectives of this training program match the goals of the National Institutes of General and Medical Sciences (NIGMS), which favors basic biomedi...
+terms: <Biophysics><Molecular><Training><biophysical foundation><biophysical principles><biophysical sciences><pre-doc><pre-doctoral>
+---
+application_id: 10813196
+activity_code: F31
+title: How temporal transcription factors regulate guidance cues and dendrite morphogenesis in Drosophila somatosensory circuits
+org_name: UNIVERSITY OF CHICAGO
+phr: PROJECT NARRATIVE  During neural development, neuronal stem cells produce neurons that ultimately wire-up to form circuits that process somatosensory information (e.g., touch, temperature, pain). The current proposal will identify molecules that instruct neurons from a single neuronal stem cell to populate different somatosensory circuits. This knowledge is critically required to produce therapies for injuries and diseases affecting somatosensation.
+terms: 3-Dimensional;Adopted;Affect;Afferent Neurons;Animals;Architecture;Area;Axon;axon guidance;Biological Assay;Birth Order;cell type;confocal imaging;Confocal Microscopy;Cues;Data;Daughter;Dendrites;Development;differential expression;Disease;Disparate;Drosophila genus;Drosophila melanogaster;Environment;Family;Gene Expression;genetic manipulation;Injury;innovation;Interneurons;Knowledge;Label;Lateral;Ligands;Location;loss of function;Maps;Modeling;Molecular;Morphogenesis;Morphology;Nerve;nerve stem cell;Nervous System;neuroblast;neurodevelopment;neuron development;neuronal circuitry;Neurons;Pain;Pathology;Peripheral Nervous System;Positioning Attribute;postmitotic;Process;Proprioceptor;receptor;receptor expression;Receptor Gene;Receptor Signaling;Regulation;Role;Rosaniline Dyes;self-renewal;Signaling Molecule;single-cell RNA sequencing;somatosensory;Specific qualifier value;stem cells;Synapses;System;Temperature;Testing;therapy development;Tissue-Specific Gene Expression;tool;Touch sensation;transcription factor;Work
+---
+application_id: 11095778
+activity_code: T32
+title: Medical Scientist Training Program
+org_name: UT SOUTHWESTERN MEDICAL CENTER
+phr: Physician-scientists are uniquely suited for the bidirectional translation of basic science research and clinical medicine. With the exponential increase in biomedical knowledge, the proliferation of new technologies, the growing health needs of the U.S. society, and the aging of the biomedical research workforce, the need to train physician-scientists who can capitalize on these advances to improve prevention, diagnosis, and treatment of disease is greater than ever. The Medical Scientist Training Program at UT Southwestern Medical Center is helping foster the next generation of physician-scientists who will improve human health through biomedical research.
+terms: <Medical><Scientist><Training Programs>
+---
+application_id: 10626788
+activity_code: F31
+title: Remapping of episodic memories in the human hippocampus
+org_name: UNIVERSITY OF OREGON
+phr: PROJECT NARRATIVE The hippocampus plays a critical role in resolving memory interference, which happens when one long-term memory is confused with another similar one. The proposed research will leverage novel computational methods to identify how patterns of activity in the human hippocampus change and adapt over time so as to minimize the potential for memory interference. The training focuses on gaining expertise in computational methods, deepening theoretical knowledge of memory systems, and professional development activities to foster a successful transition to the next career stage and beyond.
+terms: Aging;Behavioral;career;Computing Methodologies;Confusion;Coupled;Data;Destinations;detection method;Development;Discrimination;Environment;Episodic memory;Event;Exhibits;experience;Fostering;Functional Magnetic Resonance Imaging;Goals;Health;Hippocampus;Human;Impairment;improved;insight;Knowledge;Learning;Link;long term memory;Maps;markov model;Measures;Memory;Methods;neural;neural patterning;Neurodegenerative Disorders;neuroimaging;neuromechanism;Neurosciences;novel;Pattern;Play;Predisposition;Prevalence;prevent;Research;Resolution;Rodent;Role;Series;spatial memory;Structure;System;Testing;Time;Training
+---
+application_id: 10870050
+activity_code: F31
+title: A novel hippocampal GABAergic projection and its potential role in spatial recognition
+org_name: UNIVERSITY OF MINNESOTA
+phr: Project Narrative Identifying environments as novel or familiar can influence memory and the formation of internal spatial maps, which may be impaired in aging, Alzheimer’s disease, and temporal lobe epilepsy. This proposal investigates a novel inhibitory projection from the hippocampus – a brain region involved in spatial memory and spatial maps – to the supramammillary area, which is a region which can signal spatial novelty. This proposal investigates if this novel projection can signal spatial recognition and suppress spatial novelty signals, providing insight into spatial processing and into hippocampal control of the supramammillary area.
+terms: Acute;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease model;Animal Model;Area;Behavior;Behavioral;Brain;Brain region;calcium indicator;Calcium Signaling;career;Cells;Coupled;Data;dentate gyrus;Development;Discrimination;Electrophysiology (science);Elements;Endoscopes;Environment;experimental study;Exposure to;Familiarity;Fiber;fluorescence imaging;Head;Hippocampus;Impairment;Implant;in vivo;in vivo calcium imaging;inhibitory neuron;Injections;insight;Knowledge;Label;Light;Location;Maps;Memory;memory encoding;memory recognition;Microscope;Minnesota;Mus;Neurons;Neurosciences;novel;object recognition;optical fiber;optogenetics;patient population;postsynaptic;Process;programs;Research;Research Personnel;response;Rodent;Rodent Model;Role;Shapes;Signal Transduction;skills;Slice;spatial memory;Statistical Data Interpretation;Technical Expertise;Techniques;Temporal Lobe Epilepsy;Testing;Training;University resources;Update;Viral;way finding;Work
+---
+application_id: 11095377
+activity_code: T32
+title: Harvard Biophysics Graduate Program training grant
+org_name: HARVARD UNIVERSITY
+phr: The proposal requests support for the Harvard Molecular Biophysics Graduate Program, which offers interdisciplinary training at the interface between biology and physics. The Program focuses on rigorous approaches to explore the structure, function, and interactions of key macromolecules of the cell, the control of cellular and multicellular processes at the molecular, genome-wide, and organismal levels, as well as the development of methods to measure, image and model these processes. In a collaborative environment rich in resources and infrastructure, trainees will develop scientific and professional skills and will learn to ultimately use this information to diagnose, understand, prevent, or cure human diseases.
+terms: <Biophysics><Grant><Training Programs><biophysical foundation><biophysical principles><biophysical sciences>
+---
+application_id: 11095042
+activity_code: T32
+title: Chemistry-Biology Interface Predoctoral Training Program
+org_name: NEW YORK UNIVERSITY
+phr: Project Narrative
+Training graduate students for careers following attainment of the Ph.D. is one of the central missions of
+academic institutions. This grant is centered on training and education of Ph.D. scientists for careers that
+require knowledge at the interface of chemistry and biology. Since so much of biomedical research requires
+interdisciplinary knowledge, we view training at this junction to comprise a fundamentally important area for
+several different fields including academic research, the pharmaceutical industry, and non-traditional careers in
+science.
+terms: <Biology><Chemistry><Training Programs><pre-doc><pre-doctoral>
+---
+application_id: 11111813
+activity_code: T32
+title: Predoctoral Training in Molecular Pharmacology
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: Project Narrative
+ The Molecular Pharmacology Training Program (MPTP) provides a rigorous education in the principles of
+pharmacology and laboratory training by leveraging an interdisciplinary collection of trainers from multiple
+departments and institutions affiliated with Case Western Reserve University School of Medicine. The
+structured program is designed to develop critical thinking, problem solving skills, and scientific knowledge to
+develop the next generation of leaders in pharmacology. The training program has a distinct focus on career
+and professional development to prepare students for a multitude of careers that take full advantage of their
+specialized training in pharmacology.
+terms: <Molecular><Pharmacology><Training><pre-doc><pre-doctoral>
+---
+application_id: 10792461
+activity_code: F31
+title: Integrated microfluidic electrochemical neural probe with monolithic sampling, in-situ calibration, and online detection of neurochemicals for increased long-term performance
+org_name: UNIVERSITY OF ILLINOIS AT URBANA-CHAMPAIGN
+phr: Project Narrative Neurochemicals represent the fundamental signal carriers within the brain, whether it be through the rapid movement of ions across cell membranes when neurons spike, or through the cellular exchange of neurotransmitters, monitoring brain neurochemistry continues to lead us toward better understanding of how neural circuits function, and towards pharmaceuticals and treatments that improve the quality of people's lives. Electrochemical sensors are the most popular devices to measure brain neurochemistry, however they are generally lacking the capability for long-term studies for chronic implant applications, are not very selective, and are subject to fouling and drift. Adoption of hydrodynamic electrochemical sensors by leveraging silicon microfabrication technology to inte...
+terms: Action Potentials;Address;Adoption;Adsorption;Area;Ascorbic Acid;Behavior;behavioral study;Brain;brain machine interface;Brain region;Calibration;Cell membrane;Cells;Chemicals;Chronic;combat;Complex;Concentration measurement;Coupled;design;Detection;detection limit;detector;Development;Devices;Diffusion;Disadvantaged;Dopamine;Electrochemistry;Electrodes;Engineering;Environment;Enzymes;Event;Excision;experimental study;fabrication;Finite Element Analysis;flexibility;Future;Image;Immune response;Implant;implantation;Implanted Electrodes;improved;In Situ;In Vitro;in vivo;in vivo regeneration;Inflammatory Response;information processing;Injury;innovation;interest;Ions;Lead;Learning;Liquid substance;Longitudinal Studies;manufacturing technology;Mass Spectrum Analysis;Measurement;Measures;Mechanics;Mediating;Medicine;Membrane;meter;Methods;Microdialysis;Microfabrication;Microfluidics;Miniaturization;miniaturize;minimally invasive;Monitor;Movement;Natural regeneration;Nervous System Disorder;neural;neural circuit;neurochemistry;Neurodegenerative Disorders;Neurohormones;Neurologic;neuronal circuitry;Neurons;Neurosciences;Neurotransmitters;novel;oxidation;Oxidation-Reduction;Oxytocin;Performance;Periodicity;Persons;Pharmaceutical Preparations;Pharmacologic Substance;Pharmacology;Pharmacotherapy;Physiological;Potassium;predictive modeling;pressure;Process;process optimization;Property;Pump;Reaction;Reproducibility;Resistance;Resolution;response;restoration;Sampling;Scanning;sensor;Signal Transduction;Silicon;Site;Sodium;Stroke;Structure;success;Surface;System;Techniques;Technology;temporal measurement;Therapeutic;Time;Tissues;transmission process;uptake;Validation;voltage;Work
+---
+application_id: 11096309
+activity_code: T32
+title: Medical Scientist Training Program (MSTP)
+org_name: BOSTON UNIVERSITY MEDICAL CAMPUS
+phr: The mission of the Boston University (BU) Chobanian and Avedisian School of Medicine MD/PhD program is to embrace the education of talented students and promote their development into clinician-scientist leaders. MD/PhD trainees often experience unique stressors as they transition between research and clinical environments. The BU Medical Scientist Training Program will support our trainees with our extensive mentoring network, support infrastructure, and innovative mental health literacy program to develop skills that allow the sustainable pursuit of long-term careers that dually conduct rigorous research and clinical practice to enhance the care for all patients.
+terms: <Medical><Scientist><Training Programs>
+---
+application_id: 11198516
+activity_code: T32
+title: Training in BioMolecular Pharmacology
+org_name: BOSTON UNIVERSITY MEDICAL CAMPUS
+phr: The Program in BioMolecular Pharmacology at Boston University is designed to train predoctoral students in pharmacological research and discovery by building on the fundamental principles of pharmacology with emerging technologies drawn from various fields of academic and industrial biomedical sciences. Trainees undertake an integrated curriculum that emphasizes translation of rigorous basic science research into therapeutics. The acquisition of scientific skills needed for multiple careers are introduced via rigorous curriculum, innovative academic research, and industrial experience in pharmaceutical companies through summer rotations.
+terms: <Pharmacology><Training>
+---
+application_id: 11057503
+activity_code: F31
+title: Dissecting the Forward Trafficking of Presynaptic Voltage Gated Calcium Channels
+org_name: HARVARD MEDICAL SCHOOL
+phr: PROJECT NARRATIVE The presynaptic voltage-gated calcium channel CaV2.1 drives synaptic transmission, however we lack fundamental understanding of the mechanisms that direct CaV2.1s to the presynaptic terminal. The CaV2.1 C- terminus has emerged as a major regulator of presynaptic CaV2.1 trafficking. This proposal aims to characterize the trafficking functions of key sequences within the CaV2.1 C-terminus, providing insight into the cellular mechanisms of synapse formation and maintenance and the treatment of neuropathies that stem from failures in calcium channel trafficking.
+terms: Address;Affect;Axon;Axonal Transport;Biology;C-terminal;Calcium;Calcium Channel;Cell Line;Cell membrane;Cells;Chimera organism;Cytoplasm;Data;Dendrites;Destinations;EF Hand Motifs;Electrophysiology (science);Exhibits;experimental study;Face;Failure;Goals;Golgi Apparatus;Healthcare;Hippocampus;Image;Individual;insight;Maintenance;Mediating;Microscopy;millimeter;Mus;mutant;Mutation;neuronal cell body;Neurons;Neuropathy;neurotransmitter release;novel;P-Q type voltage-dependent calcium channel;Pathway interactions;Phase;Positioning Attribute;postsynaptic;presynaptic;presynaptic neurons;Presynaptic Terminals;Protein Isoforms;Proteins;Role;Route;scaffold;Site;Sorting;Source;stem;superresolution microscopy;Synaptic Membranes;Synaptic Transmission;Synaptic Vesicles;synaptogenesis;Testing;trafficking;Transfection;Travel;Vesicle;Visualization;voltage;Whole-Cell Recordings
+---
+application_id: 10934342
+activity_code: F31
+title: Metabolic Mechanisms of Copper-Dependent Neurodegeneration and Excitability in Menkes Disease
+org_name: EMORY UNIVERSITY
+phr: PROJECT NARRATIVE Menkes disease is a rare genetic condition that disrupts copper in the body and prominently affects the brain, with neurodegeneration and other neurological symptoms appearing soon after birth. Copper plays a role not only in Menkes but in a number of neurological conditions including Parkinson’s and ALS, consistent with the high energy demands of the nervous system and the crucial role of copper in mitochondrial function. The proposed research will clarify the metabolic pathways responsive to copper and their effects on neuronal function. The application of this knowledge will inform our understanding, research, and treatment of neuropathology of diseases known to be associated with dysregulated metals and/or metabolism for which there are currently limited therapeutics.
+terms: Acute;Affect;Animal Model;Binding;Bioenergetics;Biological;Birth;Brain;calcium indicator;Cell Death;cell injury;Cells;cellular engineering;chromatin immunoprecipitation;Copper;cytochrome c oxidase;Data;Disease;Engineering;enzyme activity;Epilepsy;epileptic encephalopathies;Equilibrium;Exhibits;experimental study;extracellular;Gene Expression;Genes;Genetic Diseases;Genetic Models;Genetic Transcription;Glycolysis;Goals;Homeostasis;Human;Hypoxia;Infant;inorganic phosphate;Intake;Intellectual functioning disability;Knock-out;Knowledge;Link;Menkes Kinky Hair Syndrome;Metabolic;Metabolic Pathway;metabolic phenotype;Metabolism;Metals;Mitochondria;mitochondrial metabolism;Modeling;Molecular;molecular phenotype;Molecular Target;mouse model;Mus;Mutant Strains Mice;Mutation;nano-string;National Research Service Awards;Nerve Degeneration;Nervous System;neuroblastoma cell;Neurologic;Neurologic Symptoms;neuron loss;neuronal excitability;Neurons;neuropathology;neurotransmission;Neurotransmitters;Nutrient;Oxidative Phosphorylation;Oxygen;Oxygen saturation measurement;Parkinson Disease;Pathology;Pathway interactions;Phenotype;Predisposition;Production;protein expression;rare genetic disorder;Reactive Oxygen Species;Regulation;Research;Respiration;response;Role;Testing;Therapeutic;transcription factor;transcriptome sequencing;transcriptomic profiling
+---
+application_id: 10756932
+activity_code: F31
+title: PRC1-dependent H2A Monoubiquitination During Human Corticogenesis
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: PROJECT NARRATIVE As a developing infant’s brain grows, neural stem cells must undergo rapid growth and division. Some children are born with genetic mutations that interfere with this process, leading to reduced brain size and lifelong intellectual disability. Our study aims to understand why these genetic changes lead to disease so that therapeutic approaches can be identified.
+terms: 3-Dimensional;Accounting;Affect;Alleles;Apoptosis;Apoptotic;Binding;Binding Sites;BMI1 gene;Brain;brain size;career;Catalysis;catalyst;Cell Cycle;cell type;Cerebrum;Child;Chromatin;clinically relevant;Compensation;Complement;Complex;crosslink;Data;Databases;Defect;Deposition;Developed Countries;Development;developmental disease;Disease;DNA Damage;DNA Repair;DNA replication fork;DNA Sequence Alteration;Dominant-Negative Mutation;Double Strand Break Repair;early onset;Environment;experimental study;functional restoration;Future;Gene Expression;gene repression;Gene Silencing;Genes;Genetic;genetic testing;Genetic Transcription;genome integrity;genome sequencing;genome-wide;Goals;Growth;Histone H2A;Histones;Human;human embryonic stem cell;human embryonic stem cell line;Individual;Infant;insight;Intellectual functioning disability;Ionizing radiation;Knock-out;Knowledge;Lead;Learning;Light;Literature;Lymphocyte;Mediating;Medical Genetics;Microcephaly;Mitotic;Modeling;Molecular;Monoubiquitination;mouse model;mutant;Mutation;nerve stem cell;neural;Neurodevelopmental Disorder;Neurons;novel;Nucleosomes;Organoids;Pathogenesis;Pathogenicity;Patients;Physicians;Population;Post-Translational Protein Processing;postmitotic;PRC1 Protein;premature;prevent;Process;Proliferating;Prosencephalon;Proteins;rapid growth;repaired;Reporting;Resolution;Response Elements;Role;Schizophrenia;Scientist;Site;targeted treatment;Testing;Therapeutic;Training;Transcriptional Regulation;trend;ubiquitin-protein ligase;Ubiquitination;Variant;whole genome
+---
+application_id: 11197018
+activity_code: T32
+title: iPediHeart: Interdisciplinary Research Training Program for Pediatric Heart Disease
+org_name: DUKE UNIVERSITY
+phr: Modified Project Narrative
+There is an urgent need to expand the pipeline of highly trained scientists and physician-scientists equipped to advance research across the spectrum of pediatric and congenital heart disease. The Interdisciplinary Research Training Program for Pediatric & Congenital Heart Disease (iPediHeart) is designed to meet this need by providing post-doctoral research fellows with rigorous, individualized research mentorship, a custom-tailored curriculum, and direct engagement with multi-disciplinary research mentors. By cultivating the next generation of experts through intensive scientific training and cross-disciplinary collaboration, iPediHeart will strengthen the field and accelerate the discovery of innovative strategies to improve outcomes for individuals with pedia...
+terms: <Cardiac Diseases><Cardiac Disorders><Childhood><Heart Diseases><Interdisciplinary Research><Interdisciplinary Study><Multidisciplinary Collaboration><Multidisciplinary Research><Training Programs><heart disorder><pediatric>
+---
+application_id: 10813760
+activity_code: F31
+title: How do glia remodel the nervous system?
+org_name: OREGON HEALTH & SCIENCE UNIVERSITY
+phr: Project Narrative Neuronal remodeling is a conserved process whereby the developing nervous system eliminates extraneous cells and connections. This refinement allows for proper rewiring of the nervous system for optimal function in adulthood. My goal is to understand the fundamental mechanisms by which unneeded neurons and connections are recognized and appropriately eliminated from the developing nervous system, which holds promise for furthering our understanding of neurodevelopmental disorders such as Autism Spectrum Disorders and Schizophrenia.
+terms: Adult;Animals;Apoptosis;Astrocytes;autism spectrum disorder;Axon;Biological Assay;Biological Metamorphosis;Biological Models;Cell Compartmentation;Cell Surface Receptors;cell type;Cells;Central Nervous System;Cessation of life;Data;Defect;Development;Drosophila genus;Excision;Exclusion;Failure;fly;Genes;Genetic;Goals;Human;human disease;Immunoglobulins;in vivo;Individual;Inflammation;insight;Integral Membrane Protein;knock-down;Knock-out;Knowledge;Larva;Mammals;Mediating;Membrane;Methods;Modeling;Molecular;Names;Nature;Nervous System;Neurites;Neurodevelopmental Disorder;Neuroglia;neuronal cell body;neuronal circuitry;Neurons;Neuropil;neurotransmission;novel;Pathway interactions;Phagocytes;Phagocytosis;Process;Proteins;receptor;Research;response;RNA Interference;Role;Schizophrenia;sensory input;Signal Transduction;Specific qualifier value;Specificity;Stereotyping;Synapses;System;Testing;tool;transcriptomic profiling;Turtles;Visual System;Visualization;Work
+---
+application_id: 11198159
+activity_code: T32
+title: Pediatric Cardiorespiratory Research Training Program:  Childhood origins of diseases across the lifespan.
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: NARRATIVE
+The goal of this application is to create a new T32 program, Pediatric Cardiorespiratory Research Training
+Program: Childhood origins of diseases across the lifespan, allowing for identification and engagement of
+those pediatric fellows and PhD scientists with the aptitude and passion to develop as scientists through this
+mentored training program. We will focus on research themes in which the Vanderbilt Department of Pediatrics
+has internationally recognized programs of discovery combined with a record of sustained excellence in
+research mentorship. Each T32 fellow Investigator will have an individualized training program developed by
+the mentor and Training Directors in collaboration with a multidisciplinary scientific oversight team, with the
+option of completing a Masters res...
+terms: <Childhood><Disease><Disorder><Research Training><Training Programs><life span><lifespan><pediatric>
+---
+application_id: 11060082
+activity_code: F31
+title: A Dual Role of Activin-like kinase 5 (ALK5)-mediated TGF Beta Signaling in Adult Neurogenesis
+org_name: UNIVERSITY OF CINCINNATI
+phr: Project Narrative Adult neurogenesis takes place in the SVZ of the lateral ventricles and the SGZ of the dentate gyrus in the hippocampus. While TGF-β signaling has been implicated in this process, the precise molecular mechanisms are not well known. This proposal will provide molecular insights for the regulatory role of TGF-β signaling in the addition of adult born neurons during different stages of adult neurogenesis.
+terms: Activins;Adult;adult neurogenesis;Affect;Animal Model;Anxiety;Astrocytes;Brain;Cell Lineage;cell type;Cells;Central Nervous System;Central Nervous System Diseases;Chronic;Cognitive;cognitive function;Data;density;dentate gyrus;Development;Embryo;Emotional;forgetting;functional outcomes;Genes;Goals;Hippocampus;Homeostasis;In Vitro;in vivo;inhibitor;insight;Knock-out;Knockout Mice;Label;lateral ventricle;learning outcome;Ligands;Maps;Mediating;Memory;Mental Depression;Microglia;migration;Migration Assay;Modeling;Molecular;Morphology;mouse model;Mus;neonatal mice;nerve stem cell;Nervous System Disorder;nestin protein;Neural Inhibition;neurite growth;neuroblast;neurodevelopment;neurogenesis;neuron development;Neurons;novel;Oncogenes;Pathway interactions;Pattern;Perinatal;pharmacologic;Phenotype;Phosphotransferases;Play;Process;Proliferating;Prosencephalon;Protocols documentation;receptor;Regulation;repaired;Reporter;Role;Signal Pathway;Signal Transduction;single-cell RNA sequencing;Site;Sorting;Specificity;stem cell migration;stem cell population;stem cell proliferation;Tamoxifen;Testing;TGF-beta type I receptor;Therapeutic;Time;transcriptomics;Transforming Growth Factor beta;Transforming Growth Factor beta Receptors;Vertebral column
+---
+application_id: 11197996
+activity_code: T32
+title: Postdoctoral Research Training in Lung Injury and Inflammation
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: Project Narrative
+The primary goal of our T32 training program is the career development of the next generation of scientific
+leaders in the fields of pulmonary and critical care medicine along three integrated thematic pathways
+that provide comprehensive training in translational research focused on the pathophysiologic processes
+of lung injury and inflammation. Our strong mentorship platform derives from a large group of senior
+investigators who are leaders in multidisciplinary research and emphasize novel investigative approaches
+in an ethical and scientifically responsible environment. We are committed to training the next generation
+of scientific leaders in pulmonary research, including individuals from under-represented groups.
+terms: <Lung Inflammation><Lung damage><Pneumonitis><Postdoc><Postdoctoral Fellow><Pulmonary Inflammation><Research Associate><Research Training><lung injury><post-doc><post-doctoral><post-doctoral trainee><pulmonary damage><pulmonary injury><pulmonary tissue damage><pulmonary tissue injury><research associates>
+---
+application_id: 11096819
+activity_code: T32
+title: Graduate Training in Neuroscience at the University of Mississippi Medical Center
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: PROJECT NARRATIVE
+
+The University of Mississippi of Medical Center Program in Neuroscience trains and supports students to become the independent research scientists. It is a comprehensive training program focused on all aspects of the brain and nervous system from the molecular to behavioral and encompassing basic science, preclinical, and translational aspects. We aim to mold students that are rigorous research scientists and strong communicators with robust foundational knowledge of neuroscience ready and able to advance biomedical research and improve human health.
+terms: <Medical center><Mississippi><Neurosciences><Training><Universities>
+---
+application_id: 11197815
+activity_code: T32
+title: Cardiovascular Science Training Program (CSTP)
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: Project Narrative
+Our cardiovascular sciences training program, coupled with outstanding institutional support, and
+state of-the-art approaches seeks to provide graduate students, postdoctoral fellows and physician-
+scientists with unique opportunities to address modern-era data-driven research projects by delivering
+a contemporary and collaborative didactic research experience and professional development to train
+and mentor the next generation of CVP researchers.
+terms: <Cardiovascular><Cardiovascular Body System><Cardiovascular Organ System><Cardiovascular system><Heart Vascular><Science><Training Programs><circulatory system>
+---
+application_id: 11093180
+activity_code: T32
+title: iHEAL : Improving HEalth Across the Lifespan
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: Our goal is to establish the inaugural University of Alabama at Birmingham (UAB) School of Nursing T32 training program, Improving HEalth Across the Lifespan (iHEAL), which will be one of the few Deep South nurse scientist training programs addressing comprehensive healthy living from a life-course lens. This program aims to cultivate the next generation of nurse scientists who can address a wide variety of health challenges through lenses of health disparities, social determinants of health, population and community health, prevention and health promotion, and systems and models of care. Through high-quality mentorship, experiential learning, and required coursework, pre- and postdoctoral trainees will acquire in-depth knowledge about transdisciplinary research, research ethics, professio...
+terms: <Health><improved><life span><lifespan>
+---
+application_id: 11095414
+activity_code: T32
+title: Epilepsy Training Grant
+org_name: UNIVERSITY OF VIRGINIA
+phr: Epilepsy, typically characterized by seizures, is the fourth most common neurological disorder, yet we do not have a cure or fully understand the underlying disease process. The Epilepsy Training Program will bring together a diverse group of basic science and clinical faculty to provide outstanding training in the basic, translational, and clinical aspects of epilepsy to predoctoral students. Our program will provide trainees with the necessary foundation to contribute to the current and future NINDS Benchmarks for Epilepsy Research and speed up development of a cure for this devastating neurological disease.
+terms: <Epilepsy><Epileptic Seizures><Epileptics><Grant><Seizure Disorder><Training><epilepsia><epileptogenic>
+---
+application_id: 10874430
+activity_code: F31
+title: A Dual Role of Activin-like kinase 5 (ALK5)-mediated TGF Beta Signaling in Adult Neurogenesis
+org_name: UNIVERSITY OF CINCINNATI
+phr: Project Narrative Adult neurogenesis takes place in the SVZ of the lateral ventricles and the SGZ of the dentate gyrus in the hippocampus. While TGF-β signaling has been implicated in this process, the precise molecular mechanisms are not well known. This proposal will provide molecular insights for the regulatory role of TGF-β signaling in the addition of adult born neurons during different stages of adult neurogenesis.
+terms: Activins;Adult;adult neurogenesis;Affect;Animal Model;Anxiety;Astrocytes;Brain;Cell Lineage;cell type;Cells;Central Nervous System;Central Nervous System Diseases;Chronic;Cognitive;cognitive function;Data;density;dentate gyrus;Development;Embryo;Emotional;forgetting;functional outcomes;Genes;Goals;Hippocampus;Homeostasis;In Vitro;in vivo;inhibitor;insight;Knock-out;Knockout Mice;Label;lateral ventricle;learning outcome;Ligands;Maps;Mediating;Memory;Mental Depression;Microglia;migration;Migration Assay;Modeling;Molecular;Morphology;mouse model;Mus;neonatal mice;nerve stem cell;Nervous System Disorder;nestin protein;Neural Inhibition;neurite growth;neuroblast;neurodevelopment;neurogenesis;neuron development;Neurons;novel;Oncogenes;Pathway interactions;Pattern;Perinatal;pharmacologic;Phenotype;Phosphotransferases;Play;Process;Proliferating;Prosencephalon;Protocols documentation;receptor;Regulation;repaired;Reporter;Role;Signal Pathway;Signal Transduction;single-cell RNA sequencing;Site;Sorting;Specificity;stem cell migration;stem cell population;stem cell proliferation;Tamoxifen;Testing;TGF-beta type I receptor;Therapeutic;Time;transcriptomics;Transforming Growth Factor beta;Transforming Growth Factor beta Receptors;Vertebral column
+---
+application_id: 11095680
+activity_code: T32
+title: Predoctoral Training in Basic Neuroscience
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: This application requests funds to support the progress of the top neuroscience graduate students in their second year of training at the University of Pittsburgh. The Center for Neuroscience has a broad, well-developed, an integrated training program with a history of recruiting excellent students and providing rigorous training by a diverse and involved group of faculty. Our program provides extensive training in research laboratories integrated with a mix of coursework and training in responsible conduct of research and professional skills.
+terms: <Neurosciences><Training><pre-doc><pre-doctoral>
+---
+application_id: 10835862
+activity_code: F31
+title: The role of meningeal immune cells in the efficacy of CGRP-based migraine therapies
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: Project Narrative Migraine is a painful, chronic neurological disorder that represents the second most disabling illness worldwide. This proposal investigates how two mechanisms that contribute to migraine pain, immune cell activation and calcitonin gene-related peptide (CGRP) signaling, may be connected to understand how CGRP receptor antagonist migraine therapies work. The outcomes of these studies may not only reveal a mechanism underlying the therapeutic efficacy of CGRP antagonists but potentially novel targets and mechanisms to improve existing migraine therapies.
+terms: Afferent Neurons;Anatomy;antagonist;Attenuated;Auras;Behavior;Behavioral;Behavioral Assay;Calcitonin;Calcitonin Gene-Related Peptide;Calcitonin-Gene Related Peptide Receptor;career;Caring;Cells;Cephalic;Cerebrospinal Fluid;Chronic;Classic Migraine;Clinical;clinically relevant;Coculture Techniques;cytokine;Data;Development;Disabling;Disease;drug action;Ensure;Event;experimental study;Fellowship;Flow Cytometry;Fluorescent in Situ Hybridization;Future;Goals;Headache;Hypersensitivity;Immune;immune activation;Immune Targeting;improved;in vivo;Inflammation Mediators;Inflammatory;intravenous administration;Macrophage;Macrophage Activation;mechanical allodynia;Mechanics;Mediating;Meningeal;Meninges;Mentors;Messenger RNA;Migraine;migraine treatment;minimally invasive;Modeling;Morphology;mouse model;Mus;Nervous System Disorder;neural;Neurologic;Neurologist;Neurology;Neurons;novel;optogenetics;Outcome;Outcome Study;Pain;pain behavior;Pain Measurement;pain reduction;Pain Research;Patients;Peptide Signal Sequences;Peptide Synthesis;Phenotype;Physicians;Physiology;Plasma;prevent;receptor;receptor expression;receptor-activity-modifying protein;Reporting;Research;Research Personnel;RNA;Role;Scientist;single-cell RNA sequencing;Spreading Cortical Depression;spreading depression;Structure of trigeminal ganglion;success;Technical Expertise;Testing;Time;Training;Treatment Efficacy;two photon microscopy;Work
+---
+application_id: 11091792
+activity_code: T32
+title: Clinical and Translational Science Collaborative of Northern Ohio, CTSA Predoctoral T32 at Case Western Reserve University
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: The Clinical and Translational Science Collaborative (CTSC) at Case Western Reserve University has a long-established and strong foundation for enhancing the scope and quality of Clinical and Translational Science (CTS) across its partner institutions. The proposed predoctoral training program will expand the objectives of the overall CTSC by providing training and education to the next generation of clinical and translational (C/T) researchers. Predoctoral students will be prepared for C/T research in one of several possible programs that all emphasize research leading to improved health for all Americans. Primary programs emphasize training in areas directly relevant to human health and incorporate studies that can lead to a better understanding of individual risks and interventions.
+terms: <Clinical Sciences><Ohio><Translational Research><Translational Science><Universities><pre-doc><pre-doctoral><translation research><translational investigation>
+---
+application_id: 10909038
+activity_code: F31
+title: The classical complement system in post-traumatic thalamic neuroinflammation
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: PROJECT NARRATIVE Thalamic inflammation after traumatic brain injury is associated with a host of disabling and chronic deficits, including post-traumatic epilepsy and sleep disturbances, for which no approved treatments currently exist. This proposed work integrates molecular and electrophysiological techniques within neuroscience and immunology to probe how the overactivation of the classical complement system in the thalamus can set the stage for the development of long-term impairments. The ultimate goal of this research is to leverage and intercept immune pathology in the thalamus to guide the development of urgently-needed therapies for traumatic brain injury and its symptomology.
+terms: Acute;Affect;Affinity;Antibody Therapy;Behavior;Biological Markers;Brain;Cd68;cell type;Cells;Centers for Disease Control and Prevention (U.S.);Characteristics;Chronic;Classical Complement Pathway;Clinical Treatment;Collaborations;Complement;Complement 1q;Complement 4b;Complement Activation;complement system;Coupled;Data Science;Development;Disabling;Electroencephalography;Electrophysiology (science);Epidemic;Epilepsy;Epileptogenesis;Event;Evolution;Exhibits;experimental study;Feedback;Functional disorder;Generations;Genes;Genetic;Gliosis;Goals;Human;Immune;Immunohistochemistry;Immunology;Impaired cognition;Impairment;Individual;Inflammation;injured;Injury;Institution;Intercept;Ipsilateral;Laboratories;Long-Term Effects;Mediating;meetings;memory consolidation;Memory impairment;Mentorship;Microglia;Molecular;Molecular Profiling;motor impairment;motor recovery;mouse model;Mus;nanobodies;neocortical;neuroinflammation;Neurons;Neurosciences;non rapid eye movement;novel;Oligodendroglia;Outcome;Pathologic;Pathology;Persons;Phagocytes;Phagosomes;Play;Post-Traumatic Epilepsy;Prevalence;prevent;Proteins;Reporting;Research;Resources;Rodent;Role;Short-Term Memory;Sleep;Sleep Deprivation;Sleep Disorders;Sleep disturbances;Sleep Fragmentations;sleep regulation;sleep spindle;Sleeplessness;Source;statistics;symposium;Synapses;synaptic pruning;Tamoxifen;targeted treatment;TBI Patients;TBI treatment;Techniques;Testing;Thalamic structure;Therapeutic;Time;tool;Training;Traumatic Brain Injury;Work;World Health Organization
+---
+application_id: 11096797
+activity_code: T32
+title: Postdoctoral T32 in Integrated Computational and Experimental Sensorimotor Control
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: Movement is fundamental to human existence, yet impairments of human movement, due to stroke, degenerative disease, and developmental disorders, affect 5% of the population over their lifespan. To understand the underlying brain processes that control human movement, and their malfunction in disease, requires a major interdisciplinary effort using the latest scientific developments and technological tools. Such advances require training in the methods-base and knowledgebase of several disciplines, to focus a range of modern methods on the fundamental problem of how the brain controls the body.
+terms: <Postdoc><Postdoctoral Fellow><Research Associate><post-doc><post-doctoral><post-doctoral trainee><research associates>
+---
+application_id: 10908487
+activity_code: F31
+title: Co-transcriptional mechanisms of neuronal microexon splicing: causes and consequences for 3' end processing
+org_name: YALE UNIVERSITY
+phr: PROJECT NARRATIVE Cellular identity and function is determined by gene regulation steps, including pre-mRNA splicing that dictates which protein-coding exons will be incorporated into mRNAs. Neuronal genes are enriched in tiny “microexons” required for proper brain development; failure to include microexons is associated with autism. Here, I will use novel methods to identify how microexons are recognized and spliced into mRNA during transcription.
+terms: 5&apos; Splice Site;Address;Alternative Splicing;autism spectrum disorder;Biology;Brain;cell type;Cells;Code;Codependence;Coupled;Data;Development;DNA-Directed RNA Polymerase;Engineering;Erythroid Cells;Event;Excision;Exons;experimental study;Failure;Gene Expression Regulation;Genes;Genetic Enhancer Element;Genetic Transcription;in vivo;Introns;Length;Libraries;Link;Messenger RNA;Methods;Molecular;mRNA Precursor;Nervous System;Nervous System Disorder;neuron development;Neurons;Neurotransmitters;novel;Nucleotides;Patients;Play;Polyadenylation;Polymerase;Positioning Attribute;Precision Run-On Sequencing;Protein Isoforms;Proteins;receptor;Regulation;Reporter;RNA;RNA Polymerase II;RNA Processing;RNA Splicing;Role;Series;Signal Transduction;single molecule;Site;Study models;System;Tail;Time;Tissues;Transcript;Transcription Elongation;Transcription Initiation Site;transmission process;Variant;Work;Yeasts
+---
+application_id: 11026338
+activity_code: F31
+title: Comparative Approaches for the Study of Somatosensory Processing in Drosophila
+org_name: NORTHWESTERN UNIVERSITY
+phr: PROJECT NARRATIVE Increasing the diversity of the model systems we study will proportionally increase our understanding of how sensory systems evolve, reveal conserved principles of sensory processing, and ultimately help us better extrapolate results we obtain in animal studies to the human nervous system, in both normal and disease states. Here, we propose to expand our understanding of the organization of temperature and humidity sensing circuits by introducing the desert fly Drosophila mojavensis (adapted to dry and heat conditions) as a new model alongside the common laboratory fruit fly Drosophila melanogaster. This comparative work will lead to a greater understanding of the conserved principles behind somatosensory processing and behavior, and in the long term help enhance our unde...
+terms: Air;Animal Model;Animals;Behavior;Biological Assay;Biological Models;Brain;Cactaceae;Caenorhabditis elegans;calcium indicator;cell type;Clustered Regularly Interspaced Short Palindromic Repeats;comparative;CRISPR/Cas technology;Dangerousness;design;Disease;Drosophila genus;Drosophila melanogaster;Dryness;egg;Environment;extreme heat;extreme temperature;flexibility;fly;Funding;Gene Transfer Techniques;Genes;Genetic;genetic manipulation;genome editing;Goals;Human;Humidity;Image;insight;Invertebrates;Juice;Knock-out;Laboratories;Love;Mediating;Mexico;Modality;model organism;Modeling;Molecular;Mus;mutant;Nervous System;neural circuit;Neurobiology;neurogenetics;Neurons;Neurosciences;optogenetics;pain sensation;preference;pressure;promoter;Protocols documentation;Reagent;receptor;Receptor Gene;response;sensor;Sensory;sensory system;Shapes;somatosensory;Southwestern United States;Techniques;Technology;Temperature;Temperature Sense;Transgenes;Transgenic Organisms;Work

@@ -1,0 +1,57 @@
+{
+  "total_projects": 10132,
+  "num_batches": 10,
+  "batch_size": 1014,
+  "batches": [
+    {
+      "batch": 1,
+      "file": "remaining_batch_01.txt",
+      "count": 1014
+    },
+    {
+      "batch": 2,
+      "file": "remaining_batch_02.txt",
+      "count": 1014
+    },
+    {
+      "batch": 3,
+      "file": "remaining_batch_03.txt",
+      "count": 1014
+    },
+    {
+      "batch": 4,
+      "file": "remaining_batch_04.txt",
+      "count": 1014
+    },
+    {
+      "batch": 5,
+      "file": "remaining_batch_05.txt",
+      "count": 1014
+    },
+    {
+      "batch": 6,
+      "file": "remaining_batch_06.txt",
+      "count": 1014
+    },
+    {
+      "batch": 7,
+      "file": "remaining_batch_07.txt",
+      "count": 1014
+    },
+    {
+      "batch": 8,
+      "file": "remaining_batch_08.txt",
+      "count": 1014
+    },
+    {
+      "batch": 9,
+      "file": "remaining_batch_09.txt",
+      "count": 1014
+    },
+    {
+      "batch": 10,
+      "file": "remaining_batch_10.txt",
+      "count": 1006
+    }
+  ]
+}

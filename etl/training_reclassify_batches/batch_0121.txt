@@ -1,0 +1,465 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 121 of 459 (50 projects):
+
+---
+application_id: 10984093
+activity_code: K24
+title: META2 - Mentor, Educate, Train, Advocate: Patient Oriented Researchers inCardiometabolic Disease
+org_name: STANFORD UNIVERSITY
+phr: PROJECT NARRATIVE A capable, highly trained workforce of patient oriented researchers is necessary for the continuous translation of scientific advancement into improved health outcomes - it has been shown that a diverse scientific workforce leads to overall increased research productivity and quality, due to capitalizing on unique perspectives and innovative ideas. Effective mentoring at early career stages is necessary to support researchers in becoming independent patient oriented research (POR) investigators. The META2 proposal leverages Dr. Latha Palaniappan’s expertise in POR and mentorship of diverse trainees to train the next generation of POR scientists focused on cardiometabolic diseases in diverse populations.
+terms: Academy;Address;Advocate;Area;Asian;Asian Americans;Awareness;Biomedical Research;Cardiometabolic Disease;cardiometabolic risk;cardiometabolism;Cardiovascular system;career;career development;Chronic Disease;Clinical;clinical center;Clinical Research;Clinical Trials;cohort;Cohort Studies;Communities;community engagement;Core Facility;Creativeness;Data Science;Dedications;design;Disease;Education;Educational process of instructing;Engineering;Ensure;Environment;Epidemiology;ethnic minority;experience;Faculty;Fostering;Foundations;Funding;Future;Grant;Health;Health Benefit;Health Care;improved;Individual;innovation;Institution;International;K-Series Research Career Programs;Knowledge;Leadership;Mathematics;Medicine;Mentors;Mentorship;Methods;Mid-Career Clinical Scientist Award (K24);Morehouse School of Medicine;multidisciplinary;Native Hawaiian or Other Pacific Islander;next generation;Outcome;Ownership;Paper;patient oriented;patient oriented research;Patient-Focused Outcomes;Pattern;Physicians;population health;Population Heterogeneity;Positioning Attribute;Postdoctoral Fellow;pre-doctoral;Prevention;Prevention Research;Principal Investigator;Productivity;professor;programs;Publications;Qualifying;racial minority;recruit;Research;research and development;Research Design;Research Personnel;Research Training;Resources;Risk Factors;Scientific Advances and Accomplishments;Scientist;Secure;skills;Students;Subgroup;success;Training;translational scientist;Translations;undergraduate student;Underrepresented Populations;United States National Institutes of Health;Universities;Weight;Work;World Health
+---
+application_id: 10992614
+activity_code: K24
+title: Impact of L. plantarum 299v supplementation on endothelial function and inflammation in humans with type 2 diabetes
+org_name: MEDICAL COLLEGE OF WISCONSIN
+phr: Recent human studies report an emerging, novel relationship between the gut microbiome and its metabolites with the development of heart attacks and strokes. This application will determine whether these favorable effects are seen in individuals with type 2 diabetes who have a significantly different gut microbiota and microbiota metabolism than those without type 2 diabetes. Additionally, this application will serve as an excellent platform for mentoring post-doctoral fellows and junior faculty to learn how to conduct impactful patient-oriented human clinical translation research related to vascular biology.
+terms: acute coronary syndrome;Adipose tissue;Affect;Amines;Arterial Fatty Streak;Arteries;Atherosclerosis;Biological Assay;Biology;Biopsy;Blood Vessels;brachial artery;cardiovascular risk factor;Cardiovascular system;career;Cells;Clinical;clinical translation;Clinical Trials;combat;Coronary Arteriosclerosis;Data;design;Development;Diabetes Mellitus;Double-Blind Method;Endothelial Cells;Endothelium;Event;Faculty;Genetic Transcription;glucose tolerance;glycemic control;Goals;gut microbiome;gut microbiota;Human;human microbiota;improved;Incidence;Individual;Inflammation;Inflammatory;inflammatory marker;Insulin Resistance;insulin sensitivity;Insulin-Dependent Diabetes Mellitus;interest;Intervention;Intestinal permeability;Investigation;K-Series Research Career Programs;Kidney Diseases;Knowledge;Laboratories;Lactobacillus plantarum;Learning;Measurement;Measures;Medicine;member;men;Mentors;Mentorship;Metabolism;Methods;microbiota;microbiota composition;Microvascular Dysfunction;Modification;Mononuclear;Myocardial Infarction;Neuropathy;next generation;Non-Insulin-Dependent Diabetes Mellitus;novel;Obesity;Oxides;patient oriented;patient oriented research;Patients;Physicians;Physiology;Pilot Projects;Placebo Control;Placebos;Plasma;Postdoctoral Fellow;Prevalence;probiotic supplementation;Probiotics;Production;programs;Publishing;Randomized;Reporting;Research;Research Personnel;Resistance;Retinal Diseases;Risk;Risk Factors;Scientist;Signal Transduction;Stroke;Structure;Study Subject;success;Supplementation;systemic inflammatory response;Techniques;Testing;Time;transcriptome;transcriptome sequencing;Translational Research;ultrasound;Vascular Diseases;vascular endothelial dysfunction;Vascular Endothelium;vascular inflammation;Vasodilation;Video Microscopy;Volatile Fatty Acids;Woman;Work
+---
+application_id: 10893367
+activity_code: K08
+title: Alcohol's Impact on the Gut-Brain Axis in a Mouse Model of Multiple Sclerosis
+org_name: UNIVERSITY OF TEXAS AT AUSTIN
+phr: Project Narrative The underlying cause of multiple sclerosis (MS) remains elusive and is likely due to a combination of genetics and environmental exposures, with the growing appreciation that environmental factors, such as diet and the gut microbiome contribute to a large degree of the MS susceptibility risk. Alcohol is a common dietary factor used by MS patients and yet, despite its widespread use, potential for abuse and known gut, CNS and immune effects, alcohol’s role in MS is not well understood. The proposed research will begin to define alcohol’s dose-dependent effects in neuroinflammation by examining the immune system and the gut microbiome with the vision of generating hypotheses that can inform the direction and design of future diet studies in EAE and MS and expand the reperto...
+terms: Ablation;abuse liability;Address;Adoptive Transfer;Affect;Alcohol consumption;Alcohol dependence;alcohol effect;alcohol research;Alcohols;Animals;Anti-Inflammatory Agents;Antiinflammatory Effect;Astrocytes;Autoimmune Diseases;Automobile Driving;Basic Science;binge drinking;Bioinformatics;Biology;Blood - brain barrier anatomy;career development;Caring;Cells;Central Nervous System;Chronic;Clinical;Clinical Investigator Award;clinical training;CNS Demyelinating Autoimmune Diseases;Communication;Consumption;Critical Pathways;Data;density;design;Development;Diet;dietary;Dietary Factors;Disabling;Disease;Disease Outcome;disorder risk;Dose;Environmental Exposure;Environmental Risk Factor;enzyme linked immunospot assay;epidemiology study;Etiology;evidence base;experience;Experimental Autoimmune Encephalomyelitis;experimental study;Firmicutes;Flow Cytometry;Foundations;Funding;Future;Genes;Genetic;Germ-Free;gut microbiome;gut microbiota;gut-brain axis;Immune;Immune response;Immune system;Immunohistochemistry;Immunology;Individual;Inflammatory;insight;Investigation;Lead;Link;male;Mediating;medical schools;Mentors;Mentorship;microbial;microbiome;microbiome research;microbiota;Microglia;Modeling;mouse model;Multiple Sclerosis;multiple sclerosis patient;Mus;Nerve Degeneration;Neurobiology;Neuroimmune;neuroimmunology;neuroinflammation;Neurological disability;Neurology;neuroprotection;Outcome;Patients;Pattern;Peripheral;Peripheral Nervous System;Persons;Phenotype;Physicians;Predisposition;Probiotics;professor;Program Development;Regulatory T-Lymphocyte;Research;Risk;Role;Scientist;sex;Sex Differences;sexual dimorphism;Spinal Cord;Symptoms;System;T cell therapy;T-Lymphocyte;Testing;Therapeutic;Training;transcriptome sequencing;transcriptomics;treatment response;Vision;Vocational Guidance;Work;young adult
+---
+application_id: 10755681
+activity_code: K24
+title: Impact of L. plantarum 299v supplementation on endothelial function and inflammation in humans with type 2 diabetes
+org_name: MEDICAL COLLEGE OF WISCONSIN
+phr: Recent human studies report an emerging, novel relationship between the gut microbiome and its metabolites with the development of heart attacks and strokes. This application will determine whether these favorable effects are seen in individuals with type 2 diabetes who have a significantly different gut microbiota and microbiota metabolism than those without type 2 diabetes. Additionally, this application will serve as an excellent platform for mentoring post-doctoral fellows and junior faculty to learn how to conduct impactful patient-oriented human clinical translation research related to vascular biology.
+terms: acute coronary syndrome;Adipose tissue;Affect;Amines;Arterial Fatty Streak;Arteries;Atherosclerosis;Biological Assay;Biology;Biopsy;Blood Vessels;brachial artery;cardiovascular risk factor;Cardiovascular system;career;Cells;Clinical;clinical translation;Clinical Trials;combat;Coronary Arteriosclerosis;Data;design;Development;Diabetes Mellitus;Double-Blind Method;Endothelial Cells;Endothelium;Event;Faculty;Genetic Transcription;glucose tolerance;glycemic control;Goals;gut microbiome;gut microbiota;Human;human microbiota;improved;Incidence;Individual;Inflammation;Inflammatory;inflammatory marker;Insulin Resistance;insulin sensitivity;Insulin-Dependent Diabetes Mellitus;interest;Intervention;Intestinal permeability;Investigation;K-Series Research Career Programs;Kidney Diseases;Knowledge;Laboratories;Lactobacillus plantarum;Learning;Measurement;Measures;Medicine;member;men;Mentors;Mentorship;Metabolism;Methods;microbiota;microbiota composition;Microvascular Dysfunction;Modification;Mononuclear;Myocardial Infarction;Neuropathy;next generation;Non-Insulin-Dependent Diabetes Mellitus;novel;Obesity;Oxides;patient oriented;patient oriented research;Patients;Physicians;Physiology;Pilot Projects;Placebo Control;Placebos;Plasma;Postdoctoral Fellow;Prevalence;probiotic supplementation;Probiotics;Production;programs;Publishing;Randomized;Reporting;Research;Research Personnel;Resistance;Retinal Diseases;Risk;Risk Factors;Scientist;Signal Transduction;Stroke;Structure;Study Subject;success;Supplementation;systemic inflammatory response;Techniques;Testing;Time;transcriptome;transcriptome sequencing;Translational Research;ultrasound;Vascular Diseases;vascular endothelial dysfunction;Vascular Endothelium;vascular inflammation;Vasodilation;Video Microscopy;Volatile Fatty Acids;Woman;Work
+---
+application_id: 11001195
+activity_code: K24
+title: Convergence of Vitamin E, THC, Nicotine, Propylene Glycol and Glycerin Effects on Lung Inflammation When Vaped
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: PROJECT NARRATIVE Over 10% of the U.S. population is using e-cigarettes and vaping devices, with upwards of 25% of middle- schoolers and 50% of high-schoolers vaping regularly. A new generation of patient oriented researchers are needed to define and treat the health problems that will occur due to the use of these drug delivery devices. As a successful mid-career clinician, researcher and dedicated mentor, I request K24 support to protect my time such that I may expand my patient oriented research, develop my research expertise in new ways and increase my mentorship of outstanding junior investigators.
+terms: Acute;Adolescent and Young Adult;Adverse effects;Advertising;Aerosols;Affect;Age;age group;Age Years;airway inflammation;antimicrobial;Area;Asthma;asthmatic;Award;Back;Belief;Body System;Cannabinoids;career;CCL2 gene;Cell Physiology;Cells;Chemicals;Chronic;Chronic Disease;cigarette smoke;Clinical;Clinical Research;cohort;combustible cigarette;Compensation;Country;COVID-19;cytokine;Data;Dedications;design;Development;Devices;Disease;Drug Delivery Systems;Drug usage;e-cigarette aerosols;Electronic cigarette;electronic cigarette use;electronic cigarette user;Ensure;eosinophil;Eosinophilia;Eotaxin;Epidemic;epidemiologic data;Evolution;experience;Explosion;Extrinsic asthma;Faculty;Feeling;Fibrosis;Generations;Glycerol;Grant;Health;health assessment;Heart;high risk population;High School Student;Host Defense;Human;human subject;IL8 gene;Immune;Immunologics;immunoregulation;improved;Inflammatory;Inhalant dose form;Inhalation;Institutional Review Boards;Interleukin-4;Interleukin-5;Interleukin-6;Kidney;Learning;Life;Liver;Longitudinal Studies;lung injury;Marijuana Smoking;marijuana user;Medicine;Memory;Mentors;Mentorship;methacholine;microbiome;mid-career faculty;monocyte;Nasal Epithelium;National Heart, Lung, and Blood Institute;neutrophil;never smoker;Nicotine;non-smoking;novel;Paper;patient oriented;patient oriented research;Patients;periostin;Persons;Phenotype;Physiological;Plasma;Population;Positioning Attribute;Predisposition;Productivity;professor;Propylene Glycols;Protocols documentation;Publishing;pulmonary;Pulmonary Function Test/Forced Expiratory Volume 1;Pulmonary Inflammation;RANTES;Recontacts;recruit;Recruitment Activity;Research;Research Design;Research Personnel;Running;Safety;Saliva;sex;skills;Smoke;Spirometry;Sputum;success;systemic inflammatory response;Techniques;Tetrahydrocannabinol;Time;Tobacco;Tobacco Industry;Training Support;transcriptome sequencing;Translational Research;vaper;vaping;vaping THC;Visit;Vitamin E;Work;young adult
+---
+application_id: 11043415
+activity_code: K24
+title: SMART POR: Supporting and Mentoring Across Respiratory Topics in Patient Oriented Research
+org_name: UNIVERSITY OF CHICAGO
+phr: PROJECT NARRATIVE Chronic Obstructive Pulmonary Disease (COPD) affects more than 16 million US adults, many of whom experience high rates of acute care revisits after initial COPD hospitalizations due to transitions of care (TOC) failures. My current NHLBI R01 aims to address gaps in effectiveness and implementation of COPD TOC programs by testing COPD TOC intervention bundles across 20 diverse US hospitals, utilizing rigorous implementation science (IS) and human-centered design (HCD) methods. This K24 will allow me to work with my team of mentees to address methodology gaps by developing, testing, and disseminating two innovative tools, including the "CHIMERA" crosswalk, which will optimize qualitative data collection to inform intervention design, and the "SMART COPD" framework, which w...
+terms: Accident and Emergency department;acute care;Address;Adult;Affect;Asthma;care delivery;care outcomes;career;Caring;Chimera organism;Chronic Disease;Chronic Obstructive Pulmonary Disease;Cluster randomized trial;Collaborations;comparative;concept mapping;Consolidated Framework for Implementation Research;Data;data acquisition;Data Collection;data harmonization;Data Reporting;data standards;design;Development;dissemination strategy;Education;Effectiveness;Evaluation;evidence base;experience;Failure;Foundations;health care delivery;Hospital Societies;Hospitalization;Hospitals;human centered design;Hybrids;implementation context;implementation framework;implementation intervention;implementation science;improved;improved outcome;Infrastructure;innovation;Intervention;Lead;Literature;Logic;Medicine;Mentors;Methodology;Methods;Midcareer Investigator Award in Patient-Oriented Research;Modeling;mortality;Names;National Heart, Lung, and Blood Institute;novel;Outcome;patient oriented research;Patient-Focused Outcomes;Patients;Peer Review;Persons;Pharmaceutical Preparations;post implementation;Process;Program Evaluation;Program Sustainability;programs;prospective;Publications;pulmonary function decline;Qualitative Methods;Reporting;Research;Research Personnel;Research Project Grants;respiratory;Review Literature;Site;Standardization;Testing;therapy design;Time;tool;Training;trial comparing;virtual;Visit;Walking;Work
+---
+application_id: 10783453
+activity_code: K24
+title: Mentoring in Patient Oriented Research in Lung Disease through a Sex and Gender Lens
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: PROJECT NARRATIVE Rigorous consideration of sex and gender have not been routine in data science, Network Medicine, and Patient Oriented Research in lung disease. Addressing COPD through a sex and gender lens will promote translation of big data to actionable clinical innovations for women and men; investigation of association between mosaic chromosomal alterations of X and loss of Y chromosomes with COPD phenotypes, integration with Omics data and with gene regulatory networks will support advancing this goal. Mentoring and dissemination of sex and gender approaches to data analytics will inform strategies for Precision Pulmonary Medicine.
+terms: Address;affection;age-related disease;Aging;Area;Automobile Driving;Awareness;Big Data;Biological;biological sex;Biology;career;career development;Cause of Death;Chromosome abnormality;chromosome Y loss;Chronic Obstructive Pulmonary Disease;Clinical;clinically actionable;cohort;Consultations;Data;Data Analyses;Data Analytics;data dissemination;Data Science;Data Scientist;Data Security;Development;Disease;DNA Methylation;Epidemiology;Epigenetic Process;Evaluation;Exclusion;Exhibits;Faculty;Female;Funding;Gender;gender difference;Gene Expression;gene regulatory network;Genes;Genetic;Genomics;Goals;Health;improved;Informatics;innovation;insight;interest;Investigation;investigator training;Leadership;lens;Life;Lung;Lung CAT Scan;Lung Diseases;lung health;male;Malignant neoplasm of lung;Mediating;Medical Students;Medicine;men;Mentors;Mentorship;Methods;Modeling;Molecular;mosaic;Mosaicism;Multiomic Data;multiple omics;National Heart, Lung, and Blood Institute;Network-based;next generation;novel;Obstructive Lung Diseases;Pathogenesis;Pathway interactions;patient oriented research;Phenotype;Precision Medicine Initiative;Process;programs;Proteomics;Pulmonary Emphysema;pulmonary function;Pulmonology;Reproducibility;Research;Research Personnel;Research Support;Risk;Science;Scientist;sex;sex as a biological variable;Sex Bias;Sex Chromosomes;Sex Differences;success;Symptoms;tool;Training;Training Support;Trans-Omics for Precision Medicine;Translations;treatment response;Woman;Women&apos;s Health;Work;X Chromosome;Y Chromosome
+---
+application_id: 11082877
+activity_code: K24
+title: Mentoring in Sex and Gender-informed Multidisciplinary Research on Cardiometabolic Comorbidities in Persons with HIV
+org_name: EMORY UNIVERSITY
+phr: PROJECT NARRATIVE While cardiovascular disease (CVD) is a leading cause of serious non-AIDS events and death in persons with HIV (PWH) despite antiretroviral therapy, we have a limited understanding of the underlying pathophysiologic mechanisms of CVD in PWH and the impact of sex and gender. Through this K24 award, my career objectives are to broaden my knowledge in the field through the integration of metabolomic, lipidomic and multi-omic methodologies, strengthen my understanding of the intersection between sex and gender science, and leverage my research infrastructure to build an impactful mentoring program to guide the next generation of leaders in multidisciplinary patient-oriented HIV research on cardiometabolic comorbidities.
+terms: Accounting;Acquired Immunodeficiency Syndrome;Acute myocardial infarction;Advanced Development;aged;Aging;Amino Acids;antiretroviral therapy;Area;arterial tonometry;Automobile Driving;biomarker identification;Biopsy;Blood;Carbohydrates;Cardiometabolic Disease;cardiometabolic risk;cardiometabolism;Cardiovascular Diseases;cardiovascular disorder risk;cardiovascular risk factor;career;career development;Carotid Atherosclerotic Disease;CD4 Positive T Lymphocytes;Cells;Centers of Research Excellence;Cessation of life;Chronic;Clinical;Clinical Research;Cohort Studies;Collaborations;Communicable Diseases;comorbidity;Data;data integration;data tools;Development;Dilatation - action;Disease;DNA;DNA Integration;early onset;Enrollment;Ensure;Estrogen deficiency;Event;experience;Functional disorder;Funding;Gender;Goals;high risk;high risk men;high risk population;High Risk Woman;HIV;HIV Infections;Homeostasis;Immune;immune activation;Immunology;improved;Incidence;Individual;Inflammation;insight;Interdisciplinary Study;Knowledge;Leadership;Life Expectancy;Link;lipidome;lipidomics;Lipids;Longitudinal cohort;Magnetic Resonance Imaging;Measurement;Mediating;Medicine;Men with HIV;Mentors;Mentorship;Metabolic Pathway;metabolome;metabolomics;Methodology;Methods;Mid-Career Clinical Scientist Award (K24);mid-career faculty;Morbidity - disease rate;mortality;multidisciplinary;multiple omics;next generation;novel therapeutics;Obesity;Outcome;Pathologic;Pathway Analysis;Pathway interactions;patient oriented;patient oriented research;Perimenopause;Peripheral;Peripheral Blood Mononuclear Cell;Persons;Phospholipids;Plasma;Play;Population;Populations at Risk;Postmenopause;Prevalence;Prevention;Prevention strategy;preventive intervention;Program Development;programs;progression risk;Rectum;Relative Risks;Research;Research Infrastructure;research study;Resolution;Risk;RNA;Role;Sampling;Science;Scientist;Severities;sex;Sex Differences;skills;Source;Specialized Center;Specimen;Structure;sudden cardiac death;systemic inflammatory response;T-Lymphocyte;Time;Tissues;Training;training opportunity;United States;United States National Institutes of Health;Vascular Diseases;Viral;virology;Visualization;Woman;women versus men;Work
+---
+application_id: 10757010
+activity_code: K24
+title: Patient Oriented Research and Mentorship and Training in Functional Neuroimaging of Obsessive-Compulsive Disorder
+org_name: YALE UNIVERSITY
+phr: NARRATIVE This K24 Mid-Career Investigator Career Development Award in Patient-Oriented Research seeks support for Christopher Pittenger, a tenured Associate Professor of Psychiatry at Yale University and Director of the Yale OCD Research Clinic; training and mentorship activities supported by this award will take place in the context of two NIMH-funded projects, R01 MH100068 and R01 MH116038. The Award will support Dr. Pittenger in a robust training plan aimed at increasing his skills in statistics and in the design and analysis of fMRI experiments, with the goal of making him a more effective collaborator and mentor in these domains. The robust Mentorship Plan supports a range of trainees, from high school students through junior faculty, with a particular focus on the research track wit...
+terms: Achievement;Adult;Area;Award;Brain;career;career development;Clinic;Clinical;Code;Collaborations;connectome;Data;Data Analyses;Dedications;Department chair;design;Disease;disorder control;Dissociation;Doctor of Philosophy;Double-Blind Method;Drug Exposure;Educational process of instructing;experimental study;Faculty;Feedback;Fluoxetine;Fostering;Functional disorder;Functional Magnetic Resonance Imaging;Funding;Future;Generations;Gilles de la Tourette syndrome;Goals;Grant;graph theory;Health Sciences;High School Student;Human;Image;Imaging technology;improved;Individual;Infrastructure;innovation;insight;K-Series Research Career Programs;Lead;Leadership;Linux;Machine Learning;Mentors;Mentorship;mid-career faculty;Motivation;National Institute of Mental Health;Neurobiology;neurofeedback;neuroimaging;Neurosciences;Neurosciences Research;next generation;novel;Obsessive-Compulsive Disorder;patient oriented;patient oriented research;Pharmaceutical Preparations;Pharmacotherapy;Physicians;Positioning Attribute;Postdoctoral Fellow;Preceptorship;predicting response;Prediction of Response to Therapy;programs;Protocols documentation;Psychiatry;Publishing;Pythons;Research;Research Ethics;Research Personnel;Research Project Grants;research study;Residencies;Rest;Scanning;Scientist;Services;simulation;skills;Statistical Methods;statistics;Structure;Students;success;symptomatic improvement;symptomatology;teacher;Time;Training;Training Activity;Training Programs;Training Support;Translational Research;Universities;Work
+---
+application_id: 10876497
+activity_code: K24
+title: Mentored patient-oriented research in preschool wheezing disorders
+org_name: EMORY UNIVERSITY
+phr: PROJECT NARRATIVE Preschool children with recurrent wheezing are a heterogeneous group with differing symptom presentations that likely contribute to differing longitudinal clinical outcomes. Given extremely limited symptom science in this population, the primary objectives of this cohort study are to are to determine whether symptom cluster predicts exacerbation (primary outcome) and quality of life (secondary outcome). Secondary goals are to identify pathways through next-generation sequencing that can be targeted in future personalized intervention studies to reduce morbidity and costs.
+terms: 6 year old;Address;Adrenal Cortex Hormones;Affect;affective disturbance;Age;Anxiety;Area;associated symptom;Asthma;Award;Biological;career development;Caregivers;Child;Chronic Disease;Clinical;Clinical Research;cohort;Cohort Studies;Collaborations;Complex;cost;Disease;Economic Burden;Education;Emergency department visit;Ensure;Environment;Esthesia;experience;Family;Fatigue;Fostering;functional status;Future;Gene Expression Profile;Goals;Health;hospitalization rates;impaired functional status;Impairment;improved;Incidence;Inflammatory;Infrastructure;innovation;Intervention Studies;Malignant Neoplasms;Mental Depression;Mental Health;Mentors;Molecular Biology;Morbidity - disease rate;mRNA sequencing;next generation sequencing;novel marker;Nursery Schools;Outcome;Pain;Pathway interactions;patient oriented;patient oriented research;Patient Outcomes Assessments;personalized intervention;Phenotype;physical conditioning;physical symptom;Play;Population;precision medicine;predict clinical outcome;Preschool Child;Prevalence;primary outcome;Principal Investigator;Productivity;programs;Psyche structure;Public Health;Quality of life;Recurrence;Research;Research Activity;Research Design;Resources;Respiratory Signs and Symptoms;Role;secondary outcome;Severities;Sleep disturbances;social;Statistical Methods;Statistical Study;Strategic Planning;symptom cluster;symptom science;Symptoms;Testing;therapy design;Time;Training;United States;Universities;Virus Diseases;Wheezing;Work
+---
+application_id: 10866075
+activity_code: K08
+title: Modulation of Ventricular-Vascular Coupling in Veno-Arterial Extracorporeal Membrane Oxygenation
+org_name: TUFTS MEDICAL CENTER
+phr: Project Narrative Use of veno-arterial extracorporeal membrane oxygenation (VA-ECMO) in acute myocardial infarction (AMI) is increasing exponentially yet mortality in this condition remains high. This work will define fundamental ventricular and vascular physiology in VA-ECMO and test novel approaches to mitigate increases in afterload and ventricular injury imparted by VA-ECMO. These results will provide urgently needed mechanistic insight into current and future management strategies to improve outcomes in patients with AMI associated cardiogenic shock.
+terms: Acute;Acute myocardial infarction;Adverse event;Advisory Committees;Animal Model;Aorta;aortic valve;Blood Vessels;Cannulas;Cannulations;Cardiogenic Shock;Cardiology;Cardiovascular system;Career Choice;career development;Circulation;Clinical;Clinical Research;clinical translation;cost;Counterpulsation;Coupling;Data;Death Rate;Development;Development Plans;Devices;Discipline;electric impedance;Engineering;Extracorporeal Membrane Oxygenation;Femur;Funding;Future;Goals;Grant;hemodynamics;improved;improved outcome;Injury;innovation;insight;Intervention;Intra-Aortic Balloon Pumping;Left;mechanical circulatory support;Mechanics;Mediating;Medical;Medicine;Mentorship;Methods;model design;model development;Modeling;Molecular;mortality;Myocardial;Myocardial dysfunction;myocardial injury;novel strategies;Oxygen Consumption;Patients;Peripheral;pharmacologic;Physicians;Physiology;Positioning Attribute;Pre-Clinical Model;preclinical study;pressure;Pump;Reporting;Research;Research Institute;Research Personnel;Resistance;Respiratory Diaphragm;Scientist;skills;supportive environment;Systole;Testing;therapeutic target;Thoracic aorta;Time;Training;Vasodilator Agents;Ventricular;Work;Workload;Writing
+---
+application_id: 11124136
+activity_code: T32
+title: Neural, Computational, and Neuromechanical Approaches to Motor Control
+org_name: UNIVERSITY OF CHICAGO
+phr: PROJECT NARRATIVE
+We aim to train the next generation of scientists to understand, treat and prevent movement
+disorders, and to become rigorous and creative investigators. We will provide predoctoral
+trainees with both specialized research training in their chosen discipline and give them an
+appreciation for the broader issues related to motor control and movement disorder-related
+research, from molecular, systems, behavioral to computational. We have an experienced and
+dedicated team of researchers in a rich and collaborative academic environment.
+terms: <Neuromechanics><motor control><neural><neuromechanical>
+---
+application_id: 10873270
+activity_code: K25
+title: Characterization of sarcopenia in heart failure by T1rho magnetic resonance fingerprinting
+org_name: CLEVELAND CLINIC LERNER COM-CWRU
+phr: Project Narrative Heart failure represents one of the most significant burdens to patients of advanced age and often presents with sarcopenia, or muscle wasting, which is independently predictive of poor outcomes. The objective of this project is to develop a novel quantitative magnetic resonance imaging technology and use it to characterize the skeletal muscle and myocardium in heart failure patients with sarcopenia. This project will advance the career development pursued by the investigator as well as provide a novel imaging tool that can help to improve the assessment, and potentially the clinical management, of heart failure patients with sarcopenia.
+terms: Address;Affect;Aging;aging population;aging related disease;Assessment tool;Biological Assay;Biology;Biology of Aging;biomedical imaging;Biopsy;Biopsy Specimen;Blood capillaries;bone imaging;cardiac aging;cardiac magnetic resonance imaging;Cardiopulmonary;cardiovascular imaging;career development;Career Mobility;Characteristics;Chronic Disease;Chronology;Clinical;Clinical assessments;Clinical Management;Consumption;density;Deposition;Deterioration;Development;Development Plans;Diabetes Mellitus;Disease;Doctor of Philosophy;Dual-Energy X-Ray Absorptiometry;Edema;Elderly;Evaluation;Exhibits;Fatty acid glycerol esters;Fiber;Fibrosis;Fingerprint;frailty;General Population;Goals;grasp;Hand Strength;healthy volunteer;Heart;Heart failure;heart imaging;human subject;Hypertension;Image;Imaging Device;Imaging technology;Impairment;improved;in vivo evaluation;Individual;insight;Interdisciplinary Study;Knowledge;Link;Magnetic Resonance;Magnetic Resonance Imaging;Maps;Measurement;Measures;Mentorship;Metabolic;Methods;Mitochondria;mitochondrial dysfunction;Morphologic artifacts;mortality;Muscle;muscle form;Muscle function;Muscular Atrophy;Myocardial dysfunction;Myocardial tissue;Myocardium;Noise;novel;Organ;Outcome;Pathologic;Pathway interactions;Patients;Performance;Population;Process;programs;Property;Proteins;Quality of life;Questionnaires;Relaxation;Reporting;Reproducibility;Research;Research Design;Research Personnel;Research Project Grants;research study;Rotation;sarcopenia;Scanning;simulation;Site;Skeletal Muscle;skeletal muscle wasting;skills;Techniques;Technology;Testing;Thigh structure;Time;Tissues;tool;Training;Walking;X-Ray Computed Tomography
+---
+application_id: 10894899
+activity_code: K25
+title: Simulating persistence and elimination of the HIV reservoir
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: PROJECT NARRATIVE During this K25 award, Dr Reeves will develop a phylodynamic model of the HIV reservoir—the primary barrier to cure of HIV. The model will be validated using unique virologic, immunologic, and genetic data. The validated model will be used to study creation, persistence, and elimination of the HIV reservoir, filling a crucial gap in the HIV cure field.
+terms: Acquired Immunodeficiency Syndrome;Advisory Committees;Anatomy;Antigens;antiretroviral therapy;Archives;Automobile Driving;Award;Binding;Biological Assay;Biological Markers;biological research;biomarker discovery;career;CD4 Positive T Lymphocytes;Cell Proliferation;Cells;cohort;Collaborations;Communication;curative treatments;Data;Data Set;Dedications;design;Development;diverse data;DNA;DNA Sequence;DNA-Directed DNA Polymerase;Ecology;Ensure;Epidemic;Evolution;Excision;Face;Financial Hardship;Future;gene therapy;Genes;Genetic;Goals;HIV;HIV Infections;Human;human data;Immunologics;Immunology;improved;in silico;Individual;Infection;infectious disease model;integration site;Knowledge;Laboratories;Laws;Learning;Lymphocyte;Maintenance;mathematical model;Memory;memory CD4 T lymphocyte;Mentors;Mentorship;Methods;Modeling;Modernization;mortality;Nature;Non-linear Models;novel;Persons;Phylogenetic Analysis;Physics;Play;Population Dynamics;Primary Infection;Process;Program Sustainability;Proliferating;Publishing;Regimen;Research;Research Institute;Research Personnel;Research Training;Resolution;Resource-limited setting;response;RNA-Directed DNA Polymerase;Role;San Francisco;Sequence Analysis;side effect;skills;social stigma;standard of care;Statistical Models;statistics;Structure;success;symposium;T-Cell Proliferation;T-Lymphocyte;T-Lymphocyte Subsets;Testing;Time;tool;Training;Training Programs;Trees;Universities;Viral;Viral Load result;virology;Virus Integration;Virus Latency;Virus Replication;Work
+---
+application_id: 10848274
+activity_code: T32
+title: Predoctoral Training in Multifaceted Translational Approach to Mental Illness
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: This “Predoctoral Training in a Multifaceted Translational Approach to Mental Illness (AMI)” program is focused on providing training to highly motivated pre-doctoral students in the field of translational research in mental health. UAB has a large base of interdisciplinary faculty with interests centered in basic and clinical research, therapeutics and biomarkers, as well as genetics and functional genomics in the area of mental health. With the NIMH supported T32 program, our highly trained faculty, with the support of diverse resources and an enriched environment, are committed to provide an exceptionally strong mentoring framework to train the next generation of mental health researchers.
+terms: Mental disorders;pre-doctoral;Training;translational approach
+---
+application_id: 11091204
+activity_code: T32
+title: Multidisciplinary Alcoholism Research Training Program
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Alcohol remains a pressing public health issue in the US, contributing to societal harms and mortality, underscoring the urgent need for comprehensive research to address its origins, prevent its misuse, and intervene effectively. This renewal of this established training program has a core emphasis on alcohol research, while adapting to address the changing landscape of other drug use, particularly poly-substance use as well as scientific advances in areas such as neuroscience, digital technology, adaptive intervention designs, and computational psychiatry. Thus, this updated training grant program aims to continue cultivate a cadre of scientists equipped to tackle alcohol-related issues by training the next generation of cutting-edge researchers to enhance understanding of the novel mech...
+terms: <Alcoholism><Research Training><Training Programs><multidisciplinary>
+---
+application_id: 10853034
+activity_code: K25
+title: Multivariate Machine Learning to Characterize Opioid-induced Alterations in the Brain in Chronic Pain
+org_name: STANFORD UNIVERSITY
+phr: PROJECT NARRATIVE / RELEVANCE Inquiry into the effects of long-term prescription opioid use in patients with chronic pain are highly relevant and timely due to the increased epidemic of prescription opioid use in the US. Using quantitative sensory testing, neuropsychological assessments, multimodal neuroimaging and advanced statistical techniques for data analysis, the proposed study seeks to identify the effects of long-term prescription opioid use on the brain and their relation to clinical symptoms. By detecting changes at behavioral, molecular and neural systems levels, this study will be pivotal in the development of effective pain management strategies in chronic pain, and training of Dr. Jarrahi as an independent investigator in the field of translational pain research.
+terms: abuse liability;addiction;Address;Affect;American;Amygdaloid structure;Anterior;Award;Behavior;Behavioral;Brain;brain circuitry;brain morphology;Caring;Chronic;Chronic low back pain;chronic pain;chronic pain patient;chronic painful condition;classification algorithm;Clinical;clinical application;Clinical Trials;Cognitive;cognitive control;cognitive function;cognitive performance;cognitive process;cohort;Corpus striatum structure;Data;Data Analyses;data modeling;Decision Making;Development;Dopamine;Dopamine D1 Receptor;Dopamine D2 Receptor;dopamine system;Drug usage;Epidemic;Epidemiologist;Epidemiology;Executive Dysfunction;executive function;experience;Faculty;flexibility;Functional Magnetic Resonance Imaging;Funding;Future;Goals;gray matter;Health;Hyperalgesia;Iatrogenesis;imaging scientist;Imaging Techniques;Infrastructure;innovation;Insula of Reil;Investigation;Link;Long-Term Effects;Machine Learning;machine learning classifier;Magnetic Resonance Imaging;Measures;Mediating;Medical;Mentors;Molecular;Morphology;MRI Scans;Multimodal Imaging;multimodal neuroimaging;National Institute of Drug Abuse;neural;neuroimaging;Neuropsychological Tests;Neuropsychology;neurotransmission;Nucleus Accumbens;Opiate Addiction;Opioid;Opioid Analgesics;opioid tapering;opioid therapy;opioid use;Pain;Pain management;Pain Measurement;pain patient;pain processing;Pain Research;patient oriented;Patient Self-Report;Patients;Pattern;Pharmaceutical Preparations;Play;Positron-Emission Tomography;Prefrontal Cortex;prescription opioid;Prevalence;Principal Investigator;Psyche structure;Psychophysics;Questionnaires;Raclopride;receptor binding;Recovery;recruit;Research;Research Personnel;Research Project Grants;Resolution;response;responsible research conduct;Rest;Rewards;risk mitigation;Role;Sensory;Short-Term Memory;skills;Societies;Specialist;Strategic Planning;Structure;Substance abuse problem;substance use;Substance Use Disorder;Symptoms;System;Techniques;Testing;Thick;Time;tool;Training
+---
+application_id: 10875270
+activity_code: T32
+title: Alcohol Research Training: Methods and Mechanisms of Change
+org_name: UNIVERSITY OF NEW MEXICO
+phr: Project Narrative Risky drinking and alcohol use disorders (AUDs) have serious impacts on health and safety. Development of effective means to prevent negative consequences of heavy drinking, treat AUDs, and better understand the mechanisms that underlie behavior change have the potential to improve individual lives and enhance societal functioning. The proposed training program draws on multiple disciplines to prepare a new generation of researchers to investigate the psychological, social, and biological mechanisms that underpin processes of change; apply this knowledge to developing and testing new models for prevention and treatment; and apply these models to underserved populations.
+terms: alcohol research;Methods;Research Training
+---
+application_id: 11115244
+activity_code: K25
+title: Super-Resolution Deep Learning Framework for Enhanced ADPKD Monitoring via Multi-Sequence Longitudinal MRI
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: PROJECT NARRATIVE This project seeks to revolutionize the assessment and management of Autosomal Dominant Polycystic Kidney Disease (ADPKD), a widespread genetic disorder with significant clinical impact. By developing a high-resolution multi-sequence Deep Learning framework, we aim to enable precise and quantitative measurement of cyst attributes across multiple organs, advancing our understanding of disease severity and progression. By incorporating high-resolution 3D imaging, achieved through multi-plane super-resolution technique, and cyst class information, our prognostic model aims to provide more accurate predictions of disease outcome and facilitate early intervention, ultimately enhancing patient care and outcomes in the realm of ADPKD.
+terms: 3-Dimensional;Abdomen;Address;Affect;Area;Autosomal Dominant Polycystic Kidney;Biological Markers;Clinical;Complex;Cyst;Cystic kidney;Data;deep learning;deep learning model;Detection;Deterioration;Dialysis procedure;Disease;Disease Outcome;Disease Progression;Early Diagnosis;Early Intervention;experience;Face;Future;Genetic Diseases;Glomerular Filtration Rate;Goals;Growth;Health;Hemorrhage;Image;Image Analysis;imaging biomarker;improved;Interobserver Variability;Kidney;Knowledge;Liver;Machine Learning;machine learning model;Magnetic Resonance Imaging;Measurement;Measures;Methods;Modeling;Monitor;MRI Scans;multidisciplinary;multimodality;Organ;Pancreas;Patient Care;Patient-Focused Outcomes;Patients;Performance;Persons;Physiologic pulse;predictive modeling;Prognosis;prognostic model;radiologist;reconstruction;Recording of previous events;Records;Reproducibility;Research;Research Personnel;Resolution;Risk Factors;Scanning;Science;Severity of illness;skills;Slice;Surface;T2 weighted imaging;Techniques;Testing;Thick;Three-Dimensional Imaging;tool;treatment response;ultra high resolution;Visit
+---
+application_id: 11093694
+activity_code: T32
+title: Alcohol Research Training: Methods and Mechanisms of Change
+org_name: UNIVERSITY OF NEW MEXICO
+phr: Heavy drinking, harmful consequences of drinking, and alcohol use disorder (AUD) are major public health concerns in the United States. Interdisciplinary research is necessary to understand alcohol-related problems and to intervene successfully in preventing, treating, and recovering from the spectrum of harmful alcohol use and AUD, as well as to translate successful interventions into ongoing practice. The training program at the University of New Mexico Center on Alcohol, Substance use, and Addictions draws on multiple disciplines to prepare a new generation of researchers to investigate the psychological, social, and biological mechanisms that underpin alcohol-related problems, AUD, and processes of change in intervention and treatment; apply this knowledge to developing and testing new...
+terms: <Methods><Research Training><alcohol related research><alcohol research><ethanol research>
+---
+application_id: 11088956
+activity_code: T32
+title: Career Training in the Biology of Aging
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Project Narrative
+We propose a comprehensive training program in the biology of aging that will prepare trainees for careers at
+the forefront of academics, industry, biotechnology, and entrepreneurship, thereby promoting the discovery of
+a deeper biological understanding of the aging process and nurturing a passion to apply their experiences, in
+lab, clinic, and innovation spaces to alleviate the cost and suffering associated with age-related disease.
+terms: <Biology of Aging><Training><career>
+---
+application_id: 10873803
+activity_code: T32
+title: Multidisciplinary Research Fellowship in Alzheimer's disease and Related Dementias
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: PROJECT NARRATIVE The proposed grant would support the training for postdoctoral MD trainees who are planning a career in clinical research in Behavioral Neurology and neurodegenerative disease. The program is led by Drs. Howard Rosen and Bruce Miller, both experienced researchers, and provides fellows with an integrated understanding of the clinical, epidemiological, genetic, and molecular features of neurodegenerative diseases. The goal of the program is to train future academic researchers.
+terms: Alzheimer&apos;s disease related dementia;Fellowship;Interdisciplinary Study
+---
+application_id: 11096640
+activity_code: T32
+title: Behavior and Physiology in Aging
+org_name: DUKE UNIVERSITY
+phr: The Duke Center for Aging Postdoctoral Research Training Program (RTP) trains scientists with rich potential for leadership in aging research. It approaches aging from a multidisciplinary perspective and emphasizes three high priority, cross-cutting areas-- population health research; community engagement; and team science. The program’s integrated translational and collaborative approach to research in aging drives the generation of a cadre of new investigators and new knowledge that can be applied to promote quality of life for older adults of all backgrounds.
+terms: <Aging><Behavior><Physiology>
+---
+application_id: 11095058
+activity_code: T32
+title: Multidisciplinary Research Fellowship in Alzheimer’s disease and Related Dementias
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: PROJECT NARRATIVE
+The proposed grant would support the training for postdoctoral MD trainees who are planning a career in
+clinical research in behavioral neurology and neurodegenerative disease. The program is led by Drs. Howard
+Rosen and Bruce Miller, both experienced researchers, and provides fellows with an integrated understanding
+of the clinical, epidemiological, genetic, and molecular features of neurodegenerative diseases. The goal of the
+program is to train future academic researchers.
+terms: <AD related dementia><ADRD><Alzheimer's and related dementias><Alzheimer's dementia and related dementia><Alzheimer's dementia or related dementia><Alzheimer's disease and related dementia><Alzheimer's disease and related disorders><Alzheimer's disease or a related dementia><Alzheimer's disease or a related disorder><Alzheimer's disease or related dementia><Alzheimer's disease related dementia><Fellowship><Interdisciplinary Research><Interdisciplinary Study><Multidisciplinary Collaboration><Multidisciplinary Research>
+---
+application_id: 11093115
+activity_code: T32
+title: Biological Mechanisms of Healthy Aging Training Grant
+org_name: UNIVERSITY OF WASHINGTON
+phr: Age is the single greatest risk factor for nearly all of the major causes of death and disability in the United States,
+including heart disease, most cancers, Alzheimer’s disease, diabetes and kidney disease. The relevance of this
+Training Program to public health is that we seek to train young scientists in research to understand the
+fundamental mechanisms of biological aging. It is our expectation that the scientists trained in our program will
+make significant contributions to improving health through the development of therapies that delay or prevent
+age-related diseases by directly targeting the molecular mechanisms of aging.
+terms: <Biological><Grant><Training><biologic><healthy aging><healthy human aging>
+---
+application_id: 11091882
+activity_code: T32
+title: Health Services and Outcomes Research for Aging Populations
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: NARRATIVE
+Our population is aging, which raises many important questions regarding how to deliver optimal care for the
+growing number of older adults who are frail or have complex health needs or loss of independence. We
+propose an innovative, interdisciplinary training program to produce the next generation of researchers with
+robust training in person and family-centered health services and outcomes research, all applied to geriatrics
+and gerontology. Our program will provide training in the methods to understand how health services, delivery
+of health care, and financing systems might optimally be designed to serve the needs of older adults.
+terms: <Aging><Health Services Evaluation><Health Services Research><Medical Care Research><Outcomes Research><Population><services research>
+---
+application_id: 10840482
+activity_code: T32
+title: Research Training for the Care of Vulnerable Older Adults with Alzheimer’s Disease and Related Dementias and Other Chronic Conditions
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: PROJECT NARRATIVE Older adults from vulnerable populations, including those who face disparities in care, and those with complex multimorbidity and dementia, experience poor health and quality of life, and while their numbers are growing, the research workforce needed to address their needs is small. We propose an interdisciplinary research training program to enable scholars, especially those without formal geriatrics or gerontology training, to develop the skills needed to become independently funded researchers in this field and to conduct research that leads to improvements in the health and quality of life of older, vulnerable adults.
+terms: Alzheimer&apos;s disease related dementia;Caring;Chronic;older adult;Research Training
+---
+application_id: 10761777
+activity_code: K25
+title: Using Microfluidics to Identify Mechanisms of Platelet Dysfunction and Assess Therapeutic Efficacy in Traumatic Hemorrhage
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: Project Narrative Severe bleeding is the most common cause of preventable death after traumatic injury, and trauma-induced coagulopathy contributes to this condition and increases the risk of mortality by 400%. Platelet dysfunction is one of the major contributors to trauma-induced coagulopathy, and therefore a biofidelic microfluidic assay will be employed to study platelet contributions to clot formation and further clarify the impact and origins of trauma- induced platelet dysfunction, and will also be used to inform on the effect of platelet transfusion approaches to resuscitate severely bleeding trauma patient samples in vitro. This microfluidic platform can provide highly physiologically-relevant hemostatic function assessment in preclinical studies, and has the potential to cause a ...
+terms: Address;Admission activity;Age Years;aged;Agonist;Biological;Biological Assay;Biomedical Engineering;Bleeding time procedure;Blood Platelets;blood product;Blood specimen;Blood Vessels;Caring;Cause of Death;Cessation of life;Clinical;clinical development;clinical efficacy;Clinical Trials;Clot retraction;Coagulation Process;Data;Development;Doctor of Philosophy;Education;End Point Assay;Ensure;Etiology;experience;Five-Year Plans;Functional disorder;Funding;Goals;Hemorrhage;Hemostatic Agents;Hemostatic function;Hospitalization;Hour;In Vitro;Individual;Injury;innovation;insight;Institution;Interdisciplinary Study;Kinetics;Knowledge;Licensing;Measures;Mediator;medical schools;Mentors;Mentorship;Metabolic;Microfluidics;Microscopy;Mission;Modeling;Molecular;Morphology;mortality;mortality risk;National Heart, Lung, and Blood Institute;novel;Outcome;Patients;Perfusion;Phenotype;Physiological;Plasma;platelet function;platelet phenotype;Platelet Transfusion;point of care;Porosity;pre-clinical assessment;preclinical study;prevent;preventable death;Productivity;programs;ratiometric;receptor;Recording of previous events;Research;Research Personnel;Resources;Resuscitation;Risk;Sampling;SELP gene;Signal Transduction;Structure;success;Surface;synergism;Technical Expertise;Temperature;Testing;Therapeutic;therapy development;Time;tool;Transfusion;transfusion medicine;Translational Research;translational scientist;Trauma;trauma induced coagulopathy;Trauma patient;Traumatic Hemorrhage;Traumatic injury;Treatment Efficacy;United States;United States National Institutes of Health;Universities;Venous;Washington;Work
+---
+application_id: 11198223
+activity_code: T32
+title: Training Program in Mechanisms of Virus-Host Interactions
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: Narrative
+The Mechanisms of Virus-Host Interactions Training Grant is vital to the development of the
+next generation of virologists. The trainees will be leaders in the field of Virology developing
+strategies to prevent and limit virus pathogenesis of viral diseases and the potential pandemics.
+terms: <Training Programs><virus host interaction>
+---
+application_id: 10830402
+activity_code: T32
+title: Multidisciplinary Training in Microbial Pathogenesis
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: PROJECT NARRATIVE The UCLA Microbial Pathogenesis Training Program provides essential support that unites students, postdoctoral fellows and faculty conducting research on pathogens that cause immense morbidity and mortality, and the host immune responses to these agents. Trainees are broadly educated in an array of biochemical and cellular mechanisms critical for establishing and maintaining microbial infections, as well as approaches used to combat diseases. Developing and achieving research career objectives are also integral components of our training program.
+terms: microbial;multidisciplinary;Pathogenesis;Training
+---
+application_id: 11144998
+activity_code: K26
+title: Initiate Research, Opportunities, and Networks for Early Career Investigators (IRON)
+org_name: UNIVERSITY OF KENTUCKY
+phr: Early career investigators need the opportunity to gain research knowledge coupled with quality mentorship to assist with the proper application of those skills, resulting in innovative and meaningful research. In addition to providing mentorship on research skills, it is also important to understand the circumstances in which early career investigators have found themselves and work to develop needed soft (non-research) skills. Taken together, my philosophy as a mentor is to provide experiences for early career investigators that will help them develop into well-rounded individuals who contribute to advancing science as well as be exemplary of reputable citizens in academe
+terms: Address;Awareness;Behavior;career;career development;Career Mobility;community based research;Coupled;data management;Development;early experience;Educational workshop;Event;experience;Funding;Future;Goals;Grant;Habits;health inequalities;Individual;innovation;Institution;Knowledge;Leadership;Learning;meetings;Mentors;Mentorship;Mission;National Institute of Diabetes and Digestive and Kidney Diseases;next generation;Philosophy;Research;Research Design;Research Personnel;Resources;response;responsible research conduct;Science;skills;social health determinants;success;Training;Work
+---
+application_id: 11253426
+activity_code: T32
+title: Multidisciplinary HIV Training Program
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: HIV remains a major threat to public health worldwide. Over the past 35 years, Harvard faculty and their post-
+doctoral fellows supported by this training grant have made critical contributions to the progress in combating
+this epidemic that has come from research aimed at understanding the pathogenesis of HIV and its
+complications. The goal of this training program is to develop the next generation of scientific leaders poised
+to eliminate HIV.
+terms: <AIDS Virus><Acquired Immune Deficiency Syndrome Virus><Acquired Immunodeficiency Syndrome Virus><HIV><Human Immunodeficiency Viruses><LAV-HTLV-III><Lymphadenopathy-Associated Virus><Training Programs><Virus-HIV><multidisciplinary>
+---
+application_id: 11197309
+activity_code: T32
+title: Wisconsin Allergy Research Training (WiscART) Program
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: It is critical to determine mechanisms for allergic and immune-mediated diseases, including asthma, to enable improved prevention and treatment for these common diseases. The goal of this program is to provide training in clinical and translational research to physicians and PhD scientists who wish to pursue academic careers devoted to research, education, and leadership in these critical areas of unmet medical need.
+terms: <Allergy><Research Training><Training Programs><Wisconsin>
+---
+application_id: 11196864
+activity_code: T32
+title: Immunity and Infectious Disease
+org_name: ROCKEFELLER UNIVERSITY
+phr: Project Narrative:
+This training grant supports research and education that is directly relevant to public health,
+including clinically relevant coursework and research opportunities in areas including tumor
+immunology, inflammatory bowel diseases, HIV, Hepatitis C, tuberculosis, and SARS-CoV-2.
+terms: <Communicable Diseases><Immunity><Infectious Diseases><Infectious Disorder>
+---
+application_id: 11194151
+activity_code: T32
+title: Northwestern University Allergy and Immunology Research (NUAIR) Program
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: PROJECT NARRATIVE
+The Northwestern University Allergy and Immunology Research (NUAIR) T32 Fellowship program is designed
+for MD, MD/PhD and/or PhD trainees with an interest in advanced training in translational research in the field
+of Allergy-Immunology. Trainees have access to renowned mentors in both clinical and basic science
+departments in order to develop a mentoring team with expertise in both realms to advance their training and
+develop innovative and impactful projects. NUAIR has been successful in training academic investigators during
+its first three funding cycles and aims to continue this record to develop the next generation of translational
+immunologists.
+terms: <Allergy><Immunology><Research><Universities><programs>
+---
+application_id: 11171555
+activity_code: K23
+title: Efficacy of Preoperative Oral Iron Supplementation in Adolescents Undergoing Scoliosis Surgery
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: PROJECT NARRATIVE
+Pediatric patients undergoing spinal fusion surgery for the correction of Adolescent Idiopathic Scoliosis are at
+high risk of both preexisting and surgery-related iron deficiency, yet the means and evidence for optimizing iron
+status have not been described in this setting. The proposed study is a randomized controlled trial of preoperative
+oral iron supplementation, to identify whether iron deficiency is a modifiable risk factor for adverse surgical
+outcomes such as red blood cell transfusion and diminished postoperative cognitive and physical capacity in this
+vulnerable population of adolescents. Building evidence for patient blood management interventions such as
+iron supplementation is vital to ensuring high quality care of surgical patients and may reduce unnecessary...
+terms: <0-11 years old><21+ years old><Active Follow-up><Activities of Daily Living><Activities of everyday life><Address><Adherence><Adolescent><Adolescent Youth><Adult><Adult Human><Adverse effects><Affect><Anemia><Biometals><Bleeding><Blood><Blood Reticuloendothelial System><Blood Serum><Blood Transfusion><Blood erythrocyte><Caring><Cell Communication and Signaling><Cell Signaling><Child><Child Youth><Childhood><Children (0-21)><Clinical><Cognitive><Cognitive Disturbance><Cognitive Impairment><Cognitive decline><Cognitive function abnormal><Community Trial><Data><Disturbance in cognition><Ensure><Epidemiology><Erythrocyte Transfusion><Erythrocytes><Erythrocytic><Fe deficiency><Fe element><Fe supplementation><Female Adolescents><Ferritin><Future><Goals><Growth and Development><Growth and Development function><Hematology><Hemoglobin><Hemorrhage><Idiopathic scoliosis><Impaired cognition><Impairment><Incidence><Infection><Institution><Intervention><Intracellular Communication and Signaling><Investigators><Iron><Link><Marrow erythrocyte><Menses><Menstruation><Mentors><Monitor><Muscle function><NIH><National Institutes of Health><Nerve Transmitter Substances><Neurocognition><Neurocognitive><Neurotransmitters><Nutritional><Operating Rooms><Operative Hemorrhage><Operative Procedures><Operative Surgical Procedures><Oral><Outcome><Patient Outcomes Assessments><Patient Reported Measures><Patient Reported Outcomes><Patient outcome><Patient-Centered Outcomes><Patient-Focused Outcomes><Patients><Pediatric Surgery><Pediatric Surgical Procedures><Perioperative><Persons><Physical Capacity><Physical Function><Physiologic><Physiological><Pilot Projects><Placebos><Population><Postoperative><Postoperative Period><Predisposition><Preoperative Care><Production><Protocol><Protocols documentation><QOC><Quality of Care><Randomized><Randomized, Controlled Trials><Recovery><Recovery of Function><Red Blood Cell Transfusion><Red Blood Cells><Red Cell><Regimen><Reporting><Research><Research Design><Research Personnel><Researchers><Risk><Risk Factors><Role><Serum><Serum Markers><Sham Treatment><Signal Transduction><Signal Transduction Systems><Signaling><Spinal Fusion><Spinal surgery><Spine surgery><Spondylosyndeses><Study Type><Supplementation><Surgical><Surgical Blood Loss><Surgical Hemorrhage><Surgical Interventions><Surgical Procedure><Susceptibility><Testing><Trace Elements><Trace Mineral><Training><Transfusion><United States National Institutes of Health><Vulnerable Populations><Work><active followup><adolescent girl><adulthood><adverse consequence><adverse outcome><aged><biological signal transduction><blood corpuscles><blood loss><career><child patients><cognitive capacity><cognitive dysfunction><cognitive loss><daily living function><daily living functionality><decline in function><decline in functional status><design><designing><determine efficacy><early childhood><efficacy analysis><efficacy assessment><efficacy determination><efficacy evaluation><efficacy examination><epidemiologic><epidemiological><evaluate efficacy><evidence base><examine efficacy><experience><follow up><follow-up><followed up><followup><functional ability><functional capacity><functional decline><functional outcomes><functional recovery><functional status><functional status decline><high risk><improved><improved outcome><iron deficiency><iron supplementation><juvenile><juvenile human><kids><malleable risk><menstrual period><modifiable risk><monthly period><monthly periods><neurocognitive test><nutritious><patient oriented outcomes><pediatric><pediatric patients><physical impairment><pilot study><prevent><preventing><randomisation><randomization><randomized control trial><randomly assigned><scoliosis><sham therapy><social role><standard of care><study design><surgery><surgery outcome><surgical outcome><vulnerable adolescent><vulnerable group><vulnerable individual><vulnerable people><youngster>
+---
+application_id: 11194073
+activity_code: T32
+title: Integrative Microbiology Program
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: PROJECT NARRATIVE
+The application proposes to continue a highly successful training program, Microbial Pathogenesis and Host
+Defense, renamed Integrative Microbiology (iMicro), which was initiated 20 years ago. UCSF hosts world-class
+laboratories studying all aspects of microbes in health and disease, including bacteria, fungi, parasites, and
+viruses. Our central goal is to provide an interdisciplinary environment and rigorous specialized training for the
+next generation of leaders who will endeavor to understand how microbes influence mammalian biology and to
+reduce the worldwide burden of infectious disease.
+terms: <Microbiology><programs>
+---
+application_id: 11197890
+activity_code: T32
+title: Minnesota Training Program in Virology
+org_name: UNIVERSITY OF MINNESOTA
+phr: 8. Project Narrative
+The training of young scientists that will become the next generation of virologists is essential for our nation’s
+capacity to respond to existing, emerging, and future viral diseases. Furthermore, research on viruses continues
+to lead to fundamental discoveries in biology. Through the Institute for Molecular Virology and this T32 program,
+the University of Minnesota – Twin Cities campus has established itself as a leader in virology research, with
+strengths in biophysical virology, cancer virology, influenza virus, herpesviruses, along with emerging and other
+highly pathogenic viruses.
+terms: <Minnesota><Training Programs><virology>
+---
+application_id: 10857237
+activity_code: T32
+title: Northwestern University Allergy and Immunology Research (NUAIR) Program
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: PROJECT NARRATIVE The NUAIR T32 Fellowship program is designed for MD, MD/PhD and/or PhD trainees with an interest in advanced training in translational research in the field of Allergy-Immunology. Projects of trainees have both clinical and laboratory components, and trainees have access to renowned mentors in both clinical and basic departments in order to develop a mentoring team with expertise in both realms to successfully complete projects and training. NUAIR is highly compliant with scientific, programmatic and social initiatives of the NIAID and the NIH, and has been very successful in training academic investigators during its first two funding periods.
+terms: Hypersensitivity;Immunology;programs;Research;Universities
+---
+application_id: 10836005
+activity_code: K08
+title: The effects of Mkrn3 on delayed puberty
+org_name: BOSTON CHILDREN'S HOSPITAL
+phr: PROJECT NARRATIVE Puberty is a unique developmental process in which the body develops secondary sexual characteristics and becomes capable of reproduction, yet the mechanisms leading to pubertal onset are not well understood and an important area of scientific exploration. This proposal aims to understand how an important gene, Makorin Ring Finger Protein 3 (MKRN3), which has been associated with early puberty in children, may also be involved in causing delayed puberty, as preliminary studies show that increased expression of Mkrn3 leads to delayed puberty in female mice. The goal of this career development award is to gain further expertise in understanding puberty regulation using both innovative mouse models and human studies, to ultimately improve child health through improving diagn...
+terms: Accounting;Area;Bilateral;Bone Density;Brain;Caenorhabditis elegans;Characteristics;Child;Child Health;Chromosomes;Clinical;Code;cohort;Complex;Data;Delayed Puberty;Developmental Process;Diagnosis;Disease;Disease Management;DNA Sequence Alteration;Dynorphins;Estrus;Female;Future;Genes;Genetic;genetic variant;GNRH1 gene;Goals;Health;Human;hypothalamic pituitary gonadal axis;Hypothalamic structure;Impairment;improved;in vivo;inhibitor;Injections;innovation;Investigation;K-Series Research Career Programs;KISS1 gene;Klinefelter&apos;s Syndrome;Lead;Life;long-term sequelae;loss of function mutation;Mediator;Messenger RNA;Modeling;mouse model;mRNA Transcript Degradation;Mus;neonatal mice;Neurokinin B;Neurons;Neuropeptides;Neurosecretory Systems;novel;overexpression;Patients;peer;Periodicity;Phenotype;Physiological;Precocious Puberty;premature;Premature Menopause;prepuberty;protein degradation;protein structure;Proteins;psychosocial wellbeing;pubertal timing;Puberty;Recombinant adeno-associated virus (rAAV);recombinant virus;Regulation;Reporting;Reproduction;reproductive;Ring Finger Domain;Risk;RNA Binding;Role;sex;Sex Differentiation;Structure;Structure of nucleus infundibularis hypothalami;therapeutic target;Time;tool;Transgenes;Transgenic Mice;Transgenic Organisms;ubiquitin-protein ligase;Untranslated RNA;Variant
+---
+application_id: 11198227
+activity_code: T32
+title: Pediatric Infectious Diseases and Immunity Training Program
+org_name: WASHINGTON UNIVERSITY
+phr: PROJECT NARRATIVE
+This postdoctoral training program will train academic physician-scientists to perform research in infectious
+diseases, microbiology, and immunology related to child health. Infectious diseases continue to cause extensive
+morbidity and mortality throughout the world, and trained researchers are needed who can apply powerful new
+scientific methods to combat these diseases. Accordingly, our trainees will employ the full array of cutting-edge
+and traditional approaches to understand the biology of established and emerging infectious diseases,
+genetically determined immune deficiency, and autoimmune diseases.
+terms: <Childhood><Communicable Diseases><Immunity><Infectious Diseases><Infectious Disorder><Training Programs><pediatric>
+---
+application_id: 11198319
+activity_code: T32
+title: Antimicrobial Resistance and Therapeutic Discovery Training Program
+org_name: EMORY UNIVERSITY
+phr: This T32 renewal application requests funding to continue support for interdisciplinary research and professional training for predoctoral students at Emory University, who are engaged in projects related to antimicrobial mechanisms, resistance and new therapeutic development. Faculty preceptors provide supportive and rigorous research environments for in-depth specialized training that is complemented by a broad, interdisciplinary educational curriculum and other activities provided by the T32-supported training program. Continued training of predoctoral students in the foundations of antimicrobial resistance, vaccinology and drug discovery will help deliver the next generation of highly trained interdisciplinary scientists that is urgently needed to continue the fight against major micro...
+terms: <Antimicrobial Resistance><Therapeutic><Training Programs><anti-microbial resistant><resistance to anti-microbial><resistant to antimicrobial>
+---
+application_id: 10906650
+activity_code: T32
+title: Molecular, Genetic and Cellular Targets of Cancer Training Program
+org_name: UNIVERSITY OF MINNESOTA
+phr: Narrative: The goal of this training program at the University of Minnesota Masonic Cancer Center is to train a diverse group of highly qualified individuals to become future scientific leaders working in basic and translational laboratory research and/or science-related careers to address fundamental problems in cancer biology. A strong scientific work force and the new knowledge they gain will translate to better cancer outcomes.
+terms: cellular targeting;Genetic;Malignant Neoplasms;Molecular;Training Programs
+---
+application_id: 11080204
+activity_code: T34
+title: MARC at San Diego State University
+org_name: SAN DIEGO STATE UNIVERSITY
+phr: PROJECT NARRATIVE
+Diverse teams of scientists are more likely to address issues of higher impact and complexity and produce
+more innovative and creative solutions. To ensure the robust health of the biomedical research enterprise, the
+SDSU MARC program seeks to identify and nurture the talent and potential of historically excluded students in
+science, technology, engineering, and mathematics (STEM). MARC scholars benefit from research-validated,
+supportive, and culturally aware programming and cutting-edge research experiences that prepare them for
+success in graduate programs and as future leaders in the biomedical workforce.
+terms: <Ally><Awareness><Breathing><Career Development Awards><Career Development Awards and Programs><Career Development Programs K-Series><Communication><Complex thinking><Country><Creativeness><Critical Thinking><Data><Dedications><Development><Doctor of Philosophy><Educational workshop><Emotional well being><Ensure><Equity><Ethics><Evaluation><Evaluative Thinking><Exclusion><Feels well><Health><Home><Individuals from minority><Individuals of minority><Infrastructure><Instruction><K-Awards><K-Series Research Career Programs><Lead><Leadership><Mental Health><Mental Hygiene><Mentors><Mentorship><Methods><Minority Groups><Minority People><Minority Population><Minority individual><Normal mental condition><Normal mental state><Normal psyche><Oral><Pb element><Personal Satisfaction><Persons><Ph.D.><PhD><Population><Psychological Health><Psychological Well Being><Reproducibility><Research><Research Career Program><Respiratory Aspiration><Respiratory Inspiration><STEM class><STEM course><STEM discipline><STEM field><STEM major><STEM student><Scientist><Self Efficacy><Sense of well-being><Services><Students><Technical Expertise><Training><Underrepresented Ethnic Minority><Underrepresented Groups><Underrepresented Minority><Underrepresented Populations><United States><Universities><Well in self><Workshop><Writing><career><combat><creativity><developmental><disability><disadvantaged background><emotional wellbeing><emotional wellness><empowerment><ethical><evidence base><experience><faculty mentor><heavy metal Pb><heavy metal lead><homes><improved><innovate><innovation><innovative><inspiration><interest><lens><lenses><marginalized background><mental well-being><mental wellbeing><mental wellness><peer coaching><peer instruction><peer led team learning><peer mentoring><peer teaching><programs><psychological wellbeing><psychological wellness><recruit><resilience><resilient><science, technology, engineering and math class><science, technology, engineering and math course><science, technology, engineering and math discipline><science, technology, engineering and math field><science, technology, engineering and math major><science, technology, engineering and math student><science, technology, engineering and mathematics class><science, technology, engineering and mathematics course><science, technology, engineering and mathematics discipline><science, technology, engineering and mathematics field><science, technology, engineering and mathematics major><science, technology, engineering and mathematics student><self wellness><sense of wellbeing><skills><social><success><synergism><technical skills><under representation of groups><under represented groups><under represented people><under represented populations><under-representation of minorities><under-represented minority><underrepresentation of groups><underrepresentation of minorities><underrepresented people><well-being><wellbeing>
+---
+application_id: 11094456
+activity_code: T32
+title: Cincinnati Training Program in Pediatric Rheumatology
+org_name: CINCINNATI CHILDRENS HOSP MED CTR
+phr: PROJECT NARRATIVE
+This Research Training Program based in a large Division of Pediatric Rheumatology (PR) with
+several NIH center grants and NIH-funded investigators seeks to equip PR fellows with the
+investigative skills necessary to succeed in research careers. The research training activities
+will have two focus areas: (1) Laboratory Research Track, with application of genomics,
+epigenetics, proteomics, and metabolomics to advance PR translational research, and (2)
+Clinical Science Trac, with clinical epidemiology, development of clinical outcome assessment
+tool and clinical trial design. It is expected that this program will enlarge the number of PR
+researchers, a pool that is far too small to meet the requirements of the next decades as
+molecular medicine is increasingly applied in th...
+terms: <Childhood><Rheumatology><Training Programs><pediatric>
+---
+application_id: 11094196
+activity_code: T32
+title: Immunologic Mechanisms and Rheumatic Diseases
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: PROJECT NARRATIVE
+The Division of Rheumatology, Inflammation, and Immunity at Brigham and Women’s Hospital and this training
+grant vehicle provide the core that integrates basic and translational investigators across Harvard-affiliated
+institutions working in areas of basic biology, and translational and population sciences. Themes are relevant to
+and focused in musculoskeletal and autoimmune rheumatic disease. The goal is to provide an ongoing pipeline
+of select, highly trained and expert investigators prepared for and focused on rheumatic disease research.
+terms: <Disease><Disorder><Immunochemical Immunologic><Immunologic><Immunological><Immunologically><Immunologics><Musculoskeletal Pain Disorder><Rheumatic Diseases><Rheumatism><Rheumatologic Diseases><Rheumatologic Disorder>
+---
+application_id: 11097015
+activity_code: T32
+title: Regenerative Musculoskeletal Medicine Training Program
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: Relevance to Public Health
+The relevance of this training program to the health of Americans is the the need to train the next generation
+of scientists in regenerative biomedicine and to address a critical shortage of surgeon-scientists. This
+training includes the application of “cutting edge” strategies to musculoskeletal regenerative medicine and
+use of a multidisciplinary, team approach to use those strategies from the laboratory to the bedside.
+terms: <Medicine><Musculoskeletal><Training Programs><regenerative>
+---
+application_id: 11094969
+activity_code: T32
+title: T32 Urologic Oncology Research Training Grant
+org_name: SLOAN-KETTERING INST CAN RESEARCH
+phr: PROJECT NARRATIVE
+The T32 Urologic Oncology Research Training Program at Memorial Sloan Kettering Cancer Center
+(MSK) trains qualified urologists for academic careers as surgeon-scientists focused on eliminating
+suffering and death from genitourinary cancers, which comprise 21% of all non-skin cancers and cause
+10% of all cancer deaths in the United States.
+terms: <Grant><Research Training><Urologic Oncology>
+---
+application_id: 10828443
+activity_code: T32
+title: Training in Musculoskeletal Science
+org_name: UNIVERSITY OF ROCHESTER
+phr: This T32 application outlines the plan for an education program entitled “Rochester Musculoskeletal (ROCMSK) Training Program”, which is based in the Center for Musculoskeletal Research at the University of Rochester Medical Center. ROCMSK is designed to provide interdisciplinary didactic and research training in musculoskeletal science with the aim of developing future generations of musculoskeletal scientists and leaders of innovations. This program will nurture the career development of energetic young musculoskeletal investigators with a goal of independent funding success to ensure continued future innovations in musculoskeletal research from basic science through clinical translation.
+terms: Musculoskeletal;Science;Training
+---
+application_id: 10879062
+activity_code: T32
+title: TRAINING IN CANCER BIOLOGY AND TRANSPLANTATION
+org_name: UNIVERSITY OF WASHINGTON
+phr: PROJECT NARRATIVE The burden of cancer in the United States and across the globe is substantial with an estimated number of cancer cases and deaths in the US in 2019 of 1,762,450 and 606,880 individuals respectively. At the same time cancer is at the vanguard in the development of “precision” approaches using a myriad of advances from the laboratory to advance prevention, screening, diagnosis, treatment, and survivorship strategies and disseminate them broadly and equitably, and this requires trained scientists, especially physician-scientists, to drive the advances in biologically-driven, evidence-based care. The aim of this research training program is to recruit and prepare highly qualified physicians from diverse backgrounds for a research-intensive career in medical or gynecological o...
+terms: Cancer Biology;cancer transplantation;Training

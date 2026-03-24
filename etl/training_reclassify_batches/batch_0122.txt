@@ -1,0 +1,482 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 122 of 459 (50 projects):
+
+---
+application_id: 10875584
+activity_code: T32
+title: Cancer Center Research Training Program
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: PROJECT NARRATIVE Advances in cancer medicine rely on innovative basic, translational and clinical research. This University of Pennsylvania Cancer Research Training Program strives to recruit and train the next generation of clinician scientists, providing them with the skills to make discoveries with potential for direct translation to patient care.
+terms: NCI Center for Cancer Research;Training Programs
+---
+application_id: 11181695
+activity_code: T32
+title: Translational and genomic pediatric cancer epidemiology training program
+org_name: UNIVERSITY OF MINNESOTA
+phr: Public Health Relevance
+Childhood cancer is the leading cause of death due to disease in children the United States while childhood
+cancer survivors, which number over 350,000, face lifelong increased morbidity and mortality. This training
+program equips researchers and physician-scientists with experience in classical epidemiology, genomic
+epidemiology, clinical investigations, and complementary laboratory studies relevant to childhood cancer
+etiology, outcome of therapy, and survivorship.
+terms: <Childhood Cancers><Genomics><Malignant Childhood Neoplasm><Malignant Childhood Tumor><Malignant Pediatric Neoplasm><Malignant Pediatric Tumor><Malignant childhood cancer><Training Programs><cancer epidemiology><cancer in a child><cancer in children><child with cancer><childhood malignancy><pediatric cancer><pediatric malignancy>
+---
+application_id: 10884155
+activity_code: T32
+title: Multidisciplinary Training Program in Pediatric Lung Diseases
+org_name: CHILDREN'S HOSP OF PHILADELPHIA
+phr: Narrative Disorders and diseases of the lung account for much of the morbidity and mortality that occurs during childhood, and the onset of lung disease in childhood is a strong predictor for respiratory disease in later life. The prevention and/or treatment of childhood respiratory diseases also has the potential to significantly reduce disease and medical costs associated with disease throughout the lifespan. Recognizing the paucity of researchers and physician scientists who focus on basic, clinical and translational research centered on pediatric lung diseases, the proposed training program will address the substantial need for academic pediatric pulmonologists and pulmonary investigators who will establish research programs and train leaders of tomorrow.
+terms: Childhood;Lung Diseases;multidisciplinary;Training Programs
+---
+application_id: 11196886
+activity_code: T32
+title: Training in cancer biology and transplantation
+org_name: UNIVERSITY OF WASHINGTON
+phr: Cancer is the second leading cause of death in the United States. Its eradication
+requires trained scientists, especially physician-scientists, to drive the advances in
+biologically-driven, evidence-based care. The aim of this research training program is
+to recruit and prepare highly qualified physicians for a research-intensive career in
+medical or gynecologic oncology by developing research skills in cancer biology,
+diagnosis, prevention, therapy, and outcomes and to disseminate these advances
+broadly.
+terms: <Cancer Biology><Training><cancer transplantation>
+---
+application_id: 11000408
+activity_code: K43
+title: Metabolomic predictors of weight gain during pregnancy and the postpartum period in South African women living with HIV
+org_name: UNIVERSITY OF CAPE TOWN
+phr: PROJECT NARRATIVE Excessive gestational weight gain (GWG) and postpartum weight retention (PPWR) contribute to the onset of metabolic complications and related chronic co-morbidities such as diabetes and cardiovascular diseases in women living with HIV (WLHIV). This application will conduct targeted and untargeted metabolomics testing in urine specimens collected in the first trimester of pregnancy to identify early biomarkers of GWG and PPWR. This would allow early interventions to minimise adverse weight outcomes thereby improving long-term metabolic health in WLHIV.
+terms: Address;Africa South of the Sahara;African Women;Arachidonic Acids;Area;Award;Big Data;Biological Markers;Biological Specimen Banks;biomarker discovery;Blood specimen;Body mass index;Cardiovascular Diseases;career;Child;Chronic;Clinical;clinical risk;cohort;Cohort Studies;comorbidity;cost;Data;data handling;design;Development;diabetes management;Diabetes Mellitus;Diglycerides;early detection biomarkers;Early Diagnosis;Early identification;Early Intervention;Epidemiologist;excessive weight gain;experience;First Pregnancy Trimester;Funding;Future;gestational weight gain;Goals;Health;Health system;High Risk Woman;HIV;HIV Infections;improved;innovative technologies;insight;Institute of Medicine (U.S.);Knowledge;Laboratories;Lecithin;Life;Life Cycle Stages;life span;Life Style;lipidome;lipidomics;Lipids;Mentors;Mentorship;Metabolic;Metabolic Diseases;Metabolic Pathway;metabolic profile;metabolome;metabolomics;Modeling;Molecular;Morbidity - disease rate;mortality;multidisciplinary;Non-Insulin-Dependent Diabetes Mellitus;novel;Obesity;obesogenic;Outcome;Pathway Analysis;Pathway interactions;Persons;Phenotype;Population;Postpartum Period;postpartum weight;Postpartum Women;potential biomarker;predictive marker;Pregnancy;Pregnant Women;Preventive;prognostic;Public Health;public health priorities;recruit;reproductive;Research;Research Design;Research Methodology;Research Personnel;Research Priority;Resources;Risk;Risk Factors;risk prediction;risk prediction model;risk stratification;Science;screening;Screening procedure;Series;South Africa;South African;Specimen;Statistical Data Interpretation;stem;Techniques;Technology;Testing;Therapeutic;Training;Triglycerides;United States;United States National Institutes of Health;Universities;urinary;Urine;waist circumference;Weight;Weight Gain;Woman;women&apos;s outcomes
+---
+application_id: 11016077
+activity_code: T32
+title: Microenvironmental Influences in Cancer
+org_name: VANDERBILT UNIVERSITY
+phr: PROJECT NARRATIVE
+One of the rapidly developing frontiers in cancer research is the tumor microenvironment.
+Training in this critical area of cancer research is necessary to build the workforce required to
+understand the complexities of the microenvironmental influence on cancer development and
+progression and to translate this information into more effective and less toxic approaches to the
+treatment and prevention of cancer.
+terms: <Cancers><Malignant Neoplasms><Malignant Tumor><malignancy><neoplasm/cancer>
+---
+application_id: 11016682
+activity_code: T32
+title: Cancer Center Research Training Program
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: Project Narrative
+Advances in cancer medicine rely on innovative basic, translational and clinical research. This University of
+Pennsylvania Cancer Research Training Program strives to recruit and train the next generation of clinician-
+scientists, providing them with the skills to make discoveries that will broadly enhance patient care.
+terms: <Center for Cancer Research><NCI Center for Cancer Research><Training Programs>
+---
+application_id: 11093860
+activity_code: T32
+title: Surgical Oncology Training Grant
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: PROJECT NARRATIVE
+Surgeons remain at the forefront of the care for patients with cancer. The clinical experience of
+surgeons gives them a particular perspective on cancer. This program sees to develop research
+expertise among surgeons interested in surgical oncology so that these individuals are fully
+prepared to tackle the important future research needs in basic cancer biology, translational
+cancer research and cancer epidemiology and outcomes.
+terms: <Grant><Surgical Oncology><Training><oncologic surgery>
+---
+application_id: 11197543
+activity_code: T32
+title: Training Program in Translational Brain Tumor Research
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: Project Relevance: Brain cancer continues to be a significant challenge to clinicians, with over 20,000 cases
+diagnosed per year, and the mortality rate still among the highest of all cancers. This proposal requests funds to
+support a training program that takes promising young investigators and trains them to understand brain tumor
+biology and therapy as an integrated whole. Investigators trained in this stimulating, translational, and
+comprehensive manner will provide competent leadership for future research efforts aimed at improved
+treatments and outcomes for brain tumor patients.
+terms: <Brain Neoplasia><Brain Neoplasms><Brain Tumors><Research><Training Programs><tumors in the brain>
+---
+application_id: 10884187
+activity_code: R25
+title: UTA Summer Undergraduate Research Program to Promote Diversity in Health Related Research
+org_name: UNIVERSITY OF TEXAS ARLINGTON
+phr: Project Narrative The National Institutes of Health (NIH) has made it a priority to address a disparity in the participation of underrepresented minority populations in the biomedical, behavioral and clinical research workforce. The University of Texas at Arlington is a large research institution that has a minority majority undergraduate population (~35,000 undergraduate students) and thus is an ideal institution to address the need to promote diversity. This program will expose 50 different underrepresented minority undergraduate students each year for 5 consecutive years (250 students total), to a rigorous 10-week summer research education experience with the goal of increasing underrepresented minorities in the future biomedical research workforce.
+terms: Accounting;Address;Advisory Committees;African American;Age;Area;Asian;Bachelor&apos;s Degree;Behavioral Research;Biomedical Research;classroom research;Clinical Research;cohort;college;Degree program;design;Development;disabled students;Discipline;Disparity;Education;education research;Employment;Enrollment;ethnic diversity;experience;Exposure to;Extramural Activities;Faculty;faculty mentor;falls;Fellowship;Funding;Future;Goals;graduate school;graduate student;Health;higher education;Hispanic;Hispanic Populations;Hispanic-serving Institution;Hour;Individual;innovation;Institution;International;Joints;Laboratories;laboratory experience;Laboratory Research;Lead;Military Personnel;Minority;Minority Groups;minority undergraduate;Minority-Serving Institution;Mission;multidisciplinary;National Heart, Lung, and Blood Institute;news;Persons;Population;Positioning Attribute;primary outcome;Productivity;programs;Qualifying;Reporting;Research;Research Activity;Resources;responsible research conduct;school district;Series;STEM field;Students;success;summer research;Texas;Time;Training Programs;undergraduate research experience;undergraduate student;Underrepresented Minority;underrepresented minority student;Underrepresented Populations;United States National Institutes of Health;Universities;university student
+---
+application_id: 10906662
+activity_code: T32
+title: Training Program in Translational Brain Tumor Research
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: Project Relevance: Adult brain cancer continues to be a significant challenge to clinicians, with over 20,000 cases diagnosed per year, and the mortality rate still among the highest of all cancers. Because the prognosis for individuals with the most common types of brain cancer remains poor, it is of critical importance that new therapies be developed. This proposal requests funds to support a training program that takes promising young investigators and trains them to understand brain tumor biology and therapy as an integrated whole. Investigators trained in this stimulating, translational and comprehensive manner will provide competent leadership for future research efforts aimed at improved treatments and outcomes for brain tumor patients.
+terms: Brain Neoplasms;Research;Training Programs
+---
+application_id: 11197238
+activity_code: T32
+title: Training to Reduce Burden across the Cancer Control Continuum (TRACC)
+org_name: UNIVERSITY OF MIAMI CORAL GABLES
+phr: This is a competitive renewal application for an NCI-supported cancer training program (Years 6-10). This multidisciplinary program continues to successfully train postdoctoral fellows in the multilevel determinants (e.g., biological, medical, social, psychosocial, lifestyle, and health systems) of cancer risk, etiology, and progression, as well as disease prevention, care delivery, health-related quality of life, and other patient-reported outcomes. The program's primary goal is to provide trainees with interdisciplinary, didactic, and applied learning opportunities to successfully catalyze their development into independent translational researchers, poised to pursue high-impact science and reduce burden across the cancer control continuum.
+terms: <Cancer Control><Cancer Control Science><Training>
+---
+application_id: 11196595
+activity_code: T32
+title: Cell Immunotherapy and Experimental Therapeutics Program (CIETP).
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: NARRATIVE
+Immune-directed and cell therapy have revolutionized Oncology, and while this promise is accelerating
+research, a new generation of cancer researchers is needed. The Cell Immunotherapy and Experimental
+Therapeutics Program (CIETP) aims at tailoring a training plan for clinical trainees to the specific needs of
+immunotherapies, including a focus in personalized medicine, comprehensive approach to care that factors in
+the unique toxicities these therapies cause, and the future of rational combinatorial approaches. Our faculty
+mentor team is multidisciplinary and draws across disciplines to attract and train the next generation of cancer
+researchers.
+terms: <Cell Body><Cells><Experimental Therapies><Immune mediated therapy><Immunologically Directed Therapy><Immunotherapy><Investigational Therapies><Investigational Treatments><experimental therapeutic agents><experimental therapeutics><immune therapeutic approach><immune therapeutic interventions><immune therapeutic regimens><immune therapeutic strategy><immune therapy><immune-based therapies><immune-based treatments><immuno therapy><programs>
+---
+application_id: 10895297
+activity_code: K76
+title: A Novel Deprescribing Intervention for Heart Failure with Preserved Ejection Fraction (HFpEF): A Prototype for Older Adults with Multimorbidity and Polypharmacy
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: PROJECT NARRATIVE High medication burden among older adults with multiple chronic conditions including those with heart failure is a growing problem in the United States that can negatively impact the health and wellbeing of older adults. Deprescribing (or medication discontinuation) has emerged as a strategy to improve outcomes in older adults with multiple chronic conditions and high medication burden, but is underutilized. With this proposed project, we will develop an innovative pragmatic patient-centered approach (N-of-1 trials) to medication optimization in older adults, thereby improving the health and wellbeing of older adults with multiple chronic conditions.
+terms: Address;Adrenergic beta-Antagonists;Adverse event;Affect;Aging;aging population;American;Area;Attention;Belief;Benefits and Risks;Biological;Biometry;Cardiac Output;Cardiology;career;career development;Caring;clinical practice;Clinical Trials;college;Communication;Complex;Crossover Design;Data;Death Rate;Decision Making;Development;Drug Prescriptions;drug withdrawal;Effectiveness;effectiveness-implementation RCT;effectiveness/implementation hybrid;effectiveness/implementation trial;EFRAC;Elderly;Ensure;Environment;Event;experience;Experimental Designs;Foundations;Funding;Future;Geriatrics;Goals;Grant;Health;Health Priorities;Heart;Heart failure;hospitalization rates;Impairment;implementation science;improved;improved outcome;Individual;individual patient;innovation;Intervention;iterative design;Knowledge;Knowledge acquisition;Lead;Left;Life Expectancy;Manuscripts;Medication Management;Medicine;Mentors;Mentorship;multiple chronic conditions;novel;Office Visits;older adult;Outcome;Participant;patient oriented;Patient Outcomes Assessments;Patients;Personal Satisfaction;Pharmaceutical Preparations;Polypharmacy;Population;Population Study;Positioning Attribute;Precision therapeutics;preference;preservation;prevent;Principal Investigator;Process;programs;Protocols documentation;prototype;Randomized, Controlled Trials;Research Personnel;Research Project Grants;Role;shared decision making;Signal Transduction;skills;success;supportive environment;Syndrome;Testing;theories;Time;Training;Uncertainty;United States;Variant;Ventricular;working group
+---
+application_id: 10922869
+activity_code: K99
+title: Exploring affect-motivated alcohol use as a value-based decision-making process
+org_name: UNIVERSITY OF WASHINGTON
+phr: PROJECT NARRATIVE Empirical data have not provided strong evidence that people consume alcohol in response to the experience of negative emotions in everyday life, despite theoretical predictions and evidence from cross-sectional and retrospective data to the contrary. The proposed study will employ a combination of innovative experimental and ecologically valid approaches to explore affect-motivated drinking as a decision that depends on the value assigned to alcohol relative to the value assigned to alternative substance-free reinforcers (e.g., consuming appetizing food) in emotional situations. Findings will improve our understanding of whether, when, how, and for whom alcohol use is reinforcing in everyday life, which will inform future prevention and treatment efforts attempting to he...
+terms: Addictive Behavior;Affect;Affective;Alcohol abuse;alcohol abuse therapy;Alcohol consumption;alcohol reinforcement;alcohol research;alcohol use disorder;Alcoholic beverage heavy drinker;Alcohols;Award;Behavior;Behavioral Model;Binge Eating;career;Cognitive Science;Computer Models;Consumption;coping;Data;Decision Making;Development;Diffusion;Doctor of Philosophy;drinking;drinking behavior;Ecological momentary assessment;Educational workshop;emotion regulation;Emotional;emotional experience;Emotions;Empirical Research;Environment;experience;experimental study;Food;Foundations;Future;Goals;Human;improved;Individual;innovation;insight;Institution;Intoxication;Laboratories;laboratory experiment;Learning;Life;Maps;Mentors;Meta-Analysis;Methods;Modeling;Moods;Motivation;National Institute on Alcohol Abuse and Alcoholism;negative affect;Negative Reinforcements;novel;Participant;Pathway interactions;Patient Self-Report;Persons;Phase;Positioning Attribute;positive emotional state;Positive Reinforcements;Postdoctoral Fellow;Prevention;Process;Psychological reinforcement;Psychology;Regulation;reinforcer;Reporting;Research;Resources;response;Risk;Scientist;skills;Smoking;sobriety;Sum;symposium;Symptoms;Testing;theories;Training;Translating;Universities;Washington
+---
+application_id: 10894672
+activity_code: T32
+title: Cancer Training in Disparities and Equity (C-TIDE)
+org_name: UNIVERSITY OF MIAMI CORAL GABLES
+phr: PROJECT NARRATIVE This is a new application for an NCI-supported cancer control training in disparities and equity in South Florida (South Florida C-TIDE). This multidisciplinary program proposes to train postdoctoral fellows in multilevel determinants (e.g., biological, medical, social, psychosocial, health systems) of cancer risk, etiology, progression, cancer prevention and care delivery, health-related quality of life, and other patient-reported outcomes. The primary goal of the program is to train the next generation of researchers with an exceptional training platform that supports postdoctoral fellows across the cancer control continuum as they develop independent, successful, high-impact research targeting cancer disparities and health equity.
+terms: Disparity;Equity;Malignant Neoplasms;Training
+---
+application_id: 11094227
+activity_code: T32
+title: Research Training Program in Substance Use Prevention
+org_name: YALE UNIVERSITY
+phr: Project
+Narrative
+This
+generate
+practice
+objectives
+been
+program offers postdoctoral research training in the prevention of substance use and addiction to
+ knowledge about the translation of research into real-world settings in order to impact prevention
+and policy, and ultimately, public health. The training provided aligns with NIDA strategic research
+and priorities and the Prevention Research Branch portfolio. Since the program's i nception, it has
+highly successful in training fellows from diverse backgrounds as prevention scientists.
+terms: <Research Training><Training Programs><prevent substance use><substance use prevention>
+---
+application_id: 11096599
+activity_code: T32
+title: Neurobiology of Addiction Training Program
+org_name: TEMPLE UNIV OF THE COMMONWEALTH
+phr: Project Narrative
+The purpose of the Neurobiology of Addiction Training Program at Temple University is to
+provide comprehensive training for doctoral students and post-doctoral fellows in the areas of
+the neurobiology of addiction, pharmacology of drugs of abuse, and their intersection with HIV.
+There is a need at the national level for well-trained innovative basic science researchers in
+areas related to substance use disorders in order to discover new treatment and prevention
+stategies to combat addictive diseases and their consequences including HIV.
+terms: <Neurobiology><Training Programs><addiction><addictive disorder><neurobiological>
+---
+application_id: 10834163
+activity_code: T32
+title: Pre-Doctoral Training in Interdisciplinary Neuroscience
+org_name: UNIVERSITY OF TEXAS AT AUSTIN
+phr: PROJECT NARRATIVE/HEALTH RELEVANCE The major health problems in the US result from brain diseases, including Alzheimer's, schizophrenia, alcoholism, drug addiction, depression and bipolar disorders. Incomplete understanding of the neuroscience of these conditions accounts for the limited number of effective treatments. The goal of this proposal is to provide state-of-the-art training for the next generation of neuroscientists who are equipped to solve these health problems.
+terms: Neurosciences;pre-doctoral;Training
+---
+application_id: 11095622
+activity_code: T32
+title: RESEARCH IN HUMAN COMMUNICATION AND ITS DISORDERS
+org_name: FATHER FLANAGAN'S BOYS' HOME
+phr: PROJECT NARRATIVE
+ There is a critical need for collaborative, interdisciplinary research in the area of human communication
+and its disorders. The Boys Town National Research Hospital postdoctoral training program is designed to
+address that need by providing trainees with the expertise required to develop successful independent
+research programs through training in a large center comprising a highly collaborative and unique mix of
+behavioral and clinical translational research programs.
+terms: <Communication><Disease><Disorder><Human><Modern Man><Research>
+---
+application_id: 11096912
+activity_code: T32
+title: Clinical/Laboratory Training Academic Gastroenterology
+org_name: WASHINGTON UNIVERSITY
+phr: Training the future leaders of gastroenterology requires a broad multidisciplinary approach. This training program is built around the philosophy that the future of academic gastroenterology requires nurturing and dedicated training for predoctoral scientists, research-oriented physicians and physician-scientists who will exploit opportunities in basic, translational and clinical research, including health services and public health research.
+terms: <Academic Training><Clinical><Gastroenterology><lab experience><lab training><laboratory experience><laboratory training>
+---
+application_id: 11004350
+activity_code: T32
+title: CardiOvascular Digital hEalth Research (CODER) Training Program
+org_name: UNIV OF MASSACHUSETTS MED SCH WORCESTER
+phr: PROJECT NARRATIVE The CardiOvascular Digital hEalth Research (CODER) program will train postdoctoral MD and PhD scientists in digital health. CODER includes themes of informatics, data science, artificial intelligence, mobile health, point- of-care technologies, implementation science, and health equity applied to cardiovascular disease management and prevention. Ultimately, CODER trainees will make future innovative discoveries as independent investigators that will advance the field and support the mission of NHLBI.
+terms: Cardiovascular system;digital health;Research Training;Training Programs
+---
+application_id: 11096561
+activity_code: T32
+title: INTEGRATIVE PREDOCTORAL TRAINING IN DRUG ABUSE RESEARCH AT INDIANA UNIVERSITY
+org_name: TRUSTEES OF INDIANA UNIVERSITY
+phr: Continuing support for our integrative pre-doctoral training program in the neuroscience of substance use
+disorders will provide additional training of researchers who are well prepared to develop, study and evaluate
+new treatments for the multi-faceted, multi-dimensional problem of substance use disorder. Trainees integrate
+experimental approaches from neuroscience, psychology, implementation science, and population health in
+their coursework and research training to optimize their preparation for careers in substance use disorder
+research.
+terms: <Drug abuse><Indiana><Research><Training><Universities><abuse of drugs><abuses drugs><pre-doc><pre-doctoral>
+---
+application_id: 10893385
+activity_code: K76
+title: ED GOAL: An Advance Care Planning Intervention for Seriously Ill Older Adults in the Emergency Department
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: PROJECT NARRATIVE ED GOAL is a 6-minute motivational interview conducted in the emergency department (ED), which engages seriously ill, yet clinically stable, older adults to address advance care planning (ACP) with their outpatient clinician(s) and avoids a time-consuming, sensitive conversation in the time-pressured ED environment. My NIA GEMSSTAR R03 project established that ED GOAL may increase patients’ engagement in ACP yet identified opportunities for refinement, including improving efficacy by involving caregivers of patients with cognitive impairment, adding care coordination components (hand-off document, etc.) to the outpatient clinicians, and broadening reach by adapting its use by specially-trained nurses. This study will allow me to refine ED GOAL to maximize its potential ef...
+terms: Acceleration;acceptability and feasibility;Accident and Emergency department;acute care;Address;Advance Care Planning;advanced directive;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease patient;Behavior Therapy;care coordination;career development;Caregivers;caregiving;Caring;Clinical;Clinical Trials;Communication;Computerized Medical Record;Consultations;Consumption;Decision Making;Dementia;design;Development;Disease;Doctor of Philosophy;Documentation;efficacy testing;Emergency Department Physician;Emergency department visit;Emergency Medicine;Emergency Nursing;end of life care;Ensure;Environment;Exclusion;Family;Feedback;Focus Groups;Foundations;Friends;Funding;Future;Geriatric Nursing;Geriatrics;Goals;Gunshot wound;Health Services Research;Healthcare;Home;Hospitals;Impaired cognition;implementation science;improved;Inpatients;International;Intervention;Interview;K-Series Research Career Programs;Knowledge;Life;Life Extension;Measures;Medical;medical schools;Mentors;Methods;Modeling;motivational enhancement therapy;Nurses;Nursing Faculty;nursing intervention;Nursing Research;older adult;Outpatients;Palliative Medicine;Participant;patient engagement;Patient Self-Report;Patient-Centered Care;Patients;Physicians;pilot test;Pragmatic clinical trial;pragmatic trial;Preparation;pressure;primary outcome;Proxy;Quality of Care;Quality of life;randomized controlled design;Randomized, Controlled Trials;Research;Research Personnel;Research Training;Resource-limited setting;Risk;Scientist;secondary outcome;sexual assault;Signal Transduction;Site;skills;Specific qualifier value;standard of care;Structure;Surveys;systematic review;Targeted Research;Testing;Time;Training;Training Programs;treatment arm;treatment as usual;Venous;Woman
+---
+application_id: 10919822
+activity_code: K99
+title: Examination of emotion regulation strategy use in an outpatient treatment program for adolescents with co-occurring disorders
+org_name: EMMA PENDLETON BRADLEY HOSPITAL
+phr: PROJECT NARRATIVE Emotion regulation skill use is emerging as a transdiagnostic treatment mechanism and may have important implications for adolescent alcohol use disorder and co-occurring disorder treatment, yet research in this area is lacking. By leveraging ecological momentary assessment methods, the goal of this K99/R00 is to examine emotion regulation skill use as a treatment mechanism in an intensive outpatient program for youth with co- occurring disorders. Findings from this project could inform the refinement of existing interventions and the creation of new, more effective ones.
+terms: acceptability and feasibility;Address;Adolescence;Adolescent;adolescent alcohol treatment;adolescents with alcohol use disorders;Adult;aged;alcohol abuse therapy;Alcohol consumption;alcohol craving;alcohol use disorder;Ambulatory Care;Anxiety;Area;associated symptom;Attention deficit hyperactivity disorder;Behavior;Communities;Comprehension;cost;Data;Development;Diagnosis;Diagnostic;Dialectical behavior therapy;Disease;dual diagnosis;Ecological momentary assessment;effective intervention;emotion dysregulation;emotion regulation;Emotional;Enrollment;executive function;Exhibits;experience;feasibility testing;Feedback;Goals;Grant;Growth;improved;Intervention;Learning Skill;Mental Depression;Mental disorders;Mentors;Methods;National Institute on Alcohol Abuse and Alcoholism;Nature;outpatient programs;Participant;participant enrollment;Patient Self-Report;Phase;Pilot Projects;Population;Population Intervention;Procedures;Process;prospective;Protocols documentation;Psychiatric Diagnosis;Psychopathology;randomized, clinical trials;Reporting;Research;Research Personnel;Resources;Role;Sampling;satisfaction;Scientist;skill acquisition;skills;skills training;Strategic Planning;Symptoms;Testing;Training;Treatment outcome;treatment program;underage drinking;Work;Youth
+---
+application_id: 11016016
+activity_code: T32
+title: Training in the Science of Co-Occurring Disorders
+org_name: DARTMOUTH COLLEGE
+phr: Project Narrative
+ This training program is highly relevant to the public health because it will continue to train new cohorts of
+scientists to conceptualize and study addiction from a primary perspective that substance use disorders most
+often co-occur with other types of psychiatric and medical disorders. Moreover, a focus on digital health
+approaches, the faculty’s diverse research programs, and the rigorous structure of the training program assure
+that fellows receive state of the art training in transdisciplinary approaches to the prevention and treatment of
+substance use and co-occurring disorders. This would be the only NIDA-funded T32 that centrally embraces
+digital health training for co-occurring disorders in its core mission.
+terms: <Science><Training><co-occurring disorders><dual diagnosis>
+---
+application_id: 10866606
+activity_code: T32
+title: RESEARCH IN HUMAN COMMUNICATION AND ITS DISORDERS
+org_name: FATHER FLANAGAN'S BOYS' HOME
+phr: PROJECT NARRATIVE  There is a critical need for interdisciplinary research in the area of human communication and its disorders. The Boys Town National Research Hospital postdoctoral training program is designed to provide trainees with the expertise required to develop successful independent research programs through training in a large center comprising a highly collaborative and unique mix of behavioral and clinical translational research programs.
+terms: Communication;Disease;Human;Research
+---
+application_id: 11037310
+activity_code: T32
+title: RESEARCH IN HUMAN COMMUNICATION AND ITS DISORDERS
+org_name: FATHER FLANAGAN'S BOYS' HOME
+phr: No changes from originally awarded application.  PROJECT NARRATIVE There is a critical need for interdisciplinary research in the area of human communication and its disorders. The Boys Town National Research Hospital postdoctoral training program is designed to provide trainees with the expertise required to develop successful independent research programs through training in a large center comprising a highly collaborative and unique mix of behavioral and clinical translational research programs.
+terms: Communication;Disease;Human;Research
+---
+application_id: 10886378
+activity_code: K99
+title: Associations between structural stigma and alcohol use among sexual minority women and their offspring
+org_name: HARVARD PILGRIM HEALTH CARE, INC.
+phr: Project Narrative [Sexual minority women experience disproportionate health inequities including risky drinking behaviors, partly due to structural stigma, and these impacts may extend to their offspring; however, the mechanisms that mediate and moderate these associations, as well as how they unfold throughout the lifecourse, remain un- known. The proposed research will examine how exposure to structural stigma throughout life impacts alcohol consumption of sexual minority women and their offspring in two unique, linked, longitudinal, intergenera- tional cohorts. These findings will lay the groundwork to reveal which individual resiliency factors and inter- personal determinants protect against the effects of structural stigma, advancing understanding of mechanisms of risk and modifiable ...
+terms: Address;Adolescence;Adult;Adverse effects;Age;Alcohol consumption;alcohol misuse;alcohol risk;Alcohols;Attitude;Award;career development;Characteristics;Child;Child Health;Child Rearing;cohort;Cohort Studies;Congresses;Data;data structure;Disparity;drinking behavior;Enrollment;examination questions;experience;Exposure to;Female;Foundations;Future;Generations;Geography;Health behavior;health disparity;health inequalities;Heterosexuals;high risk;high risk drinking;high risk population;Hostility;Individual;Infant;Infant Health;innovation;Institutional Policy;intergenerational;Knowledge;Lesbian;Lesbian Gay Bisexual Transgender;Libraries;Life;Life course epidemiology;Life Cycle Stages;Link;marginalized population;Measurement;Measures;Mediating;Mental Health;Mentors;Mentorship;Minority Groups;modifiable risk;Mothers;National Institute on Alcohol Abuse and Alcoholism;Natural Language Processing;news;Newspapers;novel;Nurses;Nurses&apos; Health Study;offspring;Parents;Participant;Pattern;Personal Satisfaction;Phase;Policies;protective factors;Questionnaires;Reporting;Research;Research Personnel;Research Proposals;resilience factor;Resources;Respondent;Risk;Risk Factors;Risk Reduction;self esteem;Sex Orientation;sexual minority;sexual minority health;sexual minority women;sexual minority youth;Social Environment;social group;social stigma;Stigmatization;Techniques;Testing;Text;Time;time use;tool;Training;US State;Woman;Work
+---
+application_id: 10931622
+activity_code: K99
+title: Role of gut microbial ethanol production in alcohol use disorder and alcohol-associated liver disease
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: PROJECT NARRATIVE Alcohol use disorder and alcohol-associated liver disease are associated with changes in the gut microbiome, but the mechanisms by which the gut microbiome increases individuals’ risk for these disorders is not well understood. Our research investigates how ethanol production by gut microbes may increase alcohol use in the host and exacerbate liver disease. These studies will enhance our understanding of how gut microbial metabolites contribute to alcohol use disorder and alcohol-associated liver disease and lead to discovery of improved therapeutic interventions.
+terms: absorption;Advisory Committees;Aerobic;Affect;alcohol abuse therapy;Alcohol consumption;Alcohol dependence;alcohol use disorder;Alcohol withdrawal syndrome;Alcoholic Liver Diseases;Alcohols;anti-fungal agents;Antibiotic Therapy;Antibiotics;antimicrobial;Bacteria;Bacterial Translocation;Behavior;behavior test;Behavioral;Biological;Bioreactors;Blood Circulation;Brain;California;career development;Chronic;chronic alcohol ingestion;Cirrhosis;clinical diagnosis;cohort;craving;Data;Development Plans;Disease Progression;Disease remission;disorder risk;Enrollment;Environment;Enzymes;Ethanol;experimental study;fatty liver disease;Feces;Fibrosis;Flare;fungus;Gene Expression;Gene Family;Genes;Germ-Free;Gnotobiotic;gut bacteria;gut microbes;gut microbiome;gut microbiota;Hepatic;Histopathology;Household;humanized mouse;improved;Individual;Inflammatory;interdisciplinary approach;Intestinal permeability;Intoxication;Liver;Liver diseases;liver injury;loss of function;Measures;Mentors;Metabolism;metagenomic sequencing;Metagenomics;Methods;Microbe;microbial;microbiota;Minority;Morbidity - disease rate;mortality;mouse model;Mus;mutant;neuroinflammation;neuropathology;Pathologic;Pathology;patient subsets;Patients;Phase;Physicians;Physiological;Population;Predisposition;Prevalence;Prevention strategy;Production;progression risk;psychological symptom;Publishing;Research;research and development;Resources;review of reported cases;Risk Factors;Role;Scientist;Symptoms;Syndrome;Techniques;Testing;Therapeutic;Therapeutic Intervention;Training;Universities
+---
+application_id: 10867367
+activity_code: T32
+title: Training in Hearing and Communication Neuroscience
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: Narrative This proposal focuses on research and training that are directly relevant to hearing loss, speech and language disorders, and communication disorders in humans. This training program will prepare a cadre of scientists to address fundamental questions pertaining to hearing and communication neuroscience. These individuals will not only advance our understanding of biologic and behavioral bases of a broad spectrum of auditory-vocal communication disorders, but will also generate innovative diagnostic and therapeutic applications.
+terms: Communication;Hearing;Neurosciences;Training
+---
+application_id: 11087253
+activity_code: T32
+title: Diabetes and Related Metabolic Diseases
+org_name: WASHINGTON UNIVERSITY
+phr: There were no modifications of the Public Health Relevance Section from the original submission: 
+Over 38 million Americans have diabetes and nearly 100 million have prediabetes, incurring staggering costs for the US health system since diabetes is the most expensive chronic disease. In addition to economic costs, metabolic diseases like diabetes cause enormous suffering due to heart disease, vision loss, kidney failure, liver failure, strokes, amputations, and many other health problems. This application is relevant to public health because of its overarching goal of training exceptional scientists capable of developing new strategies to decrease the burden of diabetes.
+terms: <Diabetes Mellitus><Metabolic Diseases><Metabolic Disorder><Thesaurismosis><diabetes><metabolism disorder>
+---
+application_id: 10934367
+activity_code: K99
+title: Applying Construal Level Theory to Develop and Test an Interactive Text Messaging Adjunct Intervention to Reduce Heavy Drinking and HIV Risk
+org_name: BROWN UNIVERSITY
+phr: Project Narrative Young adult men who have sex with men (MSM) have high rates of heavy alcohol use and account for majority of new HIV cases. Text messaging, a ubiquitous technology, is starting to be used to enhance effects of brief interventions and shows promise as a tool to support and maintain behavior change, but there is room for improvement, and further theory-based rigorous development and empirical testing is needed. The proposed study leverages the empirically supported construal level theory (CL T) to, in the MOSAIC K99 phase, develop and pilot test text messages via a user-centered approach with members of the intended end-user population, and in the R00 phase, test the efficacy of CL T-based text messages in reducing heavy drinking and HIV risk among young adult MSM, at the d...
+terms: 3-Dimensional;acceptability and feasibility;Address;Age;Alcohol consumption;alcohol measurement;alcohol risk;Alcohols;Behavior;behavior change;behavior test;Behavior Therapy;Behavioral;Behavioral Mechanisms;Body Weight decreased;brief intervention;career;cigarette smoking;Clinical;comparison control;condoms;Data;Development;drinking;drinking behavior;Effectiveness of Interventions;effectiveness testing;efficacy testing;experience;Future;Goals;Heavy Drinking;heavy drinking young adult;high risk sexual behavior;HIV;HIV risk;improved;Individual;innovation;Intervention;Intervention Studies;Interview;Knowledge;live text;member;men who have sex with men;Modeling;Motivation;novel;Online Systems;Outcome;Participant;Persons;Phase;pilot test;Population;Process;programs;Protocols documentation;Randomized;randomized trial;randomized, clinical trials;reduced alcohol use;Reporting;Research;Risk;risk perception;satisfaction;Series;Sex Behavior;skills;Smoking;Structure;Technology;Testing;Text;Text Messaging;texting support;theories;therapy design;therapy development;Thinking;tool;Training;trial design;Unsafe Sex;usability;Work;young adult
+---
+application_id: 10884457
+activity_code: T32
+title: Integrated Endocrine and Metabolic Research Training
+org_name: BETH ISRAEL DEACONESS MEDICAL CENTER
+phr: Project Narrative The current epidemic of obesity and diabetes sweeping the American populace has heightened the need for well-trained academic endocrinologists who can address the problem with clinical, translational, and basic science approaches. The Endocrine Training Program at the Beth Israel Deaconess Medical Center has a long record of accomplishment in producing such scientists. The undiminished tide of metabolic disease underscores the importance of continuing the vital activities of this Training Program.
+terms: Endocrine;Metabolic;Research Training
+---
+application_id: 10838514
+activity_code: T32
+title: Pediatric Gastroenterology and Nutrition Training Grant
+org_name: CINCINNATI CHILDRENS HOSP MED CTR
+phr: There is a critical shortage of investigators in pediatric gastroenterology who can advance new knowledge to improve the outcomes for children with digestive diseases. Our training program focuses on: 1) Liver Disease and Modeling, 2) Digestive Disease and Immunity, 3) Digestive Disease and Obesity, and 4) Translation Embryology. We will provide mentored training to pediatricians who will become the next generation of investigators and academic leaders in pediatric gastroenterology.
+terms: Childhood;Gastroenterology;Grant;nutrition;Training
+---
+application_id: 10894920
+activity_code: K99
+title: Alterations in neuronal metabolic pathways contribute to human cognitive aging and are exacerbated in Alzheimer's disease
+org_name: SALK INSTITUTE FOR BIOLOGICAL STUDIES
+phr: PROJECT NARRATIVE Neurons of the brain age in parallel with the individual and we can model changes in aged and diseased human neurons in a dish. I have reproducible evidence from multiple genetically distinct individuals with Alzheimer’s disease (AD), that shows the metabolic pathways involved in making the DNA building blocks are altered, potentially leading to increased DNA damage and other metabolic dysfunction. With new technologies, we will quantify changes in DNA quality, investigate two key regulators of this metabolic pathway, and profile non-genetic DNA changes associated with age and AD.
+terms: Address;Age;age-related disease;aged;Aging;aging process;aging related disease;Alzheimer&apos;s Disease;Alzheimer&apos;s disease brain;Alzheimer&apos;s disease patient;Analytical Chemistry;ATAC-seq;Bioenergetics;Biological;Biological Aging;Biological Assay;Biological Models;Brain;Carbon;cdc Genes;CDC2 gene;Cell Cycle;Cells;ChIP-seq;Chromosomal Instability;clinically relevant;Cognitive;Cognitive aging;cohort;Data;Data Set;defined contribution;Dementia;Deoxyribonucleotides;Development;differential expression;Disease;DNA;DNA biosynthesis;DNA Damage;DNA Repair;DNA Structure;Down-Regulation;effective therapy;Elderly;Ensure;Epigenetic Process;epigenome;Event;experience;Fibroblasts;Functional disorder;Future;G1 Phase;Gene Expression Regulation;Generations;Genes;Genetic;Genetic Transcription;Genome;Homeostasis;Human;human disease;human old age (65+);Impaired cognition;In Vitro;in vivo;Individual;Induced Neurons;induced pluripotent stem cell;innovation;insight;Knowledge;Life;life span;Maps;Mediating;Metabolic;Metabolic dysfunction;Metabolic Pathway;Metabolism;metabolomics;Methods;methyl group;Mitochondria;Mitochondrial DNA;mitochondrial genome;Mitosis;Modeling;multi-electrode arrays;Neurons;new technology;non-genetic;normal aging;Nuclear;nucleotide metabolism;Nucleotides;Pathogenesis;Pathologic;pathological aging;Pathway interactions;Pharmaceutical Preparations;phosphoproteomics;Population;Post-Translational Protein Processing;postmitotic;Process;Production;Proteins;Publishing;Regulation;Rejuvenation;repaired;Repression;Reproducibility;Research;Resolution;Ribonucleotides;RNA;Role;RRM1 gene;Scientific Advances and Accomplishments;Signal Pathway;Signal Transduction;single cell analysis;single cell sequencing;System;Techniques;Technology;Testing;Therapeutic;therapeutic target;Thinking;Time;tool;Transcriptional Regulation;Up-Regulation
+---
+application_id: 10913575
+activity_code: K99
+title: Brain metabolism across the lifespan using multi-parametric MRS
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: Project Narrative It is predicted that 16% of the world’s population will be older than 65 years by 2050. The proposed research project will develop new methods to assess the brain metabolism across the healthy lifespan. These techniques will contribute to our understanding of healthy aging and its link to cognitive performance, may identify biomarkers for healthy aging, and may lead to earlier identification of subject-specific abnormalities associated with a higher risk of age-related disease.
+terms: 3-Dimensional;Age;age related changes;Age Years;age-related disease;Aging;Algorithms;Alzheimer&apos;s disease related dementia;Biochemical;Biochemistry;Biological Markers;Biological Process;biomarker identification;Biophysical Process;brain metabolism;candidate marker;career;career development;Choline;Clinical;Clinical Research;cognitive performance;cohort;Communities;Computer software;Consensus;Consumption;Coupled;Creatine;Data;Data Analyses;density;design;Development;Diagnostic;Dictionary;early detection biomarkers;Early identification;Early Intervention;Environment;Evolution;experimental study;Exposure to;Female;Fingerprint;Foundations;Generations;Glutamates;Goals;Grant;healthspan;healthy aging;healthy volunteer;high risk;human old age (65+);improved;in vivo;Individual;innovation;Knowledge;Learning;Life;Life Expectancy;life span;Link;Lipids;Literature;macromolecule;Magnetic Resonance;Magnetic Resonance Imaging;Magnetic Resonance Spectroscopy;male;Measurement;Measures;Medicine;Mentors;Methodology;Methods;Modeling;Molecular;myoinositol;N-acetylaspartate;Neurobiology;neurochemistry;Neurodegenerative Disorders;Neurons;next generation;normal aging;North America;novel;novel marker;open source;Paper;Participant;Pattern;Physiologic pulse;Population;preventive intervention;Process;Protons;Recovery;Relaxation;Research;Research Design;Research Personnel;Research Project Grants;Research Proposals;Resolution;Resource Development;Risk;Role;Schedule;Sequence Analysis;Side;Signal Transduction;Societies;Source;Specificity;Structure;Techniques;Testing;Time;Training;training opportunity;Universities;volunteer;Water
+---
+application_id: 11089195
+activity_code: T32
+title: Training Grant in Pediatric Endocrinology, Diabetes and Metabolism
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: Youth with public insurance underutilize diabetes care, particularly diabetes technology which is associated with improvement in diabetes-specific outcomes. Thus, we urgently need studies to understand and increase diabetes technology utilization. This proposed research will (1) improve representation of youth in the literature, (2) address the gap in knowledge of barriers and promoters in publicly insured youth, and (3) identify and address factors associated with diabetes technology uptake and utilization.
+terms: <Childhood><Diabetes Mellitus><Endocrinology><Grant><Intermediary Metabolism><Metabolic Processes><Metabolism><Metabolism and Endocrinology><Training><diabetes><pediatric>
+---
+application_id: 11094535
+activity_code: T32
+title: Multidisciplinary Research Training in Gastroenterology and Hepatology
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: PROJECT NARRATIVE
+This Multidisciplinary Research Training Program in Gastroenterology and Hepatology addresses the critical
+need for more physician-scientists and scientists focused on gastrointestinal and liver diseases. This Program
+will provide postdoctoral fellows with rigorous, personalized and state-of-the-art research training. The
+overarching goal is to equip outstanding young researchers with the knowledge and skills required to accelerate
+the translation of basic science discoveries into new approaches to the diagnosis and management of digestive
+disorders.
+terms: <Gastroenterology><Hepatology><Interdisciplinary Research><Interdisciplinary Study><Multidisciplinary Collaboration><Multidisciplinary Research><Research Training>
+---
+application_id: 11094417
+activity_code: T32
+title: Institutional Training Grant in Pediatric Gastroenterology
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: The Pediatric T32 Training Program directly contributes to child health by preparing the next generation of physician scientists. These individuals will play a crucial role in advancing care and enhancing the quality of life for children and adolescents with GI, hepatology, and nutritional disorders. Through investing in multidisciplinary bench-to-bedside research training, this program establishes a solid foundation for trainees to become future leaders, researchers, and mentors in the fields of GI, hepatology, and nutrition. Their expertise will shape the direction of these specialties, ensuring continued progress and innovation in the future.
+terms: <Childhood><Gastroenterology><Grant><Institution><Training><pediatric>
+---
+application_id: 10912783
+activity_code: K99
+title: In situ imaging of the aging-induced structural and stoichiometric degradation of the nuclear pore complex and nuclear periphery
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: NARRATIVE The Nuclear Pore Complex (NPC) is a large megadalton cellular assembly composed of ∼550 proteins, that degrades structurally and compositionally with age, causing severe difficulties with cellular processes. The elusive ultrastructural and compositional degradation of NPC and their building components will be imaged using a combination of cryo-Focused Ion Beam milling-Electron Tomography (cryo-FIB-ET) and single-molecule imaging. With training from diverse group of mentors/advisors, this proposal will lay the groundwork for a new research program that will use these cutting-edge imaging modalities to map important ultrastructural/compositional cellular alterations caused by aging.
+terms: Advisory Committees;Affect;Age;age related;age related changes;age related decline;aged;Aging;aging related;Architecture;Award;Bacteriophage T4;Biochemistry;career;Cell Aging;Cell Physiology;Cells;Chromatin;Clustered Regularly Interspaced Short Palindromic Repeats;Collaborations;Complex;Cryoelectron Microscopy;Cytoplasm;data integration;Deterioration;Development;Disease;Doctor of Philosophy;Electron Beam Tomography;electron tomography;Environment;Enzymes;Foundations;Frequencies;Functional disorder;Gene Expression Regulation;Goals;Health;Image;imaging modality;Imaging Techniques;Immobilization;improved;In Situ;in situ imaging;In Vitro;Investigation;Ions;Leadership;Link;Maps;Mentors;Mentorship;Modality;Modeling;Molecular;molecular assembly/self assembly;molecular imaging;molecular modeling;Morbidity - disease rate;Motor;Nerve Degeneration;Neurons;novel;Nuclear;Nuclear Envelope;Nuclear Pore Complex;nucleocytoplasmic transport;Nucleoplasm;Organism;Paper;particle;Phase;Photobleaching;Play;Postdoctoral Fellow;Process;programs;Protein Isoforms;Proteins;Publications;reconstitution;Reporting;Research;Resolution;Sampling;Science;single molecule;skills;stoichiometry;structural biology;Structure;synthetic biology;Techniques;Therapeutic;Time;trafficking;Training;Transcriptional Regulation;Work;yeast genetics;Yeasts
+---
+application_id: 11093661
+activity_code: T32
+title: Interdisciplinary Bioengineering Research Training in Diabetes
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: NARRATIVE
+Diabetes is a global heath epidemic, and bioengineering approaches and new technology are needed to
+advance the development of effective diagnostics, management strategies and cures for diabetes.
+However there is a shortage of a skilled scientific workforce able to work on these developments, due to the
+unique training required. We will leverage the outstanding previous experience, expertise, resources and
+institutional support at the University of Colorado to develop such a training program, in order to attract and
+train outstanding PhD students, to prepare them for outstanding research careers in academia and industry.
+terms: <Biomedical Engineering><Diabetes Mellitus><Research Training><bio-engineered><bio-engineers><bioengineering><biological engineering><diabetes>
+---
+application_id: 10848265
+activity_code: T32
+title: Interdisciplinary Bioengineering Research Training in Diabetes
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: NARRATIVE Diabetes is a global heath epidemic, and bioengineering approaches and new technology are needed to advance the development of effective diagnostics, management strategies and cures for diabetes. However there is a shortage of a skilled scientific workforce able to work on these developments, due to the unique training required. We will leverage the outstanding previous experience, expertise, resources and institutional support at the University of Colorado to develop such a training program, in order to attract and train outstanding PhD students, to prepare them for outstanding research careers in academia and industry.
+terms: Biomedical Engineering;Diabetes Mellitus;Research Training
+---
+application_id: 11093051
+activity_code: T32
+title: NIDDK Multidisciplinary Predoctoral Training in Discovery and Translational Research
+org_name: MAYO CLINIC ROCHESTER
+phr: PROJECT NARRATIVE
+Success in the pursuit of new treatments for diabetes, digestive, and kidney diseases require developing
+the next generation of career biomedical scientists. This Mayo Predoctoral Training Program is focused
+upon this important societal goal.
+terms: <NIDDK><National Institute of Diabetes and Digestive and Kidney Diseases><Training><Translational Research><Translational Science><multidisciplinary><pre-doc><pre-doctoral><translation research><translational investigation>
+---
+application_id: 11095314
+activity_code: T32
+title: Research Track Radiology Residency
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: The University of Pennsylvania seeks to continue its highly successful physician-scientist
+training program for radiologists in the form of the Research Track Radiology Residency.
+This program is motivated by rapid advances in imaging technology and methodology
+and the need for radiology physician-scientists who are equipped to translate these
+advances to the clinic. The ongoing success of the Program's trainees, evidenced by
+academic radiology faculty appointments, NIH funding and radiology research leadership
+roles, support the continuation of this program and the innovations in the proposed
+renewal designed for the evolving landscape of radiology research.
+terms: <General Radiology><Radiology><Radiology Specialty><Research><Residencies>
+---
+application_id: 11096636
+activity_code: T32
+title: Integrated Regional Training Program in Environmental Health Sciences (IRTP)
+org_name: OREGON STATE UNIVERSITY
+phr: PROJECT NARRATIVE
+The Integrated Regional Training Program in Environmental Health Sciences (IRTP) at Oregon State
+University provides structured scientific, professional, and career development opportunities to train the next
+generation of environmental health science (EHS) researchers in toxicology, environmental chemistry,
+molecular biology, risk analysis, public health, and big data analytics with an emphasis on transdisciplinary
+opportunities in exposure biology and co-development of knowledge. IRTP trainees go on to join academic,
+regulatory, commercial, and non-profit sectors and continue to apply the knowledge gained in the training
+program to address complex, real-world environmental problems to improve human and environmental health.
+The IRTP is therefore designed to ensure that ...
+terms: <Environmental Health><Environmental Health Science><Training Programs>
+---
+application_id: 11095378
+activity_code: T32
+title: Interdisciplinary Research Training Program in Environmental Health and Toxicology
+org_name: UNIVERSITY OF ILLINOIS AT URBANA-CHAMPAIGN
+phr: This is a competing continuation application to renew the Research Training Program in Toxicology and
+Environmental Health at the University of Illinois at Urbana-Champaign. The Program, established in 2000,
+educates 4 predoctoral and 3 postdoctoral trainees per year in reproductive/endocrine toxicology,
+neurotoxicology, nutritional toxicology, nanotoxicology, and cancer toxicology.
+terms: <Environmental Health><Environmental Health Science><Interdisciplinary Research><Interdisciplinary Study><Multidisciplinary Collaboration><Multidisciplinary Research><Training Programs><ecological toxicology><environmental toxicology>
+---
+application_id: 11094567
+activity_code: T32
+title: Integrated Engineering and Rehabilitation Training
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: Relevance to Public Health. The number of people in the U.S. living with movement-related disabilities is
+staggering. Disability due to neurological disorders can often be mitigated by carefully applying electrical
+stimulation to specific neural structures. Both research and commercial applications related to neural stimulation
+are growing rapidly, leading to a real need for highly qualified Ph.D.-level engineers who have the technical and
+clinical backgrounds provided by this program.
+terms: <Engineering><Medical Rehabilitation><Rehabilitation><Rehabilitation therapy><Training><rehab therapy><rehabilitative><rehabilitative therapy>
+---
+application_id: 10907467
+activity_code: T32
+title: TRAINING IN REGENERATIVE MEDICINE
+org_name: WASHINGTON UNIVERSITY
+phr: There is currently a lack of engineers and scientists who have formal interdisciplinary training focused on regenerative medicine. This program will be used to develop an integrated training structure that provides a unique, multidisciplinary experience for postdoctoral fellows, allowing them to more efficiently translate scientific discoveries, with the ultimate goal of improving patient outcomes.
+terms: Regenerative Medicine;Training
+---
+application_id: 11095513
+activity_code: T32
+title: Molecular & Environmental Toxicology Predoctoral Training Program
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: Project Narrative
+The human chemical environment influences a significant fraction of human morbidity and
+mortality. This proposal is designed to train the next generation of scientists to take leadership
+positions in the arena of human oriented environmental health research. Training of such
+scientists is essential if we are to understand how our environment impacts our health and if we
+are to properly identify and regulate those important causal chemicals.
+terms: <Molecular Toxicology><Training Programs><ecological toxicology><environmental toxicology><pre-doc><pre-doctoral>

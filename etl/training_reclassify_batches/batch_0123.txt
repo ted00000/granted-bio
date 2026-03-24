@@ -1,0 +1,432 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 123 of 459 (50 projects):
+
+---
+application_id: 10842292
+activity_code: T32
+title: Research Training Program in Toxicology and Environmental Health
+org_name: UNIVERSITY OF ILLINOIS AT URBANA-CHAMPAIGN
+phr: This is a competing continuation application to renew the Research Training Program in Toxicology and Environmental Health at the University of Illinois at Urbana-Champaign. The Program, established in 2000, educates pre-and postdoctoral trainees in reproductive/endocrine toxicology, neurotoxicology, nutritional toxicology, and nanotoxicology.
+terms: Environmental Health;Research Training;Toxicology;Training Programs
+---
+application_id: 10828717
+activity_code: K99
+title: Functional Characterization of Tau Mutation and Post-translational Modifications
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: PROJECT NARRATIVE Aggregation of the protein tau is thought to drive several neurodegenerative diseases, including Alzheimer's Disease, that lack disease-modifying therapeutics. The goal of this proposal is to gain a comprehensive understanding of how the misfolding and aggregation of tau is controlled by a combination of its sequence and its cellular environment in human neurons. Completion of this proposal has the potential to provide unique insight into fundamental properties of protein misfolding in the brain and identify novel therapeutic targets for treating Alzheimer's Disease and other tau-related neurodegenerative diseases.
+terms: Alzheimer&apos;s Disease;American;Animal Model;Antibodies;Behavior;Biological;Biological Process;Biophysics;Brain;career;Categories;Cellular biology;Characteristics;Collaborations;Complex;CRISPR interference;crosslink;Deposition;Development;Disease;Disease Progression;effective therapy;Electron Transport;Environment;Etiology;Event;Functional disorder;functional genomics;Genes;genome-wide;Goals;Human;In Vitro;in vivo;Induced pluripotent stem cell derived neurons;innovation;insight;Kinetics;Licensing;Link;Mass Spectrum Analysis;Mentors;Mitochondria;Molecular;Molecular Conformation;Mutation;mutation screening;Neurodegenerative Disorders;Neurons;new technology;new therapeutic target;novel;novel therapeutic intervention;Onset of illness;Pathologic;Peptide Hydrolases;Pharmaceutical Preparations;Phase;Phosphorylation;Positioning Attribute;Post-Translational Protein Processing;Postdoctoral Fellow;Property;protein aggregation;protein misfolding;Proteins;Proteolysis;Proteomics;Research;Research Personnel;Scientist;skills;Spectrum Analysis;Structure;Symptoms;tau aggregation;tau interaction;tau mutation;tau Proteins;tau-1;Tauopathies;Techniques;Therapeutic;therapeutically effective;Training;Work
+---
+application_id: 11096601
+activity_code: T32
+title: Visual Science Training Program
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: Project Narrative
+The overall goal of the Visual Science Training Program (VSTP) is to recruit talented young
+researchers both pre- and postdoctoral fellows and provide them a broad research training with
+an overall emphasis on vision loss in the context of human disease, which will enable them to
+discover new horizons and contribute to our understanding of the biology of the visual cascade
+and the underlying pathologies resulting in loss of vision.
+terms: <Training Programs><vision science><visual science>
+---
+application_id: 11095395
+activity_code: T32
+title: Biostatistics, Epidemiologic, and Bioinformatic Training in Environmental Health (BEBTEH)
+org_name: UNIVERSITY OF WASHINGTON
+phr: PROJECT NARRATIVE
+The environmental health science needs a new generation of leaders who are highly trained in the art of
+quantitative reasoning and data science to help alleviate the adverse impact of environmental exposures
+on health. The proposed training program, BEBTEH, bridges the environmental health sciences with
+bioinformatics, biostatistics and data science in a unified structure within a first-class research
+environment. BEBTEH will support 8 predoctoral and 4 postdoctoral trainees to help realize NIEHS’ vision
+“to provide global leadership for innovative research that improves public health by preventing diseases
+and disability.”
+terms: <Bioinformatics><Biometrics><Biometry><Biostatistics><Environmental Health><Environmental Health Science><Epidemiology><Training><epidemiologic><epidemiological>
+---
+application_id: 11015722
+activity_code: T32
+title: Clinical Pharmacology, Drug Action and Pharmacogenetics
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: The goal of the Clinical Pharmacology and Therapeutics (CPT) Postdoctoral Training Program at UCSF is to train the next generation of clinical pharmacologist researchers so that they may pursue independently funded careers as academic investigators or clinical pharmacologists who can translate advances in biomedical research to the discovery, development, and use of pharmacological therapies to advance public health. We achieve this goal through a rigorous program structure of mentored research training accompanied by didactic coursework and participation in a biweekly seminar series. Throughout the course of the training program, trainees are exposed to a wide variety of research topics and interests leading to the development of a well-trained, highly-motivated, and forward-thinking grou...
+terms: <Clinical Pharmacology><Pharmacogenetics><drug action>
+---
+application_id: 11016470
+activity_code: T32
+title: Clinical Pharmacology Training Program
+org_name: THOMAS JEFFERSON UNIVERSITY
+phr: PROJECT NARRATIVE:
+Clinical pharmacology is a broad discipline focused on improving the effectiveness and safety of drugs
+in humans. Yet, at this time of scientific opportunity, a critical shortage of trained individuals limits the
+discovery and development of drugs for use in adults, children, and pregnant women. To fill that gap, Thomas
+Jefferson University and the Children’s Hospital of Philadelphia have developed a successful joint Clinical
+Pharmacology Fellowship Program to train postdoctoral clinician scientists dedicated to translating new
+discoveries into drugs that revolutionize care of individuals of all ages.
+terms: <Clinical Pharmacology><Training Programs>
+---
+application_id: 10827895
+activity_code: T32
+title: Trauma and Inflammation Research Training
+org_name: RHODE ISLAND HOSPITAL
+phr: Project Narrative Trauma continues to be a leading cause of death and disability in the USA. The Program aims to train surgical residents or recently graduated PhDs as the next generation of Trauma Scientists, capable of bringing advances in the understanding of the underlying mechanisms of “trauma disease” and inflammation to the bedside and improve the outcome of trauma victims.
+terms: Inflammation;Research Training;Trauma
+---
+application_id: 11015235
+activity_code: T32
+title: Trauma and Inflammation Research Training
+org_name: RHODE ISLAND HOSPITAL
+phr: Trauma continues to be a leading cause of death and disability in the USA. The Program aims to train surgical residents or recently graduated PhDs as the next generation of Trauma Scientists, capable of bringing advances in the understanding of the underlying mechanisms of “trauma disease” and inflammation to the bedside and improving the outcome of trauma victims.
+terms: <Inflammation><Research Training><Trauma>
+---
+application_id: 10867298
+activity_code: T32
+title: Molecular Biophysics Training Program
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: Project narrative The Molecular Biophysics Training Program is designed to yield a cohort of new PhDs with the skills to apply quantitative approaches rooted in physics to biomedical problems. The program will draw students from bi- institutional graduate programs shared between Weill Cornell Medicine and Sloan Kettering Institute. It will generate scientifically rigorous, thematically organized, socially cohesive and broadly inclusive educational and training environments to prepare students for diverse careers in academic and non-academic fields following timely completion of their doctoral degrees.
+terms: Biophysics;Molecular;Training Programs
+---
+application_id: 10873917
+activity_code: T32
+title: Tri-Institutional PhD Program in Computational Biology and Medicine
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: Project Narrative The Tri-Institutional Training Program in Computational Biology and Medicine (CBM) is a collaborative PhD training program involving Cornell University in Ithaca, NY, the Weill Cornell Medical College in New York City, and the research programs of Memorial Sloan Kettering Cancer Center in New York City. The Program trains computational biologists in the approaches they need to solve complex interdisciplinary problems in biology and medicine and prepares them for research-related academic and non-academic computational biology careers following timely completion of their PhD degrees.
+terms: Computational Biology;Doctor of Philosophy;Institution;Medicine;programs
+---
+application_id: 11016172
+activity_code: T32
+title: T32 training grant in medical genetics.
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: T32: Research Training Program for Physician Scientists in Medical Genetics; PDs: Eva Morava and Tamas Kozicz
+PROJECT NARRATIVE
+We aim to increase the number of physicians aspiring to pursue a research-focused career by securing time
+and mentorship needed to acquire scientific competence, while practicing both science and medicine, in a
+supporting mentored environment together with like-minded peers. Our proposal involves creating a
+comprehensive postdoctoral research training initiative in investigative genetics and genomics with the
+program objective to nurture the forthcoming cohort of autonomous scholars by offering tailored, self-directed
+educational and research initiatives with personalized mentorship. These initiatives will empower scholars to
+address the existing gaps in genetic a...
+terms: <Clinical genetics><Grant><Medical Genetics><Training>
+---
+application_id: 10824256
+activity_code: T32
+title: Research in Anesthesia Training Program (ReAP)
+org_name: STANFORD UNIVERSITY
+phr: Project Narrative Anesthesiologists take care of patients in multiple clinical areas, including the operating room, the intensive care unit, the pain clinic and the preoperative clinic. In all of these settings, they have the opportunity to improve care and outcome of patients with a wide range of disorders. To continue leading the way in advancing our understanding of diverse diseases and developing better interventions in the perioperative period requires highly trained and skilled practitioners dedicated to research in anesthesia. Integrated training programs such as the one proposed are essential to produce these future leaders of our field.
+terms: Anesthesia procedures;Research;Training Programs
+---
+application_id: 11198796
+activity_code: T32
+title: Mechanisms of Disease and Translational Science
+org_name: UT SOUTHWESTERN MEDICAL CENTER
+phr: Program Narrative
+Translating basic science discoveries into products that improve human health is a priority for the
+NIH. Most PhD programs do not provide training/education to facilitate this goal. The Mechanisms of
+Disease and Translational Science track at UTSW provides supplemental training for PhD candidates
+to introduce them to the processes and skills required to move basic science discoveries from the
+bench to the bedside.
+terms: <Disease><Disorder><Translational Research><Translational Science><translation research><translational investigation>
+---
+application_id: 11035659
+activity_code: T32
+title: Transdisciplinary Predoctoral Training in Biomedical Science and Engineering
+org_name: UNIVERSITY OF MAINE ORONO
+phr: Project Narrative: Cloud-Based Learning Modules for Biomedical Data Science  PARENT AWARD T32GM132006 (PI: Henry, Clarissa)  The current T32 award supports an innovative, evidence-based training program that includes a co-mentorship framework and transdisciplinary research opportunities. The proposed supplement will facilitate bioinformatics and data science research training by developing reusable Cloud-based training modules to demonstrate workflows to: 1) analyze bulk RNA-Seq data to study gene expression in mouse, zebrafish and C. elegans; 2) analyze mature microRNA expression using small RNA-Seq data from mouse, zebrafish and C. elegans; 3) analyze single cell RNA-Seq data from mouse and zebrafish; and 4) modeling transcription factor networks from RNA-Seq data from human and mouse. T...
+terms: Engineering;pre-doctoral;Science;Training
+---
+application_id: 11196393
+activity_code: T32
+title: Pharmacological Sciences Training Program
+org_name: DUKE UNIVERSITY
+phr: Project Narrative
+The proposed program will provide training in core pharmacology principles and offer professional, career, and experiential activities for trainees from graduate programs in Pharmacology (PHARM), Molecular Cancer Biology (MCB), Chemistry (CHEM), and Biomedical Engineering (BME), aiming to develop key competencies for scientific careers in academia, industry, or entrepreneurship. The Pharmacological Sciences Training Program (PSTP) offers classroom training and professional development activities to biomedical PhD candidates interested in pharmacology, synergizing with other programs through shared training in Responsible Conduct of Research (RCR) and Rigor and Reproducibility (R&R). Leveraging Duke University’s outstanding environment, the program benefits from leading-ed...
+terms: <Science><Training Programs><pharmacologic>
+---
+application_id: 10900640
+activity_code: T32
+title: Predoctoral Training in Pharmacological Sciences (Resubmission)
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: Project Narrative Students who participate in this program will receive rigorous training in fundamental areas of pharmacology, physiology, molecular and structural biology and drug discovery, as well as participate in cutting-edge research that examines the mechanisms of action of drugs that are either currently in use or being developed to treat a variety of human diseases. At the core of the training program, high level emphasis will be placed on mentorship, student development in the ethical conduct of research, inclusivity and wide-ranging career guidance. The knowledge gained by these trainees will have a direct impact on human health as they apply this knowledge as basic researchers, clinicians, educators, business leaders, intellectual property specialists or public policy advocate...
+terms: pharmacologic;pre-doctoral;Science;Training
+---
+application_id: 10854894
+activity_code: T32
+title: Training Program in Cellular Systems and Integrative Physiology
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: PROJECT NARRATIVE The overarching goal of the Systems and Integrative Biology Predoctoral Training Program in Cellular Systems and Integrative Physiology (CSIP Training Program) is to develop an inclusive and supportive graduate training environment to create a diverse pool of responsible and self-directed scientists who will enter the ever-changing biomedical career landscape with a broad understanding of cell biology and physiology across multiple biological scales. Through this systems approach, trainees will develop skill in critical thinking, quantitative literacy, and professional communication to become productive, ethical leaders in the biomedical workforce.
+terms: Physiology;System;Training Programs
+---
+application_id: 11014632
+activity_code: T32
+title: NC State Molecular Biotechnology Training Program (MBTP)
+org_name: NORTH CAROLINA STATE UNIVERSITY RALEIGH
+phr: Advanced training in molecular biotechnology is critical to modern biomedical science research and should be a key component of pre-doctoral education for students aspiring to academic, industrial, and government research careers. This Molecular Biotechnology Training Program at NC State University provides trainees from a wide range of graduate disciplines access to cutting-edge biotechnology training, complemented by an appreciation of responsible conduct of research and scientific rigor and reproducibility. Furthermore, students will be given opportunities for professional development through a variety of mechanisms, including workshops and internships.
+terms: <Biotech><Biotechnology><Molecular><Training Programs>
+---
+application_id: 10906126
+activity_code: K99
+title: Understanding the mechanistic link between vascular dysfunction and Alzheimers disease-related protein accumulation in the medial temporal lobe
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: Project Narrative The aim of the proposed research is to understand the interactions between cerebral small vessel disease and Alzheimer’s Disease related pathology in the medial temporal lobe, a brain region crucial for cognition and affected by the disease at early stages. The combined use of ultra-high resolution ex vivo MRI, corresponding histopathological serial sectioning, and deep-learning based quantitative measures of MRI and histology is promising to quantitatively and objectively identify these relationships, also inferring the role of potential mechanisms, such as blood-brain barrier leakage and clearance dysfunction. The results will enhance our understanding of the causal links between vascular and AD pathology and produce histologically validated neuroimaging markers of micr...
+terms: 3-Dimensional;Address;Affect;Alzheimer&apos;s Disease;Alzheimer&apos;s disease pathology;Alzheimer&apos;s disease related dementia;Amyloid;analytical method;Area;arteriole;Arterioloscleroses;Autopsy;Award;Blood - brain barrier anatomy;Blood brain barrier dysfunction;Blood Vessels;Brain;Brain region;brain tissue;burden of illness;Cerebral Amyloid Angiopathy;Cerebral small vessel disease;Cerebrovascular Disorders;Clinical;Cognition;Complex;Contrast Media;crosslink;deep learning;Dementia;Development;Disease;Disease Marker;early detection biomarkers;Ensure;entorhinal cortex;Etiology;Excision;Extravasation;Fibrin;Functional disorder;General Hospitals;global health;Goals;Health;Healthcare;Hippocampus;Histologic;Histology;Human;imaging modality;Impaired cognition;Impairment;in vivo;innovation;International;Intervention;Investigation;Knowledge;Link;Magnetic Resonance Imaging;magnetic resonance imaging biomarker;Maps;Massachusetts;Measures;medial temporal lobe;medical schools;Memory;Mentors;Metabolic;Methods;Monitor;Morphology;Neurofibrillary Tangles;neuroimaging;neuroimaging marker;neuron loss;neuropathology;novel;Optical Coherence Tomography;Pathologic;Pathology;Pattern;Penetration;Phase;Predisposition;protein TDP-43;Proteins;quantitative imaging;Research;Research Personnel;Research Priority;Resources;Role;Senile Plaques;Site;skills;spatial relationship;System;tau aggregation;tau Proteins;training opportunity;Training Programs;ultra high resolution;United States National Institutes of Health;Vascular Diseases;Visualization;Waste Products;Work
+---
+application_id: 10864012
+activity_code: T32
+title: NC STATE MOLECULAR BIOTECHNOLOGY TRAINING PROGRAM (MBTP)
+org_name: NORTH CAROLINA STATE UNIVERSITY RALEIGH
+phr: Project Narrative Advanced training in molecular biotechnology is critical to modern biomedical science research and should be a key component of pre-doctoral education for students aspiring to academic, industrial, and government research careers. This training should be done in an inclusive environment and complemented by an appreciation of responsible conduct of research and scientific rigor and reproducibility. Furthermore, students should be given opportunities for professional development through a variety of mechanisms, including workshops and internships.
+terms: Biotechnology;Molecular;Training Programs
+---
+application_id: 11016841
+activity_code: T32
+title: Training Program in Molecular, Cell, and Developmental Biology
+org_name: UNIVERSITY OF CALIFORNIA SANTA CRUZ
+phr: The graduate Training Program in Molecular, Cell and Developmental Biology (MCDB) is a student-centered interdisciplinary training program that builds core competencies needed for success in a variety of biomedical careers. A rigorous and supportive environment drives the success of all students. Graduates of the MCDB Training Program fill critical positions in academia, biotechnology, and other science-related fields, and bring unique skills to the national biomedical science workforce.
+terms: <Cellular biology><DNA Molecular Biology><Developmental Biology><Molecular Biology><Training Programs><cell biology>
+---
+application_id: 10757458
+activity_code: K99
+title: Uncovering an Enzymatic Program that Drives Physiological and Pathological Amyloid Formation.
+org_name: UNIVERSITY OF MIAMI SCHOOL OF MEDICINE
+phr: Narrative Cells are equipped with enzymes to generate physiological amyloids. These enzymes govern amyloidogenesis by regulating unusually long poly(A)-rich RNA tails that act as linear polyanionic stimulants of amyloid fiber formation. These enzymes modulate amyloid toxicity in Alzheimer’s and Parkinson’s disease models.
+terms: active control;age related;Aging;alpha synuclein;Alzheimer&apos;s Disease;Amyloid;Amyloid beta-Protein;Amyloid deposition;Amyloid fibers;Amyloid Fibrils;amyloid formation;amyloidogenesis;beta pleated sheet;Biological Process;Biology;cell assembly;Cells;cofactor;combat;Complement;Data;Dedications;Disease;disease model;Enzymes;Equilibrium;exhaust;exosome;Family;genetic manipulation;innovation;Link;Liquid substance;Modeling;novel strategies;nucleotidyltransferase;Organism;Parkinson Disease;Pathologic;Phase;Phase Transition;Physical condensation;Physiological;Poly(A)+ RNA;Process;programs;Property;protein aggregation;protein folding;proteotoxicity;Regulation;Research;Ribosomal RNA;RNA;RNA Degradation;RNA Folding;Solid;Stimulant;Tail;Testing;Toxic effect
+---
+application_id: 11095176
+activity_code: T32
+title: Predoctoral Training at the Chemistry-Biology Interface
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: PROJECT NARRATIVE
+The goal of this CBI Training Program is to provide students with the intellectual and technical skills to solve
+important and complex biological problems with implications for impacting human health and treatment of
+disease that can be most effectively addressed by studies at the chemistry-biology interface. This University of
+Pennsylvania-based program involves 41 faculty, students from complementary graduate groups and a program
+that combines chemistry-biology-interface research, didactic course-work, symposia, luncheons, retreats, and
+career development plans to create future leaders working at the chemistry-biology interface.
+terms: <Biology><Chemistry><Training><pre-doc><pre-doctoral>
+---
+application_id: 10873300
+activity_code: T32
+title: Predoctoral Training at the Chemistry-Biology Interface
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: The goal of this CBI Training Program is to provide students with the intellectual and technical skills to solve important and complex biological problems with implications for impacting human health and treatment of disease that can be most effectively addressed by studies at the chemistry-biology interface. This University of Pennsylvania-based program involves 34 faculty, students from complementary graduate groups and a program that combines chemistry-biology-interface research, didactic course-work, symposia, luncheons, retreats, and career development plans to create future leaders working at the Chemistry-Biology Interface.
+terms: Biology;Chemistry;pre-doctoral;Training
+---
+application_id: 10854790
+activity_code: T32
+title: Biotechnology Training Program
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: PROJECT NARRATIVE The University of Wisconsin-Madison Biotechnology Training Program addresses a critical need to educate scientists and engineers in the effective use of cross-disciplinary approaches to solve important problems in biomedical research. This program provides cutting-edge technical, operational and professional training to a diverse cohort of doctoral students drawn from biological, physical and engineering sciences. Ultimately, the career-long contributions of these trainees as leaders in industry, government service and academia are essential to maintain our national excellence and leadership in the application of biotechnology to demanding and dynamic societal needs.
+terms: Biotechnology;Training Programs
+---
+application_id: 10839847
+activity_code: T32
+title: Graduate Training in Cellular and Molecular Pathogenesis of Human Diseases
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: PROJECT NARRATIVE Graduate science education plays a critical role in the success of the U.S. workforce and economy, attracting and producing a diverse work force of researchers, innovators, educators, and leaders. We developed an innovative graduate program relying on the traditions and experience of one of the oldest pathology training programs in the country, but incorporating creative approaches to provide operational (cutting edge in-depth knowledge), technical (state-of-the-art methodology) and professional (transition into careers) skills that will lead to the output of true translational, diverse scientists. The Cellular and Molecular Pathology (CMP) graduate training program at the University of Wisconsin provides rigorous didactic training in fundamental basic biomedical sciences...
+terms: human disease;Molecular;Pathogenesis;Training
+---
+application_id: 10836540
+activity_code: K99
+title: Development and validation of efficient cognitive composite scores of digital tools for the detection of early pathophysiological changes in Alzheimers disease
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: PROJECT NARRATIVE In this project, the applicant will identify novel features of the digital clock drawing test most correlated with pathophysiological events in preclinical Alzheimer’s disease (AD) using machine learning and multimodal neuroimaging and establish the longitudinal performance of the digital test. Outcomes of the project will provide a non-invasive assessment of individual cognitive status in the context of progressive pathophysiological events in preclinical AD. This will enable efficient and cost-effective participant screening for AD therapeutic trials and facilitate the translation of digital testing into AD primary care settings, especially for underserved populations.
+terms: Accounting;Aging;Alzheimer disease screening;Alzheimer&apos;s Disease;Alzheimer&apos;s disease diagnosis;Alzheimer&apos;s disease therapeutic;Alzheimer&apos;s disease therapy;Alzheimer’s disease biomarker;Amyloid beta-Protein;Area;Award;beta amyloid pathology;Biological;biological heterogeneity;Brain Diseases;clinical application;clinical diagnosis;clinical heterogeneity;clinically relevant;Cognitive;cognitive performance;cognitive testing;cost effective;deep learning;Deposition;Detection;Development;Diagnostic;digital;digital tool;Discrimination;Early Diagnosis;Elderly;entorhinal cortex;Event;FDA approved;feature selection;Functional disorder;Goals;Health;Heterogeneity;Hippocampus;Impaired cognition;improved;in vivo;indexing;Individual;Machine Learning;Magnetic Resonance Imaging;Measures;multimodal learning;multimodal neuroimaging;Neuropsychology;neurovascular;normal aging;novel;Outcome;Paper;Participant;Pathology;Performance;performance tests;Perfusion;Phase;Plasma;Positron-Emission Tomography;pre-clinical;primary care setting;Process;Reporting;Research;Research Personnel;Rest;skills;Sum;tau Proteins;Tauopathies;Techniques;Testing;Therapeutic Trials;Therapy trial;Thinness;Time;time use;Training;Training Activity;Translations;Underserved Population;uptake;Validation;White Matter Hyperintensity;Work
+---
+application_id: 11014514
+activity_code: T32
+title: Biotechnology Training Program
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: The University of Wisconsin-Madison Biotechnology Training Program addresses a critical need to prepare scientists and engineers for cross-disciplinary careers solving important problems in biomedical research. This program provides cutting-edge technical, operational, and professional training to doctoral students drawn from biological, physical, and engineering sciences. Ultimately, the career-long contributions of these trainees as leaders in industry, government service and academia are essential to maintain our national excellence and leadership in the application of biotechnology to demanding and dynamic societal needs.
+terms: <Biotech><Biotechnology><Training Programs>
+---
+application_id: 10862573
+activity_code: T32
+title: NRSA in Genetics
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: Genetics and genomics are among the most important fields in basic biomedical research, contributing to essentially all medical applications. The Curriculum in Genetics and Molecular Biology is a highly-ranked doctoral program that trains students broadly in these fields. This proposal seeks NIGMS support for training these students for research and research-related careers in academic, industry, government, and non-profit settings. .
+terms: Genetic;National Research Service Awards
+---
+application_id: 11015218
+activity_code: T32
+title: Training in Cellular, Biochemical and Molecular Sciences
+org_name: UNIVERSITY OF ROCHESTER
+phr: This T32-funded Training Program will augment public health by enhancing institutional training of students in the biomedical sciences with advanced instruction in critical thinking, ensuring scientific rigor and reproducibility in experimental approaches, exposure to cutting-edge techniques, and training in professionalism and other skills necessary for using their PhD degrees in a wide variety of career paths. Our training program leverages outstanding research programs in mentor labs in areas related to the complicated biology of DNA, RNA and proteins, their relationships to various human diseases, and their potential as therapeutic tools or targets.
+terms: <Biochemical><Molecular><Science><Training>
+---
+application_id: 11091909
+activity_code: T32
+title: Program in Molecular Biophysics
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: Project Narrative
+The grand challenge in the life sciences during the 21st century is understanding how all molecules of life
+interact, working in concert to give rise to the living state, normal and diseased. Molecular biophysics is the
+interdisciplinary field that will provide this understanding. The Program in Molecular Biophysics trains
+predoctoral researchers to solve biomedical problems from first principles.
+terms: <Biophysics><Molecular><biophysical foundation><biophysical principles><biophysical sciences><programs>
+---
+application_id: 10873726
+activity_code: T32
+title: Training in Cellular, Biochemical and Molecular Sciences
+org_name: UNIVERSITY OF ROCHESTER
+phr: 8. Project Narrative This T32-funded Training Program enhances institutional training in cellular, biochemical and molecular biology by providing students with advanced instruction in critical thinking, ensuring scientific rigor and reproducibility in experimental approaches, exposure to cutting edge techniques, and training in professionalism and other skills necessary for using their PhD degrees in a wide variety of career paths. Our training program leverages outstanding research programs in mentor labs in areas related to the complicated biology of DNA, RNA and proteins and their relationship to various diseases.
+terms: Biochemical;Molecular;Science;Training
+---
+application_id: 11093663
+activity_code: T32
+title: Predoctoral Training Program in Molecular and Cellular Biology
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: NARRATIVE The University of Colorado is home to one of the only academic centers fully devoted to Down syndrome (DS) research, the Linda Crnic Institute for Down Syndrome (Crnic Institute) and MOLB T32 Training program closely collaborates with Crnic Institute to advance biomedical research in DS. The main objective of this proposal is to work with Crnic Institute in training of high quality, passionate PhD scientists who have learned to think critically and independently and are dedicated in pursuing careers in studying DS.
+terms: Molecular and Cellular Biology;pre-doctoral;Training Programs
+---
+application_id: 10908730
+activity_code: T32
+title: Predoctoral Training Program in Molecular and Cellular Biology
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: The future of biomedical and molecular biological research in the U.S. is dependent on the training of high quality, passionate PhD scientists who have learned to think critically and independently. The Molecular Biology Program at the University of Colorado Anschutz Medical Campus fosters the development of critically minded, dedicated researchers who can communicate effectively, investigate across disciplinary boundaries, and understand the human health implications of their studies.
+terms: Molecular and Cellular Biology;pre-doctoral;Training Programs
+---
+application_id: 10885940
+activity_code: K99
+title: A multi-omic and integrative longitudinal evaluation of the role of lipid, antioxidant, and osmoprotectant metabolites in the genitourinary syndrome of menopause by race and ethnicity.
+org_name: MONTANA STATE UNIVERSITY - BOZEMAN
+phr: Project Narrative The genitourinary syndrome of menopause (GSM) is an age-related, chronic, urogenital and sexual condition that disproportionately affects racial and ethnic minorities and contributes >$3 billion annually to US healthcare costs. My research indicates aging is associated with an increase in vaginal metabolites linked to oxidative stress and cellular damage and a concomitant decline in antioxidant and anti-inflammatory metabolites. I propose an integrative multi-omic (metabolomic, immunology, and microbiome) and machine learning approach to better understand these complex interactions, their role in urogenital age-related pathologies, and if race/ethnicity specific differences contribute to disparate rates of age-related pathologies in racial/ethnic minorities.
+terms: Advocate;Affect;Age;age related;Age related pathologies;age-related disease;aged;Aging;Alzheimer&apos;s Disease;Anti-Inflammatory Agents;antioxidant therapy;Antioxidants;Attenuated;Award;Biological Assay;Biological Markers;Cardiovascular Diseases;career;cell injury;Cerebrospinal Fluid;Chronic;Chronology;Clinical;Clinical Data;cohort;Communities;Complex;cost;cytokine;Data;Development;Diagnosis;Diagnostic;Diet;Disparate;Doctor of Philosophy;Dryness;early experience;Epidemiology;Epithelial Cells;estrogen disruption;Estrogen Therapy;Estrogens;ethnic minority;Ethnic Minority Women;Ethnic Origin;Evaluation;Exposure to;First Generation College Students;Genitourinary system;Glean;Glutathione;Glycine;Goals;Gynecologic;Health Care Costs;high risk;Human;Immunology;improved;In Vitro;infection rate;Inflammation;Inflammatory Response;innovation;insight;Intervention;K-Series Research Career Programs;Knowledge;Latina;Link;lipid metabolism;Lipid Peroxidation;Lipids;Longitudinal cohort;Lubricants;Lubrication;Machine Learning;machine learning method;marginalization;Mediating;Mediation;Medical;Menopausal Status;Menopausal Syndrome;Mentors;Metabolism;Metabolite Interaction;metabolome;metabolomics;Methods;Microbe;microbial host;Microbiology;microbiome;microbiota;Modality;Modernization;Mucous Membrane;multiple omics;Not Hispanic or Latino;novel;novel therapeutics;older adult;older women;Osmosis;Osteoporosis;Outcome;Oxidative Stress;Oxidative Stress Induction;Pain;Participant;Pathology;personalized intervention;Phase;Plasma;Population;post-doctoral training;Postmenopause;Predisposition;Preparation;Prevention;Process;Pruritus;Publications;Quality of life;Race;racial minority;racial minority women;Recurrence;reduce symptoms;reproductive;Reproductive Biology;Research;Research Personnel;Risk;Role;Sampling;Serum;Sex Functioning;Sexual Health;Sexually Transmitted Diseases;side effect;Signs and Symptoms;skills;social stigma;Sphingolipids;statistics;Stress;Structural Models;Symptoms;Therapeutic Agents;Vagina;vaginal lactobacilli;vaginal microbiota;Validation;validation studies;Vitamins;White Women;Woman;Work;Youth
+---
+application_id: 10881694
+activity_code: T32
+title: Rutgers Biotechnology Training Program
+org_name: RUTGERS, THE STATE UNIV OF N.J.
+phr: 8. NARRATIVE The proposed training program produces highly trained graduates that apply the tools of science and engineering to significant research problems in biology and medicine. With their unique skills and perspectives, graduates of the program are well prepared to advance human health and welfare through original discoveries, and through the development of new drugs, materials, and devices for use in exploratory investigations, diagnosis, and therapy. These professionals will play a critical role in maintaining our country’s leading role in biotechnology on the world scene.
+terms: Biotechnology;Training Programs
+---
+application_id: 11095147
+activity_code: T32
+title: Predoctoral Training in Molecular and Cellular Biology
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: Narrative
+The future of biomedical and molecular biological research in the U.S. is dependent on the training of high
+quality, passionate PhD scientists who have learned to think critically and independently. The Molecular
+Biology Program at the University of Colorado Anschutz Medical Campus fosters the development of critically
+minded, dedicated researchers who can communicate effectively, investigate across disciplinary boundaries,
+and understand the human health implications of their studies.
+terms: <Molecular and Cellular Biology><Training><pre-doc><pre-doctoral>
+---
+application_id: 11018254
+activity_code: T32
+title: G-RISE: Graduate Research Initiative for Student Advancement at The City College of New York
+org_name: CITY COLLEGE OF NEW YORK
+phr: In this renewal application, a group of 34 faculty researchers at The City College of New York
+(CCNY) proposes to leverage a position of research strength, within a large public university in
+the heart of an underserved community, to improve the quality and to broaden the demographic
+reach of advanced biomedical research workforce training that can benefit human health care.
+Using a strategic combination of NIH and institutional resources, the G-RISE program at CCNY
+has the demonstrated capacity to support cohorts of 15 Ph.D. trainees from underrepresented
+groups each year for five years, appointing each trainee for 2-3 years. A coordinated program of
+stimulating interdisciplinary coursework, rigorous research training, inclusive mentorship, and
+structured co-curricular activities that bui...
+terms: <Cities><New York><Research><Students><college><collegiate>
+---
+application_id: 10829269
+activity_code: K99
+title: Age and sex differences in the immune response to synthetic materials
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: Project Narrative  The foreign body reaction (FBR) to material implants was first described in the 1970s yet continues to induce implant rejection. With the proportion of people over 60 years old doubling from 12% to 22% by 2050 there is a critical need to better understand how chronic inflammation alters the FBR which will enable biomedical engineers to improve implant design. The overarching goals of this proposed work is to identify key biologic factors to target to develop immunomodulatory synthetic materials for use in the aging population for tissue regeneration.
+terms: Adaptive Immune System;Address;Adverse reactions;Age;age difference;age related;age-related disease;aged;Aging;aging population;Automobile Driving;Award;Biocompatible Materials;bioinformatics tool;Biological;Biological Factors;biomaterial compatibility;Biomedical Engineering;career;Cell Communication;cell type;Cells;Chronic;Cicatrix;Communication;Compensation;design;Development;Devices;Drug Delivery Systems;Engineering;experimental study;Female;Fibrosis;first responder;Flow Cytometry;Foreign-Body Reaction;Functional disorder;Goals;hallmarks of aging;healing;Health;Histology;Human;Hydrogels;Immune;immune function;Immune response;Immune system;Immune Targeting;immunoengineering;Immunofluorescence Immunologic;Immunologics;immunoregulation;Implant;implant design;implant material;improved;Infection;Inflammation;Inflammatory;inflammatory marker;Injury;Innate Immune System;Institution;life span;Location;Macrophage;Maintenance;male;Modeling;mouse model;Mus;Natural regeneration;neutrophil;non-healing wounds;old mice;Outcome;particle;Patients;Persons;Phase;Phenotype;polycaprolactone;Population;Positioning Attribute;Predisposition;prevent;Prosthesis;regenerative;Regenerative capacity;Regenerative engineering;Reporting;Research;Research Personnel;response;response to injury;Reverse Transcriptase Polymerase Chain Reaction;scaffold;senescence;senescent cell;sex;Sex Differences;single-cell RNA sequencing;Site;Splenocyte;Stromal Cells;System;T-Lymphocyte;Techniques;Testing;Therapeutic;therapeutic target;Tissue Engineering;tissue regeneration;tissue repair;Tissues;training opportunity;tumor-immune system interactions;Vaccines;Work;wound healing
+---
+application_id: 10836531
+activity_code: K99
+title: Assessing the roles of viral mutations and host factors in the transmission of Mayaro virus and other alphaviruses by urban mosquitoes
+org_name: UNIVERSITY OF TEXAS MED BR GALVESTON
+phr: PROJECT NARRATIVE Mayaro and chikungunya are alphaviruses that cause Mayaro fever and chikungunya fever, respectively; they present with fever, headache, muscle pain, chills, and long-term debilitating joint pain. These viruses are transmitted by mosquitoes, and adaptation to urban mosquitoes allows them to cause large outbreaks. Understanding how these viruses adapt to urban mosquitoes is essential for improved surveillance of variants and studies of how these viruses interact with host factors will spur the development of countermeasures against Mayaro and chikungunya viruses.
+terms: Acute Disease;Aedes;Affect;Alpha Virus;Anti-viral Response;Arboviruses;Arthralgia;Binding Proteins;Biological Assay;Blood;Brazil;career;chikungunya;Chikungunya fever;Chikungunya virus;Chills;Chimera organism;Culicidae;design;Development;Disease;Disease Outbreaks;Dissection;Distant;Dose;Double-Stranded RNA;Drug Targeting;Elements;emerging virus;Environment;Epidemic;Evolution;experimental study;Fever;Financial Hardship;fitness;forest;Future;Genes;Genetic;Genome;genome-wide analysis;genomic RNA;Genomics;Genotype;Geography;global health;Goals;Headache;Healthcare Systems;Human;human pathogen;immune activation;Immune Evasion;Immune response;Immune system;Immunity;immunoregulation;improved;Infection;Injections;Integration Host Factors;Invertebrates;K-Series Research Career Programs;knock-down;Knowledge;Laboratories;Laboratory Study;Link;Mayaro virus;Methylation;Methyltransferase;Midgut;Minority;Modeling;Modification;Monitor;mortality;Mutagenesis;Mutation;Mutation Fixation;Myalgia;next generation sequencing;Nonstructural Protein;North America;novel;novel strategies;oral infection;Pathway interactions;peri-urban;Phosphorylation;Phosphorylation Site;Phylogenetic Analysis;Play;Principal Investigator;prospective;Proteins;Publishing;Reader;Regulation;Research Personnel;Risk;RNA;RNA chemical synthesis;RNA methylation;Role;Saliva;Salivary Glands;Series;Single Nucleotide Polymorphism;skills;surveillance strategy;Testing;Titrations;transmission process;Urbanization;Vaccines;Variant;vector;vector competence;Vertebral column;Viral;viral fitness;Viral Genome;viral RNA;viral transmission;Viremia;Virus;Virus Activation;Virus Diseases;virus host interaction;Virus Replication;Writing
+---
+application_id: 10828850
+activity_code: T32
+title: G-RISE at The City College of New York
+org_name: CITY COLLEGE OF NEW YORK
+phr: Project Narrative A group of 22 faculty researchers at The City College of New York (CCNY) proposes to leverage a position of research strength in the biomedical sciences, within a large public university in the heart of an underserved community, to address the need for a well-trained biomedical research workforce and the gains to be achieved by improving its diversity. Using a strategic combination of NIH and institutional resources, the G-RISE program at CCNY has the demonstrated capacity to support an average cohort of 13 underrepresented (UR) Ph.D. trainees each year for five years, appointing each trainee for 2-3 years. A coordinated program of stimulating interdisciplinary coursework, rigorous research training, and structured activities to build research identity, ethical values, an...
+terms: Cities;college;New York
+---
+application_id: 10920391
+activity_code: T32
+title: The Clinical Translational Research Certificate of Added Qualification Program
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: NARRATIVE We are applying for funding to support students in a new interdepartmental Clinical Translational Research Certificate of Added Qualification Training Program that will offer unique translational research training to students selected from all graduate programs. The program will integrate with primary biomedical sciences PhD graduate programs, to which it will add a unique education in clinical translational research through a rigorous two-year curriculum with formal course work, practical skill building workshops, dedicated seminars, and experience in clinical research that integrates with the translational thesis research accepted students are performing. The ultimate goal of this program is to educate a highly skilled translational molecular medicine workforce, poised to becom...
+terms: clinical translation;programs;Qualifying;Translational Research
+---
+application_id: 10869870
+activity_code: T32
+title: Training Program in Cell and Molecular Biology
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Narrative The Cell and Molecular Biology Training Program is designed to train the next generation of Ph.D. scientists who will become future independent investigators in academia and industry, and leaders of inter-disciplinary cell and molecular biology research to improve human health. The Program is committed to training a diverse group of students with an emphasis on interdisciplinary, collaborative training in cell and molecular biology. The rigorous, quantitative training proposed will prepare Program trainees for a variety of research careers that provide fundamental insights into human health and disease and development of innovative approaches to therapy and disease prevention.
+terms: Cellular biology;Molecular Biology;Training Programs
+---
+application_id: 10768214
+activity_code: R25
+title: Short Course on Experimental Models of Human Cancer
+org_name: JACKSON LABORATORY
+phr: PROJECT NARRATIVE Cancer remains a largely incurable disease and the mouse remains a key model for human cancer. Thus, this short course proposes to accelerate the understanding of the next generation of cancer investigators in cutting edge modeling of human cancer including experimental cancer models, modern technology to assess mechanisms and outcomes, testing of emerging cancer therapies, and the contributions of the tumor and host genetics, as well as tumor microenvironment including its interplay with the immune system. The course will promote networking and multi-disciplinary collaboration, and will inform and train junior investigators in state-of- the-art approaches for conducting rigorous studies that utilize and leverage models of human cancer.
+terms: Acceleration;Active Learning;Address;analytical tool;anti-cancer;anti-cancer research;Area;Basic Science;Bioinformatics;Biological Models;biomedical scientist;Cancer Biology;Cancer Center;cancer genomics;Cancer Model;cancer therapy;career;career development;career networking;Cell Line;Cells;Clinical;Clinical Research;Complex;design;Development;disadvantaged background;Disease;Education;Educational Curriculum;Educational process of instructing;Educational workshop;empowerment;Environment;Epigenetic Process;Evaluation;experience;Experimental Designs;Experimental Models;Faculty;flexibility;Funding;Future;Generations;Genetic;genetic approach;Genetic Databases;Genomics;Goals;graduate student;Grant;health care disparity;Human;Human Genetics;human model;Hybrids;Immersion;Immune;Immune response;Immune system;improved;Individual;Interdisciplinary Study;Knowledge;Laboratories;Learning;lecturer;lectures;Link;Malignant Neoplasms;Mammalian Genetics;Medical;Medical Ethics;Medical Oncologist;meetings;Methodology;Minority;Modeling;Modernization;Molecular;Molecular Genetics;mouse genetics;mouse model;multidisciplinary;Mus;Mutation;neoplastic cell;next generation;Oncology;Ontology;Organoids;Outcome;Participant;Pathogenesis;Pathway interactions;patient derived xenograft model;Patient Recruitments;Patients;Persons;Postdoctoral Fellow;posters;programs;recruit;Recruitment Activity;Research;Research Personnel;research study;Resources;Sampling;Scholarship;Scientist;skills;Study models;Surveys;synergism;Techniques;Technology;Testing;The Jackson Laboratory;Therapeutic;therapy resistant;tool;Training;Training and Education;Training Programs;Travel;tumor;tumor immunology;tumor microenvironment;Update;virtual;Vision
+---
+application_id: 10914261
+activity_code: K99
+title: Plasma proteomic signatures of physical activity and Alzheimer's disease and related dementias
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: PROJECT NARRATIVE  This research will apply and compare machine-learning methods to derive plasma proteomic signatures of physical activity and examine them in relation to ADRD, yielding insight into the molecular mechanisms and biological processes through which physical activity may delay or prevent ADRD. This research may result in proteomic biomarkers of physical activity that measure the effect of physical activity to delay or prevent ADRD and suggest potential proteomic intervention targets.
+terms: Accelerometer;adjudication;Adult;age acceleration;Aging;aging clocks;aging related;Alzheimer disease prevention;Alzheimer&apos;s disease pathology;Alzheimer&apos;s disease related dementia;Alzheimer’s disease biomarker;Amyloid beta-42;Atherosclerosis Risk in Communities;Biological;Biological Markers;Biological Process;Black race;Brain;cardiovascular health;clinically relevant;cognitive function;cognitive testing;cohort;Data;Dementia;dementia risk;Disease;Disease Outcome;Engineering;Environment;ethnic diversity;Etiology;follow-up;Funding;Glial Fibrillary Acidic Protein;Goals;Health;Hispanic;Impaired cognition;insight;Intervention;Latina;Light;Link;Long-Term Effects;Machine Learning;machine learning method;Measures;Mediating;Medicine;Memory;men;Mentorship;mild cognitive impairment;moderate-to-vigorous physical activity;Molecular;Molecular Profiling;mortality;multiple chronic conditions;neurofilament;neuropathology;novel;older women;Outcome;Pathway interactions;Patient Self-Report;Phase;Phenotype;Physical activity;Plasma;Plasma Proteins;prevent;programs;prospective;Proteins;Proteome;proteomic signature;Proteomics;racial diversity;Research;Resources;Risk;Role;Sampling Studies;Strategic Planning;tau-1;Threonine;Training;United States National Academy of Sciences;United States National Institutes of Health;vigorous intensity;White Women;Woman;Women&apos;s Health;Women&apos;s study
+---
+application_id: 11096583
+activity_code: T32
+title: The Clinical Translational Research Certificate of Added Qualification Program
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: NARRATIVE:
+The interdepartmental Clinical Translational Research Certificate of Added Qualification (CTR-CAQ) Training
+Program offers interdisciplinary translational research training to students selected from all seven PhD graduate
+programs in the Graduate School of Biomedical Sciences at Baylor College of Medicine. The CTR-CAQ program
+integrates a unique education in clinical translational research through a rigorous two-year curriculum with formal
+course work, practical skill-building workshops, dedicated seminars, and experience in clinical research that
+integrates with the translational thesis research accepted students are performing. The ultimate goal of this
+program is to educate a highly skilled translational molecular medicine workforce, poised to become future
+research leaders w...
+terms: <Qualifying><Translational Research><Translational Science><clinical translation><clinically translatable><programs><translation research><translational investigation>
+---
+application_id: 10839948
+activity_code: T32
+title: UC Davis DVM/PhD Medical Scientist Training Program
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: Project Narrative Veterinarians are trained as comparative biologists with an understanding of all living species and ideally suited to solve the complex problems presented by current and future animal and human medicine. The goal of UC Davis DVM/PhD MSTP T32 training program is to provide an outstanding environment for both clinical and biomedical research training at the nation's top-ranked School of Veterinary Medicine and to prepare our students with dual DVM-PhD degrees to become compassionate and exceptional veterinarian-scientists engaged in basic and translational research to advance the health of people and animals, in context of their changing environment.
+terms: Doctor of Philosophy;Medical;Scientist;Training Programs
+---
+application_id: 11111507
+activity_code: T32
+title: Medical Scientist Training Program
+org_name: UNIVERSITY OF MARYLAND BALTIMORE
+phr: This grant award will support the Medical Scientist Training Program (MSTP) at the University of Maryland School of Medicine. The mission of our MSTP is to train a diverse and creative cadre of physician-scientists who will become leaders in their chosen fields of research, develop new knowledge and translate it to enhance clinical practice. This training will serve the nation by developing physician-scientists who can accelerate the progress of biomedical research from the laboratory to the direct benefit of patients.
+terms: Medical;Scientist;Training Programs
+---
+application_id: 10768238
+activity_code: R25
+title: Training clinicians in the integration of technology with cancer supportive care
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: PROGRAM NARRATIVE The proposed R25 program will train frontline cancer clinicians (physicians, advanced practice providers, psychologists, psychiatrists, nurses, and social workers) in the best-practice implementation of technology in cancer supportive care. Training will be carried out through pre-workshop webinars (pre-recorded); skills- based, in-person workshops focused on integration of evidence-based digital health and telehealth solutions with clinical practice, using established care approaches for cancer-related fatigue, insomnia, pain, depression and anxiety, which will also include emphasis on digital equity and working with diverse populations; and post- workshop online video and chat support from program faculty and a learning community of peers. Program content will be update...
+terms: Active Learning;Address;Adherence;Anxiety;Area;Award;behavior change;Behavioral;behavioral health;cancer care;Cancer Patient;Caring;Clinic Visits;Clinical;clinical practice;clinically significant;Cognitive;Coping Skills;cost;Data;Devices;digital;digital health;Education Projects;Educational Curriculum;Educational workshop;effectiveness evaluation;Electronic Health Record;eligible participant;Enrollment;Ensure;Epidemiology;Equity;Evaluation;evidence base;experience;Faculty;Fatigue;Feedback;Foundations;Funding;Geography;Goals;health equity;Health Status;Health Technology;Healthcare;Impairment;implementation strategy;improved;innovation;Institute of Medicine (U.S.);interest;Intervention;Knowledge;Learning;learning community;Malignant Neoplasms;Medical;Medicine;Memory;Mental Depression;Mission;mobile application;Modeling;Monitor;Moods;Motivation;multimodality;Needs Assessment;New York City;Nurses;Outcome;Pain;Participant;patient oriented;Patients;peer;Persons;Physical activity;Physicians;Play;Population;Population Heterogeneity;preference;programs;Provider;Psychiatrist;Psychologist;psychosocial;Quality of Care;Race;Reporting;Role;Rural Population;satisfaction;skills;Sleep;sleep quality;Sleeplessness;Social Workers;success;Supportive care;symposium;Technology;technology validation;telehealth;Text Messaging;tool;Training;Training Programs;United States;Update;wearable device;wearable sensor technology;webinar
+---
+application_id: 11111512
+activity_code: T32
+title: Medical Scientist Training Program
+org_name: UNIVERSITY OF MARYLAND BALTIMORE
+phr: This grant award will support the Medical Scientist Training Program (MSTP) at the University of Maryland School of Medicine. The mission of our MSTP is to train a diverse and creative cadre of physician-scientists who will become leaders in their chosen fields of research, develop new knowledge and translate it to enhance clinical practice. This training will serve the nation by developing physician-scientists who can accelerate the progress of biomedical research from the laboratory to the direct benefit of patients.
+terms: Medical;Scientist;Training Programs

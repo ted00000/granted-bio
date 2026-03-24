@@ -1,0 +1,563 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 405 of 459 (50 projects):
+
+---
+application_id: 11145873
+activity_code: T32
+title: Physician-Scientist Training in Emerging Infectious Diseases
+org_name: UNIVERSITY OF TEXAS MED BR GALVESTON
+phr: PROJECT NARRATIVE
+Emerging and re-emerging infectious agents have caused large outbreaks in recent years. In this T32 Training
+program we will train physician-scientists to be equipped to respond to emerging infectious diseases through
+instruction in research design and methods; biostatistics; outbreak investigation; clinical and research
+biocontainment and biosafety; field epidemiology; and scientific writing. Trainees will apply their training in the
+conduct of translational research while receiving intensive scientific and career mentorship through a novel
+Team Science framework.
+terms: <Emerging Communicable Diseases><Emerging Infectious Diseases><Physicians><Scientist><Training>
+---
+application_id: 11145635
+activity_code: T32
+title: Cancer Biology Training Program
+org_name: UNIVERSITY OF TEXAS HLTH SCIENCE CENTER
+phr: A steady stream of new researchers is necessary to continue the fight against cancer, the primary cause of death in the U.S. The training of a strong workforce is a key component to the next generation of scientists. The goal of this Cancer Biology Training Program is to continue to give trainees a broad exposure to the many areas of cancer research, so that they can learn multidisciplinary and cutting-edge approaches to better understand and treat cancer, thereby reducing its overall burden nationwide.
+terms: <Cancer Biology><Training Programs>
+---
+application_id: 11146402
+activity_code: T32
+title: UNC Immunotherapy Training Grant (IM-TAG)
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: Project Narrative:
+This is a training program from investigators at the University of North Carolina Chapel Hill focused on training
+the next generation of scientific leaders working in tumor immunology, tumor immunotherapy, and stem cell
+transplant immunology.
+terms: <Grant><Immune mediated therapy><Immunologically Directed Therapy><Immunotherapy><Training><immune therapeutic approach><immune therapeutic interventions><immune therapeutic regimens><immune therapeutic strategy><immune therapy><immune-based therapies><immune-based treatments><immuno therapy>
+---
+application_id: 11145654
+activity_code: T32
+title: Interdisciplinary Biomedical Imaging Training Program
+org_name: CASE WESTERN RESERVE UNIVERSITY
+phr: Relevance to Public Health. Biomedical imaging enables early disease detection, assessment of therapy,
+and minimally invasive treatment of disease. Especially with the advent of cellular and molecular imaging and
+machine/deep learning, biomedical imaging research requires persons with strong interdisciplinary training.
+terms: <Training Programs><biomedical imaging>
+---
+application_id: 11146634
+activity_code: T32
+title: Multidisciplinary Research Training to Reduce Inequalities in Cardiovascular Health
+org_name: EMORY UNIVERSITY
+phr: Project Narrative
+Inequalities in cardiovascular health are a pervasive problem that has remained essentially unchanged over
+the past several decades in the United States. This T32 competing continuation application proposes to train
+the next generation of leading researchers to pioneer innovative research using a multidisciplinary approach in
+order to reduce cardiovascular health disparities.
+terms: <Inequality><Interdisciplinary Research><Interdisciplinary Study><Multidisciplinary Collaboration><Multidisciplinary Research><Research Training><cardiovascular health>
+---
+application_id: 11146413
+activity_code: T32
+title: Neurobiology Training Program
+org_name: DUKE UNIVERSITY
+phr: Project Narrative
+The mission of the Duke Neurobiology Training Program (NBTP) is to train the next generation of leading
+scientists who will discover how the nervous system normally functions to enable a myriad of complex
+processes, including learning, memory, movement, behavior, sensation, and perception, and how to restore
+normal function of the nervous system in the face of trauma and disease. The major objective of the NBTP is to
+endow young scientists with the intellectual breadth, technical flexibility and scientific rigor to grow and adapt to
+the demands of neuroscience research now and over the next several decades, enabling them to successfully
+navigate the variety of scientific career paths that will span the neuroscience research enterprise of the future.
+terms: <Neurobiology><Training Programs><neurobiological>
+---
+application_id: 11159432
+activity_code: T32
+title: Biomechanics in Regenerative Medicine (BiRM) Training Program
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: To meet the challenges in regenerating, repairing or replacing tissues that serve a mechanical function, the
+Biomechanics in Regenerative Medicine (BiRM) training program aims to provide holistic training to doctoral
+students in bioengineering to excel in both biomechanics of all relevant length scales and in regenerative biology.
+The combined strengths of the University of Pittsburgh, Carnegie Mellon University, the University of Pittsburgh
+Medical Center and the McGowan Institute for Regenerative Medicine make it a unique place for a new
+generation workforce to be trained in order to meet the critical needs for improving existing as well as to develop
+novel and advanced therapies in regenerative medicine.
+terms: <Biomechanics><Regenerative Medicine><Training Programs><biomechanical>
+---
+application_id: 11159449
+activity_code: T32
+title: Training In Cell and Gene Therapy
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: PROJECT NARRATIVE
+This proposal will recruit and train diverse young researchers so that they can translate cell and gene based
+therapies from basic science laboratories into clinical development. These therapies hold great promise for
+regenerative medicine, cancer and other disorders, but can only be implemented after the specialized training
+provided by this award.
+terms: <Cell Therapy><DNA Therapy><Gene Transfer Clinical><Genetic Intervention><Training><cell based intervention><cell mediated intervention><cell mediated therapies><cell-based therapeutic><cell-based therapy><cellular therapeutic><cellular therapy><gene repair therapy><gene therapy><gene-based therapy><genetic therapy><genomic therapy>
+---
+application_id: 11160625
+activity_code: T32
+title: Training Program in Cancer Population Science (CaPS)
+org_name: GEORGETOWN UNIVERSITY
+phr: Moving the field of cancer population science forward will require enhancing our ability to translate basic and clinical advances into populations, communities and policy. Training a new generation of cancer population scientists to meet these challenges and opportunities will improve future cancer outcomes.
+terms: <Cancers><Malignant Neoplasms><Malignant Tumor><Population Sciences><Training Programs><malignancy><neoplasm/cancer>
+---
+application_id: 11160568
+activity_code: T32
+title: Research Training in Visual Sciences
+org_name: BAYLOR COLLEGE OF MEDICINE
+phr: Project Narrative
+This is a resubmission of a competing renewal application from 21 preceptors at Baylor College of Medicine,
+carrying 15 active qualifying NEI-R01 grants. This Training Program started in 1975 and has trained a large
+number of vision researchers who have made significant impacts to the field. The Program will continue to
+provide high-quality training for predoctoral students and postdoctoral fellows, and to equip them with
+comprehensive knowledge of the visual system and state-of-the-art experimental skills, enabling them to
+become successful researchers in the battle to fight blinding diseases.
+terms: <Research Training><vision science><visual science>
+---
+application_id: 11005293
+activity_code: K01
+title: Energy expenditure, cognitive function, and biomarker features of Alzheimer's disease
+org_name: RUTGERS, THE STATE UNIV OF N.J.
+phr: PROJECT NARRATIVE This integrated training and research proposal focuses on the longitudinal associations of two physical activity- related measures of energy expenditure with cognition and Alzheimer’s disease (AD) biomarkers among older adults who are cognitively normal, as well as those with mild cognitive impairment and mild AD dementia. Potential biological and genetic factors that may modify and/or mediate these associations will also be examined.
+terms: Acceleration;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease related dementia;Alzheimer’s disease biomarker;Amyloid;apolipoprotein E-4;Baltimore;Biological;Biological Markers;Brain;brain volume;cardiorespiratory fitness;career;career development;cerebral atrophy;Cerebrovascular Circulation;Clinical Research;Cognition;Cognitive;Cognitive aging;cognitive change;cognitive function;cognitive performance;cohort;cost;Data;Dementia;Development;Development Plans;Diagnostic;Dimensions;Disease;Disease Progression;educational atmosphere;Energy Metabolism;Exercise;Genetic;Genotype;Goals;hippocampal atrophy;Impaired cognition;Individual;insight;Intervention;Knowledge;Life Style;lifestyle factors;Link;Literature;Longitudinal Studies;Magnetic Resonance Imaging;Measures;Mediating;Mentored Patient-Oriented Research Career Development Award;Mentored Research Scientist Development Award;Mentorship;mild cognitive impairment;Mitochondria;Muscle Mitochondria;Musculoskeletal System;neuroimaging;novel;older adult;Older Population;Outcome;Oxygen;Pharmaceutical Preparations;Physical activity;Physiological;Positron-Emission Tomography;Predictive Value;programs;prospective;Publishing;Research;Research Personnel;Research Proposals;research study;Research Training;responsible research conduct;Rest;Risk;Risk Assessment;Risk Reduction;Role;sex;Skeletal Muscle;skills;specific biomarkers;Specificity;Statistical Data Interpretation;tau aggregation;tau Proteins;Techniques;Therapeutic;Time;Training;Translational Research;Walking;walking speed;Work
+---
+application_id: 11160684
+activity_code: T32
+title: Hematology Research Training Program
+org_name: UNIVERSITY OF MINNESOTA
+phr: PROJECT NARRATIVE
+Advanced research training of doctors and scientists in hematology is essential to finding cures for blood
+diseases. This training program will prepare a diverse group of hematologists and scientists to develop new
+scientifically based treatments and understandings of these diseases to improve the health and safety of
+patients with blood diseases and eliminate health disparities.
+terms: <Hematology><Research Training><Training Programs>
+---
+application_id: 11160685
+activity_code: T32
+title: Stanford Training Program in Lung Biology
+org_name: STANFORD UNIVERSITY
+phr: PROJECT NARRATIVE
+The Stanford Training Program in Lung Biology offers a rigorous and supportive environment for physician
+scientists, with a focus on selecting qualified T32 Trainee candidates, optimizing their pairing with a committed
+Mentor and supporting their education and scientific development throughout their training. Trainees will select
+from an established group of Mentors in nine areas of particular excellence at Stanford (vascular disease, stem
+cells/development, genetics/genomics, lung injury/repair, immunology, microbiome, outcomes research,
+cancer, and imaging) to prepare for successful careers in biomedicine.
+terms: <Biology><Lung><Lung Respiratory System><Training Programs>
+---
+application_id: 11161434
+activity_code: T32
+title: Bridges to the Doctorate Program at Cal State LA
+org_name: CALIFORNIA STATE UNIVERSITY LOS ANGELES
+phr: Project Narrative
+The Bridge to the Doctorate at Cal State LA Program will increase the numbers of traditionally under-
+represented doctoral-level scientists engaged in biomedical research to enhance the health of the US public.
+These individuals will be more likely to work on health disparities specific to minority populations.
+terms: <bridge to the doctorate><programs>
+---
+application_id: 11161169
+activity_code: T32
+title: Cardiovascular Behavioral Medicine Research Training
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: Behavioral, psychological, and social factors contribute to the development of cardiovascular diseases and their unequal distribution across populations. To address the public health burden of cardiovascular diseases, the Strategic Vision of the National Heart, Lung, and Blood Institute has underscored the need to train a workforce of translational scientists who conduct rigorous, interdisciplinary research on the behavioral, psychological, and social factors in cardiovascular disease risk and resilience. Our T32 program has been dedicated to addressing this need for over 40 years by providing state-of-the-art training in cardiovascular behavioral medicine research.
+terms: <Behavioral Medicine><Cardiovascular><Cardiovascular Body System><Cardiovascular Organ System><Cardiovascular system><Heart Vascular><Research Training><circulatory system>
+---
+application_id: 11161523
+activity_code: T32
+title: Graduate Training in Neuroscience
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: PROJECT NARRATIVE
+This predoctoral training program provides broad, rigorous, and quantitative training in basic neuroscience
+research. A primary goal of our program is to train the next-generation of scientific leaders who will focus their
+careers on developing new approaches to diagnose and treat disorders of the nervous system, including stroke,
+epilepsy, traumatic brain injury, neurodegenerative disorders, and addiction.
+terms: <Neurosciences><Training>
+---
+application_id: 11162473
+activity_code: T32
+title: UNC Integrated Translational Oncology Program (UNC-iTOP)
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: Narrative
+The UNC Integrated Translational Oncology Program (UNC-iTOP) is a T32 training application from the
+University of North Carolina at Chapel Hill (UNC) focused on training clinicians (MDs), basic scientists (PhDs),
+and MD-PhD candidates in clinical/translational disease based research at the interface of clinical oncology
+and cancer biology using patient samples. The UNC-iTOP is unique in its focus on developing
+clinician/scholars in translational oncology tissue-based research, integrating 1) physicians (residents and
+fellows) training in Medical, Surgical, and Gynecologic Oncology with post-doctoral fellows possessing PhD
+degrees and 2) MD, MD-PhD, PhD pre-doctoral candidates. UNC-iTOP will provide research training support
+for up to two years and will support two post-doctoral a...
+terms: <oncology program><translational oncology>
+---
+application_id: 11163252
+activity_code: T32
+title: Immunoengineering Postdoctoral Training Program - Resubmission - 1
+org_name: UNIVERSITY OF CHICAGO
+phr: PROJECT NARRATIVE
+Based at the University of Chicago, this cross-disciplinary T32 program leverages the intellectually rich
+environment on campus and its resources in immunology, medicine, molecular engineering, and data science
+to train postdoctoral fellows in the rapidly emerging field of Immunoengineering. Designed for early
+postdoctoral bioengineers or immunologists, the training plan funds participation in an immersive short course
+in each other's fields, as well as elective workshops and outreach opportunities to improve teaching & science
+communications skills, and grant- and proposal-writing abilities. Postdoctoral fellows will be mentored by a
+panel of immunologists and bioengineers to develop novel collaborative projects that address today's biggest
+unanswered questions at the in...
+terms: <Training Programs><engineered immune system><immune engineering><immunoengineering><post-doctoral training>
+---
+application_id: 11163325
+activity_code: T32
+title: Clinical and Translational Cancer Control Research Training Program
+org_name: UNIVERSITY OF ROCHESTER
+phr: PROJECT NARRATIVE
+Since 2004, the Clinical and Translational Cancer Control Research Training Program (CCRTP) has appointed
+49 exceptional postdoctoral trainees including next years’ class (36 PhDs:13 MDs) to prepare them for
+independent careers in the multidisciplinary arena of cancer control research through research, didactic training,
+and professional development. By providing exceptional mentoring and a unique, state-of-the-art environment,
+the CCRTP prepares trainees to better understand the numerous debilitating side effects of cancer treatment,
+develop novel interventions, advance standards of care, and improve quality of life for patients with cancer,
+survivors, and their caregivers.
+terms: <Cancer Control Research><Clinical><Training Programs>
+---
+application_id: 11163533
+activity_code: T32
+title: VGM: Vanderbilt Genomic Medicine Training Program
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: PROJECT NARRATIVE
+Rapid advances in laboratory technology and digital healthcare have created a new discipline that uses genetic
+information to individualize patient care. The Vanderbilt Genomic Medicine (VGM) Training Program at
+Vanderbilt University Medical Center trains MD and PhD post-doctoral fellows to become knowledgeable with
+the science and practice of genomic medicine. The program teaches research design and analytic techniques
+with the ability to apply these methods in a clinical setting to advance patient care.
+terms: <Genomic medicine><Training Programs><genome medicine>
+---
+application_id: 10764957
+activity_code: F31
+title: Investigating mechanisms activating the selective autophagy of lysosomes
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: Project Narrative: Several neurodegenerative disorders are linked to lysosomal dysfunction whereby neurotoxic aggregates accumulate in and rupture lysosomes. Thus, neurons rely on lysosomal quality control mechanisms to rescue lysosomal membrane integrity or sequester damaged lysosomes via selective autophagy. The fundamental mechanisms activating the selective autophagy of lysosomes in neurons are unknown, and therefore, this proposal will investigate conserved mechanisms within lysosomal quality control, providing a groundwork for our understanding of lysosomal dysfunction in neurodegenerative disease.
+terms: Autophagocytosis;Autophagosome;Biogenesis;Biological Assay;Cell Death;Cells;Complex;Cytoprotection;Cytosol;cytotoxic;Data;density;Deubiquitinating Enzyme;Disease;Endosomes;Excision;experimental study;Functional disorder;Goals;Health;Hela Cells;Homo;Human;human induced pluripotent stem cells;immunocytochemistry;Immunoprecipitation;In Vitro;insight;knock-down;Link;link protein;Liquid substance;live cell imaging;Lysosomes;Measures;Mediating;Membrane;Microscopy;Monitor;mutant;Neurodegenerative Disorders;Neurons;neurotoxic;novel;Optics;Organelles;Parkinson Disease;Phase;Physical condensation;premature;prevent;Process;Proteins;Quality Control;receptor;Recombinants;reconstitution;reconstruction;recruit;Recycling;Regulation;repaired;Resistance;Role;Rupture;Signal Transduction;Small Interfering RNA;Sorting;Starvation;Stereotyping;superresolution microscopy;targeted treatment;Testing;Time;Ubiquitin;ubiquitin isopeptidase;Ubiquitination;Western Blotting
+---
+application_id: 11166298
+activity_code: T32
+title: ENLIGHTEN (ENgaging Leaders In Global and local HealTh Equity in Neurology)
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: PROJECT NARRATIVE
+Gaps in neurologic health and access to healthcare for neurologic disorders, further amplified by the COVID-19
+pandemic, are widening in the US and worldwide. To translate knowledge about health disparities into
+evidence-based interventions that improve neurologic outcomes for the most underserved and vulnerable
+populations, clinician researchers and PhD scientists need rigorous training and mentoring in health equity
+research methods, which are largely lacking from neurology research training programs. The proposed
+ENgaging Leaders In Global and local HealTh Equity in Neurology (ENLIGHTEN) fellowship was developed in
+direct response to the need for a cohesive interdisciplinary training program in neurologic health equity
+research methods for global and local settings.
+terms: <Neurology><health equity>
+---
+application_id: 11167681
+activity_code: T32
+title: ADVANCE Population Cancer Research (PCR) Training
+org_name: UNIVERSITY OF SOUTHERN CALIFORNIA
+phr: The future generation of population cancer research scholars will need training in conceptual and methodological issues to conduct high impact population-based cancer research to advance cancer control and prevention and cancer outcomes for all populations. The ADVANCE program will use a comprehensive approach to enhance the knowledge, skill, and capacity of predoctoral students in population-based research with precision using novel approaches and with experience in community engagement among students in the Department of Population and Public Health Sciences at the University of Southern California.
+terms: <Population><Research Training><anti-cancer research><cancer research>
+---
+application_id: 11168669
+activity_code: T32
+title: Training in Trauma and Sepsis Research
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: PROJECT NARRATIVE
+Trauma and sepsis are among the leading causes of death and morbidity worldwide. We propose
+to train surgeon-scientists uniquely prepared to identify and address the most pressing questions
+limiting progress in the management of trauma and sepsis patients.
+terms: <Research><Sepsis><Training><Trauma>
+---
+application_id: 11169670
+activity_code: T32
+title: VOLT (Vanderbilt Oncology Training Program)
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: The Vanderbilt Oncology Training Program (VOLT) is designed to prepare trainees for an oncology career conducting cutting-edge research in basic, clinical, translational and population science. The program provides a personalized and mentored research experience with scholarly activity and focusing on developing key fundamental skills to solidify dynamic careers of research excellence to improve the lives of patients with cancer.
+terms: <Oncology><Oncology Cancer><Training Programs>
+---
+application_id: 11168752
+activity_code: T32
+title: Pharmacological Sciences Training Grant
+org_name: SAINT LOUIS UNIVERSITY
+phr: This is a new application that builds upon a 30-year history of federal funding for predoctoral
+training in the pharmacological sciences at Saint Louis University. Our broadly-based
+multidisciplinary approach involves 30 faculty from eight departments in the Colleges of Medicine,
+Arts & Sciences, and Engineering at Saint Louis University. The training program includes
+classical concepts of pharmacokinetics, pharmacodynamics, and toxicology, as well as state-of-
+the-art quantitative biology, chemical biology, and drug discovery technology and approaches.
+terms: <Grant><Science><Training><pharmacologic>
+---
+application_id: 11172242
+activity_code: T32
+title: Multidisciplinary Approach Training in Respiratory Research
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: Project Narrative
+This program in pulmonary and critical care medicine provides comprehensive research training for individuals
+with a firm commitment to a career in research focused on lung disease. Our major goal is to train future physician
+scientists and scientists to become independent researchers in academic medicine. This T32 program will enable
+trainees to have a better understanding of the pathogenesis of lung disease and to identify new diagnostic or
+therapeutic modalities in these disorders.
+terms: <Research><Training><interdisciplinary approach><multidisciplinary approach><respiratory>
+---
+application_id: 11243528
+activity_code: K08
+title: Hippocampal-cortical mechanisms of altered memory consolidation in epilepsy
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: PROJECT NARRATIVE
+Memory is one of the most fundamental human cognitive functions, and the loss of memory is a devastating
+consequence in epilepsy, which affects more than 65 million people worldwide. In this application, I will combine
+single-neuron recordings from the hippocampus and cortex with advanced neural signal processing techniques
+in a rat model of epilepsy to investigate how memories are impaired in epilepsy and to test two potential therapies
+for ameliorating impairment. This will have important relevance for basic neuroscience, clinical neurophysiology,
+and targeted therapeutics for memory in epilepsy.
+terms: <21+ years old><Action Potentials><Adult><Adult Human><Affect><Ammon Horn><Animals><Area><Brain><Brain Nervous System><California><Chronic><Clinical><Common Rat Strains><Communication><Control Animal><Cornu Ammonis><Cortical Synchronization><Data><Development><Development Plans><Digenic Acid><Doctor of Philosophy><Dysfunction><E-stim><Electric Stimulation><Electrophysiology><Electrophysiology (science)><Elements><Encephalon><Epilepsy><Epileptic Seizures><Epileptics><Event><Fire - disasters><Fires><Foundations><Functional disorder><Goals><Grant><Health><High Frequency Oscillation><Hippocampus><Histopathology><Human><Immediate Memory><Impairment><Implant><Intervention><Kainic Acid><Knowledge><Laboratories><Learning><Left><Medial><Medicine><Memory><Memory Deficit><Memory Loss><Memory impairment><Mentors><Mentorship><Modeling><Modern Man><Morbidity><Neocortex><Nerve Cells><Nerve Impulse Transmission><Nerve Transmission><Nerve Unit><Neural Cell><Neurocyte><Neurology><Neuronal Transmission><Neurons><Neurophysiology / Electrophysiology><Neurosciences><Outcome><Performance><Persons><Ph.D.><PhD><Physicians><Physiology><Physiopathology><Play><Polymers><Prefrontal Cortex><Process><Protocol><Protocols documentation><Rat><Rats Mammals><Rattus><Research><Rice><Rodent><Rodent Model><Rodentia><Rodents Mammals><Role><San Francisco><Scientist><Seizure Disorder><Short-Term Memory><Sleep><Slice><Technical Expertise><Techniques><Temporal Lobe Epilepsy><Testing><Therapeutic Intervention><Time><Training><Training Support><Translations><Universities><Variant><Variation><Work><Writing><adulthood><axon signaling><axon-glial signaling><axonal signaling><career><career development><cognitive function><college><collegiate><density><developmental><effective therapy><effective treatment><electrophysiological><electrostimulation><epilepsia><epileptogenic><experience><fire><flexibility><flexible><glia signaling><glial signaling><hippocampal><homotypical cortex><improved><in vivo><intervention therapy><isocortex><memory consolidation><memory decline><memory dysfunction><neocortical><neopallium><nerve signaling><neural><neural circuit><neural circuitry><neural signaling><neurocircuitry><neuroethics><neurofeedback><neuronal><neuronal signaling><neurophysiological><neurophysiology><neurotransmission><pathophysiology><polymer><polymeric><programs><signal processing><skills><social role><spatial memory><statistics><stem><synaptic circuit><synaptic circuitry><targeted drug therapy><targeted drug treatments><targeted therapeutic><targeted therapeutic agents><targeted therapy><targeted treatment><technical skills><tool><translation><working memory>
+---
+application_id: 11172298
+activity_code: T32
+title: Pre-and Postgraduate Training in Molecular Hematology
+org_name: WASHINGTON UNIVERSITY
+phr: Blood diseases like leukemia, sickle cell disease, anemia, venous thrombosis, and stroke affect millions of peo-
+ple in the U.S. The goal of this grant is to train a new generation of scientists who will make discoveries that
+enable us to diagnose, treat, and perhaps cure these diseases.
+terms: <Training><molecular hematology>
+---
+application_id: 11251205
+activity_code: K08
+title: Validation of Quality Measures for Patient-Centered Cancer Communication in Rwanda
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: PROJECT NARRATIVE
+As oncology capacity expands in sub-Saharan African countries such as Rwanda, implementation research is
+needed to improve the quality of patient-centered communication between clinicians and patients with cancer.
+The objective of this proposal is to develop patient-reported measures of communication quality that are
+appropriate for the Rwandan context and can be used to empower patients and clinicians to improve
+communication. Ultimately, a shift toward patient-centered care has the potential to improve cancer treatment
+outcomes, optimize resource utilization, mitigate clinician distress, and alleviate patient and family suffering.
+1
+terms: <Active Learning><Address><Adherence><Advocate><Africa><African><Award><Belief><Bioethics><Biomedical Ethics><Budgets><Cancer Burden><Cancer Center><Cancer Treatment><Cancers><Caring><Clinical><Cluster randomization trial><Cluster randomized trial><Communication><Communication Research><Cooperative Learning><Country><Death Rate><Decision Making><Dedications><Distress><Education for Intervention><Educational Intervention><Emotional><Equilibrium><Equity><Experiential Learning><Family><Financial cost><Future><Goals><Health Care Systems><Hospitals><Instruction Intervention><Intervention><Intervention Trial><Interventional trial><Interview><Investigators><Malignant Neoplasm Therapy><Malignant Neoplasm Treatment><Malignant Neoplasms><Malignant Tumor><Measures><Mentors><Modification><Morale><National Cancer Burden><Oncology><Oncology Cancer><Outcome><Patient Care><Patient Care Delivery><Patient Outcomes Assessments><Patient Reported Measures><Patient Reported Outcomes><Patient-Centered Care><Patients><Personal Satisfaction><Position><Positioning Attribute><Process><Program Evaluation><Property><Psychometrics><QOC><QOL><Quality of Care><Quality of life><Randomization trial><Research><Research Personnel><Research Resources><Researchers><Resources><Ruanda><Rwanda><Scientist><Structure><Survey Instrument><Surveys><Testing><Training><Training Intervention><Treatment outcome><Validation><Validity and Reliability><Work><anti-cancer therapy><balance><balance function><cancer care><cancer therapy><cancer-directed therapy><care for patients><care of patients><care resource use><care resource utilization><career><career development><caring for patients><clinician communication><cognitive interview><communicate to clinicians><communicate to providers><communicate with clinicians><communicate with doctors><communicate with providers><cost><design><designing><doctor communication><effective therapy><effective treatment><empowerment><field based data><field learning><field study><field test><health care resource use><health care resource utilization><implementation process><implementation research><implementation science><implementation strategy><improved><individual patient><instructional intervention><malignancy><monetary cost><mortality rate><multidisciplinary><neoplasm/cancer><oncology program><patient centered><patient oriented><pilot trial><programs><provider communication><randomized trial><response><skills training><strategies for implementation><therapy optimization><treatment adherence><treatment compliance><treatment optimization><trial design><validations><well-being><wellbeing>
+---
+application_id: 10845701
+activity_code: R25
+title: It's Contagious!  Promoting the Biomedical Workforce Pipeline through Infectious Diseases
+org_name: TEXAS BIOMEDICAL RESEARCH INSTITUTE
+phr: Teacher Enrichment Initiatives: “It’s Contagious! Promoting the Biomedical Workforce Pipeline through Infectious Diseases” aims to establish a novel model to promote the growth of a diverse future STEM education and workforce pipeline. Teacher and student participants in the programs proposed will be recruited from diverse San Antonio districts. Promoting data literacy in teachers through a Teachers as Researchers Program and engaging students in Classroom to Career Connections activities and supplemental narratives showcasing infectious disease research and diversity in biomedical careers, the program has great potential to enhance the future biomedical workforce of our nation as teachers promote diversity in the biomedical sciences and foster increased understanding of career opportuniti...
+terms: Academy;Address;Affect;Applied Skills;Area;Awareness;Biological Sciences;Biomedical Research;biomedical scientist;career;career awareness;cohort;college;Communicable Diseases;Community of Practice;Country;Data;Data Analyses;data literacy;Databases;design;Development;disease transmission;Education;Educational process of instructing;empowerment;experience;Exposure to;Fortification;Fostering;Funding;Future;Growth;high school;High School Faculty;High School Student;Hispanic;Hispanic Populations;Industry;Infectious Diseases Research;innovation;Instruction;interest;Intervention;K-12 student;Knowledge;Latinx;Leadership;Learning;Measures;Minority;Mission;Modeling;next generation;novel;Outcome;Participant;pedagogy;Peer Review;Population;Privatization;Program Development;programs;recruit;Research;research facility;Research Institute;Research Personnel;role model;Science;science teacher;Science, Technology, Engineering and Mathematics Education;skills;skills training;statistics;STEM career;student participation;Students;teacher;Teacher Professional Development;Texas;tool;Training;vaccine development;workforce needs
+---
+application_id: 11251565
+activity_code: K08
+title: DISSECTING THE SPATIAL HETEROGENEITY OF SYNOVIAL INFLAMMATION IN RHEUMATOID ARTHRITIS
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: PROJECT NARRATIVE
+Although the field of rheumatology is beginning to subtype rheumatoid arthritis patients using relative
+abundances of certain cell types in the synovium, our understanding of what these cell types do and how they
+work together is limited. In this proposal, we will define how immunity is spatially organized in the rheumatoid
+arthritis synovium, both across rheumatoid arthritis subtypes and in comparison to other autoimmune diseases,
+using cutting-edge techniques from statistics and artificial intelligence. This will enable mechanistic
+understanding of known disease subtypes, discovery of improved disease subtypes, and extrapolation of
+mechanistic and therapeutic hypotheses from other related diseases.
+terms: <(TNF)-α><AI system><Acceleration><Address><Advisory Committees><Artificial Intelligence><Assay><Atrophic Arthritis><Autoimmune><Autoimmune Diseases><Autoimmune Status><Autoimmunity><B blood cells><B cell><B cells><B-Cells><B-Lymphocytes><B-cell><Bioassay><Biological><Biological Assay><Biological Response Modifier Therapy><Biological Therapy><Biology><Biopsy><Body Tissues><Cachectin><Cataloging><Cell Body><Cell Communication><Cell Interaction><Cell-to-Cell Interaction><Cells><Clinical><Computer Reasoning><Computing Methodologies><Data><Data Set><Disease><Disorder><Dysfunction><Environment><Fingerprint><Functional disorder><Funding><Genetic><Genomics><Goals><H and E><Hematoxylin and Eosin><Hematoxylin and Eosin Staining Method><Heterogeneity><Immune><Immunes><Immunity><Immunohistochemistry><Immunohistochemistry Cell/Tissue><Immunohistochemistry Staining Method><Immunology><Inflammation><Investigation><Investigators><Kidney><Kidney Urinary System><Label><Lead><Leadership><Lupus><Lupus Glomerulonephritis><Lupus Nephritis><Machine Intelligence><Machine Learning><Macrophage-Derived TNF><Maps><Mediating><Medicine><Membrana Synovialis Capsulae Articularis><Mentors><Methodology><Methods><Minor Salivary Glands><Minor salivary gland structure><Molecular><Monocyte-Derived TNF><Musculoskeletal Pain Disorder><Outcome><Patients><Pb element><Phenotype><Physiopathology><Psoriasis><Research><Research Personnel><Researchers><Resolution><Rheumatic Diseases><Rheumatism><Rheumatoid Arthritis><Rheumatologic Diseases><Rheumatologic Disorder><Rheumatology><Sampling><Sicca Syndrome><Sjogren's Disease><Sjogren's Syndrome><Sjogrens><Sjögren Syndrome><Skin><Sorting><Staining method><Stains><Synovial Cell><Synovial Membrane><Synovitis><Synovium><TNF><TNF A><TNF Alpha><TNF gene><TNF-α><TNFA><TNFα><Task Forces><Techniques><Technology><Therapeutic><Tissues><Training><Tumor Necrosis Factor><Tumor Necrosis Factor-alpha><Variant><Variation><Work><advisory team><analytical method><autoimmune condition><autoimmune disorder><autoimmunity disease><biologic><biological therapeutic><biological treatment><biologically based therapeutics><biotherapeutics><biotherapy><case control><case-controlled><cell type><clinical heterogeneity><clinical relevance><clinical training><clinically relevant><computational methodology><computational methods><computer based method><computer methods><computer scientist><computing method><customized therapy><customized treatment><disease heterogeneity><disease subgroups><disease subtype><disorder subtype><effective therapy><effective treatment><experience><flexibility><flexible><heavy metal Pb><heavy metal lead><high dimensionality><improved><individualized medicine><individualized patient treatment><individualized therapeutic strategy><individualized therapy><individualized treatment><inflamed synovial tissue><inflamed synovium><kidney biopsy><machine based learning><method development><new drug treatments><new drugs><new pharmacological therapeutic><new therapeutics><new therapy><next generation therapeutics><novel><novel drug treatments><novel drugs><novel pharmaco-therapeutic><novel pharmacological therapeutic><novel therapeutics><novel therapy><pathophysiology><patient specific therapies><patient specific treatment><predict responsiveness><predicting response><psoriasiform><psoriatic><renal><renal biopsy><resolutions><rheumatic arthritis><single cell analysis><single cell genomics><spatial RNA sequencing><spatial gene expression analysis><spatial gene expression profiling><spatial resolved transcriptome sequencing><spatial transcriptome analysis><spatial transcriptome profiling><spatial transcriptome sequencing><spatial transcriptomics><spatially resolved transcriptomics><spatio transcriptomics><statistics><synovial inflammation><tailored medical treatment><tailored therapy><tailored treatment><tech development><technology development><tool><unique treatment><xerodermosteosis>
+---
+application_id: 11253282
+activity_code: K08
+title: Synaptic protein composition and localization in individuals with schizophrenia
+org_name: STANFORD UNIVERSITY
+phr: Project Narrative
+Schizophrenia is a chronic illness with no treatments that interfere with the disease process. To
+design treatments that will change the course of schizophrenia illness, we need to map the
+detailed ways in which brains of people with schizophrenia differ. In this project, a new imaging
+method will be used to test whether there is an abnormality in the number of specific types of
+connection points between neurons in the brains of people with schizophrenia.
+terms: <Address><Affect><Animal Model><Animal Models and Related Studies><Antibodies><Architecture><Array tomography><Automobile Driving><Autopsy><Bioinformatics><Biologic Models><Biological Models><Biology><Body Tissues><Brain><Brain Nervous System><Brodmann's area><C4 a><C4a><Career Development Awards><Career Development Awards and Programs><Career Development Programs K-Series><Caring><Cell Communication and Signaling><Cell Signaling><Chronic Disease><Chronic Illness><Clinical Research><Clinical Study><Cognition><Complement 4a><Complement C4a><Complement component C4a><Computational algorithm><Copy Number Polymorphism><Coupling><Data><Dedications><Development><Disease><Disorder><Dysfunction><Encephalon><Engineering / Architecture><Equilibrium><Excitatory Synapse><Follow-Up Studies><Followup Studies><Functional disorder><Future><GWA study><GWAS><Gene Expression><Goals><Grant><Imaging Procedures><Imaging Technics><Imaging Techniques><Individual><Influentials><Inhibitory Synapse><Intracellular Communication and Signaling><Investigators><K-Awards><K-Series Research Career Programs><Knowledge><Maps><Measures><Mediating><Mediator><Mental disorders><Mental health disorders><Mentors><Methodology><Model System><Modeling><Molecular><Nerve Cells><Nerve Impulse Transmission><Nerve Transmission><Nerve Unit><Neural Cell><Neuranatomies><Neuranatomy><Neuroanatomies><Neuroanatomy><Neurocyte><Neuronal Transmission><Neurons><Outcome Measure><Pathology><Persons><Physicians><Physiopathology><Prefrontal Cortex><Principal Component Analyses><Principal Component Analysis><Process><Proteins><Psychiatric Disease><Psychiatric Disorder><Publications><Pyramidal neuron><RNA Seq><RNA sequencing><RNAseq><Research Career Program><Research Personnel><Researchers><Resolution><Sampling><Schizophrenia><Schizophrenic Disorders><Scientific Publication><Scientist><Signal Transduction><Signal Transduction Systems><Signaling><Site><Specificity><Study models><Synapses><Synaptic><System><Testing><Therapeutic Intervention><Tissues><Training><Universities><Upregulation><Work><axon signaling><axon-glial signaling><axonal signaling><balance><balance function><barrier to testing><biological signal transduction><brain tissue><career development><chronic disorder><cohort><computer algorithm><copy number variant><copy number variation><dementia praecox><density><developmental><driving><experience><frontal cortex><frontal lobe><genome wide association><genome wide association scan><genome wide association study><genomewide association scan><genomewide association study><glia signaling><glial signaling><high risk><hippocampal pyramidal neuron><histologic image><histological image><hurdle to testing><image-based method><imaging method><imaging modality><in vivo Model><intervention design><intervention therapy><measurable outcome><mental illness><model of animal><mouse model><multiplexed imaging><murine model><necropsy><nerve signaling><neural imaging><neural signaling><neuro-imaging><neuroimaging><neurological imaging><neuronal><neuronal signaling><neurotransmission><novel><obstacle to testing><outcome measurement><pathophysiology><postmortem><postsynaptic><presynaptic><primary outcome><professor><psychiatric illness><psychological disorder><resolutions><schizophrenic><secondary outcome><synapse><synaptic pruning><testing barrier><testing hurdle><testing obstacle><therapeutic target><therapy design><transcriptome sequencing><transcriptomic sequencing><transcriptomics><treatment design><whole genome association analysis><whole genome association study>
+---
+application_id: 11172447
+activity_code: T32
+title: Training in Translating Neuroscience to Therapies
+org_name: RUTGERS BIOMEDICAL AND HEALTH SCIENCES
+phr: Project Narrative
+The number of people in the world suffering from neurological disorders is increasing rapidly, and many of these
+diseases have no good treatments much less cures. To address this unmet need to find better treatments for
+these disorders, this program aims to train laboratory-based scientists working on disease relevant projects to
+advance their discoveries to clinical trials and eventually as treatments for these patients. The comprehensive
+program combines traditional and experiential learning opportunities.
+terms: <Neurosciences><Training><Translating>
+---
+application_id: 11123164
+activity_code: T32
+title: Integrated Training For Physician-Scientists
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: PROJECT NARRATIVE
+The overall goal of the Medical Scientist (MD/PhD) Training Program (MSTP) at the University of Wisconsin-
+Madison (UW-Madison) is to train physician-scientists in the broad range of research areas critical to advancing
+frontiers of medical knowledge and therapeutics. Integrated MD/PhD programs, by immersing trainees in
+research during what are arguably their most impressionable and creative years, are a key component of our
+country’s portfolio to provide such training and dovetail into the combined missions of UW-Madison and its School
+of Medicine and Public Health (SMPH). UW-Madison consistently ranks as one of the top 20 research universities
+in the world and is especially well-known for graduate education and contributions to society. Research and
+education related to...
+terms: <Physicians><Scientist><Training>
+---
+application_id: 11172453
+activity_code: T32
+title: Translational Cancer Biology (TCB) T32 Training Program
+org_name: UT SOUTHWESTERN MEDICAL CENTER
+phr: This T32 application describes a comprehensive recruitment, training and retention program that combines a strong basic science curriculum with a strong translational cancer focus that distinguishes it from other training programs. Our goals are to train top-quality scientists capable of conducting independent cancer research; foster the intellectual, technical and communication skills required to succeed in the academic or industrial arenas of today and in the future; and to provide an understanding of the basic, public health, and clinical problems of human cancer. The Cancer Center Director of our NCI Designated Comprehensive Cancer Center provides substantial financial support for education and training.
+terms: <Cancer Biology><Training Programs>
+---
+application_id: 11172675
+activity_code: T32
+title: Predoctoral Training Program in the Neurosciences
+org_name: UNIVERSITY OF CINCINNATI
+phr: Neuroscience research is critical for development of strategies to prevent, diagnose and treat diseases of the
+nervous system. This broadly based training program is designed to provide the next generation of
+researchers with a solid foundation in the fundamentals of neuroscience and strong, cutting-edge research
+training in basic and translational neuroscience, emphasizing rigorous experimental design and data analytic
+approaches.
+terms: <Neurosciences><Training Programs><pre-doc><pre-doctoral>
+---
+application_id: 11173828
+activity_code: T32
+title: BUSPH Interdisciplinary Training Program for Biostatisticians
+org_name: BOSTON UNIVERSITY MEDICAL CAMPUS
+phr: PROJECT NARRATIVE
+Biostatistics plays a fundamental role in biomedical and public health research. This program trains predoctoral
+Biostatistics students to become effective collaborators in a wide range of biomedical disciplines, with a strong
+emphasis on research ethics and reproducible science. Trainees also receive enhanced career and professional
+development training to prepare them to contribute to the improvement of public health.
+terms: <Training Programs>
+---
+application_id: 11174401
+activity_code: T32
+title: Training in the Demography and Economics of Aging
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: This long-standing training program produces innovative, ethical, and productive researchers cross-trained in social science and demography who will seek to incorporate interdisciplinary and translational components into their research. They develop specialized expertise in areas vital to public health, including the biosocial determinants of differences in healthy aging. The ability of trainees to use the methods and theories of demography alongside outstanding disciplinary training produces scholars who generate and disseminate knowledge relevant to health and wellbeing from positions in government, academia, and research and policy organizations.
+terms: <Aging><Demography><Economics><Training><economic>
+---
+application_id: 11174478
+activity_code: T32
+title: Vascular Training Grant
+org_name: YALE UNIVERSITY
+phr: The goal of this postdoctoral training program is to train future leaders in areas of vascular biology and cardiovascular research. Heart disease is the leading cause of death in the U.S., and as such, defining the causes and mechanisms of disease continues to be of great significance. This training program, through its mentoring of future leaders in cardiovascular research, will have an important impact on health in the U.S.
+terms: <Blood Vessels><Grant><Training><vascular>
+---
+application_id: 11175969
+activity_code: T32
+title: NJ ACTS: A Platform for Translational Science in New Jersey: CTSA Predoctoral T32 at Rutgers, Biomedical Health Sciences
+org_name: RUTGERS BIOMEDICAL AND HEALTH SCIENCES
+phr: The ASCENT T32 training program, under the auspices of the New Jersey Alliance for Clinical and
+Translational Science, is designed to provide predoctoral students from Rutgers University, Princeton
+University, and the New Jersey Institute of Technology a 2-year opportunity to increase their knowledge, skills,
+and abilities in translational science to prepare them for their careers in translational biomedical science.
+terms: <Health Sciences><New Jersey><Translational Research><Translational Science><pre-doc><pre-doctoral><translation research><translational investigation>
+---
+application_id: 11176044
+activity_code: T32
+title: Postdoctoral Training Program in Stress and Trauma
+org_name: BOSTON UNIVERSITY MEDICAL CAMPUS
+phr: Posttraumatic stress disorder (PTSD) is a prevalent, chronic, and disabling condition. The goal of the training program is to provide advanced training and professional development experiences to postdoctoral fellows who will comprise the next generation of expert clinical scientists in this important public health area.
+terms: <Stress><Training Programs><Trauma><post-doctoral training>
+---
+application_id: 11176884
+activity_code: T32
+title: Developing Data-Driven Cancer Researchers
+org_name: UNIVERSITY OF WASHINGTON
+phr: PROJECT NARRATIVE
+This project will give young epidemiologists, biostatisticians, health services researchers, genetic
+epidemiologists, and pharmaceutical outcomes researchers the training they need to access and analyze the
+wealth of data that are available to address the growing burden of cancer.
+terms: <Cancers><Data><Investigators><Malignant Neoplasms><Malignant Tumor><Research Personnel><Researchers><malignancy><neoplasm/cancer>
+---
+application_id: 11176373
+activity_code: T32
+title: Global Cardiometabolic Disease Training
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: Project Narrative
+Cardiometabolic diseases currently pose one of the biggest threats to health and development globally,
+particularly in low- and middle-income countries. Despite calls from expert panels, little progress has been made
+in reducing this disease burden. We propose a nutrition-focused interdisciplinary predoctoral program to train
+leaders with expertise across global cardiometabolic disease biology, epidemiology, social, and environmental
+determinants that will translate to effective individual and global policy prevention strategies.
+terms: <Cardiometabolic Disease><Cardiometabolic Disorder><Training>
+---
+application_id: 11177746
+activity_code: T32
+title: Stanford Molecular Imaging Scholars (SMIS) Program
+org_name: STANFORD UNIVERSITY
+phr: RELEVANCE TO PUBLIC HEALTH
+The Stanford Molecular Imaging Scholars (SMIS) program is a unique, integrated, and cross-
+disciplinary postdoctoral training program that prepares young investigators for research careers
+in the field of molecular imaging of cancer. Molecular imaging explores and creates new
+approaches to visualize and quantify specific molecular and biochemical processes in intact living
+organisms and provides especially powerful tools for the study of cancer. SMIS trainees develop
+innovative molecular imaging approaches for the diagnosis and management of cancer, including
+the development of novel probes, instruments, and assays to characterize as well as guide the
+selection and/or discovery of novel treatments, and the evaluation of therapy response.
+terms: <Scholars Program><molecular imaging><molecule imaging>
+---
+application_id: 11177750
+activity_code: T32
+title: Dartmouth Training Program in Quantitative Cancer Research
+org_name: DARTMOUTH COLLEGE
+phr: NARRATIVE
+Support is requested for a multidisciplinary predoctoral Dartmouth Training program in
+Quantitative Cancer Research. It is our vision that the next generation of quantitative
+researchers will require skills and expertise from areas such as bioinformatics, biostatistics, and
+epidemiology to tackle the most challenging problems in future cancer research.
+terms: <Training Programs><anti-cancer research><cancer research>
+---
+application_id: 11178752
+activity_code: T32
+title: Research Training in Pediatric Non-Malignant Hematology
+org_name: EMORY UNIVERSITY
+phr: Project Narrative
+Research in hematology has yield important knowledge about fundamental biological processes and has
+improved the survival and quality of life for persons with blood diseases. Great strides have been made in the
+treatment of children with sickle cell disease, hemophilia, bone marrow failure and other blood disorders. Yet
+the number of well-trained researchers in this field is steadily declining, especially in pediatrics. This T32
+Training Grant is designed to address this problem by providing high quality research training to highly
+motivated and talented post-doctoral MD, MD/PhD, and PhD researchers to enable them to become the next
+generation of physician scientists and translational investigators in pediatric non-malignant hematology.
+terms: <Childhood><Hematology><Non-Malignant><Research Training><nonmalignant><pediatric>
+---
+application_id: 11179319
+activity_code: T32
+title: Institutional Training Grant in Genome Science
+org_name: STANFORD UNIVERSITY
+phr: Project Narrative
+The Stanford Genome Training Program trains PhD students and postdoctoral fellows to advance to productive
+technical and high-level leadership positions in the biomedical sciences, in academia and in the private sector.
+Specifically, we train the next generation of scientists in the field of genomics and related areas, which has
+become a centerpiece in understanding basic biology as well as disease diagnosis and prevention, due to
+tremendous technical advances and a confluence of computer science with biomedicine. Many of those
+advances were catalyzed and driven by our former trainees and those of similar institutions.
+terms: <Grant><Institution><Training><genome sciences><genomic science>
+---
+application_id: 11180358
+activity_code: T32
+title: Cancer Prevention and Control Research Training and Career Development Program
+org_name: UNIVERSITY OF TEXAS HLTH SCI CTR HOUSTON
+phr: The sixth renewal of the University of Texas Health Science Center at Houston (UTHealth) School of Public Health training program builds on a 29-year track-record preparing fellows to become independent, skilled, and principled cancer control scientists. The training program is designed to prepare cancer prevention and control researchers to fill evidence gaps about multilevel causes of cancer outcomes; to develop and evaluate cancer control multilevel interventions (MLIs); and develop and test strategies to increase the adoption, implementation, sustainment, and scale up of effective interventions in community and health care settings. Ultimately, the long-term goal of the proposed training program is to reduce cancer morbidity and mortality and improve cancer outcomes.
+terms: <Cancer Control Research><Program Development><Research Training><cancer prevention><career development>
+---
+application_id: 11180203
+activity_code: T32
+title: Biobehavioral Cancer Prevention and Control Training Program (BCPT)
+org_name: UNIVERSITY OF WASHINGTON
+phr: Narrative
+Cancer is the second leading cause of death in the United States. The Biobehavioral Cancer
+Prevention and Control Training Program (BCPT) prepares pre-doctoral and post-doctoral
+trainees for careers that will address the challenge of cancer prevention and control. The BCPT
+is a joint effort of departments in the Schools of Public Health, Medicine, Pharmacy, and
+Nursing at the University of Washington, the Fred Hutchinson Cancer Research Center, and
+affiliated institutions including the Seattle Cancer Care Alliance.
+terms: <Cancer Control><Cancer Control Science><Training Programs><biobehavior><biobehavioral><cancer prevention>

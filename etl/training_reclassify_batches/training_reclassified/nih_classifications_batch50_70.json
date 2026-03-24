@@ -1,0 +1,5252 @@
+[
+  {
+    "application_id": 11139531,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11139637,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11139642,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11140264,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11164716,
+    "primary_category": "other",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11131053,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11140307,
+    "primary_category": "digital_health",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11178712,
+    "primary_category": "digital_health",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11331929,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11169749,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11095906,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10915022,
+    "primary_category": "diagnostics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11141551,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10994174,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11097138,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11135315,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11195109,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11233143,
+    "primary_category": "basic_research",
+    "category_confidence": 87
+  },
+  {
+    "application_id": 11132909,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11141778,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11142949,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11097290,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11083030,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11142425,
+    "primary_category": "therapeutics",
+    "category_confidence": 75
+  },
+  {
+    "application_id": 11137728,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11051797,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11097366,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11001500,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11097373,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11097371,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11174205,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11054616,
+    "primary_category": "other",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11143040,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11098448,
+    "primary_category": "biotools",
+    "category_confidence": 87
+  },
+  {
+    "application_id": 11098410,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10830420,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11077252,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11098559,
+    "primary_category": "medical_device",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11143927,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11143660,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11365274,
+    "primary_category": "other",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11089393,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11143870,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10877022,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11143895,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11143885,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11057660,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11194946,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11076712,
+    "primary_category": "therapeutics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11144618,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11171327,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11144988,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11369475,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11081793,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11099798,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11099797,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11145517,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11160619,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11146498,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11165330,
+    "primary_category": "basic_research",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11163132,
+    "primary_category": "other",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11179346,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11181328,
+    "primary_category": "other",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11145925,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11146360,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11146282,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11176269,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11099970,
+    "primary_category": "digital_health",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11031963,
+    "primary_category": "other",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11146653,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11081668,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11146658,
+    "primary_category": "digital_health",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11146684,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11373083,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11101280,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11182456,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11158625,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11101390,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11158730,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11066691,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11158773,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11189764,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11099985,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11168611,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11136312,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11159420,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11159434,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11103144,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11191528,
+    "primary_category": "diagnostics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11192223,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10948605,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11159802,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11103347,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11159728,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11159823,
+    "primary_category": "other",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11159855,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10948766,
+    "primary_category": "other",
+    "category_confidence": 78
+  },
+  {
+    "application_id": 11160481,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11193867,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11144525,
+    "primary_category": "other",
+    "category_confidence": 78
+  },
+  {
+    "application_id": 11056061,
+    "primary_category": "basic_research",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11160790,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11105898,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11161142,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11006310,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10900316,
+    "primary_category": "therapeutics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11132684,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10877193,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10896968,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11065676,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11124898,
+    "primary_category": "diagnostics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11012323,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11162375,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11089561,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11013840,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11109386,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11109456,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11163291,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11163240,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11331896,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11162489,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11076333,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11163328,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10840781,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11163514,
+    "primary_category": "other",
+    "category_confidence": 78
+  },
+  {
+    "application_id": 11109583,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11109691,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11163783,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10747451,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11075235,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11164574,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11228686,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11164559,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10929998,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11110413,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10808507,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11164732,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11383773,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11111153,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11088838,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11143052,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11166271,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11076347,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11166488,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11388552,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11111266,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11166608,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11111171,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11228757,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11136420,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11136400,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11136381,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11166702,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11097222,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11042218,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11200687,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11176213,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11167709,
+    "primary_category": "digital_health",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11167875,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11112313,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11167420,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11109657,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11169759,
+    "primary_category": "therapeutics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11109703,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11169692,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11168993,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11065899,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11399244,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11075784,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11075313,
+    "primary_category": "other",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11177872,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10897260,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11194944,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11112442,
+    "primary_category": "basic_research",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11085940,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11167639,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10983747,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11167652,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10748409,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11170619,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11176792,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11410244,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11115823,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11171508,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11113957,
+    "primary_category": "biotools",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11062498,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11063217,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11032093,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11032427,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11172445,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11145947,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11167878,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10897028,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11114896,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11172579,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11118874,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10750996,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11173727,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11173805,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10900194,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11173834,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11066453,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11178591,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11168700,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11174418,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11059900,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11116838,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10897747,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11033789,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11175411,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11175457,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10993081,
+    "primary_category": "biotools",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10993377,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11175511,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11176004,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11177851,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11172513,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10995338,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11262598,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10754224,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11177900,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10826397,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11168813,
+    "primary_category": "biotools",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11176693,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11035137,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11142999,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10994835,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11177925,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10819593,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10844531,
+    "primary_category": "digital_health",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11169970,
+    "primary_category": "therapeutics",
+    "category_confidence": 78
+  },
+  {
+    "application_id": 11168875,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10995164,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10754566,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11177654,
+    "primary_category": "digital_health",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10993148,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11177741,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10995521,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11177768,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11163414,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11229722,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11083549,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11178015,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11159369,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11169011,
+    "primary_category": "basic_research",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10996028,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10996024,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10996197,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10996284,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11178461,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11065840,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10996413,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11145176,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10755239,
+    "primary_category": "therapeutics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10996527,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11178555,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11244471,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11178634,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10755272,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10996842,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10996867,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10997014,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11178745,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10997146,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11068587,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10997175,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10997487,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11179120,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10997745,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11169679,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10998022,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10998129,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10939177,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11161179,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10998235,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11180062,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10998320,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11180067,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11169710,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11101336,
+    "primary_category": "digital_health",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10999061,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11118917,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11047670,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11120086,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10999148,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10842391,
+    "primary_category": "other",
+    "category_confidence": 78
+  },
+  {
+    "application_id": 11047544,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11124601,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11180350,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11181598,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11180958,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10756077,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11032608,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11000592,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11169864,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11181649,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11001097,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11187062,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11190772,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11001641,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11121050,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11007178,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11121106,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11169976,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11169984,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11184494,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11188953,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11185050,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10757047,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11146671,
+    "primary_category": "therapeutics",
+    "category_confidence": 78
+  },
+  {
+    "application_id": 11086072,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11122167,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11058484,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10757412,
+    "primary_category": "diagnostics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11170421,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10757464,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10984972,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11174278,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11121768,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11162454,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11122199,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11122340,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11166372,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11122364,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11358071,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11135473,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11031339,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11170573,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11017712,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11170652,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11170669,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11055196,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11063782,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11076227,
+    "primary_category": "digital_health",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11027805,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10910119,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11059149,
+    "primary_category": "digital_health",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10818192,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11177592,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11194414,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11159373,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10984449,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10984446,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10910166,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11247456,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11064794,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11063234,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11063836,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11017753,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11063969,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10758847,
+    "primary_category": "basic_research",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11171463,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11122184,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11245483,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10759454,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11218674,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11121934,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11078181,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11211157,
+    "primary_category": "medical_device",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11079595,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11245530,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11124620,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11169921,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11324071,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11143939,
+    "primary_category": "biotools",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11124642,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11099743,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11124822,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11124733,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10744184,
+    "primary_category": "biotools",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10986986,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11213749,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11218665,
+    "primary_category": "therapeutics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11218679,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11088824,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11010352,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10745306,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11225074,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10911381,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11196307,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11172397,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11226591,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11129779,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11127519,
+    "primary_category": "digital_health",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10984626,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10745639,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11172493,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11127644,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11231649,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10990468,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10991348,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10884029,
+    "primary_category": "digital_health",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11172582,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11235434,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11110354,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11132657,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10996325,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11089438,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11091596,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10745911,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11062464,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11239499,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10826906,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11160727,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10826924,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11173655,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11173699,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11171518,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11098641,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11244414,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10995267,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11000298,
+    "primary_category": "diagnostics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11009965,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11143136,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11065446,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10847314,
+    "primary_category": "basic_research",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11093552,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11109411,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11160998,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11074592,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10827280,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11125773,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11083649,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10824234,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11161441,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10746445,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11174950,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11086612,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11175248,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11031308,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 10986978,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11258217,
+    "primary_category": "basic_research",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10840419,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11259280,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10843099,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11080750,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11056060,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11186983,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11175455,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11121099,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11291777,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11292544,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11169725,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11176017,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10766236,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11054931,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11099264,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10766668,
+    "primary_category": "medical_device",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11176129,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11176162,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10824662,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10641459,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10976428,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11321941,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10996673,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11163394,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11328213,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11004165,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10824681,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11177731,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10824695,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11045011,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11345191,
+    "primary_category": "medical_device",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11062472,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10767311,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11138429,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11079486,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11176941,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11358178,
+    "primary_category": "digital_health",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11360371,
+    "primary_category": "digital_health",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11076701,
+    "primary_category": "biotools",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11362957,
+    "primary_category": "other",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11086620,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11000306,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11073078,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11060075,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11177621,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11177683,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11158967,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11031307,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11001545,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11319972,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11076755,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11177912,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11137902,
+    "primary_category": "biotools",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11177862,
+    "primary_category": "other",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11177930,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11375341,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10996959,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10748376,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11083130,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11378603,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10996973,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10824810,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10896979,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11001437,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10749027,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10992595,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10749007,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10749020,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11381935,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11117151,
+    "primary_category": "therapeutics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11178763,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11081619,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11292832,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11167813,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11042243,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11084481,
+    "primary_category": "medical_device",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11135520,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11081797,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11135527,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10750959,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10900193,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10752607,
+    "primary_category": "biotools",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11401323,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11115549,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10846551,
+    "primary_category": "biotools",
+    "category_confidence": 87
+  },
+  {
+    "application_id": 11406358,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11358732,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10753513,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11067725,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11063535,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10884306,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11067024,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10884328,
+    "primary_category": "digital_health",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11115881,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10997633,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11004972,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10846573,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11257240,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11192939,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11231485,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11058363,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11112477,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10770541,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11082992,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11117145,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10904765,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11096085,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11064802,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11074603,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11142586,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11168992,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10771233,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11177811,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11249052,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11232531,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11211877,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11173665,
+    "primary_category": "digital_health",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10884449,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11051788,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11128483,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10878717,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11040319,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11099784,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11123259,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11172246,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10878696,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10889954,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10982464,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10890163,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10878792,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10878755,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11228868,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10755603,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10878734,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10756091,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11001561,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10878690,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10756457,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10982496,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11229384,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11097313,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11138166,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10878927,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11172430,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10879049,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10756455,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11229702,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10879055,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10981754,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10877021,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10877032,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11260131,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11061207,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10756951,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11032022,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10879056,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10878872,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11170655,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10757939,
+    "primary_category": "basic_research",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10827521,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10995342,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11263948,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10916256,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10982508,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11097643,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10983202,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10877130,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10994494,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10996986,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11234949,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11239222,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11093384,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11081773,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10930825,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10983733,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11178406,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10993619,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10929951,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10864821,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11182563,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11093398,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11144378,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11059192,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10868664,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10880252,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10994059,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11229375,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11081818,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11093524,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10768885,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10909858,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10872323,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11174425,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11174584,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11172541,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10819588,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10880333,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10917113,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11007395,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10910887,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10880365,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11066551,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10634668,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11245617,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10984095,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10983593,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11074645,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10880537,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10885552,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11122367,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11111994,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11143998,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11095851,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11178446,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10871819,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11242257,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11054459,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11111197,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11125179,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11125152,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11162797,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11129833,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10757325,
+    "primary_category": "basic_research",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11032868,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11145311,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11228379,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10983741,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10984778,
+    "primary_category": "basic_research",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10769488,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11137560,
+    "primary_category": "therapeutics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11122448,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11266134,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10394887,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10768620,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10893934,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11061774,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11077320,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11061097,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10815841,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11077265,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10873765,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11098878,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11130771,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10930140,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11105828,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11074644,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11075241,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10984196,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11179598,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10745326,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11290288,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10843212,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11031375,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11293882,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10873028,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10756948,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11071806,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11378551,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10930135,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11175518,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10991371,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10756977,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11187155,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11292995,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11175978,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10758286,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11061095,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11092680,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10841502,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11036401,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11254891,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11061068,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10991367,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10768673,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11189756,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10877717,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10985117,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11241033,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10890801,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11290354,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11141791,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10783063,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11026347,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10770360,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10984736,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10890631,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11051880,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11141125,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11168750,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10911145,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11242574,
+    "primary_category": "basic_research",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11090358,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11142478,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11171374,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11291332,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11094186,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10984733,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11242330,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11242388,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11033106,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10788452,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11240977,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10764301,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11094508,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10881872,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10880249,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11129242,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11068974,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10985094,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11169815,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11056066,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11178059,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11177020,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11178717,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11060022,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10887354,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10877794,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11063917,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11049181,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11290366,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10878969,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11055003,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11087640,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11292431,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11242748,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11054903,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11200894,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10799647,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11032041,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10818612,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10839939,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11198902,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11077257,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10999457,
+    "primary_category": "digital_health",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10759401,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11094826,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10819545,
+    "primary_category": "digital_health",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10984824,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11098514,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11094790,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11290404,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11213873,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10834830,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11098666,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11115926,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11071116,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10912302,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11003333,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11074026,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11061071,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10807044,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11115175,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11122902,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10985536,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11094752,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10918276,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10799696,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10985580,
+    "primary_category": "therapeutics",
+    "category_confidence": 78
+  },
+  {
+    "application_id": 11061118,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11290422,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11243130,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10882295,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11290396,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10985598,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11181321,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11082321,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11088212,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11191369,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11098458,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11085090,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11177732,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10912087,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11081626,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11085173,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10985724,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10985869,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10809043,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11062434,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11054708,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10811609,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11094141,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10878752,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11087543,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11122948,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10912313,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11369611,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11333012,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11179015,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10877860,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11381487,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10930977,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11113930,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11112880,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11058007,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10762457,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10877876,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11127461,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11095527,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10986141,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10877905,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10877884,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11240170,
+    "primary_category": "medical_device",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10883666,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11117044,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11118701,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10877932,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11117061,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11123495,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11134278,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11123916,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10781943,
+    "primary_category": "therapeutics",
+    "category_confidence": 78
+  },
+  {
+    "application_id": 11242869,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11164466,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11163917,
+    "primary_category": "medical_device",
+    "category_confidence": 87
+  },
+  {
+    "application_id": 11115483,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11019695,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11023074,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11120994,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11051767,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10992109,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 10993091,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11115403,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10883687,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11309344,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11057567,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10763413,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10825257,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10742950,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11026396,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10878215,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11044038,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11056805,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10826120,
+    "primary_category": "biotools",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11165555,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10764126,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11095844,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11095885,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11101313,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10763354,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10883754,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10987453,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10892842,
+    "primary_category": "basic_research",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10869186,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11136278,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10883660,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11137487,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10897769,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11139603,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11176687,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11172515,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10884162,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11061196,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11142559,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11158703,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10884023,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11146558,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11191387,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11137997,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11145016,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11160270,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11141725,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11160770,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11138447,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10884186,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10775701,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11145888,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11140440,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11159544,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10878695,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11144939,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10878703,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10878702,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10878706,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10993574,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10764818,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10884159,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11144505,
+    "primary_category": "diagnostics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11065716,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11143764,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11318871,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10448154,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11241140,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10764821,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11066422,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11085600,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11240623,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11221397,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10771979,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11169876,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11170440,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11167632,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10878727,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10885078,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11079435,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10993993,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10884334,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11169891,
+    "primary_category": "medical_device",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11166680,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10771996,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11214068,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11172678,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11099687,
+    "primary_category": "biotools",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10878733,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11071944,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11162346,
+    "primary_category": "therapeutics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11175302,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10878743,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11096096,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11170722,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11071014,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10884422,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10884472,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11090356,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11087456,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11163376,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11083568,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11087455,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11096071,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10823542,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11086572,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11180173,
+    "primary_category": "medical_device",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11176389,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11015519,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11034061,
+    "primary_category": "biotools",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11088695,
+    "primary_category": "therapeutics",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10873780,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11088700,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11179338,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11088924,
+    "primary_category": "diagnostics",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11096493,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11194444,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11091989,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11211214,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10827160,
+    "primary_category": "basic_research",
+    "category_confidence": 90
+  },
+  {
+    "application_id": 11213614,
+    "primary_category": "therapeutics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10991800,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11213345,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11101146,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10906663,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10977069,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11004655,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11094076,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11124652,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10885020,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11213259,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10828928,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10765739,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10877157,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 11180488,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11163417,
+    "primary_category": "diagnostics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10842242,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10747328,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11177761,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10915442,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10862637,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11115856,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10987038,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11088921,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11062483,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10990985,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10749017,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10988248,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10785243,
+    "primary_category": "biotools",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10936522,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11163490,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10931389,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11089445,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11178343,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10934325,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11112532,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10974464,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11308317,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11138273,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11145018,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11088247,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10845370,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10931376,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11221029,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11415245,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10903203,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11188947,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11193213,
+    "primary_category": "other",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10998527,
+    "primary_category": "other",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11097225,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11168673,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11099795,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11125743,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11194940,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10775705,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10900393,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10900927,
+    "primary_category": "biotools",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10747337,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10748286,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11248001,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11061001,
+    "primary_category": "other",
+    "category_confidence": 82
+  },
+  {
+    "application_id": 10978200,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10770370,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10819486,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11261518,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11016035,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10885185,
+    "primary_category": "basic_research",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 11178020,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10763817,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11103232,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11247454,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11170381,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11020961,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10827124,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10766636,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11003280,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11242081,
+    "primary_category": "therapeutics",
+    "category_confidence": 83
+  },
+  {
+    "application_id": 10885406,
+    "primary_category": "therapeutics",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 11058346,
+    "primary_category": "other",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 10996336,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 10880264,
+    "primary_category": "basic_research",
+    "category_confidence": 85
+  },
+  {
+    "application_id": 10902832,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  },
+  {
+    "application_id": 11159359,
+    "primary_category": "therapeutics",
+    "category_confidence": 80
+  },
+  {
+    "application_id": 11177594,
+    "primary_category": "basic_research",
+    "category_confidence": 88
+  }
+]
