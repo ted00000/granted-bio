@@ -94,7 +94,7 @@ export default function PricingPage() {
               <Feature included>Project, trial, and publication data</Feature>
               <Feature>Full result details</Feature>
               <Feature>Export to CSV</Feature>
-              <Feature>PI contact information</Feature>
+              <Feature>PI names and affiliations</Feature>
             </ul>
           </div>
 
@@ -129,8 +129,7 @@ export default function PricingPage() {
               <Feature included>Full result details (200 per query)</Feature>
               <Feature included>Project abstracts and summaries</Feature>
               <Feature included>Export to CSV</Feature>
-              <Feature included>PI contact information</Feature>
-              <Feature included>Priority support</Feature>
+              <Feature included>PI names and affiliations</Feature>
             </ul>
           </div>
         </div>
