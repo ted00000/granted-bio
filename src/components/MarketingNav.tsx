@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Search, FileText, User } from 'lucide-react'
 
 interface MarketingNavProps {
   showSignIn?: boolean
@@ -11,23 +12,32 @@ export function MarketingNav({ showSignIn = false }: MarketingNavProps) {
         <Link href="/" className="text-2xl font-semibold tracking-tight text-gray-900">
           granted<span className="text-[#E07A5F]">.bio</span>
         </Link>
-        <div className="flex items-center gap-6 text-sm">
+        <div className="flex items-center gap-1 text-sm">
+          <Link
+            href="/chat"
+            className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
+          >
+            <Search className="w-4 h-4" strokeWidth={1.5} />
+            Search
+          </Link>
           <Link
             href="/reports"
-            className="text-gray-600 hover:text-gray-900 transition-colors"
+            className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
           >
+            <FileText className="w-4 h-4" strokeWidth={1.5} />
             Reports
           </Link>
           <Link
-            href="/pricing"
-            className="text-gray-600 hover:text-gray-900 transition-colors"
+            href="/account"
+            className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
           >
-            Pricing
+            <User className="w-4 h-4" strokeWidth={1.5} />
+            Account
           </Link>
           {showSignIn && (
             <Link
               href="/"
-              className="text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
+              className="ml-2 text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
             >
               Sign In
             </Link>
