@@ -18,7 +18,6 @@ import {
   Microscope,
   Shield,
   Clock,
-  DollarSign,
 } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { GenerateReportDialog } from './GenerateReportDialog'
@@ -120,12 +119,12 @@ function ReportsLanding() {
               </div>
               <div className="text-center">
                 <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-4">
-                  <DollarSign className="w-6 h-6 text-purple-600" />
+                  <BarChart3 className="w-6 h-6 text-purple-600" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">98% Cost Savings</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">Deep Dive Ready</h3>
                 <p className="text-sm text-gray-600">
-                  $99 vs $4,650 for comparable BCC Research reports.
-                  Enterprise-grade intelligence at startup-friendly prices.
+                  Every report links to the underlying data. Use our search tool to explore
+                  any project, patent, or trial in detail.
                 </p>
               </div>
             </div>
@@ -444,49 +443,6 @@ function ReportsLanding() {
                 Generate Your Report - $99
                 <ArrowRight className="w-4 h-4" />
               </Link>
-            </div>
-          </div>
-        </section>
-
-        {/* Comparison */}
-        <section className="py-16 px-6">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl font-semibold text-gray-900 text-center mb-12">
-              How we compare
-            </h2>
-
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <th className="text-left py-4 px-6 font-medium text-gray-500">Provider</th>
-                    <th className="text-left py-4 px-6 font-medium text-gray-500">Price</th>
-                    <th className="text-left py-4 px-6 font-medium text-gray-500">Turnaround</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-gray-100 bg-[#E07A5F]/5">
-                    <td className="py-4 px-6 font-medium text-[#E07A5F]">granted.bio</td>
-                    <td className="py-4 px-6 font-semibold text-gray-900">$99</td>
-                    <td className="py-4 px-6 text-gray-700">Minutes</td>
-                  </tr>
-                  <tr className="border-b border-gray-100">
-                    <td className="py-4 px-6 text-gray-700">BCC Research</td>
-                    <td className="py-4 px-6 text-gray-700">$4,650</td>
-                    <td className="py-4 px-6 text-gray-500">Published schedule</td>
-                  </tr>
-                  <tr className="border-b border-gray-100">
-                    <td className="py-4 px-6 text-gray-700">Custom Consulting</td>
-                    <td className="py-4 px-6 text-gray-700">$15,000+</td>
-                    <td className="py-4 px-6 text-gray-500">4-8 weeks</td>
-                  </tr>
-                  <tr>
-                    <td className="py-4 px-6 text-gray-700">DIY (4 databases)</td>
-                    <td className="py-4 px-6 text-gray-700">Your time</td>
-                    <td className="py-4 px-6 text-gray-500">Hours + missed results</td>
-                  </tr>
-                </tbody>
-              </table>
             </div>
           </div>
         </section>
