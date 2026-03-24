@@ -337,8 +337,8 @@ function ReportsLanding() {
                     </li>
                   </ul>
                   <div className="mt-6 pt-6 border-t border-gray-100">
-                    <p className="text-sm text-gray-500 italic">
-                      "Perfect for writing the Significance and Innovation sections of my R01."
+                    <p className="text-sm text-gray-500">
+                      Ideal for R01 Significance and Innovation sections.
                     </p>
                   </div>
                 </div>
@@ -404,8 +404,8 @@ function ReportsLanding() {
                     </li>
                   </ul>
                   <div className="mt-6 pt-6 border-t border-gray-100">
-                    <p className="text-sm text-gray-500 italic">
-                      "Cut our due diligence time in half. Essential for any life science investment thesis."
+                    <p className="text-sm text-gray-500">
+                      Accelerate due diligence for any life science investment thesis.
                     </p>
                   </div>
                 </div>
