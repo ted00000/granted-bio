@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 
 export function Header() {
   const [user, setUser] = useState<any>(null)
@@ -14,35 +15,32 @@ export function Header() {
     const supabase = createBrowserSupabaseClient()
 
     // Get initial session
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    const getInitialUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
       setUser(user)
       if (user) {
-        // Check if admin
-        supabase
+        const { data: profile } = await supabase
           .from('user_profiles')
           .select('role')
           .eq('id', user.id)
           .single()
-          .then(({ data: profile }) => {
-            setIsAdmin(profile?.role === 'admin')
-          })
+        setIsAdmin(profile?.role === 'admin')
       }
-    })
+    }
+    getInitialUser()
 
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (_event: AuthChangeEvent, session: Session | null) => {
       setUser(session?.user ?? null)
       if (session?.user) {
-        supabase
+        const { data: profile } = await supabase
           .from('user_profiles')
           .select('role')
           .eq('id', session.user.id)
           .single()
-          .then(({ data: profile }) => {
-            setIsAdmin(profile?.role === 'admin')
-          })
+        setIsAdmin(profile?.role === 'admin')
       } else {
         setIsAdmin(false)
       }

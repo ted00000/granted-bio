@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import type { IntentType, PersonaType } from '@/lib/chat/types'
 import { INTENT_TO_PERSONA } from '@/lib/chat/types'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { Search, Users, Activity, FileText, Lock } from 'lucide-react'
 
 interface PersonaSelectorProps {
@@ -160,7 +161,7 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
 
     // Also listen for auth changes (sign out, etc)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (event: AuthChangeEvent, session: Session | null) => {
         if (!isMounted) return
 
         if (event === 'SIGNED_OUT') {

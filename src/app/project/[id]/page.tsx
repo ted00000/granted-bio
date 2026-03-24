@@ -105,19 +105,19 @@ export default function ProjectPage() {
 
   // Check if user is admin
   useEffect(() => {
-    const supabase = createBrowserSupabaseClient()
-    supabase.auth.getUser().then(({ data: { user } }) => {
+    const checkAdmin = async () => {
+      const supabase = createBrowserSupabaseClient()
+      const { data: { user } } = await supabase.auth.getUser()
       if (user) {
-        supabase
+        const { data: profile } = await supabase
           .from('user_profiles')
           .select('role')
           .eq('id', user.id)
           .single()
-          .then(({ data: profile }) => {
-            setIsAdmin(profile?.role === 'admin')
-          })
+        setIsAdmin(profile?.role === 'admin')
       }
-    })
+    }
+    checkAdmin()
   }, [])
 
   // Read return URL from sessionStorage
