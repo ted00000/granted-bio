@@ -16,6 +16,7 @@ import {
   FileText,
   X,
 } from 'lucide-react'
+import { MarketingNav } from '@/components/MarketingNav'
 
 function AuthForm() {
   const searchParams = useSearchParams()
@@ -177,22 +178,7 @@ const stats = [
 export default function Home() {
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
-      {/* Header */}
-      <header className="border-b border-gray-100 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="text-2xl font-semibold tracking-tight text-gray-900">
-            granted<span className="text-[#E07A5F]">.bio</span>
-          </span>
-          <div className="flex items-center gap-6 text-sm">
-            <Link href="/reports" className="text-gray-600 hover:text-gray-900 transition-colors">
-              Reports
-            </Link>
-            <Link href="/pricing" className="text-gray-600 hover:text-gray-900 transition-colors">
-              Pricing
-            </Link>
-          </div>
-        </div>
-      </header>
+      <MarketingNav />
 
       <main>
         {/* Hero */}

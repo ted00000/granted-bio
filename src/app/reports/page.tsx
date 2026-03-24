@@ -20,6 +20,7 @@ import {
   Clock,
 } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
+import { MarketingNav } from '@/components/MarketingNav'
 import { GenerateReportDialog } from './GenerateReportDialog'
 
 interface Report {
@@ -38,28 +39,7 @@ interface Report {
 function ReportsLanding() {
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
-      {/* Header */}
-      <header className="border-b border-gray-100 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-semibold tracking-tight">
-            granted<span className="text-[#E07A5F]">.bio</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/pricing"
-              className="text-sm text-gray-600 hover:text-gray-900"
-            >
-              Pricing
-            </Link>
-            <Link
-              href="/"
-              className="text-sm text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
-            >
-              Sign In
-            </Link>
-          </div>
-        </div>
-      </header>
+      <MarketingNav showSignIn />
 
       <main>
         {/* Hero */}

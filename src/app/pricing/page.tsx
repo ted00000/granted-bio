@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Check, X, Zap, FileText, Search, ArrowRight } from 'lucide-react'
+import { MarketingNav } from '@/components/MarketingNav'
 
 export default function PricingPage() {
   const router = useRouter()
@@ -38,20 +39,7 @@ export default function PricingPage() {
 
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
-      {/* Header */}
-      <header className="border-b border-gray-100 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="text-xl font-semibold tracking-tight">
-            granted<span className="text-[#E07A5F]">.bio</span>
-          </Link>
-          <Link
-            href="/chat"
-            className="text-sm text-gray-600 hover:text-gray-900"
-          >
-            Back to app
-          </Link>
-        </div>
-      </header>
+      <MarketingNav />
 
       <main className="max-w-5xl mx-auto px-6 py-16">
         {/* Hero */}
