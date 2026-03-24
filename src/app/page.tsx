@@ -207,13 +207,13 @@ export default function Home() {
                     Research Intelligence Platform
                   </div>
                   <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 leading-tight">
-                    See how research<br />
-                    becomes reality.
+                    Get the full<br />
+                    research picture.
                   </h1>
                   <p className="text-lg text-gray-500 leading-relaxed">
-                    154K NIH projects, their publications, patents, and clinical trials - all connected
-                    in one platform. Covering 2024-2026, understand the full trajectory of recent research
-                    to write better grants, make smarter investments, and find the right partners.
+                    We connect NIH grants to their publications, patents, and trials so you can
+                    see how research actually unfolds. Write better grants, make smarter investments,
+                    find the right partners.
                   </p>
                 </div>
 
