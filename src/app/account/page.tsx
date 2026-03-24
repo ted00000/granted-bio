@@ -14,6 +14,7 @@ import {
   AlertCircle,
   Loader2,
 } from 'lucide-react'
+import { MarketingNav } from '@/components/MarketingNav'
 
 type ReportPurchase = {
   id: string
@@ -109,7 +110,7 @@ export default function AccountPage() {
   if (error || !usage) {
     return (
       <div className="min-h-screen bg-[#FAFAF9]">
-        <Header />
+        <MarketingNav />
         <main className="max-w-3xl mx-auto px-6 py-16">
           <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
             <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
@@ -138,7 +139,7 @@ export default function AccountPage() {
 
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
-      <Header />
+      <MarketingNav />
 
       <main className="max-w-3xl mx-auto px-6 py-12">
         <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-8">
@@ -397,20 +398,3 @@ export default function AccountPage() {
   )
 }
 
-function Header() {
-  return (
-    <header className="border-b border-gray-100 bg-white">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="text-xl font-semibold tracking-tight">
-          granted<span className="text-[#E07A5F]">.bio</span>
-        </Link>
-        <Link
-          href="/chat"
-          className="text-sm text-gray-600 hover:text-gray-900"
-        >
-          Back to app
-        </Link>
-      </div>
-    </header>
-  )
-}
