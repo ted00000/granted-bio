@@ -12,6 +12,11 @@ import type Stripe from 'stripe'
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET
 
 export async function POST(request: NextRequest) {
+  if (!stripe) {
+    console.error('[Stripe Webhook] Stripe client not initialized')
+    return NextResponse.json({ error: 'Stripe is not configured' }, { status: 500 })
+  }
+
   if (!webhookSecret) {
     console.error('[Stripe Webhook] Missing STRIPE_WEBHOOK_SECRET')
     return NextResponse.json({ error: 'Webhook secret not configured' }, { status: 500 })

@@ -10,6 +10,13 @@ const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
 
 export async function POST(request: NextRequest) {
   try {
+    if (!stripe) {
+      return NextResponse.json(
+        { error: 'Stripe is not configured. Please set STRIPE_SECRET_KEY.' },
+        { status: 500 }
+      )
+    }
+
     const supabase = await createServerSupabaseClient()
     const { data: { user } } = await supabase.auth.getUser()
 
