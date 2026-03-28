@@ -1,7 +1,8 @@
 'use client'
 
-import { useState } from 'react'
-import { X, AlertTriangle, Loader2, FileText, FlaskConical, TrendingUp, CreditCard } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { X, AlertTriangle, Loader2, FlaskConical, TrendingUp, CreditCard, Sparkles } from 'lucide-react'
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 type Persona = 'researcher' | 'investor'
 
@@ -16,9 +17,27 @@ export function GenerateReportDialog({
 }: GenerateReportDialogProps) {
   const [topic, setTopic] = useState('')
   const [persona, setPersona] = useState<Persona>('researcher')
-  const [step, setStep] = useState<'input' | 'checking' | 'confirm' | 'purchasing'>('input')
+  const [step, setStep] = useState<'input' | 'checking' | 'confirm' | 'purchasing' | 'generating'>('input')
   const [projectCount, setProjectCount] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  // Check if user is admin
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const supabase = createBrowserSupabaseClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+        setIsAdmin(profile?.role === 'admin')
+      }
+    }
+    checkAdmin()
+  }, [])
 
   const checkTopic = async () => {
     if (!topic.trim()) return
@@ -40,13 +59,49 @@ export function GenerateReportDialog({
 
       if (data.project_count < 5) {
         setStep('confirm')
+      } else if (isAdmin) {
+        // Admin bypass - generate directly
+        await generateReportDirect(false)
       } else {
-        // Enough data, proceed to purchase
+        // Normal user - proceed to purchase
         await purchaseReport(false)
       }
     } catch (e) {
       console.error('Error checking topic:', e)
       setError(e instanceof Error ? e.message : 'Failed to check topic')
+      setStep('input')
+    }
+  }
+
+  // Admin-only: Generate report directly without payment
+  const generateReportDirect = async (dataLimited: boolean) => {
+    setStep('generating')
+    setError(null)
+
+    try {
+      const response = await fetch('/api/reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          report_type: 'topic',
+          topic: topic.trim(),
+          persona,
+          data_limited: dataLimited,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to generate report')
+      }
+
+      // Report generation started, redirect to reports page
+      onGenerated()
+      onClose()
+    } catch (e) {
+      console.error('Error generating report:', e)
+      setError(e instanceof Error ? e.message : 'Failed to generate report')
       setStep('input')
     }
   }
@@ -218,6 +273,21 @@ export function GenerateReportDialog({
               </p>
             </div>
           )}
+
+          {step === 'generating' && (
+            <div className="flex flex-col items-center py-8">
+              <div className="relative mb-4">
+                <Sparkles className="w-12 h-12 text-[#E07A5F]" strokeWidth={1.5} />
+                <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center">
+                  <Loader2 className="w-4 h-4 text-[#E07A5F] animate-spin" />
+                </div>
+              </div>
+              <p className="text-gray-900 font-medium mb-1">Generating Report</p>
+              <p className="text-sm text-gray-500 text-center">
+                Your report is being generated. This may take a few minutes.
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Footer */}
@@ -230,14 +300,25 @@ export function GenerateReportDialog({
               >
                 Cancel
               </button>
-              <button
-                onClick={checkTopic}
-                disabled={!topic.trim()}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <CreditCard className="w-4 h-4" />
-                Purchase Report - $99
-              </button>
+              {isAdmin ? (
+                <button
+                  onClick={checkTopic}
+                  disabled={!topic.trim()}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Generate (Admin)
+                </button>
+              ) : (
+                <button
+                  onClick={checkTopic}
+                  disabled={!topic.trim()}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <CreditCard className="w-4 h-4" />
+                  Purchase Report - $99
+                </button>
+              )}
             </>
           )}
 
@@ -249,17 +330,27 @@ export function GenerateReportDialog({
               >
                 Cancel
               </button>
-              <button
-                onClick={() => purchaseReport(true)}
-                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors"
-              >
-                <CreditCard className="w-4 h-4" />
-                Purchase Anyway - $99
-              </button>
+              {isAdmin ? (
+                <button
+                  onClick={() => generateReportDirect(true)}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Generate Anyway (Admin)
+                </button>
+              ) : (
+                <button
+                  onClick={() => purchaseReport(true)}
+                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors"
+                >
+                  <CreditCard className="w-4 h-4" />
+                  Purchase Anyway - $99
+                </button>
+              )}
             </>
           )}
 
-          {step === 'purchasing' && (
+          {(step === 'purchasing' || step === 'generating') && (
             <button
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
