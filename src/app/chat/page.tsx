@@ -14,6 +14,8 @@ function ChatContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const [userName, setUserName] = useState<string | null>(null)
+  const [needsName, setNeedsName] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const supabase = createBrowserSupabaseClient()
 
@@ -41,6 +43,7 @@ function ChatContent() {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
+        setUserId(user.id)
         const { data: profile } = await supabase
           .from('user_profiles')
           .select('first_name, full_name')
@@ -48,13 +51,27 @@ function ChatContent() {
           .single()
 
         if (profile) {
-          setUserName(profile.first_name || profile.full_name?.split(' ')[0] || user.email?.split('@')[0] || null)
+          if (profile.first_name) {
+            setUserName(profile.first_name)
+          } else {
+            setNeedsName(true)
+          }
         }
       }
       setIsLoading(false)
     }
     fetchUser()
   }, [supabase])
+
+  const handleNameSubmit = async (name: string) => {
+    if (!userId) return
+    await supabase
+      .from('user_profiles')
+      .update({ first_name: name })
+      .eq('id', userId)
+    setUserName(name)
+    setNeedsName(false)
+  }
 
   const handlePersonaChange = (persona: PersonaType, initialQuery?: string) => {
     if (initialQuery) {
@@ -77,7 +94,13 @@ function ChatContent() {
           <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
         </div>
       ) : (
-        <WelcomeScreen onSelectPersona={handlePersonaChange} userName={userName} initialLens={initialLens} />
+        <WelcomeScreen
+          onSelectPersona={handlePersonaChange}
+          userName={userName}
+          initialLens={initialLens}
+          needsName={needsName}
+          onNameSubmit={handleNameSubmit}
+        />
       )}
     </AppLayout>
   )

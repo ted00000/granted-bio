@@ -8,6 +8,8 @@ interface WelcomeScreenProps {
   onSelectPersona: (persona: PersonaType, initialQuery?: string) => void
   userName?: string | null
   initialLens?: PersonaType
+  needsName?: boolean
+  onNameSubmit?: (name: string) => Promise<void>
 }
 
 // Lens configuration - horizontal pills below search
@@ -58,9 +60,11 @@ const SEARCH_TIPS: Record<PersonaType, {
   }
 }
 
-export function WelcomeScreen({ onSelectPersona, userName, initialLens }: WelcomeScreenProps) {
+export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsName, onNameSubmit }: WelcomeScreenProps) {
   const [selectedLens, setSelectedLens] = useState<PersonaType>(initialLens || 'researcher')
   const [searchInput, setSearchInput] = useState('')
+  const [nameInput, setNameInput] = useState('')
+  const [savingName, setSavingName] = useState(false)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -77,7 +81,47 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens }: Welcom
     }
   }
 
+  const handleSaveName = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!nameInput.trim() || !onNameSubmit) return
+    setSavingName(true)
+    await onNameSubmit(nameInput.trim())
+    setSavingName(false)
+  }
+
   const currentTips = SEARCH_TIPS[selectedLens]
+
+  if (needsName) {
+    return (
+      <div className="h-full flex flex-col overflow-y-auto">
+        <div className="flex-1 flex flex-col justify-center px-6 lg:px-8 pt-[calc(4.5rem+env(safe-area-inset-top))] lg:pt-8 pb-[calc(2rem+env(safe-area-inset-bottom))] lg:pb-8 min-h-min">
+          <div className="max-w-sm mx-auto text-center">
+            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-8">
+              What should we call you?
+            </h1>
+            <form onSubmit={handleSaveName} className="space-y-4">
+              <input
+                type="text"
+                placeholder="Your first name"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                autoFocus
+                required
+                className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-center text-lg"
+              />
+              <button
+                type="submit"
+                disabled={savingName || !nameInput.trim()}
+                className="w-full py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors disabled:opacity-50"
+              >
+                {savingName ? 'Saving...' : 'Continue'}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="h-full flex flex-col overflow-y-auto">
