@@ -47,7 +47,7 @@ export async function synthesizeReport(
   const persona = context.persona || 'researcher'
   console.log(`[Synthesis Agent] Generating ${persona} report for "${topic}"`)
 
-  // Generate all LLM content in parallel
+  // Generate all LLM content in parallel (first batch)
   const [executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, enhancedMarketContext, fieldMaturity, competitiveTopology, ipLandscape] = await Promise.all([
     generateExecutiveSummary(topic, agentOutputs, context),
     generateSectionInsights(topic, agentOutputs, context),
@@ -59,11 +59,19 @@ export async function synthesizeReport(
     generateIPLandscapeAssessment(topic, agentOutputs, context),
   ])
 
+  // Generate project insights (needs executive summary first for context)
+  const projectInsights = await generateProjectInsights(
+    topic,
+    agentOutputs.projects.items.slice(0, 10),
+    executiveSummary,
+    context
+  )
+
   // Replace raw market context with enhanced version
   agentOutputs.market.context = enhancedMarketContext
 
   // Assemble markdown report with persona-aware structure
-  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape)
+  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights)
 
   return {
     executiveSummary,
@@ -1107,6 +1115,92 @@ function defaultIPLandscape(): IPLandscapeAssessment {
 }
 
 /**
+ * Generate insights for each top project relative to the overall report narrative
+ */
+async function generateProjectInsights(
+  topic: string,
+  projects: ProjectItem[],
+  executiveSummary: string,
+  context: SynthesisContext
+): Promise<Record<string, string>> {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
+
+  // Only generate insights for top 10 projects
+  const topProjects = projects.slice(0, 10)
+  if (topProjects.length === 0) {
+    return {}
+  }
+
+  const projectDetails = topProjects
+    .map((p, i) => {
+      const cleanedAbstract = cleanNarrative(p.abstract) || 'No abstract available'
+      return `[${i + 1}] ID: ${p.application_id}
+Title: ${p.title}
+PI: ${p.pi_names?.split(';')[0]?.trim() || 'N/A'}
+Organization: ${p.org_name || 'N/A'}
+Category: ${p.primary_category || 'N/A'}
+Funding: ${formatCurrency(p.total_cost || 0)}
+Abstract: ${cleanedAbstract}`
+    })
+    .join('\n\n---\n\n')
+
+  const prompt = `You are analyzing NIH-funded research projects for a report on "${topic}".
+
+## REPORT CONTEXT (Executive Summary)
+${executiveSummary}
+
+## TOP PROJECTS TO ANALYZE
+${projectDetails}
+
+---
+
+For each project, generate a 2-3 sentence insight explaining:
+1. How this project contributes to or advances the field of "${topic}"
+2. What makes this project noteworthy (unique approach, strategic positioning, or connection to broader trends)
+
+Be specific and analytical. Reference the project's actual methods or focus when possible.
+
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+
+Return JSON only (object mapping application_id to insight string):
+{
+  "application_id_1": "2-3 sentence insight for project 1",
+  "application_id_2": "2-3 sentence insight for project 2",
+  ...
+}`
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 2000,
+      messages: [{ role: 'user', content: prompt }],
+    })
+
+    const textContent = response.content.find((c) => c.type === 'text')
+    if (!textContent || textContent.type !== 'text') {
+      return {}
+    }
+
+    // Parse JSON from response
+    let jsonText = textContent.text.trim()
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
+    }
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      return {}
+    }
+
+    const parsed = JSON.parse(jsonMatch[0])
+    return parsed
+  } catch (error) {
+    console.warn('[Synthesis Agent] Failed to generate project insights:', error)
+    return {}
+  }
+}
+
+/**
  * Determine contextual section title based on topic category
  */
 function getClinicalSectionTitle(topCategory: string, trialCount: number): string | null {
@@ -1131,7 +1225,8 @@ function assembleMarkdown(
   curatedPublications: CuratedPublication[],
   fieldMaturity: FieldMaturityAssessment,
   competitiveTopology: CompetitiveTopology,
-  ipLandscape: IPLandscapeAssessment
+  ipLandscape: IPLandscapeAssessment,
+  projectInsights?: Record<string, string>
 ): string {
   const persona = context.persona || 'researcher'
   const now = new Date().toLocaleDateString('en-US', {
@@ -1210,7 +1305,7 @@ ${renderFundingLandscape(context.fundingStats, insights.funding)}
 
 ## Key Research Projects
 
-${renderProjects(agentOutputs.projects.items.slice(0, 10))}
+${renderProjects(agentOutputs.projects.items.slice(0, 10), projectInsights)}
 
 ---
 
@@ -1255,7 +1350,7 @@ ${renderFundingLandscape(context.fundingStats, insights.funding)}
 
 ## Key Research Projects
 
-${renderProjects(agentOutputs.projects.items.slice(0, 10))}
+${renderProjects(agentOutputs.projects.items.slice(0, 10), projectInsights)}
 
 ---
 
@@ -1673,7 +1768,7 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
   return md
 }
 
-function renderProjects(projects: ProjectItem[]): string {
+function renderProjects(projects: ProjectItem[], projectInsights?: Record<string, string>): string {
   if (projects.length === 0) {
     return 'No projects found for this topic in our database.\n'
   }
@@ -1692,8 +1787,17 @@ function renderProjects(projects: ProjectItem[]): string {
     if (p.primary_category) {
       md += `- **Category:** ${formatCategory(p.primary_category)}\n`
     }
-    if (p.abstract) {
-      const excerpt = p.abstract.substring(0, 300) + (p.abstract.length > 300 ? '...' : '')
+
+    // Add project insight if available
+    const insight = projectInsights?.[p.application_id]
+    if (insight) {
+      md += `\n**Insight:** ${insight}\n`
+    }
+
+    // Clean and display narrative
+    const cleanedNarrative = cleanNarrative(p.abstract)
+    if (cleanedNarrative) {
+      const excerpt = cleanedNarrative.substring(0, 300) + (cleanedNarrative.length > 300 ? '...' : '')
       md += `\n> ${excerpt}\n`
     }
     md += `\n[View Project ->](/project/${p.application_id})\n\n`
@@ -1868,4 +1972,31 @@ function formatCategory(category: string): string {
   return category
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+/**
+ * Clean project narrative/abstract text
+ * Removes common prefixes like "PROJECT NARRATIVE", "Narrative", etc.
+ * and normalizes whitespace
+ */
+function cleanNarrative(text: string | null): string | null {
+  if (!text) return null
+
+  // Remove common prefix patterns (case insensitive)
+  let cleaned = text
+    .replace(/^(PROJECT\s+)?NARRATIVE\s*/i, '')
+    .replace(/^Project\s+narrative\s*/i, '')
+    .replace(/^Narrative\s*/i, '')
+    .replace(/^PUBLIC\s+HEALTH\s+RELEVANCE\s*/i, '')
+    .replace(/^PHR\s*:\s*/i, '')
+
+  // Normalize whitespace: collapse multiple newlines/spaces into single space
+  cleaned = cleaned
+    .replace(/\r\n/g, '\n')
+    .replace(/\n{2,}/g, ' ')
+    .replace(/\n/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .trim()
+
+  return cleaned
 }
