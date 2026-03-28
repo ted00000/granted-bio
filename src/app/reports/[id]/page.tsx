@@ -349,7 +349,8 @@ export default function ReportDetailPage({
             const colCount = tableData[0].length
             const colWidth = maxWidth / colCount
             const lineHeight = 11
-            const cellPadding = 4
+            const cellPaddingTop = 6
+            const cellPaddingBottom = 8
 
             // Pre-calculate row heights based on wrapped content
             const rowHeights: number[] = tableData.map((row) => {
@@ -359,7 +360,7 @@ export default function ReportDetailPage({
                 const wrapped = doc.splitTextToSize(cell, colWidth - 8)
                 maxLines = Math.max(maxLines, wrapped.length)
               })
-              return maxLines * lineHeight + cellPadding * 2
+              return maxLines * lineHeight + cellPaddingTop + cellPaddingBottom
             })
 
             // Draw table row by row with proper heights
@@ -372,13 +373,15 @@ export default function ReportDetailPage({
                 y = margin
               }
 
-              // Header row background
+              const rowTop = y
+
+              // Header row background (fill entire row area)
               if (rowIndex === 0) {
                 doc.setFillColor(249, 250, 251)
-                doc.rect(margin, y - 10, maxWidth, rowHeight, 'F')
+                doc.rect(margin, rowTop, maxWidth, rowHeight, 'F')
               }
 
-              // Cell text
+              // Cell text - positioned with top padding
               doc.setFontSize(9)
               doc.setFont('helvetica', rowIndex === 0 ? 'bold' : 'normal')
               doc.setTextColor(rowIndex === 0 ? 17 : 55, rowIndex === 0 ? 24 : 65, rowIndex === 0 ? 39 : 81)
@@ -386,18 +389,19 @@ export default function ReportDetailPage({
               row.forEach((cell, colIndex) => {
                 const cellX = margin + colIndex * colWidth + 4
                 const cellText = doc.splitTextToSize(cell, colWidth - 8)
-                // Render all lines of the cell
+                // Render all lines of the cell with proper vertical positioning
                 cellText.forEach((textLine: string, lineIndex: number) => {
-                  doc.text(textLine, cellX, y + lineIndex * lineHeight)
+                  const textY = rowTop + cellPaddingTop + lineHeight * 0.8 + lineIndex * lineHeight
+                  doc.text(textLine, cellX, textY)
                 })
               })
 
-              // Row border at bottom
+              // Row border at bottom of row
               doc.setDrawColor(229, 231, 235)
               doc.setLineWidth(0.5)
-              doc.line(margin, y + rowHeight - cellPadding, margin + maxWidth, y + rowHeight - cellPadding)
+              doc.line(margin, rowTop + rowHeight, margin + maxWidth, rowTop + rowHeight)
 
-              y += rowHeight
+              y = rowTop + rowHeight
             })
 
             y += 8
