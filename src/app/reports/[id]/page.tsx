@@ -207,8 +207,9 @@ export default function ReportDetailPage({
         return result
       }
 
+      const bottomMargin = 72 // 1 inch bottom margin for better spacing
       const addNewPageIfNeeded = (height: number) => {
-        if (y + height > pageHeight - margin) {
+        if (y + height > pageHeight - bottomMargin) {
           doc.addPage()
           y = margin
           return true
@@ -347,24 +348,35 @@ export default function ReportDetailPage({
           if (tableData.length > 0) {
             const colCount = tableData[0].length
             const colWidth = maxWidth / colCount
-            const rowHeight = 14
+            const lineHeight = 11
+            const cellPadding = 4
 
-            addNewPageIfNeeded(tableData.length * rowHeight + 8)
+            // Pre-calculate row heights based on wrapped content
+            const rowHeights: number[] = tableData.map((row) => {
+              let maxLines = 1
+              row.forEach((cell) => {
+                doc.setFontSize(9)
+                const wrapped = doc.splitTextToSize(cell, colWidth - 8)
+                maxLines = Math.max(maxLines, wrapped.length)
+              })
+              return maxLines * lineHeight + cellPadding * 2
+            })
 
-            // Draw table
+            // Draw table row by row with proper heights
             tableData.forEach((row, rowIndex) => {
-              const rowY = y + rowIndex * rowHeight
+              const rowHeight = rowHeights[rowIndex]
+
+              // Check if row fits, add new page if needed
+              if (y + rowHeight > pageHeight - bottomMargin) {
+                doc.addPage()
+                y = margin
+              }
 
               // Header row background
               if (rowIndex === 0) {
                 doc.setFillColor(249, 250, 251)
-                doc.rect(margin, rowY - 10, maxWidth, rowHeight, 'F')
+                doc.rect(margin, y - 10, maxWidth, rowHeight, 'F')
               }
-
-              // Row border
-              doc.setDrawColor(229, 231, 235)
-              doc.setLineWidth(0.5)
-              doc.line(margin, rowY + 4, margin + maxWidth, rowY + 4)
 
               // Cell text
               doc.setFontSize(9)
@@ -374,11 +386,21 @@ export default function ReportDetailPage({
               row.forEach((cell, colIndex) => {
                 const cellX = margin + colIndex * colWidth + 4
                 const cellText = doc.splitTextToSize(cell, colWidth - 8)
-                doc.text(cellText[0] || '', cellX, rowY)
+                // Render all lines of the cell
+                cellText.forEach((textLine: string, lineIndex: number) => {
+                  doc.text(textLine, cellX, y + lineIndex * lineHeight)
+                })
               })
+
+              // Row border at bottom
+              doc.setDrawColor(229, 231, 235)
+              doc.setLineWidth(0.5)
+              doc.line(margin, y + rowHeight - cellPadding, margin + maxWidth, y + rowHeight - cellPadding)
+
+              y += rowHeight
             })
 
-            y += tableData.length * rowHeight + 8
+            y += 8
           }
           isFirstElement = false
           continue

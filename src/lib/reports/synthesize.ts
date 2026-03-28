@@ -1998,5 +1998,8 @@ function cleanNarrative(text: string | null): string | null {
     .replace(/\s{2,}/g, ' ')
     .trim()
 
+  // Remove leading punctuation (colons, dashes, etc.) that might remain after prefix removal
+  cleaned = cleaned.replace(/^[:\-–—•\s]+/, '').trim()
+
   return cleaned
 }
