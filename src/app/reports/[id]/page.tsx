@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { FileText, ArrowLeft, AlertCircle, FileDown, Loader2, FileType } from 'lucide-react'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { jsPDF } from 'jspdf'
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle } from 'docx'
+import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, Header, Footer, AlignmentType } from 'docx'
 import { saveAs } from 'file-saver'
 
 interface FundingByYear {
@@ -130,8 +130,49 @@ export default function ReportDetailPage({
       const pageHeight = doc.internal.pageSize.getHeight()
       const margin = 54 // 0.75 inch
       const maxWidth = pageWidth - margin * 2
-      let y = margin
+      const headerHeight = 40
+      const footerHeight = 36
+      let y = margin + headerHeight
       let isFirstElement = true
+      const currentYear = new Date().getFullYear()
+
+      // Helper to add header and footer to a page
+      const addPageBranding = () => {
+        // Header - "granted.bio" text logo
+        doc.setFontSize(11)
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(17, 24, 39)
+        doc.text('granted', margin, margin + 12)
+        const grantedWidth = doc.getTextWidth('granted')
+        doc.setTextColor(224, 122, 95) // #E07A5F
+        doc.text('.bio', margin + grantedWidth, margin + 12)
+
+        // Header line
+        doc.setDrawColor(229, 231, 235)
+        doc.setLineWidth(0.5)
+        doc.line(margin, margin + 24, pageWidth - margin, margin + 24)
+
+        // Footer
+        doc.setFontSize(8)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(156, 163, 175) // gray-400
+
+        // Copyright on left
+        doc.text(`© ${currentYear} Granted Bio. All rights reserved.`, margin, pageHeight - margin + 12)
+
+        // Page number on right
+        const pageNum = doc.getNumberOfPages()
+        const pageText = `Page ${pageNum}`
+        const pageTextWidth = doc.getTextWidth(pageText)
+        doc.text(pageText, pageWidth - margin - pageTextWidth, pageHeight - margin + 12)
+
+        // Footer line
+        doc.setDrawColor(229, 231, 235)
+        doc.line(margin, pageHeight - margin, pageWidth - margin, pageHeight - margin)
+      }
+
+      // Add branding to first page
+      addPageBranding()
 
       const cleanText = (text: string): string => {
         let result = text
@@ -207,11 +248,12 @@ export default function ReportDetailPage({
         return result
       }
 
-      const bottomMargin = 72 // 1 inch bottom margin for better spacing
+      const bottomMargin = 72 + footerHeight // Account for footer space
       const addNewPageIfNeeded = (height: number) => {
         if (y + height > pageHeight - bottomMargin) {
           doc.addPage()
-          y = margin
+          addPageBranding()
+          y = margin + headerHeight
           return true
         }
         return false
@@ -370,7 +412,8 @@ export default function ReportDetailPage({
               // Check if row fits, add new page if needed
               if (y + rowHeight > pageHeight - bottomMargin) {
                 doc.addPage()
-                y = margin
+                addPageBranding()
+                y = margin + headerHeight
               }
 
               const rowTop = y
@@ -659,6 +702,7 @@ export default function ReportDetailPage({
       flushBlockquote()
       flushTable()
 
+      const currentYear = new Date().getFullYear()
       const doc = new Document({
         sections: [
           {
@@ -671,6 +715,51 @@ export default function ReportDetailPage({
                   left: 1440,
                 },
               },
+            },
+            headers: {
+              default: new Header({
+                children: [
+                  new Paragraph({
+                    children: [
+                      new TextRun({ text: 'granted', bold: true, size: 22 }),
+                      new TextRun({ text: '.bio', bold: true, size: 22, color: 'E07A5F' }),
+                    ],
+                    border: {
+                      bottom: {
+                        color: 'E5E7EB',
+                        size: 6,
+                        style: BorderStyle.SINGLE,
+                        space: 8,
+                      },
+                    },
+                    spacing: { after: 200 },
+                  }),
+                ],
+              }),
+            },
+            footers: {
+              default: new Footer({
+                children: [
+                  new Paragraph({
+                    children: [
+                      new TextRun({
+                        text: `© ${currentYear} Granted Bio. All rights reserved.`,
+                        size: 16,
+                        color: '9CA3AF',
+                      }),
+                    ],
+                    border: {
+                      top: {
+                        color: 'E5E7EB',
+                        size: 6,
+                        style: BorderStyle.SINGLE,
+                        space: 8,
+                      },
+                    },
+                    alignment: AlignmentType.CENTER,
+                  }),
+                ],
+              }),
             },
             children,
           },
