@@ -911,9 +911,13 @@ export async function searchProjectsKeyword(
   }
 }
 
-// Helper: Search org_name field
+// Helper: Search org_name field (word-start matching)
+// Uses PostgreSQL regex \m for word boundary to avoid matching "molariti" in "osmolarities"
 async function searchOrgName(query: string): Promise<Set<string>> {
   const matchingIds = new Set<string>()
+
+  // Escape special regex characters in the query
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
   try {
     let offset = 0
@@ -921,10 +925,11 @@ async function searchOrgName(query: string): Promise<Set<string>> {
     const maxResults = 5000
 
     while (offset < maxResults) {
+      // Use ~* for case-insensitive regex, \m for word-start boundary
       const { data, error } = await supabaseAdmin
         .from('projects')
         .select('application_id')
-        .ilike('org_name', `%${query}%`)
+        .filter('org_name', '~*', `\\m${escapedQuery}`)
         .range(offset, offset + pageSize - 1)
 
       if (error) {
@@ -944,9 +949,13 @@ async function searchOrgName(query: string): Promise<Set<string>> {
   return matchingIds
 }
 
-// Helper: Search pi_names field
+// Helper: Search pi_names field (word-start matching)
+// Uses PostgreSQL regex \m for word boundary to avoid matching "Smith" in "Blacksmith"
 async function searchPINames(query: string): Promise<Set<string>> {
   const matchingIds = new Set<string>()
+
+  // Escape special regex characters in the query
+  const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
   try {
     let offset = 0
@@ -954,10 +963,11 @@ async function searchPINames(query: string): Promise<Set<string>> {
     const maxResults = 5000
 
     while (offset < maxResults) {
+      // Use ~* for case-insensitive regex, \m for word-start boundary
       const { data, error } = await supabaseAdmin
         .from('projects')
         .select('application_id')
-        .ilike('pi_names', `%${query}%`)
+        .filter('pi_names', '~*', `\\m${escapedQuery}`)
         .range(offset, offset + pageSize - 1)
 
       if (error) {
