@@ -89,7 +89,7 @@ export function UpgradePrompt({ type, tier, limit, onClose }: UpgradePromptProps
             </li>
             <li className="flex items-center gap-3 text-sm">
               <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-              <span className="text-gray-700">PI contact information</span>
+              <span className="text-gray-700">PI names and affiliations</span>
             </li>
           </ul>
 
