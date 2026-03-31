@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, KeyboardEvent } from 'react'
-import { FlaskConical, Activity, Users, Sparkles, Type } from 'lucide-react'
+import { FlaskConical, Activity, Users, Sparkles, Crosshair } from 'lucide-react'
 import type { PersonaType, SearchMode } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
@@ -222,8 +222,8 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                 `}
                 title="Keyword search - finds exact matches for names, IDs, organizations"
               >
-                <Type className={`w-4 h-4 ${searchMode === 'standard' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'standard' ? 2 : 1.5} />
-                <span className={searchMode === 'standard' ? 'font-medium' : ''}>Standard</span>
+                <Crosshair className={`w-4 h-4 ${searchMode === 'standard' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'standard' ? 2 : 1.5} />
+                <span className={searchMode === 'standard' ? 'font-medium' : ''}>Exact</span>
               </button>
             </div>
           </div>
