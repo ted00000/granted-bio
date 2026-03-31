@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useRef, KeyboardEvent } from 'react'
-import { FlaskConical, Activity, Users } from 'lucide-react'
-import type { PersonaType } from '@/lib/chat/types'
+import { FlaskConical, Activity, Users, Sparkles, Type } from 'lucide-react'
+import type { PersonaType, SearchMode } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
-  onSelectPersona: (persona: PersonaType, initialQuery?: string) => void
+  onSelectPersona: (persona: PersonaType, initialQuery?: string, searchMode?: SearchMode) => void
   userName?: string | null
   initialLens?: PersonaType
   needsName?: boolean
@@ -62,6 +62,7 @@ const SEARCH_TIPS: Record<PersonaType, {
 
 export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsName, onNameSubmit }: WelcomeScreenProps) {
   const [selectedLens, setSelectedLens] = useState<PersonaType>(initialLens || 'researcher')
+  const [searchMode, setSearchMode] = useState<SearchMode>('smart')
   const [searchInput, setSearchInput] = useState('')
   const [nameInput, setNameInput] = useState('')
   const [savingName, setSavingName] = useState(false)
@@ -70,7 +71,7 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (searchInput.trim()) {
-      onSelectPersona(selectedLens, searchInput.trim())
+      onSelectPersona(selectedLens, searchInput.trim(), searchMode)
     }
   }
 
@@ -168,8 +169,9 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
             </div>
           </form>
 
-          {/* Lens Bar */}
-          <div className="flex justify-center mb-6">
+          {/* Lens Bar and Search Mode Toggle */}
+          <div className="flex justify-center items-center gap-3 mb-6">
+            {/* Persona Pills */}
             <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full">
               {LENS_CONFIG.map(lens => {
                 const isSelected = selectedLens === lens.id
@@ -191,6 +193,38 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                   </button>
                 )
               })}
+            </div>
+
+            {/* Search Mode Toggle */}
+            <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full">
+              <button
+                onClick={() => setSearchMode('smart')}
+                className={`
+                  flex items-center gap-1.5 px-3 py-2 text-sm rounded-full transition-all
+                  ${searchMode === 'smart'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-500 hover:text-gray-700'
+                  }
+                `}
+                title="Semantic search - finds conceptually related results"
+              >
+                <Sparkles className={`w-4 h-4 ${searchMode === 'smart' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'smart' ? 2 : 1.5} />
+                <span className={searchMode === 'smart' ? 'font-medium' : ''}>Smart</span>
+              </button>
+              <button
+                onClick={() => setSearchMode('standard')}
+                className={`
+                  flex items-center gap-1.5 px-3 py-2 text-sm rounded-full transition-all
+                  ${searchMode === 'standard'
+                    ? 'bg-white text-gray-900 shadow-sm'
+                    : 'text-gray-500 hover:text-gray-700'
+                  }
+                `}
+                title="Keyword search - finds exact matches for names, IDs, organizations"
+              >
+                <Type className={`w-4 h-4 ${searchMode === 'standard' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'standard' ? 2 : 1.5} />
+                <span className={searchMode === 'standard' ? 'font-medium' : ''}>Standard</span>
+              </button>
             </div>
           </div>
 

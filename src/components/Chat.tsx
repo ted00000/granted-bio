@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { Search, TrendingUp, Users, Activity, Bookmark, Download, FlaskConical } from 'lucide-react'
-import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult } from '@/lib/chat/types'
+import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult, SearchMode } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
 import { UpgradePrompt } from './billing/UpgradePrompt'
@@ -63,6 +63,7 @@ interface FilterState {
 interface ChatProps {
   persona: PersonaType
   initialQuery?: string
+  searchMode?: SearchMode
 }
 
 // Parse message content to extract choices (bullet points at the end)
@@ -1167,7 +1168,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
   )
 }
 
-export function Chat({ persona, initialQuery }: ChatProps) {
+export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -1622,7 +1623,7 @@ export function Chat({ persona, initialQuery }: ChatProps) {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona })
+        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona, searchMode })
       })
 
       // Handle search limit exceeded

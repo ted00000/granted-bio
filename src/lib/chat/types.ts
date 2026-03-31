@@ -2,6 +2,9 @@
 
 export type PersonaType = 'researcher' | 'bd' | 'investor' | 'trials'
 
+// Search mode: smart (semantic) vs standard (keyword)
+export type SearchMode = 'smart' | 'standard'
+
 // Intent-based selection (maps to personas for prompts)
 export type IntentType = 'research' | 'market' | 'leads' | 'trials'
 

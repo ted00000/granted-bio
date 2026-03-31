@@ -6,7 +6,7 @@ import { Chat } from '@/components/Chat'
 import { AppLayout } from '@/components/AppLayout'
 import { WelcomeScreen } from '@/components/WelcomeScreen'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
-import type { PersonaType } from '@/lib/chat/types'
+import type { PersonaType, SearchMode } from '@/lib/chat/types'
 
 const VALID_PERSONAS: PersonaType[] = ['researcher', 'bd', 'investor', 'trials']
 
@@ -24,6 +24,7 @@ function ChatContent() {
   const lensParam = searchParams.get('lens')
   const piParam = searchParams.get('pi')
   const orgParam = searchParams.get('org')
+  const modeParam = searchParams.get('mode')
 
   // If pi or org param is provided, automatically use 'bd' persona with that as the query
   const hasPeopleSearch = piParam || orgParam
@@ -38,6 +39,7 @@ function ChatContent() {
   const initialLens = VALID_PERSONAS.includes(lensParam as PersonaType)
     ? (lensParam as PersonaType)
     : undefined
+  const searchMode: SearchMode = modeParam === 'standard' ? 'standard' : 'smart'
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -73,11 +75,12 @@ function ChatContent() {
     setNeedsName(false)
   }
 
-  const handlePersonaChange = (persona: PersonaType, initialQuery?: string) => {
+  const handlePersonaChange = (persona: PersonaType, initialQuery?: string, mode?: SearchMode) => {
+    const modeParam = mode && mode !== 'smart' ? `&mode=${mode}` : ''
     if (initialQuery) {
-      router.push(`/chat?persona=${persona}&q=${encodeURIComponent(initialQuery)}`)
+      router.push(`/chat?persona=${persona}&q=${encodeURIComponent(initialQuery)}${modeParam}`)
     } else {
-      router.push(`/chat?persona=${persona}`)
+      router.push(`/chat?persona=${persona}${modeParam}`)
     }
   }
 
@@ -88,7 +91,7 @@ function ChatContent() {
       userName={userName}
     >
       {selectedPersona ? (
-        <Chat persona={selectedPersona} initialQuery={initialQuery} />
+        <Chat persona={selectedPersona} initialQuery={initialQuery} searchMode={searchMode} />
       ) : isLoading ? (
         <div className="h-full flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />

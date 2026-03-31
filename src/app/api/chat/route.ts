@@ -2,7 +2,7 @@ import { NextRequest } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { PERSONA_PROMPTS } from '@/lib/chat/prompts'
 import { AGENT_TOOLS, executeTool } from '@/lib/chat/tools'
-import type { PersonaType, UserAccess } from '@/lib/chat/types'
+import type { PersonaType, UserAccess, SearchMode } from '@/lib/chat/types'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { checkAndIncrementSearch } from '@/lib/billing/usage'
 import { TIER_LIMITS, type BillingTier } from '@/lib/stripe/config'
@@ -30,6 +30,7 @@ function getUserAccessFromTier(tier: BillingTier): UserAccess {
 interface ChatRequestBody {
   messages: Array<{ role: 'user' | 'assistant'; content: string }>
   persona: PersonaType
+  searchMode?: SearchMode
 }
 
 type AnthropicMessage = {
@@ -40,7 +41,7 @@ type AnthropicMessage = {
 export async function POST(request: NextRequest) {
   try {
     const body: ChatRequestBody = await request.json()
-    const { messages, persona } = body
+    const { messages, persona, searchMode = 'smart' } = body
 
     if (!messages || !persona) {
       return new Response(
@@ -79,12 +80,30 @@ export async function POST(request: NextRequest) {
     const userAccess = getUserAccessFromTier(usageCheck.tier)
 
     // Get system prompt for this persona
-    const systemPrompt = PERSONA_PROMPTS[persona]
+    let systemPrompt = PERSONA_PROMPTS[persona]
     if (!systemPrompt) {
       return new Response(
         JSON.stringify({ error: 'Invalid persona' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
+    }
+
+    // Add search mode context to prompt
+    if (searchMode === 'standard') {
+      systemPrompt += `
+
+=== SEARCH MODE: STANDARD (Keyword) ===
+The user has selected STANDARD search mode. This mode uses exact keyword matching and searches across:
+- Project abstracts and terms
+- Organization names (org_name)
+- PI names (pi_names)
+- Project numbers (project_number)
+
+For this mode:
+- Use exact terms the user provides (don't expand with synonyms)
+- Organization names, PI names, and project numbers will be matched directly
+- This is best for finding specific people, companies, or projects by name/ID
+- Your keyword_query should match the user's input closely`
     }
 
     // Build conversation history
@@ -237,7 +256,7 @@ export async function POST(request: NextRequest) {
             const toolResultsRaw = await Promise.all(
               toolUseBlocks.map(async (block) => {
                 try {
-                  const result = await executeTool(block.name, block.input, userAccess)
+                  const result = await executeTool(block.name, block.input, userAccess, searchMode)
                   return { block, result, error: null }
                 } catch (error) {
                   console.error(`Tool ${block.name} error:`, error)

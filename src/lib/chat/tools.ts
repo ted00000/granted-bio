@@ -674,6 +674,336 @@ export async function keywordSearch(
   }
 }
 
+// Extended keyword search for "Standard" mode
+// Searches: abstracts, terms, org_name, pi_names, project_number
+// This is the search function used when user selects "Standard" mode
+export async function searchProjectsKeyword(
+  params: HybridSearchParams,
+  userAccess: UserAccess
+): Promise<KeywordSearchResult> {
+  const { keyword_query, filters, limit = 100 } = params
+  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+
+  try {
+    // Split query into words for matching
+    const queryLower = keyword_query.toLowerCase().trim()
+    const words = queryLower.split(/\s+/).filter(w => w.length > 0)
+
+    if (words.length === 0) {
+      return {
+        summary: 'Found 0 projects.',
+        search_query: keyword_query,
+        keyword_query,
+        semantic_query: '',
+        total_count: 0,
+        showing_count: 0,
+        by_category: {},
+        by_org_type: {},
+        all_results: [],
+        sample_results: []
+      }
+    }
+
+    // Search across multiple fields in parallel
+    // For exact matches (org_name, pi_names, project_number), use the full query
+    // For abstracts/terms, use word-by-word AND logic
+    const [
+      abstractMatches,
+      orgNameMatches,
+      piNameMatches,
+      projectNumberMatches
+    ] = await Promise.all([
+      // Abstract search (existing logic - word-by-word AND)
+      getKeywordMatchingIds(keyword_query),
+      // Org name search (exact phrase match)
+      searchOrgName(queryLower),
+      // PI name search (exact phrase match)
+      searchPINames(queryLower),
+      // Project number search (exact match)
+      searchProjectNumber(queryLower)
+    ])
+
+    // Combine all matches (OR logic across fields)
+    const allMatchingIds = new Set<string>()
+    abstractMatches.forEach(id => allMatchingIds.add(id))
+    orgNameMatches.forEach(id => allMatchingIds.add(id))
+    piNameMatches.forEach(id => allMatchingIds.add(id))
+    projectNumberMatches.forEach(id => allMatchingIds.add(id))
+
+    const matchingIdsArray = [...allMatchingIds]
+
+    if (matchingIdsArray.length === 0) {
+      return {
+        summary: 'Found 0 projects.',
+        search_query: keyword_query,
+        keyword_query,
+        semantic_query: '',
+        total_count: 0,
+        showing_count: 0,
+        by_category: {},
+        by_org_type: {},
+        all_results: [],
+        sample_results: []
+      }
+    }
+
+    // Fetch project details
+    const allProjects = await fetchProjectsByIds(matchingIdsArray)
+
+    // Apply filters
+    let filteredProjects = allProjects
+    if (filters?.primary_category?.length) {
+      filteredProjects = filteredProjects.filter(p => p.primary_category && filters.primary_category!.includes(p.primary_category))
+    }
+    if (filters?.org_type?.length) {
+      filteredProjects = filteredProjects.filter(p => p.org_type && filters.org_type!.includes(p.org_type))
+    }
+    if (filters?.state?.length) {
+      filteredProjects = filteredProjects.filter(p => p.org_state && filters.state!.includes(p.org_state))
+    }
+    if (filters?.min_funding) {
+      filteredProjects = filteredProjects.filter(p => (p.total_cost || 0) >= filters.min_funding!)
+    }
+    if (filters?.has_patents) {
+      filteredProjects = filteredProjects.filter(p => (p.patent_count || 0) > 0)
+    }
+    if (filters?.has_publications) {
+      filteredProjects = filteredProjects.filter(p => (p.publication_count || 0) > 0)
+    }
+    if (filters?.has_clinical_trials) {
+      filteredProjects = filteredProjects.filter(p => (p.clinical_trial_count || 0) > 0)
+    }
+
+    // Deduplicate by core project number
+    const seenProjects = new Map<string, typeof filteredProjects[0]>()
+    for (const project of filteredProjects) {
+      const key = getProjectDedupeKey(project)
+      const existing = seenProjects.get(key)
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(key, project)
+      }
+    }
+    const dedupedProjects = [...seenProjects.values()]
+
+    // Sort by total_cost descending
+    dedupedProjects.sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
+
+    const totalBeforeCap = dedupedProjects.length
+
+    // Aggregate by category and org_type
+    const byCategory: Record<string, number> = {}
+    const byOrgType: Record<string, number> = {}
+
+    dedupedProjects.forEach(p => {
+      const cat = p.primary_category || 'other'
+      const org = p.org_type || 'other'
+      byCategory[cat] = (byCategory[cat] || 0) + 1
+      byOrgType[org] = (byOrgType[org] || 0) + 1
+    })
+
+    // Get PI emails for all results
+    const allProjectNumbers = dedupedProjects.map(p => p.project_number).filter(Boolean) as string[]
+    let piEmails: Record<string, string> = {}
+
+    if (allProjectNumbers.length > 0 && userAccess.canSeeEmails) {
+      for (let i = 0; i < allProjectNumbers.length; i += 500) {
+        const batch = allProjectNumbers.slice(i, i + 500)
+        const { data: pubLinks } = await supabaseAdmin
+          .from('project_publications')
+          .select('project_number, pmid')
+          .in('project_number', batch)
+
+        if (pubLinks?.length) {
+          const pmids = pubLinks.map(pl => pl.pmid)
+          const { data: pubs } = await supabaseAdmin
+            .from('publications')
+            .select('pmid, pi_email')
+            .in('pmid', pmids)
+            .not('pi_email', 'is', null)
+            .neq('pi_email', '')
+
+          const pmidToEmail: Record<string, string> = {}
+          pubs?.forEach(p => {
+            if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
+          })
+          pubLinks?.forEach(pl => {
+            if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
+              piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+            }
+          })
+        }
+      }
+    }
+
+    // Top 10 for sample
+    const topProjects = dedupedProjects.slice(0, 10)
+    const sampleResults = topProjects.map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      secondary_category: p.secondary_category,
+      primary_category_confidence: p.primary_category_confidence,
+      total_cost: p.total_cost,
+      fiscal_year: p.fiscal_year,
+      pi_names: p.pi_names,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      program_officer: p.program_officer || null,
+      activity_code: p.activity_code || null,
+      project_end: p.project_end || null,
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
+    }))
+
+    // All results
+    const allResults = dedupedProjects.map(p => ({
+      application_id: p.application_id,
+      title: p.title,
+      org_name: p.org_name,
+      org_state: p.org_state,
+      org_type: p.org_type,
+      primary_category: p.primary_category,
+      secondary_category: p.secondary_category,
+      primary_category_confidence: p.primary_category_confidence,
+      total_cost: p.total_cost,
+      fiscal_year: p.fiscal_year,
+      pi_names: p.pi_names,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      program_officer: p.program_officer || null,
+      activity_code: p.activity_code || null,
+      project_end: p.project_end || null,
+      patent_count: p.patent_count || 0,
+      publication_count: p.publication_count || 0,
+      clinical_trial_count: p.clinical_trial_count || 0
+    }))
+
+    // Generate summary
+    const categoryBreakdown = Object.entries(byCategory)
+      .sort(([, a], [, b]) => b - a)
+      .map(([cat, count]) => `${cat}: ${count}`)
+      .join(', ')
+
+    const orgTypeBreakdown = Object.entries(byOrgType)
+      .sort(([, a], [, b]) => b - a)
+      .map(([org, count]) => `${org}: ${count}`)
+      .join(', ')
+
+    const summary = `Found ${totalBeforeCap} projects. By category: ${categoryBreakdown}. By org_type: ${orgTypeBreakdown}.`
+
+    return {
+      summary,
+      search_query: keyword_query,
+      keyword_query,
+      semantic_query: '',
+      total_count: totalBeforeCap,
+      showing_count: Math.min(totalBeforeCap, 100),
+      by_category: byCategory,
+      by_org_type: byOrgType,
+      all_results: allResults,
+      sample_results: sampleResults
+    }
+  } catch (error) {
+    console.error('Standard keyword search error:', error)
+    throw error
+  }
+}
+
+// Helper: Search org_name field
+async function searchOrgName(query: string): Promise<Set<string>> {
+  const matchingIds = new Set<string>()
+
+  try {
+    let offset = 0
+    const pageSize = 1000
+    const maxResults = 5000
+
+    while (offset < maxResults) {
+      const { data, error } = await supabaseAdmin
+        .from('projects')
+        .select('application_id')
+        .ilike('org_name', `%${query}%`)
+        .range(offset, offset + pageSize - 1)
+
+      if (error) {
+        if (error.code === '57014') break // Timeout
+        throw error
+      }
+      if (!data || data.length === 0) break
+
+      data.forEach(p => matchingIds.add(p.application_id))
+      if (data.length < pageSize) break
+      offset += pageSize
+    }
+  } catch (error) {
+    console.log(`Org name search failed for "${query}":`, error)
+  }
+
+  return matchingIds
+}
+
+// Helper: Search pi_names field
+async function searchPINames(query: string): Promise<Set<string>> {
+  const matchingIds = new Set<string>()
+
+  try {
+    let offset = 0
+    const pageSize = 1000
+    const maxResults = 5000
+
+    while (offset < maxResults) {
+      const { data, error } = await supabaseAdmin
+        .from('projects')
+        .select('application_id')
+        .ilike('pi_names', `%${query}%`)
+        .range(offset, offset + pageSize - 1)
+
+      if (error) {
+        if (error.code === '57014') break // Timeout
+        throw error
+      }
+      if (!data || data.length === 0) break
+
+      data.forEach(p => matchingIds.add(p.application_id))
+      if (data.length < pageSize) break
+      offset += pageSize
+    }
+  } catch (error) {
+    console.log(`PI names search failed for "${query}":`, error)
+  }
+
+  return matchingIds
+}
+
+// Helper: Search project_number field (exact or partial match)
+async function searchProjectNumber(query: string): Promise<Set<string>> {
+  const matchingIds = new Set<string>()
+
+  // Clean up query - remove common prefixes/suffixes for project number matching
+  const cleanQuery = query.toUpperCase().trim()
+
+  try {
+    const { data, error } = await supabaseAdmin
+      .from('projects')
+      .select('application_id')
+      .ilike('project_number', `%${cleanQuery}%`)
+      .limit(1000)
+
+    if (error) {
+      console.log(`Project number search failed for "${query}":`, error)
+      return matchingIds
+    }
+
+    data?.forEach(p => matchingIds.add(p.application_id))
+  } catch (error) {
+    console.log(`Project number search failed for "${query}":`, error)
+  }
+
+  return matchingIds
+}
+
 export async function searchProjects(
   params: SearchProjectsParams,
   userAccess: UserAccess
@@ -2017,15 +2347,24 @@ export async function searchTrials(
   }
 }
 
+// Search mode type
+type SearchMode = 'smart' | 'standard'
+
 // Tool execution dispatcher
 export async function executeTool(
   toolName: string,
   args: Record<string, unknown>,
-  userAccess: UserAccess
+  userAccess: UserAccess,
+  searchMode: SearchMode = 'smart'
 ): Promise<unknown> {
   switch (toolName) {
     case 'search_projects':
-      // Uses semantic-only search with similarity scores for client-side precision filtering
+      // Route to appropriate search based on mode
+      if (searchMode === 'standard') {
+        // Standard mode: keyword search with extended fields (org_name, pi_names, project_number)
+        return searchProjectsKeyword(args as unknown as HybridSearchParams, userAccess)
+      }
+      // Smart mode: semantic search with similarity scores for client-side precision filtering
       return searchProjectsSemantic(args as unknown as HybridSearchParams, userAccess)
     case 'get_company_profile':
       return getCompanyProfile(args as unknown as GetCompanyProfileParams, userAccess)
@@ -2041,8 +2380,15 @@ export async function executeTool(
       return searchTrials(args as unknown as SearchTrialsParams, userAccess)
     // Legacy support for old tool names
     case 'keyword_search':
-      // Redirect to semantic search
+      // Redirect based on search mode
       const keywordArgs = args as unknown as KeywordSearchParams
+      if (searchMode === 'standard') {
+        return searchProjectsKeyword({
+          keyword_query: keywordArgs.keyword,
+          semantic_query: keywordArgs.keyword,
+          filters: keywordArgs.filters
+        }, userAccess)
+      }
       return searchProjectsSemantic({
         keyword_query: keywordArgs.keyword,
         semantic_query: keywordArgs.keyword,
