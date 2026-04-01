@@ -4,7 +4,7 @@ import { PERSONA_PROMPTS } from '@/lib/chat/prompts'
 import { AGENT_TOOLS, executeTool } from '@/lib/chat/tools'
 import type { PersonaType, UserAccess, SearchMode } from '@/lib/chat/types'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { checkAndIncrementSearch } from '@/lib/billing/usage'
+import { checkAndIncrementSearch, logApiUsage } from '@/lib/billing/usage'
 import { TIER_LIMITS, type BillingTier } from '@/lib/stripe/config'
 
 export const runtime = 'nodejs'
@@ -113,8 +113,16 @@ For this mode:
     }))
 
     const encoder = new TextEncoder()
+    const userId = user.id  // Capture for usage logging
+
     const stream = new ReadableStream({
       async start(controller) {
+        // Accumulate token usage across all iterations
+        let totalInputTokens = 0
+        let totalOutputTokens = 0
+        let totalCacheReadTokens = 0
+        let totalCacheWriteTokens = 0
+
         try {
           const maxToolIterations = 5
           let iteration = 0
@@ -175,6 +183,12 @@ For this mode:
               cache_write: cacheWrite,
               cost_estimate: `$${totalCost.toFixed(4)}`
             })
+
+            // Accumulate tokens for usage tracking
+            totalInputTokens += uncachedInput
+            totalOutputTokens += usage.output_tokens
+            totalCacheReadTokens += cacheRead
+            totalCacheWriteTokens += cacheWrite
 
             // Extract text and tool use from response
             let responseText = ''
@@ -321,6 +335,17 @@ For this mode:
               content: toolResults
             })
           }
+
+          // Log API usage for billing (async, don't await)
+          logApiUsage({
+            userId,
+            endpoint: 'chat',
+            persona,
+            inputTokens: totalInputTokens,
+            outputTokens: totalOutputTokens,
+            cacheReadTokens: totalCacheReadTokens,
+            cacheWriteTokens: totalCacheWriteTokens,
+          }).catch(err => console.error('[Chat API] Usage logging failed:', err))
 
           controller.enqueue(encoder.encode('data: [DONE]\n\n'))
           controller.close()

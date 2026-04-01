@@ -256,3 +256,109 @@ export async function linkReportToPurchase(
     throw new Error(`Failed to link report: ${error.message}`)
   }
 }
+
+// ============================================
+// API Usage Tracking (for associate billing)
+// ============================================
+
+export interface ApiUsageParams {
+  userId: string
+  endpoint: 'chat' | 'report'
+  persona?: string
+  inputTokens: number
+  outputTokens: number
+  cacheReadTokens?: number
+  cacheWriteTokens?: number
+}
+
+// Anthropic pricing (per million tokens) - Sonnet 4
+const PRICING = {
+  input: 3,        // $3/M input tokens
+  output: 15,      // $15/M output tokens
+  cacheRead: 0.3,  // $0.30/M (10% of input)
+  cacheWrite: 3.75 // $3.75/M (125% of input)
+}
+
+/**
+ * Calculate cost in cents from token counts
+ */
+export function calculateCostCents(
+  inputTokens: number,
+  outputTokens: number,
+  cacheReadTokens = 0,
+  cacheWriteTokens = 0
+): number {
+  const inputCost = (inputTokens * PRICING.input) / 1_000_000
+  const outputCost = (outputTokens * PRICING.output) / 1_000_000
+  const cacheReadCost = (cacheReadTokens * PRICING.cacheRead) / 1_000_000
+  const cacheWriteCost = (cacheWriteTokens * PRICING.cacheWrite) / 1_000_000
+
+  // Convert dollars to cents
+  return (inputCost + outputCost + cacheReadCost + cacheWriteCost) * 100
+}
+
+/**
+ * Log API usage for a user (for associate billing)
+ */
+export async function logApiUsage(params: ApiUsageParams): Promise<void> {
+  const costCents = calculateCostCents(
+    params.inputTokens,
+    params.outputTokens,
+    params.cacheReadTokens || 0,
+    params.cacheWriteTokens || 0
+  )
+
+  const { error } = await supabaseAdmin
+    .from('api_usage')
+    .insert({
+      user_id: params.userId,
+      endpoint: params.endpoint,
+      persona: params.persona || null,
+      input_tokens: params.inputTokens,
+      output_tokens: params.outputTokens,
+      cache_read_tokens: params.cacheReadTokens || 0,
+      cache_write_tokens: params.cacheWriteTokens || 0,
+      cost_cents: costCents,
+    })
+
+  if (error) {
+    // Log but don't throw - usage tracking shouldn't break the API
+    console.error('[API Usage] Failed to log usage:', error.message)
+  }
+}
+
+/**
+ * Get user's API usage summary for the current month
+ */
+export async function getMonthlyApiUsage(userId: string): Promise<{
+  totalCostCents: number
+  totalInputTokens: number
+  totalOutputTokens: number
+  callCount: number
+}> {
+  const startOfMonth = new Date()
+  startOfMonth.setDate(1)
+  startOfMonth.setHours(0, 0, 0, 0)
+
+  const { data, error } = await supabaseAdmin
+    .from('api_usage')
+    .select('cost_cents, input_tokens, output_tokens')
+    .eq('user_id', userId)
+    .gte('created_at', startOfMonth.toISOString())
+
+  if (error || !data) {
+    return {
+      totalCostCents: 0,
+      totalInputTokens: 0,
+      totalOutputTokens: 0,
+      callCount: 0,
+    }
+  }
+
+  return {
+    totalCostCents: data.reduce((sum, row) => sum + Number(row.cost_cents), 0),
+    totalInputTokens: data.reduce((sum, row) => sum + row.input_tokens, 0),
+    totalOutputTokens: data.reduce((sum, row) => sum + row.output_tokens, 0),
+    callCount: data.length,
+  }
+}
