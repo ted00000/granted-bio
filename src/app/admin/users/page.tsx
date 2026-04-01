@@ -6,13 +6,23 @@ import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 interface UserProfile {
   id: string
   email: string
+  full_name: string | null
   role: string
   created_at: string
   updated_at: string
 }
 
+interface UserUsage {
+  userId: string
+  totalCostCents: number
+  totalInputTokens: number
+  totalOutputTokens: number
+  callCount: number
+}
+
 export default function UsersPage() {
   const [users, setUsers] = useState<UserProfile[]>([])
+  const [usage, setUsage] = useState<Record<string, UserUsage>>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [updating, setUpdating] = useState<string | null>(null)
@@ -21,13 +31,14 @@ export default function UsersPage() {
 
   useEffect(() => {
     loadUsers()
+    loadUsage()
   }, [])
 
   const loadUsers = async () => {
     setLoading(true)
     const { data, error } = await supabase
       .from('user_profiles')
-      .select('*')
+      .select('id, email, full_name, role, created_at, updated_at')
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -36,6 +47,22 @@ export default function UsersPage() {
       setUsers(data || [])
     }
     setLoading(false)
+  }
+
+  const loadUsage = async () => {
+    try {
+      const response = await fetch('/api/admin/usage?period=month')
+      if (response.ok) {
+        const data = await response.json()
+        const usageMap: Record<string, UserUsage> = {}
+        for (const total of data.totals) {
+          usageMap[total.userId] = total
+        }
+        setUsage(usageMap)
+      }
+    } catch (err) {
+      console.error('Failed to load usage:', err)
+    }
   }
 
   const updateRole = async (userId: string, newRole: string) => {
@@ -61,6 +88,8 @@ export default function UsersPage() {
     switch (role) {
       case 'admin':
         return 'bg-purple-100 text-purple-800'
+      case 'associate':
+        return 'bg-emerald-100 text-emerald-800'
       case 'user':
         return 'bg-blue-100 text-blue-800'
       default:
@@ -68,17 +97,33 @@ export default function UsersPage() {
     }
   }
 
+  const formatCost = (cents: number) => {
+    return `$${(cents / 100).toFixed(2)}`
+  }
+
+  const formatTokens = (tokens: number) => {
+    if (tokens >= 1_000_000) {
+      return `${(tokens / 1_000_000).toFixed(1)}M`
+    } else if (tokens >= 1_000) {
+      return `${(tokens / 1_000).toFixed(1)}K`
+    }
+    return tokens.toString()
+  }
+
+  // Separate associates for the top section
+  const associates = users.filter(u => u.role === 'associate')
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Manage user accounts and permissions
+            Manage user accounts, roles, and track associate usage
           </p>
         </div>
         <button
-          onClick={loadUsers}
+          onClick={() => { loadUsers(); loadUsage(); }}
           className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
         >
           Refresh
@@ -96,81 +141,185 @@ export default function UsersPage() {
           <div className="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto"></div>
           <p className="mt-4 text-gray-500">Loading users...</p>
         </div>
-      ) : users.length === 0 ? (
-        <div className="bg-white rounded-lg shadow p-8 text-center">
-          <svg
-            className="mx-auto h-12 w-12 text-gray-400"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-            />
-          </svg>
-          <p className="mt-4 text-gray-500">No users found</p>
-        </div>
       ) : (
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  User
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Role
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Joined
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">
-                      {user.email}
-                    </div>
-                    <div className="text-sm text-gray-500">
-                      {user.id.slice(0, 8)}...
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span
-                      className={`px-2 py-1 text-xs font-medium rounded-full ${getRoleColor(
-                        user.role
-                      )}`}
-                    >
-                      {user.role}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {new Date(user.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <select
-                      value={user.role}
-                      onChange={(e) => updateRole(user.id, e.target.value)}
-                      disabled={updating === user.id}
-                      className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                    >
-                      <option value="user">User</option>
-                      <option value="admin">Admin</option>
-                    </select>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <>
+          {/* Associates Section */}
+          {associates.length > 0 && (
+            <div className="bg-white rounded-lg shadow overflow-hidden">
+              <div className="px-6 py-4 border-b border-gray-200 bg-emerald-50">
+                <h2 className="text-lg font-medium text-emerald-800">
+                  Associates ({associates.length})
+                </h2>
+                <p className="text-sm text-emerald-600">
+                  Unlimited access with usage-based billing
+                </p>
+              </div>
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      User
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      This Month
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Tokens
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Joined
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {associates.map((user) => {
+                    const userUsage = usage[user.id]
+                    return (
+                      <tr key={user.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">
+                            {user.full_name || user.email}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {user.email}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-semibold text-gray-900">
+                            {userUsage ? formatCost(userUsage.totalCostCents) : '$0.00'}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {userUsage ? `${userUsage.callCount} calls` : '0 calls'}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {userUsage ? (
+                            <span>
+                              {formatTokens(userUsage.totalInputTokens)} in / {formatTokens(userUsage.totalOutputTokens)} out
+                            </span>
+                          ) : (
+                            '—'
+                          )}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {new Date(user.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <select
+                            value={user.role}
+                            onChange={(e) => updateRole(user.id, e.target.value)}
+                            disabled={updating === user.id}
+                            className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                          >
+                            <option value="user">User</option>
+                            <option value="associate">Associate</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {/* All Users Table */}
+          <div className="bg-white rounded-lg shadow overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h2 className="text-lg font-medium text-gray-900">
+                All Users ({users.length})
+              </h2>
+            </div>
+            {users.length === 0 ? (
+              <div className="p-8 text-center">
+                <svg
+                  className="mx-auto h-12 w-12 text-gray-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                </svg>
+                <p className="mt-4 text-gray-500">No users found</p>
+              </div>
+            ) : (
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      User
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Role
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      API Cost (Month)
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Joined
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {users.map((user) => {
+                    const userUsage = usage[user.id]
+                    return (
+                      <tr key={user.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">
+                            {user.full_name || user.email}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {user.id.slice(0, 8)}...
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded-full ${getRoleColor(
+                              user.role
+                            )}`}
+                          >
+                            {user.role || 'user'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {userUsage ? formatCost(userUsage.totalCostCents) : '—'}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {new Date(user.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <select
+                            value={user.role || 'user'}
+                            onChange={(e) => updateRole(user.id, e.target.value)}
+                            disabled={updating === user.id}
+                            className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                          >
+                            <option value="user">User</option>
+                            <option value="associate">Associate</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            )}
+          </div>
+        </>
       )}
 
       {/* Info Box */}
@@ -194,11 +343,13 @@ export default function UsersPage() {
             <div className="mt-2 text-sm text-blue-700">
               <ul className="list-disc list-inside space-y-1">
                 <li>
-                  <strong>Admin:</strong> Full access to admin dashboard, data
-                  uploads, and user management
+                  <strong>Admin:</strong> Full access to admin dashboard, unlimited API usage
                 </li>
                 <li>
-                  <strong>User:</strong> Access to search and company details only
+                  <strong>Associate:</strong> Unlimited search and reports, usage tracked for billing
+                </li>
+                <li>
+                  <strong>User:</strong> Free tier with limited searches per month
                 </li>
               </ul>
             </div>
