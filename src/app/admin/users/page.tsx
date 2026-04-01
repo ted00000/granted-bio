@@ -349,7 +349,7 @@ export default function UsersPage() {
                   <strong>Associate:</strong> Unlimited search and reports, usage tracked for billing
                 </li>
                 <li>
-                  <strong>User:</strong> Free tier with limited searches per month
+                  <strong>User:</strong> Standard user (Free: 10 searches/mo, Pro: 500 searches/mo)
                 </li>
               </ul>
             </div>
