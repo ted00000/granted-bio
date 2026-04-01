@@ -272,7 +272,7 @@ export default function AccountPage() {
                     >
                       Upgrade to Pro
                     </button>{' '}
-                    for 500/month.
+                    to get up to 500 monthly searches.
                   </p>
                 )}
               </div>
