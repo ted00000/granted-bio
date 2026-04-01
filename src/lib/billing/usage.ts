@@ -28,7 +28,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
   // Get user profile with usage data
   const { data: profile, error } = await supabaseAdmin
     .from('user_profiles')
-    .select('tier, subscription_status, searches_this_month, searches_reset_at')
+    .select('role, tier, subscription_status, searches_this_month, searches_reset_at')
     .eq('id', userId)
     .single()
 
@@ -39,6 +39,16 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
       remaining: 0,
       limit: TIER_LIMITS.free.searchesPerMonth,
       tier: 'free',
+    }
+  }
+
+  // Admin and associate roles have unlimited access
+  if (profile.role === 'admin' || profile.role === 'associate') {
+    return {
+      allowed: true,
+      remaining: Infinity,
+      limit: Infinity,
+      tier: 'pro', // Give them pro features
     }
   }
 
@@ -100,7 +110,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
 export async function getUserUsage(userId: string): Promise<UserUsage> {
   const { data: profile, error } = await supabaseAdmin
     .from('user_profiles')
-    .select('tier, subscription_status, current_period_end, searches_this_month, searches_reset_at')
+    .select('role, tier, subscription_status, current_period_end, searches_this_month, searches_reset_at')
     .eq('id', userId)
     .single()
 
@@ -113,6 +123,20 @@ export async function getUserUsage(userId: string): Promise<UserUsage> {
         remaining: TIER_LIMITS.free.searchesPerMonth,
       },
       subscriptionStatus: null,
+      currentPeriodEnd: null,
+    }
+  }
+
+  // Admin and associate roles have unlimited access
+  if (profile.role === 'admin' || profile.role === 'associate') {
+    return {
+      tier: 'pro',
+      searches: {
+        used: profile.searches_this_month || 0,
+        limit: Infinity,
+        remaining: Infinity,
+      },
+      subscriptionStatus: 'active',
       currentPeriodEnd: null,
     }
   }
