@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Lock, Users, Settings } from 'lucide-react'
+import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Lock, Users, Settings, Shield } from 'lucide-react'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import type { PersonaType } from '@/lib/chat/types'
 
@@ -15,9 +15,26 @@ interface SidebarProps {
 
 export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const supabase = createBrowserSupabaseClient()
+
+  // Check if user is admin
+  useEffect(() => {
+    async function checkAdminRole() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single()
+        setIsAdmin(profile?.role === 'admin')
+      }
+    }
+    checkAdminRole()
+  }, [])
 
   const handleSignOut = async () => {
     await supabase.auth.signOut()
@@ -246,6 +263,26 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
             />
             <span className={`text-sm ${pathname === '/account' ? 'font-medium' : ''}`}>Account</span>
           </Link>
+          {isAdmin && (
+            <Link
+              href="/admin"
+              onClick={() => setIsOpen(false)}
+              className={`
+                w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                transition-all duration-150
+                ${pathname?.startsWith('/admin')
+                  ? 'bg-gray-50 text-gray-900'
+                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                }
+              `}
+            >
+              <Shield
+                className={`w-5 h-5 flex-shrink-0 ${pathname?.startsWith('/admin') ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                strokeWidth={pathname?.startsWith('/admin') ? 2 : 1.5}
+              />
+              <span className={`text-sm ${pathname?.startsWith('/admin') ? 'font-medium' : ''}`}>Admin</span>
+            </Link>
+          )}
           <button
             onClick={handleSignOut}
             className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all"

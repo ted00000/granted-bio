@@ -1740,6 +1740,7 @@ function summarizeCompanyProfile(profile: CompanyProfile) {
     fiscal_years: profile.fiscal_years,
     // Only include top 5 projects summarized
     top_projects: profile.projects.slice(0, 5).map(p => ({
+      application_id: p.application_id,
       title: p.title,
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,

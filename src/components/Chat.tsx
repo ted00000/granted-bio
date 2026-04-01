@@ -1056,7 +1056,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
       patent_count: number
       publication_count: number
       clinical_trial_count: number
-      top_projects: Array<{ title: string; total_cost: number | null; fiscal_year: number | null }>
+      top_projects: Array<{ application_id?: string; title: string; total_cost: number | null; fiscal_year: number | null }>
     }
 
     if (!data) return <div className="flex items-center justify-center h-full text-gray-400 text-sm">Not found</div>
@@ -1088,7 +1088,11 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">Recent Projects</h3>
             <div className="space-y-4">
               {data.top_projects.map((project, idx) => (
-                <div key={idx}>
+                <div
+                  key={idx}
+                  onClick={() => project.application_id && onProjectClick?.(project.application_id)}
+                  className={project.application_id ? 'cursor-pointer hover:bg-gray-50 -mx-2 px-2 py-1 rounded transition-colors' : ''}
+                >
                   <p className="text-sm text-gray-900">{project.title}</p>
                   <div className="flex items-center justify-between mt-1">
                     <span className="text-xs text-gray-400">FY{project.fiscal_year}</span>
