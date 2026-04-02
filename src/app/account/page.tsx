@@ -13,6 +13,7 @@ import {
   Check,
   AlertCircle,
   Loader2,
+  Activity,
 } from 'lucide-react'
 import { MarketingNav } from '@/components/MarketingNav'
 
@@ -26,13 +27,22 @@ type ReportPurchase = {
   report_id: string | null
 }
 
+type ApiUsage = {
+  totalCostCents: number
+  totalInputTokens: number
+  totalOutputTokens: number
+  callCount: number
+}
+
 type UsageData = {
+  role: 'user' | 'admin' | 'associate'
   tier: 'free' | 'pro'
   searchesUsed: number
   searchLimit: number
   subscriptionStatus: 'active' | 'past_due' | 'canceled' | 'trialing' | null
   currentPeriodEnd: string | null
   reportPurchases: ReportPurchase[]
+  apiUsage: ApiUsage | null
 }
 
 export default function AccountPage() {
@@ -136,6 +146,20 @@ export default function AccountPage() {
   )
   const isPro = usage.tier === 'pro'
   const isActive = usage.subscriptionStatus === 'active'
+  const isAssociate = usage.role === 'associate'
+
+  const formatCost = (cents: number) => {
+    return `$${(cents / 100).toFixed(2)}`
+  }
+
+  const formatTokens = (tokens: number) => {
+    if (tokens >= 1_000_000) {
+      return `${(tokens / 1_000_000).toFixed(1)}M`
+    } else if (tokens >= 1_000) {
+      return `${(tokens / 1_000).toFixed(1)}K`
+    }
+    return tokens.toString()
+  }
 
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
@@ -159,16 +183,22 @@ export default function AccountPage() {
                     Current Plan
                   </h2>
                   <div className="flex items-center gap-2">
-                    <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        isPro
-                          ? 'bg-[#E07A5F]/10 text-[#E07A5F]'
-                          : 'bg-gray-100 text-gray-600'
-                      }`}
-                    >
-                      {isPro ? 'Pro Search' : 'Free'}
-                    </span>
-                    {isPro && usage.subscriptionStatus && (
+                    {isAssociate ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                        Associate
+                      </span>
+                    ) : (
+                      <span
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                          isPro
+                            ? 'bg-[#E07A5F]/10 text-[#E07A5F]'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}
+                      >
+                        {isPro ? 'Pro Search' : 'Free'}
+                      </span>
+                    )}
+                    {isPro && usage.subscriptionStatus && !isAssociate && (
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           isActive
@@ -203,7 +233,9 @@ export default function AccountPage() {
                   )}
                 </div>
               </div>
-              {isPro ? (
+              {isAssociate ? (
+                <span className="text-sm text-gray-500">Unlimited access</span>
+              ) : isPro ? (
                 <button
                   onClick={handleManageSubscription}
                   disabled={portalLoading}
@@ -228,56 +260,106 @@ export default function AccountPage() {
             </div>
           </section>
 
-          {/* Search Usage */}
-          <section className="bg-white rounded-2xl border border-gray-200 p-6">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-                <Search className="w-5 h-5 text-blue-600" />
-              </div>
-              <div className="flex-1">
-                <h2 className="text-lg font-semibold text-gray-900 mb-1">
-                  Search Usage
-                </h2>
-                <p className="text-sm text-gray-500 mb-4">This month</p>
-
-                <div className="mb-2">
-                  <div className="flex items-baseline justify-between mb-1">
-                    <span className="text-2xl font-semibold text-gray-900">
-                      {usage.searchesUsed}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      of {usage.searchLimit} searches
-                    </span>
-                  </div>
-                  <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div
-                      className={`h-full rounded-full transition-all ${
-                        usagePercent >= 90
-                          ? 'bg-red-500'
-                          : usagePercent >= 70
-                            ? 'bg-amber-500'
-                            : 'bg-emerald-500'
-                      }`}
-                      style={{ width: `${usagePercent}%` }}
-                    />
-                  </div>
+          {/* API Usage for Associates */}
+          {isAssociate && usage.apiUsage && (
+            <section className="bg-white rounded-2xl border border-gray-200 p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+                  <Activity className="w-5 h-5 text-emerald-600" />
                 </div>
+                <div className="flex-1">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-1">
+                    API Usage
+                  </h2>
+                  <p className="text-sm text-gray-500 mb-4">This month</p>
 
-                {!isPro && usagePercent >= 80 && (
-                  <p className="text-sm text-amber-600 mt-3">
-                    Running low on searches.{' '}
-                    <button
-                      onClick={handleUpgrade}
-                      className="font-medium underline hover:no-underline"
-                    >
-                      Upgrade to Pro
-                    </button>{' '}
-                    to get up to 500 monthly searches.
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-2xl font-semibold text-gray-900">
+                        {formatCost(usage.apiUsage.totalCostCents)}
+                      </div>
+                      <div className="text-sm text-gray-500">Total cost</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-2xl font-semibold text-gray-900">
+                        {usage.apiUsage.callCount}
+                      </div>
+                      <div className="text-sm text-gray-500">API calls</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-2xl font-semibold text-gray-900">
+                        {formatTokens(usage.apiUsage.totalInputTokens)}
+                      </div>
+                      <div className="text-sm text-gray-500">Input tokens</div>
+                    </div>
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="text-2xl font-semibold text-gray-900">
+                        {formatTokens(usage.apiUsage.totalOutputTokens)}
+                      </div>
+                      <div className="text-sm text-gray-500">Output tokens</div>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-gray-400 mt-4">
+                    Usage is tracked for billing purposes. You will receive an invoice at the end of each month.
                   </p>
-                )}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
+
+          {/* Search Usage for regular users */}
+          {!isAssociate && (
+            <section className="bg-white rounded-2xl border border-gray-200 p-6">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+                  <Search className="w-5 h-5 text-blue-600" />
+                </div>
+                <div className="flex-1">
+                  <h2 className="text-lg font-semibold text-gray-900 mb-1">
+                    Search Usage
+                  </h2>
+                  <p className="text-sm text-gray-500 mb-4">This month</p>
+
+                  <div className="mb-2">
+                    <div className="flex items-baseline justify-between mb-1">
+                      <span className="text-2xl font-semibold text-gray-900">
+                        {usage.searchesUsed}
+                      </span>
+                      <span className="text-sm text-gray-500">
+                        of {usage.searchLimit} searches
+                      </span>
+                    </div>
+                    <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all ${
+                          usagePercent >= 90
+                            ? 'bg-red-500'
+                            : usagePercent >= 70
+                              ? 'bg-amber-500'
+                              : 'bg-emerald-500'
+                        }`}
+                        style={{ width: `${usagePercent}%` }}
+                      />
+                    </div>
+                  </div>
+
+                  {!isPro && usagePercent >= 80 && (
+                    <p className="text-sm text-amber-600 mt-3">
+                      Running low on searches.{' '}
+                      <button
+                        onClick={handleUpgrade}
+                        className="font-medium underline hover:no-underline"
+                      >
+                        Upgrade to Pro
+                      </button>{' '}
+                      to get up to 500 monthly searches.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </section>
+          )}
 
           {/* Report History */}
           <section className="bg-white rounded-2xl border border-gray-200 p-6">
@@ -361,8 +443,8 @@ export default function AccountPage() {
             )}
           </section>
 
-          {/* Billing */}
-          {isPro && (
+          {/* Billing - only for Pro subscribers, not associates */}
+          {isPro && !isAssociate && (
             <section className="bg-white rounded-2xl border border-gray-200 p-6">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">

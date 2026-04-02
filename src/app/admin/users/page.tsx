@@ -113,6 +113,12 @@ export default function UsersPage() {
   // Separate associates for the top section
   const associates = users.filter(u => u.role === 'associate')
 
+  // Calculate total monthly cost for associates
+  const totalMonthlyCost = associates.reduce((sum, user) => {
+    const userUsage = usage[user.id]
+    return sum + (userUsage?.totalCostCents || 0)
+  }, 0)
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -122,12 +128,20 @@ export default function UsersPage() {
             Manage user accounts, roles, and track associate usage
           </p>
         </div>
-        <button
-          onClick={() => { loadUsers(); loadUsage(); }}
-          className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-        >
-          Refresh
-        </button>
+        <div className="flex items-center gap-2">
+          <a
+            href="/api/admin/usage?period=month&format=csv"
+            className="px-4 py-2 text-sm font-medium text-white bg-emerald-600 border border-emerald-600 rounded-md hover:bg-emerald-700"
+          >
+            Export CSV
+          </a>
+          <button
+            onClick={() => { loadUsers(); loadUsage(); }}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+          >
+            Refresh
+          </button>
+        </div>
       </div>
 
       {error && (
@@ -146,13 +160,21 @@ export default function UsersPage() {
           {/* Associates Section */}
           {associates.length > 0 && (
             <div className="bg-white rounded-lg shadow overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200 bg-emerald-50">
-                <h2 className="text-lg font-medium text-emerald-800">
-                  Associates ({associates.length})
-                </h2>
-                <p className="text-sm text-emerald-600">
-                  Unlimited access with usage-based billing
-                </p>
+              <div className="px-6 py-4 border-b border-gray-200 bg-emerald-50 flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-medium text-emerald-800">
+                    Associates ({associates.length})
+                  </h2>
+                  <p className="text-sm text-emerald-600">
+                    Unlimited access with usage-based billing
+                  </p>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-semibold text-emerald-800">
+                    {formatCost(totalMonthlyCost)}
+                  </div>
+                  <div className="text-sm text-emerald-600">This month</div>
+                </div>
               </div>
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
