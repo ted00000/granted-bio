@@ -22,6 +22,7 @@ import {
 import { AppLayout } from '@/components/AppLayout'
 import { MarketingNav } from '@/components/MarketingNav'
 import { GenerateReportDialog } from './GenerateReportDialog'
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 
 interface Report {
   id: string
@@ -469,10 +470,25 @@ function ReportsDashboard() {
   const [loading, setLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [showGenerateDialog, setShowGenerateDialog] = useState(false)
+  const [canBypassPayment, setCanBypassPayment] = useState(false)
 
   useEffect(() => {
     fetchReports()
+    checkRole()
   }, [])
+
+  const checkRole = async () => {
+    const supabase = createBrowserSupabaseClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (user) {
+      const { data: profile } = await supabase
+        .from('user_profiles')
+        .select('role')
+        .eq('id', user.id)
+        .single()
+      setCanBypassPayment(profile?.role === 'admin' || profile?.role === 'associate')
+    }
+  }
 
   // Poll for generating reports
   useEffect(() => {
@@ -550,7 +566,7 @@ function ReportsDashboard() {
                 onClick={() => setShowGenerateDialog(true)}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors text-sm"
               >
-                Generate Report - $99
+                {canBypassPayment ? 'Generate Report' : 'Generate Report - $99'}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
