@@ -20,11 +20,11 @@ export function GenerateReportDialog({
   const [step, setStep] = useState<'input' | 'checking' | 'confirm' | 'purchasing' | 'generating'>('input')
   const [projectCount, setProjectCount] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [canBypassPayment, setCanBypassPayment] = useState(false)
 
-  // Check if user is admin
+  // Check if user can bypass payment (admin or associate)
   useEffect(() => {
-    const checkAdmin = async () => {
+    const checkRole = async () => {
       const supabase = createBrowserSupabaseClient()
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
@@ -33,10 +33,11 @@ export function GenerateReportDialog({
           .select('role')
           .eq('id', user.id)
           .single()
-        setIsAdmin(profile?.role === 'admin')
+        // Both admin and associate can bypass payment
+        setCanBypassPayment(profile?.role === 'admin' || profile?.role === 'associate')
       }
     }
-    checkAdmin()
+    checkRole()
   }, [])
 
   const checkTopic = async () => {
@@ -59,7 +60,7 @@ export function GenerateReportDialog({
 
       if (data.project_count < 5) {
         setStep('confirm')
-      } else if (isAdmin) {
+      } else if (canBypassPayment) {
         // Admin bypass - generate directly
         await generateReportDirect(false)
       } else {
@@ -300,7 +301,7 @@ export function GenerateReportDialog({
               >
                 Cancel
               </button>
-              {isAdmin ? (
+              {canBypassPayment ? (
                 <button
                   onClick={checkTopic}
                   disabled={!topic.trim()}
@@ -330,7 +331,7 @@ export function GenerateReportDialog({
               >
                 Cancel
               </button>
-              {isAdmin ? (
+              {canBypassPayment ? (
                 <button
                   onClick={() => generateReportDirect(true)}
                   className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors"
