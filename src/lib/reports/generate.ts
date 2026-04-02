@@ -116,6 +116,7 @@ export async function generateTopicReport(
     console.log(`[Report ${reportId}] Synthesizing report for ${persona} persona...`)
 
     const reportData = await synthesizeReport(topic, agentOutputs, {
+      userId,
       fundingStats,
       topOrganizations: topOrgs,
       topResearchers,

@@ -71,6 +71,7 @@ async function main() {
   const synthesisStart = Date.now()
 
   const reportData = await synthesizeReport(topic, agentOutputs, {
+    userId: 'test-script-user', // Test script - usage tracking will be skipped for non-existent user
     fundingStats,
     topOrganizations: topOrgs,
     topResearchers,

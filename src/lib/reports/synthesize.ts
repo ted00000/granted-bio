@@ -20,13 +20,21 @@ import type {
   CompetitiveTopology,
   IPLandscapeAssessment,
 } from './types'
+import { logApiUsage } from '@/lib/billing/usage'
 
 interface SynthesisContext {
+  userId: string
   fundingStats: FundingStats
   topOrganizations: OrgStats[]
   topResearchers: ResearcherStats[]
   dataLimited?: boolean
   persona?: ReportPersona
+}
+
+// Track cumulative token usage across all synthesis API calls
+interface UsageTracker {
+  inputTokens: number
+  outputTokens: number
 }
 
 interface SectionInsights {
@@ -47,16 +55,19 @@ export async function synthesizeReport(
   const persona = context.persona || 'researcher'
   console.log(`[Synthesis Agent] Generating ${persona} report for "${topic}"`)
 
+  // Initialize usage tracker for all API calls
+  const usageTracker: UsageTracker = { inputTokens: 0, outputTokens: 0 }
+
   // Generate all LLM content in parallel (first batch)
   const [executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, enhancedMarketContext, fieldMaturity, competitiveTopology, ipLandscape] = await Promise.all([
-    generateExecutiveSummary(topic, agentOutputs, context),
-    generateSectionInsights(topic, agentOutputs, context),
-    generateSignalsAnalysis(topic, agentOutputs, context),
-    generateCuratedPublications(topic, agentOutputs, context),
-    enhanceMarketContext(topic, agentOutputs.market.context, context),
-    generateFieldMaturityAssessment(topic, agentOutputs, context),
-    generateCompetitiveTopology(topic, agentOutputs, context),
-    generateIPLandscapeAssessment(topic, agentOutputs, context),
+    generateExecutiveSummary(topic, agentOutputs, context, usageTracker),
+    generateSectionInsights(topic, agentOutputs, context, usageTracker),
+    generateSignalsAnalysis(topic, agentOutputs, context, usageTracker),
+    generateCuratedPublications(topic, agentOutputs, context, usageTracker),
+    enhanceMarketContext(topic, agentOutputs.market.context, context, usageTracker),
+    generateFieldMaturityAssessment(topic, agentOutputs, context, usageTracker),
+    generateCompetitiveTopology(topic, agentOutputs, context, usageTracker),
+    generateIPLandscapeAssessment(topic, agentOutputs, context, usageTracker),
   ])
 
   // Generate project insights (needs executive summary first for context)
@@ -64,7 +75,8 @@ export async function synthesizeReport(
     topic,
     agentOutputs.projects.items.slice(0, 10),
     executiveSummary,
-    context
+    context,
+    usageTracker
   )
 
   // Replace raw market context with enhanced version
@@ -72,6 +84,16 @@ export async function synthesizeReport(
 
   // Assemble markdown report with persona-aware structure
   const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights)
+
+  // Log cumulative API usage for billing
+  console.log(`[Synthesis Agent] Total API usage: ${usageTracker.inputTokens} input, ${usageTracker.outputTokens} output tokens`)
+  await logApiUsage({
+    userId: context.userId,
+    endpoint: 'report',
+    persona: persona,
+    inputTokens: usageTracker.inputTokens,
+    outputTokens: usageTracker.outputTokens,
+  })
 
   return {
     executiveSummary,
@@ -100,7 +122,8 @@ export async function synthesizeReport(
 async function generateExecutiveSummary(
   topic: string,
   agentOutputs: AllAgentOutputs,
-  context: SynthesisContext
+  context: SynthesisContext,
+  usageTracker: UsageTracker
 ): Promise<string> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
@@ -195,6 +218,10 @@ FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sente
     ],
   })
 
+  // Track usage
+  usageTracker.inputTokens += response.usage.input_tokens
+  usageTracker.outputTokens += response.usage.output_tokens
+
   const textContent = response.content.find((c) => c.type === 'text')
   if (!textContent || textContent.type !== 'text') {
     return 'Executive summary could not be generated.'
@@ -210,7 +237,8 @@ FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sente
 async function generateSectionInsights(
   topic: string,
   agentOutputs: AllAgentOutputs,
-  context: SynthesisContext
+  context: SynthesisContext,
+  usageTracker: UsageTracker
 ): Promise<SectionInsights> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
@@ -333,6 +361,10 @@ Return JSON only, no markdown:
       messages: [{ role: 'user', content: prompt }],
     })
 
+    // Track usage
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+
     const textContent = response.content.find((c) => c.type === 'text')
     if (!textContent || textContent.type !== 'text') {
       return defaultInsights()
@@ -366,7 +398,8 @@ function defaultInsights(): SectionInsights {
 async function generateSignalsAnalysis(
   topic: string,
   agentOutputs: AllAgentOutputs,
-  context: SynthesisContext
+  context: SynthesisContext,
+  usageTracker: UsageTracker
 ): Promise<SignalsAnalysis> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
@@ -487,6 +520,10 @@ Return JSON only:
       messages: [{ role: 'user', content: prompt }],
     })
 
+    // Track usage
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+
     const textContent = response.content.find((c) => c.type === 'text')
     if (!textContent || textContent.type !== 'text') {
       return defaultSignals()
@@ -556,7 +593,8 @@ function defaultSignals(): SignalsAnalysis {
 async function enhanceMarketContext(
   topic: string,
   rawContext: MarketContext,
-  context: SynthesisContext
+  context: SynthesisContext,
+  usageTracker: UsageTracker
 ): Promise<MarketContext> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
@@ -606,6 +644,10 @@ Keep existing key players, market size, and recent developments unchanged.`
       messages: [{ role: 'user', content: prompt }],
     })
 
+    // Track usage
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+
     const textContent = response.content.find((c) => c.type === 'text')
     if (!textContent || textContent.type !== 'text') {
       return rawContext
@@ -640,7 +682,8 @@ Keep existing key players, market size, and recent developments unchanged.`
 async function generateCuratedPublications(
   topic: string,
   agentOutputs: AllAgentOutputs,
-  context: SynthesisContext
+  context: SynthesisContext,
+  usageTracker: UsageTracker
 ): Promise<CuratedPublication[]> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
@@ -700,6 +743,10 @@ Return JSON only (array of 3-5 items):
       messages: [{ role: 'user', content: prompt }],
     })
 
+    // Track usage
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+
     const textContent = response.content.find((c) => c.type === 'text')
     if (!textContent || textContent.type !== 'text') {
       return []
@@ -726,7 +773,8 @@ Return JSON only (array of 3-5 items):
 async function generateFieldMaturityAssessment(
   topic: string,
   agentOutputs: AllAgentOutputs,
-  context: SynthesisContext
+  context: SynthesisContext,
+  usageTracker: UsageTracker
 ): Promise<FieldMaturityAssessment> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
@@ -814,6 +862,10 @@ Return JSON only:
       messages: [{ role: 'user', content: prompt }],
     })
 
+    // Track usage
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+
     const textContent = response.content.find((c) => c.type === 'text')
     if (!textContent || textContent.type !== 'text') {
       return defaultFieldMaturity()
@@ -866,7 +918,8 @@ function defaultFieldMaturity(): FieldMaturityAssessment {
 async function generateCompetitiveTopology(
   topic: string,
   agentOutputs: AllAgentOutputs,
-  context: SynthesisContext
+  context: SynthesisContext,
+  usageTracker: UsageTracker
 ): Promise<CompetitiveTopology> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
@@ -951,6 +1004,10 @@ Return JSON only:
       messages: [{ role: 'user', content: prompt }],
     })
 
+    // Track usage
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+
     const textContent = response.content.find((c) => c.type === 'text')
     if (!textContent || textContent.type !== 'text') {
       return defaultCompetitiveTopology()
@@ -991,7 +1048,8 @@ function defaultCompetitiveTopology(): CompetitiveTopology {
 async function generateIPLandscapeAssessment(
   topic: string,
   agentOutputs: AllAgentOutputs,
-  _context: SynthesisContext
+  _context: SynthesisContext,
+  usageTracker: UsageTracker
 ): Promise<IPLandscapeAssessment> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
@@ -1075,6 +1133,10 @@ Return JSON only:
       messages: [{ role: 'user', content: prompt }],
     })
 
+    // Track usage
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+
     const textContent = response.content.find((c) => c.type === 'text')
     if (!textContent || textContent.type !== 'text') {
       return defaultIPLandscape()
@@ -1121,7 +1183,8 @@ async function generateProjectInsights(
   topic: string,
   projects: ProjectItem[],
   executiveSummary: string,
-  context: SynthesisContext
+  context: SynthesisContext,
+  usageTracker: UsageTracker
 ): Promise<Record<string, string>> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
@@ -1176,6 +1239,10 @@ Return JSON only (object mapping application_id to insight string):
       max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
     })
+
+    // Track usage
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
 
     const textContent = response.content.find((c) => c.type === 'text')
     if (!textContent || textContent.type !== 'text') {
