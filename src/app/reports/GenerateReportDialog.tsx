@@ -97,9 +97,8 @@ export function GenerateReportDialog({
         throw new Error(data.error || 'Failed to generate report')
       }
 
-      // Report generation started, redirect to reports page
-      onGenerated()
-      onClose()
+      // Report generation started - stay on generating step so user sees the message
+      // User will click Close which triggers onGenerated() to refresh the list
     } catch (e) {
       console.error('Error generating report:', e)
       setError(e instanceof Error ? e.message : 'Failed to generate report')
@@ -283,9 +282,9 @@ export function GenerateReportDialog({
                   <Loader2 className="w-4 h-4 text-[#E07A5F] animate-spin" />
                 </div>
               </div>
-              <p className="text-gray-900 font-medium mb-1">Generating Report</p>
-              <p className="text-sm text-gray-500 text-center">
-                Your report is being generated. This may take a few minutes.
+              <p className="text-gray-900 font-medium mb-1">Report Started</p>
+              <p className="text-sm text-gray-500 text-center max-w-xs">
+                Your report is being generated in the background. You can close this dialog and check back in a few minutes.
               </p>
             </div>
           )}
@@ -351,12 +350,24 @@ export function GenerateReportDialog({
             </>
           )}
 
-          {(step === 'purchasing' || step === 'generating') && (
+          {step === 'purchasing' && (
             <button
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
             >
               Cancel
+            </button>
+          )}
+
+          {step === 'generating' && (
+            <button
+              onClick={() => {
+                onGenerated()
+                onClose()
+              }}
+              className="px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors"
+            >
+              Close
             </button>
           )}
         </div>
