@@ -370,72 +370,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             </div>
             <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
-                persona === 'bd' ? (
-                  // People-focused layout: org and PI names are clickable links
-                  <div
-                    key={project.application_id}
-                    className={isMobile
-                      ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100'
-                      : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0 -mx-2 px-2 rounded-lg'}
-                  >
-                    <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-1`}>
-                      {project.org_name ? (
-                        <button
-                          onClick={() => onOrgClick?.(project.org_name!)}
-                          className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words hover:text-[#E07A5F] transition-colors text-left"
-                        >
-                          {project.org_name}
-                        </button>
-                      ) : (
-                        <span className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words">
-                          Unknown Organization
-                        </span>
-                      )}
-                      {project.total_cost && (
-                        <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
-                          {formatCurrency(project.total_cost)}
-                        </span>
-                      )}
-                    </div>
-                    {project.pi_names && (
-                      <button
-                        onClick={() => onResearcherClick?.(project.pi_names!.split(';')[0]?.trim() || '')}
-                        className="text-sm text-gray-700 mt-1 block hover:text-[#E07A5F] transition-colors text-left"
-                      >
-                        {project.pi_names.split(';')[0]?.trim()}
-                      </button>
-                    )}
-                    <button
-                      onClick={() => onProjectClick?.(project.application_id)}
-                      className="text-xs text-gray-500 mt-2 line-clamp-2 text-left hover:text-[#E07A5F] transition-colors"
-                    >
-                      {project.title}
-                    </button>
-                    <div className="flex items-center gap-2 text-xs text-gray-400 mt-2">
-                      {(() => {
-                        const active = isProjectActive(project.project_end)
-                        const color = active === null ? 'bg-gray-300' : active ? 'bg-emerald-400' : 'bg-rose-300'
-                        const label = active === null ? 'Unknown' : active ? 'Active' : 'Inactive'
-                        return (
-                          <span
-                            className={`w-2 h-2 rounded-full flex-shrink-0 ${color}`}
-                            title={label}
-                          />
-                        )
-                      })()}
-                      {project.org_state && <span>{project.org_state}</span>}
-                      {project.primary_category && (
-                        <span className="capitalize">{project.primary_category.replace(/_/g, ' ')}</span>
-                      )}
-                      {project.patent_count > 0 && (
-                        <span>{project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}</span>
-                      )}
-                      {project.publication_count > 0 && (
-                        <span>{project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}</span>
-                      )}
-                    </div>
-                  </div>
-                ) : (
                   <button
                     key={project.application_id}
                     onClick={() => onProjectClick?.(project.application_id)}
@@ -516,7 +450,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       )}
                     </div>
                   </button>
-                )
               ))}
             </div>
           </div>
@@ -657,72 +590,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             </div>
             <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
-                persona === 'bd' ? (
-                  // People-focused layout: org and PI names are clickable links
-                  <div
-                    key={project.application_id}
-                    className={isMobile
-                      ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100'
-                      : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0 -mx-2 px-2 rounded-lg'}
-                  >
-                    <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-1`}>
-                      {project.org_name ? (
-                        <button
-                          onClick={() => onOrgClick?.(project.org_name!)}
-                          className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words hover:text-[#E07A5F] transition-colors text-left"
-                        >
-                          {project.org_name}
-                        </button>
-                      ) : (
-                        <span className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words">
-                          Unknown Organization
-                        </span>
-                      )}
-                      {project.total_cost && (
-                        <span className="text-sm font-semibold text-[#E07A5F] whitespace-nowrap">
-                          {formatCurrency(project.total_cost)}
-                        </span>
-                      )}
-                    </div>
-                    {project.pi_names && (
-                      <button
-                        onClick={() => onResearcherClick?.(project.pi_names!.split(';')[0]?.trim() || '')}
-                        className="text-sm text-gray-700 mt-1 block hover:text-[#E07A5F] transition-colors text-left"
-                      >
-                        {project.pi_names.split(';')[0]?.trim()}
-                      </button>
-                    )}
-                    <button
-                      onClick={() => onProjectClick?.(project.application_id)}
-                      className="text-xs text-gray-500 mt-2 line-clamp-2 text-left hover:text-[#E07A5F] transition-colors"
-                    >
-                      {project.title}
-                    </button>
-                    <div className="flex items-center gap-2 text-xs text-gray-400 mt-2">
-                      {(() => {
-                        const active = isProjectActive(project.project_end)
-                        const color = active === null ? 'bg-gray-300' : active ? 'bg-emerald-400' : 'bg-rose-300'
-                        const label = active === null ? 'Unknown' : active ? 'Active' : 'Inactive'
-                        return (
-                          <span
-                            className={`w-2 h-2 rounded-full flex-shrink-0 ${color}`}
-                            title={label}
-                          />
-                        )
-                      })()}
-                      {project.org_state && <span>{project.org_state}</span>}
-                      {project.primary_category && (
-                        <span className="capitalize">{project.primary_category.replace(/_/g, ' ')}</span>
-                      )}
-                      {project.patent_count > 0 && (
-                        <span>{project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}</span>
-                      )}
-                      {project.publication_count > 0 && (
-                        <span>{project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}</span>
-                      )}
-                    </div>
-                  </div>
-                ) : (
                   <button
                     key={project.application_id}
                     onClick={() => onProjectClick?.(project.application_id)}
@@ -803,7 +670,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       )}
                     </div>
                   </button>
-                )
               ))}
             </div>
           </div>
