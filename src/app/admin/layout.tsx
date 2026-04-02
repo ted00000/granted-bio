@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
+import { AdminSignOut } from './AdminSignOut'
 
 export default async function AdminLayout({
   children,
@@ -54,6 +55,7 @@ export default async function AdminLayout({
                 Users
               </Link>
               <span className="text-sm text-gray-500">{user.email}</span>
+              <AdminSignOut />
             </nav>
           </div>
         </div>
