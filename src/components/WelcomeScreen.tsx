@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, KeyboardEvent } from 'react'
-import { FlaskConical, Activity, Users, Sparkles, Crosshair, User } from 'lucide-react'
+import { FlaskConical, Activity, Users, Sparkles, Crosshair, User, Building2 } from 'lucide-react'
 import type { PersonaType, SearchMode } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
@@ -245,7 +245,10 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                   `}
                   title="Name lookup - search for a specific researcher or organization by name"
                 >
-                  <User className={`w-4 h-4 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
+                  <div className="flex items-center -space-x-1">
+                    <Building2 className={`w-3.5 h-3.5 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
+                    <User className={`w-3.5 h-3.5 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
+                  </div>
                   <span className={searchMode === 'name' ? 'font-medium' : ''}>Name</span>
                 </button>
               )}

@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, TrendingUp, Users, Activity, Bookmark, Download, FlaskConical } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark, Download, FlaskConical, Sparkles, Crosshair, User, Building2 } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult, SearchMode } from '@/lib/chat/types'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
@@ -1143,6 +1143,8 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
   const [initialQueryProcessed, setInitialQueryProcessed] = useState(false)
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
   const [upgradeInfo, setUpgradeInfo] = useState<{ tier: 'free' | 'pro'; limit: number } | null>(null)
+  const [newSearchInput, setNewSearchInput] = useState('')
+  const [newSearchMode, setNewSearchMode] = useState<SearchMode>(searchMode)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -1700,6 +1702,13 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     if (!isLoading) sendMessage(choice, messages)
   }
 
+  const handleNewSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!newSearchInput.trim()) return
+    const modeParam = newSearchMode !== 'smart' ? `&mode=${newSearchMode}` : ''
+    router.push(`/chat?persona=${persona}&q=${encodeURIComponent(newSearchInput.trim())}${modeParam}`)
+  }
+
   const isLastAssistantMessage = (messageId: string) => {
     const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant')
     return lastAssistant?.id === messageId
@@ -2160,6 +2169,84 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                     />
                   )
                 )}
+
+                {/* New Search section */}
+                <div className="pt-6 mt-6 border-t border-gray-200">
+                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">New Search</div>
+                  <form onSubmit={handleNewSearch} className="space-y-3">
+                    <textarea
+                      value={newSearchInput}
+                      onChange={(e) => setNewSearchInput(e.target.value)}
+                      placeholder="Enter a new search..."
+                      rows={2}
+                      className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#E07A5F] focus:border-[#E07A5F] resize-none"
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                          e.preventDefault()
+                          handleNewSearch(e)
+                        }
+                      }}
+                    />
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => setNewSearchMode('smart')}
+                          className={`
+                            flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-full transition-all
+                            ${newSearchMode === 'smart'
+                              ? 'bg-white text-gray-900 shadow-sm border border-gray-200'
+                              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                            }
+                          `}
+                        >
+                          <Sparkles className={`w-3 h-3 ${newSearchMode === 'smart' ? 'text-[#E07A5F]' : ''}`} strokeWidth={newSearchMode === 'smart' ? 2 : 1.5} />
+                          <span className={newSearchMode === 'smart' ? 'font-medium' : ''}>Smart</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setNewSearchMode('standard')}
+                          className={`
+                            flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-full transition-all
+                            ${newSearchMode === 'standard'
+                              ? 'bg-white text-gray-900 shadow-sm border border-gray-200'
+                              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                            }
+                          `}
+                        >
+                          <Crosshair className={`w-3 h-3 ${newSearchMode === 'standard' ? 'text-[#E07A5F]' : ''}`} strokeWidth={newSearchMode === 'standard' ? 2 : 1.5} />
+                          <span className={newSearchMode === 'standard' ? 'font-medium' : ''}>Exact</span>
+                        </button>
+                        {persona === 'bd' && (
+                          <button
+                            type="button"
+                            onClick={() => setNewSearchMode('name')}
+                            className={`
+                              flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-full transition-all
+                              ${newSearchMode === 'name'
+                                ? 'bg-white text-gray-900 shadow-sm border border-gray-200'
+                                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                              }
+                            `}
+                          >
+                            <div className="flex items-center -space-x-1">
+                              <Building2 className={`w-3 h-3 ${newSearchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={newSearchMode === 'name' ? 2 : 1.5} />
+                              <User className={`w-3 h-3 ${newSearchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={newSearchMode === 'name' ? 2 : 1.5} />
+                            </div>
+                            <span className={newSearchMode === 'name' ? 'font-medium' : ''}>Name</span>
+                          </button>
+                        )}
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={!newSearchInput.trim()}
+                        className="px-3 py-1.5 text-xs font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                      >
+                        Search
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
 
