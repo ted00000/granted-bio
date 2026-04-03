@@ -1,0 +1,4850 @@
+%PDF-1.3
+%ºß¬à
+3 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 4 0 R
+>>
+endobj
+4 0 obj
+<<
+/Length 4582
+>>
+stream
+0.200025 w
+0 G
+BT
+/F2 16 Tf
+18.3999999999999986 TL
+0.067 0.094 0.153 rg
+54. 738. Td
+(Brain Organoid Electrophysiology Investment Intelligence) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 704. Td
+(Generated: March 28, 2026) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 688. Td
+(Report Type: Investment Intelligence) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 672. Td
+(Data Sources: NIH RePORTER, ClinicalTrials.gov, USPTO, PubMed) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 636. m
+558. 636. l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 602. Td
+(Executive Summary) Tj
+ET
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 558. Td
+(Strategic Executive Summary) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 530. Td
+(Among the projects analyzed, brain organoid electrophysiology presents a credible near-term commercial opportunity in) Tj
+T* (the CNS drug discovery tools market, where demand for human-relevant preclinical models is structurally underserved.) Tj
+T* (The concentration of investment around instrumentation platforms - particularly multielectrode array systems, optical) Tj
+T* (recording tools, and long-term culture interfaces - suggests the market is signaling that hardware infrastructure, not) Tj
+T* (biology alone, will define who captures value as pharmaceutical adoption accelerates.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 460. Td
+(Stanford University emerges as the clear intellectual property anchor in this landscape, holding multiple patents on) Tj
+T* (functionally integrated forebrain spheroid assembly and oligodendrocyte culture systems, positioning it as a likely) Tj
+T* (licensing or spin-out source for platform companies. NeuroNexus and NeuroLux represent the most commercially) Tj
+T* (oriented actors among the projects analyzed, developing purpose-built organoid recording systems rather than adapting) Tj
+T* (existing neuroscience tools - a meaningful product differentiation in a field where most hardware was designed for) Tj
+T* (animal or explant tissue. The white space appears to lie in scalable, standardized recording platforms that can address) Tj
+T* (organoid-to-organoid variability, a technical gap that none of the analyzed projects appears to have solved convincingly,) Tj
+T* (and one that pharmaceutical customers will require before committing to organoid-based screening workflows.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 354. Td
+(The field shows clear acceleration signals rather than maturation: funding is flowing toward enabling technology layers) Tj
+T* (\(recording hardware, optical probes, microfluidic chips\) that typically precede commercial platform consolidation, and the) Tj
+T* (presence of early-stage clinical trials linked to electrophysiology methods suggests translational pathways are beginning) Tj
+T* (to open. The involvement of institutions like the Allen Institute in large-scale recording tool development further indicates) Tj
+T* (that foundational infrastructure is being built with broad dissemination intent, which historically compresses the timeline) Tj
+T* (to commercial adoption by reducing researcher friction.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 272. Td
+(The most significant risk an investor should monitor is the maturation ceiling problem - brain organoids currently) Tj
+T* (recapitulate fetal rather than adult brain states, which limits their utility for late-onset neurological diseases representing) Tj
+T* (the largest drug market opportunity. Investors should prioritize companies that pair electrophysiology platforms with) Tj
+T* (biological solutions to this maturation gap, as that combination likely defines the next defensible moat in the space.) Tj
+T* (Conversely, the near-term opportunity in epilepsy and neurodevelopmental disorder modeling appears commercially) Tj
+T* (viable today, and platform companies that establish early pharma partnerships in these indications may generate enough) Tj
+T* (revenue and data to finance the longer maturation problem.) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 170. m
+558. 170. l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 136. Td
+(Field Maturity Assessment) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 108. Td
+(Technology Readiness: Early-Mid Research \(TRL 2-4\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 86. Td
+(Overall Assessment: Emerging - Proof of concept stage) Tj
+ET
+endstream
+endobj
+5 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 6 0 R
+>>
+endobj
+6 0 obj
+<<
+/Length 6498
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 738. Td
+(Based on the linked publications, funding patterns, and trial data, brain organoid electrophysiology appears to be an) Tj
+T* (actively emerging but still fundamentally research-stage field. The combination of high NIH investment \($100.3M across) Tj
+T* (125 projects\) concentrated in basic research, a 41% preprint ratio, and only 3 trials with no phase classification suggests) Tj
+T* (the field is generating significant scientific momentum but has not yet transitioned toward clinical or commercial) Tj
+T* (validation. For someone entering this space, this pattern indicates meaningful opportunity for foundational contribution,) Tj
+T* (but also suggests that translational milestones and standardized methodologies are likely still being established.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 648. Td
+(Supporting Evidence) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 622. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 622. Td
+(Publication Maturity: A 41% preprint ratio is notably elevated and suggests the field is publishing faster than peer) Tj
+T* (review cycles can absorb, which is characteristic of a rapidly moving but not yet consolidated research area.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 595. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 595. Td
+(Clinical Progression: With only 3 trials all classified as N/A phase and no early-, mid-, or late-stage trials present, the) Tj
+T* (clinical translation pipeline appears largely absent, reinforcing that the field remains primarily in preclinical and basic) Tj
+T* (research territory.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 556. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 556. Td
+(IP Activity: Zero patents filed in the last two years despite a total of 5 on record may indicate that early IP activity has) Tj
+T* (plateaued and that the technology has not yet reached a stage where commercial actors are aggressively staking out) Tj
+T* (intellectual property positions.) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 491. m
+558. 491. l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 457. Td
+(Competitive Topology) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 429. Td
+(Based on this sample of NIH-funded projects, the competitive topology for brain organoid electrophysiology spans five) Tj
+T* (distinct methodological clusters that compete and partly complement each other: high-density silicon probes \(most) Tj
+T* (mature, with established commercial products\) anchor one end, while iPSC-derived organoid circuit assembly and) Tj
+T* (integrated optoelectronic MEA platforms anchor an emerging frontier. GEVI optical imaging and MEA-based organoid) Tj
+T* (platforms occupy a middle tier, each offering label-dependent or label-independent readouts that could displace or) Tj
+T* (augment electrode-based approaches as organoid tissue complexity increases. The central tension in the field is) Tj
+T* (between scalable electrode hardware optimized for in vivo animal work being adapted for organoids versus purpose-built) Tj
+T* (organoid platforms designed from the ground up for 3D human tissue, with commercial players concentrated in the) Tj
+T* (former and academic innovators driving the latter.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 303. Td
+(Methodological Clusters) Tj
+ET
+0.98 0.98 0.98 rg
+54. 287. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 273. m
+558. 273. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 277. Td
+(Approach) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+184. 277. Td
+(Key Players) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+310. 277. Td
+(Maturity) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+436. 277. Td
+(Commercial Readiness) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 259. m
+558. 259. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 263. Td
+(MEA/Electrode-Based) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+184. 263. Td
+(NeuroNexus Technologies,) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 263. Td
+(Emerging) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+436. 263. Td
+(Among the funded projects,) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 245. m
+558. 245. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 249. Td
+(iPSC-Derived Organoid) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+184. 249. Td
+(Stanford University,) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 249. Td
+(Emerging) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+436. 249. Td
+(Based on the sample, this) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 231. m
+558. 231. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 235. Td
+(Genetically Encoded Voltage) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+184. 235. Td
+(Stanford University,) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 235. Td
+(Emerging) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+436. 235. Td
+(Among the funded projects,) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 217. m
+558. 217. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 221. Td
+(High-Density Silicon Probe) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+184. 221. Td
+(Allen Institute, Johns Hopkins) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 221. Td
+(Maturing) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+436. 221. Td
+(This cluster represents the) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 203. m
+558. 203. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 207. Td
+(Integrated Optogenetic-Electr) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+184. 207. Td
+(University of Massachusetts) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 207. Td
+(Emerging) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+436. 207. Td
+(Among the funded projects,) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 159. m
+558. 159. l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 125. Td
+(Investment Signals) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 89. Td
+(Technology Readiness Assessment) Tj
+ET
+endstream
+endobj
+7 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 8 0 R
+>>
+endobj
+8 0 obj
+<<
+/Length 6695
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 738. Td
+(The vast majority of funded projects - estimated at 85-90% based on the NIH sample - sit at TRL 1-4, focused on) Tj
+T* (platform tool development, basic organoid maturation, and fundamental electrophysiological characterization rather than) Tj
+T* (validated therapeutic or diagnostic applications. A small subset, including NeuroNexus Technologies and NeuroLux) Tj
+T* (hardware projects, represent TRL 4-5 efforts with clearer paths toward commercial instrumentation products. Clinical) Tj
+T* (translation pathways remain nascent, with only 3 clinical trials listed and no direct organoid electrophysiology trials) Tj
+T* (evident, suggesting the field is at least 5-10 years from meaningful clinical-stage assets.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 648. Td
+(Commercial Readiness) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 622. Td
+(The field is primarily pre-commercial, with the most market-ready opportunities concentrated in instrumentation and) Tj
+T* (hardware - specifically MEA systems, silicon probes \(Neuropixels-adjacent\), and optogenetic recording platforms - rather) Tj
+T* (than organoid-derived therapeutics or diagnostics. Critical gaps include organoid maturation standardization,) Tj
+T* (reproducibility across labs, regulatory frameworks for organoid-based drug screening, and long-term electrophysiological) Tj
+T* (stability, all of which appear actively being addressed but not yet solved per the project abstracts. SpikeGadgets LLC) Tj
+T* (receiving $2.4M suggests at least one commercial instrumentation player is already extracting near-term revenue from) Tj
+T* (adjacent electrophysiology tooling, which is the most actionable commercial signal in this dataset.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 520. Td
+(IP Concentration) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 494. Td
+(Among the linked patents in this NIH dataset, Stanford University holds a notable concentration with 4 of 5 total patents,) Tj
+T* (and Dartmouth College holds 1, suggesting IP is highly concentrated in academic institutions rather than commercial) Tj
+T* (entities. This pattern may indicate that foundational platform IP could be licensed from Stanford at significant cost or) Tj
+T* (subject to Bayh-Dole encumbrances, which creates both a risk and an opportunity for spinout formation around) Tj
+T* (Stanford's portfolio. Based on the NIH sample, freedom to operate for new entrants appears relatively open on the) Tj
+T* (hardware instrumentation side, but any organoid disease-modeling platform touching Stanford's electrophysiology) Tj
+T* (methods should trigger a targeted IP audit before investment.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 392. Td
+(Investment Risk Flags) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 366. Td
+(Key Risk: The most critical investor risk is the maturation gap: without reliable, reproducible, postnatal-equivalent) Tj
+T* (organoid electrophysiology, the entire value chain from drug screening to disease modeling remains scientifically) Tj
+T* (unvalidated, and the 2025 funding surge suggests urgency but not yet resolution of this foundational bottleneck.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 320. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 320. Td
+(Scientific/Technical: The core scientific risk is organoid immaturity - current models recapitulate fetal rather than) Tj
+T* (postnatal brain states, limiting disease relevance and signal reproducibility, a challenge explicitly acknowledged) Tj
+T* (across multiple project abstracts including the Columbia and UCLA projects.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 281. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 281. Td
+(Regulatory: No established FDA regulatory pathway exists for organoid-based assays as primary drug screening) Tj
+T* (evidence, and the 3 clinical trials listed as N/A status suggest regulatory translation mechanisms remain undefined,) Tj
+T* (creating significant timeline uncertainty for any diagnostic or therapeutic application.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 242. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 242. Td
+(Competitive/Market: The 2025 funding spike to $71.1M versus $5-17M in adjacent years signals a crowding dynamic) Tj
+T* (where multiple well-funded academic groups are racing to solve the same organoid maturation and recording) Tj
+T* (problems, which may compress the window for a differentiated commercial entry before the field standardizes around) Tj
+T* (a dominant platform.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 191. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 191. Td
+(Execution: The heavy concentration of funding in academic institutions - Allen Institute, Stanford, UC Berkeley) Tj
+T* (collectively absorbing roughly 36% of total funding - means the most advanced technical capabilities may be difficult) Tj
+T* (to recruit out or license, and small commercial players like NeuroNexus and NeuroLux are working with comparatively) Tj
+T* (modest grants under $500K each.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 126. Td
+(Comparable Technologies) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 100. Td
+(The closest commercial comparables are MEA instrumentation companies such as Maxwell Biosystems, Multi Channel) Tj
+T* (Systems, and Axion Biosystems, which have successfully commercialized electrophysiology platforms for simpler 2D) Tj
+T* (neural cultures and are now extending into organoid applications - these companies demonstrate that the) Tj
+T* (instrumentation layer can achieve profitability ahead of biological validation. Cortical Labs and FinalSpark represent a) Tj
+T* (more speculative comparable in the organoid computing space, attracting venture interest but remaining pre-revenue) Tj
+T* (and scientifically controversial, suggesting the market rewards narrative but requires caution on valuation. Historical) Tj
+T* (analogs in organ-on-chip - such as Emulate Bio, which raised over $100M before pivoting under commercial pressure -) Tj
+T* (suggest investors should expect long development timelines, high burn rates, and significant de-risking milestones) Tj
+T* (required before Series B+ rounds become viable in this space.) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. -38. m
+558. -38. l
+S
+endstream
+endobj
+9 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 10 0 R
+>>
+endobj
+10 0 obj
+<<
+/Length 5845
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 738. Td
+(Market Context) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 702. Td
+(Market Overview) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 676. Td
+(Brain organoid electrophysiology is an emerging research field at the intersection of stem cell biology, neuroscience, and) Tj
+T* (bioelectronics. It involves three-dimensional brain organoids - miniaturized, self-organized neural tissue derived from) Tj
+T* (human induced pluripotent stem cells \(iPSCs\) or embryonic stem cells - coupled with electrophysiological recording tools) Tj
+T* (to measure and analyze spontaneous and evoked neural activity. NIH funding patterns suggest strong and sustained) Tj
+T* (public investment in this space, with approximately $100.3M identified across 125 analyzed projects, reinforcing the) Tj
+T* (scientific credibility of the field. The concentration of funded work at institutions such as the Allen Institute, Stanford) Tj
+T* (University, UC Berkeley, Johns Hopkins University, and Boston University appears to correlate with the academic-first) Tj
+T* (trajectory of the technology, where foundational research on neural activity, organoid maturation, and recording) Tj
+T* (methodology is still being established. A landmark moment for the field came with studies demonstrating that brain) Tj
+T* (organoids can generate complex, oscillatory neural activity patterns resembling those observed in developing human) Tj
+T* (brains, including work from the Muotri lab at UC San Diego, which has drawn attention from both academic funders and) Tj
+T* (commercial investors.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 522. Td
+(The primary research category identified in NIH-funded projects is basic research, which aligns with the current state of) Tj
+T* (the broader market. Commercial interest is accelerating - particularly from pharmaceutical and biotech companies) Tj
+T* (seeking better preclinical models for CNS drug development - but the public funding footprint suggests the field has not) Tj
+T* (yet fully transitioned into applied or translational development at scale. The year-over-year funding pattern, with a) Tj
+T* (notable spike to $71.1M in 2025 compared to $16.7M in 2024 and a projected $7.2M in 2026 based on available data,) Tj
+T* (may indicate a concentrated surge in grant activity rather than a steady ramp, though it is worth noting that NIH data) Tj
+T* (captures only publicly funded academic research and does not reflect private industry R&D investment, which may tell a) Tj
+T* (different story.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 416. Td
+(This public investment may indicate a gap between the pace of academic discovery and commercial readiness. The) Tj
+T* (market sits at the convergence of organoid technology, multielectrode array \(MEA\) systems, neural interface hardware,) Tj
+T* (and neurological drug discovery platforms, and while academic institutions are advancing the science, commercial) Tj
+T* (translation faces significant technical hurdles around vascularization, organoid maturation timelines, and inter-organoid) Tj
+T* (variability. Disease modeling applications for epilepsy, schizophrenia, autism spectrum disorder, and Alzheimer's disease) Tj
+T* (represent clear commercial targets, but the heavy weighting of NIH funding toward basic research suggests the bridge) Tj
+T* (between discovery and drug development pipelines remains a key gap - one that represents both a challenge and an) Tj
+T* (opportunity for commercial players positioned to operationalize academic advances.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 310. Td
+(Market Size: The broader brain organoid market was estimated at approximately $170-200 million in 2023, projected to) Tj
+T* (grow at a CAGR of roughly 20-25% through 2030. The electrophysiology-specific segment within this market is a smaller) Tj
+T* (subset, but MEA systems and associated software for organoid applications represent a rapidly growing niche. Exact) Tj
+T* (figures for the organoid electrophysiology sub-segment specifically are not well-defined in public market reports as of) Tj
+T* (early 2025.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 232. Td
+(Key Players) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 206. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 206. Td
+(MaxWell Biosystems - provider of high-density CMOS-based MEA platforms widely used in organoid) Tj
+T* (electrophysiology research) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 179. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 179. Td
+(Multi Channel Systems \(MCS\) - established MEA hardware and software provider with organoid-compatible recording) Tj
+T* (systems) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 152. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 152. Td
+(Axion Biosystems - developer of the Maestro MEA platform with specific applications in 3D neural organoid recording) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 137. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 137. Td
+(CORTICAL LABS - pioneering work in coupling biological neural tissue with computing systems, with relevance to) Tj
+T* (organoid electrophysiology applications) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 110. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 110. Td
+(Ncardia \(formerly Pluriomics\) - focused on iPSC-derived neural models for drug screening with electrophysiological) Tj
+T* (readouts) Tj
+ET
+endstream
+endobj
+11 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 12 0 R
+>>
+endobj
+12 0 obj
+<<
+/Length 5762
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 738. Td
+(Recent Developments) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 712. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 712. Td
+(Cortical Labs published research and attracted commercial interest around 'DishBrain' and related systems) Tj
+T* (demonstrating goal-directed learning in cultured neurons, advancing the concept of organoid-based computation and) Tj
+T* (stimulating broader investment interest in the field \(circa 2022-2023\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 673. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 673. Td
+(Multiple pharmaceutical companies including Roche and AstraZeneca have established or expanded internal) Tj
+T* (programs using brain organoids with electrophysiological readouts as part of CNS drug discovery pipelines, signaling) Tj
+T* (growing industry adoption) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 634. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 634. Td
+(The development of next-generation 3D MEA scaffolds and injectable electrode arrays specifically designed for) Tj
+T* (embedding within organoids has been reported by multiple academic groups, with commercialization efforts underway) Tj
+T* (by hardware startups) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 595. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 595. Td
+(Increased NIH and DARPA funding for organoid-based neural modeling platforms, including programs under the) Tj
+T* (BRAIN Initiative, has supported both academic research and technology transfer opportunities relevant to commercial) Tj
+T* (electrophysiology tools) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 542. Td
+(Competitive Landscape) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 516. Td
+(The competitive landscape is currently fragmented, with competition occurring across several distinct layers. Hardware) Tj
+T* (providers such as Axion Biosystems, MaxWell Biosystems, and Multi Channel Systems compete on electrode density,) Tj
+T* (throughput, ease of use, and software analytics capabilities. Upstream, organoid production companies and iPSC) Tj
+T* (suppliers such as FUJIFILM Cellular Dynamics and Thermo Fisher Scientific compete to provide standardized,) Tj
+T* (reproducible neural organoid starting materials. At the platform integration level, a small number of companies are) Tj
+T* (attempting to offer end-to-end solutions combining organoid culture, electrophysiological recording, and data analytics.) Tj
+T* (The field is highly dependent on academic-industry collaboration, and many of the most innovative technical advances) Tj
+T* (originate in university labs before being licensed or spun out. Barriers to entry remain relatively high due to the technical) Tj
+T* (complexity of both organoid culture and high-quality electrophysiological recording, but the market is attracting new) Tj
+T* (entrants as the underlying science matures and commercial applications in drug discovery become clearer.) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 372. m
+558. 372. l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 338. Td
+(IP Landscape) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 310. Td
+(IP Concentration: Highly Concentrated - Few dominant owners) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 288. Td
+(Dominant Patent Holders: Stanford University, Dartmouth College) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 266. Td
+(Recent Activity: The linked sample shows zero patents filed in the last two years, suggesting either a slowdown in) Tj
+T* (NIH-linked patenting activity in this specific niche or a shift toward commercial or unfunded filings that fall outside this) Tj
+T* (dataset.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 212. Td
+(Freedom to Operate Assessment) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 186. Td
+(Among the NIH-linked patents, Stanford University's forebrain spheroid assembly patents may present FTO concerns for) Tj
+T* (entrants developing functionally integrated organoid platforms, particularly those involving human pluripotent cell-derived) Tj
+T* (neural assembloids. However, this sample reflects only NIH-linked academic patents, and commercial entities such as) Tj
+T* (Axion Biosystems or MaxWell Biosystems may hold additional patents on electrophysiology instrumentation,) Tj
+T* (microelectrode arrays, and recording systems that are not captured here. Any FTO assessment should incorporate a) Tj
+T* (broader search across commercial, international, and non-NIH-funded patent filings before drawing conclusions.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 104. Td
+(The linked patent sample appears heavily concentrated in academic institutions, with Stanford University holding 80% of) Tj
+T* (identified patents focused on organoid assembly and neural culture methods rather than electrophysiology) Tj
+T* (instrumentation specifically. This pattern may suggest that the instrumentation and recording-side of brain organoid) Tj
+T* (electrophysiology is being developed commercially outside the NIH-linked pipeline, leaving a potential gap or opportunity) Tj
+T* (for entrants focused on measurement hardware or signal analysis tools. Commercial developers should treat this sample) Tj
+T* (as a partial signal and conduct comprehensive landscape searches before inferring open space or making product) Tj
+T* (development decisions.) Tj
+ET
+endstream
+endobj
+13 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 14 0 R
+>>
+endobj
+14 0 obj
+<<
+/Length 5474
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 738. Td
+(Patent Summary) Tj
+ET
+0.98 0.98 0.98 rg
+54. 722. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 708. m
+558. 708. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 712. Td
+(Metric) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+310. 712. Td
+(Value) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 694. m
+558. 694. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 698. Td
+(Total Patents) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 698. Td
+(5) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 680. m
+558. 680. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 684. Td
+(Unique Assignees) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 684. Td
+(2) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 666. m
+558. 666. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 670. Td
+(Recent \(2 years\)) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 670. Td
+(0) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 634. Td
+(Key Patents) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 602. Td
+(Assembly of Functionally-Integrated Forebrain Spheroids from Human Pluripotent Cells to Study) Tj
+T* (Development and Disease) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 572. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 572. Td
+(Patent #: 10676715) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 557. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 557. Td
+(Assignee: STANFORD UNIVERSITY) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 538. m
+54. 514. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 536. Td
+(Human pluripotent stem cells are differentiated in vitro into forebrain subdomain structures, which are then fused to) Tj
+T* (generate an integrated system for use in analysis, screening programs, and the lik...) Tj
+ET
+0.5 w
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 494. Td
+(ASSEMBLY OF FUNCTIONALLY INTEGRATED HUMAN FOREBRAIN SPHEROIDS AND METHODS OF USE) Tj
+T* (THEREOF) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 464. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 464. Td
+(Patent #: 11279914) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 449. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 449. Td
+(Assignee: STANFORD UNIVERSITY) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 430. m
+54. 406. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 428. Td
+(Human pluripotent stem cells are differentiated in vitro into forebrain subdomain structures, which are then fused to) Tj
+T* (generate an integrated system for use in analysis, screening programs, and the lik...) Tj
+ET
+0.5 w
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 386. Td
+(PERSONALIZED 3D NEURAL CULTURE SYSTEM FOR GENERATING HUMAN OLIGODENDROCYTES AND) Tj
+T* (STUDYING MYELINATION IN VITRO) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 356. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 356. Td
+(Patent #: 11760974) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 341. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 341. Td
+(Assignee: STANFORD UNIVERSITY) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 322. m
+54. 298. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 320. Td
+(Human pluripotent stem cells are differentiated in vitro into oligodendro-spheroids comprising oligodendrocytes for use in) Tj
+T* (analysis, screening programs, and the like.) Tj
+ET
+0.5 w
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 278. Td
+(ASSEMBLY OF FUNCTIONALLY INTEGRATED HUMAN FOREBRAIN SPHEROIDS AND METHODS OF USE) Tj
+T* (THEREOF) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 248. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 248. Td
+(Patent #: 12173313) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 233. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 233. Td
+(Assignee: STANFORD UNIVERSITY) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 214. m
+54. 190. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 212. Td
+(Human pluripotent stem cells are differentiated in vitro into forebrain subdomain structures, which are then fused to) Tj
+T* (generate an integrated system for use in analysis, screening programs, and the lik...) Tj
+ET
+0.5 w
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 170. Td
+(SYSTEMS AND METHODS FOR MULTIPLEXED AMPLIFIERS FOR BRAIN COMPUTER INTERFACES) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 153. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 153. Td
+(Patent #: 12333073) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 138. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 138. Td
+(Assignee: DARTMOUTH COLLEGE) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 119. m
+54. 95. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 117. Td
+(A brain computer interface for interfacing with a brain of a subject is provided. The brain computer interface includes one or) Tj
+T* (more shanks. Each shank includes an array of pixels and output traces. Ea...) Tj
+ET
+0.5 w
+0.9 0.91 0.92 RG
+0.5 w
+54. 61. m
+558. 61. l
+S
+endstream
+endobj
+15 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 16 0 R
+>>
+endobj
+16 0 obj
+<<
+/Length 7133
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 738. Td
+(NIH Funding Analysis) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 702. Td
+(Funding Summary) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 676. Td
+(*Amounts reflect most recent fiscal year awards per project.*) Tj
+ET
+0.98 0.98 0.98 rg
+54. 664. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 650. m
+558. 650. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 654. Td
+(Metric) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+310. 654. Td
+(Value) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 636. m
+558. 636. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 640. Td
+(Total FY Awards) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 640. Td
+($100.3M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 622. m
+558. 622. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 626. Td
+(Active Projects) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 626. Td
+(125) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 608. m
+558. 608. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 612. Td
+(Funding Organizations) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 612. Td
+(67) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 594. m
+558. 594. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 598. Td
+(Principal Investigators) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 598. Td
+(133) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 562. Td
+(Funding by Year) Tj
+ET
+0.98 0.98 0.98 rg
+54. 546. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 532. m
+558. 532. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 536. Td
+(Year) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+226. 536. Td
+(Projects) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+394. 536. Td
+(Funding) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 518. m
+558. 518. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 522. Td
+(2026) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 522. Td
+(10) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 522. Td
+($7.2M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 504. m
+558. 504. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 508. Td
+(2025) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 508. Td
+(80) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 508. Td
+($71.1M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 490. m
+558. 490. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 494. Td
+(2024) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 494. Td
+(33) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 494. Td
+($16.7M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 476. m
+558. 476. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 480. Td
+(2023) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 480. Td
+(2) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 480. Td
+($5.4M) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 444. Td
+(Top Funding Categories) Tj
+ET
+0.98 0.98 0.98 rg
+54. 428. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 414. m
+558. 414. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 418. Td
+(Category) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+226. 418. Td
+(Projects) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+394. 418. Td
+(Funding) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 400. m
+558. 400. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 404. Td
+(Basic Research) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 404. Td
+(66) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 404. Td
+($42.0M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 386. m
+558. 386. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 390. Td
+(Biotools) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 390. Td
+(36) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 390. Td
+($41.9M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 372. m
+558. 372. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 376. Td
+(Therapeutics) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 376. Td
+(7) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 376. Td
+($7.3M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 358. m
+558. 358. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 362. Td
+(Medical Device) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 362. Td
+(12) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 362. Td
+($6.7M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 344. m
+558. 344. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 348. Td
+(Digital Health) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 348. Td
+(2) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 348. Td
+($1.6M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 300. m
+558. 300. l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 266. Td
+(Key Research Projects) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 230. Td
+(Top Funded Projects) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 204. Td
+(*Note: Funding figures shown are the most recent fiscal year award, not total project cost across all years.*) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 176. Td
+(1. Advanced culture and recording system for long-term electrophysiological profiling in human brain) Tj
+T* (organoids) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 146. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 146. Td
+(PI: KIPKE, DARYL R \(contact\), NEURONEXUS TECHNOLOGIES) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 131. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 131. Td
+(FY Award: $449K \(FY2025\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 116. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 116. Td
+(Category: Biotools) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 95. Td
+(Insight: NeuroNexus is developing a purpose-built electrophysiology system specifically designed for long-term organoid) Tj
+T* (recording, addressing the critical gap between millisecond-scale neural firing and week-scale developmental dynamics) Tj
+T* (that existing tools cannot bridge. This project is strategically noteworthy because it represents a commercial hardware) Tj
+T* (company building organoid-native instrumentation rather than adapting rodent or explant tools, positioning NeuroNexus) Tj
+T* (as a potential platform provider as pharmaceutical adoption of organoid-based screening accelerates. The focus on how) Tj
+T* (molecular and cellular changes translate to functional circuit properties directly addresses the kind of mechanistic) Tj
+T* (readout that drug discovery customers require.) Tj
+ET
+endstream
+endobj
+17 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 18 0 R
+>>
+endobj
+18 0 obj
+<<
+/Length 6891
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+0.88 0.48 0.37 RG
+2. w
+54. 740. m
+54. 705. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 738. Td
+(Human brain organoid systems, cell culture models of human brain development derived from pluripotent stem cells, are) Tj
+T* (important for disease studies and drug testing in human brain cells and circuits. This project will develop a novel) Tj
+T* (electrophysiology system and critical components that, for the f...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 691. Td
+(View Project ->) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 663. Td
+(2. Dissecting neocortical field potential dynamics using optical voltage imaging in genetically targeted) Tj
+T* (cell-types) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 633. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 633. Td
+(PI: SCHNITZER, MARK J, STANFORD UNIVERSITY) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 618. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 618. Td
+(FY Award: $604K \(FY2025\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 603. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 603. Td
+(Category: Basic Research) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 582. Td
+(Insight: This Stanford project applies genetically targeted voltage imaging to decompose field potential signals by cell) Tj
+T* (type, providing a methodological foundation that could significantly improve the interpretability of electrophysiological) Tj
+T* (recordings in organoid systems where population-level signals are currently difficult to attribute to specific neural) Tj
+T* (subtypes. Its strategic relevance to organoid electrophysiology lies in the optical toolkit it is validating - voltage indicators) Tj
+T* (and imaging instrumentation that could be adapted to organoid preparations where electrode-based recordings lack) Tj
+T* (spatial and cell-type resolution. As organoid complexity increases to include multiple cell classes, the ability to dissect) Tj
+T* (contributions of 12 distinct neuron types to field potentials represents a critical analytical capability the field will need.) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 490. m
+54. 455. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 488. Td
+(Recordings of cortical field potentials are widely used in basic and clinical neuroscience and include) Tj
+T* (electroencephalography \(EEG\), electrocorticography \(ECoG\) and local field potential \(LFP\) recordings, which all provide) Tj
+T* (time-varying voltage signals reflecting neural population activity. However, ...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 441. Td
+(View Project ->) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 413. Td
+(3. Neuropixels Opto: Integrated Silicon Probes for Cell-Type-Specific Electrophysiology) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 396. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 396. Td
+(PI: SVOBODA, KAREL, ALLEN INSTITUTE) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 381. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 381. Td
+(FY Award: $2.1M \(FY2025\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 366. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 366. Td
+(Category: Medical Device) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 345. Td
+(Insight: The Allen Institute's Neuropixels Opto project integrates optical stimulation directly into high-density silicon) Tj
+T* (probes, enabling simultaneous cell-type identification and electrophysiological recording at scale - a capability that could) Tj
+T* (eventually be adapted to probe the increasingly complex cellular diversity emerging in brain organoids. Its significance) Tj
+T* (lies in the dissemination model the Allen Institute historically employs: tools developed here tend to be distributed) Tj
+T* (broadly and affordably, which would compress adoption timelines and reduce the instrumentation friction currently) Tj
+T* (slowing organoid electrophysiology workflows. While currently designed for rodent and primate in vivo work, the) Tj
+T* (cell-type-specific recording paradigm this project establishes is directly relevant to interpreting heterogeneous neural) Tj
+T* (populations in organoid systems.) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 241. m
+54. 206. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 239. Td
+(Neurons in the human brain can be categorized into thousands of distinct cell types, each with unique properties, functions,) Tj
+T* (and contributions to disease states. A comprehensive understanding of different cell types requires observing their electrical) Tj
+T* (activity in living brains-however, the current...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 192. Td
+(View Project ->) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 164. Td
+(4. Development and Validation of a Compliant Reversible Actuator and Detector Leveraging) Tj
+T* (Electrophysiology for Organoids \(Organoid-CRADLE\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 134. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 134. Td
+(PI: GOOD, CAMERON, NEUROLUX, INC.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 119. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 119. Td
+(FY Award: $500K \(FY2025\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 104. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 104. Td
+(Category: Biotools) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 83. Td
+(Insight: NeuroLux's Organoid-CRADLE project is developing a compliant, reversible actuator and detector system) Tj
+T* (specifically for neural organoids, directly targeting the measurement and manipulation challenges that make functional) Tj
+T* (characterization of these 3D cultures difficult with conventional rigid electrodes. This project is commercially notable) Tj
+T* (because NeuroLux, like NeuroNexus, is an industry actor building organoid-native hardware rather than repurposing) Tj
+T* (existing neuroscience tools, and the emphasis on reduced tissue injury suggests a design philosophy oriented toward) Tj
+T* (longitudinal recording - a requirement for drug screening workflows that need reproducible, stable baselines. The) Tj
+T* (versatility framing of the abstract suggests the platform may support both electrical recording and stimulation modalities,) Tj
+T* (which would meaningfully differentiate it from single-function competitors.) Tj
+ET
+endstream
+endobj
+19 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 20 0 R
+>>
+endobj
+20 0 obj
+<<
+/Length 6872
+>>
+stream
+0.5 w
+0.88 0.48 0.37 RG
+0.88 0.48 0.37 RG
+2. w
+54. 740. m
+54. 705. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 738. Td
+(Neural organoids are small clusters of human-origin brain cells that can help scientists develop new medicines and) Tj
+T* (understand the brain. Unfortunately, measuring and manipulating their function is difficult. We plan to develop a new tool for) Tj
+T* (this purpose that will be more versatile, more informative...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 691. Td
+(View Project ->) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 663. Td
+(5. Neuropixels NXT: Integrated Silicon Probes for Large Scale Extracellular Recording in Rodents and) Tj
+T* (Primates) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 633. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 633. Td
+(PI: HARRIS, TIMOTHY D, JOHNS HOPKINS UNIVERSITY) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 618. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 618. Td
+(FY Award: $3.1M \(FY2024\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 603. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 603. Td
+(Category: Biotools) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 582. Td
+(Insight: The Neuropixels NXT project at Johns Hopkins is scaling single-unit electrophysiology by 10-50x in freely) Tj
+T* (moving rodents and primates, advancing the foundational recording infrastructure that the broader neuroscience field -) Tj
+T* (including organoid researchers - will draw on as they demand higher-density, higher-fidelity readouts. While not directly) Tj
+T* (focused on organoids, this project is strategically relevant because improvements in probe density, signal quality, and) Tj
+T* (compatibility with complex tissue geometries will inform the next generation of organoid-compatible recording tools, and) Tj
+T* (the engineering advances here often migrate into adjacent applications. The scale of funding at $3.1M reflects the) Tj
+T* (infrastructure-building intent characteristic of tools that define field-wide standards rather than niche applications.) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 490. m
+54. 455. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 488. Td
+(: The understanding of brain disease is profoundly impaired by the very primitive understanding of the brain as a system.) Tj
+T* (The BRAIN Initiative ambition to produce a dynamic picture of the functioning brain by developing and applying improved) Tj
+T* (methods for large-scale monitoring of neural activity was ...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 441. Td
+(View Project ->) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 413. Td
+(6. Assembly and characterization of human cortico-striatal neural networks) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 396. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 396. Td
+(PI: SHCHEGLOVITOV, OLEKSANDR, UTAH STATE HIGHER EDUCATION SYSTEM--UNIVERSITY OF UTAH) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 381. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 381. Td
+(FY Award: $518K \(FY2025\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 366. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 366. Td
+(Category: Basic Research) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 345. Td
+(Insight: The University of Utah project is generating human cortico-striatal organoids from stem cells to model the) Tj
+T* (development of a specific, clinically relevant brain circuit implicated in autism, schizophrenia, epilepsy, and mood) Tj
+T* (disorders - providing a biologically targeted application layer for organoid electrophysiology rather than a) Tj
+T* (general-purpose platform. Its noteworthy aspect is the region-specific assembly approach, which moves beyond) Tj
+T* (homogeneous cortical organoids toward circuit-level models where electrophysiological recordings can be interpreted in) Tj
+T* (the context of known cortico-striatal functional relationships. The explicit link to patient-specific diagnostics and) Tj
+T* (treatments positions this work as a translational bridge that could generate the disease-relevant datasets pharmaceutical) Tj
+T* (partners need to validate organoid-based screening.) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 241. m
+54. 206. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 239. Td
+(Much of human perception and behavior is governed by functioning brain networks. This project will develop a method for) Tj
+T* (generating human cortico-striatal organoids from stem cells and demonstrate that these organoids can be used to model) Tj
+T* (the development of human cortico-striatal networks. The abilit...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 192. Td
+(View Project ->) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 164. Td
+(7. Multi-modal, large-scale characterization of cellular and cell-type-specific effects with electric) Tj
+T* (stimulation in rodent and human brain) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 134. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 134. Td
+(PI: LEE, SOO YEUN  \(contact\), ALLEN INSTITUTE) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 119. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 119. Td
+(FY Award: $494K \(FY2024\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 104. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 104. Td
+(Category: Basic Research) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 83. Td
+(Insight: The Allen Institute's electric stimulation project uses multipatch electrophysiology and high-density Neuropixels) Tj
+T* (recordings to characterize how external stimulation affects single neurons and specific cell types in both rodent and) Tj
+T* (human brain tissue, generating mechanistic data directly applicable to designing stimulation protocols for organoid) Tj
+T* (systems. Its unique contribution to the organoid electrophysiology field is the inclusion of human single-neuron) Tj
+T* (recordings, which provides a comparative reference point for assessing how well organoid electrophysiology) Tj
+T* (recapitulates authentic human neural responses to stimulation - a validation benchmark the field currently lacks. The) Tj
+T* (translational framing around epilepsy, dementia, and Parkinson's disease aligns with the near-term commercial) Tj
+T* (opportunities identified in the broader landscape.) Tj
+ET
+endstream
+endobj
+21 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 22 0 R
+>>
+endobj
+22 0 obj
+<<
+/Length 6864
+>>
+stream
+0.5 w
+0.88 0.48 0.37 RG
+0.88 0.48 0.37 RG
+2. w
+54. 740. m
+54. 705. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 738. Td
+(Our goal is to gain a deeper mechanistic understanding of how external electric brain stimulation impacts the brain at the) Tj
+T* (single-neuron and cell type-specific level. Using a number of techniques such in vitro multipatch electrophysiology and) Tj
+T* (high-density Neuropixels in vivo recordings, this work wi...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 691. Td
+(View Project ->) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 663. Td
+(8. Elucidating the molecular mechanisms behind human neurodevelopmental disorders using brain) Tj
+T* (organoids) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 633. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 633. Td
+(PI: NOVITCH, BENNETT G, UNIVERSITY OF CALIFORNIA LOS ANGELES) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 618. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 618. Td
+(FY Award: $719K \(FY2026\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 603. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 603. Td
+(Category: Basic Research) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 582. Td
+(Insight: The UCLA project has already developed a platform for assembling functional neural circuits in organoids that) Tj
+T* (exhibit oscillatory rhythms - one of the more complex and clinically meaningful electrophysiological signatures - and is) Tj
+T* (now applying this system to investigate mechanisms across a range of neurological disorders and develop therapeutic) Tj
+T* (strategies. This is strategically significant because demonstrating oscillatory network activity in organoids substantially) Tj
+T* (elevates their functional relevance for CNS drug discovery, where rhythm disruption is a central feature of epilepsy,) Tj
+T* (schizophrenia, and autism spectrum disorders. The combination of a working functional circuit platform with a disease) Tj
+T* (mechanism focus positions UCLA as a potential source of validated biological protocols that hardware platform) Tj
+T* (companies could partner with to demonstrate clinical relevance.) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 478. m
+54. 443. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 476. Td
+(Brain organoids are emerging as powerful tools for studying the mechanisms behind human brain development and) Tj
+T* (disease. In our recent studies, we developed a platform for assembling functional neural circuits that exhibit surprisingly) Tj
+T* (complex neural network activities such as oscillatory rhythms. In ...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 429. Td
+(View Project ->) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 401. Td
+(9. Gaining insight into psychiatric disease by engineering piece by piece the human brain in vitro.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 384. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 384. Td
+(PI: PASCA, SERGIU  \(contact\), STANFORD UNIVERSITY) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 369. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 369. Td
+(FY Award: $662K \(FY2024\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 354. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 354. Td
+(Category: Biotools) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 333. Td
+(Insight: Pasca's Stanford project is building next-generation organoid models that incorporate neural projections) Tj
+T* (releasing neuromodulatory molecules, extending organoid functionality to include the dopaminergic, serotonergic, and) Tj
+T* (cholinergic systems that are central to psychiatric disease but absent from most current organoid preparations. This is a) Tj
+T* (high-strategic-value contribution because neuromodulatory tone profoundly shapes the electrophysiological properties of) Tj
+T* (neural circuits, meaning that organoids lacking these inputs produce recordings that may systematically misrepresent) Tj
+T* (disease-relevant activity patterns. Given Stanford's existing IP position in forebrain spheroid assembly, this project likely) Tj
+T* (extends a patent portfolio that already anchors the organoid field, reinforcing Stanford's licensing and spin-out potential.) Tj
+ET
+0.88 0.48 0.37 RG
+2. w
+54. 241. m
+54. 206. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 239. Td
+(The slow pace of progress in understanding brain disorders is partly due to a lack of access to live neurons from patients for) Tj
+T* (detailed investigation by imaging, recording, and stimulation. We propose to build the next-generation, in vitro organoid) Tj
+T* (models of human brain function by including neural ...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 192. Td
+(View Project ->) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 164. Td
+(10. Unlocking the postnatal human brain using activity augmented organoids) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 147. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 147. Td
+(PI: MAKINSON, CHRISTOPHER D, COLUMBIA UNIVERSITY HEALTH SCIENCES) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 132. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 132. Td
+(FY Award: $965K \(FY2025\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 117. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 117. Td
+(Category: Basic Research) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 96. Td
+(Insight: Columbia's project directly confronts the maturation ceiling problem identified as the primary risk in the field -) Tj
+T* (brain organoids currently recapitulate fetal rather than postnatal brain states - by systematically implementing activity) Tj
+T* (augmentation methods designed to drive organoids toward more mature functional profiles over extended culture) Tj
+T* (periods. The approach is methodologically significant because it treats neural activity itself as a developmental driver) Tj
+T* (rather than just a readout, creating a feedback logic where electrophysiological stimulation and measurement are) Tj
+T* (integrated tools for advancing biological maturity. If successful, this work could unlock the larger drug market) Tj
+T* (opportunities associated with late-onset neurological diseases, making it one of the highest-potential projects in the) Tj
+T* (analyzed set for long-term commercial impact.) Tj
+ET
+endstream
+endobj
+23 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 24 0 R
+>>
+endobj
+24 0 obj
+<<
+/Length 5015
+>>
+stream
+0.5 w
+0.88 0.48 0.37 RG
+0.88 0.48 0.37 RG
+2. w
+54. 740. m
+54. 705. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.42 0.447 0.502 rg
+62. 738. Td
+(Tri-dimensional \(3D\) cellular structures derived from human stem cells have been shown to recapitulate many aspects of) Tj
+T* (fetal brain development, however, efforts to use these systems to study later stages of development have been frustrating.) Tj
+T* (In order to improve the maturity and relevance of this mod...) Tj
+ET
+0.5 w
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 691. Td
+(View Project ->) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 649. m
+558. 649. l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 615. Td
+(Clinical & Translational Activity) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 579. Td
+(Trial Summary) Tj
+ET
+0.98 0.98 0.98 rg
+54. 563. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 549. m
+558. 549. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 553. Td
+(Phase) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+310. 553. Td
+(Count) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 535. m
+558. 535. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 539. Td
+(N/A) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 539. Td
+(3) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 503. Td
+(Active Trials) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 471. Td
+(Neocortical Microarchitecture of Executive Function) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 454. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 454. Td
+(NCT ID: NCT06778135) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 439. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 439. Td
+(Phase: NA) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 424. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 424. Td
+(Status: RECRUITING) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 409. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 409. Td
+(Sponsor: University of Colorado, Denver) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 394. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 394. Td
+(Conditions: Parkinson Disease) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 379. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 379. Td
+(Enrollment: 15 participants) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 352. Td
+(Modeling TMS-induced Cortical Network Activity) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 335. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 335. Td
+(NCT ID: NCT05288959) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 320. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 320. Td
+(Phase: NA) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 305. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 305. Td
+(Status: NOT YET RECRUITING) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 290. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 290. Td
+(Sponsor: Massachusetts General Hospital) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 275. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 275. Td
+(Conditions: Healthy) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 260. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 260. Td
+(Enrollment: 80 participants) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 233. Td
+(Physiology of Human Brain Connectivity) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 216. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 216. Td
+(NCT ID: NCT06246942) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 201. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 201. Td
+(Phase: NA) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 186. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 186. Td
+(Status: RECRUITING) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 171. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 171. Td
+(Sponsor: Massachusetts General Hospital) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 156. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 156. Td
+(Conditions: Healthy) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 141. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 141. Td
+(Enrollment: 80 participants) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 100. m
+558. 100. l
+S
+endstream
+endobj
+25 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 26 0 R
+>>
+endobj
+26 0 obj
+<<
+/Length 11726
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 738. Td
+(Key Organizations) Tj
+ET
+0.98 0.98 0.98 rg
+54. 720. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 706. m
+558. 706. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 710. Td
+(Organization) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+158.8000000000000114 710. Td
+(Projects) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+259.6000000000000227 710. Td
+(Funding) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+360.3999999999999773 710. Td
+(Trials) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+461.1999999999999886 710. Td
+(Patents) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 692. m
+558. 692. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 696. Td
+(ALLEN INSTITUTE) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 696. Td
+(5) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 696. Td
+($23.0M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 696. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 696. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 678. m
+558. 678. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 682. Td
+(STANFORD) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 682. Td
+(9) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 682. Td
+($7.6M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 682. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 682. Td
+(4) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 664. m
+558. 664. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 668. Td
+(UNIVERSITY OF) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 668. Td
+(4) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 668. Td
+($5.8M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 668. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 668. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 650. m
+558. 650. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 654. Td
+(JOHNS HOPKINS) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 654. Td
+(4) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 654. Td
+($3.8M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 654. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 654. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 636. m
+558. 636. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 640. Td
+(BOSTON) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 640. Td
+(3) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 640. Td
+($3.2M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 640. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 640. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 622. m
+558. 622. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 626. Td
+(UNIVERSITY OF) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 626. Td
+(2) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 626. Td
+($2.9M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 626. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 626. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 608. m
+558. 608. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 612. Td
+(UNIVERSITY OF) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 612. Td
+(3) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 612. Td
+($2.5M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 612. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 612. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 594. m
+558. 594. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 598. Td
+(SPIKEGADGETS, LLC) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 598. Td
+(2) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 598. Td
+($2.4M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 598. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 598. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 580. m
+558. 580. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 584. Td
+(UNIVERSITY OF) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 584. Td
+(5) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 584. Td
+($2.4M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 584. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 584. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 566. m
+558. 566. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 570. Td
+(UNIVERSITY OF) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 570. Td
+(5) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 570. Td
+($2.3M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 570. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 570. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 552. m
+558. 552. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 556. Td
+(SALK INSTITUTE) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 556. Td
+(1) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 556. Td
+($2.0M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 556. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 556. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 538. m
+558. 538. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 542. Td
+(RICE UNIVERSITY) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 542. Td
+(2) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 542. Td
+($1.9M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 542. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 542. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 524. m
+558. 524. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 528. Td
+(UNIVERSITY OF) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 528. Td
+(6) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 528. Td
+($1.9M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 528. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 528. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 510. m
+558. 510. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 514. Td
+(UNIVERSITY OF) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 514. Td
+(2) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 514. Td
+($1.9M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 514. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 514. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 496. m
+558. 496. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 500. Td
+(MASSACHUSETTS) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+158.8000000000000114 500. Td
+(3) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+259.6000000000000227 500. Td
+($1.8M) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+360.3999999999999773 500. Td
+(0) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+461.1999999999999886 500. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 458. m
+558. 458. l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 424. Td
+(Key Publications) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 388. Td
+(Must-Read Publications) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 356. Td
+(1. Scalable production of human cortical organoids using a biocompatible polymer) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 339. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 339. Td
+(Journal: Nature biomedical engineering | Year: 2025) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 324. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 324. Td
+(PMID: 40579490) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 303. Td
+(Why it matters: Among the linked publications, this is the most directly relevant to brain organoid electrophysiology as an) Tj
+T* (investable platform - it solves a core manufacturing bottleneck by preventing organoid fusion during suspension culture,) Tj
+T* (enabling scalable and reproducible cortical organoid production. The demonstration of screening 298 FDA-approved) Tj
+T* (drugs across 2,400+ organoids signals a clear commercial pathway toward high-throughput drug discovery for) Tj
+T* (neuropsychiatric disorders.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 233. Td
+(Key finding: A cost-effective polysaccharide additive significantly increases cortical organoid yield while preserving) Tj
+T* (functional electrophysiological activity, enabling scalable compound screening for neurological disease phenotypes.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 193. Td
+(2. Biomimetic model of corticostriatal micro-assemblies discovers a neural code) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 176. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 176. Td
+(Journal: Nature communications | Year: 2025) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 161. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 161. Td
+(PMID: 41457177) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 140. Td
+(Why it matters: Among the linked publications, this paper is notable for bridging the gap between low-level) Tj
+T* (electrophysiology \(spiking, field potentials\) and high-level cognitive function \(working memory, decision-making\) using a) Tj
+T* (mechanistically accurate multi-scale model - a capability directly relevant to interpreting electrophysiological signals from) Tj
+T* (brain organoid assembloids. The model's ability to predict erroneous behaviors via a previously unknown neural code) Tj
+T* (has strong implications for both disease modeling and therapeutic target identification.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 70. Td
+(Key finding: A biomimetic corticostriatal model reproduces physiological spiking and field activity, and independently) Tj
+T* (predicts a novel neural code for behavioral errors that was subsequently confirmed in empirical macaque data.) Tj
+ET
+endstream
+endobj
+27 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 28 0 R
+>>
+endobj
+28 0 obj
+<<
+/Length 5869
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 738. Td
+(3. DeviceAgent: An autonomous multimodal AI agent for flexible bioelectronics) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 721. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 721. Td
+(Journal: bioRxiv | Year: 2025) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 706. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 706. Td
+(PMID: 41278846) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 685. Td
+(Why it matters: Among the linked publications, this paper represents a methodological advance with direct translational) Tj
+T* (value - an AI agent that automates the full pipeline from bioelectronic device design to electrophysiological signal) Tj
+T* (analysis, demonstrated on hiPSC-derived cardiomyocytes using mesh electronics. For investors, this points toward) Tj
+T* (dramatically reduced development timelines and costs for recording devices used in brain organoid and tissue-interface) Tj
+T* (research.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 615. Td
+(Key finding: DeviceAgent autonomously generates bioelectronic layouts, fabrication protocols, defect inspection, and) Tj
+T* (electrophysiological analysis, reducing the specialized expertise barrier in developing neural interface platforms.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 575. Td
+(4. Adaptations of the axon initial segment in fast-spiking interneurons of the human neocortex support) Tj
+T* (low action potential thresholds) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 545. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 545. Td
+(Journal: PLoS biology | Year: 2025) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 530. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 530. Td
+(PMID: 41370321) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 509. Td
+(Why it matters: Among the linked publications, this study provides critical caution and context for the brain organoid) Tj
+T* (electrophysiology field by demonstrating that human neurons exhibit distinct molecular and electrophysiological) Tj
+T* (properties compared to mouse neurons - specifically in axon initial segment composition and action potential thresholds.) Tj
+T* (This finding is directly relevant to investors evaluating organoid platforms, as it underscores the necessity of) Tj
+T* (human-derived models for drug screening and therapeutic development rather than relying on rodent data.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 439. Td
+(Key finding: Human fast-spiking interneurons lack key Kv1 potassium channels present in mouse equivalents, resulting) Tj
+T* (in lower action potential thresholds and highlighting species-specific differences that must be accounted for in) Tj
+T* (translational electrophysiology research.) Tj
+ET
+BT
+/F2 10 Tf
+11.5 TL
+0.067 0.094 0.153 rg
+54. 387. Td
+(5. Roadmap for direct and indirect translation of optogenetics into discoveries and therapies for humans) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 370. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 370. Td
+(Journal: Nature neuroscience | Year: 2025) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 355. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 355. Td
+(PMID: 41254285) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 334. Td
+(Why it matters: Among the linked publications, this review from leading optogenetics researchers including Karl) Tj
+T* (Deisseroth provides a comprehensive framework for how circuit-level causal insights - including those derived from) Tj
+T* (organoid electrophysiology platforms - can be translated into therapies. For investors, it maps the regulatory and) Tj
+T* (molecular strategy landscape for optogenetic and related neuromodulation therapeutics, including a proof-of-principle) Tj
+T* (human CNS application restoring vision.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 264. Td
+(Key finding: Optogenetics has demonstrated direct human therapeutic application for blindness, and the roadmap) Tj
+T* (outlines how causal circuit knowledge from experimental systems can advance neuromodulation treatments for a broad) Tj
+T* (range of neurological and psychiatric disorders.) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 210. Td
+(Publication Summary) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 184. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 184. Td
+(Total linked publications: 271) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 169. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 169. Td
+(Unique journals: 10) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 148. Td
+(Top Journals:) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 126. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 126. Td
+(bioRxiv : the preprint server for biology \(101\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 111. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 111. Td
+(Nature communications \(18\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 96. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 96. Td
+(Nature neuroscience \(12\)) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 81. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 81. Td
+(Neuron \(8\)) Tj
+ET
+endstream
+endobj
+29 0 obj
+<</Type /Page
+/Parent 1 0 R
+/Resources 2 0 R
+/MediaBox [0 0 612. 792.]
+/Contents 30 0 R
+>>
+endobj
+30 0 obj
+<<
+/Length 5716
+>>
+stream
+0.5 w
+0.9 0.91 0.92 RG
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 738. Td
+(•) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+66. 738. Td
+(eLife \(8\)) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 697. m
+558. 697. l
+S
+BT
+/F2 13 Tf
+14.9499999999999993 TL
+0.067 0.094 0.153 rg
+54. 663. Td
+(About This Report) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 627. Td
+(Methodology) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 601. Td
+(This report analyzes a curated subset of NIH-funded research projects most relevant to Brain Organoid) Tj
+T* (Electrophysiology. Projects were identified using semantic search \(AI-based conceptual matching\) and filtered by match) Tj
+T* (quality.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 555. Td
+(Important Note on Funding Figures: All funding amounts shown represent the most recent fiscal year award for each) Tj
+T* (project, NOT the total project cost across all years. Multi-year projects will have higher cumulative funding than the FY) Tj
+T* (award shown.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 509. Td
+(Match Quality Tiers:) Tj
+ET
+0.98 0.98 0.98 rg
+54. 497. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 483. m
+558. 483. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 487. Td
+(Tier) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+226. 487. Td
+(Similarity) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+394. 487. Td
+(Description) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 469. m
+558. 469. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 473. Td
+(Precise) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 473. Td
+(>=50%) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 473. Td
+(Highly relevant - directly addresses the) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 455. m
+558. 455. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 459. Td
+(Balanced) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 459. Td
+(>=35%) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 459. Td
+(Relevant - related research with clear) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 431. Td
+(Sample Composition:) Tj
+ET
+0.98 0.98 0.98 rg
+54. 419. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 405. m
+558. 405. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 409. Td
+(Metric) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+310. 409. Td
+(Value) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 391. m
+558. 391. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 395. Td
+(Projects Analyzed) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 395. Td
+(125) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 377. m
+558. 377. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 381. Td
+(Precise Matches) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 381. Td
+(125) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 363. m
+558. 363. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 367. Td
+(Balanced Matches) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 367. Td
+(0) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 349. m
+558. 349. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 353. Td
+(Total FY Awards) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 353. Td
+($100.3M) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 335. m
+558. 335. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 339. Td
+(Organizations) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 339. Td
+(67) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 321. m
+558. 321. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 325. Td
+(Principal Investigators) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+310. 325. Td
+(133) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 297. Td
+(Linked Data:) Tj
+ET
+0.98 0.98 0.98 rg
+54. 285. 504. -14. re
+f
+0.9 0.91 0.92 RG
+0.5 w
+54. 271. m
+558. 271. l
+S
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+58. 275. Td
+(Data Type) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+226. 275. Td
+(Count) Tj
+ET
+BT
+/F2 9 Tf
+10.3499999999999996 TL
+0.067 0.094 0.153 rg
+394. 275. Td
+(Source) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 257. m
+558. 257. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 261. Td
+(Clinical Trials) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 261. Td
+(3) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 261. Td
+(ClinicalTrials.gov) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 243. m
+558. 243. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 247. Td
+(Patents) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 247. Td
+(5) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 247. Td
+(USPTO) Tj
+ET
+0.9 0.91 0.92 RG
+0.5 w
+54. 229. m
+558. 229. l
+S
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+58. 233. Td
+(Publications) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+226. 233. Td
+(271) Tj
+ET
+BT
+/F1 9 Tf
+10.3499999999999996 TL
+0.216 0.255 0.318 rg
+394. 233. Td
+(PubMed) Tj
+ET
+BT
+/F2 11 Tf
+12.6499999999999986 TL
+0.067 0.094 0.153 rg
+54. 197. Td
+(Limitations) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 171. Td
+(This analysis focuses on depth over breadth, capturing publicly-funded academic research. It does not include) Tj
+T* (privately-funded industry R&D or international research outside NIH grants.) Tj
+ET
+BT
+/F1 9.5 Tf
+10.9249999999999989 TL
+0.216 0.255 0.318 rg
+54. 137. Td
+(*Data current as of March 28, 2026.*) Tj
+ET
+endstream
+endobj
+1 0 obj
+<</Type /Pages
+/Kids [3 0 R 5 0 R 7 0 R 9 0 R 11 0 R 13 0 R 15 0 R 17 0 R 19 0 R 21 0 R 23 0 R 25 0 R 27 0 R 29 0 R ]
+/Count 14
+>>
+endobj
+31 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+32 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+33 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+34 0 obj
+<<
+/Type /Font
+/BaseFont /Helvetica-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+35 0 obj
+<<
+/Type /Font
+/BaseFont /Courier
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+36 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+37 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-Oblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+38 0 obj
+<<
+/Type /Font
+/BaseFont /Courier-BoldOblique
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+39 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Roman
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+40 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Bold
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+41 0 obj
+<<
+/Type /Font
+/BaseFont /Times-Italic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+42 0 obj
+<<
+/Type /Font
+/BaseFont /Times-BoldItalic
+/Subtype /Type1
+/Encoding /WinAnsiEncoding
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+43 0 obj
+<<
+/Type /Font
+/BaseFont /ZapfDingbats
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+44 0 obj
+<<
+/Type /Font
+/BaseFont /Symbol
+/Subtype /Type1
+/FirstChar 32
+/LastChar 255
+>>
+endobj
+2 0 obj
+<<
+/ProcSet [/PDF /Text /ImageB /ImageC /ImageI]
+/Font <<
+/F1 31 0 R
+/F2 32 0 R
+/F3 33 0 R
+/F4 34 0 R
+/F5 35 0 R
+/F6 36 0 R
+/F7 37 0 R
+/F8 38 0 R
+/F9 39 0 R
+/F10 40 0 R
+/F11 41 0 R
+/F12 42 0 R
+/F13 43 0 R
+/F14 44 0 R
+>>
+/XObject <<
+>>
+>>
+endobj
+45 0 obj
+<<
+/Producer (jsPDF 4.2.0)
+/CreationDate (D:20260328115606-04'00')
+>>
+endobj
+46 0 obj
+<<
+/Type /Catalog
+/Pages 1 0 R
+/OpenAction [3 0 R /FitH null]
+/PageLayout /OneColumn
+>>
+endobj
+xref
+0 47
+0000000000 65535 f 
+0000093188 00000 n 
+0000095099 00000 n 
+0000000015 00000 n 
+0000000120 00000 n 
+0000004754 00000 n 
+0000004859 00000 n 
+0000011409 00000 n 
+0000011514 00000 n 
+0000018261 00000 n 
+0000018367 00000 n 
+0000024265 00000 n 
+0000024372 00000 n 
+0000030187 00000 n 
+0000030294 00000 n 
+0000035821 00000 n 
+0000035928 00000 n 
+0000043114 00000 n 
+0000043221 00000 n 
+0000050165 00000 n 
+0000050272 00000 n 
+0000057197 00000 n 
+0000057304 00000 n 
+0000064221 00000 n 
+0000064328 00000 n 
+0000069396 00000 n 
+0000069503 00000 n 
+0000081283 00000 n 
+0000081390 00000 n 
+0000087312 00000 n 
+0000087419 00000 n 
+0000093334 00000 n 
+0000093460 00000 n 
+0000093591 00000 n 
+0000093725 00000 n 
+0000093863 00000 n 
+0000093987 00000 n 
+0000094116 00000 n 
+0000094248 00000 n 
+0000094384 00000 n 
+0000094512 00000 n 
+0000094639 00000 n 
+0000094768 00000 n 
+0000094901 00000 n 
+0000095003 00000 n 
+0000095352 00000 n 
+0000095438 00000 n 
+trailer
+<<
+/Size 47
+/Root 46 0 R
+/Info 45 0 R
+/ID [ <C00F71A0C648547FA1ABF9B3D80D554F> <C00F71A0C648547FA1ABF9B3D80D554F> ]
+>>
+startxref
+95542
+%%EOF

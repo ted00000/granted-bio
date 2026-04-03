@@ -2229,8 +2229,9 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                               }
                             `}
                           >
-                            <div className="flex items-center -space-x-1">
+                            <div className="flex items-center gap-0.5">
                               <Building2 className={`w-3 h-3 ${newSearchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={newSearchMode === 'name' ? 2 : 1.5} />
+                              <span className={`text-[9px] ${newSearchMode === 'name' ? 'text-[#E07A5F]' : 'text-gray-400'}`}>/</span>
                               <User className={`w-3 h-3 ${newSearchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={newSearchMode === 'name' ? 2 : 1.5} />
                             </div>
                             <span className={newSearchMode === 'name' ? 'font-medium' : ''}>Name</span>
