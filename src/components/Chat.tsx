@@ -1918,39 +1918,6 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                   </div>
                 </div>
 
-                {/* Persona switching tabs - only show after results load */}
-                {toolResults.length > 0 && userQuery && (
-                  <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full">
-                    {[
-                      { key: 'researcher' as const, label: 'Projects', icon: FlaskConical },
-                      { key: 'bd' as const, label: 'People', icon: Users },
-                      { key: 'trials' as const, label: 'Trials', icon: Activity },
-                    ].map(({ key, label, icon: Icon }) => {
-                      const isActive = persona === key
-                      return (
-                        <button
-                          key={key}
-                          onClick={() => {
-                            if (!isActive) {
-                              router.push(`/chat?persona=${key}&q=${encodeURIComponent(userQuery)}`)
-                            }
-                          }}
-                          className={`
-                            flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full transition-all
-                            ${isActive
-                              ? 'bg-white text-gray-900 shadow-sm'
-                              : 'text-gray-500 hover:text-gray-700'
-                            }
-                          `}
-                        >
-                          <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-[#E07A5F]' : ''}`} strokeWidth={isActive ? 2 : 1.5} />
-                          <span className={isActive ? 'font-medium' : ''}>{label}</span>
-                        </button>
-                      )
-                    })}
-                  </div>
-                )}
-
                 {/* Stats card with count and match quality */}
                 {toolResults.length > 0 && searchContext ? (
                   <div className="bg-white rounded-lg border border-gray-100 p-4 mb-4">
