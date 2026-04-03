@@ -1143,7 +1143,6 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
   const [initialQueryProcessed, setInitialQueryProcessed] = useState(false)
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
   const [upgradeInfo, setUpgradeInfo] = useState<{ tier: 'free' | 'pro'; limit: number } | null>(null)
-  const [newSearchInput, setNewSearchInput] = useState('')
   const [newSearchMode, setNewSearchMode] = useState<SearchMode>(searchMode)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
@@ -1702,13 +1701,6 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     if (!isLoading) sendMessage(choice, messages)
   }
 
-  const handleNewSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newSearchInput.trim()) return
-    const modeParam = newSearchMode !== 'smart' ? `&mode=${newSearchMode}` : ''
-    router.push(`/chat?persona=${persona}&q=${encodeURIComponent(newSearchInput.trim())}${modeParam}`)
-  }
-
   const isLastAssistantMessage = (messageId: string) => {
     const lastAssistant = [...messages].reverse().find(m => m.role === 'assistant')
     return lastAssistant?.id === messageId
@@ -2170,28 +2162,46 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                   )
                 )}
 
-                {/* New Search section */}
-                <div className="pt-6 mt-6 border-t border-gray-200">
-                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">New Search</div>
-                  <form onSubmit={handleNewSearch} className="space-y-3">
-                    <textarea
-                      value={newSearchInput}
-                      onChange={(e) => setNewSearchInput(e.target.value)}
-                      placeholder="Enter a new search..."
-                      rows={2}
-                      className="w-full px-3 py-2 text-sm bg-white border border-gray-200 rounded-lg placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#E07A5F] focus:border-[#E07A5F] resize-none"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                          e.preventDefault()
-                          handleNewSearch(e)
-                        }
-                      }}
-                    />
-                    <div className="flex items-center justify-between">
+                {/* Try Different Lens section */}
+                {userQuery && (
+                  <div className="pt-6 mt-6 border-t border-gray-200">
+                    <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-3">Try Different Lens</div>
+                    <div className="space-y-3">
+                      {/* Persona tabs */}
+                      <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-full">
+                        {[
+                          { key: 'researcher' as const, label: 'Research', icon: FlaskConical },
+                          { key: 'bd' as const, label: 'People', icon: Users },
+                          { key: 'trials' as const, label: 'Trials', icon: Activity },
+                        ].map(({ key, label, icon: Icon }) => (
+                          <button
+                            key={key}
+                            onClick={() => {
+                              // Reset mode if switching away from bd and name mode was selected
+                              const mode = key !== 'bd' && newSearchMode === 'name' ? 'smart' : newSearchMode
+                              const modeParam = mode !== 'smart' ? `&mode=${mode}` : ''
+                              router.push(`/chat?persona=${key}&q=${encodeURIComponent(userQuery)}${modeParam}`)
+                            }}
+                            className={`
+                              flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-full transition-all flex-1 justify-center
+                              ${persona === key
+                                ? 'bg-white text-gray-900 shadow-sm'
+                                : 'text-gray-500 hover:text-gray-700'
+                              }
+                            `}
+                          >
+                            <Icon className={`w-3.5 h-3.5 ${persona === key ? 'text-[#E07A5F]' : ''}`} strokeWidth={persona === key ? 2 : 1.5} />
+                            <span className={persona === key ? 'font-medium' : ''}>{label}</span>
+                          </button>
+                        ))}
+                      </div>
+                      {/* Mode qualifiers */}
                       <div className="flex items-center gap-1">
                         <button
-                          type="button"
-                          onClick={() => setNewSearchMode('smart')}
+                          onClick={() => {
+                            setNewSearchMode('smart')
+                            router.push(`/chat?persona=${persona}&q=${encodeURIComponent(userQuery)}`)
+                          }}
                           className={`
                             flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-full transition-all
                             ${newSearchMode === 'smart'
@@ -2204,8 +2214,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                           <span className={newSearchMode === 'smart' ? 'font-medium' : ''}>Smart</span>
                         </button>
                         <button
-                          type="button"
-                          onClick={() => setNewSearchMode('standard')}
+                          onClick={() => {
+                            setNewSearchMode('standard')
+                            router.push(`/chat?persona=${persona}&q=${encodeURIComponent(userQuery)}&mode=standard`)
+                          }}
                           className={`
                             flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-full transition-all
                             ${newSearchMode === 'standard'
@@ -2219,8 +2231,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                         </button>
                         {persona === 'bd' && (
                           <button
-                            type="button"
-                            onClick={() => setNewSearchMode('name')}
+                            onClick={() => {
+                              setNewSearchMode('name')
+                              router.push(`/chat?persona=${persona}&q=${encodeURIComponent(userQuery)}&mode=name`)
+                            }}
                             className={`
                               flex items-center gap-1 px-2.5 py-1.5 text-xs rounded-full transition-all
                               ${newSearchMode === 'name'
@@ -2238,16 +2252,9 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                           </button>
                         )}
                       </div>
-                      <button
-                        type="submit"
-                        disabled={!newSearchInput.trim()}
-                        className="px-3 py-1.5 text-xs font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                      >
-                        Search
-                      </button>
                     </div>
-                  </form>
-                </div>
+                  </div>
+                )}
               </div>
             </div>
 
