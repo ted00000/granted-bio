@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
 import { PERSONA_PROMPTS } from '@/lib/chat/prompts'
 import { AGENT_TOOLS, executeTool } from '@/lib/chat/tools'
+import { detectNameType } from '@/lib/chat/nameDetection'
 import type { PersonaType, UserAccess, SearchMode } from '@/lib/chat/types'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { checkAndIncrementSearch, logApiUsage } from '@/lib/billing/usage'
@@ -104,6 +105,30 @@ For this mode:
 - Organization names, PI names, and project numbers will be matched directly
 - This is best for finding specific people, companies, or projects by name/ID
 - Your keyword_query should match the user's input closely`
+    } else if (searchMode === 'name') {
+      // Name mode: detect if input is a person or organization
+      const lastUserMessage = messages[messages.length - 1]?.content || ''
+      const detection = detectNameType(lastUserMessage)
+
+      if (detection.type === 'pi') {
+        systemPrompt += `
+
+=== SEARCH MODE: NAME LOOKUP (Person Detected) ===
+The user has selected NAME search mode and entered what appears to be a person's name.
+Detection: ${detection.reason} (${detection.confidence} confidence)
+
+IMMEDIATELY call get_pi_profile with pi_name: "${lastUserMessage}"
+Do NOT use search_projects. This is a direct PI lookup.`
+      } else {
+        systemPrompt += `
+
+=== SEARCH MODE: NAME LOOKUP (Organization Detected) ===
+The user has selected NAME search mode and entered what appears to be an organization name.
+Detection: ${detection.reason} (${detection.confidence} confidence)
+
+IMMEDIATELY call get_company_profile with org_name: "${lastUserMessage}"
+Do NOT use search_projects. This is a direct organization lookup.`
+      }
     }
 
     // Build conversation history

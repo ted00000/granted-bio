@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useRef, KeyboardEvent } from 'react'
-import { FlaskConical, Activity, Users, Sparkles, Crosshair } from 'lucide-react'
+import { useState, useRef, useEffect, KeyboardEvent } from 'react'
+import { FlaskConical, Activity, Users, Sparkles, Crosshair, User } from 'lucide-react'
 import type { PersonaType, SearchMode } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
@@ -91,6 +91,13 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
   }
 
   const currentTips = SEARCH_TIPS[selectedLens]
+
+  // Reset to 'smart' if leaving bd persona while 'name' mode is selected
+  useEffect(() => {
+    if (selectedLens !== 'bd' && searchMode === 'name') {
+      setSearchMode('smart')
+    }
+  }, [selectedLens, searchMode])
 
   if (needsName) {
     return (
@@ -225,6 +232,23 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                 <Crosshair className={`w-4 h-4 ${searchMode === 'standard' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'standard' ? 2 : 1.5} />
                 <span className={searchMode === 'standard' ? 'font-medium' : ''}>Exact</span>
               </button>
+              {/* Name option - only for People persona */}
+              {selectedLens === 'bd' && (
+                <button
+                  onClick={() => setSearchMode('name')}
+                  className={`
+                    flex items-center gap-1.5 px-3 py-2 text-sm rounded-full transition-all
+                    ${searchMode === 'name'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700'
+                    }
+                  `}
+                  title="Name lookup - search for a specific researcher or organization by name"
+                >
+                  <User className={`w-4 h-4 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
+                  <span className={searchMode === 'name' ? 'font-medium' : ''}>Name</span>
+                </button>
+              )}
             </div>
           </div>
 

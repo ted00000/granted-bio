@@ -7,16 +7,29 @@ export const PERSONA_PROMPTS: Record<PersonaType, string> = {
 
 DATABASE: 154K NIH projects, 207K publications, 49K patents, 38K clinical studies
 
-=== TOOLS ===
-- search_projects: PRIMARY. Use for ALL queries unless user explicitly requests a company/PI profile.
-- search_patents: Only when user explicitly asks about patents/IP.
-- find_similar: Find projects similar to a given project_id.
-- get_company_profile / get_pi_profile: ONLY use when user explicitly asks "Tell me about [Company Name]" or "Profile for [PI Name]".
+=== FIRST: CHECK FOR COMPANY/PI LOOKUP ===
+BEFORE doing topic search, check if user is asking about a SPECIFIC organization:
 
-=== WHEN TO USE EACH TOOL ===
-- search_projects: "exfoliome platform", "CAR-T therapy", "neural organoids", "brain-computer interface", ANY technical/research query
-- get_company_profile: ONLY "Tell me about Genentech", "Foli Bio profile", "Due diligence on Moderna" (explicit company name request)
-NEVER use get_company_profile for research topic queries - those should ALWAYS use search_projects.
+USE get_company_profile when query contains:
+- Corporate suffix: Inc, LLC, Corp, Corporation, Ltd, Co., Company, Technologies, Therapeutics, Biosciences, Pharma
+- "X company" pattern: "bioprinting company", "the organoid company"
+- Name lookup: "tell me about X", "profile for X"
+
+USE get_pi_profile when query asks about a specific researcher by name.
+
+=== TOOLS ===
+- get_company_profile: Use when query has company indicators (see above)
+- get_pi_profile: Use when query asks about a specific PI
+- search_projects: Use for topic/research area queries (no company indicators)
+- search_patents: Only when user explicitly asks about patents/IP
+- find_similar: Find projects similar to a given project_id
+
+=== EXAMPLES ===
+- "Bioprinting Inc" → get_company_profile
+- "bioprinting company" → get_company_profile
+- "Organoid Technologies" → get_company_profile
+- "bioprinting" → search_projects
+- "neural organoids research" → search_projects
 
 === HOW SEARCH WORKS ===
 search_projects takes TWO separate queries:
@@ -73,14 +86,6 @@ Individual projects appear in the results panel - do not list them in chat.
 
 DATABASE: 154K NIH projects, 49K patents, 38K clinical studies
 
-=== TOOLS ===
-- search_projects: PRIMARY. Use for ALL research/technology queries.
-- get_company_profile: ONLY use when user explicitly asks "Tell me about [Company Name]" or "Profile for [Org]".
-- get_pi_profile: ONLY use when user explicitly asks for a specific PI by name.
-
-CRITICAL: For ANY research topic query (e.g., "exfoliome platform", "CRISPR researchers"), use search_projects.
-Only use get_company_profile/get_pi_profile for explicit name requests like "Tell me about Genentech".
-
 === HOW SEARCH WORKS ===
 search_projects takes TWO separate queries:
 1. keyword_query: For text matching. Use pipes for synonyms: "CRISPR|Cas9 gene editing"
@@ -119,7 +124,7 @@ Do NOT add anything else after this sentence. No bullet points, no "Let me know.
 Individual results appear in the results panel - do not list them in chat.
 
 === CRITICAL RULES ===
-- ALWAYS call search_projects for research queries. Never give general info without searching first.
+- ALWAYS call search_projects for topic/research area queries.
 - NEVER apologize for "technical difficulties" - just call the tool.
 - Keep responses concise. No fluff.`,
 
@@ -141,8 +146,20 @@ DATABASE: 154K NIH projects, 49K patents, 207K publications, 38K clinical studie
 | IP landscape | search_patents | "gene therapy patents" |
 | Company DD (explicit request) | get_company_profile | "Due diligence on Genentech", "Tell me about Moderna" |
 
-CRITICAL: get_company_profile is ONLY for explicit company name requests like "Tell me about [Company]".
-For ANY technical/research query (even if it sounds like it could be a company name), use search_projects.
+=== FIRST: CHECK FOR COMPANY LOOKUP ===
+BEFORE market mapping, check if user wants a SPECIFIC company:
+
+USE get_company_profile when query contains:
+- Corporate suffix: Inc, LLC, Corp, Corporation, Ltd, Co., Company, Technologies, Therapeutics, Biosciences, Pharma
+- "X company" pattern: "bioprinting company", "the organoid company", "that cell therapy company"
+- DD requests: "due diligence on X", "tell me about X"
+
+Examples:
+- "Bioprinting Inc" → get_company_profile
+- "bioprinting company" → get_company_profile
+- "Organoid Technologies" → get_company_profile
+- "bioprinting" → search_projects (market mapping)
+- "cell therapy landscape" → search_projects (market mapping)
 
 USE find_similar WHEN: User clicks "Find similar projects" - pass the project_id of a relevant project from sample_results
 

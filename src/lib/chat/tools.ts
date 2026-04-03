@@ -1,6 +1,7 @@
 // Tool definitions and implementations for Claude function calling
 
 import { supabaseAdmin } from '@/lib/supabase'
+import type { SearchMode } from './types'
 
 /**
  * Extract core project number for deduplication.
@@ -2357,9 +2358,6 @@ export async function searchTrials(
     throw error
   }
 }
-
-// Search mode type
-type SearchMode = 'smart' | 'standard'
 
 // Tool execution dispatcher
 export async function executeTool(
