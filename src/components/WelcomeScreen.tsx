@@ -246,9 +246,9 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                   title="Name lookup - search for a specific researcher or organization by name"
                 >
                   <div className="flex items-center">
-                    <Building2 className={`w-3.5 h-3.5 mr-1 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
-                    <span className={`text-[10px] ${searchMode === 'name' ? 'text-[#E07A5F]' : 'text-gray-400'}`}>/</span>
-                    <User className={`w-3.5 h-3.5 ml-0.5 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
+                    <Building2 className={`w-4 h-4 mr-1 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
+                    <span className={`text-xs ${searchMode === 'name' ? 'text-[#E07A5F]' : 'text-gray-400'}`}>/</span>
+                    <User className={`w-4 h-4 ml-0.5 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
                   </div>
                   <span className={searchMode === 'name' ? 'font-medium' : ''}>Name</span>
                 </button>
