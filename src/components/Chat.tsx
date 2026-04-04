@@ -1061,6 +1061,77 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
     )
   }
 
+  if (latestResult.name === 'get_pi_profile') {
+    const data = latestResult.data as {
+      pi_name: string
+      organizations: string[]
+      total_funding: number
+      project_count: number
+      publication_count: number
+      top_projects: Array<{
+        title: string
+        org_name: string | null
+        total_cost: number | null
+        fiscal_year: number | null
+        primary_category: string | null
+      }>
+    }
+
+    if (!data) return <div className="flex items-center justify-center h-full text-gray-400 text-sm">Researcher not found</div>
+
+    return (
+      <div className="h-full overflow-y-auto">
+        <div className="p-6 border-b border-gray-100">
+          <div className="text-lg font-semibold text-gray-900">{data.pi_name}</div>
+          {data.organizations?.length > 0 && (
+            <div className="text-sm text-gray-500 mt-1">{data.organizations.join(' · ')}</div>
+          )}
+          <div className="text-3xl font-semibold tracking-tight text-[#E07A5F] mt-3">{formatCurrency(data.total_funding)}</div>
+          <div className="text-sm text-gray-400 mt-1">total funding</div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-6 p-6 border-b border-gray-100">
+          {[
+            { label: 'Projects', value: data.project_count },
+            { label: 'Publications', value: data.publication_count },
+          ].map(stat => (
+            <div key={stat.label}>
+              <div className="text-2xl font-semibold text-gray-900">{stat.value}</div>
+              <div className="text-xs text-gray-400">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {data.top_projects?.length > 0 && (
+          <div className="p-6">
+            <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">Recent Projects</h3>
+            <div className="space-y-4">
+              {data.top_projects.map((project, idx) => (
+                <div key={idx} className="pb-3 border-b border-gray-50 last:border-0">
+                  <p className="text-sm text-gray-900 leading-snug">{project.title}</p>
+                  <div className="flex items-center justify-between mt-1.5">
+                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                      {project.org_name && <span>{project.org_name}</span>}
+                      {project.fiscal_year && <span>FY{project.fiscal_year}</span>}
+                      {project.primary_category && (
+                        <span className="px-1.5 py-0.5 bg-gray-100 rounded text-[10px] capitalize">
+                          {project.primary_category.replace(/_/g, ' ')}
+                        </span>
+                      )}
+                    </div>
+                    {project.total_cost && (
+                      <span className="text-sm font-medium text-[#E07A5F]">{formatCurrency(project.total_cost)}</span>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
   if (latestResult.name === 'get_patent_details') {
     const data = latestResult.data as {
       patent_id: string
