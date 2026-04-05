@@ -239,19 +239,9 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
   // Use filtered results if available, otherwise use original
   const displayData = filteredResults || (projectResult?.data as KeywordSearchResult | undefined)
 
-  // Debug: log what's being rendered
-  if (filteredResults) {
-    const orgTypes = [...new Set(filteredResults.all_results?.map(p => p.org_type) || [])]
-    console.log('[ResultsPanel] filteredResults:', { count: filteredResults.total_count, orgTypes })
-  }
-
   if (latestResult.name === 'keyword_search') {
     // Use displayData if available (for filtered results), otherwise fall back to raw data
     const data = displayData || latestResult.data as KeywordSearchResult
-
-    // Debug: log what data is being used at render time
-    const dataOrgTypes = [...new Set(data.all_results?.slice(0, 10).map(p => p.org_type) || [])]
-    console.log('[keyword_search branch] data org_types:', dataOrgTypes, 'displayData===filteredResults:', displayData === filteredResults)
 
     const isCapped = data.showing_count && data.showing_count < data.total_count
     const isFiltered = filteredResults !== null
@@ -515,10 +505,6 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
     // Now returns KeywordSearchResult format from hybrid search
     // Use displayData if available (for filtered results), otherwise fall back to raw data
     const data = displayData || latestResult.data as KeywordSearchResult
-
-    // Debug: log what data is being used at render time
-    const dataOrgTypes = [...new Set(data.all_results?.slice(0, 10).map(p => p.org_type) || [])]
-    console.log('[search_projects branch] data org_types:', dataOrgTypes, 'displayData===filteredResults:', displayData === filteredResults)
 
     const isCapped = data.showing_count && data.showing_count < data.total_count
     const isFiltered = filteredResults !== null
@@ -1216,7 +1202,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
   const [isSearching, setIsSearching] = useState(false)
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
-  const [filteredResults, setFilteredResults] = useState<KeywordSearchResult | null>(null)
+  // filteredResults is now computed via useMemo (see below) to avoid race conditions
   const [currentFilters, setCurrentFilters] = useState<FilterState>({})
   const [trialStatusFilters, setTrialStatusFilters] = useState<string[]>([])
   const [trialTypeFilter, setTrialTypeFilter] = useState<'therapeutic' | 'diagnostic' | null>(null)
@@ -1257,7 +1243,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
         const state = JSON.parse(saved)
         if (state.toolResults) setToolResults(state.toolResults)
         if (state.searchContext) setSearchContext(state.searchContext)
-        if (state.filteredResults) setFilteredResults(state.filteredResults)
+        // filteredResults is now computed via useMemo from searchContext + currentFilters
         if (state.currentFilters) setCurrentFilters(state.currentFilters)
         if (state.messages) setMessages(state.messages)
         // Clear after restoring so refresh doesn't restore again
@@ -1331,7 +1317,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
       setInput('')
       setToolResults([])
       setSearchContext(null)
-      setFilteredResults(null)
+      // filteredResults is computed via useMemo - clearing searchContext and currentFilters resets it
       setCurrentFilters({})
       setTrialStatusFilters([])
       setTrialTypeFilter(null)
@@ -1356,17 +1342,17 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
       messagesContainerRef.current.scrollTop = 0
     }
 
+    // filteredResults is computed via useMemo, so we only save searchContext + currentFilters
     const state = {
       toolResults,
       searchContext,
-      filteredResults,
       currentFilters,
       messages,
       returnUrl: window.location.href
     }
     sessionStorage.setItem('searchState', JSON.stringify(state))
     router.push(`/project/${applicationId}`)
-  }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
+  }, [toolResults, searchContext, currentFilters, messages, router])
 
   // Save search state and navigate to trial
   const navigateToTrial = useCallback((nctId: string) => {
@@ -1375,17 +1361,17 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
       messagesContainerRef.current.scrollTop = 0
     }
 
+    // filteredResults is computed via useMemo, so we only save searchContext + currentFilters
     const state = {
       toolResults,
       searchContext,
-      filteredResults,
       currentFilters,
       messages,
       returnUrl: window.location.href
     }
     sessionStorage.setItem('searchState', JSON.stringify(state))
     router.push(`/trial/${nctId}`)
-  }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
+  }, [toolResults, searchContext, currentFilters, messages, router])
 
   // Save search state and navigate to organization
   const navigateToOrg = useCallback((orgName: string) => {
@@ -1393,17 +1379,17 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
       messagesContainerRef.current.scrollTop = 0
     }
 
+    // filteredResults is computed via useMemo, so we only save searchContext + currentFilters
     const state = {
       toolResults,
       searchContext,
-      filteredResults,
       currentFilters,
       messages,
       returnUrl: window.location.href
     }
     sessionStorage.setItem('searchState', JSON.stringify(state))
     router.push(`/org/${encodeURIComponent(orgName)}`)
-  }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
+  }, [toolResults, searchContext, currentFilters, messages, router])
 
   // Save search state and navigate to researcher
   const navigateToResearcher = useCallback((researcherName: string) => {
@@ -1411,17 +1397,17 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
       messagesContainerRef.current.scrollTop = 0
     }
 
+    // filteredResults is computed via useMemo, so we only save searchContext + currentFilters
     const state = {
       toolResults,
       searchContext,
-      filteredResults,
       currentFilters,
       messages,
       returnUrl: window.location.href
     }
     sessionStorage.setItem('searchState', JSON.stringify(state))
     router.push(`/researcher/${encodeURIComponent(researcherName)}`)
-  }, [toolResults, searchContext, filteredResults, currentFilters, messages, router])
+  }, [toolResults, searchContext, currentFilters, messages, router])
 
   // Save/unsave trial
   const handleSaveTrial = useCallback(async (nctId: string) => {
@@ -1469,15 +1455,16 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     return isSbir || isSttr
   }, [])
 
-  // Handle filter changes - just update state, let useEffect do the filtering
+  // Handle filter changes - just update state, useMemo computes filtered results synchronously
   const handleFilterChange = useCallback((filters: FilterState) => {
     setCurrentFilters(filters)
-    // The useEffect below will handle filtering when currentFilters changes
   }, [])
 
   // Single source of truth for all filtering (precision + category + org_type + quick filters)
-  useEffect(() => {
-    if (!searchContext) return
+  // Using useMemo instead of useEffect to avoid race conditions - filtered results are computed
+  // synchronously during render, so they're immediately available when filters change
+  const filteredResults = useMemo(() => {
+    if (!searchContext) return null
 
     const allResults = searchContext.originalResults.all_results
     const quick = currentFilters.quick
@@ -1488,10 +1475,9 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     const hasOrgTypeFilter = currentFilters.org_type?.length
     const hasPrecisionFilter = precision !== 'low' // 'low' = 100%, no filtering
 
-    // If no filters active, clear filtered results to show original
+    // If no filters active, return null to show original results
     if (!hasCategoryFilter && !hasOrgTypeFilter && !hasQuickFilters && !hasPrecisionFilter) {
-      setFilteredResults(null)
-      return
+      return null
     }
 
     // Apply precision filter (percentile-based: top N% by similarity)
@@ -1509,11 +1495,9 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
 
     // Apply org_type filter
     if (currentFilters.org_type?.length) {
-      const beforeCount = filtered.length
       filtered = filtered.filter(p =>
         p.org_type && currentFilters.org_type!.includes(p.org_type)
       )
-      console.log('[org_type filter]', { filter: currentFilters.org_type, before: beforeCount, after: filtered.length })
     }
 
     // Apply quick filters
@@ -1543,7 +1527,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
       byOrgType[org] = (byOrgType[org] || 0) + 1
     })
 
-    const filteredData: KeywordSearchResult = {
+    return {
       summary: `Found ${filtered.length} projects (filtered).`,
       search_query: searchContext.originalResults.search_query,
       total_count: filtered.length,
@@ -1552,9 +1536,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
       by_org_type: byOrgType,
       all_results: filtered,
       sample_results: filtered.slice(0, 10)
-    }
-
-    setFilteredResults(filteredData)
+    } as KeywordSearchResult
   }, [precision, searchContext, currentFilters, isSbirSttr])
 
   // Compute precision counts from original results (percentile-based)
@@ -1605,7 +1587,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     // This prevents old results from showing while new search is in progress
     setToolResults([])
     setSearchContext(null)
-    setFilteredResults(null)
+    // filteredResults is computed via useMemo - clearing searchContext and currentFilters resets it
     setCurrentFilters({})
     // Clear sessionStorage to prevent stale state restoration
     sessionStorage.removeItem('searchState')
@@ -1675,7 +1657,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                     semanticQuery: resultData.semantic_query || resultData.search_query || '',
                     originalResults: resultData
                   })
-                  setFilteredResults(null) // Clear any previous filters
+                  // filteredResults is computed via useMemo - new searchContext with cleared filters = no filtering
                 } else if (parsed.name === 'search_trials') {
                   // Cast trial results to KeywordSearchResult for searchContext compatibility
                   const resultData = parsed.data as TrialSearchResult
