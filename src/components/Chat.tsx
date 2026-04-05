@@ -239,6 +239,12 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
   // Use filtered results if available, otherwise use original
   const displayData = filteredResults || (projectResult?.data as KeywordSearchResult | undefined)
 
+  // Debug: log what's being rendered
+  if (filteredResults) {
+    const orgTypes = [...new Set(filteredResults.all_results?.map(p => p.org_type) || [])]
+    console.log('[ResultsPanel] filteredResults:', { count: filteredResults.total_count, orgTypes })
+  }
+
   if (latestResult.name === 'keyword_search') {
     // Use displayData if available (for filtered results), otherwise fall back to raw data
     const data = displayData || latestResult.data as KeywordSearchResult
@@ -1495,9 +1501,11 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
 
     // Apply org_type filter
     if (currentFilters.org_type?.length) {
+      const beforeCount = filtered.length
       filtered = filtered.filter(p =>
         p.org_type && currentFilters.org_type!.includes(p.org_type)
       )
+      console.log('[org_type filter]', { filter: currentFilters.org_type, before: beforeCount, after: filtered.length })
     }
 
     // Apply quick filters
