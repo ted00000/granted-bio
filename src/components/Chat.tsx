@@ -1330,6 +1330,11 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     }
   }, [persona])
 
+  // Sync newSearchMode with prop when it changes (e.g., from URL params)
+  useEffect(() => {
+    setNewSearchMode(searchMode)
+  }, [searchMode])
+
   // Save search state and navigate to project
   const navigateToProject = useCallback((applicationId: string) => {
     // Scroll to top BEFORE navigating so iOS Safari remembers this position

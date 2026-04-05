@@ -39,7 +39,7 @@ function ChatContent() {
   const initialLens = VALID_PERSONAS.includes(lensParam as PersonaType)
     ? (lensParam as PersonaType)
     : undefined
-  const searchMode: SearchMode = modeParam === 'standard' ? 'standard' : 'smart'
+  const searchMode: SearchMode = modeParam === 'standard' ? 'standard' : modeParam === 'name' ? 'name' : 'smart'
 
   useEffect(() => {
     const fetchUser = async () => {
