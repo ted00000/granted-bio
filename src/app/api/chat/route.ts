@@ -114,32 +114,24 @@ For this mode:
         systemPrompt += `
 
 === SEARCH MODE: NAME LOOKUP (Person Detected) ===
-The user has selected NAME search mode and entered what appears to be a person's name.
-Detection: ${detection.reason} (${detection.confidence} confidence)
+The user selected NAME search mode. This is a DIRECT LOOKUP by name, not a topic search.
 
-IMMEDIATELY call get_pi_profile with pi_name: "${lastUserMessage}"
-
-If the tool returns null or empty (researcher not found):
-1. First say: "No researcher named '${lastUserMessage}' found in our NIH database."
-2. Then you MAY offer a topic search: "However, I found X projects related to [topic]..."
-3. Be transparent - the user should know the direct lookup failed.
-
-Do NOT silently fall back to search_projects without explaining.`
+RULES:
+1. Call ONLY get_pi_profile with pi_name: "${lastUserMessage}"
+2. Do NOT call search_projects or any other tool
+3. If get_pi_profile returns null: respond "No researcher named '${lastUserMessage}' found in our NIH database."
+4. Do NOT offer topic search fallback - the user explicitly chose name lookup mode`
       } else {
         systemPrompt += `
 
 === SEARCH MODE: NAME LOOKUP (Organization Detected) ===
-The user has selected NAME search mode and entered what appears to be an organization name.
-Detection: ${detection.reason} (${detection.confidence} confidence)
+The user selected NAME search mode. This is a DIRECT LOOKUP by name, not a topic search.
 
-IMMEDIATELY call get_company_profile with org_name: "${lastUserMessage}"
-
-If the tool returns null or empty (organization not found):
-1. First say: "No organization named '${lastUserMessage}' found in our NIH database."
-2. Then you MAY offer a topic search: "However, I found X projects related to [topic]..."
-3. Be transparent - the user should know the direct lookup failed.
-
-Do NOT silently fall back to search_projects without explaining.`
+RULES:
+1. Call ONLY get_company_profile with org_name: "${lastUserMessage}"
+2. Do NOT call search_projects or any other tool
+3. If get_company_profile returns null: respond "No organization named '${lastUserMessage}' found in our NIH database."
+4. Do NOT offer topic search fallback - the user explicitly chose name lookup mode`
       }
     }
 
