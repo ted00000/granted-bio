@@ -1992,6 +1992,15 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                   </div>
                 ) : null}
 
+                {/* Show assistant message when no tool results (e.g., Name mode lookup failed) */}
+                {toolResults.length === 0 && lastAssistantMsg?.content && !isLoading && (
+                  <div className="bg-white rounded-lg border border-gray-100 p-4">
+                    <p className="text-sm text-gray-600 leading-relaxed">
+                      {lastAssistantMsg.content}
+                    </p>
+                  </div>
+                )}
+
                 {/* Filter chips - different for trials vs projects */}
                 {toolResults.length > 0 && searchContext && searchContext.originalResults.all_results?.length > 0 && (
                   persona === 'trials' ? (
