@@ -249,6 +249,10 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
     // Use displayData if available (for filtered results), otherwise fall back to raw data
     const data = displayData || latestResult.data as KeywordSearchResult
 
+    // Debug: log what data is being used at render time
+    const dataOrgTypes = [...new Set(data.all_results?.slice(0, 10).map(p => p.org_type) || [])]
+    console.log('[keyword_search branch] data org_types:', dataOrgTypes, 'displayData===filteredResults:', displayData === filteredResults)
+
     const isCapped = data.showing_count && data.showing_count < data.total_count
     const isFiltered = filteredResults !== null
 
@@ -511,6 +515,10 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
     // Now returns KeywordSearchResult format from hybrid search
     // Use displayData if available (for filtered results), otherwise fall back to raw data
     const data = displayData || latestResult.data as KeywordSearchResult
+
+    // Debug: log what data is being used at render time
+    const dataOrgTypes = [...new Set(data.all_results?.slice(0, 10).map(p => p.org_type) || [])]
+    console.log('[search_projects branch] data org_types:', dataOrgTypes, 'displayData===filteredResults:', displayData === filteredResults)
 
     const isCapped = data.showing_count && data.showing_count < data.total_count
     const isFiltered = filteredResults !== null
