@@ -41,8 +41,7 @@ const SEARCH_TIPS: Record<PersonaType, {
     description: 'Find researchers, labs, and organizations working in specific areas',
     examples: [
       { label: 'Researcher names', queries: ['Jane Doe', 'John Doe'] },
-      { label: 'Institutions', queries: ['Stanford University', 'MIT', 'Johns Hopkins'] },
-      { label: 'Companies', queries: ['Genentech', 'Moderna', 'Illumina'] },
+      { label: 'Organizations', queries: ['Stanford University', 'Genentech', 'MIT'] },
       { label: 'Research areas', queries: ['immunotherapy researchers', 'CRISPR labs'] },
     ]
   },
