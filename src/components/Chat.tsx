@@ -1455,113 +1455,52 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     return isSbir || isSttr
   }, [])
 
-  // Handle filter changes - filter client-side from stored results
+  // Handle filter changes - just update state, let useEffect do the filtering
   const handleFilterChange = useCallback((filters: FilterState) => {
     setCurrentFilters(filters)
+    // The useEffect below will handle filtering when currentFilters changes
+  }, [])
 
-    if (!searchContext) return
-
-    const allResults = searchContext.originalResults.all_results
-    const quick = filters.quick
-
-    // If no filters, clear filtered results and show original
-    const hasQuickFilters = quick && (quick.activeOnly || quick.sbirSttrOnly || quick.hasPatents || quick.hasClinicalTrials || quick.precision)
-    if (!filters.primary_category?.length && !filters.org_type?.length && !hasQuickFilters) {
-      setFilteredResults(null)
-      return
-    }
-
-    // Filter the full result set client-side
-    let filtered = allResults
-
-    // Apply precision filter (percentile-based: top N% by similarity)
-    if (quick?.precision) {
-      const percentile = PRECISION_PERCENTILES[quick.precision]
-      const sorted = [...filtered].sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
-      const count = Math.max(1, Math.ceil(sorted.length * percentile))
-      filtered = sorted.slice(0, count)
-    }
-
-    // Apply quick filters
-    if (quick?.activeOnly) {
-      filtered = filtered.filter(p => isProjectActive(p.project_end) === true)
-    }
-    if (quick?.sbirSttrOnly) {
-      filtered = filtered.filter(p => isSbirSttr(p.activity_code))
-    }
-    if (quick?.hasPatents) {
-      filtered = filtered.filter(p => (p.patent_count || 0) > 0)
-    }
-    if (quick?.hasClinicalTrials) {
-      filtered = filtered.filter(p => (p.clinical_trial_count || 0) > 0)
-    }
-    if (quick?.hasPublications) {
-      filtered = filtered.filter(p => (p.publication_count || 0) > 0)
-    }
-
-    if (filters.primary_category?.length) {
-      filtered = filtered.filter(p =>
-        p.primary_category && filters.primary_category!.includes(p.primary_category)
-      )
-    }
-
-    if (filters.org_type?.length) {
-      filtered = filtered.filter(p =>
-        p.org_type && filters.org_type!.includes(p.org_type)
-      )
-    }
-
-    // Recalculate category and org_type counts from filtered set
-    const byCategory: Record<string, number> = {}
-    const byOrgType: Record<string, number> = {}
-
-    filtered.forEach(p => {
-      const cat = p.primary_category || 'other'
-      const org = p.org_type || 'other'
-      byCategory[cat] = (byCategory[cat] || 0) + 1
-      byOrgType[org] = (byOrgType[org] || 0) + 1
-    })
-
-    // Build filtered result with updated counts
-    const filteredData: KeywordSearchResult = {
-      summary: `Found ${filtered.length} projects (filtered).`,
-      search_query: searchContext.originalResults.search_query,
-      total_count: filtered.length,
-      showing_count: Math.min(filtered.length, 100),
-      by_category: byCategory,
-      by_org_type: byOrgType,
-      all_results: filtered,
-      sample_results: filtered.slice(0, 10)
-    }
-
-    setFilteredResults(filteredData)
-  }, [searchContext])
-
-  // Apply precision filtering when precision changes
+  // Single source of truth for all filtering (precision + category + org_type + quick filters)
   useEffect(() => {
     if (!searchContext) return
 
     const allResults = searchContext.originalResults.all_results
-    const percentile = PRECISION_PERCENTILES[precision]
+    const quick = currentFilters.quick
 
-    // Filter by percentile (top N% by similarity)
+    // Check if any filters are active
+    const hasQuickFilters = quick && (quick.activeOnly || quick.sbirSttrOnly || quick.hasPatents || quick.hasClinicalTrials || quick.hasPublications)
+    const hasCategoryFilter = currentFilters.primary_category?.length
+    const hasOrgTypeFilter = currentFilters.org_type?.length
+    const hasPrecisionFilter = precision !== 'low' // 'low' = 100%, no filtering
+
+    // If no filters active, clear filtered results to show original
+    if (!hasCategoryFilter && !hasOrgTypeFilter && !hasQuickFilters && !hasPrecisionFilter) {
+      setFilteredResults(null)
+      return
+    }
+
+    // Apply precision filter (percentile-based: top N% by similarity)
+    const percentile = PRECISION_PERCENTILES[precision]
     const sorted = [...allResults].sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
     const count = Math.max(1, Math.ceil(sorted.length * percentile))
     let filtered = sorted.slice(0, count)
 
-    // Also apply any existing category/org_type filters
+    // Apply category filter
     if (currentFilters.primary_category?.length) {
       filtered = filtered.filter(p =>
         p.primary_category && currentFilters.primary_category!.includes(p.primary_category)
       )
     }
+
+    // Apply org_type filter
     if (currentFilters.org_type?.length) {
       filtered = filtered.filter(p =>
         p.org_type && currentFilters.org_type!.includes(p.org_type)
       )
     }
+
     // Apply quick filters
-    const quick = currentFilters.quick
     if (quick?.activeOnly) {
       filtered = filtered.filter(p => isProjectActive(p.project_end) === true)
     }
@@ -1578,7 +1517,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
       filtered = filtered.filter(p => (p.publication_count || 0) > 0)
     }
 
-    // Recalculate counts
+    // Recalculate counts from filtered results
     const byCategory: Record<string, number> = {}
     const byOrgType: Record<string, number> = {}
     filtered.forEach(p => {
@@ -1589,7 +1528,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     })
 
     const filteredData: KeywordSearchResult = {
-      summary: `Found ${filtered.length} projects.`,
+      summary: `Found ${filtered.length} projects (filtered).`,
       search_query: searchContext.originalResults.search_query,
       total_count: filtered.length,
       showing_count: Math.min(filtered.length, 100),
@@ -1646,8 +1585,14 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     setMessages(updatedMessages)
     setInput('')
     setIsLoading(true)
-    // Clear tool results when starting a new user message (not on each tool_start)
+    // Clear previous search state when starting a new search
+    // This prevents old results from showing while new search is in progress
     setToolResults([])
+    setSearchContext(null)
+    setFilteredResults(null)
+    setCurrentFilters({})
+    // Clear sessionStorage to prevent stale state restoration
+    sessionStorage.removeItem('searchState')
 
     const assistantId = crypto.randomUUID()
     setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '', isStreaming: true }])
