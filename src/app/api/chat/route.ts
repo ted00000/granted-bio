@@ -119,7 +119,7 @@ The user selected NAME search mode. This is a DIRECT LOOKUP by name, not a topic
 RULES:
 1. Call ONLY get_pi_profile with pi_name: "${lastUserMessage}"
 2. Do NOT call search_projects or any other tool
-3. If get_pi_profile returns null: respond "No researcher named '${lastUserMessage}' found in our NIH database."
+3. If get_pi_profile returns null: respond "No researcher named '${lastUserMessage}' found in our NIH grant data (2024-present)."
 4. Do NOT offer topic search fallback - the user explicitly chose name lookup mode`
       } else {
         systemPrompt += `
@@ -130,7 +130,7 @@ The user selected NAME search mode. This is a DIRECT LOOKUP by name, not a topic
 RULES:
 1. Call ONLY get_company_profile with org_name: "${lastUserMessage}"
 2. Do NOT call search_projects or any other tool
-3. If get_company_profile returns null: respond "No organization named '${lastUserMessage}' found in our NIH database."
+3. If get_company_profile returns null: respond "No organization named '${lastUserMessage}' found in our NIH grant data (2024-present)."
 4. Do NOT offer topic search fallback - the user explicitly chose name lookup mode`
       }
     }
