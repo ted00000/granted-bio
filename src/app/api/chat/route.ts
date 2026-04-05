@@ -118,7 +118,13 @@ The user has selected NAME search mode and entered what appears to be a person's
 Detection: ${detection.reason} (${detection.confidence} confidence)
 
 IMMEDIATELY call get_pi_profile with pi_name: "${lastUserMessage}"
-Do NOT use search_projects. This is a direct PI lookup.`
+
+If the tool returns null or empty (researcher not found):
+1. First say: "No researcher named '${lastUserMessage}' found in our NIH database."
+2. Then you MAY offer a topic search: "However, I found X projects related to [topic]..."
+3. Be transparent - the user should know the direct lookup failed.
+
+Do NOT silently fall back to search_projects without explaining.`
       } else {
         systemPrompt += `
 
@@ -127,7 +133,13 @@ The user has selected NAME search mode and entered what appears to be an organiz
 Detection: ${detection.reason} (${detection.confidence} confidence)
 
 IMMEDIATELY call get_company_profile with org_name: "${lastUserMessage}"
-Do NOT use search_projects. This is a direct organization lookup.`
+
+If the tool returns null or empty (organization not found):
+1. First say: "No organization named '${lastUserMessage}' found in our NIH database."
+2. Then you MAY offer a topic search: "However, I found X projects related to [topic]..."
+3. Be transparent - the user should know the direct lookup failed.
+
+Do NOT silently fall back to search_projects without explaining.`
       }
     }
 
