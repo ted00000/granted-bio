@@ -1016,9 +1016,24 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
     return (
       <div className="h-full overflow-y-auto">
         <div className="p-6 border-b border-gray-100">
-          <div className="text-lg font-semibold text-gray-900">{data.org_name}</div>
-          <div className="text-3xl font-semibold tracking-tight text-[#E07A5F] mt-2">{formatCurrency(data.total_funding)}</div>
-          <div className="text-sm text-gray-400 mt-1">total funding</div>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <button
+                onClick={() => onOrgClick?.(data.org_name)}
+                className="text-lg font-semibold text-gray-900 hover:text-[#E07A5F] transition-colors text-left"
+              >
+                {data.org_name}
+              </button>
+              <div className="text-3xl font-semibold tracking-tight text-[#E07A5F] mt-2">{formatCurrency(data.total_funding)}</div>
+              <div className="text-sm text-gray-400 mt-1">total funding</div>
+            </div>
+            <button
+              onClick={() => onOrgClick?.(data.org_name)}
+              className="flex-shrink-0 px-3 py-1.5 text-sm font-medium text-[#E07A5F] hover:bg-[#E07A5F]/10 rounded-lg transition-colors"
+            >
+              View Full Profile →
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-6 p-6 border-b border-gray-100">
