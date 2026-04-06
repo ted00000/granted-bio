@@ -1756,49 +1756,75 @@ export async function getCompanyProfile(
 ): Promise<ReturnType<typeof summarizeCompanyProfile> | null> {
   const { org_name } = params
 
+  // Only include recent fiscal years (2024+) to match org page
+  const MIN_FISCAL_YEAR = 2024
+
   try {
-    // Find projects for this organization
-    const { data: projects, error: projectsError } = await supabaseAdmin
+    // First, find the canonical org name with a partial match
+    const { data: matchProjects, error: matchError } = await supabaseAdmin
+      .from('projects')
+      .select('org_name')
+      .ilike('org_name', `%${org_name}%`)
+      .limit(1)
+
+    if (matchError) throw matchError
+    if (!matchProjects?.length) return null
+
+    const canonicalOrgName = matchProjects[0].org_name
+
+    // Now fetch all projects with exact match on canonical name and fiscal year filter
+    const { data: allProjects, error: projectsError } = await supabaseAdmin
       .from('projects')
       .select('*')
-      .ilike('org_name', `%${org_name}%`)
+      .eq('org_name', canonicalOrgName)
+      .gte('fiscal_year', MIN_FISCAL_YEAR)
       .order('fiscal_year', { ascending: false })
 
     if (projectsError) throw projectsError
 
-    if (!projects?.length) {
+    if (!allProjects?.length) {
       return null
     }
 
-    // Get the canonical org name from first result
-    const canonicalOrgName = projects[0].org_name
+    // Deduplicate projects by core project number (same logic as org page)
+    const seenProjects = new Map<string, typeof allProjects[0]>()
+    for (const project of allProjects) {
+      const dedupeKey = getProjectDedupeKey(project)
+      if (!dedupeKey) continue
+      const existing = seenProjects.get(dedupeKey)
+      // Keep the most recent fiscal year version
+      if (!existing || (project.fiscal_year || 0) > (existing.fiscal_year || 0)) {
+        seenProjects.set(dedupeKey, project)
+      }
+    }
+    const dedupedProjects = Array.from(seenProjects.values())
 
-    // Get patent count
-    const projectNumbers = projects.map(p => p.project_number).filter(Boolean)
-    const { count: patentCount } = await supabaseAdmin
-      .from('patents')
-      .select('*', { count: 'exact', head: true })
-      .in('project_number', projectNumbers)
+    // Get project numbers for linked table queries
+    const projectNumbers = dedupedProjects.map(p => p.project_number).filter(Boolean) as string[]
 
-    // Get publication count
-    const { count: pubCount } = await supabaseAdmin
-      .from('project_publications')
-      .select('*', { count: 'exact', head: true })
-      .in('project_number', projectNumbers)
+    // Get counts from linked tables (use project_patents, not patents)
+    const [patentsResult, pubsResult, trialsResult] = await Promise.all([
+      supabaseAdmin
+        .from('project_patents')
+        .select('*', { count: 'exact', head: true })
+        .in('project_number', projectNumbers),
+      supabaseAdmin
+        .from('project_publications')
+        .select('*', { count: 'exact', head: true })
+        .in('project_number', projectNumbers),
+      supabaseAdmin
+        .from('clinical_studies')
+        .select('*', { count: 'exact', head: true })
+        .in('project_number', projectNumbers)
+    ])
 
-    // Get clinical trial count
-    const { count: trialCount } = await supabaseAdmin
-      .from('clinical_studies')
-      .select('*', { count: 'exact', head: true })
-      .in('project_number', projectNumbers)
-
-    // Aggregate stats
-    const totalFunding = projects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
+    // Aggregate stats from deduplicated projects
+    const totalFunding = dedupedProjects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
     const categories: Record<string, number> = {}
     const fiscalYears = new Set<number>()
     const states = new Set<string>()
 
-    projects.forEach(p => {
+    dedupedProjects.forEach(p => {
       if (p.primary_category) {
         categories[p.primary_category] = (categories[p.primary_category] || 0) + 1
       }
@@ -1809,11 +1835,11 @@ export async function getCompanyProfile(
     const profile: CompanyProfile = {
       org_name: canonicalOrgName || org_name,
       total_funding: totalFunding,
-      project_count: projects.length,
-      patent_count: patentCount || 0,
-      publication_count: pubCount || 0,
-      clinical_trial_count: trialCount || 0,
-      projects: projects.slice(0, 10) as ProjectResult[],
+      project_count: dedupedProjects.length,
+      patent_count: patentsResult.count || 0,
+      publication_count: pubsResult.count || 0,
+      clinical_trial_count: trialsResult.count || 0,
+      projects: dedupedProjects.slice(0, 10) as ProjectResult[],
       primary_categories: categories,
       fiscal_years: Array.from(fiscalYears).sort((a, b) => b - a),
       states: Array.from(states)
