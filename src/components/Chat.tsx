@@ -1662,6 +1662,17 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: true } : m))
                 setIsSearching(true)
               } else if (parsed.type === 'tool_result') {
+                // For get_company_profile, navigate directly to org page without updating state
+                // This prevents the preview from flashing before navigation
+                if (parsed.name === 'get_company_profile') {
+                  const resultData = parsed.data as { org_name?: string }
+                  if (resultData?.org_name) {
+                    setIsSearching(false)
+                    router.push(`/org/${encodeURIComponent(resultData.org_name)}`)
+                    return // Skip adding to toolResults
+                  }
+                }
+
                 setToolResults(prev => [...prev, { name: parsed.name, data: parsed.data, timestamp: Date.now() }])
                 setIsSearching(false)
                 // Capture search context for UI filtering
@@ -1683,12 +1694,6 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                   })
                   setTrialStatusFilters([]) // Clear any previous trial filters
                   setTrialTypeFilter(null)
-                } else if (parsed.name === 'get_company_profile') {
-                  // Auto-navigate to full org page instead of showing preview
-                  const resultData = parsed.data as { org_name?: string }
-                  if (resultData?.org_name) {
-                    router.push(`/org/${encodeURIComponent(resultData.org_name)}`)
-                  }
                 }
               } else if (parsed.type === 'tool_complete') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: false } : m))
