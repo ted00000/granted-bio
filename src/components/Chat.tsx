@@ -1706,17 +1706,6 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: true } : m))
                 setIsSearching(true)
               } else if (parsed.type === 'tool_result') {
-                // For get_company_profile, navigate directly to org page without updating state
-                if (parsed.name === 'get_company_profile') {
-                  const resultData = parsed.data as { org_name?: string }
-                  if (resultData?.org_name) {
-                    // Set loading false immediately to hide "Searching..." before navigation
-                    setIsLoading(false)
-                    router.replace(`/org/${encodeURIComponent(resultData.org_name)}`)
-                    return // Skip adding to toolResults
-                  }
-                }
-
                 setToolResults(prev => [...prev, { name: parsed.name, data: parsed.data, timestamp: Date.now() }])
                 setIsSearching(false)
                 // Capture search context for UI filtering
