@@ -1663,12 +1663,12 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                 setIsSearching(true)
               } else if (parsed.type === 'tool_result') {
                 // For get_company_profile, navigate directly to org page without updating state
-                // This prevents the preview from flashing before navigation
                 if (parsed.name === 'get_company_profile') {
                   const resultData = parsed.data as { org_name?: string }
                   if (resultData?.org_name) {
-                    setIsSearching(false)
-                    router.push(`/org/${encodeURIComponent(resultData.org_name)}`)
+                    // Set loading false immediately to hide "Searching..." before navigation
+                    setIsLoading(false)
+                    router.replace(`/org/${encodeURIComponent(resultData.org_name)}`)
                     return // Skip adding to toolResults
                   }
                 }
