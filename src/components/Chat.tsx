@@ -398,6 +398,28 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                           {project.title}
                         </p>
                         <div className="flex items-center flex-wrap gap-1.5 mt-2">
+                          {(() => {
+                            const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
+                            return (
+                              <>
+                                {isSbir && (
+                                  <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                                    SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                                  </span>
+                                )}
+                                {isSttr && (
+                                  <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                                    STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                                  </span>
+                                )}
+                              </>
+                            )
+                          })()}
+                          {project.primary_category && (
+                            <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
+                              {project.primary_category.replace(/_/g, ' ')}
+                            </span>
+                          )}
                           {project.patent_count > 0 && (
                             <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
                               {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
@@ -661,6 +683,28 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                           {project.title}
                         </p>
                         <div className="flex items-center flex-wrap gap-1.5 mt-2">
+                          {(() => {
+                            const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
+                            return (
+                              <>
+                                {isSbir && (
+                                  <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                                    SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                                  </span>
+                                )}
+                                {isSttr && (
+                                  <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                                    STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                                  </span>
+                                )}
+                              </>
+                            )
+                          })()}
+                          {project.primary_category && (
+                            <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
+                              {project.primary_category.replace(/_/g, ' ')}
+                            </span>
+                          )}
                           {project.patent_count > 0 && (
                             <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
                               {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
