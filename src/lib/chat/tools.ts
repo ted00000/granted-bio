@@ -1745,7 +1745,11 @@ function summarizeCompanyProfile(profile: CompanyProfile) {
       title: p.title,
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
-      primary_category: p.primary_category
+      primary_category: p.primary_category,
+      activity_code: p.activity_code,
+      patent_count: p.patent_count,
+      publication_count: p.publication_count,
+      clinical_trial_count: p.clinical_trial_count
     }))
   }
 }
@@ -1865,6 +1869,10 @@ type SummarizedPIProfile = {
     total_cost: number | null
     fiscal_year: number | null
     primary_category: string | null
+    activity_code: string | null
+    patent_count: number
+    publication_count: number
+    clinical_trial_count: number
   }>
 }
 
@@ -1943,13 +1951,17 @@ export async function getPIProfile(
       fiscal_year: number | null
       primary_category: string | null
       pi_names: string | null
+      activity_code: string | null
+      patent_count: number
+      publication_count: number
+      clinical_trial_count: number
     }> | null = null
     let matchedPattern: string | null = null
 
     for (const pattern of namePatterns) {
       const { data, error } = await supabaseAdmin
         .from('projects')
-        .select('org_name, project_number, total_cost, title, fiscal_year, primary_category, pi_names')
+        .select('org_name, project_number, total_cost, title, fiscal_year, primary_category, pi_names, activity_code, patent_count, publication_count, clinical_trial_count')
         .ilike('pi_names', `%${pattern}%`)
         .order('fiscal_year', { ascending: false })
 
@@ -1993,7 +2005,11 @@ export async function getPIProfile(
         org_name: p.org_name,
         total_cost: p.total_cost,
         fiscal_year: p.fiscal_year,
-        primary_category: p.primary_category
+        primary_category: p.primary_category,
+        activity_code: p.activity_code,
+        patent_count: p.patent_count,
+        publication_count: p.publication_count,
+        clinical_trial_count: p.clinical_trial_count
       }))
     }
   } catch (error) {

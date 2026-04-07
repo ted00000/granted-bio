@@ -1052,7 +1052,17 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
       patent_count: number
       publication_count: number
       clinical_trial_count: number
-      top_projects: Array<{ application_id?: string; title: string; total_cost: number | null; fiscal_year: number | null }>
+      top_projects: Array<{
+        application_id?: string
+        title: string
+        total_cost: number | null
+        fiscal_year: number | null
+        primary_category: string | null
+        activity_code: string | null
+        patent_count: number
+        publication_count: number
+        clinical_trial_count: number
+      }>
     }
 
     if (!data) return <div className="flex items-center justify-center h-full text-gray-400 text-sm">Not found</div>
@@ -1102,13 +1112,52 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 <div
                   key={idx}
                   onClick={() => project.application_id && onProjectClick?.(project.application_id)}
-                  className={project.application_id ? 'cursor-pointer hover:bg-gray-50 -mx-2 px-2 py-1 rounded transition-colors' : ''}
+                  className={project.application_id ? 'cursor-pointer hover:bg-gray-50 -mx-2 px-2 py-2 rounded transition-colors' : ''}
                 >
-                  <p className="text-sm text-gray-900">{project.title}</p>
-                  <div className="flex items-center justify-between mt-1">
-                    <span className="text-xs text-gray-400">FY{project.fiscal_year}</span>
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-sm text-gray-900 flex-1">{project.title}</p>
                     {project.total_cost && (
-                      <span className="text-sm font-medium text-[#E07A5F]">{formatCurrency(project.total_cost)}</span>
+                      <span className="text-sm font-medium text-[#E07A5F] flex-shrink-0">{formatCurrency(project.total_cost)}</span>
+                    )}
+                  </div>
+                  <div className="text-xs text-gray-400 mt-1">FY{project.fiscal_year}</div>
+                  <div className="flex items-center flex-wrap gap-1.5 mt-2">
+                    {(() => {
+                      const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
+                      return (
+                        <>
+                          {isSbir && (
+                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                              SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                            </span>
+                          )}
+                          {isSttr && (
+                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                              STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                            </span>
+                          )}
+                        </>
+                      )
+                    })()}
+                    {project.primary_category && (
+                      <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
+                        {project.primary_category.replace(/_/g, ' ')}
+                      </span>
+                    )}
+                    {project.patent_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
+                        {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
+                    {project.publication_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-700 rounded">
+                        {project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
+                    {project.clinical_trial_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-green-50 text-green-700 rounded">
+                        {project.clinical_trial_count} Trial{project.clinical_trial_count !== 1 ? 's' : ''}
+                      </span>
                     )}
                   </div>
                 </div>
@@ -1133,6 +1182,10 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         total_cost: number | null
         fiscal_year: number | null
         primary_category: string | null
+        activity_code: string | null
+        patent_count: number
+        publication_count: number
+        clinical_trial_count: number
       }>
     }
 
@@ -1167,19 +1220,53 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             <div className="space-y-4">
               {data.top_projects.map((project, idx) => (
                 <div key={idx} className="pb-3 border-b border-gray-50 last:border-0">
-                  <p className="text-sm text-gray-900 leading-snug">{project.title}</p>
-                  <div className="flex items-center justify-between mt-1.5">
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                      {project.org_name && <span>{project.org_name}</span>}
-                      {project.fiscal_year && <span>FY{project.fiscal_year}</span>}
-                      {project.primary_category && (
-                        <span className="px-1.5 py-0.5 bg-gray-100 rounded text-[10px] capitalize">
-                          {project.primary_category.replace(/_/g, ' ')}
-                        </span>
-                      )}
-                    </div>
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-sm text-gray-900 leading-snug flex-1">{project.title}</p>
                     {project.total_cost && (
-                      <span className="text-sm font-medium text-[#E07A5F]">{formatCurrency(project.total_cost)}</span>
+                      <span className="text-sm font-medium text-[#E07A5F] flex-shrink-0">{formatCurrency(project.total_cost)}</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
+                    {project.org_name && <span>{project.org_name}</span>}
+                    {project.fiscal_year && <span>FY{project.fiscal_year}</span>}
+                  </div>
+                  <div className="flex items-center flex-wrap gap-1.5 mt-2">
+                    {(() => {
+                      const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
+                      return (
+                        <>
+                          {isSbir && (
+                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                              SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                            </span>
+                          )}
+                          {isSttr && (
+                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                              STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                            </span>
+                          )}
+                        </>
+                      )
+                    })()}
+                    {project.primary_category && (
+                      <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
+                        {project.primary_category.replace(/_/g, ' ')}
+                      </span>
+                    )}
+                    {project.patent_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
+                        {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
+                    {project.publication_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-700 rounded">
+                        {project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}
+                      </span>
+                    )}
+                    {project.clinical_trial_count > 0 && (
+                      <span className="px-2 py-0.5 text-xs bg-green-50 text-green-700 rounded">
+                        {project.clinical_trial_count} Trial{project.clinical_trial_count !== 1 ? 's' : ''}
+                      </span>
                     )}
                   </div>
                 </div>

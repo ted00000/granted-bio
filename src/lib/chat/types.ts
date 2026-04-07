@@ -168,6 +168,11 @@ export interface ProjectResult {
   is_supplement: boolean | null
   supplement_number: string | null
   similarity?: number
+  // Tag fields for display badges
+  activity_code?: string | null
+  patent_count?: number
+  publication_count?: number
+  clinical_trial_count?: number
 }
 
 export interface CompanyProfile {
