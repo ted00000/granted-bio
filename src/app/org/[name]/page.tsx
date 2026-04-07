@@ -30,6 +30,22 @@ interface Project {
   primary_category: string | null
   project_start: string | null
   project_end: string | null
+  activity_code: string | null
+  patent_count: number
+  publication_count: number
+  clinical_trial_count: number
+}
+
+// Helper to detect SBIR/STTR from activity code
+function getSbirSttrStatus(activityCode: string | null): { isSbir: boolean; isSttr: boolean; phase: number | null } {
+  if (!activityCode) return { isSbir: false, isSttr: false, phase: null }
+  const code = activityCode.toUpperCase()
+  const isSbir = code.startsWith('R43') || code.startsWith('R44')
+  const isSttr = code.startsWith('R41') || code.startsWith('R42')
+  let phase: number | null = null
+  if (code.startsWith('R43') || code.startsWith('R41')) phase = 1
+  if (code.startsWith('R44') || code.startsWith('R42')) phase = 2
+  return { isSbir, isSttr, phase }
 }
 
 interface Pagination {
@@ -554,8 +570,45 @@ export default function OrgPage() {
                           <span className="truncate">PI: {project.pi_names.split(';')[0]?.trim()}</span>
                         )}
                         {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
+                      </div>
+                      {/* Tags row */}
+                      <div className="flex items-center flex-wrap gap-1.5 mt-2">
+                        {(() => {
+                          const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
+                          return (
+                            <>
+                              {isSbir && (
+                                <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                                  SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                                </span>
+                              )}
+                              {isSttr && (
+                                <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                                  STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                                </span>
+                              )}
+                            </>
+                          )
+                        })()}
                         {project.primary_category && (
-                          <span className="capitalize">• {project.primary_category.replace(/_/g, ' ')}</span>
+                          <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
+                            {project.primary_category.replace(/_/g, ' ')}
+                          </span>
+                        )}
+                        {project.patent_count > 0 && (
+                          <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
+                            {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
+                          </span>
+                        )}
+                        {project.publication_count > 0 && (
+                          <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-700 rounded">
+                            {project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}
+                          </span>
+                        )}
+                        {project.clinical_trial_count > 0 && (
+                          <span className="px-2 py-0.5 text-xs bg-green-50 text-green-700 rounded">
+                            {project.clinical_trial_count} Trial{project.clinical_trial_count !== 1 ? 's' : ''}
+                          </span>
                         )}
                       </div>
                     </Link>

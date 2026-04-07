@@ -167,7 +167,11 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         pi_names,
         primary_category,
         project_start,
-        project_end
+        project_end,
+        activity_code,
+        patent_count,
+        publication_count,
+        clinical_trial_count
       `, { count: 'exact' })
       .eq('org_name', orgName)
       .gte('fiscal_year', MIN_FISCAL_YEAR)
