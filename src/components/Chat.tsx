@@ -1683,6 +1683,12 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                   })
                   setTrialStatusFilters([]) // Clear any previous trial filters
                   setTrialTypeFilter(null)
+                } else if (parsed.name === 'get_company_profile') {
+                  // Auto-navigate to full org page instead of showing preview
+                  const resultData = parsed.data as { org_name?: string }
+                  if (resultData?.org_name) {
+                    router.push(`/org/${encodeURIComponent(resultData.org_name)}`)
+                  }
                 }
               } else if (parsed.type === 'tool_complete') {
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: false } : m))
