@@ -372,7 +372,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
                   <button
                     key={project.application_id}
-                    onClick={() => persona === 'bd' && project.org_name ? onOrgClick?.(project.org_name) : onProjectClick?.(project.application_id)}
+                    onClick={() => onProjectClick?.(project.application_id)}
                     className={`group block w-full text-left ${isMobile
                       ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:bg-gray-50'
                       : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0 hover:bg-gray-50/50 -mx-2 px-2 rounded-lg transition-colors'}`}
@@ -657,7 +657,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               {data.all_results.slice(0, isMobile ? 50 : 100).map((project) => (
                   <button
                     key={project.application_id}
-                    onClick={() => persona === 'bd' && project.org_name ? onOrgClick?.(project.org_name) : onProjectClick?.(project.application_id)}
+                    onClick={() => onProjectClick?.(project.application_id)}
                     className={`group block w-full text-left ${isMobile
                       ? 'bg-white rounded-xl p-4 shadow-sm border border-gray-100 active:bg-gray-50'
                       : 'pb-4 border-b border-gray-50 last:border-0 last:pb-0 hover:bg-gray-50/50 -mx-2 px-2 rounded-lg transition-colors'}`}
