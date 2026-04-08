@@ -1745,6 +1745,7 @@ function summarizeCompanyProfile(profile: CompanyProfile) {
       title: p.title,
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
+      project_end: p.project_end,
       primary_category: p.primary_category,
       activity_code: p.activity_code,
       patent_count: p.patent_count,

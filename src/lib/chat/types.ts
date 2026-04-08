@@ -170,6 +170,7 @@ export interface ProjectResult {
   similarity?: number
   // Tag fields for display badges
   activity_code?: string | null
+  project_end?: string | null
   patent_count?: number
   publication_count?: number
   clinical_trial_count?: number

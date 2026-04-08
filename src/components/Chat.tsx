@@ -1057,6 +1057,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         title: string
         total_cost: number | null
         fiscal_year: number | null
+        project_end: string | null
         primary_category: string | null
         activity_code: string | null
         patent_count: number
@@ -1108,60 +1109,75 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           <div className="p-6">
             <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-4">Recent Projects</h3>
             <div className="space-y-4">
-              {data.top_projects.map((project, idx) => (
-                <div
-                  key={idx}
-                  onClick={() => project.application_id && onProjectClick?.(project.application_id)}
-                  className={project.application_id ? 'cursor-pointer hover:bg-gray-50 -mx-2 px-2 py-2 rounded transition-colors' : ''}
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="text-sm text-gray-900 flex-1">{project.title}</p>
-                    {project.total_cost && (
-                      <span className="text-sm font-medium text-[#E07A5F] flex-shrink-0">{formatCurrency(project.total_cost)}</span>
-                    )}
+              {data.top_projects.map((project, idx) => {
+                const isActive = isProjectActive(project.project_end)
+                return (
+                  <div
+                    key={idx}
+                    onClick={() => project.application_id && onProjectClick?.(project.application_id)}
+                    className={project.application_id ? 'cursor-pointer hover:bg-gray-50 -mx-2 px-2 py-2 rounded transition-colors' : ''}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="text-sm text-gray-900 flex-1">{project.title}</p>
+                      {project.total_cost && (
+                        <span className="text-sm font-medium text-[#E07A5F] flex-shrink-0">{formatCurrency(project.total_cost)}</span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
+                      {(() => {
+                        const color = isActive === null ? 'bg-gray-300' : isActive ? 'bg-emerald-400' : 'bg-rose-300'
+                        const label = isActive === null ? 'Unknown' : isActive ? 'Active' : 'Inactive'
+                        return (
+                          <span
+                            className={`w-2 h-2 rounded-full flex-shrink-0 ${color}`}
+                            title={label}
+                          />
+                        )
+                      })()}
+                      <span>FY{project.fiscal_year}</span>
+                    </div>
+                    <div className="flex items-center flex-wrap gap-1.5 mt-2">
+                      {(() => {
+                        const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
+                        return (
+                          <>
+                            {isSbir && (
+                              <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                                SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                              </span>
+                            )}
+                            {isSttr && (
+                              <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
+                                STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
+                              </span>
+                            )}
+                          </>
+                        )
+                      })()}
+                      {project.primary_category && (
+                        <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
+                          {project.primary_category.replace(/_/g, ' ')}
+                        </span>
+                      )}
+                      {project.patent_count > 0 && (
+                        <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
+                          {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
+                        </span>
+                      )}
+                      {project.publication_count > 0 && (
+                        <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-700 rounded">
+                          {project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}
+                        </span>
+                      )}
+                      {project.clinical_trial_count > 0 && (
+                        <span className="px-2 py-0.5 text-xs bg-green-50 text-green-700 rounded">
+                          {project.clinical_trial_count} Trial{project.clinical_trial_count !== 1 ? 's' : ''}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-400 mt-1">FY{project.fiscal_year}</div>
-                  <div className="flex items-center flex-wrap gap-1.5 mt-2">
-                    {(() => {
-                      const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
-                      return (
-                        <>
-                          {isSbir && (
-                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
-                              SBIR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
-                            </span>
-                          )}
-                          {isSttr && (
-                            <span className="px-2 py-0.5 text-xs bg-purple-50 text-purple-700 rounded">
-                              STTR{phase ? ` ${phase === 1 ? 'I' : 'II'}` : ''}
-                            </span>
-                          )}
-                        </>
-                      )
-                    })()}
-                    {project.primary_category && (
-                      <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-600 rounded capitalize">
-                        {project.primary_category.replace(/_/g, ' ')}
-                      </span>
-                    )}
-                    {project.patent_count > 0 && (
-                      <span className="px-2 py-0.5 text-xs bg-amber-50 text-amber-700 rounded">
-                        {project.patent_count} Patent{project.patent_count !== 1 ? 's' : ''}
-                      </span>
-                    )}
-                    {project.publication_count > 0 && (
-                      <span className="px-2 py-0.5 text-xs bg-blue-50 text-blue-700 rounded">
-                        {project.publication_count} Pub{project.publication_count !== 1 ? 's' : ''}
-                      </span>
-                    )}
-                    {project.clinical_trial_count > 0 && (
-                      <span className="px-2 py-0.5 text-xs bg-green-50 text-green-700 rounded">
-                        {project.clinical_trial_count} Trial{project.clinical_trial_count !== 1 ? 's' : ''}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         )}
@@ -1235,16 +1251,20 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       )}
                     </div>
                     <div className="flex items-center gap-2 text-xs text-gray-400 mt-1">
+                      {(() => {
+                        const color = isActive === null ? 'bg-gray-300' : isActive ? 'bg-emerald-400' : 'bg-rose-300'
+                        const label = isActive === null ? 'Unknown' : isActive ? 'Active' : 'Inactive'
+                        return (
+                          <span
+                            className={`w-2 h-2 rounded-full flex-shrink-0 ${color}`}
+                            title={label}
+                          />
+                        )
+                      })()}
                       {project.org_name && <span>{project.org_name}</span>}
-                      {project.fiscal_year && <span>FY{project.fiscal_year}</span>}
+                      {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
                     </div>
                     <div className="flex items-center flex-wrap gap-1.5 mt-2">
-                      {isActive === true && (
-                        <span className="px-2 py-0.5 text-xs bg-emerald-50 text-emerald-700 rounded">Active</span>
-                      )}
-                      {isActive === false && (
-                        <span className="px-2 py-0.5 text-xs bg-gray-100 text-gray-500 rounded">Inactive</span>
-                      )}
                       {(() => {
                         const { isSbir, isSttr, phase } = getSbirSttrStatus(project.activity_code)
                         return (
