@@ -1864,10 +1864,12 @@ type SummarizedPIProfile = {
   project_count: number
   publication_count: number
   top_projects: Array<{
+    application_id: string
     title: string
     org_name: string | null
     total_cost: number | null
     fiscal_year: number | null
+    project_end: string | null
     primary_category: string | null
     activity_code: string | null
     patent_count: number
@@ -1944,11 +1946,13 @@ export async function getPIProfile(
 
     // Try each pattern until we find matches
     let projects: Array<{
+      application_id: string
       org_name: string | null
       project_number: string | null
       total_cost: number | null
       title: string
       fiscal_year: number | null
+      project_end: string | null
       primary_category: string | null
       pi_names: string | null
       activity_code: string | null
@@ -1961,7 +1965,7 @@ export async function getPIProfile(
     for (const pattern of namePatterns) {
       const { data, error } = await supabaseAdmin
         .from('projects')
-        .select('org_name, project_number, total_cost, title, fiscal_year, primary_category, pi_names, activity_code, patent_count, publication_count, clinical_trial_count')
+        .select('application_id, org_name, project_number, total_cost, title, fiscal_year, project_end, primary_category, pi_names, activity_code, patent_count, publication_count, clinical_trial_count')
         .ilike('pi_names', `%${pattern}%`)
         .order('fiscal_year', { ascending: false })
 
@@ -2001,10 +2005,12 @@ export async function getPIProfile(
       publication_count: pubCount || 0,
       // Only return top 5 projects summarized
       top_projects: projects.slice(0, 5).map(p => ({
+        application_id: p.application_id,
         title: p.title,
         org_name: p.org_name,
         total_cost: p.total_cost,
         fiscal_year: p.fiscal_year,
+        project_end: p.project_end,
         primary_category: p.primary_category,
         activity_code: p.activity_code,
         patent_count: p.patent_count,
