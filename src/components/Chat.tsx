@@ -1366,6 +1366,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const isRestoringState = useRef(false)
   const prevPersonaRef = useRef<PersonaType | null>(null)
+  const currentSearchId = useRef<string | null>(null)  // Track current search to prevent stale results
 
   const router = useRouter()
   const metadata = PERSONA_METADATA[persona]
@@ -1729,12 +1730,17 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
     setMessages(updatedMessages)
     setInput('')
     setIsLoading(true)
+    // Generate a unique ID for this search to prevent stale results from previous searches
+    const searchId = crypto.randomUUID()
+    currentSearchId.current = searchId
     // Clear previous search state when starting a new search
     // This prevents old results from showing while new search is in progress
     setToolResults([])
     setSearchContext(null)
     // filteredResults is computed via useMemo - clearing searchContext and currentFilters resets it
     setCurrentFilters({})
+    // Reset precision to default for new search
+    setPrecision('low')
     // Clear sessionStorage to prevent stale state restoration
     sessionStorage.removeItem('searchState')
 
@@ -1793,6 +1799,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                 setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, isToolCall: true } : m))
                 setIsSearching(true)
               } else if (parsed.type === 'tool_result') {
+                // Only update state if this is still the current search (prevents stale results)
+                if (currentSearchId.current !== searchId) {
+                  continue
+                }
                 setToolResults(prev => [...prev, { name: parsed.name, data: parsed.data, timestamp: Date.now() }])
                 setIsSearching(false)
                 // Capture search context for UI filtering
