@@ -128,12 +128,9 @@ export function detectNameType(input: string): NameDetectionResult {
   if (words.length >= 2 && words.length <= 4) {
     const firstWord = words[0].replace(/[.,]/g, '')
     if (COMMON_FIRST_NAMES.has(firstWord)) {
-      // Additional check: second word should be capitalized in original (likely surname)
-      const originalWords = input.trim().split(/\s+/)
-      const secondWord = originalWords[1]
-      if (secondWord && secondWord[0] === secondWord[0].toUpperCase()) {
-        return { type: 'pi', confidence: 'medium', reason: 'Common first name + capitalized surname' }
-      }
+      // If first word is a common first name, assume it's a person
+      // (users often type names in lowercase)
+      return { type: 'pi', confidence: 'medium', reason: 'Common first name pattern' }
     }
   }
 
