@@ -2362,9 +2362,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                   <div className="pt-4 mt-4">
                     <button
                       onClick={() => router.push('/chat')}
-                      className="text-sm text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
+                      className="flex items-center gap-1.5 text-sm text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
                     >
-                      New Search →
+                      <Search className="w-3.5 h-3.5" />
+                      New Search
                     </button>
                   </div>
                 )}
