@@ -1,12 +1,24 @@
 'use client'
 
-import { Suspense, useState, useEffect } from 'react'
+import { Suspense, useState, useEffect, useCallback } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Chat } from '@/components/Chat'
 import { AppLayout } from '@/components/AppLayout'
 import { WelcomeScreen } from '@/components/WelcomeScreen'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import type { PersonaType, SearchMode } from '@/lib/chat/types'
+
+interface FilterState {
+  primary_category?: string[]
+  org_type?: string[]
+  quick?: {
+    activeOnly?: boolean
+    sbirSttrOnly?: boolean
+    hasPatents?: boolean
+    hasClinicalTrials?: boolean
+    hasPublications?: boolean
+  }
+}
 
 const VALID_PERSONAS: PersonaType[] = ['researcher', 'bd', 'investor', 'trials']
 
@@ -26,6 +38,16 @@ function ChatContent() {
   const orgParam = searchParams.get('org')
   const modeParam = searchParams.get('mode')
 
+  // Filter params
+  const precisionParam = searchParams.get('precision') as 'low' | 'med' | 'high' | null
+  const categoryParam = searchParams.get('category')
+  const orgtypeParam = searchParams.get('orgtype')
+  const activeParam = searchParams.get('active')
+  const sbirParam = searchParams.get('sbir')
+  const patentsParam = searchParams.get('patents')
+  const trialsParam = searchParams.get('trials')
+  const pubsParam = searchParams.get('pubs')
+
   // If pi or org param is provided, automatically use 'bd' persona with that as the query
   const hasPeopleSearch = piParam || orgParam
   const selectedPersona = hasPeopleSearch
@@ -40,6 +62,86 @@ function ChatContent() {
     ? (lensParam as PersonaType)
     : undefined
   const searchMode: SearchMode = modeParam === 'standard' ? 'standard' : modeParam === 'name' ? 'name' : 'smart'
+
+  // Build initial filters from URL params
+  const initialPrecision = precisionParam && ['low', 'med', 'high'].includes(precisionParam)
+    ? precisionParam
+    : undefined
+
+  const initialFilters: FilterState | undefined = (() => {
+    const filters: FilterState = {}
+    if (categoryParam) {
+      filters.primary_category = categoryParam.split(',').filter(Boolean)
+    }
+    if (orgtypeParam) {
+      filters.org_type = orgtypeParam.split(',').filter(Boolean)
+    }
+    const quick: FilterState['quick'] = {}
+    if (activeParam === '1') quick.activeOnly = true
+    if (sbirParam === '1') quick.sbirSttrOnly = true
+    if (patentsParam === '1') quick.hasPatents = true
+    if (trialsParam === '1') quick.hasClinicalTrials = true
+    if (pubsParam === '1') quick.hasPublications = true
+    if (Object.keys(quick).length > 0) {
+      filters.quick = quick
+    }
+    return Object.keys(filters).length > 0 ? filters : undefined
+  })()
+
+  // Update URL when filters change (without page reload)
+  const handleFiltersChange = useCallback((filters: FilterState, precision: 'low' | 'med' | 'high') => {
+    const params = new URLSearchParams(searchParams.toString())
+
+    // Precision
+    if (precision !== 'low') {
+      params.set('precision', precision)
+    } else {
+      params.delete('precision')
+    }
+
+    // Category
+    if (filters.primary_category?.length) {
+      params.set('category', filters.primary_category.join(','))
+    } else {
+      params.delete('category')
+    }
+
+    // Org type
+    if (filters.org_type?.length) {
+      params.set('orgtype', filters.org_type.join(','))
+    } else {
+      params.delete('orgtype')
+    }
+
+    // Quick filters
+    if (filters.quick?.activeOnly) {
+      params.set('active', '1')
+    } else {
+      params.delete('active')
+    }
+    if (filters.quick?.sbirSttrOnly) {
+      params.set('sbir', '1')
+    } else {
+      params.delete('sbir')
+    }
+    if (filters.quick?.hasPatents) {
+      params.set('patents', '1')
+    } else {
+      params.delete('patents')
+    }
+    if (filters.quick?.hasClinicalTrials) {
+      params.set('trials', '1')
+    } else {
+      params.delete('trials')
+    }
+    if (filters.quick?.hasPublications) {
+      params.set('pubs', '1')
+    } else {
+      params.delete('pubs')
+    }
+
+    router.replace(`/chat?${params.toString()}`, { scroll: false })
+  }, [searchParams, router])
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -91,7 +193,14 @@ function ChatContent() {
       userName={userName}
     >
       {selectedPersona ? (
-        <Chat persona={selectedPersona} initialQuery={initialQuery} searchMode={searchMode} />
+        <Chat
+          persona={selectedPersona}
+          initialQuery={initialQuery}
+          searchMode={searchMode}
+          initialFilters={initialFilters}
+          initialPrecision={initialPrecision}
+          onFiltersChange={handleFiltersChange}
+        />
       ) : isLoading ? (
         <div className="h-full flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />

@@ -64,6 +64,9 @@ interface ChatProps {
   persona: PersonaType
   initialQuery?: string
   searchMode?: SearchMode
+  initialFilters?: FilterState
+  initialPrecision?: 'low' | 'med' | 'high'
+  onFiltersChange?: (filters: FilterState, precision: 'low' | 'med' | 'high') => void
 }
 
 // Parse message content to extract choices (bullet points at the end)
@@ -1376,7 +1379,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
   )
 }
 
-export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps) {
+export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilters, initialPrecision, onFiltersChange }: ChatProps) {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -1384,12 +1387,12 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
   // filteredResults is now computed via useMemo (see below) to avoid race conditions
-  const [currentFilters, setCurrentFilters] = useState<FilterState>({})
+  const [currentFilters, setCurrentFilters] = useState<FilterState>(initialFilters || {})
   const [trialStatusFilters, setTrialStatusFilters] = useState<string[]>([])
   const [trialTypeFilter, setTrialTypeFilter] = useState<'therapeutic' | 'diagnostic' | null>(null)
   const [trialFiltersExpanded, setTrialFiltersExpanded] = useState(true)
   const [savedTrialIds, setSavedTrialIds] = useState<Set<string>>(new Set())
-  const [precision, setPrecision] = useState<'low' | 'med' | 'high'>('low')
+  const [precision, setPrecision] = useState<'low' | 'med' | 'high'>(initialPrecision || 'low')
   const [restoredFromStorage, setRestoredFromStorage] = useState(false)
   const [showMobileResults, setShowMobileResults] = useState(true)  // Delay mobile results during restoration
   const [initialQueryProcessed, setInitialQueryProcessed] = useState(false)
@@ -1482,6 +1485,13 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
       }
     }
   }, [restoredFromStorage, toolResults])
+
+  // Sync filter changes to URL via callback
+  useEffect(() => {
+    if (onFiltersChange && searchContext) {
+      onFiltersChange(currentFilters, precision)
+    }
+  }, [currentFilters, precision, onFiltersChange, searchContext])
 
   // Reset state when persona changes (but not on first mount or restoration)
   useEffect(() => {
