@@ -2357,15 +2357,14 @@ export function Chat({ persona, initialQuery, searchMode = 'smart' }: ChatProps)
                   )
                 )}
 
-                {/* New Search button */}
+                {/* New Search link */}
                 {userQuery && (
-                  <div className="pt-6 mt-6 border-t border-gray-200">
+                  <div className="pt-4 mt-4">
                     <button
                       onClick={() => router.push('/chat')}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                      className="text-sm text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
                     >
-                      <Search className="w-4 h-4" />
-                      New Search
+                      New Search →
                     </button>
                   </div>
                 )}
