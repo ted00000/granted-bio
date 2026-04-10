@@ -1814,7 +1814,11 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
         }
       }
 
-      if (!response.ok) throw new Error('Chat request failed')
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        const errorMessage = errorData.error || 'Chat request failed'
+        throw new Error(errorMessage)
+      }
 
       const reader = response.body?.getReader()
       const decoder = new TextDecoder()
@@ -1885,7 +1889,21 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
       }
     } catch (error) {
       console.error('Chat error:', error)
-      setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: 'Sorry, an error occurred.', isStreaming: false } : m))
+      const errorMsg = error instanceof Error ? error.message : 'An unexpected error occurred'
+      // Map specific errors to user-friendly messages
+      let userMessage = 'Sorry, something went wrong. Please try again.'
+      if (errorMsg.includes('Unauthorized')) {
+        userMessage = 'Your session has expired. Please sign in again.'
+      } else if (errorMsg.includes('Invalid persona')) {
+        userMessage = 'Invalid search mode. Please refresh and try again.'
+      } else if (errorMsg.includes('Missing messages')) {
+        userMessage = 'Please enter a search query.'
+      } else if (errorMsg.includes('timeout') || errorMsg.includes('Timeout')) {
+        userMessage = 'The search took too long. Please try a more specific query.'
+      } else if (errorMsg.includes('network') || errorMsg.includes('Network') || errorMsg.includes('fetch')) {
+        userMessage = 'Network error. Please check your connection and try again.'
+      }
+      setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: userMessage, isStreaming: false } : m))
     } finally {
       setIsLoading(false)
     }
