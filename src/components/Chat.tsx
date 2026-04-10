@@ -196,9 +196,11 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
       String(p.clinical_trial_count || 0)
     ])
 
+    // Escape quotes and replace newlines with spaces to prevent CSV row breaks
+    const escapeCell = (cell: string) => `"${cell.replace(/"/g, '""').replace(/[\r\n]+/g, ' ').trim()}"`
     const csvContent = [
       headers.join(','),
-      ...rows.map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      ...rows.map(row => row.map(cell => escapeCell(String(cell))).join(','))
     ].join('\n')
 
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
