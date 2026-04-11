@@ -1604,24 +1604,45 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     setNewSearchMode(searchMode)
   }, [searchMode])
 
+  // Helper to safely save search state (handles quota exceeded errors)
+  const saveSearchState = useCallback(() => {
+    try {
+      const state = {
+        toolResults,
+        searchContext,
+        currentFilters,
+        messages,
+        returnUrl: window.location.href
+      }
+      sessionStorage.setItem('searchState', JSON.stringify(state))
+    } catch {
+      // Quota exceeded - clear old data and try again with minimal state
+      try {
+        sessionStorage.removeItem('searchState')
+        const minimalState = {
+          toolResults: toolResults.slice(-1), // Keep only last result
+          searchContext,
+          currentFilters,
+          messages: messages.slice(-4), // Keep only last few messages
+          returnUrl: window.location.href
+        }
+        sessionStorage.setItem('searchState', JSON.stringify(minimalState))
+      } catch {
+        // Still failed - just clear it
+        sessionStorage.removeItem('searchState')
+      }
+    }
+  }, [toolResults, searchContext, currentFilters, messages])
+
   // Save search state and navigate to project
   const navigateToProject = useCallback((applicationId: string) => {
     // Scroll to top BEFORE navigating so iOS Safari remembers this position
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = 0
     }
-
-    // filteredResults is computed via useMemo, so we only save searchContext + currentFilters
-    const state = {
-      toolResults,
-      searchContext,
-      currentFilters,
-      messages,
-      returnUrl: window.location.href
-    }
-    sessionStorage.setItem('searchState', JSON.stringify(state))
+    saveSearchState()
     router.push(`/project/${applicationId}`)
-  }, [toolResults, searchContext, currentFilters, messages, router])
+  }, [saveSearchState, router])
 
   // Save search state and navigate to trial
   const navigateToTrial = useCallback((nctId: string) => {
@@ -1629,54 +1650,27 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = 0
     }
-
-    // filteredResults is computed via useMemo, so we only save searchContext + currentFilters
-    const state = {
-      toolResults,
-      searchContext,
-      currentFilters,
-      messages,
-      returnUrl: window.location.href
-    }
-    sessionStorage.setItem('searchState', JSON.stringify(state))
+    saveSearchState()
     router.push(`/trial/${nctId}`)
-  }, [toolResults, searchContext, currentFilters, messages, router])
+  }, [saveSearchState, router])
 
   // Save search state and navigate to organization
   const navigateToOrg = useCallback((orgName: string) => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = 0
     }
-
-    // filteredResults is computed via useMemo, so we only save searchContext + currentFilters
-    const state = {
-      toolResults,
-      searchContext,
-      currentFilters,
-      messages,
-      returnUrl: window.location.href
-    }
-    sessionStorage.setItem('searchState', JSON.stringify(state))
+    saveSearchState()
     router.push(`/org/${encodeURIComponent(orgName)}`)
-  }, [toolResults, searchContext, currentFilters, messages, router])
+  }, [saveSearchState, router])
 
   // Save search state and navigate to researcher
   const navigateToResearcher = useCallback((researcherName: string) => {
     if (messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = 0
     }
-
-    // filteredResults is computed via useMemo, so we only save searchContext + currentFilters
-    const state = {
-      toolResults,
-      searchContext,
-      currentFilters,
-      messages,
-      returnUrl: window.location.href
-    }
-    sessionStorage.setItem('searchState', JSON.stringify(state))
+    saveSearchState()
     router.push(`/researcher/${encodeURIComponent(researcherName)}`)
-  }, [toolResults, searchContext, currentFilters, messages, router])
+  }, [saveSearchState, router])
 
   // Save/unsave trial
   const handleSaveTrial = useCallback(async (nctId: string) => {
