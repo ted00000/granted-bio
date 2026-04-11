@@ -1460,6 +1460,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSearching, setIsSearching] = useState(false)
+  const [isSlowSearch, setIsSlowSearch] = useState(false)
   const [toolResults, setToolResults] = useState<ToolResult[]>([])
   const [searchContext, setSearchContext] = useState<SearchContext | null>(null)
   // filteredResults is now computed via useMemo (see below) to avoid race conditions
@@ -1994,6 +1995,17 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     }
   }, [initialQuery, initialQueryProcessed, isLoading, messages.length, sendMessage])
 
+  // Detect slow searches (taking longer than 8 seconds)
+  useEffect(() => {
+    if (isSearching) {
+      setIsSlowSearch(false)
+      const timer = setTimeout(() => setIsSlowSearch(true), 8000)
+      return () => clearTimeout(timer)
+    } else {
+      setIsSlowSearch(false)
+    }
+  }, [isSearching])
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     sendMessage(input, messages)
@@ -2288,9 +2300,14 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                     </div>
                   </div>
                 ) : isLoading ? (
-                  <div className="flex items-center gap-2 text-sm text-gray-400 py-4">
-                    <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-                    <span>Searching...</span>
+                  <div className="flex flex-col gap-1 py-4">
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+                      <span>Searching...</span>
+                    </div>
+                    {isSlowSearch && (
+                      <p className="text-xs text-gray-400 ml-5">Taking longer than expected. Complex queries may need more time.</p>
+                    )}
                   </div>
                 ) : null}
 
