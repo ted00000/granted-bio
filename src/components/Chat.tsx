@@ -524,6 +524,22 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             </div>
           </div>
         )}
+
+        {/* Empty state when filters remove all results */}
+        {data.all_results?.length === 0 && data.total_count > 0 && (
+          <div className="p-6 text-center">
+            <p className="text-sm text-gray-500">No results match your current filters.</p>
+            <p className="text-xs text-gray-400 mt-1">Try adjusting your filters or precision level.</p>
+          </div>
+        )}
+
+        {/* Empty state when search found nothing */}
+        {data.total_count === 0 && (
+          <div className="p-6 text-center">
+            <p className="text-sm text-gray-500">No results found for this search.</p>
+            <p className="text-xs text-gray-400 mt-1">Try different keywords or broaden your search.</p>
+          </div>
+        )}
       </div>
     )
   }
@@ -809,6 +825,22 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             </div>
           </div>
         )}
+
+        {/* Empty state when filters remove all results */}
+        {data.all_results?.length === 0 && data.total_count > 0 && (
+          <div className="p-6 text-center">
+            <p className="text-sm text-gray-500">No results match your current filters.</p>
+            <p className="text-xs text-gray-400 mt-1">Try adjusting your filters or precision level.</p>
+          </div>
+        )}
+
+        {/* Empty state when search found nothing */}
+        {data.total_count === 0 && (
+          <div className="p-6 text-center">
+            <p className="text-sm text-gray-500">No results found for this search.</p>
+            <p className="text-xs text-gray-400 mt-1">Try different keywords or broaden your search.</p>
+          </div>
+        )}
       </div>
     )
   }
@@ -942,11 +974,32 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             filteredTrials = filteredTrials.filter(t => t.is_diagnostic_trial)
           }
           const displayCount = filteredTrials.length
+          const hasFilters = trialStatusFilters.length > 0 || trialTypeFilter
+
+          // Empty state when filters remove all trials
+          if (filteredTrials.length === 0 && hasFilters && data.all_results.length > 0) {
+            return (
+              <div className="p-6 text-center">
+                <p className="text-sm text-gray-500">No trials match your current filters.</p>
+                <p className="text-xs text-gray-400 mt-1">Try selecting different status or type filters.</p>
+              </div>
+            )
+          }
+
+          // Empty state when search found no trials
+          if (data.all_results.length === 0) {
+            return (
+              <div className="p-6 text-center">
+                <p className="text-sm text-gray-500">No clinical trials found for this search.</p>
+                <p className="text-xs text-gray-400 mt-1">Try different keywords or broaden your search.</p>
+              </div>
+            )
+          }
 
           return filteredTrials.length > 0 && (
             <div className={isMobile ? 'p-4' : 'p-6'}>
               <h3 className="text-sm font-medium text-gray-500 mb-4">
-                {(trialStatusFilters.length > 0 || trialTypeFilter) ? `${displayCount} Filtered` : 'Trials'}
+                {hasFilters ? `${displayCount} Filtered` : 'Trials'}
               </h3>
               <div className={isMobile ? 'space-y-3' : 'space-y-5'}>
                 {filteredTrials.slice(0, isMobile ? 30 : 50).map((trial) => {
@@ -1071,7 +1124,14 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
       }>
     }
 
-    if (!data) return <div className="flex items-center justify-center h-full text-gray-400 text-sm">Not found</div>
+    if (!data) return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center px-4">
+          <p className="text-sm text-gray-500">Organization not found</p>
+          <p className="text-xs text-gray-400 mt-1">This organization may not have NIH grant records.</p>
+        </div>
+      </div>
+    )
 
     return (
       <div className="h-full overflow-y-auto">
@@ -1212,7 +1272,14 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
       }>
     }
 
-    if (!data) return <div className="flex items-center justify-center h-full text-gray-400 text-sm">Researcher not found</div>
+    if (!data) return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center px-4">
+          <p className="text-sm text-gray-500">Researcher not found</p>
+          <p className="text-xs text-gray-400 mt-1">Try searching with a different name spelling.</p>
+        </div>
+      </div>
+    )
 
     return (
       <div className="h-full overflow-y-auto">
@@ -1329,7 +1396,14 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
       cited_by_count: number
     }
 
-    if (!data) return <div className="flex items-center justify-center h-full text-gray-400 text-sm">Not found</div>
+    if (!data) return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center px-4">
+          <p className="text-sm text-gray-500">Patent not found</p>
+          <p className="text-xs text-gray-400 mt-1">This patent may not be linked to an NIH grant.</p>
+        </div>
+      </div>
+    )
 
     return (
       <div className="h-full overflow-y-auto">
