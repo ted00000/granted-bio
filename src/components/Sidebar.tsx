@@ -13,16 +13,23 @@ interface SidebarProps {
   userName?: string | null
 }
 
+interface UsageData {
+  tier: 'free' | 'pro'
+  searchesUsed: number
+  searchLimit: number
+}
+
 export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
+  const [usage, setUsage] = useState<UsageData | null>(null)
   const router = useRouter()
   const pathname = usePathname()
   const supabase = createBrowserSupabaseClient()
 
-  // Check if user is admin
+  // Check if user is admin and fetch usage
   useEffect(() => {
-    async function checkAdminRole() {
+    async function fetchUserData() {
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         const { data: profile } = await supabase
@@ -31,9 +38,24 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
           .eq('id', user.id)
           .single()
         setIsAdmin(profile?.role === 'admin')
+
+        // Fetch usage data
+        try {
+          const res = await fetch('/api/billing/usage')
+          if (res.ok) {
+            const data = await res.json()
+            setUsage({
+              tier: data.tier,
+              searchesUsed: data.searchesUsed,
+              searchLimit: data.searchLimit
+            })
+          }
+        } catch {
+          // Silently fail - usage indicator is non-critical
+        }
       }
     }
-    checkAdminRole()
+    fetchUserData()
   }, [])
 
   const handleSignOut = async () => {
@@ -244,6 +266,24 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
             <div className="px-3 py-2 text-sm text-gray-500 truncate">
               {userName}
             </div>
+          )}
+          {/* Usage indicator - show for free users always, pro users only when approaching limit */}
+          {usage && (usage.tier === 'free' || usage.searchesUsed >= usage.searchLimit * 0.8) && (
+            <Link
+              href="/account"
+              className={`
+                px-3 py-1.5 text-xs rounded flex items-center justify-between
+                ${usage.searchesUsed >= usage.searchLimit * 0.9
+                  ? 'bg-rose-50 text-rose-600'
+                  : usage.searchesUsed >= usage.searchLimit * 0.7
+                    ? 'bg-amber-50 text-amber-600'
+                    : 'bg-gray-50 text-gray-500'
+                }
+              `}
+            >
+              <span>Searches</span>
+              <span className="font-medium">{usage.searchesUsed}/{usage.searchLimit}</span>
+            </Link>
           )}
           <Link
             href="/account"
