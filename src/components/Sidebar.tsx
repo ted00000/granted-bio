@@ -17,6 +17,7 @@ interface UsageData {
   tier: 'free' | 'pro'
   searchesUsed: number
   searchLimit: number
+  isUnlimited: boolean
 }
 
 export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarProps) {
@@ -47,7 +48,8 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
             setUsage({
               tier: data.tier,
               searchesUsed: data.searchesUsed,
-              searchLimit: data.searchLimit
+              searchLimit: data.searchLimit,
+              isUnlimited: data.isUnlimited || false
             })
           }
         } catch {
@@ -267,8 +269,8 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
               {userName}
             </div>
           )}
-          {/* Usage indicator - show for free users always, pro users only when approaching limit */}
-          {usage && (usage.tier === 'free' || usage.searchesUsed >= usage.searchLimit * 0.8) && (
+          {/* Usage indicator - show for free users always, pro users only when approaching limit, never for unlimited */}
+          {usage && !usage.isUnlimited && (usage.tier === 'free' || usage.searchesUsed >= usage.searchLimit * 0.8) && (
             <Link
               href="/account"
               className={`

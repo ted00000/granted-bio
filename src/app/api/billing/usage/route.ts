@@ -39,11 +39,14 @@ export async function GET(request: NextRequest) {
     }
 
     // Flatten structure for account page
+    // Handle Infinity (for admin/associate) - JSON can't serialize Infinity
+    const isUnlimited = !Number.isFinite(usage.searches.limit)
     return NextResponse.json({
       role,
       tier: usage.tier,
       searchesUsed: usage.searches.used,
-      searchLimit: usage.searches.limit,
+      searchLimit: isUnlimited ? 999999 : usage.searches.limit,
+      isUnlimited,
       subscriptionStatus: usage.subscriptionStatus,
       currentPeriodEnd: usage.currentPeriodEnd,
       reportPurchases: purchases || [],
