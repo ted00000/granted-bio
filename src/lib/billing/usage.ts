@@ -42,14 +42,44 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
     }
   }
 
-  // Admin and associate roles have unlimited access
-  if (profile.role === 'admin' || profile.role === 'associate') {
+  // Admin role has unlimited access
+  if (profile.role === 'admin') {
     return {
       allowed: true,
       remaining: Infinity,
       limit: Infinity,
-      tier: 'pro', // Give them pro features
+      tier: 'pro',
     }
+  }
+
+  // Associate role gets pro tier limits (500/month) but is tracked
+  if (profile.role === 'associate') {
+    // Force pro tier for associates regardless of subscription status
+    const limit = TIER_LIMITS.pro.searchesPerMonth
+    const resetAt = profile.searches_reset_at ? new Date(profile.searches_reset_at) : new Date()
+    const now = new Date()
+    const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())
+    let currentSearches = profile.searches_this_month || 0
+
+    if (resetAt < monthAgo) {
+      currentSearches = 0
+      await supabaseAdmin
+        .from('user_profiles')
+        .update({ searches_this_month: 0, searches_reset_at: now.toISOString() })
+        .eq('id', userId)
+    }
+
+    const remaining = Math.max(0, limit - currentSearches)
+    const allowed = currentSearches < limit
+
+    if (allowed) {
+      await supabaseAdmin
+        .from('user_profiles')
+        .update({ searches_this_month: currentSearches + 1 })
+        .eq('id', userId)
+      return { allowed: true, remaining: remaining - 1, limit, tier: 'pro' }
+    }
+    return { allowed: false, remaining: 0, limit, tier: 'pro' }
   }
 
   // Map to billing tier
@@ -127,8 +157,8 @@ export async function getUserUsage(userId: string): Promise<UserUsage> {
     }
   }
 
-  // Admin and associate roles have unlimited access
-  if (profile.role === 'admin' || profile.role === 'associate') {
+  // Admin role has unlimited access
+  if (profile.role === 'admin') {
     return {
       tier: 'pro',
       searches: {
@@ -136,6 +166,21 @@ export async function getUserUsage(userId: string): Promise<UserUsage> {
         limit: Infinity,
         remaining: Infinity,
       },
+      subscriptionStatus: 'active',
+      currentPeriodEnd: null,
+    }
+  }
+
+  // Associate role gets pro tier limits (500/month)
+  if (profile.role === 'associate') {
+    const limit = TIER_LIMITS.pro.searchesPerMonth
+    const resetAt = profile.searches_reset_at ? new Date(profile.searches_reset_at) : new Date()
+    const monthAgo = new Date()
+    monthAgo.setMonth(monthAgo.getMonth() - 1)
+    const used = resetAt < monthAgo ? 0 : (profile.searches_this_month || 0)
+    return {
+      tier: 'pro',
+      searches: { used, limit, remaining: Math.max(0, limit - used) },
       subscriptionStatus: 'active',
       currentPeriodEnd: null,
     }
