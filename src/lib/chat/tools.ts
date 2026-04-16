@@ -724,14 +724,20 @@ export async function searchProjectsKeyword(
       searchProjectNumber(queryLower)
     ])
 
-    // Combine all matches (OR logic across fields)
-    const allMatchingIds = new Set<string>()
-    abstractMatches.forEach(id => allMatchingIds.add(id))
-    orgNameMatches.forEach(id => allMatchingIds.add(id))
-    piNameMatches.forEach(id => allMatchingIds.add(id))
-    projectNumberMatches.forEach(id => allMatchingIds.add(id))
+    // Track which fields each ID matched on for relevance scoring
+    const matchSources = new Map<string, Set<'abstract' | 'org_name' | 'pi_name' | 'project_number'>>()
 
-    const matchingIdsArray = [...allMatchingIds]
+    const addMatch = (id: string, source: 'abstract' | 'org_name' | 'pi_name' | 'project_number') => {
+      if (!matchSources.has(id)) matchSources.set(id, new Set())
+      matchSources.get(id)!.add(source)
+    }
+
+    abstractMatches.forEach(id => addMatch(id, 'abstract'))
+    orgNameMatches.forEach(id => addMatch(id, 'org_name'))
+    piNameMatches.forEach(id => addMatch(id, 'pi_name'))
+    projectNumberMatches.forEach(id => addMatch(id, 'project_number'))
+
+    const matchingIdsArray = [...matchSources.keys()]
 
     if (matchingIdsArray.length === 0) {
       return {
@@ -786,8 +792,33 @@ export async function searchProjectsKeyword(
     }
     const dedupedProjects = [...seenProjects.values()]
 
-    // Sort by total_cost descending
-    dedupedProjects.sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
+    // Compute relevance score for each project based on match sources
+    // Scores: project_number (1.0) > pi_name (0.9) > org_name (0.8) > abstract (0.6)
+    // Multiple matches boost the score
+    const getRelevanceScore = (applicationId: string): number => {
+      const sources = matchSources.get(applicationId)
+      if (!sources) return 0.5 // Default for projects without direct match
+
+      let score = 0
+      if (sources.has('project_number')) score = Math.max(score, 1.0)
+      if (sources.has('pi_name')) score = Math.max(score, 0.9)
+      if (sources.has('org_name')) score = Math.max(score, 0.8)
+      if (sources.has('abstract')) score = Math.max(score, 0.6)
+
+      // Bonus for matching multiple fields (up to 0.1 extra)
+      const bonusPerField = 0.025
+      score += Math.min((sources.size - 1) * bonusPerField, 0.1)
+
+      return Math.min(score, 1.0)
+    }
+
+    // Sort by relevance score descending, then by total_cost as tiebreaker
+    dedupedProjects.sort((a, b) => {
+      const scoreA = getRelevanceScore(a.application_id)
+      const scoreB = getRelevanceScore(b.application_id)
+      if (scoreB !== scoreA) return scoreB - scoreA
+      return (b.total_cost || 0) - (a.total_cost || 0)
+    })
 
     const totalBeforeCap = dedupedProjects.length
 
@@ -856,7 +887,8 @@ export async function searchProjectsKeyword(
       project_end: p.project_end || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
-      clinical_trial_count: p.clinical_trial_count || 0
+      clinical_trial_count: p.clinical_trial_count || 0,
+      similarity: getRelevanceScore(p.application_id)
     }))
 
     // All results
@@ -878,7 +910,8 @@ export async function searchProjectsKeyword(
       project_end: p.project_end || null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
-      clinical_trial_count: p.clinical_trial_count || 0
+      clinical_trial_count: p.clinical_trial_count || 0,
+      similarity: getRelevanceScore(p.application_id)
     }))
 
     // Generate summary
