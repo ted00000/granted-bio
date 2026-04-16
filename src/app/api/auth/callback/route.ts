@@ -40,11 +40,30 @@ export async function GET(request: NextRequest) {
         // Check if user is admin
         const { data: { user } } = await supabase.auth.getUser()
         if (user) {
-          const { data: profile } = await supabase
+          // Fetch profile - if it doesn't exist (race condition with trigger), create it
+          let { data: profile } = await supabase
             .from('user_profiles')
             .select('role')
             .eq('id', user.id)
             .single()
+
+          // If profile doesn't exist, create it as fallback
+          // This handles the race condition where trigger hasn't run yet
+          if (!profile) {
+            const { data: newProfile } = await supabase
+              .from('user_profiles')
+              .upsert({
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.full_name || user.user_metadata?.name || null,
+                avatar_url: user.user_metadata?.avatar_url || null,
+                role: 'user',
+                tier: 'free'
+              }, { onConflict: 'id' })
+              .select('role')
+              .single()
+            profile = newProfile
+          }
 
           if (profile?.role === 'admin') {
             redirectUrl = `${origin}/admin`

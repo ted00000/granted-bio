@@ -7,6 +7,7 @@ import { Bookmark, ChevronLeft, FileText, Heart, BookOpen, Lightbulb, Activity, 
 import { AppLayout } from '@/components/AppLayout'
 import { CategoryEditModal } from '@/components/CategoryEditModal'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface Project {
   id: string
@@ -100,25 +101,8 @@ export default function ProjectPage() {
   const [returnUrl, setReturnUrl] = useState('/chat')
   const [isSaved, setIsSaved] = useState(false)
   const [savingProject, setSavingProject] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false)
   const [showCategoryModal, setShowCategoryModal] = useState(false)
-
-  // Check if user is admin
-  useEffect(() => {
-    const checkAdmin = async () => {
-      const supabase = createBrowserSupabaseClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single()
-        setIsAdmin(profile?.role === 'admin')
-      }
-    }
-    checkAdmin()
-  }, [])
+  const { isAdmin } = useAuth()
 
   // Read return URL from sessionStorage
   useEffect(() => {

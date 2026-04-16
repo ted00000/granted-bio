@@ -7,6 +7,7 @@ import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearch
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
 import { UpgradePrompt } from './billing/UpgradePrompt'
+import { useAuth } from '@/contexts/AuthContext'
 
 const ICONS = {
   search: Search,
@@ -1485,6 +1486,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const abortControllerRef = useRef<AbortController | null>(null)  // Abort in-flight searches
 
   const router = useRouter()
+  const { refetchUsage } = useAuth()
   const metadata = PERSONA_METADATA[persona]
   const IconComponent = ICONS[metadata.icon]
 
@@ -1985,8 +1987,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
       setMessages(prev => prev.map(m => m.id === assistantId ? { ...m, content: userMessage, isStreaming: false } : m))
     } finally {
       setIsLoading(false)
+      // Refresh usage data in the sidebar after search completes
+      refetchUsage()
     }
-  }, [isLoading, persona])
+  }, [isLoading, persona, refetchUsage])
 
   // Auto-submit initial query from welcome screen
   // Don't re-search if we're restoring state from sessionStorage (back button navigation)

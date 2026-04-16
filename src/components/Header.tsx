@@ -1,57 +1,15 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
+import { useAuth } from '@/contexts/AuthContext'
 
 export function Header() {
-  const [user, setUser] = useState<any>(null)
-  const [isAdmin, setIsAdmin] = useState(false)
+  const { user, isAdmin, signOut } = useAuth()
   const router = useRouter()
 
-  useEffect(() => {
-    const supabase = createBrowserSupabaseClient()
-
-    // Get initial session
-    const getInitialUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-      if (user) {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single()
-        setIsAdmin(profile?.role === 'admin')
-      }
-    }
-    getInitialUser()
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event: AuthChangeEvent, session: Session | null) => {
-      setUser(session?.user ?? null)
-      if (session?.user) {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('role')
-          .eq('id', session.user.id)
-          .single()
-        setIsAdmin(profile?.role === 'admin')
-      } else {
-        setIsAdmin(false)
-      }
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
   const handleSignOut = async () => {
-    const supabase = createBrowserSupabaseClient()
-    await supabase.auth.signOut()
+    await signOut()
     router.push('/')
   }
 

@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { X, AlertTriangle, Loader2, FlaskConical, TrendingUp, CreditCard, Sparkles } from 'lucide-react'
-import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import { useAuth } from '@/contexts/AuthContext'
 
 type Persona = 'researcher' | 'investor'
 
@@ -20,25 +20,9 @@ export function GenerateReportDialog({
   const [step, setStep] = useState<'input' | 'checking' | 'confirm' | 'purchasing' | 'generating'>('input')
   const [projectCount, setProjectCount] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [canBypassPayment, setCanBypassPayment] = useState(false)
 
-  // Check if user can bypass payment (admin or associate)
-  useEffect(() => {
-    const checkRole = async () => {
-      const supabase = createBrowserSupabaseClient()
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single()
-        // Both admin and associate can bypass payment
-        setCanBypassPayment(profile?.role === 'admin' || profile?.role === 'associate')
-      }
-    }
-    checkRole()
-  }, [])
+  const { isAdmin, isAssociate } = useAuth()
+  const canBypassPayment = isAdmin || isAssociate
 
   const checkTopic = async () => {
     if (!topic.trim()) return

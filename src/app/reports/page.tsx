@@ -22,7 +22,7 @@ import {
 import { AppLayout } from '@/components/AppLayout'
 import { MarketingNav } from '@/components/MarketingNav'
 import { GenerateReportDialog } from './GenerateReportDialog'
-import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface Report {
   id: string
@@ -470,25 +470,13 @@ function ReportsDashboard() {
   const [loading, setLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [showGenerateDialog, setShowGenerateDialog] = useState(false)
-  const [canBypassPayment, setCanBypassPayment] = useState(false)
+
+  const { isAdmin, isAssociate } = useAuth()
+  const canBypassPayment = isAdmin || isAssociate
 
   useEffect(() => {
     fetchReports()
-    checkRole()
   }, [])
-
-  const checkRole = async () => {
-    const supabase = createBrowserSupabaseClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    if (user) {
-      const { data: profile } = await supabase
-        .from('user_profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single()
-      setCanBypassPayment(profile?.role === 'admin' || profile?.role === 'associate')
-    }
-  }
 
   // Poll for generating reports
   useEffect(() => {

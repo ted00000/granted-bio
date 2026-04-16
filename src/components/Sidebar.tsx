@@ -1,10 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Lock, Users, Settings, Shield } from 'lucide-react'
-import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import { useAuth } from '@/contexts/AuthContext'
 import type { PersonaType } from '@/lib/chat/types'
 
 interface SidebarProps {
@@ -13,55 +13,14 @@ interface SidebarProps {
   userName?: string | null
 }
 
-interface UsageData {
-  tier: 'free' | 'pro'
-  searchesUsed: number
-  searchLimit: number
-  isUnlimited: boolean
-}
-
 export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [usage, setUsage] = useState<UsageData | null>(null)
   const router = useRouter()
   const pathname = usePathname()
-  const supabase = createBrowserSupabaseClient()
-
-  // Check if user is admin and fetch usage
-  useEffect(() => {
-    async function fetchUserData() {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('role')
-          .eq('id', user.id)
-          .single()
-        setIsAdmin(profile?.role === 'admin')
-
-        // Fetch usage data
-        try {
-          const res = await fetch('/api/billing/usage')
-          if (res.ok) {
-            const data = await res.json()
-            setUsage({
-              tier: data.tier,
-              searchesUsed: data.searchesUsed,
-              searchLimit: data.searchLimit,
-              isUnlimited: data.isUnlimited || false
-            })
-          }
-        } catch {
-          // Silently fail - usage indicator is non-critical
-        }
-      }
-    }
-    fetchUserData()
-  }, [])
+  const { isAdmin, usage, signOut, profile } = useAuth()
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut()
+    await signOut()
     router.refresh()
     router.push('/')
   }
@@ -270,7 +229,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
             </div>
           )}
           {/* Usage indicator - show for free users always, pro users only when approaching limit, never for unlimited */}
-          {usage && !usage.isUnlimited && (usage.tier === 'free' || usage.searchesUsed >= usage.searchLimit * 0.8) && (
+          {usage && !usage.isUnlimited && (profile?.tier === 'free' || usage.searchesUsed >= usage.searchLimit * 0.8) && (
             <Link
               href="/account"
               className={`
