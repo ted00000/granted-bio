@@ -8,19 +8,27 @@ interface UpgradePromptProps {
   type: 'search_limit'
   tier: 'free' | 'pro'
   limit: number
+  subscriptionStatus?: string | null
   onClose: () => void
 }
 
-export function UpgradePrompt({ type, tier, limit, onClose }: UpgradePromptProps) {
+export function UpgradePrompt({ type, tier, limit, subscriptionStatus, onClose }: UpgradePromptProps) {
   const [loading, setLoading] = useState(false)
+
+  // Check if this is a past_due subscription (payment failed)
+  const isPaymentFailed = subscriptionStatus === 'past_due'
 
   const handleUpgrade = async () => {
     setLoading(true)
     try {
-      const response = await fetch('/api/stripe/checkout', {
+      // For payment failures, go to billing portal to update payment method
+      const endpoint = isPaymentFailed ? '/api/stripe/portal' : '/api/stripe/checkout'
+      const body = isPaymentFailed ? {} : { type: 'subscription' }
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'subscription' }),
+        body: JSON.stringify(body),
       })
       const data = await response.json()
       if (data.url) {
@@ -57,64 +65,99 @@ export function UpgradePrompt({ type, tier, limit, onClose }: UpgradePromptProps
               <Zap className="w-5 h-5" />
             </div>
             <h2 className="text-xl font-semibold">
-              Search Limit Reached
+              {isPaymentFailed ? 'Payment Failed' : 'Search Limit Reached'}
             </h2>
           </div>
 
           <p className="text-white/90">
-            You&apos;ve used all {limit} of your free searches this month.
-            Upgrade to Pro Search for unlimited access.
+            {isPaymentFailed ? (
+              <>Your last payment didn&apos;t go through. Please update your payment method to continue using Pro Search.</>
+            ) : (
+              <>You&apos;ve used all {limit} of your free searches this month. Upgrade to Pro Search for unlimited access.</>
+            )}
           </p>
         </div>
 
         {/* Content */}
         <div className="px-6 py-5">
-          <div className="flex items-baseline gap-2 mb-4">
-            <span className="text-3xl font-semibold text-gray-900">$49</span>
-            <span className="text-gray-500">/month</span>
-          </div>
+          {isPaymentFailed ? (
+            <>
+              <p className="text-gray-600 mb-6">
+                Your Pro Search subscription is on hold. Update your payment method to restore access to all features.
+              </p>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={handleUpgrade}
+                  disabled={loading}
+                  className="w-full py-3 px-4 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    'Loading...'
+                  ) : (
+                    <>
+                      Update Payment Method
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+                <Link
+                  href="/account"
+                  className="text-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  Go to Account
+                </Link>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex items-baseline gap-2 mb-4">
+                <span className="text-3xl font-semibold text-gray-900">$49</span>
+                <span className="text-gray-500">/month</span>
+              </div>
 
-          <ul className="space-y-3 mb-6">
-            <li className="flex items-center gap-3 text-sm">
-              <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-              <span className="text-gray-700">500 searches per month</span>
-            </li>
-            <li className="flex items-center gap-3 text-sm">
-              <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-              <span className="text-gray-700">Full result details (200 per query)</span>
-            </li>
-            <li className="flex items-center gap-3 text-sm">
-              <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-              <span className="text-gray-700">Export to CSV</span>
-            </li>
-            <li className="flex items-center gap-3 text-sm">
-              <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-              <span className="text-gray-700">PI names and affiliations</span>
-            </li>
-          </ul>
+              <ul className="space-y-3 mb-6">
+                <li className="flex items-center gap-3 text-sm">
+                  <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  <span className="text-gray-700">500 searches per month</span>
+                </li>
+                <li className="flex items-center gap-3 text-sm">
+                  <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  <span className="text-gray-700">Full result details (200 per query)</span>
+                </li>
+                <li className="flex items-center gap-3 text-sm">
+                  <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  <span className="text-gray-700">Export to CSV</span>
+                </li>
+                <li className="flex items-center gap-3 text-sm">
+                  <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+                  <span className="text-gray-700">PI names and affiliations</span>
+                </li>
+              </ul>
 
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={handleUpgrade}
-              disabled={loading}
-              className="w-full py-3 px-4 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-            >
-              {loading ? (
-                'Loading...'
-              ) : (
-                <>
-                  Upgrade to Pro
-                  <ArrowRight className="w-4 h-4" />
-                </>
-              )}
-            </button>
-            <Link
-              href="/pricing"
-              className="text-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
-            >
-              View all plans
-            </Link>
-          </div>
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={handleUpgrade}
+                  disabled={loading}
+                  className="w-full py-3 px-4 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    'Loading...'
+                  ) : (
+                    <>
+                      Upgrade to Pro
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+                <Link
+                  href="/pricing"
+                  className="text-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                >
+                  View all plans
+                </Link>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

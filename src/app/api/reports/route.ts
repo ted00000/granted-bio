@@ -59,6 +59,34 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'topic is required for topic reports' }, { status: 400 })
     }
 
+    // Check if user can bypass payment (admin/associate roles)
+    const { data: profile } = await supabase
+      .from('user_profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single()
+
+    const canBypassPayment = profile?.role === 'admin' || profile?.role === 'associate'
+
+    // If user cannot bypass payment, verify they have a completed purchase for this topic
+    if (!canBypassPayment && report_type === 'topic') {
+      const { data: purchase } = await supabase
+        .from('report_purchases')
+        .select('id, status')
+        .eq('user_id', user.id)
+        .eq('topic', topic)
+        .eq('status', 'completed')
+        .is('report_id', null) // Not yet linked to a report
+        .single()
+
+      if (!purchase) {
+        return NextResponse.json(
+          { error: 'Payment required. Please purchase a report first.' },
+          { status: 402 }
+        )
+      }
+    }
+
     // Start report generation (runs async, returns immediately with report ID)
     let reportId: string
 

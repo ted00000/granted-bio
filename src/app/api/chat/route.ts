@@ -72,6 +72,7 @@ export async function POST(request: NextRequest) {
           type: 'search_limit',
           tier: usageCheck.tier,
           limit: usageCheck.limit,
+          subscriptionStatus: usageCheck.subscriptionStatus,
           upgradeUrl: '/pricing',
         }),
         { status: 402, headers: { 'Content-Type': 'application/json' } }

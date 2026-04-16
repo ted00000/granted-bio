@@ -8,6 +8,7 @@ export interface UsageCheckResult {
   remaining: number
   limit: number
   tier: BillingTier
+  subscriptionStatus: string | null
 }
 
 export interface UserUsage {
@@ -39,6 +40,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
       remaining: 0,
       limit: TIER_LIMITS.free.searchesPerMonth,
       tier: 'free',
+      subscriptionStatus: null,
     }
   }
 
@@ -49,6 +51,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
       remaining: Infinity,
       limit: Infinity,
       tier: 'pro',
+      subscriptionStatus: 'active',
     }
   }
 
@@ -58,7 +61,8 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
     const limit = TIER_LIMITS.pro.searchesPerMonth
     const resetAt = profile.searches_reset_at ? new Date(profile.searches_reset_at) : new Date()
     const now = new Date()
-    const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())
+    const monthAgo = new Date()
+    monthAgo.setMonth(monthAgo.getMonth() - 1)
     let currentSearches = profile.searches_this_month || 0
 
     if (resetAt < monthAgo) {
@@ -77,9 +81,9 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
         .from('user_profiles')
         .update({ searches_this_month: currentSearches + 1 })
         .eq('id', userId)
-      return { allowed: true, remaining: remaining - 1, limit, tier: 'pro' }
+      return { allowed: true, remaining: remaining - 1, limit, tier: 'pro', subscriptionStatus: 'active' }
     }
-    return { allowed: false, remaining: 0, limit, tier: 'pro' }
+    return { allowed: false, remaining: 0, limit, tier: 'pro', subscriptionStatus: 'active' }
   }
 
   // Map to billing tier
@@ -89,7 +93,8 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
   // Check if we need to reset monthly counter
   const resetAt = profile.searches_reset_at ? new Date(profile.searches_reset_at) : new Date()
   const now = new Date()
-  const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())
+  const monthAgo = new Date()
+  monthAgo.setMonth(monthAgo.getMonth() - 1)
 
   let currentSearches = profile.searches_this_month || 0
 
@@ -123,6 +128,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
       remaining: remaining - 1, // After this search
       limit,
       tier,
+      subscriptionStatus: profile.subscription_status,
     }
   }
 
@@ -131,6 +137,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
     remaining: 0,
     limit,
     tier,
+    subscriptionStatus: profile.subscription_status,
   }
 }
 

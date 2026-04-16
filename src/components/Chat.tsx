@@ -1474,7 +1474,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const [showMobileResults, setShowMobileResults] = useState(true)  // Delay mobile results during restoration
   const [initialQueryProcessed, setInitialQueryProcessed] = useState(false)
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
-  const [upgradeInfo, setUpgradeInfo] = useState<{ tier: 'free' | 'pro'; limit: number } | null>(null)
+  const [upgradeInfo, setUpgradeInfo] = useState<{ tier: 'free' | 'pro'; limit: number; subscriptionStatus?: string | null } | null>(null)
   const [newSearchMode, setNewSearchMode] = useState<SearchMode>(searchMode)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
@@ -1482,6 +1482,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const isRestoringState = useRef(false)
   const prevPersonaRef = useRef<PersonaType | null>(null)
   const currentSearchId = useRef<string | null>(null)  // Track current search to prevent stale results
+  const abortControllerRef = useRef<AbortController | null>(null)  // Abort in-flight searches
 
   const router = useRouter()
   const metadata = PERSONA_METADATA[persona]
@@ -1846,6 +1847,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     setMessages(updatedMessages)
     setInput('')
     setIsLoading(true)
+    // Abort any in-flight search before starting a new one
+    abortControllerRef.current?.abort()
+    abortControllerRef.current = new AbortController()
+
     // Generate a unique ID for this search to prevent stale results from previous searches
     const searchId = crypto.randomUUID()
     currentSearchId.current = searchId
@@ -1867,14 +1872,15 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona, searchMode })
+        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona, searchMode }),
+        signal: abortControllerRef.current?.signal
       })
 
       // Handle search limit exceeded
       if (response.status === 402) {
         const data = await response.json()
         if (data.type === 'search_limit') {
-          setUpgradeInfo({ tier: data.tier, limit: data.limit })
+          setUpgradeInfo({ tier: data.tier, limit: data.limit, subscriptionStatus: data.subscriptionStatus })
           setShowUpgradePrompt(true)
           // Remove the empty assistant message we added
           setMessages(prev => prev.filter(m => m.id !== assistantId))
@@ -1957,6 +1963,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
         }
       }
     } catch (error) {
+      // Ignore aborted requests - user started a new search
+      if (error instanceof Error && error.name === 'AbortError') {
+        return
+      }
       console.error('Chat error:', error)
       const errorMsg = error instanceof Error ? error.message : 'An unexpected error occurred'
       // Map specific errors to user-friendly messages
@@ -2534,6 +2544,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
           type="search_limit"
           tier={upgradeInfo.tier}
           limit={upgradeInfo.limit}
+          subscriptionStatus={upgradeInfo.subscriptionStatus}
           onClose={() => setShowUpgradePrompt(false)}
         />
       )}
