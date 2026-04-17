@@ -42,11 +42,17 @@ export function UpgradePrompt({ type, tier, limit, subscriptionStatus, onClose }
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="upgrade-dialog-title"
+    >
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black/50"
         onClick={onClose}
+        aria-hidden="true"
       />
 
       {/* Dialog */}
@@ -55,16 +61,17 @@ export function UpgradePrompt({ type, tier, limit, subscriptionStatus, onClose }
         <div className="bg-gradient-to-r from-[#E07A5F] to-[#F4A261] px-6 py-8 text-white">
           <button
             onClick={onClose}
+            aria-label="Close dialog"
             className="absolute top-4 right-4 p-1 text-white/80 hover:text-white rounded-lg transition-colors"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" aria-hidden="true" />
           </button>
 
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-              <Zap className="w-5 h-5" />
+              <Zap className="w-5 h-5" aria-hidden="true" />
             </div>
-            <h2 className="text-xl font-semibold">
+            <h2 id="upgrade-dialog-title" className="text-xl font-semibold">
               {isPaymentFailed ? 'Payment Failed' : 'Search Limit Reached'}
             </h2>
           </div>

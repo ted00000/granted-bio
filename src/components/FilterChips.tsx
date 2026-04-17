@@ -160,9 +160,12 @@ export function FilterChips({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsExpanded(!isExpanded)}
+              aria-expanded={isExpanded}
+              aria-controls="filter-panel"
               className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
             >
-              {isExpanded ? 'Hide' : 'Show'}
+              {isExpanded ? 'Hide filters' : 'Show filters'}
+              <span className="sr-only"> panel</span>
             </button>
             <span className="text-gray-300">·</span>
             <h3 className="text-sm font-medium text-gray-500">
@@ -188,7 +191,7 @@ export function FilterChips({
 
       {/* Quick filters - toggles in a subtle card */}
       {isExpanded && (
-      <div className="bg-gray-50 rounded-lg p-3">
+      <div id="filter-panel" className="bg-gray-50 rounded-lg p-3" role="group" aria-label="Quick filters">
         <div className="flex flex-wrap gap-1.5">
           {[
             { key: 'activeOnly' as const, label: 'Active', count: quickFilterCounts?.active },
@@ -204,6 +207,7 @@ export function FilterChips({
                 key={key}
                 onClick={() => toggleQuickFilter(key)}
                 disabled={isDisabled}
+                aria-pressed={isSelected}
                 className={`
                   px-2 py-1 text-xs rounded-md border transition-all
                   ${isSelected
@@ -230,8 +234,8 @@ export function FilterChips({
 
       {/* Category filters */}
       {isExpanded && sortedCategories.length > 0 && (
-        <div>
-          <h4 className="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">Life Science Area</h4>
+        <div role="group" aria-labelledby="category-filter-label">
+          <h4 id="category-filter-label" className="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">Life Science Area</h4>
           <div className="flex flex-wrap gap-1.5">
             {sortedCategories.map(([category]) => {
               const isSelected = selectedCategories.includes(category)
@@ -243,6 +247,7 @@ export function FilterChips({
                   key={category}
                   onClick={() => toggleCategory(category)}
                   disabled={isDisabled}
+                  aria-pressed={isSelected}
                   className={`
                     px-2 py-1 text-xs rounded-md border transition-all
                     ${isSelected
@@ -267,8 +272,8 @@ export function FilterChips({
 
       {/* Org type filters */}
       {isExpanded && sortedOrgTypes.length > 0 && (
-        <div>
-          <h4 className="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">Organization Type</h4>
+        <div role="group" aria-labelledby="orgtype-filter-label">
+          <h4 id="orgtype-filter-label" className="text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">Organization Type</h4>
           <div className="flex flex-wrap gap-1.5">
             {sortedOrgTypes.map(([orgType]) => {
               const isSelected = selectedOrgTypes.includes(orgType)
@@ -280,6 +285,7 @@ export function FilterChips({
                   key={orgType}
                   onClick={() => toggleOrgType(orgType)}
                   disabled={isDisabled}
+                  aria-pressed={isSelected}
                   className={`
                     px-2 py-1 text-xs rounded-md border transition-all
                     ${isSelected
@@ -304,8 +310,8 @@ export function FilterChips({
 
       {/* Loading indicator */}
       {isExpanded && isLoading && (
-        <div className="flex items-center gap-2 text-xs text-gray-400">
-          <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+        <div className="flex items-center gap-2 text-xs text-gray-400" role="status" aria-live="polite">
+          <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" aria-hidden="true" />
           <span>Filtering...</span>
         </div>
       )}

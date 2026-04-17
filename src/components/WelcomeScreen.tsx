@@ -107,13 +107,16 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
               What should we call you?
             </h1>
             <form onSubmit={handleSaveName} className="space-y-4">
+              <label htmlFor="name-input" className="sr-only">Your first name</label>
               <input
+                id="name-input"
                 type="text"
                 placeholder="Your first name"
                 value={nameInput}
                 onChange={(e) => setNameInput(e.target.value)}
                 autoFocus
                 required
+                aria-required="true"
                 className="w-full px-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-200 text-center text-lg"
               />
               <button
@@ -143,10 +146,14 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
           </h1>
 
           {/* Search Input */}
-          <form onSubmit={handleSubmit} className="mb-4">
+          <form onSubmit={handleSubmit} className="mb-4" role="search">
             <div className="flex items-center gap-2">
               <div className="flex-1 min-w-0 relative">
+                <label htmlFor="search-input" className="sr-only">
+                  Search {LENS_CONFIG.find(l => l.id === selectedLens)?.label || 'projects'}
+                </label>
                 <textarea
+                  id="search-input"
                   ref={inputRef}
                   value={searchInput}
                   onChange={e => setSearchInput(e.target.value.slice(0, 140))}
@@ -166,9 +173,10 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
               <button
                 type="submit"
                 disabled={!searchInput.trim() || searchInput.length > 140}
+                aria-label="Submit search"
                 className="flex-shrink-0 p-3.5 bg-[#E07A5F] text-white rounded-xl hover:bg-[#C96A4F] disabled:opacity-40 transition-colors"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </button>
@@ -178,13 +186,15 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
           {/* Lens Bar and Search Mode Toggle */}
           <div className="flex justify-center items-center gap-3 mb-6">
             {/* Persona Pills */}
-            <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full">
+            <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full" role="tablist" aria-label="Search type">
               {LENS_CONFIG.map(lens => {
                 const isSelected = selectedLens === lens.id
                 const Icon = lens.icon
                 return (
                   <button
                     key={lens.id}
+                    role="tab"
+                    aria-selected={isSelected}
                     onClick={() => setSelectedLens(lens.id)}
                     className={`
                       flex items-center gap-1.5 px-4 py-2 text-sm rounded-full transition-all
@@ -194,7 +204,7 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                       }
                     `}
                   >
-                    <Icon className={`w-4 h-4 ${isSelected ? 'text-[#E07A5F]' : ''}`} strokeWidth={isSelected ? 2 : 1.5} />
+                    <Icon className={`w-4 h-4 ${isSelected ? 'text-[#E07A5F]' : ''}`} strokeWidth={isSelected ? 2 : 1.5} aria-hidden="true" />
                     <span className={isSelected ? 'font-medium' : ''}>{lens.label}</span>
                   </button>
                 )
@@ -202,8 +212,10 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
             </div>
 
             {/* Search Mode Toggle */}
-            <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full">
+            <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full" role="tablist" aria-label="Search mode">
               <button
+                role="tab"
+                aria-selected={searchMode === 'smart'}
                 onClick={() => setSearchMode('smart')}
                 className={`
                   flex items-center gap-1.5 px-3 py-2 text-sm rounded-full transition-all
@@ -214,10 +226,12 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                 `}
                 title="Semantic search - finds conceptually related results"
               >
-                <Sparkles className={`w-4 h-4 ${searchMode === 'smart' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'smart' ? 2 : 1.5} />
+                <Sparkles className={`w-4 h-4 ${searchMode === 'smart' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'smart' ? 2 : 1.5} aria-hidden="true" />
                 <span className={searchMode === 'smart' ? 'font-medium' : ''}>Smart</span>
               </button>
               <button
+                role="tab"
+                aria-selected={searchMode === 'standard'}
                 onClick={() => setSearchMode('standard')}
                 className={`
                   flex items-center gap-1.5 px-3 py-2 text-sm rounded-full transition-all
@@ -228,12 +242,14 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                 `}
                 title="Keyword search - finds exact matches for names, IDs, organizations"
               >
-                <Crosshair className={`w-4 h-4 ${searchMode === 'standard' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'standard' ? 2 : 1.5} />
+                <Crosshair className={`w-4 h-4 ${searchMode === 'standard' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'standard' ? 2 : 1.5} aria-hidden="true" />
                 <span className={searchMode === 'standard' ? 'font-medium' : ''}>Exact</span>
               </button>
               {/* Name option - only for People persona */}
               {selectedLens === 'bd' && (
                 <button
+                  role="tab"
+                  aria-selected={searchMode === 'name'}
                   onClick={() => setSearchMode('name')}
                   className={`
                     flex items-center gap-1.5 px-3 py-2 text-sm rounded-full transition-all
@@ -244,7 +260,7 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                   `}
                   title="Name lookup - search for a specific researcher or organization by name"
                 >
-                  <div className="flex items-center">
+                  <div className="flex items-center" aria-hidden="true">
                     <Building2 className={`w-4 h-4 mr-1 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
                     <span className={`text-xs ${searchMode === 'name' ? 'text-[#E07A5F]' : 'text-gray-400'}`}>/</span>
                     <User className={`w-4 h-4 ml-0.5 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />

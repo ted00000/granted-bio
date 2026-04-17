@@ -44,12 +44,15 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
       {/* Mobile menu button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-controls="main-sidebar"
+        aria-label={isOpen ? 'Close navigation menu' : 'Open navigation menu'}
         className="lg:hidden fixed top-[max(1rem,env(safe-area-inset-top))] left-[max(1rem,env(safe-area-inset-left))] z-50 p-2 rounded-lg bg-white shadow-md border border-gray-100"
       >
         {isOpen ? (
-          <X className="w-5 h-5 text-gray-600" />
+          <X className="w-5 h-5 text-gray-600" aria-hidden="true" />
         ) : (
-          <Menu className="w-5 h-5 text-gray-600" />
+          <Menu className="w-5 h-5 text-gray-600" aria-hidden="true" />
         )}
       </button>
 
@@ -58,11 +61,15 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
         <div
           className="lg:hidden fixed inset-0 bg-black/20 z-40"
           onClick={() => setIsOpen(false)}
+          aria-hidden="true"
         />
       )}
 
       {/* Sidebar */}
       <aside
+        id="main-sidebar"
+        role="navigation"
+        aria-label="Main navigation"
         className={`
           fixed lg:static inset-y-0 left-0 z-40
           w-64 bg-white border-r border-gray-100

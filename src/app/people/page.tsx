@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Users, Trash2, Building2, User } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
+import { ListPageSkeleton } from '@/components/ui/Skeleton'
 
 interface SavedPerson {
   id: string
@@ -75,9 +76,7 @@ export default function MyPeoplePage() {
           </div>
 
           {loading ? (
-            <div className="flex items-center justify-center py-16">
-              <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-            </div>
+            <ListPageSkeleton count={4} />
           ) : people.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-400 mb-3">No saved people yet</p>

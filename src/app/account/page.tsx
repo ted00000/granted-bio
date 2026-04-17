@@ -16,6 +16,8 @@ import {
   Activity,
 } from 'lucide-react'
 import { MarketingNav } from '@/components/MarketingNav'
+import { AccountPageSkeleton } from '@/components/ui/Skeleton'
+import { LoadError } from '@/components/ui/ErrorState'
 
 type ReportPurchase = {
   id: string
@@ -111,8 +113,14 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+      <div className="min-h-screen bg-[#FAFAF9]">
+        <MarketingNav />
+        <main className="max-w-3xl mx-auto px-6 py-12">
+          <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-8">
+            Account
+          </h1>
+          <AccountPageSkeleton />
+        </main>
       </div>
     )
   }
@@ -122,19 +130,7 @@ export default function AccountPage() {
       <div className="min-h-screen bg-[#FAFAF9]">
         <MarketingNav />
         <main className="max-w-3xl mx-auto px-6 py-16">
-          <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
-            <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              Unable to load account
-            </h2>
-            <p className="text-gray-600 mb-6">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
-            >
-              Try Again
-            </button>
-          </div>
+          <LoadError resource="account information" onRetry={fetchUsage} />
         </main>
       </div>
     )

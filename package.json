@@ -13,6 +13,7 @@
     "@react-pdf/renderer": "^4.3.2",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.91.1",
+    "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "docx": "^9.6.1",
     "file-saver": "^2.0.5",
@@ -28,6 +29,7 @@
     "recharts": "^3.7.0",
     "resend": "^6.8.0",
     "stripe": "^20.4.1",
+    "tailwind-merge": "^3.5.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {

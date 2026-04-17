@@ -88,14 +88,20 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     // Get the subscription details
     const subscription = await stripe.subscriptions.retrieve(subscriptionId) as Stripe.Subscription
 
-    // Find user by Stripe customer ID
+    // Find user by Stripe customer ID and check idempotency
     const { data: profile } = await supabaseAdmin
       .from('user_profiles')
-      .select('id')
+      .select('id, stripe_subscription_id')
       .eq('stripe_customer_id', customerId)
       .single()
 
     if (profile) {
+      // Idempotency check: skip if already processed this subscription
+      if (profile.stripe_subscription_id === subscriptionId) {
+        console.log(`[Stripe Webhook] Subscription ${subscriptionId} already processed for user ${profile.id}, skipping`)
+        return
+      }
+
       // Get current period end from subscription items (Stripe SDK v20+)
       const periodEnd = subscription.items?.data[0]?.current_period_end
 
@@ -115,6 +121,18 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     // One-time report payment
     const paymentIntentId = session.payment_intent as string
     const metadata = session.metadata || {}
+
+    // Idempotency check: see if this session already has a completed purchase with a report
+    const { data: existingPurchase } = await supabaseAdmin
+      .from('report_purchases')
+      .select('id, status, report_id')
+      .eq('stripe_checkout_session_id', session.id)
+      .single()
+
+    if (existingPurchase?.status === 'completed' && existingPurchase?.report_id) {
+      console.log(`[Stripe Webhook] Purchase for session ${session.id} already completed with report ${existingPurchase.report_id}, skipping`)
+      return
+    }
 
     // Mark purchase as completed
     await completeReportPurchase(session.id, paymentIntentId)
@@ -155,31 +173,52 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
  */
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   const customerId = subscription.customer as string
+  const periodEnd = subscription.items?.data[0]?.current_period_end
+  const newPeriodEndDate = periodEnd ? new Date(periodEnd * 1000).toISOString() : null
 
   const { data: profile } = await supabaseAdmin
     .from('user_profiles')
-    .select('id')
+    .select('id, subscription_status, current_period_end')
     .eq('stripe_customer_id', customerId)
     .single()
 
   if (profile) {
     // Determine tier based on subscription status
     const tier = subscription.status === 'active' ? 'pro' : 'free'
-    const periodEnd = subscription.items?.data[0]?.current_period_end
+
+    // Idempotency check: detect if this is an actual renewal (period_end changed)
+    // Only reset search counter when the billing period actually renewed
+    const isRenewal = profile.current_period_end &&
+      newPeriodEndDate &&
+      newPeriodEndDate !== profile.current_period_end &&
+      subscription.status === 'active'
+
+    // Skip if status and period_end are unchanged (duplicate webhook)
+    if (
+      profile.subscription_status === subscription.status &&
+      profile.current_period_end === newPeriodEndDate
+    ) {
+      console.log(`[Stripe Webhook] Subscription update for user ${profile.id} unchanged, skipping`)
+      return
+    }
+
+    const updateData: Record<string, unknown> = {
+      tier,
+      stripe_subscription_id: subscription.id,
+      subscription_status: subscription.status,
+      current_period_end: newPeriodEndDate,
+    }
+
+    // Only reset search counter on actual renewal, not just any status update
+    if (isRenewal) {
+      updateData.searches_this_month = 0
+      updateData.searches_reset_at = new Date().toISOString()
+      console.log(`[Stripe Webhook] Detected renewal for user ${profile.id}, resetting search counter`)
+    }
 
     await supabaseAdmin
       .from('user_profiles')
-      .update({
-        tier,
-        stripe_subscription_id: subscription.id,
-        subscription_status: subscription.status,
-        current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
-        // Reset search counter on renewal
-        ...(subscription.status === 'active' ? {
-          searches_this_month: 0,
-          searches_reset_at: new Date().toISOString(),
-        } : {}),
-      })
+      .update(updateData)
       .eq('id', profile.id)
 
     console.log(`[Stripe Webhook] Updated subscription for user ${profile.id}: ${subscription.status}`)
@@ -194,11 +233,17 @@ async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
 
   const { data: profile } = await supabaseAdmin
     .from('user_profiles')
-    .select('id')
+    .select('id, subscription_status, stripe_subscription_id')
     .eq('stripe_customer_id', customerId)
     .single()
 
   if (profile) {
+    // Idempotency check: skip if already canceled or different subscription
+    if (profile.subscription_status === 'canceled' || profile.stripe_subscription_id !== subscription.id) {
+      console.log(`[Stripe Webhook] Subscription ${subscription.id} already canceled or mismatched for user ${profile.id}, skipping`)
+      return
+    }
+
     await supabaseAdmin
       .from('user_profiles')
       .update({
