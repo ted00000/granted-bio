@@ -21,10 +21,13 @@ import { MarketingNav } from '@/components/MarketingNav'
 function AuthForm() {
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') || '/chat'
+  const authError = searchParams.get('error')
 
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState<'google' | 'magic' | null>(null)
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(
+    authError === 'auth_callback_error' ? 'Authentication failed. Please try again.' : null
+  )
   const [magicLinkSent, setMagicLinkSent] = useState(false)
 
   const supabase = createBrowserSupabaseClient()

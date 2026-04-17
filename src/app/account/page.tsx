@@ -142,6 +142,7 @@ export default function AccountPage() {
   )
   const isPro = usage.tier === 'pro'
   const isActive = usage.subscriptionStatus === 'active'
+  const isAdmin = usage.role === 'admin'
   const isAssociate = usage.role === 'associate'
 
   const formatCost = (cents: number) => {
@@ -206,7 +207,11 @@ export default function AccountPage() {
                     Current Plan
                   </h2>
                   <div className="flex items-center gap-2">
-                    {isAssociate ? (
+                    {isAdmin ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        Admin
+                      </span>
+                    ) : isAssociate ? (
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
                         Associate
                       </span>
@@ -221,7 +226,7 @@ export default function AccountPage() {
                         {isPro ? 'Pro Search' : 'Free'}
                       </span>
                     )}
-                    {isPro && usage.subscriptionStatus && !isAssociate && (
+                    {isPro && usage.subscriptionStatus && !isAdmin && !isAssociate && (
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           isActive
@@ -239,7 +244,7 @@ export default function AccountPage() {
                       </span>
                     )}
                   </div>
-                  {isPro && usage.currentPeriodEnd && (
+                  {isPro && usage.currentPeriodEnd && !isAdmin && (
                     <p className="text-sm text-gray-500 mt-2">
                       {usage.subscriptionStatus === 'canceled'
                         ? 'Access until'
@@ -256,7 +261,7 @@ export default function AccountPage() {
                   )}
                 </div>
               </div>
-              {isAssociate ? (
+              {isAdmin || isAssociate ? (
                 <span className="text-sm text-gray-500">Unlimited access</span>
               ) : isPro ? (
                 <button
@@ -332,7 +337,7 @@ export default function AccountPage() {
           )}
 
           {/* Search Usage for regular users */}
-          {!isAssociate && (
+          {!isAdmin && !isAssociate && (
             <section className="bg-white rounded-2xl border border-gray-200 p-6">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
