@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { User, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Building2, Search, X, Bookmark } from 'lucide-react'
+import { User, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Building2, Search, X, Bookmark, ArrowLeft } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 
@@ -226,12 +226,21 @@ export default function ResearcherPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <Breadcrumbs
-              items={[
-                { label: 'Researchers', href: '/chat' },
-                { label: 'Researcher' },
-              ]}
-            />
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.back()}
+                className="p-1.5 -ml-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                aria-label="Go back"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <Breadcrumbs
+                items={[
+                  { label: 'Researchers' },
+                  { label: 'Researcher' },
+                ]}
+              />
+            </div>
             <div className="text-center py-8 mt-8">
               <User className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Researcher not found'}</h1>
@@ -249,14 +258,23 @@ export default function ResearcherPage() {
         {/* Top header with back button, researcher info, and bookmark */}
         <div className="flex-shrink-0 border-b border-gray-100 bg-white">
           <div className="px-5 py-4">
-            {/* Breadcrumbs and bookmark */}
+            {/* Back button, breadcrumbs, and bookmark */}
             <div className="flex items-center justify-between mb-4">
-              <Breadcrumbs
-                items={[
-                  { label: 'Researchers', href: '/chat' },
-                  { label: decodeURIComponent(name).length > 30 ? decodeURIComponent(name).slice(0, 30) + '...' : decodeURIComponent(name) },
-                ]}
-              />
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => router.back()}
+                  className="p-1.5 -ml-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                  aria-label="Go back"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                </button>
+                <Breadcrumbs
+                  items={[
+                    { label: 'Researchers' },
+                    { label: decodeURIComponent(name).length > 30 ? decodeURIComponent(name).slice(0, 30) + '...' : decodeURIComponent(name) },
+                  ]}
+                />
+              </div>
               <button
                 onClick={toggleSaveResearcher}
                 disabled={savingResearcher}

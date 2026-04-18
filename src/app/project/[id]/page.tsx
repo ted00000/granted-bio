@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Bookmark, FileText, Heart, BookOpen, Lightbulb, Activity, Pencil } from 'lucide-react'
+import { Bookmark, FileText, Heart, BookOpen, Lightbulb, Activity, Pencil, ArrowLeft } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { CategoryEditModal } from '@/components/CategoryEditModal'
@@ -219,12 +219,21 @@ export default function ProjectPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <Breadcrumbs
-              items={[
-                { label: 'Projects', href: '/chat' },
-                { label: 'Project' },
-              ]}
-            />
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.back()}
+                className="p-1.5 -ml-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                aria-label="Go back"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <Breadcrumbs
+                items={[
+                  { label: 'Projects' },
+                  { label: 'Project' },
+                ]}
+              />
+            </div>
             <div className="text-center py-8 mt-8">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Project Not Found</h1>
               <p className="text-gray-500">{error}</p>
@@ -259,14 +268,23 @@ export default function ProjectPage() {
     <AppLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Breadcrumbs and bookmark */}
+          {/* Back button, breadcrumbs, and bookmark */}
           <div className="flex items-center justify-between mb-6">
-            <Breadcrumbs
-              items={[
-                { label: 'Projects', href: '/chat' },
-                { label: project.title.length > 40 ? project.title.slice(0, 40) + '...' : project.title },
-              ]}
-            />
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.back()}
+                className="p-1.5 -ml-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                aria-label="Go back"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <Breadcrumbs
+                items={[
+                  { label: 'Projects' },
+                  { label: project.title.length > 40 ? project.title.slice(0, 40) + '...' : project.title },
+                ]}
+              />
+            </div>
             <button
               onClick={toggleSave}
               disabled={savingProject}

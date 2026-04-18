@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, Bookmark } from 'lucide-react'
+import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, Bookmark, ArrowLeft } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 
@@ -179,12 +179,21 @@ export default function TrialDetailPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <Breadcrumbs
-              items={[
-                { label: 'Trials', href: '/chat' },
-                { label: 'Trial' },
-              ]}
-            />
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.back()}
+                className="p-1.5 -ml-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                aria-label="Go back"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <Breadcrumbs
+                items={[
+                  { label: 'Trials' },
+                  { label: 'Trial' },
+                ]}
+              />
+            </div>
             <div className="text-center py-8 mt-8">
               <Activity className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Trial not found'}</h1>
@@ -202,14 +211,23 @@ export default function TrialDetailPage() {
     <AppLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Breadcrumbs and save */}
+          {/* Back button, breadcrumbs, and save */}
           <div className="flex items-center justify-between mb-6">
-            <Breadcrumbs
-              items={[
-                { label: 'Trials', href: '/chat' },
-                { label: trial.study_title.length > 40 ? trial.study_title.slice(0, 40) + '...' : trial.study_title },
-              ]}
-            />
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.back()}
+                className="p-1.5 -ml-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                aria-label="Go back"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <Breadcrumbs
+                items={[
+                  { label: 'Trials' },
+                  { label: trial.study_title.length > 40 ? trial.study_title.slice(0, 40) + '...' : trial.study_title },
+                ]}
+              />
+            </div>
             <button
               onClick={toggleSaveTrial}
               disabled={savingTrial}
