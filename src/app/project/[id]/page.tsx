@@ -222,7 +222,7 @@ export default function ProjectPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => router.back()}
-                className="p-1.5 -ml-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                className="p-1.5 -ml-1.5 rounded-lg text-[#E07A5F] hover:bg-[#E07A5F]/10 transition-colors"
                 aria-label="Go back"
               >
                 <ArrowLeft className="w-4 h-4" />
@@ -273,7 +273,7 @@ export default function ProjectPage() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => router.back()}
-                className="p-1.5 -ml-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+                className="p-1.5 -ml-1.5 rounded-lg text-[#E07A5F] hover:bg-[#E07A5F]/10 transition-colors"
                 aria-label="Go back"
               >
                 <ArrowLeft className="w-4 h-4" />
