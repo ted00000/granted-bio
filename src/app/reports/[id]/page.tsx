@@ -2,7 +2,8 @@
 
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
-import { FileText, ArrowLeft, AlertCircle, FileDown, Loader2, FileType } from 'lucide-react'
+import { FileText, AlertCircle, FileDown, Loader2, FileType } from 'lucide-react'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { jsPDF } from 'jspdf'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, Header, Footer, AlignmentType } from 'docx'
@@ -793,12 +794,12 @@ export default function ReportDetailPage({
               <Link href="/" className="text-xl font-semibold text-gray-900">
                 granted<span className="text-[#E07A5F]">.bio</span>
               </Link>
-              <Link
-                href="/reports"
-                className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium"
-              >
-                ← Back to Reports
-              </Link>
+              <Breadcrumbs
+                items={[
+                  { label: 'Reports', href: '/reports' },
+                  { label: 'Report' },
+                ]}
+              />
             </div>
           </div>
         </header>
@@ -829,13 +830,12 @@ export default function ReportDetailPage({
             <Link href="/" className="text-xl font-semibold text-gray-900">
               granted<span className="text-[#E07A5F]">.bio</span>
             </Link>
-            <Link
-              href="/reports"
-              className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium flex items-center gap-1"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Reports
-            </Link>
+            <Breadcrumbs
+              items={[
+                { label: 'Reports', href: '/reports' },
+                { label: report.title.length > 30 ? report.title.slice(0, 30) + '...' : report.title },
+              ]}
+            />
           </div>
         </div>
       </header>

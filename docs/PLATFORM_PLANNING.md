@@ -983,22 +983,54 @@ const tools = [
 - [x] Basic result display
 - [x] User auth (Supabase)
 
-**Phase 2: Optimization & Quality** 🔄 IN PROGRESS
+**Phase 2: Optimization & Quality** ✅ COMPLETE
 - [x] Database indexes for performance
 - [x] Fix intermediate text streaming
 - [x] Multi-state filtering
-- [ ] Tune search threshold for better recall
-- [ ] Add logging for cost monitoring
-- [ ] Test and validate search quality
+- [x] Search threshold tuning
+- [x] Mobile responsiveness (sidebar scroll, table layouts)
+- [x] Breadcrumb navigation across all detail pages
+- [x] Error retry logic with exponential backoff
+- [x] Report progress indication (stage tracking)
 
-**Phase 3: Monetization** ⏳ NOT STARTED
-- [ ] Stripe integration
-- [ ] Tier enforcement (free/pro/enterprise)
-- [ ] Report generation (PDF)
-- [ ] Email visibility by tier
+**Phase 3: Monetization** ✅ COMPLETE
+- [x] Stripe integration (checkout, webhooks, portal)
+- [x] Tier enforcement (free/pro with search limits)
+- [x] Report generation (PDF with progress tracking)
+- [x] Email visibility by tier
+- [x] Usage tracking with pre-warning at 80%
 
 **Phase 4: Advanced Features** ⏳ NOT STARTED
 - [ ] Saved searches
 - [ ] Alerts (email on new matches)
 - [ ] API access for enterprise
 - [ ] CRM integration
+
+---
+
+### 9.9 Parking Lot (Deferred Architectural Items)
+
+Items intentionally deferred for future evaluation:
+
+| Item | Trigger Condition | Notes |
+|------|-------------------|-------|
+| **React Query adoption** | Caching/deduplication pain | Would replace manual fetch calls, add auto-refetch |
+| **Unified component library** | Next major UI refactor | Standardize buttons, cards, modals |
+
+See `SYSTEM_REVIEW.md` for full details on deferred items.
+
+### 9.10 Recent Updates (April 2026)
+
+**April 17, 2026 - UI/UX Polish:**
+- Created `PremiumBadge` component for consistent premium feature styling
+- Added `Breadcrumbs` navigation to all detail pages
+- Fixed mobile sidebar scroll with safe area insets
+- Added horizontal scroll to data tables on mobile
+- Implemented report progress tracking (Searching → Gathering → Analyzing → Writing)
+- Added pre-warning banner at 80% search usage
+- Created `fetchWithRetry` utility for resilient API calls
+
+**New Components:**
+- `/src/components/ui/PremiumBadge.tsx`
+- `/src/components/Breadcrumbs.tsx`
+- `/src/lib/retry.ts`

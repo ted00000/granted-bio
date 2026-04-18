@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Bookmark, ChevronLeft, FileText, Heart, BookOpen, Lightbulb, Activity, Pencil } from 'lucide-react'
+import { Bookmark, FileText, Heart, BookOpen, Lightbulb, Activity, Pencil } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { CategoryEditModal } from '@/components/CategoryEditModal'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import { useAuth } from '@/contexts/AuthContext'
@@ -218,11 +219,13 @@ export default function ProjectPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 mb-8">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
-            <div className="text-center py-8">
+            <Breadcrumbs
+              items={[
+                { label: 'Search', href: '/chat' },
+                { label: 'Project' },
+              ]}
+            />
+            <div className="text-center py-8 mt-8">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Project Not Found</h1>
               <p className="text-gray-500">{error}</p>
             </div>
@@ -256,12 +259,14 @@ export default function ProjectPage() {
     <AppLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Back button and bookmark */}
+          {/* Breadcrumbs and bookmark */}
           <div className="flex items-center justify-between mb-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
+            <Breadcrumbs
+              items={[
+                { label: 'Search', href: '/chat' },
+                { label: project.title.length > 40 ? project.title.slice(0, 40) + '...' : project.title },
+              ]}
+            />
             <button
               onClick={toggleSave}
               disabled={savingProject}

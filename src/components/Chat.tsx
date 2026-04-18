@@ -2,8 +2,9 @@
 
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { Search, TrendingUp, Users, Activity, Bookmark, Download, FlaskConical, Sparkles, Crosshair, User, Building2 } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark, Download, FlaskConical, Sparkles, Crosshair, User, Building2, AlertTriangle } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult, SearchMode } from '@/lib/chat/types'
+import { fetchWithRetry } from '@/lib/retry'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
 import { UpgradePrompt } from './billing/UpgradePrompt'
@@ -1486,7 +1487,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const abortControllerRef = useRef<AbortController | null>(null)  // Abort in-flight searches
 
   const router = useRouter()
-  const { refetchUsage } = useAuth()
+  const { refetchUsage, usage, profile } = useAuth()
   const metadata = PERSONA_METADATA[persona]
   const IconComponent = ICONS[metadata.icon]
 
@@ -1871,12 +1872,15 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     setMessages(prev => [...prev, { id: assistantId, role: 'assistant', content: '', isStreaming: true }])
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona, searchMode }),
-        signal: abortControllerRef.current?.signal
-      })
+      const response = await fetchWithRetry(
+        () => fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ messages: updatedMessages.map(m => ({ role: m.role, content: m.content })), persona, searchMode }),
+          signal: abortControllerRef.current?.signal
+        }),
+        { maxRetries: 2, initialDelayMs: 1000 }
+      )
 
       // Handle search limit exceeded
       if (response.status === 402) {
@@ -2177,6 +2181,26 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
             <p className="text-gray-400 mb-6 text-sm px-2">
               {metadata.description}
             </p>
+
+            {/* Search limit warning - show when approaching limit */}
+            {usage && !usage.isUnlimited && profile?.tier === 'free' && usage.searchesUsed >= usage.searchLimit * 0.8 && usage.searchesUsed < usage.searchLimit && (
+              <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-amber-800">
+                    <span className="font-medium">Running low on searches.</span>{' '}
+                    You&apos;ve used {usage.searchesUsed} of {usage.searchLimit} free searches this month.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => router.push('/pricing')}
+                    className="mt-1 text-sm text-amber-700 hover:text-amber-900 font-medium underline underline-offset-2"
+                  >
+                    Upgrade to Pro for 500 searches/month
+                  </button>
+                </div>
+              </div>
+            )}
 
             {/* Input right after content */}
             <form onSubmit={handleSubmit} className="mb-4">

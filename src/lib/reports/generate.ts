@@ -23,6 +23,27 @@ import { runMarketAgent } from './agents/market'
 import { synthesizeReport } from './synthesize'
 
 /**
+ * Progress stage type for report generation
+ */
+type ProgressStage = 'searching_projects' | 'gathering_data' | 'aggregating' | 'synthesizing'
+
+/**
+ * Update the progress stage for a report
+ * This is a fire-and-forget update - we don't want to block on it
+ */
+async function updateProgressStage(reportId: string, stage: ProgressStage): Promise<void> {
+  try {
+    await supabaseAdmin
+      .from('user_reports')
+      .update({ progress_stage: stage, updated_at: new Date().toISOString() })
+      .eq('id', reportId)
+  } catch (error) {
+    console.error(`[Report ${reportId}] Failed to update progress stage to ${stage}:`, error)
+    // Don't throw - progress updates are non-critical
+  }
+}
+
+/**
  * Quick check to count projects for a topic before full generation
  * Used to show "limited data" warning if < 5 projects
  */
@@ -77,6 +98,7 @@ export async function generateTopicReport(
     // Phase 1a: Get projects first (other agents depend on project numbers)
     console.log(`[Report ${reportId}] Starting agent data gathering for "${topic}"`)
 
+    await updateProgressStage(reportId, 'searching_projects')
     const projectsOutput = await runProjectsAgent(topic)
     console.log(`[Report ${reportId}] Projects agent complete: ${projectsOutput.items.length} projects`)
 
@@ -89,6 +111,7 @@ export async function generateTopicReport(
 
     // Phase 1b: Run dependent agents in parallel (they all use project numbers)
     // Market agent runs independently (doesn't need project numbers)
+    await updateProgressStage(reportId, 'gathering_data')
     const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
       runTrialsAgent(projectNumbers),
       runPatentsAgent(projectNumbers),
@@ -111,12 +134,14 @@ export async function generateTopicReport(
     console.log(`  - Publications: ${publicationsOutput.items.length} (linked to ${projectNumbers.length} projects)`)
 
     // Phase 2: Aggregation
+    await updateProgressStage(reportId, 'aggregating')
     const fundingStats = calculateFundingStats(projectsOutput)
     const topOrgs = aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput)
     const topResearchers = aggregateResearchers(projectsOutput)
 
     // Phase 3: Synthesis - generate executive summary and markdown report
     console.log(`[Report ${reportId}] Synthesizing report for ${persona} persona...`)
+    await updateProgressStage(reportId, 'synthesizing')
 
     const reportData = await synthesizeReport(topic, agentOutputs, {
       userId,
@@ -223,6 +248,7 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
   try {
     console.log(`[Portfolio Report ${reportId}] Starting generation for ${savedProjects.length} projects, ${savedTrials.length} trials`)
 
+    await updateProgressStage(reportId, 'searching_projects')
     // Transform saved projects into ProjectsAgentOutput format
     const projectsOutput = transformSavedProjectsToOutput(savedProjects)
     console.log(`[Portfolio Report ${reportId}] Processed ${projectsOutput.items.length} projects`)
@@ -236,6 +262,7 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
     const portfolioTopic = derivePortfolioTopic(projectsOutput)
     console.log(`[Portfolio Report ${reportId}] Derived topic: "${portfolioTopic}"`)
 
+    await updateProgressStage(reportId, 'gathering_data')
     const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
       runTrialsAgent(projectNumbers),
       runPatentsAgent(projectNumbers),
@@ -266,12 +293,14 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
     console.log(`  - Publications: ${publicationsOutput.items.length}`)
 
     // Aggregation
+    await updateProgressStage(reportId, 'aggregating')
     const fundingStats = calculateFundingStats(projectsOutput)
     const topOrgs = aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput)
     const topResearchers = aggregateResearchers(projectsOutput)
 
     // Synthesis
     console.log(`[Portfolio Report ${reportId}] Synthesizing report...`)
+    await updateProgressStage(reportId, 'synthesizing')
 
     const reportData = await synthesizeReport(portfolioTopic, agentOutputs, {
       userId,

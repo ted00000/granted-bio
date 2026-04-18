@@ -1,6 +1,6 @@
 # Granted.bio System Review
 
-**Date:** April 16, 2026
+**Date:** April 16, 2026 (Updated: April 17, 2026)
 **Scope:** Full codebase review across user types (Admin, Associate, Pro, Free)
 **Focus:** Sign-up → Search → Report generation flow
 
@@ -174,9 +174,9 @@ const customerId = session.customer as string  // Could be null
 - No visible focus indicators
 - Missing `aria-live` regions for dynamic content
 
-### 16. Mobile Responsiveness
-- Sidebar doesn't scroll properly on short screens
-- Tables not responsive (no horizontal scroll or card view)
+### 16. Mobile Responsiveness - **PARTIALLY COMPLETED** (April 17, 2026)
+- ~~Sidebar doesn't scroll properly on short screens~~ **FIXED** - Added safe area insets and flex overflow fix
+- ~~Tables not responsive (no horizontal scroll or card view)~~ **FIXED** - Added horizontal scroll with shadow indicators
 - Filter chips can overflow without indication
 
 ### 17. Inconsistent Error Handling
@@ -184,20 +184,20 @@ const customerId = session.customer as string  // Could be null
 - Silent failures in non-critical paths (usage fetch, checkout errors)
 - Generic "Failed" messages without recovery guidance
 
-### 18. Loading State Issues
+### 18. Loading State Issues - **PARTIALLY COMPLETED** (April 17, 2026)
 - No skeleton screens for perceived performance
 - Slow search feedback (8-second indicator) implementation unclear
-- No progress indication for report generation
+- ~~No progress indication for report generation~~ **FIXED** - Added `progress_stage` column and UI labels (Searching → Gathering → Analyzing → Writing)
 
-### 19. Upgrade Prompt Gaps
-- No warning before hitting search limit (only after)
+### 19. Upgrade Prompt Gaps - **PARTIALLY COMPLETED** (April 17, 2026)
+- ~~No warning before hitting search limit (only after)~~ **FIXED** - Added pre-warning banner at 80% usage in Chat.tsx
 - No inline upgrade during search when approaching limit
 - Account page shows 80%+ warning but no prominent CTA
 
-### 20. Inconsistent Lock/Badge Treatment
-- PersonaSelector: Lock icon + "Premium" text
-- Sidebar: "Premium" badge only
-- Different visual treatment of same feature
+### 20. Inconsistent Lock/Badge Treatment - **COMPLETED** (April 17, 2026)
+- ~~PersonaSelector: Lock icon + "Premium" text~~ **FIXED**
+- ~~Sidebar: "Premium" badge only~~ **FIXED**
+- ~~Different visual treatment of same feature~~ **FIXED** - Created unified `PremiumBadge` component with sm/md size variants
 
 ---
 
@@ -219,12 +219,14 @@ Missing contexts:
 - Quota exceeded fallback drops all but last result
 - Complex scroll restoration with multiple RAF/setTimeout hacks
 
-### 23. No Data Fetching Library
+### 23. No Data Fetching Library - **PARTIALLY ADDRESSED** (April 17, 2026)
 No SWR, React Query, or TanStack Query:
 - No automatic refetching
-- No error retry logic
+- ~~No error retry logic~~ **FIXED** - Added `fetchWithRetry` utility with exponential backoff in `/src/lib/retry.ts`
 - No request deduplication
 - No cache management
+
+**Note:** Full React Query adoption deferred to parking lot - evaluate when caching/deduplication becomes painful.
 
 ---
 
@@ -303,11 +305,11 @@ No SWR, React Query, or TanStack Query:
 14. Fix subscription counter reset logic
 
 ### Lower Priority (Nice to Have)
-15. Add React Query for data fetching
-16. Implement breadcrumb navigation
-17. Add mobile-optimized table layouts
-18. Create unified component library
-19. Add retry logic for failed operations
+15. Add React Query for data fetching - **DEFERRED** (parking lot - evaluate when state management becomes painful)
+16. Implement breadcrumb navigation - **COMPLETED** (April 17, 2026) - Created `Breadcrumbs.tsx` component, added to all detail pages
+17. Add mobile-optimized table layouts - **COMPLETED** (April 17, 2026) - Added horizontal scroll with shadow indicators
+18. Create unified component library - **DEFERRED** (parking lot - evaluate during next major UI refactor)
+19. Add retry logic for failed operations - **COMPLETED** (April 17, 2026) - Created `fetchWithRetry` utility in `/src/lib/retry.ts`
 
 ---
 
@@ -341,3 +343,54 @@ Granted.bio is a functional, well-designed application that needs refinement to 
 4. Add proper loading and error feedback throughout
 
 The foundation is solid - these improvements will elevate the product significantly.
+
+---
+
+## Update Log
+
+### April 17, 2026 - Low Priority Items Addressed
+
+**Completed:**
+
+| Issue | Fix | Files Modified |
+|-------|-----|----------------|
+| #16 Mobile Sidebar Scroll | Added safe area insets, `min-h-0` flex fix, `overscroll-y-contain` | `Sidebar.tsx` |
+| #17 Mobile Table Layouts | Added horizontal scroll wrapper with shadow indicators | `admin/users/page.tsx`, `admin/jobs/page.tsx` |
+| #18 Report Progress Indication | Added `progress_stage` column and UI labels | Migration, `generate.ts`, `reports/page.tsx` |
+| #19 Pre-warning Search Limit | Added banner at 80% usage with upgrade CTA | `Chat.tsx` |
+| #20 Inconsistent Lock/Badge | Created unified `PremiumBadge` component with size variants | `PremiumBadge.tsx`, `PersonaSelector.tsx` |
+| #23 Error Retry Logic | Created `fetchWithRetry` utility with exponential backoff + jitter | `retry.ts`, `Chat.tsx`, `reports/page.tsx` |
+| Breadcrumb Navigation | Created `Breadcrumbs` component, added to all detail pages | `Breadcrumbs.tsx`, 6 page files |
+
+**New Files Created:**
+- `/src/components/ui/PremiumBadge.tsx` - Unified premium badge component
+- `/src/components/Breadcrumbs.tsx` - Breadcrumb navigation component
+- `/src/lib/retry.ts` - Fetch retry utility with exponential backoff
+- `/supabase/migrations/20260417_report_progress_stage.sql` - Progress tracking column
+
+**Deferred to Parking Lot:**
+
+| Item | Reason |
+|------|--------|
+| React Query adoption | Evaluate when caching/deduplication pain exceeds integration effort |
+| Unified component library | Evaluate during next major UI refactor |
+
+---
+
+## Parking Lot (Deferred Items)
+
+Items intentionally deferred for future consideration:
+
+### React Query / TanStack Query
+**Status:** Not urgent
+**Trigger:** When stale data, duplicate fetches, or cache management become significant pain points
+**Scope:** Would replace manual fetch calls in Chat, Sidebar, Reports pages
+**Benefit:** Automatic refetching, request deduplication, cache management
+**Cost:** ~8 hours integration, learning curve for team
+
+### Unified Component Library
+**Status:** Not urgent
+**Trigger:** During next major UI refactor or when component inconsistency slows development
+**Scope:** Standardize buttons, cards, modals, form elements across app
+**Benefit:** Faster development, consistent UX, easier theming
+**Cost:** ~16 hours to audit and consolidate existing components

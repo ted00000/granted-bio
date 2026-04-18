@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 interface UserProfile {
   id: string
@@ -121,6 +122,12 @@ export default function UsersPage() {
 
   return (
     <div className="space-y-6">
+      <Breadcrumbs
+        items={[
+          { label: 'Admin', href: '/admin' },
+          { label: 'Users' },
+        ]}
+      />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
@@ -159,7 +166,7 @@ export default function UsersPage() {
         <>
           {/* Associates Section */}
           {associates.length > 0 && (
-            <div className="bg-white rounded-lg shadow overflow-hidden">
+            <div className="bg-white rounded-lg shadow overflow-x-auto">
               <div className="px-6 py-4 border-b border-gray-200 bg-emerald-50 flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-medium text-emerald-800">
@@ -250,7 +257,7 @@ export default function UsersPage() {
           )}
 
           {/* All Users Table */}
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="bg-white rounded-lg shadow overflow-x-auto">
             <div className="px-6 py-4 border-b border-gray-200">
               <h2 className="text-lg font-medium text-gray-900">
                 All Users ({users.length})

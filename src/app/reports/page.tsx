@@ -23,6 +23,7 @@ import { AppLayout } from '@/components/AppLayout'
 import { MarketingNav } from '@/components/MarketingNav'
 import { GenerateReportDialog } from './GenerateReportDialog'
 import { useAuth } from '@/contexts/AuthContext'
+import { fetchWithRetry } from '@/lib/retry'
 
 interface Report {
   id: string
@@ -30,6 +31,7 @@ interface Report {
   report_type: 'topic' | 'portfolio'
   topic: string | null
   status: 'generating' | 'complete' | 'failed'
+  progress_stage: 'searching_projects' | 'gathering_data' | 'aggregating' | 'synthesizing' | null
   project_count: number | null
   data_limited: boolean
   created_at: string
@@ -489,7 +491,10 @@ function ReportsDashboard() {
 
   const fetchReports = async () => {
     try {
-      const response = await fetch('/api/reports')
+      const response = await fetchWithRetry(
+        () => fetch('/api/reports'),
+        { maxRetries: 2, initialDelayMs: 1000 }
+      )
       const data = await response.json()
       if (data.reports) {
         setReports(data.reports)
@@ -504,7 +509,10 @@ function ReportsDashboard() {
   const deleteReport = async (id: string) => {
     setDeletingId(id)
     try {
-      await fetch(`/api/reports/${id}`, { method: 'DELETE' })
+      await fetchWithRetry(
+        () => fetch(`/api/reports/${id}`, { method: 'DELETE' }),
+        { maxRetries: 2, initialDelayMs: 500 }
+      )
       setReports((prev) => prev.filter((r) => r.id !== id))
     } catch (e) {
       console.error('Error deleting report:', e)
@@ -581,7 +589,7 @@ function ReportsDashboard() {
                       <h3 className="text-sm font-medium text-gray-900 leading-snug group-hover:text-[#E07A5F] transition-colors">
                         {report.title}
                       </h3>
-                      <StatusBadge status={report.status} />
+                      <StatusBadge status={report.status} progressStage={report.progress_stage} />
                     </div>
                     <div className="flex items-center gap-2 text-xs text-gray-400">
                       <span>{formatDateTime(report.created_at)}</span>
@@ -640,12 +648,20 @@ function formatDateTime(dateString: string): string {
   })
 }
 
-function StatusBadge({ status }: { status: Report['status'] }) {
+const PROGRESS_LABELS: Record<string, string> = {
+  searching_projects: 'Searching projects...',
+  gathering_data: 'Gathering data...',
+  aggregating: 'Analyzing...',
+  synthesizing: 'Writing report...',
+}
+
+function StatusBadge({ status, progressStage }: { status: Report['status']; progressStage?: Report['progress_stage'] }) {
   if (status === 'generating') {
+    const label = progressStage ? PROGRESS_LABELS[progressStage] || 'Generating...' : 'Generating...'
     return (
       <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700">
         <Loader2 className="w-3 h-3 animate-spin" />
-        Generating
+        {label}
       </span>
     )
   }

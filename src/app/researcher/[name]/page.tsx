@@ -5,6 +5,7 @@ import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { User, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Building2, Search, X, Bookmark } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
@@ -225,11 +226,13 @@ export default function ResearcherPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 mb-8">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
-            <div className="text-center py-8">
+            <Breadcrumbs
+              items={[
+                { label: 'Search', href: '/chat' },
+                { label: 'Researcher' },
+              ]}
+            />
+            <div className="text-center py-8 mt-8">
               <User className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Researcher not found'}</h1>
               <p className="text-gray-500">No projects found for "{decodeURIComponent(name)}".</p>
@@ -246,12 +249,14 @@ export default function ResearcherPage() {
         {/* Top header with back button, researcher info, and bookmark */}
         <div className="flex-shrink-0 border-b border-gray-100 bg-white">
           <div className="px-5 py-4">
-            {/* Back button and bookmark */}
+            {/* Breadcrumbs and bookmark */}
             <div className="flex items-center justify-between mb-4">
-              <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm">
-                <ChevronLeft className="w-4 h-4" />
-                Back
-              </button>
+              <Breadcrumbs
+                items={[
+                  { label: 'Search', href: '/chat' },
+                  { label: decodeURIComponent(name).length > 30 ? decodeURIComponent(name).slice(0, 30) + '...' : decodeURIComponent(name) },
+                ]}
+              />
               <button
                 onClick={toggleSaveResearcher}
                 disabled={savingResearcher}

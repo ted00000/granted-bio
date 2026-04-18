@@ -7,7 +7,8 @@ import type { IntentType, PersonaType } from '@/lib/chat/types'
 import { INTENT_TO_PERSONA } from '@/lib/chat/types'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
-import { Search, Users, Activity, FileText, Lock } from 'lucide-react'
+import { Search, Users, Activity, FileText } from 'lucide-react'
+import { PremiumBadge } from '@/components/ui/PremiumBadge'
 
 interface PersonaSelectorProps {
   onSelect: (persona: PersonaType) => void
@@ -308,10 +309,7 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
                     <div className="text-gray-400 group-hover:text-[#E07A5F] transition-colors">
                       <FileText className="w-5 h-5" strokeWidth={1.5} />
                     </div>
-                    <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">
-                      <Lock className="w-3 h-3" />
-                      Premium
-                    </span>
+                    <PremiumBadge />
                   </div>
                   <h2 className="text-base font-medium text-gray-900 mb-1">
                     Intelligence Reports

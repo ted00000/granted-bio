@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Lock, Users, Settings, Shield } from 'lucide-react'
+import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Users, Settings, Shield } from 'lucide-react'
+import { PremiumBadge } from '@/components/ui/PremiumBadge'
 import { useAuth } from '@/contexts/AuthContext'
 import type { PersonaType } from '@/lib/chat/types'
 
@@ -75,11 +76,12 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
           w-64 bg-white border-r border-gray-100
           flex flex-col
           transform transition-transform duration-200 ease-in-out
+          pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]
           ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
       >
         {/* Logo */}
-        <div className="flex-shrink-0 px-5 pt-[max(1.5rem,env(safe-area-inset-top))] pb-6 text-center">
+        <div className="flex-shrink-0 px-5 pt-6 pb-6 text-center">
           <button
             onClick={handleHomeClick}
             className="text-xl font-semibold tracking-tight text-gray-900 hover:opacity-80 transition-opacity"
@@ -89,7 +91,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-3 py-2 overflow-y-auto">
+        <nav className="flex-1 min-h-0 px-3 py-2 overflow-y-auto overscroll-y-contain">
           {/* Search */}
           <button
             onClick={handleHomeClick}
@@ -133,10 +135,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
                 <span className={`text-sm font-medium ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-gray-900' : ''}`}>
                   Reports
                 </span>
-                <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded">
-                  <Lock className="w-2.5 h-2.5" />
-                  Premium
-                </span>
+                <PremiumBadge size="sm" />
               </div>
             </div>
           </Link>
@@ -229,7 +228,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
         </nav>
 
         {/* Bottom section */}
-        <div className="flex-shrink-0 border-t border-gray-100 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] space-y-1">
+        <div className="flex-shrink-0 border-t border-gray-100 p-3 space-y-1">
           {userName && (
             <div className="px-3 py-2 text-sm text-gray-500 truncate">
               {userName}

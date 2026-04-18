@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, ChevronLeft, Bookmark } from 'lucide-react'
+import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, Bookmark } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 interface TrialData {
   nct_id: string
@@ -178,11 +179,13 @@ export default function TrialDetailPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 mb-8">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
-            <div className="text-center py-8">
+            <Breadcrumbs
+              items={[
+                { label: 'Search', href: '/chat' },
+                { label: 'Trial' },
+              ]}
+            />
+            <div className="text-center py-8 mt-8">
               <Activity className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Trial not found'}</h1>
               <p className="text-gray-500">The clinical trial {nctId} could not be found.</p>
@@ -199,12 +202,14 @@ export default function TrialDetailPage() {
     <AppLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Back button and save */}
+          {/* Breadcrumbs and save */}
           <div className="flex items-center justify-between mb-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
+            <Breadcrumbs
+              items={[
+                { label: 'Search', href: '/chat' },
+                { label: trial.study_title.length > 40 ? trial.study_title.slice(0, 40) + '...' : trial.study_title },
+              ]}
+            />
             <button
               onClick={toggleSaveTrial}
               disabled={savingTrial}
