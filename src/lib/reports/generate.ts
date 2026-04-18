@@ -157,6 +157,7 @@ export async function generateTopicReport(
       .from('user_reports')
       .update({
         status: 'complete',
+        progress_stage: null,
         executive_summary: reportData.executiveSummary,
         market_context: reportData.marketContext,
         funding_stats: fundingStats,
@@ -189,6 +190,7 @@ export async function generateTopicReport(
       .from('user_reports')
       .update({
         status: 'failed',
+        progress_stage: null,
         error_message: errorMessage,
         updated_at: new Date().toISOString(),
       })
@@ -316,6 +318,7 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
       .from('user_reports')
       .update({
         status: 'complete',
+        progress_stage: null,
         topic: portfolioTopic,
         executive_summary: reportData.executiveSummary,
         market_context: reportData.marketContext,
@@ -347,6 +350,7 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
       .from('user_reports')
       .update({
         status: 'failed',
+        progress_stage: null,
         error_message: errorMessage,
         updated_at: new Date().toISOString(),
       })
