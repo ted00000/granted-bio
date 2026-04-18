@@ -181,7 +181,7 @@ export default function TrialDetailPage() {
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
               items={[
-                { label: 'Search', href: '/chat' },
+                { label: 'Trials', href: '/chat' },
                 { label: 'Trial' },
               ]}
             />
@@ -206,7 +206,7 @@ export default function TrialDetailPage() {
           <div className="flex items-center justify-between mb-6">
             <Breadcrumbs
               items={[
-                { label: 'Search', href: '/chat' },
+                { label: 'Trials', href: '/chat' },
                 { label: trial.study_title.length > 40 ? trial.study_title.slice(0, 40) + '...' : trial.study_title },
               ]}
             />

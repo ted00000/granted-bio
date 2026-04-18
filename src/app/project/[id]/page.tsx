@@ -221,7 +221,7 @@ export default function ProjectPage() {
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
               items={[
-                { label: 'Search', href: '/chat' },
+                { label: 'Projects', href: '/chat' },
                 { label: 'Project' },
               ]}
             />
@@ -263,7 +263,7 @@ export default function ProjectPage() {
           <div className="flex items-center justify-between mb-6">
             <Breadcrumbs
               items={[
-                { label: 'Search', href: '/chat' },
+                { label: 'Projects', href: '/chat' },
                 { label: project.title.length > 40 ? project.title.slice(0, 40) + '...' : project.title },
               ]}
             />
