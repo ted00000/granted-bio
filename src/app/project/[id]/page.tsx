@@ -90,6 +90,18 @@ function getSbirSttrStatus(activityCode: string | null): { isSbir: boolean; isSt
   return { isSbir, isSttr, phase }
 }
 
+/**
+ * Normalize NIH text that has hard line breaks at ~80 chars.
+ * Collapses single newlines to spaces, preserves paragraph breaks (double newlines).
+ */
+function normalizeText(text: string): string {
+  return text
+    .replace(/\r\n/g, '\n')           // Normalize line endings
+    .replace(/\n{2,}/g, '\n\n')       // Collapse multiple newlines to double
+    .replace(/(?<!\n)\n(?!\n)/g, ' ') // Single newlines become spaces
+    .trim()
+}
+
 export default function ProjectPage() {
   const params = useParams()
   const id = params.id as string
@@ -430,7 +442,7 @@ export default function ProjectPage() {
                 {activeTab === 'abstract' && (
                   <div>
                     {abstract ? (
-                      <p className="text-gray-600 leading-relaxed whitespace-pre-line">{abstract}</p>
+                      <p className="text-gray-600 leading-relaxed whitespace-pre-line">{normalizeText(abstract)}</p>
                     ) : (
                       <p className="text-gray-400 italic">No abstract available.</p>
                     )}
@@ -441,7 +453,7 @@ export default function ProjectPage() {
                 {activeTab === 'phr' && (
                   <div>
                     {project.phr ? (
-                      <p className="text-gray-600 leading-relaxed">{project.phr}</p>
+                      <p className="text-gray-600 leading-relaxed whitespace-pre-line">{normalizeText(project.phr)}</p>
                     ) : (
                       <p className="text-gray-400 italic">No public health relevance statement available.</p>
                     )}

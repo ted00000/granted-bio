@@ -77,6 +77,18 @@ interface CompanyData {
   }
 }
 
+/**
+ * Normalize NIH text that has hard line breaks at ~80 chars.
+ * Collapses single newlines to spaces, preserves paragraph breaks (double newlines).
+ */
+function normalizeText(text: string): string {
+  return text
+    .replace(/\r\n/g, '\n')           // Normalize line endings
+    .replace(/\n{2,}/g, '\n\n')       // Collapse multiple newlines to double
+    .replace(/(?<!\n)\n(?!\n)/g, ' ') // Single newlines become spaces
+    .trim()
+}
+
 export default function CompanyPage() {
   const params = useParams()
   const slug = params.slug as string
@@ -301,7 +313,7 @@ export default function CompanyPage() {
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       Public Health Relevance
                     </h3>
-                    <p className="text-gray-600">{project.phr}</p>
+                    <p className="text-gray-600 whitespace-pre-line">{normalizeText(project.phr)}</p>
                   </div>
                 )}
 
@@ -311,7 +323,7 @@ export default function CompanyPage() {
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       Abstract
                     </h3>
-                    <p className="text-gray-600 whitespace-pre-line">{abstract}</p>
+                    <p className="text-gray-600 whitespace-pre-line">{normalizeText(abstract)}</p>
                   </div>
                 )}
 
