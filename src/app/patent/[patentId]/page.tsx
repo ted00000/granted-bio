@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { FileText, Calendar, Users, Building2, Tag, ExternalLink, ChevronLeft, Quote, Bookmark } from 'lucide-react'
+import { FileText, Calendar, Users, Building2, Tag, ExternalLink, Quote, Bookmark } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 interface PatentData {
   patent_id: string
@@ -59,7 +60,6 @@ function getUSPTOUrl(patentId: string): string {
 
 export default function PatentDetailPage() {
   const params = useParams()
-  const router = useRouter()
   const patentId = params.patentId as string
 
   const [patent, setPatent] = useState<PatentData | null>(null)
@@ -164,10 +164,12 @@ export default function PatentDetailPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 mb-8">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
+            <Breadcrumbs
+              items={[
+                { label: 'Patents', href: '/' },
+                { label: 'Patent' },
+              ]}
+            />
             <div className="text-center py-8">
               <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Patent not found'}</h1>
@@ -183,12 +185,14 @@ export default function PatentDetailPage() {
     <AppLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Back button and save */}
+          {/* Breadcrumbs and save */}
           <div className="flex items-center justify-between mb-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
+            <Breadcrumbs
+              items={[
+                { label: 'Patents', href: '/' },
+                { label: patent.patent_title && patent.patent_title.length > 40 ? patent.patent_title.slice(0, 40) + '...' : patent.patent_title || `Patent ${patentId}` },
+              ]}
+            />
             <button
               onClick={toggleSavePatent}
               disabled={savingPatent}

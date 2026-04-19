@@ -1,10 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { BookOpen, Calendar, Users, Building2, ExternalLink, ChevronLeft, Bookmark } from 'lucide-react'
+import { BookOpen, Calendar, Users, Building2, ExternalLink, Bookmark } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
+import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 interface PublicationData {
   pmid: string
@@ -48,7 +49,6 @@ function formatAuthors(authorList: string | null): string[] {
 
 export default function PublicationDetailPage() {
   const params = useParams()
-  const router = useRouter()
   const pmid = params.pmid as string
 
   const [publication, setPublication] = useState<PublicationData | null>(null)
@@ -156,10 +156,12 @@ export default function PublicationDetailPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 mb-8">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
+            <Breadcrumbs
+              items={[
+                { label: 'Publications', href: '/' },
+                { label: 'Publication' },
+              ]}
+            />
             <div className="text-center py-8">
               <BookOpen className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Publication not found'}</h1>
@@ -177,12 +179,14 @@ export default function PublicationDetailPage() {
     <AppLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Back button and save */}
+          {/* Breadcrumbs and save */}
           <div className="flex items-center justify-between mb-6">
-            <button onClick={() => router.back()} className="text-[#E07A5F] hover:text-[#C96A4F] flex items-center gap-1 text-sm">
-              <ChevronLeft className="w-4 h-4" />
-              Back
-            </button>
+            <Breadcrumbs
+              items={[
+                { label: 'Publications', href: '/' },
+                { label: publication.pub_title && publication.pub_title.length > 40 ? publication.pub_title.slice(0, 40) + '...' : publication.pub_title || `PMID: ${pmid}` },
+              ]}
+            />
             <button
               onClick={toggleSavePublication}
               disabled={savingPub}

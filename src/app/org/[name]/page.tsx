@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Building2, ChevronLeft, ChevronRight, FlaskConical, Search, X, Bookmark } from 'lucide-react'
+import { Building2, ChevronLeft, ChevronRight, FlaskConical, Search, X, Bookmark } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 
@@ -97,7 +97,6 @@ function isProjectActive(endDate: string | null): boolean | null {
 
 export default function OrgPage() {
   const params = useParams()
-  const router = useRouter()
   const name = params.name as string
 
   const [data, setData] = useState<OrgData | null>(null)
@@ -243,21 +242,12 @@ export default function OrgPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <div className="flex items-center gap-3 mb-8">
-              <button
-                onClick={() => router.back()}
-                className="p-1.5 -ml-1.5 rounded-lg text-[#E07A5F] hover:bg-[#E07A5F]/10 transition-colors"
-                aria-label="Go back"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-              <Breadcrumbs
-                items={[
-                  { label: 'Organizations' },
-                  { label: decodeURIComponent(name) },
-                ]}
-              />
-            </div>
+            <Breadcrumbs
+              items={[
+                { label: 'Organizations', href: '/' },
+                { label: decodeURIComponent(name) },
+              ]}
+            />
             <div className="text-center py-8">
               <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Organization not found'}</h1>
@@ -272,26 +262,17 @@ export default function OrgPage() {
   return (
     <AppLayout>
       <div className="h-full flex flex-col bg-[#FAFAF9]">
-        {/* Top header with back button, org info, and bookmark */}
+        {/* Top header with org info and bookmark */}
         <div className="flex-shrink-0 border-b border-gray-100 bg-white">
           <div className="px-5 py-4">
-            {/* Back button, breadcrumbs, and bookmark */}
+            {/* Breadcrumbs and bookmark */}
             <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => router.back()}
-                  className="p-1.5 -ml-1.5 rounded-lg text-[#E07A5F] hover:bg-[#E07A5F]/10 transition-colors"
-                  aria-label="Go back"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                </button>
-                <Breadcrumbs
-                  items={[
-                    { label: 'Organizations' },
-                    { label: data.org_name.length > 40 ? data.org_name.slice(0, 40) + '...' : data.org_name },
-                  ]}
-                />
-              </div>
+              <Breadcrumbs
+                items={[
+                  { label: 'Organizations', href: '/' },
+                  { label: data.org_name.length > 40 ? data.org_name.slice(0, 40) + '...' : data.org_name },
+                ]}
+              />
               <button
                 onClick={toggleSaveOrg}
                 disabled={savingOrg}

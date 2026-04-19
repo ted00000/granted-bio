@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, Bookmark, ArrowLeft } from 'lucide-react'
+import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, Bookmark } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 
@@ -69,7 +69,6 @@ function formatStatus(status: string | null): { label: string; color: string } {
 
 export default function TrialDetailPage() {
   const params = useParams()
-  const router = useRouter()
   const nctId = params.nctId as string
 
   const [trial, setTrial] = useState<TrialData | null>(null)
@@ -179,21 +178,12 @@ export default function TrialDetailPage() {
       <AppLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => router.back()}
-                className="p-1.5 -ml-1.5 rounded-lg text-[#E07A5F] hover:bg-[#E07A5F]/10 transition-colors"
-                aria-label="Go back"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-              <Breadcrumbs
-                items={[
-                  { label: 'Trials' },
-                  { label: 'Trial' },
-                ]}
-              />
-            </div>
+            <Breadcrumbs
+              items={[
+                { label: 'Trials', href: '/' },
+                { label: 'Trial' },
+              ]}
+            />
             <div className="text-center py-8 mt-8">
               <Activity className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Trial not found'}</h1>
@@ -211,23 +201,14 @@ export default function TrialDetailPage() {
     <AppLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Back button, breadcrumbs, and save */}
+          {/* Breadcrumbs and save */}
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => router.back()}
-                className="p-1.5 -ml-1.5 rounded-lg text-[#E07A5F] hover:bg-[#E07A5F]/10 transition-colors"
-                aria-label="Go back"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </button>
-              <Breadcrumbs
-                items={[
-                  { label: 'Trials' },
-                  { label: trial.study_title.length > 40 ? trial.study_title.slice(0, 40) + '...' : trial.study_title },
-                ]}
-              />
-            </div>
+            <Breadcrumbs
+              items={[
+                { label: 'Trials', href: '/' },
+                { label: trial.study_title.length > 40 ? trial.study_title.slice(0, 40) + '...' : trial.study_title },
+              ]}
+            />
             <button
               onClick={toggleSaveTrial}
               disabled={savingTrial}
