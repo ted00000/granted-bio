@@ -136,44 +136,201 @@ export default function ReportDetailPage({
       let y = margin + headerHeight
       let isFirstElement = true
       const currentYear = new Date().getFullYear()
+      const brandColor: [number, number, number] = [224, 122, 95] // #E07A5F
 
-      // Helper to add header and footer to a page
-      const addPageBranding = () => {
+      // Helper to add header and footer to content pages (not cover)
+      const addPageBranding = (pageNum: number) => {
         // Header - "granted.bio" text logo
-        doc.setFontSize(11)
+        doc.setFontSize(10)
         doc.setFont('helvetica', 'bold')
         doc.setTextColor(17, 24, 39)
         doc.text('granted', margin, margin + 12)
         const grantedWidth = doc.getTextWidth('granted')
-        doc.setTextColor(224, 122, 95) // #E07A5F
+        doc.setTextColor(...brandColor)
         doc.text('.bio', margin + grantedWidth, margin + 12)
+
+        // Report title on right
+        doc.setFontSize(9)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(107, 114, 128)
+        const shortTitle = report.title.length > 40 ? report.title.slice(0, 40) + '...' : report.title
+        const titleWidth = doc.getTextWidth(shortTitle)
+        doc.text(shortTitle, pageWidth - margin - titleWidth, margin + 12)
 
         // Header line
         doc.setDrawColor(229, 231, 235)
         doc.setLineWidth(0.5)
         doc.line(margin, margin + 24, pageWidth - margin, margin + 24)
 
-        // Footer
-        doc.setFontSize(8)
-        doc.setFont('helvetica', 'normal')
-        doc.setTextColor(156, 163, 175) // gray-400
-
-        // Copyright on left
-        doc.text(`© ${currentYear} Granted Bio. All rights reserved.`, margin, pageHeight - margin + 12)
-
-        // Page number on right
-        const pageNum = doc.getNumberOfPages()
-        const pageText = `Page ${pageNum}`
-        const pageTextWidth = doc.getTextWidth(pageText)
-        doc.text(pageText, pageWidth - margin - pageTextWidth, pageHeight - margin + 12)
-
         // Footer line
         doc.setDrawColor(229, 231, 235)
         doc.line(margin, pageHeight - margin, pageWidth - margin, pageHeight - margin)
+
+        // Footer - Page number centered, copyright on left
+        doc.setFontSize(8)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(156, 163, 175)
+        doc.text(`© ${currentYear} Granted Bio`, margin, pageHeight - margin + 14)
+
+        // Page number centered
+        const pageText = `Page ${pageNum}`
+        const pageTextWidth = doc.getTextWidth(pageText)
+        doc.text(pageText, (pageWidth - pageTextWidth) / 2, pageHeight - margin + 14)
+
+        // Generated date on right
+        const dateText = formatDate(report.created_at)
+        const dateWidth = doc.getTextWidth(dateText)
+        doc.text(dateText, pageWidth - margin - dateWidth, pageHeight - margin + 14)
       }
 
-      // Add branding to first page
-      addPageBranding()
+      // ========== COVER PAGE ==========
+      const centerX = pageWidth / 2
+
+      // Top accent line
+      doc.setDrawColor(...brandColor)
+      doc.setLineWidth(4)
+      doc.line(margin, 80, pageWidth - margin, 80)
+
+      // "INTELLIGENCE REPORT" label
+      doc.setFontSize(11)
+      doc.setFont('helvetica', 'bold')
+      doc.setTextColor(...brandColor)
+      const labelText = 'INTELLIGENCE REPORT'
+      const labelWidth = doc.getTextWidth(labelText)
+      doc.text(labelText, centerX - labelWidth / 2, 120)
+
+      // Main title (the topic)
+      doc.setFontSize(32)
+      doc.setFont('helvetica', 'bold')
+      doc.setTextColor(17, 24, 39)
+      const titleLines = doc.splitTextToSize(report.title, maxWidth - 40)
+      const titleStartY = 180
+      titleLines.forEach((line: string, idx: number) => {
+        const lineWidth = doc.getTextWidth(line)
+        doc.text(line, centerX - lineWidth / 2, titleStartY + idx * 40)
+      })
+
+      // Subtitle / date
+      const subtitleY = titleStartY + titleLines.length * 40 + 30
+      doc.setFontSize(12)
+      doc.setFont('helvetica', 'normal')
+      doc.setTextColor(107, 114, 128)
+      const dateStr = formatDate(report.created_at)
+      const dateStrWidth = doc.getTextWidth(dateStr)
+      doc.text(dateStr, centerX - dateStrWidth / 2, subtitleY)
+
+      // Key metrics box
+      const metricsY = subtitleY + 60
+      const metricsBoxWidth = 200
+      const metricsBoxHeight = 80
+      const metricsBoxX = centerX - metricsBoxWidth / 2
+
+      doc.setDrawColor(229, 231, 235)
+      doc.setLineWidth(1)
+      doc.roundedRect(metricsBoxX, metricsY, metricsBoxWidth, metricsBoxHeight, 8, 8, 'S')
+
+      if (report.project_count !== null) {
+        doc.setFontSize(28)
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(17, 24, 39)
+        const countStr = report.project_count.toLocaleString()
+        const countWidth = doc.getTextWidth(countStr)
+        doc.text(countStr, centerX - countWidth / 2, metricsY + 38)
+
+        doc.setFontSize(11)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(107, 114, 128)
+        const projectsLabel = 'Projects Analyzed'
+        const projectsWidth = doc.getTextWidth(projectsLabel)
+        doc.text(projectsLabel, centerX - projectsWidth / 2, metricsY + 58)
+      }
+
+      // Bottom branding
+      doc.setFontSize(14)
+      doc.setFont('helvetica', 'bold')
+      doc.setTextColor(17, 24, 39)
+      const brandGranted = 'granted'
+      const brandBio = '.bio'
+      const brandGrantedWidth = doc.getTextWidth(brandGranted)
+      doc.setTextColor(...brandColor)
+      const brandBioWidth = doc.getTextWidth(brandBio)
+      const totalBrandWidth = brandGrantedWidth + brandBioWidth
+      doc.setTextColor(17, 24, 39)
+      doc.text(brandGranted, centerX - totalBrandWidth / 2, pageHeight - 100)
+      doc.setTextColor(...brandColor)
+      doc.text(brandBio, centerX - totalBrandWidth / 2 + brandGrantedWidth, pageHeight - 100)
+
+      // Tagline
+      doc.setFontSize(10)
+      doc.setFont('helvetica', 'normal')
+      doc.setTextColor(107, 114, 128)
+      const tagline = 'Life Sciences Intelligence Platform'
+      const taglineWidth = doc.getTextWidth(tagline)
+      doc.text(tagline, centerX - taglineWidth / 2, pageHeight - 82)
+
+      // Bottom accent line
+      doc.setDrawColor(...brandColor)
+      doc.setLineWidth(4)
+      doc.line(margin, pageHeight - 50, pageWidth - margin, pageHeight - 50)
+
+      // ========== TABLE OF CONTENTS ==========
+      // Parse headers to build TOC
+      const tocLines = report.markdown_content.split('\n')
+      const tocItems: { level: number; text: string; pageNum: number }[] = []
+
+      // First pass: identify H1 and H2 headers for TOC
+      tocLines.forEach((tocLine) => {
+        const tocTrimmed = tocLine.trim()
+        if (tocTrimmed.startsWith('## ')) {
+          tocItems.push({ level: 2, text: tocTrimmed.slice(3), pageNum: 0 }) // Page nums calculated during render
+        } else if (tocTrimmed.startsWith('# ')) {
+          tocItems.push({ level: 1, text: tocTrimmed.slice(2), pageNum: 0 })
+        }
+      })
+
+      // Only add TOC if we have enough sections
+      let contentStartPage = 2
+      if (tocItems.length >= 3) {
+        doc.addPage()
+        contentStartPage = 3
+
+        // TOC header
+        doc.setFontSize(20)
+        doc.setFont('helvetica', 'bold')
+        doc.setTextColor(17, 24, 39)
+        doc.text('Table of Contents', margin, 80)
+
+        // Accent line under TOC title
+        doc.setDrawColor(...brandColor)
+        doc.setLineWidth(2)
+        doc.line(margin, 92, margin + 120, 92)
+
+        let tocY = 130
+        tocItems.forEach((item, idx) => {
+          doc.setFontSize(item.level === 1 ? 12 : 11)
+          doc.setFont('helvetica', item.level === 1 ? 'bold' : 'normal')
+          doc.setTextColor(55, 65, 81)
+
+          const indent = item.level === 1 ? 0 : 16
+          const bulletChar = item.level === 1 ? '' : '•  '
+          const displayText = bulletChar + item.text
+
+          doc.text(displayText, margin + indent, tocY)
+          tocY += item.level === 1 ? 28 : 22
+        })
+
+        // Add TOC footer
+        doc.setFontSize(8)
+        doc.setFont('helvetica', 'italic')
+        doc.setTextColor(156, 163, 175)
+        doc.text('Note: This report was generated by AI analysis of publicly available data.', margin, pageHeight - margin - 20)
+      }
+
+      // ========== CONTENT PAGES ==========
+      doc.addPage()
+      let currentPageNum = contentStartPage
+      addPageBranding(currentPageNum)
+      y = margin + headerHeight
 
       const cleanText = (text: string): string => {
         let result = text
@@ -253,12 +410,24 @@ export default function ReportDetailPage({
       const addNewPageIfNeeded = (height: number) => {
         if (y + height > pageHeight - bottomMargin) {
           doc.addPage()
-          addPageBranding()
+          currentPageNum++
+          addPageBranding(currentPageNum)
           y = margin + headerHeight
           return true
         }
         return false
       }
+
+      // Helper to force new page for major sections
+      const forceNewPage = () => {
+        doc.addPage()
+        currentPageNum++
+        addPageBranding(currentPageNum)
+        y = margin + headerHeight
+      }
+
+      // Track if we should add page break before next H1/H2
+      let contentRendered = false
 
       // Collect table rows for proper rendering
       const lines = report.markdown_content.split('\n')
@@ -280,66 +449,89 @@ export default function ReportDetailPage({
           continue
         }
 
-        // H1 Header
+        // H1 Header - Major section, force page break if not first
         if (trimmed.startsWith('# ')) {
-          if (!isFirstElement) y += 16
-          addNewPageIfNeeded(24)
-          doc.setFontSize(16)
+          if (contentRendered && y > margin + headerHeight + 100) {
+            // Force new page for major sections (unless near top)
+            forceNewPage()
+          } else if (!isFirstElement) {
+            y += 20
+          }
+          addNewPageIfNeeded(36)
+
+          // Draw accent bar on left
+          doc.setFillColor(...brandColor)
+          doc.rect(margin, y - 6, 4, 28, 'F')
+
+          doc.setFontSize(18)
           doc.setFont('helvetica', 'bold')
           doc.setTextColor(17, 24, 39)
           const text = cleanText(trimmed.slice(2))
-          const splitText = doc.splitTextToSize(text, maxWidth)
-          doc.text(splitText, margin, y)
-          y += splitText.length * 20 + 8
+          const splitText = doc.splitTextToSize(text, maxWidth - 12)
+          doc.text(splitText, margin + 12, y)
+          y += splitText.length * 22 + 12
           isFirstElement = false
+          contentRendered = true
           i++
           continue
         }
 
-        // H2 Header
+        // H2 Header - Section header with subtle background
         if (trimmed.startsWith('## ')) {
-          y += 16
-          addNewPageIfNeeded(24)
-          doc.setFontSize(13)
+          y += 18
+          addNewPageIfNeeded(32)
+
+          // Subtle background bar
+          doc.setFillColor(249, 250, 251) // gray-50
+          doc.rect(margin, y - 10, maxWidth, 26, 'F')
+
+          // Left accent line
+          doc.setFillColor(...brandColor)
+          doc.rect(margin, y - 10, 3, 26, 'F')
+
+          doc.setFontSize(14)
           doc.setFont('helvetica', 'bold')
           doc.setTextColor(17, 24, 39)
           const text = cleanText(trimmed.slice(3))
-          const splitText = doc.splitTextToSize(text, maxWidth)
-          doc.text(splitText, margin, y)
-          y += splitText.length * 16 + 6
+          const splitText = doc.splitTextToSize(text, maxWidth - 10)
+          doc.text(splitText, margin + 10, y)
+          y += splitText.length * 18 + 10
           isFirstElement = false
+          contentRendered = true
           i++
           continue
         }
 
         // H3 Header
         if (trimmed.startsWith('### ')) {
-          y += 8
-          addNewPageIfNeeded(18)
-          doc.setFontSize(11)
+          y += 12
+          addNewPageIfNeeded(20)
+          doc.setFontSize(12)
           doc.setFont('helvetica', 'bold')
-          doc.setTextColor(17, 24, 39)
+          doc.setTextColor(55, 65, 81)
           const text = cleanText(trimmed.slice(4))
           const splitText = doc.splitTextToSize(text, maxWidth)
           doc.text(splitText, margin, y)
-          y += splitText.length * 14 + 6
+          y += splitText.length * 15 + 8
           isFirstElement = false
+          contentRendered = true
           i++
           continue
         }
 
         // H4 Header
         if (trimmed.startsWith('#### ')) {
-          y += 6
-          addNewPageIfNeeded(16)
-          doc.setFontSize(10)
+          y += 8
+          addNewPageIfNeeded(18)
+          doc.setFontSize(11)
           doc.setFont('helvetica', 'bold')
-          doc.setTextColor(17, 24, 39)
+          doc.setTextColor(75, 85, 99)
           const text = cleanText(trimmed.slice(5))
           const splitText = doc.splitTextToSize(text, maxWidth)
           doc.text(splitText, margin, y)
-          y += splitText.length * 13 + 4
+          y += splitText.length * 14 + 6
           isFirstElement = false
+          contentRendered = true
           i++
           continue
         }
@@ -357,21 +549,27 @@ export default function ReportDetailPage({
 
         // Blockquote
         if (trimmed.startsWith('> ')) {
-          addNewPageIfNeeded(18)
-          doc.setFontSize(9)
-          doc.setFont('helvetica', 'normal')
-          doc.setTextColor(107, 114, 128)
+          addNewPageIfNeeded(22)
+          doc.setFontSize(10)
+          doc.setFont('helvetica', 'italic')
+          doc.setTextColor(75, 85, 99)
           const text = cleanText(trimmed.slice(2))
-          const splitText = doc.splitTextToSize(text, maxWidth - 14)
-          const blockHeight = splitText.length * 11 + 2
-          doc.setDrawColor(224, 122, 95)
-          doc.setLineWidth(2)
-          doc.line(margin, y - 2, margin, y + blockHeight - 2)
-          doc.text(splitText, margin + 8, y)
-          y += blockHeight + 6
+          const splitText = doc.splitTextToSize(text, maxWidth - 20)
+          const blockHeight = splitText.length * 13 + 8
+
+          // Light background
+          doc.setFillColor(254, 242, 239) // Very light brand color
+          doc.roundedRect(margin, y - 8, maxWidth, blockHeight + 4, 4, 4, 'F')
+
+          // Brand-colored left border
+          doc.setFillColor(...brandColor)
+          doc.rect(margin, y - 8, 4, blockHeight + 4, 'F')
+
+          doc.text(splitText, margin + 14, y)
+          y += blockHeight + 8
           doc.setTextColor(0, 0, 0)
-          doc.setLineWidth(0.5)
           isFirstElement = false
+          contentRendered = true
           i++
           continue
         }
@@ -391,20 +589,40 @@ export default function ReportDetailPage({
           if (tableData.length > 0) {
             const colCount = tableData[0].length
             const colWidth = maxWidth / colCount
-            const lineHeight = 11
-            const cellPaddingTop = 6
-            const cellPaddingBottom = 8
+            const lineHeight = 12
+            const cellPaddingTop = 7
+            const cellPaddingBottom = 9
+
+            // Detect numeric columns (for right-alignment)
+            const numericCols: boolean[] = []
+            for (let col = 0; col < colCount; col++) {
+              // Check if most non-header cells in this column are numeric
+              let numericCount = 0
+              for (let row = 1; row < tableData.length; row++) {
+                const cell = tableData[row][col] || ''
+                // Match numbers, currencies, percentages
+                if (cell.match(/^[\$€£]?[\d,]+\.?\d*%?$/) || cell.match(/^\d+[KMB]?\+?$/i)) {
+                  numericCount++
+                }
+              }
+              numericCols[col] = numericCount > (tableData.length - 1) / 2
+            }
 
             // Pre-calculate row heights based on wrapped content
             const rowHeights: number[] = tableData.map((row) => {
               let maxLines = 1
               row.forEach((cell) => {
-                doc.setFontSize(9)
-                const wrapped = doc.splitTextToSize(cell, colWidth - 8)
+                doc.setFontSize(10)
+                const wrapped = doc.splitTextToSize(cell, colWidth - 12)
                 maxLines = Math.max(maxLines, wrapped.length)
               })
               return maxLines * lineHeight + cellPaddingTop + cellPaddingBottom
             })
+
+            // Draw table border (top)
+            doc.setDrawColor(...brandColor)
+            doc.setLineWidth(1.5)
+            doc.line(margin, y, margin + maxWidth, y)
 
             // Draw table row by row with proper heights
             tableData.forEach((row, rowIndex) => {
@@ -413,30 +631,48 @@ export default function ReportDetailPage({
               // Check if row fits, add new page if needed
               if (y + rowHeight > pageHeight - bottomMargin) {
                 doc.addPage()
-                addPageBranding()
+                currentPageNum++
+                addPageBranding(currentPageNum)
                 y = margin + headerHeight
+                // Redraw top border on new page
+                doc.setDrawColor(...brandColor)
+                doc.setLineWidth(1.5)
+                doc.line(margin, y, margin + maxWidth, y)
               }
 
               const rowTop = y
 
-              // Header row background (fill entire row area)
+              // Row backgrounds
               if (rowIndex === 0) {
-                doc.setFillColor(249, 250, 251)
+                // Header row - brand color tint
+                doc.setFillColor(254, 242, 239) // Very light brand color
+                doc.rect(margin, rowTop, maxWidth, rowHeight, 'F')
+              } else if (rowIndex % 2 === 0) {
+                // Alternating rows
+                doc.setFillColor(249, 250, 251) // gray-50
                 doc.rect(margin, rowTop, maxWidth, rowHeight, 'F')
               }
 
               // Cell text - positioned with top padding
-              doc.setFontSize(9)
+              doc.setFontSize(10)
               doc.setFont('helvetica', rowIndex === 0 ? 'bold' : 'normal')
               doc.setTextColor(rowIndex === 0 ? 17 : 55, rowIndex === 0 ? 24 : 65, rowIndex === 0 ? 39 : 81)
 
               row.forEach((cell, colIndex) => {
-                const cellX = margin + colIndex * colWidth + 4
-                const cellText = doc.splitTextToSize(cell, colWidth - 8)
-                // Render all lines of the cell with proper vertical positioning
+                const cellX = margin + colIndex * colWidth
+                const cellText = doc.splitTextToSize(cell, colWidth - 12)
+
+                // Right-align numeric columns (except header)
+                const isNumeric = numericCols[colIndex] && rowIndex > 0
+
                 cellText.forEach((textLine: string, lineIndex: number) => {
                   const textY = rowTop + cellPaddingTop + lineHeight * 0.8 + lineIndex * lineHeight
-                  doc.text(textLine, cellX, textY)
+                  if (isNumeric) {
+                    const textWidth = doc.getTextWidth(textLine)
+                    doc.text(textLine, cellX + colWidth - 8 - textWidth, textY)
+                  } else {
+                    doc.text(textLine, cellX + 6, textY)
+                  }
                 })
               })
 
@@ -448,38 +684,44 @@ export default function ReportDetailPage({
               y = rowTop + rowHeight
             })
 
-            y += 8
+            y += 12
           }
           isFirstElement = false
+          contentRendered = true
           continue
         }
 
         // List item
         if (trimmed.match(/^[-*] /)) {
-          addNewPageIfNeeded(14)
-          doc.setFontSize(9.5)
+          addNewPageIfNeeded(16)
+          doc.setFontSize(10.5)
           doc.setFont('helvetica', 'normal')
           doc.setTextColor(55, 65, 81)
           const text = cleanText(trimmed.slice(2))
-          const splitText = doc.splitTextToSize(text, maxWidth - 12)
+          const splitText = doc.splitTextToSize(text, maxWidth - 14)
+          // Brand-colored bullet
+          doc.setTextColor(...brandColor)
           doc.text('•', margin, y)
-          doc.text(splitText, margin + 12, y)
-          y += splitText.length * 12 + 3
+          doc.setTextColor(55, 65, 81)
+          doc.text(splitText, margin + 14, y)
+          y += splitText.length * 13 + 4
           isFirstElement = false
+          contentRendered = true
           i++
           continue
         }
 
         // Regular paragraph
-        addNewPageIfNeeded(14)
-        doc.setFontSize(9.5)
+        addNewPageIfNeeded(16)
+        doc.setFontSize(10.5)
         doc.setFont('helvetica', 'normal')
         doc.setTextColor(55, 65, 81)
         const text = cleanText(trimmed)
         const splitText = doc.splitTextToSize(text, maxWidth)
         doc.text(splitText, margin, y)
-        y += splitText.length * 12 + 4
+        y += splitText.length * 13 + 5
         isFirstElement = false
+        contentRendered = true
         i++
       }
 
