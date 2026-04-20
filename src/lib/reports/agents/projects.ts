@@ -1,10 +1,12 @@
 // Projects Agent
 // Searches NIH projects using pure semantic search (aligned with UI)
+// Filters for topic relevance to ensure projects are actually ABOUT the topic (not just mentioning it)
 // Returns up to 100 projects sorted by relevance
 
 import { supabaseAdmin } from '@/lib/supabase'
 import Anthropic from '@anthropic-ai/sdk'
 import type { ProjectsAgentOutput, ProjectItem } from '../types'
+import { filterForRelevance, quickRelevanceCheck } from '../relevance-filter'
 
 const anthropic = new Anthropic()
 
@@ -221,30 +223,61 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
     .sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
 
   // Filter to balanced threshold FIRST - this defines the report population
-  const balancedResults = uniqueResults.filter(p => (p.similarity || 0) >= THRESHOLD_BALANCED)
+  const relevantResults = uniqueResults.filter(p => (p.similarity || 0) >= THRESHOLD_BALANCED)
 
-  // Get core project numbers from the BALANCED subset only
-  const balancedCoreNumbers = new Set<string>()
-  for (const project of balancedResults) {
+  // === TOPIC RELEVANCE FILTERING ===
+  // Semantic search can return projects that merely MENTION the topic rather than being ABOUT it.
+  // For example, a cancer project that says "we use monoclonal antibodies as detection tools"
+  // would match "monoclonal antibody production" semantically, but the project is about cancer,
+  // not mAb production. Filter these out to ensure linked data is truly relevant.
+
+  // Quick filter first (fast keyword check)
+  const quickFiltered = relevantResults.filter((p) =>
+    quickRelevanceCheck(topic, p.title || '', p.phr)
+  )
+  console.log(`[Projects Agent] Quick relevance filter: ${quickFiltered.length}/${relevantResults.length} passed`)
+
+  // AI-based filtering for remaining items
+  let relevantProjects = quickFiltered
+  if (quickFiltered.length > 0) {
+    const filterItems = quickFiltered.map((p) => ({
+      id: p.application_id,
+      title: p.title || 'Untitled Project',
+      description: p.phr,
+    }))
+    const filterResult = await filterForRelevance(topic, filterItems, 'projects')
+    const relevantIds = new Set(filterResult.kept)
+    relevantProjects = quickFiltered.filter((p) => relevantIds.has(p.application_id))
+    console.log(`[Projects Agent] AI relevance filter: ${relevantProjects.length}/${quickFiltered.length} kept`)
+  }
+
+  if (relevantProjects.length === 0) {
+    console.log('[Projects Agent] No relevant projects after filtering')
+    return emptyOutput()
+  }
+
+  // Get core project numbers from the RELEVANT subset only
+  const relevantCoreNumbers = new Set<string>()
+  for (const project of relevantProjects) {
     const core = getCoreProjectNumber(project.project_number || null)
-    if (core) balancedCoreNumbers.add(core)
+    if (core) relevantCoreNumbers.add(core)
   }
 
   // Now collect ALL project_number variants from raw results, but ONLY for projects
-  // whose core number is in the balanced subset. This ensures we find linked data
+  // whose core number is in the relevant subset. This ensures we find linked data
   // under any variant (e.g., "5R44MH136894-02" or "1R44MH136894-01") but ONLY for
-  // projects that passed the relevance threshold.
+  // projects that passed both similarity AND relevance thresholds.
   const allProjectNumbers = rawResults
     .map(p => p.project_number)
     .filter((pn): pn is string => {
       if (!pn || pn.trim() === '') return false
       const core = getCoreProjectNumber(pn)
-      return balancedCoreNumbers.has(core)
+      return relevantCoreNumbers.has(core)
     })
 
   console.log(
     `[Projects Agent] Collected ${allProjectNumbers.length} project_number variants ` +
-    `for ${balancedCoreNumbers.size} balanced projects`
+    `for ${relevantCoreNumbers.size} relevant projects`
   )
 
   // Log similarity distribution
@@ -258,7 +291,7 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
       `(similarity: ${minSim.toFixed(3)} - ${maxSim.toFixed(3)}, avg: ${avgSim.toFixed(3)})`
   )
 
-  return processResults(balancedResults, allProjectNumbers)
+  return processResults(relevantProjects, allProjectNumbers)
 }
 
 /**
@@ -271,24 +304,24 @@ function getMatchTier(similarity: number): 'precise' | 'balanced' | 'broad' {
 }
 
 /**
- * Process balanced search results into agent output
- * @param balancedResults - Deduplicated search results already filtered to balanced+ threshold
- * @param allProjectNumbers - Project_number variants for balanced projects (for linked data lookup)
+ * Process relevant search results into agent output
+ * @param relevantResults - Deduplicated results filtered to balanced+ threshold AND topic relevance
+ * @param allProjectNumbers - Project_number variants for relevant projects (for linked data lookup)
  */
 function processResults(
-  balancedResults: Array<RawProjectResult & { similarity?: number }>,
+  relevantResults: Array<RawProjectResult & { similarity?: number }>,
   allProjectNumbers: string[]
 ): ProjectsAgentOutput {
-  const preciseCount = balancedResults.filter(p => (p.similarity || 0) >= THRESHOLD_PRECISE).length
+  const preciseCount = relevantResults.filter(p => (p.similarity || 0) >= THRESHOLD_PRECISE).length
 
   console.log(
-    `[Projects Agent] Processing ${balancedResults.length} balanced+ matches ` +
-    `(${preciseCount} precise, ${balancedResults.length - preciseCount} balanced)`
+    `[Projects Agent] Processing ${relevantResults.length} relevant matches ` +
+    `(${preciseCount} precise, ${relevantResults.length - preciseCount} balanced)`
   )
 
   // Map to ProjectItem format with similarity and tier
   // Note: 'phr' field is the public health relevance (abstract equivalent)
-  const items: ProjectItem[] = balancedResults.map((p) => ({
+  const items: ProjectItem[] = relevantResults.map((p) => ({
     application_id: p.application_id,
     project_number: p.project_number || null,
     title: p.title,
@@ -346,7 +379,7 @@ function processResults(
     .slice(0, 15)
 
   // Calculate average similarity for quality reporting
-  const avgSimilarity = balancedResults.reduce((sum, p) => sum + (p.similarity || 0), 0) / balancedResults.length
+  const avgSimilarity = relevantResults.reduce((sum, p) => sum + (p.similarity || 0), 0) / relevantResults.length
 
   console.log(
     `[Projects Agent] Processed ${items.length} projects, ` +
