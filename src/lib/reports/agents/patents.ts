@@ -1,21 +1,19 @@
 // Patents Agent
 // Fetches patents linked to specific projects
-// Filters for topic relevance to ensure patents are actually related to the report topic
+// Projects are pre-filtered for relevance, so linked patents are inherently relevant
 // Enriches abstracts from Google Patents if needed
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { PatentsAgentOutput, PatentItem } from '../types'
-import { filterForRelevance, quickRelevanceCheck } from '../relevance-filter'
 
 /**
  * Run the Patents Agent to gather patent data linked to specific projects
- * Filters patents for topic relevance to ensure they're actually related to the report topic
+ * Projects are pre-filtered for topic relevance, so linked patents are inherently relevant
  *
- * @param projectNumbers - NIH project numbers to fetch patents for
- * @param topic - The report topic for relevance filtering (e.g., "monoclonal antibody production")
+ * @param projectNumbers - NIH project numbers to fetch patents for (already filtered for relevance)
  */
-export async function runPatentsAgent(projectNumbers: string[], topic: string): Promise<PatentsAgentOutput> {
-  console.log(`[Patents Agent] Fetching patents for ${projectNumbers.length} projects (topic: ${topic})`)
+export async function runPatentsAgent(projectNumbers: string[]): Promise<PatentsAgentOutput> {
+  console.log(`[Patents Agent] Fetching patents for ${projectNumbers.length} projects`)
 
   if (projectNumbers.length === 0) {
     return emptyOutput()
@@ -69,47 +67,21 @@ export async function runPatentsAgent(projectNumbers: string[], topic: string): 
   const uniquePatents = Array.from(seenPatents.values())
   console.log(`[Patents Agent] Found ${uniquePatents.length} unique patents (from ${linkedPatents.length} linked)`)
 
-  // Filter for topic relevance
-  // First, quick filter to reduce items before AI filtering
-  const quickFiltered = uniquePatents.filter((p) =>
-    quickRelevanceCheck(topic, p.patent_title || '', p.abstract)
-  )
-  console.log(`[Patents Agent] Quick filter: ${quickFiltered.length}/${uniquePatents.length} passed`)
-
-  // Then AI-based filtering for remaining items
-  let relevantPatents = quickFiltered
-  if (quickFiltered.length > 0) {
-    const filterItems = quickFiltered.map((p) => ({
-      id: p.patent_id,
-      title: p.patent_title || 'Untitled Patent',
-      description: p.abstract,
-    }))
-    const filterResult = await filterForRelevance(topic, filterItems, 'patents')
-    const relevantIds = new Set(filterResult.kept)
-    relevantPatents = quickFiltered.filter((p) => relevantIds.has(p.patent_id))
-  }
-  console.log(`[Patents Agent] After relevance filter: ${relevantPatents.length} patents`)
-
-  if (relevantPatents.length === 0) {
-    console.log('[Patents Agent] No relevant patents after filtering')
-    return emptyOutput()
-  }
-
   // Check for missing abstracts and enrich from Google Patents (limit to 15 due to scraping)
-  const needsEnrichment = relevantPatents.filter((p) => !p.abstract).slice(0, 15)
+  const needsEnrichment = uniquePatents.filter((p) => !p.abstract).slice(0, 15)
   if (needsEnrichment.length > 0) {
     console.log(`[Patents Agent] ${needsEnrichment.length} patents need abstract enrichment`)
     const enriched = await enrichPatentAbstracts(needsEnrichment.map((p) => p.patent_id))
 
     // Update results with fetched abstracts
-    for (const patent of relevantPatents) {
+    for (const patent of uniquePatents) {
       if (!patent.abstract && enriched[patent.patent_id]) {
         patent.abstract = enriched[patent.patent_id]
       }
     }
   }
 
-  return processResults(relevantPatents)
+  return processResults(uniquePatents)
 }
 
 /**

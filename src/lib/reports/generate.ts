@@ -111,12 +111,12 @@ export async function generateTopicReport(
 
     // Phase 1b: Run dependent agents in parallel (they all use project numbers)
     // Market agent runs independently (doesn't need project numbers)
-    // Each agent filters for topic relevance to ensure only related items are included
+    // Projects are pre-filtered for relevance, so linked data is inherently relevant
     await updateProgressStage(reportId, 'gathering_data')
     const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
-      runTrialsAgent(projectNumbers, topic),
-      runPatentsAgent(projectNumbers, topic),
-      runPublicationsAgent(projectNumbers, topic),
+      runTrialsAgent(projectNumbers),
+      runPatentsAgent(projectNumbers),
+      runPublicationsAgent(projectNumbers),
       runMarketAgent(topic),
     ])
 
@@ -267,9 +267,9 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
 
     await updateProgressStage(reportId, 'gathering_data')
     const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
-      runTrialsAgent(projectNumbers, portfolioTopic),
-      runPatentsAgent(projectNumbers, portfolioTopic),
-      runPublicationsAgent(projectNumbers, portfolioTopic),
+      runTrialsAgent(projectNumbers),
+      runPatentsAgent(projectNumbers),
+      runPublicationsAgent(projectNumbers),
       runMarketAgent(portfolioTopic),
     ])
 

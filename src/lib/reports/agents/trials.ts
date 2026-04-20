@@ -1,21 +1,19 @@
 // Trials Agent
 // Fetches clinical trials linked to specific projects
-// Filters for topic relevance to ensure trials are actually related to the report topic
+// Projects are pre-filtered for relevance, so linked trials are inherently relevant
 // Enriches data from ClinicalTrials.gov if needed
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { TrialsAgentOutput, TrialItem } from '../types'
-import { filterForRelevance, quickRelevanceCheck } from '../relevance-filter'
 
 /**
  * Run the Trials Agent to gather clinical trial data linked to specific projects
- * Filters trials for topic relevance to ensure they're actually related to the report topic
+ * Projects are pre-filtered for topic relevance, so linked trials are inherently relevant
  *
- * @param projectNumbers - NIH project numbers to fetch trials for
- * @param topic - The report topic for relevance filtering (e.g., "monoclonal antibody production")
+ * @param projectNumbers - NIH project numbers to fetch trials for (already filtered for relevance)
  */
-export async function runTrialsAgent(projectNumbers: string[], topic: string): Promise<TrialsAgentOutput> {
-  console.log(`[Trials Agent] Fetching trials for ${projectNumbers.length} projects (topic: ${topic})`)
+export async function runTrialsAgent(projectNumbers: string[]): Promise<TrialsAgentOutput> {
+  console.log(`[Trials Agent] Fetching trials for ${projectNumbers.length} projects`)
 
   if (projectNumbers.length === 0) {
     return emptyOutput()
@@ -49,34 +47,8 @@ export async function runTrialsAgent(projectNumbers: string[], topic: string): P
   const uniqueTrials = Array.from(seenTrials.values())
   console.log(`[Trials Agent] Found ${uniqueTrials.length} unique trials (from ${linkedTrials.length} linked)`)
 
-  // Filter for topic relevance
-  // First, quick filter to reduce items before AI filtering
-  const quickFiltered = uniqueTrials.filter((t) =>
-    quickRelevanceCheck(topic, t.study_title, t.brief_summary)
-  )
-  console.log(`[Trials Agent] Quick filter: ${quickFiltered.length}/${uniqueTrials.length} passed`)
-
-  // Then AI-based filtering for remaining items
-  let relevantTrials = quickFiltered
-  if (quickFiltered.length > 0) {
-    const filterItems = quickFiltered.map((t) => ({
-      id: t.nct_id,
-      title: t.study_title,
-      description: t.brief_summary || t.conditions?.join(', '),
-    }))
-    const filterResult = await filterForRelevance(topic, filterItems, 'trials')
-    const relevantIds = new Set(filterResult.kept)
-    relevantTrials = quickFiltered.filter((t) => relevantIds.has(t.nct_id))
-  }
-  console.log(`[Trials Agent] After relevance filter: ${relevantTrials.length} trials`)
-
-  if (relevantTrials.length === 0) {
-    console.log('[Trials Agent] No relevant trials after filtering')
-    return emptyOutput()
-  }
-
   // Check if any trials need enrichment
-  const needsEnrichment = relevantTrials.filter(
+  const needsEnrichment = uniqueTrials.filter(
     (t) => !t.phase || !t.enrollment_count || !t.lead_sponsor
   )
 
@@ -85,7 +57,7 @@ export async function runTrialsAgent(projectNumbers: string[], topic: string): P
     await enrichTrials(needsEnrichment.map((t) => t.nct_id))
 
     // Refetch enriched data
-    const nctIds = relevantTrials.map((t) => t.nct_id)
+    const nctIds = uniqueTrials.map((t) => t.nct_id)
     const { data: refreshed } = await supabaseAdmin
       .from('clinical_studies')
       .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
@@ -96,7 +68,7 @@ export async function runTrialsAgent(projectNumbers: string[], topic: string): P
     }
   }
 
-  return processResults(relevantTrials)
+  return processResults(uniqueTrials)
 }
 
 /**
