@@ -1516,6 +1516,9 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
 function renderFieldMaturity(maturity: FieldMaturityAssessment): string {
   let md = ''
 
+  // Disclaimer about sample-based assessment
+  md += '*Note: This assessment is based on NIH-linked clinical trials, patents, and publications. It reflects patterns in the analyzed sample and may not represent the full global research landscape.*\n\n'
+
   // Overall assessment badge/indicator
   const assessmentLabels: Record<string, string> = {
     nascent: 'Nascent - Early basic research',
@@ -1557,6 +1560,9 @@ function renderCompetitiveTopology(topology: CompetitiveTopology): string {
 
   let md = ''
 
+  // Disclaimer about NIH-linked sample
+  md += '*Note: Key players listed below are derived from NIH-funded project data and represent academic/research institutions. Commercial entities may not appear.*\n\n'
+
   if (topology.narrative) {
     md += topology.narrative + '\n\n'
   }
@@ -1579,6 +1585,9 @@ function renderCompetitiveTopology(topology: CompetitiveTopology): string {
 
 function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOutputs['patents'], insight: string): string {
   let md = ''
+
+  // Disclaimer about NIH-linked sample
+  md += '*Note: This analysis includes only patents linked to NIH-funded projects. Commercial patents and international filings may exist outside this sample.*\n\n'
 
   // Add the strategic IP assessment first
   const concentrationLabels: Record<string, string> = {
@@ -1731,10 +1740,13 @@ function renderResearcherSignals(signals: SignalsAnalysis): string {
 
 function renderCuratedPublications(curated: CuratedPublication[], allPubs: AllAgentOutputs['publications']): string {
   if (curated.length === 0 && allPubs.items.length === 0) {
-    return 'No publications found for this topic.\n'
+    return '*Note: This analysis includes only publications linked to NIH-funded projects.*\n\nNo publications found linked to NIH projects in this space.\n'
   }
 
   let md = ''
+
+  // Disclaimer about NIH-linked sample
+  md += '*Note: This analysis includes only publications linked to NIH-funded projects and may not represent the complete body of literature in this field.*\n\n'
 
   // Show curated publications if available
   if (curated.length > 0) {
@@ -1768,6 +1780,7 @@ function renderCuratedPublications(curated: CuratedPublication[], allPubs: AllAg
 
 function renderMarketContext(market: MarketContext): string {
   let md = '### Market Overview\n\n'
+  md += '*Note: Market estimates below are synthesized from AI training knowledge and should be independently verified. They do not reflect data from the granted.bio platform.*\n\n'
   md += market.overview + '\n\n'
 
   if (market.marketSize) {
@@ -1776,6 +1789,7 @@ function renderMarketContext(market: MarketContext): string {
 
   if (market.keyPlayers.length > 0) {
     md += '### Key Players\n\n'
+    md += '*These players are identified from broader market knowledge and may differ from the NIH-funded organizations analyzed elsewhere in this report.*\n\n'
     market.keyPlayers.forEach((player) => {
       md += `- ${player}\n`
     })
@@ -1875,10 +1889,14 @@ function renderProjects(projects: ProjectItem[], projectInsights?: Record<string
 
 function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: string): string {
   if (trials.items.length === 0) {
-    return 'No clinical trials found for this topic in our database.\n'
+    return '*Note: This analysis includes only clinical trials linked to NIH-funded projects.*\n\nNo clinical trials found linked to NIH projects in this space.\n'
   }
 
   let md = ''
+
+  // Disclaimer about NIH-linked sample
+  md += '*Note: This analysis includes only clinical trials linked to NIH-funded projects. Industry-sponsored and international trials may exist outside this sample.*\n\n'
+
   if (insight) {
     md += insight + '\n\n'
   }
@@ -1912,10 +1930,14 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
 
 function renderPatents(patents: AllAgentOutputs['patents'], insight: string): string {
   if (patents.items.length === 0) {
-    return 'No patents found for this topic in our database.\n'
+    return '*Note: This analysis includes only patents linked to NIH-funded projects.*\n\nNo patents found linked to NIH projects in this space.\n'
   }
 
   let md = ''
+
+  // Disclaimer about NIH-linked sample
+  md += '*Note: This analysis includes only patents linked to NIH-funded projects. Commercial patents and international filings may exist outside this sample.*\n\n'
+
   if (insight) {
     md += insight + '\n\n'
   }
@@ -1944,10 +1966,14 @@ function renderPatents(patents: AllAgentOutputs['patents'], insight: string): st
 
 function renderPublications(pubs: AllAgentOutputs['publications'], insight: string): string {
   if (pubs.items.length === 0) {
-    return 'No publications found for this topic in our database.\n'
+    return '*Note: This analysis includes only publications linked to NIH-funded projects.*\n\nNo publications found linked to NIH projects in this space.\n'
   }
 
   let md = ''
+
+  // Disclaimer about NIH-linked sample
+  md += '*Note: This analysis includes only publications linked to NIH-funded projects and may not represent the complete body of literature in this field.*\n\n'
+
   if (insight) {
     md += insight + '\n\n'
   }

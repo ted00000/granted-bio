@@ -1,12 +1,10 @@
 // Projects Agent
 // Searches NIH projects using pure semantic search (aligned with UI)
-// Filters for topic relevance to ensure projects are actually ABOUT the topic (not just mentioning it)
 // Returns up to 100 projects sorted by relevance
 
 import { supabaseAdmin } from '@/lib/supabase'
 import Anthropic from '@anthropic-ai/sdk'
 import type { ProjectsAgentOutput, ProjectItem } from '../types'
-import { filterForRelevance, quickRelevanceCheck } from '../relevance-filter'
 
 const anthropic = new Anthropic()
 
@@ -222,37 +220,17 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
     // Re-sort by similarity after deduplication
     .sort((a, b) => (b.similarity || 0) - (a.similarity || 0))
 
-  // Filter to balanced threshold FIRST - this defines the report population
-  const relevantResults = uniqueResults.filter(p => (p.similarity || 0) >= THRESHOLD_BALANCED)
+  // Filter to balanced threshold - this defines the report population
+  // Semantic search already ensures topical relevance through embedding similarity,
+  // so we don't apply additional keyword or AI relevance filters to projects.
+  // The balanced threshold (0.35) provides sufficient precision while maintaining
+  // recall for specialized topics with varied terminology.
+  const relevantProjects = uniqueResults.filter(p => (p.similarity || 0) >= THRESHOLD_BALANCED)
 
-  // === TOPIC RELEVANCE FILTERING ===
-  // Semantic search can return projects that merely MENTION the topic rather than being ABOUT it.
-  // For example, a cancer project that says "we use monoclonal antibodies as detection tools"
-  // would match "monoclonal antibody production" semantically, but the project is about cancer,
-  // not mAb production. Filter these out to ensure linked data is truly relevant.
-
-  // Quick filter first (fast keyword check)
-  const quickFiltered = relevantResults.filter((p) =>
-    quickRelevanceCheck(topic, p.title || '', p.phr)
-  )
-  console.log(`[Projects Agent] Quick relevance filter: ${quickFiltered.length}/${relevantResults.length} passed`)
-
-  // AI-based filtering for remaining items
-  let relevantProjects = quickFiltered
-  if (quickFiltered.length > 0) {
-    const filterItems = quickFiltered.map((p) => ({
-      id: p.application_id,
-      title: p.title || 'Untitled Project',
-      description: p.phr,
-    }))
-    const filterResult = await filterForRelevance(topic, filterItems, 'projects')
-    const relevantIds = new Set(filterResult.kept)
-    relevantProjects = quickFiltered.filter((p) => relevantIds.has(p.application_id))
-    console.log(`[Projects Agent] AI relevance filter: ${relevantProjects.length}/${quickFiltered.length} kept`)
-  }
+  console.log(`[Projects Agent] Balanced threshold filter: ${relevantProjects.length}/${uniqueResults.length} projects`)
 
   if (relevantProjects.length === 0) {
-    console.log('[Projects Agent] No relevant projects after filtering')
+    console.log('[Projects Agent] No projects above balanced threshold')
     return emptyOutput()
   }
 
