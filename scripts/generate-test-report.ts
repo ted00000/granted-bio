@@ -34,11 +34,12 @@ async function main() {
   console.log(`  - Project numbers for linked data: ${projectNumbers.length}`)
 
   // Phase 1b: Run dependent agents in parallel
+  // Each agent filters for topic relevance to ensure only related items are included
   console.log('\nPhase 1b: Running linked data agents in parallel...')
   const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
-    runTrialsAgent(projectNumbers),
-    runPatentsAgent(projectNumbers),
-    runPublicationsAgent(projectNumbers),
+    runTrialsAgent(projectNumbers, topic),
+    runPatentsAgent(projectNumbers, topic),
+    runPublicationsAgent(projectNumbers, topic),
     runMarketAgent(topic),
   ])
 

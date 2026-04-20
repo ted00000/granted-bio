@@ -48,7 +48,7 @@ async function testAgents() {
   console.log('🏥 TRIALS AGENT (linked to projects)')
   console.log('-'.repeat(40))
   try {
-    const trials = await runTrialsAgent(projectNumbers)
+    const trials = await runTrialsAgent(projectNumbers, TOPIC)
     console.log(`  Total trials: ${trials.items.length}`)
     console.log(`  By phase:`, Object.entries(trials.byPhase).map(([p, c]) => `${p}: ${c}`).join(', '))
     console.log(`  Sample titles:`)
@@ -65,7 +65,7 @@ async function testAgents() {
   console.log('📜 PATENTS AGENT (linked to projects)')
   console.log('-'.repeat(40))
   try {
-    const patents = await runPatentsAgent(projectNumbers)
+    const patents = await runPatentsAgent(projectNumbers, TOPIC)
     console.log(`  Total patents: ${patents.items.length}`)
     console.log(`  Recent (2yr): ${patents.recentCount}`)
     console.log(`  Top assignees:`, patents.byAssignee.slice(0, 3).map(a => a.assignee).join(', ') || 'None')
@@ -83,7 +83,7 @@ async function testAgents() {
   console.log('📚 PUBLICATIONS AGENT (linked to projects)')
   console.log('-'.repeat(40))
   try {
-    const pubs = await runPublicationsAgent(projectNumbers)
+    const pubs = await runPublicationsAgent(projectNumbers, TOPIC)
     console.log(`  Total publications: ${pubs.items.length}`)
     console.log(`  Top journals:`, pubs.byJournal.slice(0, 3).map(j => j.journal).join(', ') || 'None')
     console.log(`  Sample titles:`)
