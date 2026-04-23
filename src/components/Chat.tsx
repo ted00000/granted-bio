@@ -1474,6 +1474,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const [precision, setPrecision] = useState<'low' | 'med' | 'high'>(initialPrecision || 'low')
   const [restoredFromStorage, setRestoredFromStorage] = useState(false)
   const [showMobileResults, setShowMobileResults] = useState(true)  // Delay mobile results during restoration
+  const [mobileView, setMobileView] = useState<'results' | 'filters'>('results')  // Mobile toggle between views
   const [initialQueryProcessed, setInitialQueryProcessed] = useState(false)
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
   const [upgradeInfo, setUpgradeInfo] = useState<{ tier: 'free' | 'pro'; limit: number; subscriptionStatus?: string | null } | null>(null)
@@ -2256,12 +2257,59 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
         </div>
       ) : (
         <>
+          {/* Mobile tab bar - switch between Results and Filters */}
+          <div className="lg:hidden flex-shrink-0 bg-white border-b border-gray-100 pt-[calc(0.5rem+env(safe-area-inset-top))] px-4 pb-2">
+            <div className="flex items-center justify-between">
+              {/* Mobile tabs */}
+              <div className="flex gap-1 p-1 bg-gray-100 rounded-lg">
+                <button
+                  onClick={() => setMobileView('results')}
+                  className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                    mobileView === 'results'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-500'
+                  }`}
+                >
+                  Results
+                  {searchContext && (
+                    <span className="ml-1.5 text-xs text-gray-400">
+                      {(filteredResults || searchContext.originalResults).total_count.toLocaleString()}
+                    </span>
+                  )}
+                </button>
+                <button
+                  onClick={() => setMobileView('filters')}
+                  className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                    mobileView === 'filters'
+                      ? 'bg-white text-gray-900 shadow-sm'
+                      : 'text-gray-500'
+                  }`}
+                >
+                  Filters
+                  {((currentFilters.primary_category?.length || 0) + (currentFilters.org_type?.length || 0) + (currentFilters.quick ? Object.values(currentFilters.quick).filter(Boolean).length : 0)) > 0 && (
+                    <span className="ml-1.5 px-1.5 py-0.5 text-xs bg-[#E07A5F] text-white rounded-full">
+                      {(currentFilters.primary_category?.length || 0) + (currentFilters.org_type?.length || 0) + (currentFilters.quick ? Object.values(currentFilters.quick).filter(Boolean).length : 0)}
+                    </span>
+                  )}
+                </button>
+              </div>
+              {/* New Search button on mobile */}
+              <button
+                onClick={() => router.push('/chat')}
+                className="p-2 text-gray-500 hover:text-[#E07A5F] transition-colors"
+                aria-label="New Search"
+              >
+                <Search className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+
           {/* Two-column layout: Left (filters) + Right (results) */}
           <div className="flex-1 flex overflow-hidden" ref={messagesContainerRef}>
             <div ref={messagesEndRef} />
 
-            {/* Left column - Search context, stats, filters */}
-            <div className="w-80 lg:w-96 flex-shrink-0 border-r border-gray-100 overflow-y-auto bg-[#FAFAF9]">
+            {/* Left column - Search context, stats, filters (full width on mobile, sidebar on desktop) */}
+            <div className={`w-full lg:w-96 flex-shrink-0 lg:border-r border-gray-100 overflow-y-auto bg-[#FAFAF9] ${mobileView === 'filters' ? 'block' : 'hidden'} lg:block`}>
               <div className="p-5 space-y-4">
                 {/* User query */}
                 <div className="flex items-start gap-2">
@@ -2525,8 +2573,8 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
               </div>
             </div>
 
-            {/* Right column - Results only */}
-            <div className="flex-1 overflow-hidden">
+            {/* Right column - Results only (hidden on mobile when viewing filters) */}
+            <div className={`flex-1 overflow-hidden ${mobileView === 'results' ? 'block' : 'hidden'} lg:block`}>
               {toolResults.length > 0 && showMobileResults ? (
                 <ResultsPanel
                   results={toolResults}

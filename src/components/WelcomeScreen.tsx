@@ -184,7 +184,7 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
           </form>
 
           {/* Lens Bar and Search Mode Toggle */}
-          <div className="flex justify-center items-center gap-3 mb-6">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-3 mb-6">
             {/* Persona Pills */}
             <div className="inline-flex items-center gap-1 p-1 bg-gray-100 rounded-full" role="tablist" aria-label="Search type">
               {LENS_CONFIG.map(lens => {
