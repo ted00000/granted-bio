@@ -73,7 +73,8 @@ export default function CategorizationReviewPage() {
       const res = await fetch(`/api/admin/categorization-review?${params}`)
       if (!res.ok) {
         const data = await res.json()
-        throw new Error(data.error || 'Failed to load queue')
+        const detail = data.details || data.hint || data.code || ''
+        throw new Error(`${data.error || 'Failed to load queue'}${detail ? ` — ${detail}` : ''}`)
       }
       const data = await res.json() as QueueResponse
       setQueue(data)

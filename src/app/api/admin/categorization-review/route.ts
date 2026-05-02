@@ -97,23 +97,26 @@ export async function GET(request: NextRequest) {
       { count: 'exact' }
     )
     .eq('primary_category', preset.category)
+    .lt('primary_category_confidence', confidenceMax)
 
   if (preset.activity_codes) {
     query = query.in('activity_code', preset.activity_codes)
   }
 
-  // Confidence filter — null confidence is treated as "uncertain enough" too
-  query = query.or(`primary_category_confidence.lt.${confidenceMax},primary_category_confidence.is.null`)
-
   // Order by lowest confidence first (most uncertain first)
-  query = query.order('primary_category_confidence', { ascending: true, nullsFirst: false })
+  query = query.order('primary_category_confidence', { ascending: true })
 
   // Page through with extra slack to allow filtering out reviewed items client-side
   const { data: projects, error, count } = await query.range(offset, offset + limit * 3 - 1)
 
   if (error) {
     console.error('Review queue query error:', error)
-    return NextResponse.json({ error: 'Failed to fetch queue', details: error.message }, { status: 500 })
+    return NextResponse.json({
+      error: 'Failed to fetch queue',
+      details: error.message,
+      hint: error.hint || null,
+      code: error.code || null
+    }, { status: 500 })
   }
 
   // Filter out already-reviewed in-memory (cleaner than a NOT IN with potentially large list)
