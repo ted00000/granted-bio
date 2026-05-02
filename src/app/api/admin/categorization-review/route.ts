@@ -93,7 +93,7 @@ export async function GET(request: NextRequest) {
   let query = supabaseAdmin
     .from('projects')
     .select(
-      'application_id, project_number, activity_code, title, org_name, primary_category, primary_category_confidence, fy',
+      'application_id, project_number, activity_code, title, org_name, primary_category, primary_category_confidence, fiscal_year',
       { count: 'exact' }
     )
     .eq('primary_category', preset.category)

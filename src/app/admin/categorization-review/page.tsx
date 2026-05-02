@@ -30,7 +30,7 @@ interface QueueItem {
   org_name: string | null
   primary_category: string
   primary_category_confidence: number | null
-  fy: number | null
+  fiscal_year: number | null
   abstract: string | null
 }
 
@@ -250,10 +250,10 @@ export default function CategorizationReviewPage() {
                   <span className="font-mono text-xs bg-gray-100 px-1.5 py-0.5 rounded">{currentItem.activity_code}</span>
                 </>
               )}
-              {currentItem.fy && (
+              {currentItem.fiscal_year && (
                 <>
                   <span className="text-gray-300">·</span>
-                  <span>FY{currentItem.fy}</span>
+                  <span>FY{currentItem.fiscal_year}</span>
                 </>
               )}
               <span className="text-gray-300">·</span>
