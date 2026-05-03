@@ -418,6 +418,95 @@ export default function ReportDetailPage({
         return false
       }
 
+      // --- Link handling helpers ---
+
+      // Resolve relative URLs to absolute (clickable in any PDF reader)
+      const baseUrl =
+        typeof window !== 'undefined' ? window.location.origin : 'https://granted.bio'
+      const absolutize = (url: string): string => {
+        if (url.startsWith('http://') || url.startsWith('https://')) return url
+        if (url.startsWith('/')) return baseUrl + url
+        return url
+      }
+
+      type Segment = { text: string; url?: string }
+
+      // Parse a line into text and link segments. Bold markers are stripped from segment text
+      // since segment-renderer can't easily handle bold-within-link wrapping. Inline links win.
+      const parseSegments = (line: string): Segment[] => {
+        const segments: Segment[] = []
+        const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g
+        let lastIndex = 0
+        let match: RegExpExecArray | null
+        while ((match = linkRegex.exec(line)) !== null) {
+          if (match.index > lastIndex) {
+            segments.push({ text: cleanText(line.slice(lastIndex, match.index)) })
+          }
+          segments.push({ text: cleanText(match[1]), url: absolutize(match[2]) })
+          lastIndex = match.index + match[0].length
+        }
+        if (lastIndex < line.length) {
+          segments.push({ text: cleanText(line.slice(lastIndex)) })
+        }
+        return segments
+      }
+
+      const linkColor: [number, number, number] = [37, 99, 235] // blue-600 — clear visual cue
+      const bodyColor: [number, number, number] = [55, 65, 81]
+
+      // Word-by-word renderer that wraps and adds clickable annotations for link segments.
+      // Returns the new y position after the rendered block.
+      const renderSegmentsWithLinks = (
+        segments: Segment[],
+        startX: number,
+        startY: number,
+        availableWidth: number,
+        lineHeight: number
+      ): number => {
+        let x = startX
+        let yPos = startY
+
+        for (const seg of segments) {
+          // Tokenize keeping whitespace so word boundaries are preserved
+          const tokens = seg.text.split(/(\s+)/).filter((t) => t.length > 0)
+          for (const token of tokens) {
+            const tokenWidth = doc.getTextWidth(token)
+            const isWhitespace = /^\s+$/.test(token)
+
+            // Wrap if token doesn't fit and we're not at line start
+            if (x + tokenWidth > startX + availableWidth && x > startX) {
+              yPos += lineHeight
+              x = startX
+              if (yPos > pageHeight - bottomMargin) {
+                doc.addPage()
+                currentPageNum++
+                addPageBranding(currentPageNum)
+                yPos = margin + headerHeight
+              }
+              if (isWhitespace) continue // drop wrapping whitespace
+            }
+
+            if (isWhitespace) {
+              x += tokenWidth
+              continue
+            }
+
+            if (seg.url) {
+              doc.setTextColor(...linkColor)
+              doc.textWithLink(token, x, yPos, { url: seg.url })
+              doc.setTextColor(...bodyColor)
+            } else {
+              doc.text(token, x, yPos)
+            }
+            x += tokenWidth
+          }
+        }
+        return yPos
+      }
+
+      // Quick predicate: does this line contain a markdown link worth rendering as clickable?
+      const hasMarkdownLink = (line: string): boolean => /\[[^\]]+\]\([^)]+\)/.test(line)
+
       // Helper to force new page for major sections
       const forceNewPage = () => {
         doc.addPage()
@@ -697,14 +786,24 @@ export default function ReportDetailPage({
           doc.setFontSize(10.5)
           doc.setFont('helvetica', 'normal')
           doc.setTextColor(55, 65, 81)
-          const text = cleanText(trimmed.slice(2))
-          const splitText = doc.splitTextToSize(text, maxWidth - 14)
+          const lineContent = trimmed.slice(2)
+
           // Brand-colored bullet
           doc.setTextColor(...brandColor)
           doc.text('•', margin, y)
           doc.setTextColor(55, 65, 81)
-          doc.text(splitText, margin + 14, y)
-          y += splitText.length * 13 + 4
+
+          if (hasMarkdownLink(lineContent)) {
+            // Link-aware path: word-by-word with clickable link annotations
+            const segments = parseSegments(lineContent)
+            const finalY = renderSegmentsWithLinks(segments, margin + 14, y, maxWidth - 14, 13)
+            y = finalY + 13 + 4
+          } else {
+            const text = cleanText(lineContent)
+            const splitText = doc.splitTextToSize(text, maxWidth - 14)
+            doc.text(splitText, margin + 14, y)
+            y += splitText.length * 13 + 4
+          }
           isFirstElement = false
           contentRendered = true
           i++
@@ -716,10 +815,17 @@ export default function ReportDetailPage({
         doc.setFontSize(10.5)
         doc.setFont('helvetica', 'normal')
         doc.setTextColor(55, 65, 81)
-        const text = cleanText(trimmed)
-        const splitText = doc.splitTextToSize(text, maxWidth)
-        doc.text(splitText, margin, y)
-        y += splitText.length * 13 + 5
+
+        if (hasMarkdownLink(trimmed)) {
+          const segments = parseSegments(trimmed)
+          const finalY = renderSegmentsWithLinks(segments, margin, y, maxWidth, 13)
+          y = finalY + 13 + 5
+        } else {
+          const text = cleanText(trimmed)
+          const splitText = doc.splitTextToSize(text, maxWidth)
+          doc.text(splitText, margin, y)
+          y += splitText.length * 13 + 5
+        }
         isFirstElement = false
         contentRendered = true
         i++

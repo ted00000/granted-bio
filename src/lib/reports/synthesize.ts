@@ -1402,6 +1402,14 @@ ${renderOrganizations(context.topOrganizations)}
 
 ---
 
+## Key Researchers
+
+*Investors often need names for diligence, partnership, and recruiting conversations. The PIs below are ranked by NIH funding within the analyzed sample.*
+
+${renderResearchers(context.topResearchers)}
+
+---
+
 ## Key Publications
 
 ${renderCuratedPublications(curatedPublications, agentOutputs.publications)}
@@ -1500,6 +1508,8 @@ This report analyzes a curated subset of NIH-funded research projects most relev
 | Total FY Awards | ${formatCurrency(context.fundingStats.total)} |
 | Organizations | ${context.fundingStats.orgCount.toLocaleString()} |
 | Principal Investigators | ${context.fundingStats.piCount.toLocaleString()} |
+
+${renderSampleInterpretation(agentOutputs, context)}
 
 **Linked Data:**
 
@@ -2059,6 +2069,65 @@ function renderOrganizations(orgs: OrgStats[]): string {
   })
 
   return md
+}
+
+/**
+ * Interpret the sample composition for the reader.
+ * Calls out skewed distributions (all precise, all balanced) and small sample warnings.
+ */
+function renderSampleInterpretation(
+  agentOutputs: AllAgentOutputs,
+  context: SynthesisContext
+): string {
+  const total = context.fundingStats.projectCount
+  if (total === 0) return ''
+
+  const precise = agentOutputs.projects.items.filter((p) => p.match_tier === 'precise').length
+  const balanced = agentOutputs.projects.items.filter((p) => p.match_tier === 'balanced').length
+  const preciseRatio = total > 0 ? precise / total : 0
+
+  const notes: string[] = []
+
+  // Skew interpretation
+  if (precise === total && total >= 5) {
+    notes.push(
+      `**All ${total} matches are Precise** (similarity ≥50%). This indicates strong topical convergence — the search query maps cleanly to a well-defined research area, and confidence in sample relevance is high.`
+    )
+  } else if (preciseRatio >= 0.7 && total >= 5) {
+    notes.push(
+      `**${precise} of ${total} matches are Precise** (${Math.round(preciseRatio * 100)}%). The sample skews toward high-relevance results, suggesting the query is well-matched to a coherent research area.`
+    )
+  } else if (precise === 0 && balanced === total && total >= 5) {
+    notes.push(
+      `**All ${total} matches are Balanced** (similarity 35-50%). No projects met the Precise threshold — the topic may be broad, multi-disciplinary, or use terminology that diverges from common NIH abstracts. Treat findings as directional rather than definitive.`
+    )
+  }
+
+  // Small-sample caveats
+  if (total < 5) {
+    notes.push(
+      `**Small sample (${total} projects)**: Statistical patterns are not interpretable at this size. Findings are descriptive of these specific projects rather than the broader field.`
+    )
+  } else if (total < 10) {
+    notes.push(
+      `**Modest sample (${total} projects)**: Aggregate metrics (top organizations, category distribution) are based on a small number of projects and should be read as indicative.`
+    )
+  }
+
+  // Linked-data composition signal
+  if (
+    agentOutputs.trials.items.length === 0 &&
+    agentOutputs.patents.items.length === 0 &&
+    agentOutputs.publications.items.length === 0
+  ) {
+    notes.push(
+      `**No linked clinical trials, patents, or publications were found** for these projects. This is consistent with very early-stage research, projects that have not yet produced linked outputs in NIH RePORTER, or topics where outputs flow to non-NIH-tracked channels.`
+    )
+  }
+
+  if (notes.length === 0) return ''
+
+  return '**Sample Interpretation:**\n\n' + notes.map((n) => `- ${n}`).join('\n') + '\n\n'
 }
 
 function renderResearchers(researchers: ResearcherStats[]): string {
