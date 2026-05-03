@@ -1,16 +1,20 @@
 // Market Agent
-// Gathers external market context via web search (10-15% of report)
+// Gathers external market context via Claude's web_search tool (10-15% of report)
+// Replaces the prior training-data-only approach with live, sourced web research.
 
+import Anthropic from '@anthropic-ai/sdk'
 import type { MarketAgentOutput, MarketContext } from '../types'
 
+const anthropic = new Anthropic()
+
 /**
- * Run the Market Agent to gather external market context for a topic
+ * Run the Market Agent to gather external market context for a topic.
+ * Uses Claude's server-side web_search tool for current, sourced information.
  */
 export async function runMarketAgent(topic: string): Promise<MarketAgentOutput> {
   console.log(`[Market Agent] Gathering market context for "${topic}"`)
 
   try {
-    // Use Claude with web search to gather market context
     const context = await gatherMarketContext(topic)
     return { context }
   } catch (error) {
@@ -29,38 +33,53 @@ export async function runMarketAgent(topic: string): Promise<MarketAgentOutput> 
 }
 
 /**
- * Use LLM to gather and synthesize market context
+ * Use Claude with web_search to gather current, cited market intelligence.
+ * Sources are extracted from the actual URLs the model retrieved.
  */
 async function gatherMarketContext(topic: string): Promise<MarketContext> {
-  const { default: Anthropic } = await import('@anthropic-ai/sdk')
-  const client = new Anthropic()
+  const today = new Date().toISOString().split('T')[0]
 
-  const prompt = `You are a market research analyst. Gather current market intelligence for: "${topic}"
+  const prompt = `You are a life-sciences market research analyst. Today is ${today}.
 
-Based on your knowledge (up to your training cutoff), provide:
+Use the web_search tool to gather CURRENT market intelligence for: "${topic}"
 
-1. **Market Overview**: Brief description of the market/research landscape for this topic
-2. **Market Size**: Any known market size estimates (global market value, growth rate)
-3. **Key Players**: Major companies commercializing or developing products in this space (list 3-5)
-4. **Recent Developments**: Notable recent events (FDA approvals, major partnerships, clinical results) - list 2-4
-5. **Competitive Landscape**: Brief description of the competitive dynamics
+Run multiple searches as needed to verify and triangulate facts. Search for:
+1. Recent market size estimates (cite year and source)
+2. Key commercial players (companies developing or commercializing this technology)
+3. Recent notable events from the last 12-24 months (FDA approvals, fundings, M&A, partnerships, clinical readouts)
+4. Competitive dynamics
 
-Format your response as JSON with this structure:
+Prefer sources from the last 2 years. Industry reports, reputable trade press, company announcements, and FDA/regulatory filings are all valid.
+
+After searching, return your analysis as JSON with this exact structure:
+
 {
-  "overview": "2-3 paragraph market overview",
-  "marketSize": "e.g., '$X billion in 2024, growing at Y% CAGR' or null if unknown",
+  "overview": "2-3 paragraph market overview synthesized from search results",
+  "marketSize": "e.g., '$X billion in 2024, projected to $Y by 2030 at Z% CAGR (Source Name, Year)' — include source year, or null if no reliable estimate found",
   "keyPlayers": ["Company A", "Company B", "Company C"],
-  "recentDevelopments": ["Development 1", "Development 2"],
-  "competitiveLandscape": "Brief competitive analysis paragraph"
+  "recentDevelopments": ["YYYY-MM: brief description of development", "YYYY-MM: brief description"],
+  "competitiveLandscape": "Brief paragraph describing competitive dynamics"
 }
 
-Only include information you are confident about. If you're not sure about something, omit it or mark as uncertain.
+CRITICAL RULES:
+- Only include information you actually found via search. Do NOT fabricate market sizes, companies, or events.
+- For market size, always include the source year (e.g., "as of 2024 Grand View Research report").
+- Each entry in recentDevelopments must be prefixed with YYYY-MM for transparency about recency.
+- If search returned no useful information for a field, use null or [].
+- FORMATTING: Do NOT use em dashes. Use regular hyphens.
 
-FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.`
+Return ONLY the JSON object — no preamble, no markdown code fence, no explanation outside the JSON.`
 
-  const response = await client.messages.create({
+  const response = await anthropic.messages.create({
     model: 'claude-sonnet-4-6',
-    max_tokens: 2000,
+    max_tokens: 4000,
+    tools: [
+      {
+        type: 'web_search_20250305',
+        name: 'web_search',
+        max_uses: 5,
+      },
+    ],
     messages: [
       {
         role: 'user',
@@ -69,26 +88,54 @@ FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sente
     ],
   })
 
-  // Extract text content
-  const textContent = response.content.find((c) => c.type === 'text')
-  if (!textContent || textContent.type !== 'text') {
+  // Extract URLs from web_search_tool_result blocks (used as sources)
+  const sources: string[] = []
+  for (const block of response.content) {
+    // The web_search_tool_result block type is dynamically added by the API
+    if (block.type === 'web_search_tool_result') {
+      // Type is loosely-typed in the SDK for server tools — cast and inspect
+      const result = block as unknown as { content?: Array<{ url?: string; type?: string }> }
+      if (Array.isArray(result.content)) {
+        for (const r of result.content) {
+          if (r.url && typeof r.url === 'string') sources.push(r.url)
+        }
+      }
+    }
+  }
+
+  // The final text block contains the JSON answer (model may produce intermediate text between searches)
+  const textBlocks = response.content.filter((b) => b.type === 'text')
+  const finalText = textBlocks[textBlocks.length - 1]
+  if (!finalText || finalText.type !== 'text') {
     throw new Error('No text response from Claude')
   }
 
-  // Parse JSON from response
-  const jsonMatch = textContent.text.match(/\{[\s\S]*\}/)
+  // Strip markdown code fences if present, then extract JSON object
+  let jsonText = finalText.text.trim()
+  if (jsonText.startsWith('```')) {
+    jsonText = jsonText.replace(/```(?:json)?\n?/g, '').replace(/\n?```$/g, '').trim()
+  }
+  const jsonMatch = jsonText.match(/\{[\s\S]*\}/)
   if (!jsonMatch) {
     throw new Error('No JSON found in response')
   }
 
   const parsed = JSON.parse(jsonMatch[0])
 
+  // Dedupe sources and cap at 10
+  const uniqueSources = Array.from(new Set(sources)).slice(0, 10)
+
+  console.log(
+    `[Market Agent] Used web_search; collected ${uniqueSources.length} sources, ` +
+    `${parsed.keyPlayers?.length || 0} key players, ${parsed.recentDevelopments?.length || 0} recent developments`
+  )
+
   return {
     overview: parsed.overview || '',
     marketSize: parsed.marketSize || null,
-    keyPlayers: parsed.keyPlayers || [],
-    recentDevelopments: parsed.recentDevelopments || [],
+    keyPlayers: Array.isArray(parsed.keyPlayers) ? parsed.keyPlayers : [],
+    recentDevelopments: Array.isArray(parsed.recentDevelopments) ? parsed.recentDevelopments : [],
     competitiveLandscape: parsed.competitiveLandscape || '',
-    sources: ['Claude AI knowledge base (training data cutoff)'],
+    sources: uniqueSources,
   }
 }

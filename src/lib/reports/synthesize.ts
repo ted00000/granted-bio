@@ -199,6 +199,8 @@ Instead, answer these questions in narrative form:
 
 Write in confident, analytical prose. Be specific about what you observed but don't repeat raw numbers.
 
+OUTPUT FORMAT: Write paragraphs only. Do NOT include any heading at the start of your output (no "## Strategic Executive Summary" or similar) — the section header is added separately.
+
 SAMPLE-BASED LANGUAGE: This analysis covers NIH-linked research, not the complete market. Use confident but appropriately hedged language:
 - "Among the projects analyzed..." not "The field has..."
 - "This pattern suggests..." or "These findings indicate..."
@@ -841,6 +843,12 @@ SAMPLE-BASED LANGUAGE: These metrics come from NIH-linked data. Use confident bu
 - "The sample suggests TRL..." not "The technology is at TRL..."
 - "This pattern may indicate..." or "suggests maturity level of..."
 
+CRITICAL — STATISTICAL HONESTY: When a denominator is small, the percentage is not reliably interpretable. Apply these rules strictly:
+- If totalPubs (${totalPubs}) is below 10, do NOT lean on the preprint ratio as a meaningful signal. State explicitly that "with only ${totalPubs} linked publications, the ${(preprintRatio * 100).toFixed(0)}% preprint ratio is not statistically interpretable" or similar honest phrasing. Discuss what is observable about journal mix instead.
+- If totalPatents (${totalPatents}) is below 5, do NOT treat the recency ratio as a trend. Say "with only ${totalPatents} linked patents, recency ratios are not interpretable as trend signals" or similar.
+- If totalTrials (${totalTrials}) is below 3, treat phase distribution as descriptive, not statistical.
+- Never imply "the field has X" or "the field is doing Y" based on a small absolute count. Frame as "the linked sample contains X" or "no Y was observed in the sample."
+
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
 Return JSON only:
@@ -848,9 +856,9 @@ Return JSON only:
   "trlEstimate": "TRL X-Y" or narrative like "Early Research (TRL 1-3)",
   "maturityNarrative": "2-3 sentences explaining the overall maturity assessment and what it means for someone entering this space",
   "evidenceSummary": {
-    "preprintRatio": "One sentence interpreting what the ${(preprintRatio * 100).toFixed(0)}% preprint ratio signals",
-    "trialProgression": "One sentence interpreting what the trial phase distribution signals",
-    "patentActivity": "One sentence interpreting what the patent recency (${recentPatents} in 2 years) signals"
+    "preprintRatio": "One sentence interpreting the preprint ratio — apply small-N rule above when totalPubs < 10",
+    "trialProgression": "One sentence interpreting the trial phase distribution — apply small-N rule above when totalTrials < 3",
+    "patentActivity": "One sentence interpreting the patent recency — apply small-N rule above when totalPatents < 5"
   },
   "overallAssessment": "nascent" | "emerging" | "maturing" | "established"
 }`
@@ -1753,7 +1761,7 @@ function renderCuratedPublications(curated: CuratedPublication[], allPubs: AllAg
     md += '### Must-Read Publications\n\n'
     curated.forEach((pub, i) => {
       md += `#### ${i + 1}. ${pub.title}\n`
-      md += `- **Journal:** ${pub.journal || 'N/A'} | **Year:** ${pub.year || 'N/A'}\n`
+      md += `- **Journal:** ${pub.journal ? normalizeJournalName(pub.journal) : 'N/A'} | **Year:** ${pub.year || 'N/A'}\n`
       md += `- **PMID:** [${pub.pmid}](https://pubmed.ncbi.nlm.nih.gov/${pub.pmid})\n`
       md += `\n**Why it matters:** ${pub.significance}\n`
       md += `\n**Key finding:** ${pub.keyFinding}\n\n`
@@ -1766,11 +1774,16 @@ function renderCuratedPublications(curated: CuratedPublication[], allPubs: AllAg
     md += `- Total linked publications: ${allPubs.items.length}\n`
     md += `- Unique journals: ${allPubs.byJournal.length}\n\n`
 
-    if (allPubs.byJournal.length > 0) {
+    // Only show "Top Journals" list if at least one journal has 2+ pubs (otherwise it's noise)
+    const topJournalCount = allPubs.byJournal[0]?.count ?? 0
+    if (allPubs.byJournal.length > 0 && topJournalCount >= 2) {
       md += '**Top Journals:**\n\n'
-      allPubs.byJournal.slice(0, 5).forEach((j) => {
-        md += `- ${j.journal} (${j.count})\n`
-      })
+      allPubs.byJournal
+        .filter((j) => j.count >= 2)
+        .slice(0, 5)
+        .forEach((j) => {
+          md += `- ${normalizeJournalName(j.journal)} (${j.count})\n`
+        })
       md += '\n'
     }
   }
@@ -1780,7 +1793,7 @@ function renderCuratedPublications(curated: CuratedPublication[], allPubs: AllAg
 
 function renderMarketContext(market: MarketContext): string {
   let md = '### Market Overview\n\n'
-  md += '*Note: Market estimates below are synthesized from AI training knowledge and should be independently verified. They do not reflect data from the granted.bio platform.*\n\n'
+  md += '*Market context below is synthesized from current web search results. See sources at the end of this section. NIH funding patterns are integrated to bridge public research and commercial activity.*\n\n'
   md += market.overview + '\n\n'
 
   if (market.marketSize) {
@@ -1789,7 +1802,7 @@ function renderMarketContext(market: MarketContext): string {
 
   if (market.keyPlayers.length > 0) {
     md += '### Key Players\n\n'
-    md += '*These players are identified from broader market knowledge and may differ from the NIH-funded organizations analyzed elsewhere in this report.*\n\n'
+    md += '*These players are identified from market reports and trade press, and may differ from the NIH-funded organizations analyzed elsewhere in this report.*\n\n'
     market.keyPlayers.forEach((player) => {
       md += `- ${player}\n`
     })
@@ -1806,7 +1819,27 @@ function renderMarketContext(market: MarketContext): string {
 
   if (market.competitiveLandscape) {
     md += '### Competitive Landscape\n\n'
-    md += market.competitiveLandscape + '\n'
+    md += market.competitiveLandscape + '\n\n'
+  }
+
+  // Render sources — distinguish URLs from descriptive labels
+  if (market.sources.length > 0) {
+    md += '### Sources\n\n'
+    md += '*Live web sources retrieved during report generation. Click to verify.*\n\n'
+    market.sources.forEach((src) => {
+      if (src.startsWith('http://') || src.startsWith('https://')) {
+        // Extract a short readable label from the URL host
+        try {
+          const u = new URL(src)
+          md += `- [${u.hostname}${u.pathname.length > 1 ? u.pathname : ''}](${src})\n`
+        } catch {
+          md += `- [${src}](${src})\n`
+        }
+      } else {
+        md += `- ${src}\n`
+      }
+    })
+    md += '\n'
   }
 
   return md
@@ -1860,7 +1893,7 @@ function renderProjects(projects: ProjectItem[], projectInsights?: Record<string
   projects.forEach((p, i) => {
     md += `#### ${i + 1}. ${p.title}\n`
     md += `- **PI:** ${p.pi_names?.split(';')[0]?.trim() || 'N/A'}`
-    if (p.org_name) md += `, ${p.org_name}`
+    if (p.org_name) md += `, ${normalizeOrgName(p.org_name)}`
     md += '\n'
     md += `- **FY Award:** ${formatCurrency(p.total_cost || 0)}`
     if (p.fiscal_year) md += ` (FY${p.fiscal_year})`
@@ -1983,13 +2016,18 @@ function renderPublications(pubs: AllAgentOutputs['publications'], insight: stri
   md += `| Total Publications | ${pubs.items.length} |\n`
   md += `| Unique Journals | ${pubs.byJournal.length} |\n\n`
 
-  if (pubs.byJournal.length > 0) {
+  // Only show "Top Journals" list if at least one journal has 2+ pubs
+  const topJournalCount = pubs.byJournal[0]?.count ?? 0
+  if (pubs.byJournal.length > 0 && topJournalCount >= 2) {
     md += '### Top Journals\n\n'
     md += '| Journal | Publications |\n'
     md += '|---------|-------------|\n'
-    pubs.byJournal.slice(0, 5).forEach((j) => {
-      md += `| ${j.journal} | ${j.count} |\n`
-    })
+    pubs.byJournal
+      .filter((j) => j.count >= 2)
+      .slice(0, 5)
+      .forEach((j) => {
+        md += `| ${normalizeJournalName(j.journal)} | ${j.count} |\n`
+      })
     md += '\n'
   }
 
@@ -1997,7 +2035,7 @@ function renderPublications(pubs: AllAgentOutputs['publications'], insight: stri
   pubs.items.slice(0, 15).forEach((p) => {
     md += `#### ${p.publication_title || 'Untitled'}\n`
     md += `- **PMID:** [${p.pmid}](https://pubmed.ncbi.nlm.nih.gov/${p.pmid})\n`
-    if (p.journal) md += `- **Journal:** ${p.journal}\n`
+    if (p.journal) md += `- **Journal:** ${normalizeJournalName(p.journal)}\n`
     if (p.publication_date) md += `- **Year:** ${new Date(p.publication_date).getFullYear()}\n`
     if (p.authors) md += `- **Authors:** ${p.authors}\n`
     md += '\n'
@@ -2015,7 +2053,8 @@ function renderOrganizations(orgs: OrgStats[]): string {
   md += '|--------------|----------|---------|--------|--------|\n'
 
   orgs.forEach((o) => {
-    const orgLink = `[${o.org_name}](/org/${encodeURIComponent(o.org_name)})`
+    const displayName = normalizeOrgName(o.org_name)
+    const orgLink = `[${displayName}](/org/${encodeURIComponent(o.org_name)})`
     md += `| ${orgLink} | ${o.projects} | ${formatCurrency(o.funding)} | ${o.trials} | ${o.patents} |\n`
   })
 
@@ -2032,7 +2071,7 @@ function renderResearchers(researchers: ResearcherStats[]): string {
 
   researchers.forEach((r) => {
     const piLink = `[${r.pi_name}](/researcher/${encodeURIComponent(r.pi_name)})`
-    md += `| ${piLink} | ${r.projects} | ${formatCurrency(r.funding)} | ${r.org || 'N/A'} |\n`
+    md += `| ${piLink} | ${r.projects} | ${formatCurrency(r.funding)} | ${r.org ? normalizeOrgName(r.org) : 'N/A'} |\n`
   })
 
   return md
@@ -2065,6 +2104,128 @@ function formatCategory(category: string): string {
   return category
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+// Acronyms that should stay all-caps in org/journal names
+const ORG_ACRONYMS = new Set([
+  'NIH', 'NSF', 'MIT', 'UCLA', 'USC', 'UCSF', 'UCSD', 'UCSB', 'UCB', 'UNC',
+  'UCD', 'UCI', 'UCR', 'CSU', 'CMU', 'UC', 'IBM', 'HHMI', 'ASU', 'SUNY',
+  'CUNY', 'NYU', 'LLC', 'PC', 'CRO', 'CDMO', 'USA', 'UK', 'BIDMC', 'MGH',
+  'CHOP', 'CSHL', 'NIST', 'EPA', 'FDA', 'CDC', 'DOE', 'DARPA', 'OHSU',
+  'MD', 'PhD', 'DDS', 'DVM', 'III', 'IV', 'VI', 'VII', 'VIII', 'IX', 'XI',
+  'XII', 'PLOS', 'EMBO', 'JCI', 'NEJM', 'BMJ', 'JAMA', 'PNAS', 'EBO',
+])
+
+const ORG_SMALL_WORDS = new Set([
+  'of', 'the', 'and', 'in', 'for', 'on', 'at', 'to', 'a', 'an', 'or', 'as',
+  'by', 'with', 'from', 'de', 'la', 'le', 'du',
+])
+
+// Journals with intentional non-standard casing — substitute after title-casing
+const JOURNAL_CASE_FIXES: Array<[RegExp, string]> = [
+  [/\bBiorxiv\b/g, 'bioRxiv'],
+  [/\bMedrxiv\b/g, 'medRxiv'],
+  [/\bArxiv\b/g, 'arXiv'],
+  [/\bMbio\b/g, 'mBio'],
+  [/\bElife\b/g, 'eLife'],
+  [/\bPlos\b/g, 'PLOS'],
+  [/\bEmbo\b/g, 'EMBO'],
+  [/\bJci\b/g, 'JCI'],
+  [/\bNejm\b/g, 'NEJM'],
+  [/\bBmj\b/g, 'BMJ'],
+  [/\bJama\b/g, 'JAMA'],
+  [/\bPnas\b/g, 'PNAS'],
+  [/\bIscience\b/g, 'iScience'],
+]
+
+/**
+ * Title-case a single token, preserving internal hyphens and acronyms
+ */
+function titleCaseToken(token: string): string {
+  return token.split('-').map(part => {
+    const alpha = part.replace(/[^A-Za-z]/g, '')
+    if (ORG_ACRONYMS.has(alpha)) return part
+    let result = ''
+    let firstLetterDone = false
+    for (const c of part) {
+      if (/[A-Za-z]/.test(c)) {
+        if (!firstLetterDone) {
+          result += c.toUpperCase()
+          firstLetterDone = true
+        } else {
+          result += c.toLowerCase()
+        }
+      } else {
+        result += c
+      }
+    }
+    return result
+  }).join('-')
+}
+
+/**
+ * Normalize an organization name from NIH RePORTER data:
+ * - Strips trailing extra closing parens (data quirk: "X (Y))")
+ * - Title-cases all-caps strings (e.g. "STANFORD UNIVERSITY" → "Stanford University")
+ * - Preserves known acronyms (MIT, UCLA, NIH)
+ * - Lowercases small connector words (of, the, and)
+ * - Leaves already-mixed-case names alone
+ */
+function normalizeOrgName(name: string | null | undefined): string {
+  if (!name) return ''
+  let cleaned = name.trim()
+  // Strip trailing extra closing parens
+  cleaned = cleaned.replace(/\){2,}$/, ')')
+  // Skip if already mixed case (likely an already-normalized commercial name)
+  if (/[a-z]/.test(cleaned)) return cleaned
+
+  const tokens = cleaned.split(/(\s+)/)
+  let firstNonSpaceFound = false
+
+  return tokens.map(token => {
+    if (/^\s+$/.test(token) || !token) return token
+    const isFirst = !firstNonSpaceFound
+    firstNonSpaceFound = true
+
+    const alpha = token.replace(/[^A-Za-z]/g, '')
+    if (ORG_ACRONYMS.has(alpha)) return token
+    if (!isFirst && ORG_SMALL_WORDS.has(alpha.toLowerCase())) {
+      return token.toLowerCase()
+    }
+    return titleCaseToken(token)
+  }).join('')
+}
+
+/**
+ * Title-case a journal name and apply known special-case fixes (bioRxiv, PLOS, etc.)
+ * Always normalizes regardless of input casing, since PubMed feeds inconsistently cased journals.
+ */
+function normalizeJournalName(name: string | null | undefined): string {
+  if (!name) return ''
+  const trimmed = name.trim()
+  if (!trimmed) return ''
+
+  const tokens = trimmed.split(/(\s+)/)
+  let firstNonSpaceFound = false
+
+  let result = tokens.map(token => {
+    if (/^\s+$/.test(token) || !token) return token
+    const isFirst = !firstNonSpaceFound
+    firstNonSpaceFound = true
+
+    const alpha = token.replace(/[^A-Za-z]/g, '')
+    if (ORG_ACRONYMS.has(alpha.toUpperCase()) && alpha === alpha.toUpperCase()) return token
+    if (!isFirst && ORG_SMALL_WORDS.has(alpha.toLowerCase())) {
+      return token.toLowerCase()
+    }
+    return titleCaseToken(token)
+  }).join('')
+
+  // Apply special-case fixes for known mixed-case journals
+  for (const [pattern, replacement] of JOURNAL_CASE_FIXES) {
+    result = result.replace(pattern, replacement)
+  }
+  return result
 }
 
 /**
