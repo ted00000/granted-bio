@@ -1,12 +1,32 @@
 'use client'
 
 import Link from 'next/link'
+import { FundingByYearChart, CategoryDistributionChart, TrialsByPhaseChart } from './charts'
+
+interface FundingByYearItem {
+  year: number
+  funding: number
+  projects: number
+}
+
+interface CategoryItem {
+  category: string
+  funding: number
+  projects: number
+}
+
+interface ChartData {
+  fundingByYear?: FundingByYearItem[]
+  categories?: CategoryItem[]
+  trialsByPhase?: Record<string, number>
+}
 
 interface MarkdownRendererProps {
   content: string
+  chartData?: ChartData
 }
 
-export function MarkdownRenderer({ content }: MarkdownRendererProps) {
+export function MarkdownRenderer({ content, chartData }: MarkdownRendererProps) {
   const lines = content.split('\n')
   const elements: React.ReactNode[] = []
   let i = 0
@@ -16,6 +36,33 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
     // Skip empty lines
     if (!line.trim()) {
+      i++
+      continue
+    }
+
+    // Chart marker (e.g. <!-- chart:funding-by-year -->)
+    const chartMatch = line.trim().match(/^<!--\s*chart:([\w-]+)\s*-->$/)
+    if (chartMatch) {
+      const name = chartMatch[1]
+      if (name === 'funding-by-year' && chartData?.fundingByYear?.length) {
+        elements.push(
+          <div key={i} className="my-4">
+            <FundingByYearChart data={chartData.fundingByYear} />
+          </div>
+        )
+      } else if (name === 'categories' && chartData?.categories?.length) {
+        elements.push(
+          <div key={i} className="my-4">
+            <CategoryDistributionChart data={chartData.categories} />
+          </div>
+        )
+      } else if (name === 'trials-by-phase' && chartData?.trialsByPhase) {
+        elements.push(
+          <div key={i} className="my-4">
+            <TrialsByPhaseChart data={chartData.trialsByPhase} />
+          </div>
+        )
+      }
       i++
       continue
     }

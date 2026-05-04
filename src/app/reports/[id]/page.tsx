@@ -507,6 +507,217 @@ export default function ReportDetailPage({
       // Quick predicate: does this line contain a markdown link worth rendering as clickable?
       const hasMarkdownLink = (line: string): boolean => /\[[^\]]+\]\([^)]+\)/.test(line)
 
+      // --- Chart drawing helpers (vector charts native to jsPDF — no images, no font issues) ---
+
+      const formatChartCurrency = (v: number): string => {
+        if (v >= 1_000_000_000) return `$${(v / 1_000_000_000).toFixed(1)}B`
+        if (v >= 1_000_000) return `$${(v / 1_000_000).toFixed(0)}M`
+        if (v >= 1_000) return `$${(v / 1_000).toFixed(0)}K`
+        return `$${v}`
+      }
+
+      // Brand-aligned palette for category bars (matches CategoryDistributionChart.tsx)
+      const CHART_PALETTE: Array<[number, number, number]> = [
+        [224, 122, 95], // #E07A5F brand
+        [244, 162, 97], // #F4A261
+        [233, 196, 106], // #E9C46A
+        [42, 157, 143], // #2A9D8F
+        [38, 70, 83], // #264653
+        [156, 102, 68], // #9C6644
+        [188, 108, 37], // #BC6C25
+        [96, 108, 56], // #606C38
+      ]
+
+      // Phase color scale (matches TrialsByPhaseChart.tsx)
+      const PHASE_COLORS: Record<string, [number, number, number]> = {
+        'Early Phase 1': [252, 213, 206],
+        'Phase 1': [249, 169, 154],
+        'Phase 2': [224, 122, 95],
+        'Phase 3': [201, 106, 79],
+        'Phase 4': [168, 90, 66],
+        'N/A': [212, 212, 212],
+        Unknown: [212, 212, 212],
+      }
+
+      // Draw a vertical bar chart in jsPDF coordinate space. Returns final y after chart.
+      const drawVerticalBarChart = (
+        data: Array<{ label: string; value: number }>,
+        cx: number,
+        cy: number,
+        cw: number,
+        ch: number,
+        opts?: { yLabelFn?: (v: number) => string }
+      ): number => {
+        if (data.length === 0) return cy
+        const yLabelFn = opts?.yLabelFn ?? ((v: number) => v.toString())
+        const padTop = 14
+        const padBottom = 24
+        const padLeft = 56
+        const padRight = 16
+
+        const plotX = cx + padLeft
+        const plotY = cy + padTop
+        const plotW = cw - padLeft - padRight
+        const plotH = ch - padTop - padBottom
+
+        const maxVal = Math.max(...data.map((d) => d.value), 1)
+        // Round up to a nice axis max
+        const niceMax = Math.ceil(maxVal * 1.05)
+
+        // Y-axis grid + labels (5 ticks)
+        doc.setFontSize(8)
+        doc.setFont('helvetica', 'normal')
+        doc.setTextColor(82, 82, 82)
+        doc.setDrawColor(229, 229, 229)
+        doc.setLineWidth(0.4)
+        for (let t = 0; t <= 4; t++) {
+          const v = (niceMax / 4) * t
+          const yPx = plotY + plotH - (v / niceMax) * plotH
+          doc.line(plotX, yPx, plotX + plotW, yPx)
+          const label = yLabelFn(v)
+          const labelW = doc.getTextWidth(label)
+          doc.text(label, plotX - 4 - labelW, yPx + 3)
+        }
+
+        // Bars
+        const barSlot = plotW / data.length
+        const barW = Math.min(barSlot * 0.7, 50)
+        const barOffset = (barSlot - barW) / 2
+        doc.setFillColor(...brandColor)
+        data.forEach((d, idx) => {
+          const h = (d.value / niceMax) * plotH
+          const bx = plotX + idx * barSlot + barOffset
+          const by = plotY + plotH - h
+          doc.rect(bx, by, barW, h, 'F')
+          // Value label above bar
+          doc.setTextColor(82, 82, 82)
+          doc.setFontSize(8)
+          const valueLabel = yLabelFn(d.value)
+          const valW = doc.getTextWidth(valueLabel)
+          doc.text(valueLabel, bx + barW / 2 - valW / 2, by - 3)
+          // X label below
+          const labelW = doc.getTextWidth(d.label)
+          doc.text(d.label, bx + barW / 2 - labelW / 2, plotY + plotH + 12)
+        })
+
+        return cy + ch
+      }
+
+      // Draw a horizontal bar chart. Returns final y after chart.
+      const drawHorizontalBarChart = (
+        data: Array<{ label: string; value: number; color?: [number, number, number] }>,
+        cx: number,
+        cy: number,
+        cw: number,
+        ch: number,
+        opts?: { valueLabelFn?: (v: number) => string }
+      ): number => {
+        if (data.length === 0) return cy
+        const valueLabelFn = opts?.valueLabelFn ?? ((v: number) => v.toString())
+        const padTop = 8
+        const padBottom = 8
+        const padLeft = 130
+        const padRight = 60
+
+        const plotX = cx + padLeft
+        const plotY = cy + padTop
+        const plotW = cw - padLeft - padRight
+        const plotH = ch - padTop - padBottom
+
+        const maxVal = Math.max(...data.map((d) => d.value), 1)
+        const rowH = plotH / data.length
+        const barH = Math.min(rowH * 0.65, 22)
+
+        doc.setFontSize(9)
+        doc.setFont('helvetica', 'normal')
+
+        data.forEach((d, idx) => {
+          const w = (d.value / maxVal) * plotW
+          const ry = plotY + idx * rowH + (rowH - barH) / 2
+          // Label left
+          doc.setTextColor(55, 65, 81)
+          const labelText = d.label.length > 24 ? d.label.slice(0, 22) + '…' : d.label
+          const labelW = doc.getTextWidth(labelText)
+          doc.text(labelText, plotX - 6 - labelW, ry + barH / 2 + 3)
+          // Bar
+          const color = d.color ?? brandColor
+          doc.setFillColor(...color)
+          doc.rect(plotX, ry, w, barH, 'F')
+          // Value right
+          doc.setTextColor(82, 82, 82)
+          doc.text(valueLabelFn(d.value), plotX + w + 4, ry + barH / 2 + 3)
+        })
+
+        return cy + ch
+      }
+
+      // Detect chart markers and dispatch to the right drawing helper.
+      const renderChartMarker = (markerName: string): boolean => {
+        const fundingStats = report.funding_stats
+        const trials = report.agent_outputs?.trials
+
+        if (markerName === 'funding-by-year' && fundingStats?.byYear?.length) {
+          const data = [...fundingStats.byYear]
+            .sort((a, b) => a.year - b.year)
+            .slice(-10)
+            .map((row) => ({ label: String(row.year), value: row.funding }))
+          const chartHeight = 140
+          addNewPageIfNeeded(chartHeight + 20)
+          y = drawVerticalBarChart(data, margin, y, maxWidth, chartHeight, {
+            yLabelFn: formatChartCurrency,
+          })
+          y += 12
+          return true
+        }
+
+        if (markerName === 'categories' && fundingStats?.byCategory?.length) {
+          const top = fundingStats.byCategory.slice(0, 6)
+          const data = top.map((row, idx) => ({
+            label: row.category.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
+            value: row.funding,
+            color: CHART_PALETTE[idx % CHART_PALETTE.length],
+          }))
+          const chartHeight = Math.max(80, data.length * 22 + 16)
+          addNewPageIfNeeded(chartHeight + 20)
+          y = drawHorizontalBarChart(data, margin, y, maxWidth, chartHeight, {
+            valueLabelFn: formatChartCurrency,
+          })
+          y += 12
+          return true
+        }
+
+        if (markerName === 'trials-by-phase' && trials?.byPhase) {
+          const PHASE_ORDER = [
+            'Early Phase 1',
+            'Phase 1',
+            'Phase 2',
+            'Phase 3',
+            'Phase 4',
+            'N/A',
+            'Unknown',
+          ]
+          const entries = Object.entries(trials.byPhase) as Array<[string, number]>
+          const data = entries
+            .sort(([a], [b]) => {
+              const ai = PHASE_ORDER.indexOf(a)
+              const bi = PHASE_ORDER.indexOf(b)
+              return (ai === -1 ? 100 : ai) - (bi === -1 ? 100 : bi)
+            })
+            .map(([phase, count]) => ({
+              label: phase,
+              value: count,
+              color: PHASE_COLORS[phase] ?? brandColor,
+            }))
+          const chartHeight = Math.max(80, data.length * 22 + 16)
+          addNewPageIfNeeded(chartHeight + 20)
+          y = drawHorizontalBarChart(data, margin, y, maxWidth, chartHeight)
+          y += 12
+          return true
+        }
+
+        return false
+      }
+
       // Helper to force new page for major sections
       const forceNewPage = () => {
         doc.addPage()
@@ -528,6 +739,16 @@ export default function ReportDetailPage({
 
         if (!trimmed) {
           y += 6
+          i++
+          continue
+        }
+
+        // Chart marker (e.g. <!-- chart:funding-by-year -->) — render vector chart
+        const chartMatch = trimmed.match(/^<!--\s*chart:([\w-]+)\s*-->$/)
+        if (chartMatch) {
+          renderChartMarker(chartMatch[1])
+          isFirstElement = false
+          contentRendered = true
           i++
           continue
         }
@@ -1282,7 +1503,14 @@ export default function ReportDetailPage({
 
         {report.status === 'complete' && report.markdown_content && (
           <div id="report-content" className="bg-white rounded-lg shadow-sm">
-            <MarkdownRenderer content={report.markdown_content} />
+            <MarkdownRenderer
+              content={report.markdown_content}
+              chartData={{
+                fundingByYear: report.funding_stats?.byYear,
+                categories: report.funding_stats?.byCategory,
+                trialsByPhase: report.agent_outputs?.trials?.byPhase,
+              }}
+            />
           </div>
         )}
       </main>

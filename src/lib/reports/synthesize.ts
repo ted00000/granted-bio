@@ -1871,6 +1871,9 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
 
   if (stats.byYear.length > 0) {
     md += '### Funding by Year\n\n'
+    if (stats.byYear.length >= 2) {
+      md += '<!-- chart:funding-by-year -->\n\n'
+    }
     md += '| Year | Projects | Funding |\n'
     md += '|------|----------|--------|\n'
     stats.byYear.slice(0, 10).forEach((row) => {
@@ -1881,6 +1884,9 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
 
   if (stats.byCategory.length > 0) {
     md += '### Top Funding Categories\n\n'
+    if (stats.byCategory.length >= 2) {
+      md += '<!-- chart:categories -->\n\n'
+    }
     md += '| Category | Projects | Funding |\n'
     md += '|----------|----------|--------|\n'
     stats.byCategory.slice(0, 5).forEach((row) => {
@@ -1944,6 +1950,9 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
     md += insight + '\n\n'
   }
   md += '### Trial Summary\n\n'
+  if (Object.keys(trials.byPhase).length >= 2) {
+    md += '<!-- chart:trials-by-phase -->\n\n'
+  }
   md += '| Phase | Count |\n'
   md += '|-------|-------|\n'
   Object.entries(trials.byPhase)
