@@ -1331,15 +1331,21 @@ ${context.dataLimited ? '\n**Note:** This report has limited data available for 
 
 ---
 
-## Executive Summary
+## How to Use This Report
 
-${executiveSummary}
+${renderHowToUse(persona)}
 
 ---
 
 ## What This Report Does Not Cover
 
 ${renderBlindSpots(persona)}
+
+---
+
+## Executive Summary
+
+${executiveSummary}
 
 ---
 
@@ -1538,27 +1544,56 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
 // --- Render functions ---
 
 /**
+ * Boilerplate explaining the value of the report — appears in every report.
+ * Articulates why NIH data is a leading indicator (investor) or validator
+ * (researcher), and frames our semantic analysis as the core differentiator
+ * vs. the supplementary web-sourced market context.
+ */
+function renderHowToUse(persona: ReportPersona): string {
+  const intro =
+    persona === 'investor'
+      ? 'NIH-funded research is a leading indicator of commercial opportunity. Public funding typically precedes private activity by 3-7 years, so the projects, PIs, IP filings, and clinical programs surfaced here are early signals of which technologies will produce the next wave of companies, partnerships, and deals in this space.'
+      : 'NIH funding patterns validate research direction. Knowing who is funded in your space — with what methods, in what collaborations, and at what scale — calibrates where your work fits relative to the field\'s momentum and reveals gaps worth pursuing.'
+
+  const synthesisBullet =
+    persona === 'investor'
+      ? 'Synthesizing across the analyzed sample to surface patterns no single record reveals — competitive topology, IP concentration, field maturity, and momentum signals'
+      : 'Synthesizing across the analyzed sample to surface patterns no single record reveals — methodological trends, collaboration networks, gap analysis, and positioning signals'
+
+  return `${intro}
+
+The intelligence in this report comes primarily from our semantic analysis across the linked data, not from any single source. NIH RePORTER, ClinicalTrials.gov, USPTO, and PubMed are all publicly searchable — anyone can look up individual records. Our value is in:
+
+- Identifying conceptually-related projects via AI semantic search rather than brittle keyword matching
+- Cross-linking each project to its associated patents, clinical trials, and publications
+- ${synthesisBullet}
+
+The Market Context section adds external color sourced via live web search. It is supplementary to the core analysis above.
+`
+}
+
+/**
  * Consolidated, upfront acknowledgment of what's NOT in this analysis.
- * Placed right after the executive summary — calibrates the reader before
- * they engage with the body. Builds trust through specificity, not apology.
+ * Placed after "How to Use This Report" so readers calibrate before
+ * engaging with the body. Builds trust through specificity, not apology.
  */
 function renderBlindSpots(persona: ReportPersona): string {
   const investorClose =
-    'For private-market intelligence, supplement with PitchBook, CB Insights, or industry analyst reports.'
+    'For pure private-market intelligence (funding rounds, M&A, internal pipelines), supplement with PitchBook, CB Insights, or industry analyst reports.'
   const researcherClose =
     'For a complete literature view, supplement with broader PubMed/Web of Science searches and conference proceedings.'
   const closing = persona === 'investor' ? investorClose : researcherClose
 
   return `*A short, upfront note on the boundaries of this analysis. We surface this so you can read everything below with the right calibration.*
 
-- **Private R&D is invisible.** Funding, projects, and PIs surfaced here are NIH-funded only. Industry-internal pipelines, VC-backed pre-clinical work, and corporate R&D do not appear.
+- **Companies are in this data — non-NIH-funded internal R&D is not.** SBIR/STTR grantees, academic-industry partnerships, and commercial entities receiving NIH funding do appear and carry real commercial weight. What's invisible is privately-funded R&D inside companies that doesn't intersect with an NIH grant.
 - **International activity is largely outside the sample.** NIH RePORTER captures US grantees and their direct collaborators. Major work in Europe, China, Japan, and elsewhere is not reflected unless tied to a US-funded project.
 - **Linked outputs require an NIH grant acknowledgment.** A clinical trial, patent, or publication only appears here if it was filed with an NIH project number. Industry-led trials, non-USPTO patents, and papers without NIH funding acks are missing — even when central to the field.
 - **Recent quarter activity may be incomplete.** NIH RePORTER updates with a lag of several weeks; some current-fiscal-year awards may not yet be visible.
 - **Market context is web-sourced**, not exhaustive — see the Sources subsection in Market Context for what was retrieved.
 - **Project categorization is automated.** A single primary category is assigned per project by AI classification, with confidence scores. Some boundary cases (especially infrastructure vs. biotools) may be misassigned.
 
-This is depth-over-breadth analysis — high signal on what NIH funds and produces. ${closing}
+This is depth-over-breadth analysis — high signal on what NIH funds and produces, including its commercial recipients. ${closing}
 `
 }
 
