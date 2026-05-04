@@ -1337,6 +1337,12 @@ ${executiveSummary}
 
 ---
 
+## What This Report Does Not Cover
+
+${renderBlindSpots(persona)}
+
+---
+
 ## Field Maturity Assessment
 
 ${renderFieldMaturity(fieldMaturity)}
@@ -1530,6 +1536,31 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
 }
 
 // --- Render functions ---
+
+/**
+ * Consolidated, upfront acknowledgment of what's NOT in this analysis.
+ * Placed right after the executive summary — calibrates the reader before
+ * they engage with the body. Builds trust through specificity, not apology.
+ */
+function renderBlindSpots(persona: ReportPersona): string {
+  const investorClose =
+    'For private-market intelligence, supplement with PitchBook, CB Insights, or industry analyst reports.'
+  const researcherClose =
+    'For a complete literature view, supplement with broader PubMed/Web of Science searches and conference proceedings.'
+  const closing = persona === 'investor' ? investorClose : researcherClose
+
+  return `*A short, upfront note on the boundaries of this analysis. We surface this so you can read everything below with the right calibration.*
+
+- **Private R&D is invisible.** Funding, projects, and PIs surfaced here are NIH-funded only. Industry-internal pipelines, VC-backed pre-clinical work, and corporate R&D do not appear.
+- **International activity is largely outside the sample.** NIH RePORTER captures US grantees and their direct collaborators. Major work in Europe, China, Japan, and elsewhere is not reflected unless tied to a US-funded project.
+- **Linked outputs require an NIH grant acknowledgment.** A clinical trial, patent, or publication only appears here if it was filed with an NIH project number. Industry-led trials, non-USPTO patents, and papers without NIH funding acks are missing — even when central to the field.
+- **Recent quarter activity may be incomplete.** NIH RePORTER updates with a lag of several weeks; some current-fiscal-year awards may not yet be visible.
+- **Market context is web-sourced**, not exhaustive — see the Sources subsection in Market Context for what was retrieved.
+- **Project categorization is automated.** A single primary category is assigned per project by AI classification, with confidence scores. Some boundary cases (especially infrastructure vs. biotools) may be misassigned.
+
+This is depth-over-breadth analysis — high signal on what NIH funds and produces. ${closing}
+`
+}
 
 function renderFieldMaturity(maturity: FieldMaturityAssessment): string {
   let md = ''
