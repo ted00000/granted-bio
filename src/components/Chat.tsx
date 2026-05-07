@@ -1504,10 +1504,36 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     const saved = sessionStorage.getItem('searchState')
     if (saved) {
       try {
+        const state = JSON.parse(saved)
+
+        // Only restore when the saved state actually corresponds to the current
+        // search. Without this guard, doing a fresh search after viewing a
+        // project detail would flash the previous search's results: the saved
+        // sessionStorage entry from the old search would override the new
+        // initialQuery before it could run.
+        let sameSearch = false
+        if (state.returnUrl) {
+          try {
+            const savedUrl = new URL(state.returnUrl, window.location.origin)
+            const currentUrl = new URL(window.location.href)
+            const keys = ['q', 'persona', 'pi', 'org', 'mode']
+            sameSearch =
+              savedUrl.pathname === currentUrl.pathname &&
+              keys.every((k) => savedUrl.searchParams.get(k) === currentUrl.searchParams.get(k))
+          } catch {
+            sameSearch = false
+          }
+        }
+
+        if (!sameSearch) {
+          // Stale state from a previous search — drop it so the new query runs cleanly.
+          sessionStorage.removeItem('searchState')
+          return
+        }
+
         isRestoringState.current = true
         // Hide mobile results initially to prevent scroll-to-bottom
         setShowMobileResults(false)
-        const state = JSON.parse(saved)
         if (state.toolResults) setToolResults(state.toolResults)
         if (state.searchContext) setSearchContext(state.searchContext)
         // filteredResults is now computed via useMemo from searchContext + currentFilters
