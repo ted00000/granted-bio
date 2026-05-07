@@ -2593,34 +2593,67 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                   currentFilters={currentFilters}
                   hideStatsAndFilters={true}
                 />
-              ) : isLoading ? (
-                // Searching state — visible on the Results tab while waiting
-                <div className="h-full flex items-center justify-center p-6">
-                  <div className="text-center">
-                    <div className="w-8 h-8 mx-auto mb-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-                    <p className="text-sm text-gray-500">Searching...</p>
-                    {isSlowSearch && (
-                      <p className="text-xs text-gray-400 mt-2 max-w-xs">Taking longer than expected. Complex queries may need more time.</p>
+              ) : isLoading || (messages.length > 0 && lastAssistantMsg?.content) ? (
+                // Loading or no-results state — mirror the Filters tab styling
+                // (query header + content card on the same #FAFAF9 background)
+                <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+                  <div className="p-5 space-y-4">
+                    {/* Query header — same markup as Filters tab */}
+                    {userQuery && (
+                      <div className="flex items-start gap-2">
+                        <Search className="w-4 h-4 text-[#E07A5F] flex-shrink-0 mt-0.5" />
+                        <div>
+                          <span className="text-sm font-medium text-gray-900">{userQuery}</span>
+                          {searchContext?.semanticQuery && (
+                            <div className="text-[10px] text-gray-400 mt-0.5" title={searchContext.semanticQuery}>
+                              → {searchContext.semanticQuery}
+                            </div>
+                          )}
+                          <div className="flex items-center gap-1.5 mt-2">
+                            <span className="px-2 py-0.5 text-[10px] bg-gray-100 text-gray-500 rounded">
+                              {persona === 'researcher' ? 'Research' : persona === 'bd' ? 'People' : persona === 'trials' ? 'Trials' : 'Investor'}
+                            </span>
+                            <span className="px-2 py-0.5 text-[10px] bg-gray-100 text-gray-500 rounded">
+                              {searchMode === 'smart' ? 'Smart' : searchMode === 'standard' ? 'Exact' : 'Name'}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* State-specific content card */}
+                    {isLoading ? (
+                      <div className="flex flex-col gap-1 py-4">
+                        <div className="flex items-center gap-2 text-sm text-gray-400">
+                          <div className="w-3 h-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+                          <span>Searching...</span>
+                        </div>
+                        {isSlowSearch && (
+                          <p className="text-xs text-gray-400 ml-5">Taking longer than expected. Complex queries may need more time.</p>
+                        )}
+                      </div>
+                    ) : (
+                      <>
+                        <div className="bg-white rounded-lg border border-gray-100 p-4">
+                          <p className="text-sm text-gray-600 leading-relaxed">
+                            {lastAssistantMsg!.content}
+                          </p>
+                        </div>
+                        <div className="pt-2">
+                          <button
+                            onClick={() => router.push('/chat')}
+                            className="flex items-center gap-1.5 text-sm text-[#E07A5F] hover:text-[#C96A4F] transition-colors"
+                          >
+                            <Search className="w-3.5 h-3.5" />
+                            New Search
+                          </button>
+                        </div>
+                      </>
                     )}
                   </div>
                 </div>
-              ) : messages.length > 0 && lastAssistantMsg?.content ? (
-                // Search complete with no results — show assistant's explanation here too,
-                // not just in the Filters tab. Otherwise mobile users see a misleading placeholder.
-                <div className="h-full flex items-center justify-center p-6">
-                  <div className="text-center max-w-md">
-                    <IconComponent className="w-10 h-10 mx-auto mb-3 text-gray-300" strokeWidth={1.5} />
-                    <p className="text-sm text-gray-700 leading-relaxed mb-4">{lastAssistantMsg.content}</p>
-                    <button
-                      onClick={() => router.push('/chat')}
-                      className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium"
-                    >
-                      Try a new search
-                    </button>
-                  </div>
-                </div>
               ) : (
-                // Initial empty state — pre-search
+                // Initial empty state — pre-search (rare path on mobile)
                 <div className="h-full flex items-center justify-center">
                   <div className="text-center text-gray-400">
                     <IconComponent className="w-12 h-12 mx-auto mb-3 opacity-30" strokeWidth={1} />
