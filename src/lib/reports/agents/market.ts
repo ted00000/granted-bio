@@ -55,15 +55,32 @@ After searching, return your analysis as JSON with this exact structure:
 
 {
   "overview": "2-3 paragraph market overview synthesized from search results",
-  "marketSize": "e.g., '$X billion in 2024, projected to $Y by 2030 at Z% CAGR (Source Name, Year)' — include source year, or null if no reliable estimate found",
+  "marketSize": "See MARKET SIZING RULES below — either a direct estimate, an explicitly-labeled adjacent-market anchor, or null",
   "keyPlayers": ["Company A", "Company B", "Company C"],
   "recentDevelopments": ["YYYY-MM: brief description of development", "YYYY-MM: brief description"],
   "competitiveLandscape": "Brief paragraph describing competitive dynamics"
 }
 
-CRITICAL RULES:
-- Only include information you actually found via search. Do NOT fabricate market sizes, companies, or events.
-- For market size, always include the source year (e.g., "as of 2024 Grand View Research report").
+MARKET SIZING RULES (be strict):
+
+The marketSize field must follow exactly ONE of three patterns:
+
+1. **Direct estimate** — when a reputable source has sized THIS topic specifically:
+   "$X billion in YYYY, projected to $Y by YYYY at Z% CAGR (Source Name, Year)"
+
+2. **Adjacent-market anchor** — when this topic is not separately tracked, but the parent or adjacent market is. Lead with the framing so it's clear:
+   "Direct sizing for [topic] is not separately tracked. The closest adjacent market is [parent market name]: $X billion in YYYY (Source, Year). [Optional: one more anchor if it adds clarity.]"
+
+3. **null** — when no reliable figure exists for either the topic or a clearly-related adjacent market.
+
+PROHIBITED PATTERNS (do NOT do these):
+- Do NOT speculate about what fraction of a parent market this topic represents (no "meaningful but unquantified fraction" language)
+- Do NOT stitch together multiple sources that disagree (e.g., "$1.5-1.86 billion ... $6.27-9.6 billion") — this looks made up. If sources disagree materially, pick the most recent reputable one and cite it; otherwise use null.
+- Do NOT include figures from sources you haven't verified via search
+- Do NOT pad with caveats — the framing above is sufficient
+
+OTHER RULES:
+- Only include information you actually found via search.
 - Each entry in recentDevelopments must be prefixed with YYYY-MM for transparency about recency.
 - If search returned no useful information for a field, use null or [].
 - FORMATTING: Do NOT use em dashes. Use regular hyphens.

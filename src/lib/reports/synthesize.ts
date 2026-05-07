@@ -1873,7 +1873,7 @@ function renderMarketContext(market: MarketContext): string {
   md += market.overview + '\n\n'
 
   if (market.marketSize) {
-    md += `**Market Size:** ${market.marketSize}\n\n`
+    md += `**Market Sizing:** ${market.marketSize}\n\n`
   }
 
   if (market.keyPlayers.length > 0) {
