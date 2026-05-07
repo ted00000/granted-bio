@@ -116,7 +116,10 @@ export default function ProjectPage() {
   const [showCategoryModal, setShowCategoryModal] = useState(false)
   const { isAdmin } = useAuth()
 
-  // Read return URL from sessionStorage
+  // Determine where the breadcrumb should send the user when they click "Projects".
+  // Priority: explicit searchState.returnUrl (set by the search flow) → document.referrer
+  // (any same-origin page they came from, e.g. /org/[name]) → fallback '/chat'.
+  // Without this, the breadcrumb always landed on '/' regardless of source.
   useEffect(() => {
     const saved = sessionStorage.getItem('searchState')
     if (saved) {
@@ -124,9 +127,21 @@ export default function ProjectPage() {
         const state = JSON.parse(saved)
         if (state.returnUrl) {
           setReturnUrl(state.returnUrl)
+          return
         }
-      } catch (e) {
-        // Ignore parse errors
+      } catch {
+        // ignore parse errors and fall through to referrer
+      }
+    }
+
+    if (typeof document !== 'undefined' && document.referrer) {
+      try {
+        const url = new URL(document.referrer)
+        if (url.origin === window.location.origin) {
+          setReturnUrl(url.pathname + url.search)
+        }
+      } catch {
+        // invalid referrer URL, keep default
       }
     }
   }, [])
@@ -232,7 +247,7 @@ export default function ProjectPage() {
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
               items={[
-                { label: 'Projects', href: '/' },
+                { label: 'Projects', href: returnUrl },
                 { label: 'Project' },
               ]}
             />
@@ -274,7 +289,7 @@ export default function ProjectPage() {
           <div className="flex items-center justify-between mb-6">
             <Breadcrumbs
               items={[
-                { label: 'Projects', href: '/' },
+                { label: 'Projects', href: returnUrl },
                 { label: project.title.length > 40 ? project.title.slice(0, 40) + '...' : project.title },
               ]}
             />
