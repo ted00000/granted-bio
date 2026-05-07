@@ -2593,7 +2593,34 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                   currentFilters={currentFilters}
                   hideStatsAndFilters={true}
                 />
+              ) : isLoading ? (
+                // Searching state — visible on the Results tab while waiting
+                <div className="h-full flex items-center justify-center p-6">
+                  <div className="text-center">
+                    <div className="w-8 h-8 mx-auto mb-3 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
+                    <p className="text-sm text-gray-500">Searching...</p>
+                    {isSlowSearch && (
+                      <p className="text-xs text-gray-400 mt-2 max-w-xs">Taking longer than expected. Complex queries may need more time.</p>
+                    )}
+                  </div>
+                </div>
+              ) : messages.length > 0 && lastAssistantMsg?.content ? (
+                // Search complete with no results — show assistant's explanation here too,
+                // not just in the Filters tab. Otherwise mobile users see a misleading placeholder.
+                <div className="h-full flex items-center justify-center p-6">
+                  <div className="text-center max-w-md">
+                    <IconComponent className="w-10 h-10 mx-auto mb-3 text-gray-300" strokeWidth={1.5} />
+                    <p className="text-sm text-gray-700 leading-relaxed mb-4">{lastAssistantMsg.content}</p>
+                    <button
+                      onClick={() => router.push('/chat')}
+                      className="text-sm text-[#E07A5F] hover:text-[#C96A4F] font-medium"
+                    >
+                      Try a new search
+                    </button>
+                  </div>
+                </div>
               ) : (
+                // Initial empty state — pre-search
                 <div className="h-full flex items-center justify-center">
                   <div className="text-center text-gray-400">
                     <IconComponent className="w-12 h-12 mx-auto mb-3 opacity-30" strokeWidth={1} />
