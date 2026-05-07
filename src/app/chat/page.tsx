@@ -1,11 +1,12 @@
 'use client'
 
-import { Suspense, useState, useEffect, useCallback } from 'react'
+import { Suspense, useCallback } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { Chat } from '@/components/Chat'
 import { AppLayout } from '@/components/AppLayout'
 import { WelcomeScreen } from '@/components/WelcomeScreen'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import { useAuth } from '@/contexts/AuthContext'
 import type { PersonaType, SearchMode } from '@/lib/chat/types'
 
 interface FilterState {
@@ -25,10 +26,15 @@ const VALID_PERSONAS: PersonaType[] = ['researcher', 'bd', 'investor', 'trials']
 function ChatContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const [userName, setUserName] = useState<string | null>(null)
-  const [needsName, setNeedsName] = useState(false)
-  const [userId, setUserId] = useState<string | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  // Use the global AuthContext rather than duplicating a per-mount auth fetch.
+  // The previous local pattern would re-run supabase.auth.getUser() every time
+  // the user navigated INTO /chat (e.g., from /reports via the sidebar Search
+  // button) and could strand isLoading=true if the call hung.
+  const { user, profile, isLoading, refetchProfile } = useAuth()
+  const userId = user?.id ?? null
+  const userName = profile?.firstName ?? null
+  // Logged-in user without a captured first name → trigger the name prompt.
+  const needsName = !!user && !profile?.firstName
   const supabase = createBrowserSupabaseClient()
 
   const personaParam = searchParams.get('persona')
@@ -143,49 +149,14 @@ function ChatContent() {
     router.replace(`/chat?${params.toString()}`, { scroll: false })
   }, [searchParams, router])
 
-  useEffect(() => {
-    let cancelled = false
-    const fetchUser = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser()
-        if (cancelled) return
-        if (user) {
-          setUserId(user.id)
-          const { data: profile } = await supabase
-            .from('user_profiles')
-            .select('first_name, full_name')
-            .eq('id', user.id)
-            .single()
-          if (cancelled) return
-          if (profile?.first_name) {
-            setUserName(profile.first_name)
-          } else if (profile) {
-            setNeedsName(true)
-          }
-        }
-      } catch (error) {
-        // Don't strand the spinner on auth/network failure.
-        // Without this, getUser() throwing silently kept isLoading=true forever
-        // until the route remounted (e.g., navigating in from a different page).
-        console.error('[ChatPage] auth check failed:', error)
-      } finally {
-        if (!cancelled) setIsLoading(false)
-      }
-    }
-    fetchUser()
-    return () => {
-      cancelled = true
-    }
-  }, [supabase])
-
   const handleNameSubmit = async (name: string) => {
     if (!userId) return
     await supabase
       .from('user_profiles')
       .update({ first_name: name })
       .eq('id', userId)
-    setUserName(name)
-    setNeedsName(false)
+    // Refresh the global profile so the name prompt closes app-wide.
+    await refetchProfile()
   }
 
   const handlePersonaChange = (persona: PersonaType, initialQuery?: string, mode?: SearchMode) => {

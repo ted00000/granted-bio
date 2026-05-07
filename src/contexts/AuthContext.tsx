@@ -26,6 +26,7 @@ interface AuthContextType {
   isLoading: boolean
   signOut: () => Promise<void>
   refetchUsage: () => Promise<void>
+  refetchProfile: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -76,19 +77,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [fetchUsage])
 
   useEffect(() => {
-    // Get initial user
+    let cancelled = false
+
+    // Get initial user — guarded with timeout + try/catch so a hanging or thrown
+    // auth call can never strand isLoading=true (which would leave the app
+    // showing a permanent spinner).
     const initAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
+      try {
+        const userPromise = supabase.auth.getUser()
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Auth check timed out')), 8000)
+        )
+        const { data: { user } } = await Promise.race([userPromise, timeoutPromise])
+        if (cancelled) return
+        setUser(user)
 
-      if (user) {
-        await Promise.all([
-          fetchProfile(user.id),
-          fetchUsage()
-        ])
+        if (user) {
+          await Promise.all([
+            fetchProfile(user.id),
+            fetchUsage()
+          ])
+        }
+      } catch (error) {
+        console.error('[AuthContext] initial auth check failed:', error)
+      } finally {
+        if (!cancelled) setIsLoading(false)
       }
-
-      setIsLoading(false)
     }
 
     initAuth()
@@ -111,7 +125,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     )
 
-    return () => subscription.unsubscribe()
+    return () => {
+      cancelled = true
+      subscription.unsubscribe()
+    }
   }, [supabase, fetchProfile, fetchUsage])
 
   const signOut = useCallback(async () => {
@@ -121,6 +138,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUsage(null)
   }, [supabase])
 
+  const refetchProfile = useCallback(async () => {
+    if (user) await fetchProfile(user.id)
+  }, [user, fetchProfile])
+
   const value: AuthContextType = {
     user,
     profile,
@@ -129,7 +150,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAssociate: profile?.role === 'associate',
     isLoading,
     signOut,
-    refetchUsage
+    refetchUsage,
+    refetchProfile
   }
 
   return (
