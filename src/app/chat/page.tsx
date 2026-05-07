@@ -144,27 +144,38 @@ function ChatContent() {
   }, [searchParams, router])
 
   useEffect(() => {
+    let cancelled = false
     const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      if (user) {
-        setUserId(user.id)
-        const { data: profile } = await supabase
-          .from('user_profiles')
-          .select('first_name, full_name')
-          .eq('id', user.id)
-          .single()
-
-        if (profile) {
-          if (profile.first_name) {
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        if (cancelled) return
+        if (user) {
+          setUserId(user.id)
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('first_name, full_name')
+            .eq('id', user.id)
+            .single()
+          if (cancelled) return
+          if (profile?.first_name) {
             setUserName(profile.first_name)
-          } else {
+          } else if (profile) {
             setNeedsName(true)
           }
         }
+      } catch (error) {
+        // Don't strand the spinner on auth/network failure.
+        // Without this, getUser() throwing silently kept isLoading=true forever
+        // until the route remounted (e.g., navigating in from a different page).
+        console.error('[ChatPage] auth check failed:', error)
+      } finally {
+        if (!cancelled) setIsLoading(false)
       }
-      setIsLoading(false)
     }
     fetchUser()
+    return () => {
+      cancelled = true
+    }
   }, [supabase])
 
   const handleNameSubmit = async (name: string) => {
