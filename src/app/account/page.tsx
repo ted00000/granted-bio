@@ -15,7 +15,7 @@ import {
   Loader2,
   Activity,
 } from 'lucide-react'
-import { MarketingNav } from '@/components/MarketingNav'
+import { AppLayout } from '@/components/AppLayout'
 import { AccountPageSkeleton } from '@/components/ui/Skeleton'
 import { LoadError } from '@/components/ui/ErrorState'
 
@@ -113,26 +113,28 @@ export default function AccountPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#FAFAF9]">
-        <MarketingNav />
-        <main className="max-w-3xl mx-auto px-6 py-12">
-          <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-8">
-            Account
-          </h1>
-          <AccountPageSkeleton />
-        </main>
-      </div>
+      <AppLayout>
+        <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+          <main className="max-w-3xl mx-auto px-4 py-8 sm:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-8">
+            <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-8">
+              Account
+            </h1>
+            <AccountPageSkeleton />
+          </main>
+        </div>
+      </AppLayout>
     )
   }
 
   if (error || !usage) {
     return (
-      <div className="min-h-screen bg-[#FAFAF9]">
-        <MarketingNav />
-        <main className="max-w-3xl mx-auto px-6 py-16">
-          <LoadError resource="account information" onRetry={fetchUsage} />
-        </main>
-      </div>
+      <AppLayout>
+        <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+          <main className="max-w-3xl mx-auto px-4 py-16 sm:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-16">
+            <LoadError resource="account information" onRetry={fetchUsage} />
+          </main>
+        </div>
+      </AppLayout>
     )
   }
 
@@ -159,13 +161,12 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      <MarketingNav />
-
-      <main className="max-w-3xl mx-auto px-6 py-12">
-        <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-8">
-          Account
-        </h1>
+    <AppLayout>
+      <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+        <main className="max-w-3xl mx-auto px-4 py-8 sm:px-6 pt-[calc(1rem+env(safe-area-inset-top))] lg:pt-8">
+          <h1 className="text-3xl font-semibold tracking-tight text-gray-900 mb-8">
+            Account
+          </h1>
 
         {/* Payment failure warning */}
         {usage?.subscriptionStatus === 'past_due' && (
@@ -503,8 +504,9 @@ export default function AccountPage() {
             </section>
           )}
         </div>
-      </main>
-    </div>
+        </main>
+      </div>
+    </AppLayout>
   )
 }
 
