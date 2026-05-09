@@ -18,6 +18,7 @@ import {
 import { AppLayout } from '@/components/AppLayout'
 import { AccountPageSkeleton } from '@/components/ui/Skeleton'
 import { LoadError } from '@/components/ui/ErrorState'
+import { useAuth } from '@/contexts/AuthContext'
 
 type ReportPurchase = {
   id: string
@@ -49,6 +50,7 @@ type UsageData = {
 
 export default function AccountPage() {
   const router = useRouter()
+  const { profile } = useAuth()
   const [loading, setLoading] = useState(true)
   const [usage, setUsage] = useState<UsageData | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -147,6 +149,21 @@ export default function AccountPage() {
   const isAdmin = usage.role === 'admin'
   const isAssociate = usage.role === 'associate'
 
+  // Beta state — derived from the AuthContext's profile, not the billing API
+  // (which maps beta → pro at the billing layer for search-limit purposes).
+  const isBeta =
+    profile?.tier === 'beta' &&
+    !!profile.betaExpiresAt &&
+    new Date(profile.betaExpiresAt) > new Date()
+  const BETA_REPORT_CAP = 3
+  const betaReportsUsed = profile?.reportsGenerated ?? 0
+  const betaReportsRemaining = Math.max(0, BETA_REPORT_CAP - betaReportsUsed)
+  const betaDaysRemaining = profile?.betaExpiresAt
+    ? Math.max(0, Math.ceil(
+        (new Date(profile.betaExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+      ))
+    : 0
+
   const formatCost = (cents: number) => {
     return `$${(cents / 100).toFixed(2)}`
   }
@@ -216,6 +233,10 @@ export default function AccountPage() {
                       <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
                         Associate
                       </span>
+                    ) : isBeta ? (
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-700">
+                        Beta
+                      </span>
                     ) : (
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
@@ -227,7 +248,12 @@ export default function AccountPage() {
                         {isPro ? 'Pro Search' : 'Free'}
                       </span>
                     )}
-                    {isPro && usage.subscriptionStatus && !isAdmin && !isAssociate && (
+                    {isBeta && (
+                      <span className="text-xs text-gray-500">
+                        {betaDaysRemaining} day{betaDaysRemaining === 1 ? '' : 's'} remaining
+                      </span>
+                    )}
+                    {isPro && !isBeta && usage.subscriptionStatus && !isAdmin && !isAssociate && (
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                           isActive
@@ -245,7 +271,7 @@ export default function AccountPage() {
                       </span>
                     )}
                   </div>
-                  {isPro && usage.currentPeriodEnd && !isAdmin && (
+                  {isPro && !isBeta && usage.currentPeriodEnd && !isAdmin && (
                     <p className="text-sm text-gray-500 mt-2">
                       {usage.subscriptionStatus === 'canceled'
                         ? 'Access until'
@@ -264,6 +290,10 @@ export default function AccountPage() {
               </div>
               {isAdmin || isAssociate ? (
                 <span className="text-sm text-gray-500">Unlimited access</span>
+              ) : isBeta ? (
+                <span className="text-sm text-gray-500">
+                  {BETA_REPORT_CAP} reports total
+                </span>
               ) : isPro ? (
                 <button
                   onClick={handleManageSubscription}
@@ -401,7 +431,11 @@ export default function AccountPage() {
                   <h2 className="text-lg font-semibold text-gray-900">
                     Intelligence Reports
                   </h2>
-                  <p className="text-sm text-gray-500">$99 per report</p>
+                  <p className="text-sm text-gray-500">
+                    {isBeta
+                      ? `${betaReportsUsed} of ${BETA_REPORT_CAP} used · ${betaReportsRemaining} remaining`
+                      : '$99 per report'}
+                  </p>
                 </div>
               </div>
               <Link
@@ -472,8 +506,9 @@ export default function AccountPage() {
             )}
           </section>
 
-          {/* Billing - only for Pro subscribers, not associates */}
-          {isPro && !isAssociate && (
+          {/* Billing - only for paying Pro subscribers (skip beta users
+              who get pro perks without a Stripe subscription) */}
+          {isPro && !isAssociate && !isBeta && (
             <section className="bg-white rounded-2xl border border-gray-200 p-6">
               <div className="flex items-start gap-4">
                 <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
