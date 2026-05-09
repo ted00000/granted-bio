@@ -69,8 +69,15 @@ export async function GET(request: NextRequest) {
             redirectUrl = `${origin}/admin`
           }
 
-          // Promote to beta tier if the user's email is on the invite list.
-          // Idempotent — RPC only updates if there's an unclaimed matching invite.
+          // Beta tier sync on sign-in:
+          //  1. Revert expired beta users to free (no-op if not expired)
+          //  2. Promote to beta if the email is on the invite list (no-op if not invited)
+          // Both RPCs are idempotent; non-critical (sign-in completes either way).
+          try {
+            await supabase.rpc('expire_user_beta_if_stale', { p_user_id: user.id })
+          } catch (e) {
+            console.error('[auth/callback] expire_user_beta_if_stale failed:', e)
+          }
           if (user.email) {
             try {
               await supabase.rpc('claim_beta_invite', {
@@ -78,7 +85,6 @@ export async function GET(request: NextRequest) {
                 p_email: user.email,
               })
             } catch (e) {
-              // Non-critical — sign-in still completes if the RPC fails.
               console.error('[auth/callback] claim_beta_invite failed:', e)
             }
           }

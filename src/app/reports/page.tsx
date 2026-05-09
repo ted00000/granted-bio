@@ -473,7 +473,7 @@ function ReportsDashboard() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [showGenerateDialog, setShowGenerateDialog] = useState(false)
 
-  const { isAdmin, isAssociate, profile } = useAuth()
+  const { isAdmin, isAssociate, profile, refetchProfile } = useAuth()
 
   // Active beta = beta tier with non-expired window
   const isActiveBeta =
@@ -541,6 +541,9 @@ function ReportsDashboard() {
   const handleReportGenerated = () => {
     setShowGenerateDialog(false)
     fetchReports()
+    // Refresh the global profile so the beta progress banner ticks up
+    // (reportsGenerated comes from useAuth and is computed at fetch time).
+    refetchProfile()
   }
 
   return (
