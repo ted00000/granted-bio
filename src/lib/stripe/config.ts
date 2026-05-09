@@ -39,11 +39,19 @@ export const PRO_SUBSCRIPTION_PRICE_CENTS = 4900 // $49/month
 
 // Map database tier values to billing tiers
 // The database has legacy tiers (basic, advanced, unlimited) that all map to 'pro'
+// Beta tier maps to 'pro' for search limits, but only while beta_expires_at is in the future.
 export function mapDatabaseTierToBillingTier(
   dbTier: string | null,
-  subscriptionStatus: string | null
+  subscriptionStatus: string | null,
+  betaExpiresAt?: string | null
 ): BillingTier {
-  // Only treat as 'pro' if subscription is active
+  // Beta tier — get pro perks while not expired
+  if (dbTier === 'beta') {
+    if (!betaExpiresAt) return 'free'
+    if (new Date(betaExpiresAt) > new Date()) return 'pro'
+    return 'free'
+  }
+  // Paid pro: only treat as 'pro' if subscription is active
   if (subscriptionStatus === 'active' && dbTier && dbTier !== 'free') {
     return 'pro'
   }

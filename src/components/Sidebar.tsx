@@ -230,10 +230,31 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
         {/* Bottom section */}
         <div className="flex-shrink-0 border-t border-gray-100 p-3 space-y-1">
           {userName && (
-            <div className="px-3 py-2 text-sm text-gray-500 truncate">
-              {userName}
+            <div className="px-3 py-2 text-sm text-gray-500 truncate flex items-center gap-2">
+              <span className="truncate">{userName}</span>
+              {profile?.tier === 'beta' && (
+                <span className="flex-shrink-0 px-1.5 py-0.5 text-[10px] font-medium bg-violet-100 text-violet-700 rounded">
+                  Beta
+                </span>
+              )}
             </div>
           )}
+          {/* Beta report count + days remaining */}
+          {profile?.tier === 'beta' && profile.betaExpiresAt && (() => {
+            const daysLeft = Math.max(0, Math.ceil(
+              (new Date(profile.betaExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+            ))
+            const reportsLeft = Math.max(0, 3 - (profile.reportsGenerated ?? 0))
+            return (
+              <Link
+                href="/account"
+                className="px-3 py-1.5 text-xs rounded flex items-center justify-between bg-violet-50 text-violet-700"
+              >
+                <span>Reports</span>
+                <span className="font-medium">{reportsLeft} left · {daysLeft}d</span>
+              </Link>
+            )
+          })()}
           {/* Usage indicator - show for free users always, pro users only when approaching limit, never for unlimited */}
           {usage && !usage.isUnlimited && (profile?.tier === 'free' || usage.searchesUsed >= usage.searchLimit * 0.8) && (
             <Link

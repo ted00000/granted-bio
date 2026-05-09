@@ -6,8 +6,10 @@ import type { User, AuthChangeEvent, Session } from '@supabase/supabase-js'
 
 interface UserProfile {
   role: 'user' | 'admin' | 'associate'
-  tier: 'free' | 'pro'
+  tier: 'free' | 'pro' | 'beta'
   firstName: string | null
+  betaExpiresAt: string | null
+  reportsGenerated: number
 }
 
 interface UsageData {
@@ -40,17 +42,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const supabase = createBrowserSupabaseClient()
 
   const fetchProfile = useCallback(async (userId: string) => {
-    const { data } = await supabase
-      .from('user_profiles')
-      .select('role, tier, first_name')
-      .eq('id', userId)
-      .single()
+    // Fetch profile + lifetime report count in parallel
+    const [profileRes, reportsRes] = await Promise.all([
+      supabase
+        .from('user_profiles')
+        .select('role, tier, first_name, beta_expires_at, subscription_status')
+        .eq('id', userId)
+        .single(),
+      supabase
+        .from('user_reports')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', userId)
+    ])
 
-    if (data) {
+    if (profileRes.data) {
+      const data = profileRes.data
+      // Map DB tier to UI tier. Beta gets 'beta' if not expired, otherwise 'free'.
+      let uiTier: 'free' | 'pro' | 'beta' = 'free'
+      if (data.tier === 'beta') {
+        uiTier =
+          data.beta_expires_at && new Date(data.beta_expires_at) > new Date()
+            ? 'beta'
+            : 'free'
+      } else if (
+        data.subscription_status === 'active' &&
+        data.tier &&
+        data.tier !== 'free'
+      ) {
+        uiTier = 'pro'
+      }
+
       setProfile({
         role: data.role || 'user',
-        tier: data.tier || 'free',
-        firstName: data.first_name
+        tier: uiTier,
+        firstName: data.first_name,
+        betaExpiresAt: data.beta_expires_at,
+        reportsGenerated: reportsRes.count ?? 0,
       })
     }
   }, [supabase])

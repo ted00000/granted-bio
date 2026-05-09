@@ -59,14 +59,43 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'topic is required for topic reports' }, { status: 400 })
     }
 
-    // Check if user can bypass payment (admin/associate roles)
+    // Check if user can bypass payment (admin/associate roles, or active beta)
     const { data: profile } = await supabase
       .from('user_profiles')
-      .select('role')
+      .select('role, tier, beta_expires_at')
       .eq('id', user.id)
       .single()
 
-    const canBypassPayment = profile?.role === 'admin' || profile?.role === 'associate'
+    const isAdminOrAssociate = profile?.role === 'admin' || profile?.role === 'associate'
+
+    // Active beta = tier='beta' AND not expired
+    const isActiveBeta =
+      profile?.tier === 'beta' &&
+      !!profile.beta_expires_at &&
+      new Date(profile.beta_expires_at) > new Date()
+
+    // Beta lifetime cap: 3 reports total. Count is enforced even for expired beta users
+    // (so they can't generate after promotion ends but didn't claim all 3).
+    const BETA_REPORT_CAP = 3
+    if (isActiveBeta) {
+      const { count: existingReports } = await supabase
+        .from('user_reports')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+
+      if ((existingReports ?? 0) >= BETA_REPORT_CAP) {
+        return NextResponse.json(
+          {
+            error: `Beta users are limited to ${BETA_REPORT_CAP} reports. You've reached your limit.`,
+            type: 'beta_report_cap',
+            cap: BETA_REPORT_CAP,
+          },
+          { status: 402 }
+        )
+      }
+    }
+
+    const canBypassPayment = isAdminOrAssociate || isActiveBeta
 
     // If user cannot bypass payment, verify they have a completed purchase for this topic
     if (!canBypassPayment && report_type === 'topic') {

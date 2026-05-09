@@ -29,7 +29,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
   // Get user profile with usage data
   const { data: profile, error } = await supabaseAdmin
     .from('user_profiles')
-    .select('role, tier, subscription_status, searches_this_month, searches_reset_at')
+    .select('role, tier, subscription_status, beta_expires_at, searches_this_month, searches_reset_at')
     .eq('id', userId)
     .single()
 
@@ -86,8 +86,12 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
     return { allowed: false, remaining: 0, limit, tier: 'pro', subscriptionStatus: 'active' }
   }
 
-  // Map to billing tier
-  const tier = mapDatabaseTierToBillingTier(profile.tier, profile.subscription_status)
+  // Map to billing tier (beta gets pro perks while not expired)
+  const tier = mapDatabaseTierToBillingTier(
+    profile.tier,
+    profile.subscription_status,
+    profile.beta_expires_at
+  )
   const limit = TIER_LIMITS[tier].searchesPerMonth
 
   // Check if we need to reset monthly counter
@@ -147,7 +151,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
 export async function getUserUsage(userId: string): Promise<UserUsage> {
   const { data: profile, error } = await supabaseAdmin
     .from('user_profiles')
-    .select('role, tier, subscription_status, current_period_end, searches_this_month, searches_reset_at')
+    .select('role, tier, subscription_status, beta_expires_at, current_period_end, searches_this_month, searches_reset_at')
     .eq('id', userId)
     .single()
 
@@ -193,7 +197,11 @@ export async function getUserUsage(userId: string): Promise<UserUsage> {
     }
   }
 
-  const tier = mapDatabaseTierToBillingTier(profile.tier, profile.subscription_status)
+  const tier = mapDatabaseTierToBillingTier(
+    profile.tier,
+    profile.subscription_status,
+    profile.beta_expires_at
+  )
   const limit = TIER_LIMITS[tier].searchesPerMonth
 
   // Check if we need to reset (read-only check)

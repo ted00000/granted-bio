@@ -68,6 +68,20 @@ export async function GET(request: NextRequest) {
           if (profile?.role === 'admin') {
             redirectUrl = `${origin}/admin`
           }
+
+          // Promote to beta tier if the user's email is on the invite list.
+          // Idempotent — RPC only updates if there's an unclaimed matching invite.
+          if (user.email) {
+            try {
+              await supabase.rpc('claim_beta_invite', {
+                p_user_id: user.id,
+                p_email: user.email,
+              })
+            } catch (e) {
+              // Non-critical — sign-in still completes if the RPC fails.
+              console.error('[auth/callback] claim_beta_invite failed:', e)
+            }
+          }
         }
       }
 
