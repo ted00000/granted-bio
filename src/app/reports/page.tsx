@@ -473,8 +473,25 @@ function ReportsDashboard() {
   const [deletingId, setDeletingId] = useState<string | null>(null)
   const [showGenerateDialog, setShowGenerateDialog] = useState(false)
 
-  const { isAdmin, isAssociate } = useAuth()
-  const canBypassPayment = isAdmin || isAssociate
+  const { isAdmin, isAssociate, profile } = useAuth()
+
+  // Active beta = beta tier with non-expired window
+  const isActiveBeta =
+    profile?.tier === 'beta' &&
+    !!profile.betaExpiresAt &&
+    new Date(profile.betaExpiresAt) > new Date()
+
+  const BETA_REPORT_CAP = 3
+  const reportsUsed = profile?.reportsGenerated ?? 0
+  const reportsRemaining = Math.max(0, BETA_REPORT_CAP - reportsUsed)
+  const betaCapReached = isActiveBeta && reportsUsed >= BETA_REPORT_CAP
+  const daysRemaining = profile?.betaExpiresAt
+    ? Math.max(0, Math.ceil(
+        (new Date(profile.betaExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+      ))
+    : null
+
+  const canBypassPayment = isAdmin || isAssociate || (isActiveBeta && !betaCapReached)
 
   useEffect(() => {
     fetchReports()
@@ -535,14 +552,53 @@ function ReportsDashboard() {
               <FileText className="w-6 h-6 text-[#E07A5F]" strokeWidth={1.5} />
               <h1 className="text-2xl font-semibold text-gray-900">My Reports</h1>
             </div>
-            <button
-              onClick={() => setShowGenerateDialog(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[#E07A5F] hover:bg-[#FDF2EF] rounded-lg transition-colors text-sm font-medium"
-            >
-              <Plus className="w-4 h-4" strokeWidth={1.5} />
-              New Report
-            </button>
+            {betaCapReached ? (
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-400 cursor-not-allowed">
+                Beta limit reached
+              </span>
+            ) : (
+              <button
+                onClick={() => setShowGenerateDialog(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[#E07A5F] hover:bg-[#FDF2EF] rounded-lg transition-colors text-sm font-medium"
+              >
+                <Plus className="w-4 h-4" strokeWidth={1.5} />
+                New Report
+              </button>
+            )}
           </div>
+
+          {/* Beta progress banner */}
+          {isActiveBeta && (
+            <div className={`mb-6 rounded-lg border px-4 py-3 ${
+              betaCapReached
+                ? 'bg-gray-50 border-gray-200'
+                : reportsRemaining === 1
+                  ? 'bg-amber-50 border-amber-200'
+                  : 'bg-violet-50 border-violet-200'
+            }`}>
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${
+                    betaCapReached ? 'bg-gray-200 text-gray-700' : 'bg-violet-100 text-violet-700'
+                  }`}>
+                    Beta
+                  </span>
+                  <span className="text-sm text-gray-700">
+                    {betaCapReached ? (
+                      <>You&apos;ve used all <strong>{BETA_REPORT_CAP} of {BETA_REPORT_CAP}</strong> beta reports.</>
+                    ) : (
+                      <>Report <strong>{reportsUsed + 1} of {BETA_REPORT_CAP}</strong> &middot; <strong>{reportsRemaining}</strong> remaining</>
+                    )}
+                  </span>
+                </div>
+                {daysRemaining !== null && !betaCapReached && (
+                  <span className="text-xs text-gray-500">
+                    Beta access expires in <strong>{daysRemaining} day{daysRemaining === 1 ? '' : 's'}</strong>
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
 
           {loading ? (
             <div className="flex items-center justify-center py-16">

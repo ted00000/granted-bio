@@ -21,8 +21,19 @@ export function GenerateReportDialog({
   const [projectCount, setProjectCount] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  const { isAdmin, isAssociate } = useAuth()
-  const canBypassPayment = isAdmin || isAssociate
+  const { isAdmin, isAssociate, profile } = useAuth()
+
+  // Active beta gets free reports up to a lifetime cap of 3
+  const isActiveBeta =
+    profile?.tier === 'beta' &&
+    !!profile.betaExpiresAt &&
+    new Date(profile.betaExpiresAt) > new Date()
+  const BETA_REPORT_CAP = 3
+  const reportsUsed = profile?.reportsGenerated ?? 0
+  const reportsRemaining = Math.max(0, BETA_REPORT_CAP - reportsUsed)
+  const betaCapReached = isActiveBeta && reportsUsed >= BETA_REPORT_CAP
+
+  const canBypassPayment = isAdmin || isAssociate || (isActiveBeta && !betaCapReached)
 
   const checkTopic = async () => {
     if (!topic.trim()) return
@@ -154,7 +165,45 @@ export function GenerateReportDialog({
 
         {/* Content */}
         <div className="px-6 py-4">
-          {step === 'input' && (
+          {/* Beta progress indicator — visible at every step inside the dialog */}
+          {isActiveBeta && (
+            <div className={`mb-4 rounded-lg border px-3 py-2 text-sm ${
+              betaCapReached
+                ? 'bg-gray-50 border-gray-200 text-gray-600'
+                : reportsRemaining === 1
+                  ? 'bg-amber-50 border-amber-200 text-amber-800'
+                  : 'bg-violet-50 border-violet-200 text-violet-800'
+            }`}>
+              <div className="flex items-center gap-2">
+                <span className={`px-1.5 py-0.5 text-[10px] font-medium rounded ${
+                  betaCapReached ? 'bg-gray-200 text-gray-700' : 'bg-violet-100 text-violet-700'
+                }`}>
+                  Beta
+                </span>
+                {betaCapReached ? (
+                  <span>You&apos;ve used all {BETA_REPORT_CAP} of your beta reports.</span>
+                ) : (
+                  <span>This will be report <strong>{reportsUsed + 1} of {BETA_REPORT_CAP}</strong> &middot; <strong>{reportsRemaining - 1}</strong> will remain after.</span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {step === 'input' && betaCapReached && (
+            <div className="text-center py-6">
+              <p className="text-sm text-gray-600 mb-4">
+                Your beta period included {BETA_REPORT_CAP} reports. You&apos;ve used them all. Existing reports stay viewable. Reach out about Pro access if you&apos;d like to keep generating reports.
+              </p>
+              <button
+                onClick={onClose}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors text-sm"
+              >
+                Close
+              </button>
+            </div>
+          )}
+
+          {step === 'input' && !betaCapReached && (
             <>
               <p className="text-sm text-gray-600 mb-4">
                 Create comprehensive topic-focused intelligence reports synthesizing research activity, funding, clinical trials, patents, and publications.
