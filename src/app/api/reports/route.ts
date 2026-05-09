@@ -74,10 +74,11 @@ export async function POST(request: NextRequest) {
       !!profile.beta_expires_at &&
       new Date(profile.beta_expires_at) > new Date()
 
-    // Beta lifetime cap: 3 reports total. Count is enforced even for expired beta users
-    // (so they can't generate after promotion ends but didn't claim all 3).
+    // Beta lifetime cap: 3 reports total. Skip for admins/associates so role-based
+    // testers can't accidentally lock themselves out while adding themselves to the
+    // invite list to validate the flow.
     const BETA_REPORT_CAP = 3
-    if (isActiveBeta) {
+    if (isActiveBeta && !isAdminOrAssociate) {
       const { count: existingReports } = await supabase
         .from('user_reports')
         .select('*', { count: 'exact', head: true })
