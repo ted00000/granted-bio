@@ -3,6 +3,12 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { generateTopicReport, generatePortfolioReport } from '@/lib/reports'
 import type { ReportPersona } from '@/lib/reports/types'
 
+// Report generation runs 5 agents in parallel plus a synthesis chain;
+// typical wall-clock is 30-90s. Explicit ceiling avoids hitting Vercel's
+// default function timeout under load.
+export const runtime = 'nodejs'
+export const maxDuration = 300
+
 // GET - List user's reports
 export async function GET() {
   try {
