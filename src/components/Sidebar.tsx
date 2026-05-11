@@ -135,7 +135,9 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
                 <span className={`text-sm font-medium ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-gray-900' : ''}`}>
                   Reports
                 </span>
-                <PremiumBadge size="sm" />
+                {/* Premium badge is a paywall hint — only show to free users.
+                    Beta, pro, admin, associate already have access. */}
+                {profile?.tier === 'free' && <PremiumBadge size="sm" />}
               </div>
             </div>
           </Link>
