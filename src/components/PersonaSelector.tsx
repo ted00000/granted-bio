@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { IntentType, PersonaType } from '@/lib/chat/types'
 import { INTENT_TO_PERSONA } from '@/lib/chat/types'
+import { Logo } from '@/components/Logo'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { Search, Users, Activity, FileText } from 'lucide-react'
@@ -214,9 +215,7 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
       {/* Header */}
       <header className="px-6 py-4">
         <nav className="max-w-5xl mx-auto flex items-center justify-between">
-          <span className="text-2xl font-semibold tracking-tight text-gray-900">
-            granted<span className="text-[#E07A5F]">.bio</span>
-          </span>
+          <Logo height={32} />
           <button
             onClick={handleSignOut}
             className="text-sm text-gray-400 hover:text-gray-600 transition-colors"

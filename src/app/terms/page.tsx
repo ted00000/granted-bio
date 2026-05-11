@@ -1,12 +1,13 @@
 import Link from 'next/link'
+import { Logo } from '@/components/Logo'
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-white">
       <header className="px-6 py-4">
         <nav className="max-w-3xl mx-auto">
-          <Link href="/" className="text-2xl font-semibold tracking-tight text-gray-900">
-            granted<span className="text-[#E07A5F]">.bio</span>
+          <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
+            <Logo height={32} />
           </Link>
         </nav>
       </header>

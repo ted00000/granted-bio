@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
 import { AdminSignOut } from './AdminSignOut'
+import { Logo } from '@/components/Logo'
 
 export default async function AdminLayout({
   children,
@@ -22,8 +23,8 @@ export default async function AdminLayout({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-8">
-              <Link href="/" className="text-xl font-bold text-gray-900">
-                granted<span className="text-[#E07A5F]">.bio</span>
+              <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
+                <Logo height={28} />
               </Link>
               <span className="text-sm font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">
                 Admin

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Search, FileText, User } from 'lucide-react'
+import { Logo } from '@/components/Logo'
 
 interface MarketingNavProps {
   showSignIn?: boolean
@@ -9,8 +10,8 @@ export function MarketingNav({ showSignIn = false }: MarketingNavProps) {
   return (
     <header className="border-b border-gray-100 bg-white">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="text-2xl font-semibold tracking-tight text-gray-900">
-          granted<span className="text-[#E07A5F]">.bio</span>
+        <Link href="/" aria-label="granted.bio home" className="flex items-center hover:opacity-80 transition-opacity">
+          <Logo height={32} priority />
         </Link>
         <div className="flex items-center gap-1 text-sm">
           <Link

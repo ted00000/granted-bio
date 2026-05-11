@@ -4,6 +4,7 @@ import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { FileText, AlertCircle, FileDown, Loader2, FileType } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { Logo } from '@/components/Logo'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { jsPDF } from 'jspdf'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, Header, Footer, AlignmentType } from 'docx'
@@ -1360,8 +1361,8 @@ export default function ReportDetailPage({
         <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
           <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6">
             <div className="flex items-center justify-between">
-              <Link href="/" className="text-xl font-semibold text-gray-900">
-                granted<span className="text-[#E07A5F]">.bio</span>
+              <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
+                <Logo height={28} priority />
               </Link>
               <Breadcrumbs
                 items={[
@@ -1396,8 +1397,8 @@ export default function ReportDetailPage({
       <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6">
           <div className="flex items-center justify-between">
-            <Link href="/" className="text-xl font-semibold text-gray-900">
-              granted<span className="text-[#E07A5F]">.bio</span>
+            <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
+              <Logo height={28} priority />
             </Link>
             <Breadcrumbs
               items={[

@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Users, Settings, Shield } from 'lucide-react'
 import { PremiumBadge } from '@/components/ui/PremiumBadge'
+import { Logo } from '@/components/Logo'
 import { useAuth } from '@/contexts/AuthContext'
 import type { PersonaType } from '@/lib/chat/types'
 
@@ -81,12 +82,13 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
         `}
       >
         {/* Logo */}
-        <div className="flex-shrink-0 px-5 pt-6 pb-6 text-center">
+        <div className="flex-shrink-0 px-5 pt-6 pb-6 flex justify-center">
           <button
             onClick={handleHomeClick}
-            className="text-xl font-semibold tracking-tight text-gray-900 hover:opacity-80 transition-opacity"
+            aria-label="granted.bio home"
+            className="hover:opacity-80 transition-opacity"
           >
-            granted<span className="text-[#E07A5F]">.bio</span>
+            <Logo height={28} priority />
           </button>
         </div>
 

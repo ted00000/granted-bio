@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import { Logo } from '@/components/Logo'
 
 export default function ResetPasswordPage() {
   const [email, setEmail] = useState('')
@@ -33,8 +34,8 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen bg-white">
       <header className="px-6 py-4">
         <nav className="max-w-md mx-auto">
-          <Link href="/" className="text-2xl font-semibold tracking-tight text-gray-900">
-            granted<span className="text-[#E07A5F]">.bio</span>
+          <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
+            <Logo height={32} />
           </Link>
         </nav>
       </header>
