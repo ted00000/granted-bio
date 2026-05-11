@@ -23,8 +23,12 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
 
   const handleSignOut = async () => {
     await signOut()
-    router.refresh()
-    router.push('/')
+    // Hard reload to '/'. Soft client-routing here (router.refresh + push)
+    // can render /chat one more time with mid-flight state — user already
+    // null but profile not yet, etc. — which briefly shows the name-capture
+    // screen before navigation completes. A full reload makes middleware
+    // re-evaluate from scratch and React state initializes clean.
+    window.location.href = '/'
   }
 
   const handleNavClick = (persona: PersonaType) => {
