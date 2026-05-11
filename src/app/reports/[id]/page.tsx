@@ -1362,7 +1362,7 @@ export default function ReportDetailPage({
           <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6">
             <div className="flex items-center justify-between">
               <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
-                <Logo height={28} priority />
+                <Logo height={36} priority />
               </Link>
               <Breadcrumbs
                 items={[
@@ -1398,7 +1398,7 @@ export default function ReportDetailPage({
         <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6">
           <div className="flex items-center justify-between">
             <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
-              <Logo height={28} priority />
+              <Logo height={36} priority />
             </Link>
             <Breadcrumbs
               items={[

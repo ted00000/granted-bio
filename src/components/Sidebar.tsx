@@ -19,7 +19,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
-  const { isAdmin, usage, signOut, profile } = useAuth()
+  const { isAdmin, isAssociate, usage, signOut, profile } = useAuth()
 
   const handleSignOut = async () => {
     await signOut()
@@ -88,7 +88,7 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
             aria-label="granted.bio home"
             className="hover:opacity-80 transition-opacity"
           >
-            <Logo height={28} priority />
+            <Logo height={36} priority />
           </button>
         </div>
 
@@ -137,9 +137,12 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
                 <span className={`text-sm font-medium ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-gray-900' : ''}`}>
                   Reports
                 </span>
-                {/* Premium badge is a paywall hint — only show to free users.
-                    Beta, pro, admin, associate already have access. */}
-                {profile?.tier === 'free' && <PremiumBadge size="sm" />}
+                {/* Premium badge is a paywall hint — only show to actual free
+                    users. Admins/associates have role-based unlimited access
+                    even though their DB tier defaults to 'free'. */}
+                {profile?.tier === 'free' && !isAdmin && !isAssociate && (
+                  <PremiumBadge size="sm" />
+                )}
               </div>
             </div>
           </Link>

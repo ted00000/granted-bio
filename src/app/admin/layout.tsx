@@ -24,7 +24,7 @@ export default async function AdminLayout({
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-8">
               <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
-                <Logo height={28} />
+                <Logo height={36} />
               </Link>
               <span className="text-sm font-medium text-gray-500 bg-gray-100 px-2 py-1 rounded">
                 Admin

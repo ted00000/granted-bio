@@ -215,7 +215,7 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
       {/* Header */}
       <header className="px-6 py-4">
         <nav className="max-w-5xl mx-auto flex items-center justify-between">
-          <Logo height={32} />
+          <Logo height={40} />
           <button
             onClick={handleSignOut}
             className="text-sm text-gray-400 hover:text-gray-600 transition-colors"

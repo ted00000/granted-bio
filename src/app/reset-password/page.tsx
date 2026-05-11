@@ -35,7 +35,7 @@ export default function ResetPasswordPage() {
       <header className="px-6 py-4">
         <nav className="max-w-md mx-auto">
           <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
-            <Logo height={32} />
+            <Logo height={40} />
           </Link>
         </nav>
       </header>

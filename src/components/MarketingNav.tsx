@@ -11,7 +11,7 @@ export function MarketingNav({ showSignIn = false }: MarketingNavProps) {
     <header className="border-b border-gray-100 bg-white">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <Link href="/" aria-label="granted.bio home" className="flex items-center hover:opacity-80 transition-opacity">
-          <Logo height={32} priority />
+          <Logo height={40} priority />
         </Link>
         <div className="flex items-center gap-1 text-sm">
           <Link
