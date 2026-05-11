@@ -75,8 +75,18 @@ export async function runTrialsAgent(projectNumbers: string[]): Promise<TrialsAg
  * Process raw results into agent output
  */
 function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
+  // Dedup by NCT ID. clinical_studies has one row per (nct_id, project_number),
+  // so a multi-linked trial fetched via .in('nct_id', ...) returns duplicates.
+  // Making this idempotent lets every caller (including the post-enrichment
+  // refetch) share the same processing path safely.
+  const seen = new Map<string, RawTrialResult>()
+  for (const t of rawResults) {
+    if (!seen.has(t.nct_id)) seen.set(t.nct_id, t)
+  }
+  const deduped = Array.from(seen.values())
+
   // Map to TrialItem format
-  const items: TrialItem[] = rawResults.map((t) => ({
+  const items: TrialItem[] = deduped.map((t) => ({
     nct_id: t.nct_id,
     study_title: t.study_title,
     phase: t.phase || null,
