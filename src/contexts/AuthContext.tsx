@@ -159,16 +159,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [supabase, fetchProfile, fetchUsage])
 
   const signOut = useCallback(async () => {
-    // Browser client clears localStorage tokens; server endpoint clears the
-    // SSR httpOnly cookies that middleware reads. Skipping the server call
-    // leaves cookies intact, so middleware keeps treating the user as signed
-    // in and bounces them right back to /chat.
-    await supabase.auth.signOut()
+    // Server endpoint must run first so the SSR httpOnly cookies that
+    // middleware reads are cleared on the response. Browser client cleanup
+    // for localStorage tokens runs second. Skipping either half leaves a
+    // partial signed-in state.
     try {
-      await fetch('/api/auth/signout', { method: 'POST', redirect: 'manual' })
+      await fetch('/api/auth/signout', { method: 'POST' })
     } catch (e) {
       console.error('[AuthContext] server signout failed:', e)
     }
+    await supabase.auth.signOut()
     setUser(null)
     setProfile(null)
     setUsage(null)
