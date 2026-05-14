@@ -186,11 +186,13 @@ function ChatContent() {
           initialPrecision={initialPrecision}
           onFiltersChange={handleFiltersChange}
         />
-      ) : isLoading ? (
-        <div className="h-full flex items-center justify-center">
-          <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
-        </div>
       ) : (
+        // Render WelcomeScreen immediately rather than gating on isLoading.
+        // The screen's primary content (persona pills, search input, examples)
+        // doesn't depend on auth — only the personalized greeting and the
+        // name-capture check do, and those resolve lazily as profile loads.
+        // Previously a new-tab visit showed a full-screen spinner for several
+        // seconds while initAuth completed.
         <WelcomeScreen
           onSelectPersona={handlePersonaChange}
           userName={userName}
