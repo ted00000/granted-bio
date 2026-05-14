@@ -33,8 +33,11 @@ function ChatContent() {
   const { user, profile, isLoading, refetchProfile } = useAuth()
   const userId = user?.id ?? null
   const userName = profile?.firstName ?? null
-  // Logged-in user without a captured first name → trigger the name prompt.
-  const needsName = !!user && !profile?.firstName
+  // Only show the name prompt once we KNOW the profile loaded but is missing
+  // a first name. Previously `!profile?.firstName` was true even when profile
+  // was null (transient fetch failure on a stale-session return) — falsely
+  // showing 'What should we call you?' to users who already had a name set.
+  const needsName = !!user && profile !== null && !profile.firstName
   const supabase = createBrowserSupabaseClient()
 
   const personaParam = searchParams.get('persona')

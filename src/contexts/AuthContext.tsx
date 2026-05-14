@@ -108,23 +108,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Get initial user — guarded with timeout + try/catch so a hanging or thrown
     // auth call can never strand isLoading=true (which would leave the app
-    // showing a permanent spinner).
+    // showing a permanent spinner). Timeout covers the ENTIRE chain
+    // (getUser + profile + usage) — a hang in any step must not strand
+    // isLoading=true. Previously only getUser was guarded.
     const initAuth = async () => {
-      try {
-        const userPromise = supabase.auth.getUser()
-        const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Auth check timed out')), 8000)
-        )
-        const { data: { user } } = await Promise.race([userPromise, timeoutPromise])
+      const inner = async () => {
+        const { data: { user } } = await supabase.auth.getUser()
         if (cancelled) return
         setUser(user)
-
         if (user) {
           await Promise.all([
             fetchProfile(user.id),
             fetchUsage()
           ])
         }
+      }
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Auth init timed out')), 10000)
+      )
+      try {
+        await Promise.race([inner(), timeoutPromise])
       } catch (error) {
         console.error('[AuthContext] initial auth check failed:', error)
       } finally {
