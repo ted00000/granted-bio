@@ -162,16 +162,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [supabase, fetchProfile, fetchUsage])
 
   const signOut = useCallback(async () => {
-    // Server endpoint must run first so the SSR httpOnly cookies that
-    // middleware reads are cleared on the response. Browser client cleanup
-    // for localStorage tokens runs second. Skipping either half leaves a
-    // partial signed-in state.
-    try {
-      await fetch('/api/auth/signout', { method: 'POST' })
-    } catch (e) {
-      console.error('[AuthContext] server signout failed:', e)
-    }
-    await supabase.auth.signOut()
+    // Race each step against a timeout so a hanging client can never block
+    // the caller's navigation. The server endpoint clearing cookies is the
+    // only truly critical step (middleware reads cookies on the next request);
+    // browser-side localStorage cleanup is best-effort and will resolve on
+    // the next page load if it doesn't complete here.
+    //
+    // Without timeouts, supabase.auth.signOut() can hang silently after a
+    // long idle (stale session state) — the caller's await never resolves,
+    // the hard-reload navigation never runs, and signOut appears to do
+    // nothing even though cookies were already cleared.
+    const withTimeout = <T,>(p: Promise<T>, ms: number, label: string): Promise<T | null> =>
+      Promise.race([
+        p,
+        new Promise<null>((resolve) =>
+          setTimeout(() => {
+            console.warn(`[AuthContext] ${label} timed out after ${ms}ms — proceeding`)
+            resolve(null)
+          }, ms)
+        ),
+      ])
+
+    await withTimeout(
+      fetch('/api/auth/signout', { method: 'POST' }).catch((e) => {
+        console.error('[AuthContext] server signout failed:', e)
+        return null
+      }),
+      3000,
+      'server signout'
+    )
+    await withTimeout(
+      supabase.auth.signOut().catch((e) => {
+        console.error('[AuthContext] browser signout failed:', e)
+        return null
+      }),
+      2000,
+      'browser signout'
+    )
     setUser(null)
     setProfile(null)
     setUsage(null)
