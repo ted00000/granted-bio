@@ -12,6 +12,7 @@ import type { PersonaType, SearchMode } from '@/lib/chat/types'
 interface FilterState {
   primary_category?: string[]
   org_type?: string[]
+  state?: string
   quick?: {
     activeOnly?: boolean
     sbirSttrOnly?: boolean
@@ -56,6 +57,7 @@ function ChatContent() {
   const patentsParam = searchParams.get('patents')
   const trialsParam = searchParams.get('trials')
   const pubsParam = searchParams.get('pubs')
+  const stateParam = searchParams.get('state')
 
   // If pi or org param is provided, automatically use 'bd' persona with that as the query
   const hasPeopleSearch = piParam || orgParam
@@ -84,6 +86,9 @@ function ChatContent() {
     }
     if (orgtypeParam) {
       filters.org_type = orgtypeParam.split(',').filter(Boolean)
+    }
+    if (stateParam) {
+      filters.state = stateParam.toUpperCase()
     }
     const quick: FilterState['quick'] = {}
     if (activeParam === '1') quick.activeOnly = true
@@ -120,6 +125,13 @@ function ChatContent() {
       params.set('orgtype', filters.org_type.join(','))
     } else {
       params.delete('orgtype')
+    }
+
+    // State
+    if (filters.state) {
+      params.set('state', filters.state)
+    } else {
+      params.delete('state')
     }
 
     // Quick filters

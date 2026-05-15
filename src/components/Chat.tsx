@@ -59,6 +59,7 @@ const PRECISION_PERCENTILES = {
 interface FilterState {
   primary_category?: string[]
   org_type?: string[]
+  state?: string  // single-select 2-letter state code (e.g. 'CA')
   quick?: QuickFilters
 }
 
@@ -133,6 +134,8 @@ interface ResultsPanelProps {
   // Cross-filtered counts for dynamic chip numbers
   crossFilteredByCategory?: Record<string, number>
   crossFilteredByOrgType?: Record<string, number>
+  crossFilteredByState?: Record<string, number>
+  byState?: Record<string, number>
   // Quick filter counts
   quickFilterCounts?: {
     active: number
@@ -176,7 +179,7 @@ interface ResultsPanelProps {
   hideStatsAndFilters?: boolean
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, trialTypeFilter = null, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {}, hideStatsAndFilters = false }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, crossFilteredByState, byState, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, trialTypeFilter = null, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {}, hideStatsAndFilters = false }: ResultsPanelProps) {
   const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
   // Count active filters for collapsed state display
@@ -347,11 +350,14 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               <FilterChips
                 byCategory={searchContext.originalResults.by_category || {}}
                 byOrgType={searchContext.originalResults.by_org_type || {}}
+                byState={byState || {}}
                 filteredByCategory={crossFilteredByCategory}
                 filteredByOrgType={crossFilteredByOrgType}
+                filteredByState={crossFilteredByState}
                 quickFilterCounts={quickFilterCounts}
                 keywordQuery={searchContext.keywordQuery}
                 semanticQuery={searchContext.semanticQuery}
+                currentState={currentFilters.state}
                 onFilterChange={onFilterChange}
                 isLoading={false}
                 hideHeader={stickyFilters}
@@ -648,11 +654,14 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
               <FilterChips
                 byCategory={searchContext.originalResults.by_category || {}}
                 byOrgType={searchContext.originalResults.by_org_type || {}}
+                byState={byState || {}}
                 filteredByCategory={crossFilteredByCategory}
                 filteredByOrgType={crossFilteredByOrgType}
+                filteredByState={crossFilteredByState}
                 quickFilterCounts={quickFilterCounts}
                 keywordQuery={searchContext.keywordQuery}
                 semanticQuery={searchContext.semanticQuery}
+                currentState={currentFilters.state}
                 onFilterChange={onFilterChange}
                 isLoading={false}
                 hideHeader={stickyFilters}
@@ -1767,10 +1776,11 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     const hasQuickFilters = quick && (quick.activeOnly || quick.sbirSttrOnly || quick.hasPatents || quick.hasClinicalTrials || quick.hasPublications)
     const hasCategoryFilter = currentFilters.primary_category?.length
     const hasOrgTypeFilter = currentFilters.org_type?.length
+    const hasStateFilter = !!currentFilters.state
     const hasPrecisionFilter = precision !== 'low' // 'low' = 100%, no filtering
 
     // If no filters active, return null to show original results
-    if (!hasCategoryFilter && !hasOrgTypeFilter && !hasQuickFilters && !hasPrecisionFilter) {
+    if (!hasCategoryFilter && !hasOrgTypeFilter && !hasStateFilter && !hasQuickFilters && !hasPrecisionFilter) {
       return null
     }
 
@@ -1792,6 +1802,11 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
       filtered = filtered.filter(p =>
         p.org_type && currentFilters.org_type!.includes(p.org_type)
       )
+    }
+
+    // Apply state filter
+    if (currentFilters.state) {
+      filtered = filtered.filter(p => p.org_state === currentFilters.state)
     }
 
     // Apply quick filters
@@ -2075,7 +2090,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const applyFilters = useCallback((
     results: SearchResultProject[],
     filters: FilterState,
-    exclude?: { category?: boolean; orgType?: boolean; quick?: keyof QuickFilters }
+    exclude?: { category?: boolean; orgType?: boolean; state?: boolean; quick?: keyof QuickFilters }
   ): SearchResultProject[] => {
     let filtered: SearchResultProject[] = results
 
@@ -2120,13 +2135,18 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
       )
     }
 
+    // Apply state filter (unless excluded)
+    if (filters.state && !exclude?.state) {
+      filtered = filtered.filter(p => p.org_state === filters.state)
+    }
+
     return filtered
   }, [isSbirSttr])
 
   // Compute all cross-filtered counts dynamically (respects precision filter)
-  const { crossFilteredByCategory, crossFilteredByOrgType, quickFilterCounts } = useMemo(() => {
+  const { crossFilteredByCategory, crossFilteredByOrgType, crossFilteredByState, byState, quickFilterCounts } = useMemo(() => {
     if (!searchContext) {
-      return { crossFilteredByCategory: undefined, crossFilteredByOrgType: undefined, quickFilterCounts: undefined }
+      return { crossFilteredByCategory: undefined, crossFilteredByOrgType: undefined, crossFilteredByState: undefined, byState: undefined, quickFilterCounts: undefined }
     }
 
     const originalResults = searchContext.originalResults.all_results
@@ -2139,9 +2159,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
 
     const hasCategory = currentFilters.primary_category?.length
     const hasOrgType = currentFilters.org_type?.length
+    const hasState = !!currentFilters.state
     const hasQuickFilters = currentFilters.quick && Object.values(currentFilters.quick).some(Boolean)
     const hasPrecision = precision !== 'low'  // 'low' = all results, so not a filter
-    const hasAnyFilter = hasCategory || hasOrgType || hasQuickFilters || hasPrecision
+    const hasAnyFilter = hasCategory || hasOrgType || hasState || hasQuickFilters || hasPrecision
 
     // For category chips: apply all filters EXCEPT category (on precision-filtered set)
     const categoryFiltered = applyFilters(allResults, currentFilters, { category: true })
@@ -2157,6 +2178,19 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     orgFiltered.forEach(p => {
       const org = p.org_type || 'other'
       byOrgType[org] = (byOrgType[org] || 0) + 1
+    })
+
+    // Base byState — all states present in the precision-filtered set
+    const baseByState: Record<string, number> = {}
+    allResults.forEach(p => {
+      if (p.org_state) baseByState[p.org_state] = (baseByState[p.org_state] || 0) + 1
+    })
+
+    // Cross-filtered byState — all filters EXCEPT state applied
+    const stateFiltered = applyFilters(allResults, currentFilters, { state: true })
+    const byStateXF: Record<string, number> = {}
+    stateFiltered.forEach(p => {
+      if (p.org_state) byStateXF[p.org_state] = (byStateXF[p.org_state] || 0) + 1
     })
 
     // For quick filter chips: apply all filters EXCEPT the specific quick filter (on precision-filtered set)
@@ -2182,6 +2216,8 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     return {
       crossFilteredByCategory: hasAnyFilter ? byCategory : undefined,
       crossFilteredByOrgType: hasAnyFilter ? byOrgType : undefined,
+      crossFilteredByState: hasAnyFilter ? byStateXF : undefined,
+      byState: baseByState,
       quickFilterCounts: quickCounts
     }
   }, [searchContext, currentFilters, applyFilters, isSbirSttr, precision])
@@ -2565,11 +2601,14 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                     <FilterChips
                       byCategory={searchContext.originalResults.by_category || {}}
                       byOrgType={searchContext.originalResults.by_org_type || {}}
+                      byState={byState || {}}
                       filteredByCategory={crossFilteredByCategory}
                       filteredByOrgType={crossFilteredByOrgType}
+                      filteredByState={crossFilteredByState}
                       quickFilterCounts={quickFilterCounts}
                       keywordQuery={searchContext.keywordQuery}
                       semanticQuery={searchContext.semanticQuery}
+                      currentState={currentFilters.state}
                       onFilterChange={handleFilterChange}
                       isLoading={false}
                     />
@@ -2601,6 +2640,8 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                   onFilterChange={handleFilterChange}
                   crossFilteredByCategory={crossFilteredByCategory}
                   crossFilteredByOrgType={crossFilteredByOrgType}
+                  crossFilteredByState={crossFilteredByState}
+                  byState={byState}
                   quickFilterCounts={quickFilterCounts}
                   onProjectClick={navigateToProject}
                   onOrgClick={navigateToOrg}

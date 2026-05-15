@@ -14,9 +14,13 @@ interface QuickFilters {
 interface FilterChipsProps {
   byCategory: Record<string, number>
   byOrgType: Record<string, number>
+  byState?: Record<string, number>
   // Filtered counts (dynamic based on cross-dimension selection)
   filteredByCategory?: Record<string, number>
   filteredByOrgType?: Record<string, number>
+  filteredByState?: Record<string, number>
+  // Currently-selected state (single-select, 2-letter code)
+  currentState?: string
   // Quick filter counts
   quickFilterCounts?: {
     active: number
@@ -30,7 +34,7 @@ interface FilterChipsProps {
   }
   keywordQuery: string
   semanticQuery: string
-  onFilterChange: (filters: { primary_category?: string[]; org_type?: string[]; quick?: QuickFilters }) => void
+  onFilterChange: (filters: { primary_category?: string[]; org_type?: string[]; state?: string; quick?: QuickFilters }) => void
   isLoading?: boolean
   hideHeader?: boolean
 }
@@ -56,11 +60,31 @@ const ORG_TYPE_LABELS: Record<string, string> = {
   other: 'Other'
 }
 
+// US state codes → full names, used in the State filter dropdown
+const US_STATE_NAMES: Record<string, string> = {
+  AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
+  CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', DC: 'District of Columbia',
+  FL: 'Florida', GA: 'Georgia', HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois',
+  IN: 'Indiana', IA: 'Iowa', KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana',
+  ME: 'Maine', MD: 'Maryland', MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota',
+  MS: 'Mississippi', MO: 'Missouri', MT: 'Montana', NE: 'Nebraska', NV: 'Nevada',
+  NH: 'New Hampshire', NJ: 'New Jersey', NM: 'New Mexico', NY: 'New York',
+  NC: 'North Carolina', ND: 'North Dakota', OH: 'Ohio', OK: 'Oklahoma', OR: 'Oregon',
+  PA: 'Pennsylvania', RI: 'Rhode Island', SC: 'South Carolina', SD: 'South Dakota',
+  TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VT: 'Vermont', VA: 'Virginia',
+  WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming',
+  PR: 'Puerto Rico', VI: 'U.S. Virgin Islands', GU: 'Guam', AS: 'American Samoa',
+  MP: 'Northern Mariana Islands',
+}
+
 export function FilterChips({
   byCategory,
   byOrgType,
+  byState,
   filteredByCategory,
   filteredByOrgType,
+  filteredByState,
+  currentState,
   quickFilterCounts,
   keywordQuery,
   semanticQuery,
@@ -70,26 +94,34 @@ export function FilterChips({
 }: FilterChipsProps) {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
   const [selectedOrgTypes, setSelectedOrgTypes] = useState<string[]>([])
+  const [selectedState, setSelectedState] = useState<string>('')
   const [quickFilters, setQuickFilters] = useState<QuickFilters>({})
   const [isExpanded, setIsExpanded] = useState(true)
+
+  // Sync external state value (e.g. from URL params) into local state
+  useEffect(() => {
+    setSelectedState(currentState ?? '')
+  }, [currentState])
 
   // Reset filters when search query changes
   useEffect(() => {
     setSelectedCategories([])
     setSelectedOrgTypes([])
+    setSelectedState('')
     setQuickFilters({})
   }, [keywordQuery, semanticQuery])
 
   // Notify parent of filter changes
   useEffect(() => {
-    const filters: { primary_category?: string[]; org_type?: string[]; quick?: QuickFilters } = {}
+    const filters: { primary_category?: string[]; org_type?: string[]; state?: string; quick?: QuickFilters } = {}
     if (selectedCategories.length > 0) filters.primary_category = selectedCategories
     if (selectedOrgTypes.length > 0) filters.org_type = selectedOrgTypes
+    if (selectedState) filters.state = selectedState
     if (Object.keys(quickFilters).some(k => quickFilters[k as keyof QuickFilters])) {
       filters.quick = quickFilters
     }
     onFilterChange(filters)
-  }, [selectedCategories, selectedOrgTypes, quickFilters, onFilterChange])
+  }, [selectedCategories, selectedOrgTypes, selectedState, quickFilters, onFilterChange])
 
   const toggleCategory = (category: string) => {
     if (isLoading) return
@@ -128,10 +160,11 @@ export function FilterChips({
   const clearFilters = () => {
     setSelectedCategories([])
     setSelectedOrgTypes([])
+    setSelectedState('')
     setQuickFilters({})
   }
 
-  const hasFilters = selectedCategories.length > 0 || selectedOrgTypes.length > 0 || Object.values(quickFilters).some(Boolean)
+  const hasFilters = selectedCategories.length > 0 || selectedOrgTypes.length > 0 || !!selectedState || Object.values(quickFilters).some(Boolean)
 
   // Use original counts for chip list (so all options stay visible)
   // Use filtered counts for display numbers (dynamic based on cross-selection)
@@ -150,7 +183,24 @@ export function FilterChips({
 
   // Count active filters for collapsed state display
   const activeFilterCount = selectedCategories.length + selectedOrgTypes.length +
+    (selectedState ? 1 : 0) +
     Object.values(quickFilters).filter(Boolean).length
+
+  // State dropdown — alphabetized by full state name, with counts.
+  // Only shows states that actually appear in the result set.
+  const stateOptions = byState
+    ? Object.entries(byState)
+        .filter(([, c]) => c > 0)
+        .map(([code, count]) => {
+          const filteredCount = filteredByState?.[code]
+          return {
+            code,
+            count: filteredCount !== undefined ? filteredCount : count,
+            label: US_STATE_NAMES[code] || code,
+          }
+        })
+        .sort((a, b) => a.label.localeCompare(b.label))
+    : []
 
   return (
     <div className="space-y-3">
@@ -305,6 +355,29 @@ export function FilterChips({
               )
             })}
           </div>
+        </div>
+      )}
+
+      {/* State filter (single-select dropdown) */}
+      {isExpanded && stateOptions.length > 0 && (
+        <div>
+          <label htmlFor="state-filter" className="block text-[10px] uppercase tracking-wider text-gray-400 mb-1.5">
+            State
+          </label>
+          <select
+            id="state-filter"
+            value={selectedState}
+            onChange={(e) => setSelectedState(e.target.value)}
+            disabled={isLoading}
+            className="text-xs bg-white border border-gray-300 rounded-md px-2 py-1.5 focus:outline-none focus:ring-2 focus:ring-[#E07A5F]/30 focus:border-[#E07A5F] disabled:opacity-50"
+          >
+            <option value="">All states</option>
+            {stateOptions.map(({ code, count, label }) => (
+              <option key={code} value={code}>
+                {label} ({count.toLocaleString()})
+              </option>
+            ))}
+          </select>
         </div>
       )}
 
