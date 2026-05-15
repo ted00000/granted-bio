@@ -192,7 +192,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       'server signout'
     )
     await withTimeout(
-      supabase.auth.signOut().catch((e) => {
+      supabase.auth.signOut().catch((e: unknown) => {
         console.error('[AuthContext] browser signout failed:', e)
         return null
       }),
