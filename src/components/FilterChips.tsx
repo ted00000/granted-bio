@@ -186,21 +186,22 @@ export function FilterChips({
     (selectedState ? 1 : 0) +
     Object.values(quickFilters).filter(Boolean).length
 
-  // State dropdown — alphabetized by full state name, with counts.
-  // Only shows states that actually appear in the result set.
-  const stateOptions = byState
-    ? Object.entries(byState)
-        .filter(([, c]) => c > 0)
-        .map(([code, count]) => {
-          const filteredCount = filteredByState?.[code]
-          return {
-            code,
-            count: filteredCount !== undefined ? filteredCount : count,
-            label: US_STATE_NAMES[code] || code,
-          }
-        })
-        .sort((a, b) => a.label.localeCompare(b.label))
-    : []
+  // State dropdown — alphabetized by full state name, with live counts that
+  // honor other active filters. When filteredByState is defined (any filter
+  // active), use those counts exclusively — and drop states that have zero
+  // projects in the filtered set so the dropdown only lists actionable
+  // choices. When no filters are active, use base counts.
+  // Always include the currently-selected state even if its filtered count
+  // is zero, so the user can see/clear their selection.
+  const displayStateCounts = filteredByState ?? byState ?? {}
+  const stateOptions = (byState ? Object.keys(byState) : [])
+    .map((code) => ({
+      code,
+      count: displayStateCounts[code] ?? 0,
+      label: US_STATE_NAMES[code] || code,
+    }))
+    .filter((o) => o.count > 0 || o.code === selectedState)
+    .sort((a, b) => a.label.localeCompare(b.label))
 
   return (
     <div className="space-y-3">
