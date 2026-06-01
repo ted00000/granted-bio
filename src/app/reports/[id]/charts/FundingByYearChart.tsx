@@ -15,6 +15,7 @@ interface FundingByYearData {
   year: number
   funding: number
   projects: number
+  isPartial?: boolean
 }
 
 interface FundingByYearChartProps {
@@ -30,15 +31,23 @@ const formatFunding = (value: number): string => {
 }
 
 const COLORS = {
-  bar: '#E07A5F',
-  barHover: '#C96A4F',
+  bar: '#E07A5F',         // full year
+  barPartial: '#F3C7BC',  // partial year (lighter tint) — accessible label suffix below
   grid: '#E5E5E5',
   text: '#525252',
 }
 
 export function FundingByYearChart({ data, height = 300 }: FundingByYearChartProps) {
-  // Sort by year ascending
-  const sortedData = [...data].sort((a, b) => a.year - b.year)
+  // Sort by year ascending; append "YTD" to the x-axis label of partial years
+  // so the visual distinction doesn't rely on color alone.
+  const sortedData = [...data]
+    .sort((a, b) => a.year - b.year)
+    .map((d) => ({
+      ...d,
+      xLabel: d.isPartial ? `${d.year} YTD` : String(d.year),
+    }))
+
+  const hasPartial = sortedData.some((d) => d.isPartial)
 
   return (
     <div className="w-full" style={{ height }}>
@@ -49,7 +58,7 @@ export function FundingByYearChart({ data, height = 300 }: FundingByYearChartPro
         >
           <CartesianGrid strokeDasharray="3 3" stroke={COLORS.grid} vertical={false} />
           <XAxis
-            dataKey="year"
+            dataKey="xLabel"
             tick={{ fill: COLORS.text, fontSize: 12 }}
             axisLine={{ stroke: COLORS.grid }}
             tickLine={false}
@@ -76,12 +85,17 @@ export function FundingByYearChart({ data, height = 300 }: FundingByYearChartPro
             radius={[4, 4, 0, 0]}
             maxBarSize={50}
           >
-            {sortedData.map((_, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS.bar} />
+            {sortedData.map((d, index) => (
+              <Cell key={`cell-${index}`} fill={d.isPartial ? COLORS.barPartial : COLORS.bar} />
             ))}
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+      {hasPartial && (
+        <p className="text-xs text-gray-500 mt-1 ml-1">
+          Lighter bar = partial fiscal year (YTD only); not directly comparable to fully-reported prior years.
+        </p>
+      )}
     </div>
   )
 }

@@ -162,6 +162,10 @@ async function generateExecutiveSummary(
   const prompt = `${personaContext}
 
 ## TOPIC: ${topic}
+${partialFYPromptDirective(context.fundingStats)}
+
+## FUNDING BY YEAR (most recent first)
+${formatYearTrendForPrompt(context.fundingStats.byYear)}
 
 ## DATA SUMMARY (do NOT repeat these numbers - interpret what they MEAN)
 - ${context.fundingStats.projectCount} projects analyzed (${preciseCount} highly relevant, ${balancedCount} relevant)
@@ -272,7 +276,7 @@ async function generateSectionInsights(
     .join('\n\n')
 
   const prompt = `You are analyzing research data for "${topic}" to generate substantive section insights for a research intelligence report.
-
+${partialFYPromptDirective(context.fundingStats)}
 CRITICAL FRAMING: This data represents a CURATED SAMPLE of ${context.fundingStats.projectCount} high-confidence NIH-funded projects (balanced+ match threshold), not the complete population. Use sample-appropriate language.
 
 MATCH QUALITY TIERS:
@@ -292,6 +296,7 @@ ${formatProjectsWithTiers(agentOutputs.projects.items) || 'No project abstracts 
 - Organizations: ${context.fundingStats.orgCount} | PIs: ${context.fundingStats.piCount}
 - Top Categories: ${context.fundingStats.byCategory.slice(0, 3).map(c => `${c.category.replace(/_/g, ' ')} (${c.projects})`).join(', ')}
 - Top Orgs: ${context.fundingStats.byOrg.slice(0, 3).map((o) => `${o.org}: ${formatCurrency(o.funding)}`).join(', ')}
+- Funding by year: ${formatYearTrendForPrompt(context.fundingStats.byYear)}
 
 ---
 
@@ -424,10 +429,8 @@ async function generateSignalsAnalysis(
     .map(([phase, count]) => `${phase}: ${count}`)
     .join(', ')
 
-  const yearTrend = context.fundingStats.byYear
-    .slice(0, 5)
-    .map((y) => `${y.year}: ${formatCurrency(y.funding)}`)
-    .join(', ')
+  const yearTrend = formatYearTrendForPrompt(context.fundingStats.byYear)
+  const partialDirective = partialFYPromptDirective(context.fundingStats)
 
   const prompt = persona === 'investor'
     ? `Analyze this research landscape for "${topic}" from an INVESTOR perspective.
@@ -452,7 +455,7 @@ ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 20))}
 
 ---
 
-Generate INVESTOR-FOCUSED signals analysis.
+Generate INVESTOR-FOCUSED signals analysis.${partialDirective}
 
 SAMPLE-BASED LANGUAGE: This covers NIH-linked data only, not complete market IP/trials. Use confident but hedged language:
 - "Among the linked patents..." not "The IP landscape is..."
@@ -496,7 +499,7 @@ ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 25))}
 
 ---
 
-Generate RESEARCHER-FOCUSED signals analysis.
+Generate RESEARCHER-FOCUSED signals analysis.${partialDirective}
 
 SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this space. Use confident but hedged language:
 - "Among the funded projects..." not "The field is..."
@@ -603,9 +606,10 @@ async function enhanceMarketContext(
 
   const topCategory = context.fundingStats.byCategory[0]?.category || 'research'
   const topOrgs = context.fundingStats.byOrg.slice(0, 5).map(o => o.org).join(', ')
-  const yearTrend = context.fundingStats.byYear.slice(0, 3).map(y => `${y.year}: ${formatCurrency(y.funding)}`).join(', ')
+  const yearTrend = formatYearTrendForPrompt(context.fundingStats.byYear.slice(0, 3))
+  const partialDirective = partialFYPromptDirective(context.fundingStats)
 
-  const prompt = `You are integrating market research with NIH funding data for "${topic}".
+  const prompt = `You are integrating market research with NIH funding data for "${topic}".${partialDirective}
 
 ## EXISTING MARKET OVERVIEW (from general knowledge)
 ${rawContext.overview}
@@ -826,7 +830,8 @@ async function generateFieldMaturityAssessment(
 - NIH projects: ${context.fundingStats.projectCount}
 - Total funding: $${(context.fundingStats.total / 1000000).toFixed(1)}M
 - Top category: ${context.fundingStats.byCategory[0]?.category || 'research'}
-
+- Funding by year: ${formatYearTrendForPrompt(context.fundingStats.byYear)}
+${partialFYPromptDirective(context.fundingStats)}
 ---
 
 Based on these signals, provide a Technology Readiness Level (TRL) assessment.
@@ -1501,7 +1506,7 @@ ${renderResearchers(context.topResearchers)}
 
 This report analyzes a curated subset of NIH-funded research projects most relevant to **${topic}**. Projects were identified using semantic search (AI-based conceptual matching) and filtered by match quality.
 
-**Important Note on Funding Figures:** All funding amounts shown represent the most recent fiscal year award for each project, NOT the total project cost across all years. Multi-year projects will have higher cumulative funding than the FY award shown.
+**Note on Funding Figures:** Per-project funding amounts shown in this report are the sum of award totals across all budget periods for each project (not just the most recent year). Funding-by-year figures show actual spend per fiscal year drawn from the underlying NIH RePORTER budget-period rows, so a multi-year project contributes to each year it received funding. The current NIH fiscal year (Oct 1 - Sep 30) is partial when this report is generated; that year is labeled "(YTD)" in tables and charts and should not be compared directly to fully-reported prior years.
 
 **Match Quality Tiers:**
 
@@ -1517,7 +1522,7 @@ This report analyzes a curated subset of NIH-funded research projects most relev
 | Projects Analyzed | ${context.fundingStats.projectCount.toLocaleString()} |
 | Precise Matches | ${agentOutputs.projects.items.filter(p => p.match_tier === 'precise').length} |
 | Balanced Matches | ${agentOutputs.projects.items.filter(p => p.match_tier === 'balanced').length} |
-| Total FY Awards | ${formatCurrency(context.fundingStats.total)} |
+| Total Committed Funding | ${formatCurrency(context.fundingStats.total)} |
 | Organizations | ${context.fundingStats.orgCount.toLocaleString()} |
 | Principal Investigators | ${context.fundingStats.piCount.toLocaleString()} |
 
@@ -1927,10 +1932,10 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
     md += insight + '\n\n'
   }
   md += '### Funding Summary\n\n'
-  md += '*Amounts reflect most recent fiscal year awards per project.*\n\n'
+  md += '*Funding figures sum award amounts across all budget periods for each project. Each fiscal year reflects actual spend in that year, not the most recent budget period only.*\n\n'
   md += '| Metric | Value |\n'
   md += '|--------|-------|\n'
-  md += `| Total FY Awards | ${formatCurrency(stats.total)} |\n`
+  md += `| Total Committed Funding | ${formatCurrency(stats.total)} |\n`
   md += `| Active Projects | ${stats.projectCount.toLocaleString()} |\n`
   md += `| Funding Organizations | ${stats.orgCount.toLocaleString()} |\n`
   md += `| Principal Investigators | ${stats.piCount.toLocaleString()} |\n\n`
@@ -1943,9 +1948,13 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
     md += '| Year | Projects | Funding |\n'
     md += '|------|----------|--------|\n'
     stats.byYear.slice(0, 10).forEach((row) => {
-      md += `| ${row.year} | ${row.projects} | ${formatCurrency(row.funding)} |\n`
+      const yearLabel = row.isPartial ? `FY${row.year} (YTD)` : `FY${row.year}`
+      md += `| ${yearLabel} | ${row.projects} | ${formatCurrency(row.funding)} |\n`
     })
     md += '\n'
+    if (stats.partialFYNote) {
+      md += `*${stats.partialFYNote} The YTD figure should not be compared directly to fully-reported prior years.*\n\n`
+    }
   }
 
   if (stats.byCategory.length > 0) {
@@ -1970,15 +1979,15 @@ function renderProjects(projects: ProjectItem[], projectInsights?: Record<string
   }
 
   let md = '### Top Funded Projects\n\n'
-  md += '*Note: Funding figures shown are the most recent fiscal year award, not total project cost across all years.*\n\n'
+  md += '*Funding is the sum of award totals across all budget periods for each project. Latest activity is the most recent fiscal year the project received an award.*\n\n'
 
   projects.forEach((p, i) => {
     md += `#### ${i + 1}. ${p.title}\n`
     md += `- **PI:** ${p.pi_names?.split(';')[0]?.trim() || 'N/A'}`
     if (p.org_name) md += `, ${normalizeOrgName(p.org_name)}`
     md += '\n'
-    md += `- **FY Award:** ${formatCurrency(p.total_cost || 0)}`
-    if (p.fiscal_year) md += ` (FY${p.fiscal_year})`
+    md += `- **Funding:** ${formatCurrency(p.total_cost || 0)}`
+    if (p.fiscal_year) md += ` (latest activity FY${p.fiscal_year})`
     md += '\n'
     if (p.primary_category) {
       md += `- **Category:** ${formatCategory(p.primary_category)}\n`
@@ -2248,6 +2257,31 @@ function formatCategory(category: string): string {
   return category
     .replace(/_/g, ' ')
     .replace(/\b\w/g, (c) => c.toUpperCase())
+}
+
+/**
+ * Render the funding-by-year list for prompt context, annotating the
+ * partial current FY so the LLM doesn't read it as a real year-over-year decline.
+ */
+function formatYearTrendForPrompt(byYear: FundingStats['byYear']): string {
+  return byYear
+    .slice(0, 5)
+    .map((y) => `${y.year}: ${formatCurrency(y.funding)}${y.isPartial ? ' (YTD, partial year)' : ''}`)
+    .join(', ')
+}
+
+/**
+ * A reusable critical-instruction block that every funding-trend-consuming
+ * prompt includes. Tells the LLM not to interpret the partial FY's lower
+ * number as a real funding decline.
+ */
+function partialFYPromptDirective(stats: FundingStats): string {
+  if (!stats.partialFYNote || !stats.currentFY) return ''
+  const fy = stats.currentFY
+  const priorFY = fy - 1
+  return `\n\n## CRITICAL — FY${fy} IS A PARTIAL YEAR
+${stats.partialFYNote}
+The FY${fy} figure shown is YTD only and reflects partial reporting. Do NOT interpret a drop from FY${priorFY} to FY${fy} as a real funding decline — it is incomplete data. When discussing recent funding trends, either exclude FY${fy} from year-over-year comparisons or explicitly label it as YTD. Never use language like "declined to" or "fell to" for FY${fy}.`
 }
 
 // Acronyms that should stay all-caps in org/journal names

@@ -21,6 +21,7 @@ import { runPatentsAgent } from './agents/patents'
 import { runPublicationsAgent } from './agents/publications'
 import { runMarketAgent } from './agents/market'
 import { synthesizeReport } from './synthesize'
+import { getCurrentNihFiscalYear, formatPartialFYLabel } from './fiscal-year'
 
 /**
  * Progress stage type for report generation
@@ -550,6 +551,9 @@ function calculateFundingStats(
     }
   })
 
+  const currentFY = getCurrentNihFiscalYear()
+  const hasPartialYear = projectsOutput.byYear.some((y) => y.isPartial)
+
   return {
     total: projectsOutput.totalFunding,
     projectCount: items.length,
@@ -558,6 +562,8 @@ function calculateFundingStats(
     byYear: projectsOutput.byYear,
     byCategory: projectsOutput.byCategory,
     byOrg: projectsOutput.byOrg.slice(0, 10),
+    currentFY,
+    partialFYNote: hasPartialYear ? formatPartialFYLabel(currentFY) : undefined,
   }
 }
 

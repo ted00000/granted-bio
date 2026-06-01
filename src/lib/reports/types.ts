@@ -23,9 +23,19 @@ export interface FundingStats {
   projectCount: number
   orgCount: number
   piCount: number
-  byYear: Array<{ year: number; projects: number; funding: number }>
+  /**
+   * Funding aggregated by NIH fiscal year. Each entry sums total_cost across
+   * all matching budget-period rows for that year (NOT just the latest
+   * budget period per project — which is what we show on individual project
+   * cards). isPartial = true when the year hasn't ended at report time.
+   */
+  byYear: Array<{ year: number; projects: number; funding: number; isPartial?: boolean }>
   byCategory: Array<{ category: string; projects: number; funding: number }>
   byOrg: Array<{ org: string; projects: number; funding: number }>
+  /** Current NIH fiscal year at report-generation time. */
+  currentFY?: number
+  /** Footnote text for the partial current FY (e.g. "Through May 2026; FY2026 ends Sep 30, 2026."). */
+  partialFYNote?: string
 }
 
 export interface ProjectItem {
@@ -98,7 +108,7 @@ export interface MarketContext {
 export interface ProjectsAgentOutput {
   items: ProjectItem[]
   totalFunding: number
-  byYear: Array<{ year: number; projects: number; funding: number }>
+  byYear: Array<{ year: number; projects: number; funding: number; isPartial?: boolean }>
   byCategory: Array<{ category: string; projects: number; funding: number }>
   byOrg: Array<{ org: string; projects: number; funding: number }>
   // All project_number variants (before deduplication) for linked data lookup

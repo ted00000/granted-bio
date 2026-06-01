@@ -5,6 +5,7 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import Anthropic from '@anthropic-ai/sdk'
 import type { ProjectsAgentOutput, ProjectItem } from '../types'
+import { isPartialFiscalYear } from '../fiscal-year'
 
 const anthropic = new Anthropic()
 
@@ -269,7 +270,16 @@ export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutp
       `(similarity: ${minSim.toFixed(3)} - ${maxSim.toFixed(3)}, avg: ${avgSim.toFixed(3)})`
   )
 
-  return processResults(relevantProjects, allProjectNumbers)
+  // Filter raw rows down to ALL budget periods of relevant projects.
+  // These power the year-by-year aggregation and per-project total funding
+  // (sum across all budget periods), while the deduped `relevantProjects`
+  // list is what we display as the "key projects" entries.
+  const relevantRawRows = rawResults.filter((r) => {
+    const core = getCoreProjectNumber(r.project_number || null)
+    return !!core && relevantCoreNumbers.has(core)
+  })
+
+  return processResults(relevantProjects, relevantRawRows, allProjectNumbers)
 }
 
 /**
@@ -282,73 +292,121 @@ function getMatchTier(similarity: number): 'precise' | 'balanced' | 'broad' {
 }
 
 /**
- * Process relevant search results into agent output
- * @param relevantResults - Deduplicated results filtered to balanced+ threshold AND topic relevance
- * @param allProjectNumbers - Project_number variants for relevant projects (for linked data lookup)
+ * Process relevant search results into agent output.
+ *
+ * Aggregation rules (post-2026-05 refactor — keep counts deduped, dollars raw):
+ *  - Project counts (projectCount, byCategory.projects, byOrg.projects, etc.):
+ *    one entry per project, sourced from the deduped `relevantResults`.
+ *  - Funding totals (totalFunding, byCategory.funding, byOrg.funding,
+ *    per-project total_cost on ProjectItem): sum of total_cost across ALL
+ *    matching budget periods for each project, sourced from `relevantRawRows`.
+ *  - byYear: sum of total_cost per fiscal_year from `relevantRawRows`. A
+ *    project running 2024-2026 contributes its actual 2024, 2025, and 2026
+ *    awards to the correct years instead of disappearing into the latest
+ *    period only. isPartial flags the current NIH fiscal year (Oct 1 - Sep 30
+ *    hasn't ended yet at report-generation time).
+ *
+ * @param relevantResults - Deduplicated set, one row per project
+ * @param relevantRawRows - All budget-period rows belonging to relevant projects
+ * @param allProjectNumbers - Project_number variants (for linked-data lookup)
  */
 function processResults(
   relevantResults: Array<RawProjectResult & { similarity?: number }>,
+  relevantRawRows: Array<RawProjectResult & { similarity?: number }>,
   allProjectNumbers: string[]
 ): ProjectsAgentOutput {
   const preciseCount = relevantResults.filter(p => (p.similarity || 0) >= THRESHOLD_PRECISE).length
 
   console.log(
     `[Projects Agent] Processing ${relevantResults.length} relevant matches ` +
-    `(${preciseCount} precise, ${relevantResults.length - preciseCount} balanced)`
+    `(${preciseCount} precise, ${relevantResults.length - preciseCount} balanced); ` +
+    `${relevantRawRows.length} raw budget-period rows`
   )
 
-  // Map to ProjectItem format with similarity and tier
-  // Note: 'phr' field is the public health relevance (abstract equivalent)
-  const items: ProjectItem[] = relevantResults.map((p) => ({
-    application_id: p.application_id,
-    project_number: p.project_number || null,
-    title: p.title,
-    abstract: p.phr || null, // PHR is the abstract equivalent in NIH data
-    pi_names: p.pi_names || null,
-    org_name: p.org_name || null,
-    total_cost: p.total_cost || null,
-    fiscal_year: p.fiscal_year || null,
-    primary_category: p.primary_category || null,
-    similarity: p.similarity || null,
-    match_tier: p.similarity ? getMatchTier(p.similarity) : null,
-  }))
+  // Per-project total funding — sum total_cost across all budget periods.
+  // Keyed by core project number so all variants roll up into one entry.
+  const perProjectTotal = new Map<string, number>()
+  for (const r of relevantRawRows) {
+    const core = getCoreProjectNumber(r.project_number || null)
+    if (!core) continue
+    perProjectTotal.set(core, (perProjectTotal.get(core) || 0) + (r.total_cost || 0))
+  }
 
-  // Calculate total funding
+  // Map to ProjectItem format. total_cost on each item is now the project's
+  // committed funding across all budget periods (not just the latest period).
+  // fiscal_year stays as the latest budget period's year — useful as a
+  // "most recent activity" indicator on the project card.
+  const items: ProjectItem[] = relevantResults.map((p) => {
+    const core = getCoreProjectNumber(p.project_number || null)
+    const projectTotal = (core && perProjectTotal.get(core)) || (p.total_cost || 0)
+    return {
+      application_id: p.application_id,
+      project_number: p.project_number || null,
+      title: p.title,
+      abstract: p.phr || null, // PHR is the abstract equivalent in NIH data
+      pi_names: p.pi_names || null,
+      org_name: p.org_name || null,
+      total_cost: projectTotal,
+      fiscal_year: p.fiscal_year || null,
+      primary_category: p.primary_category || null,
+      similarity: p.similarity || null,
+      match_tier: p.similarity ? getMatchTier(p.similarity) : null,
+    }
+  })
+
+  // Total funding: sum of per-project totals across the deduped set.
   const totalFunding = items.reduce((sum, p) => sum + (p.total_cost || 0), 0)
 
-  // Group by fiscal year
-  const byYearMap = new Map<number, { projects: number; funding: number }>()
-  items.forEach((p) => {
-    if (!p.fiscal_year) return
-    const existing = byYearMap.get(p.fiscal_year) || { projects: 0, funding: 0 }
-    existing.projects++
-    existing.funding += p.total_cost || 0
-    byYearMap.set(p.fiscal_year, existing)
-  })
-  const byYear = Array.from(byYearMap.entries())
-    .map(([year, data]) => ({ year, ...data }))
+  // byYear: actual spend per fiscal_year from raw budget-period rows.
+  // Count unique projects (via core number) so a multi-year project counts
+  // once per year it had funding, not multiple times per year.
+  const yearFunding = new Map<number, number>()
+  const yearCoreSet = new Map<number, Set<string>>()
+  for (const r of relevantRawRows) {
+    if (!r.fiscal_year) continue
+    const core = getCoreProjectNumber(r.project_number || null)
+    if (!core) continue
+    yearFunding.set(r.fiscal_year, (yearFunding.get(r.fiscal_year) || 0) + (r.total_cost || 0))
+    let coresInYear = yearCoreSet.get(r.fiscal_year)
+    if (!coresInYear) {
+      coresInYear = new Set()
+      yearCoreSet.set(r.fiscal_year, coresInYear)
+    }
+    coresInYear.add(core)
+  }
+  const byYear = Array.from(yearFunding.entries())
+    .map(([year, funding]) => ({
+      year,
+      funding,
+      projects: yearCoreSet.get(year)?.size ?? 0,
+      isPartial: isPartialFiscalYear(year),
+    }))
     .sort((a, b) => b.year - a.year)
 
-  // Group by category
+  // byCategory: project counts from deduped, funding from project totals.
   const byCategoryMap = new Map<string, { projects: number; funding: number }>()
-  items.forEach((p) => {
+  relevantResults.forEach((p) => {
     const category = p.primary_category || 'other'
+    const core = getCoreProjectNumber(p.project_number || null)
+    const projectTotal = (core && perProjectTotal.get(core)) || (p.total_cost || 0)
     const existing = byCategoryMap.get(category) || { projects: 0, funding: 0 }
     existing.projects++
-    existing.funding += p.total_cost || 0
+    existing.funding += projectTotal
     byCategoryMap.set(category, existing)
   })
   const byCategory = Array.from(byCategoryMap.entries())
     .map(([category, data]) => ({ category, ...data }))
     .sort((a, b) => b.funding - a.funding)
 
-  // Group by organization
+  // byOrg: same pattern as byCategory.
   const byOrgMap = new Map<string, { projects: number; funding: number }>()
-  items.forEach((p) => {
+  relevantResults.forEach((p) => {
     if (!p.org_name) return
+    const core = getCoreProjectNumber(p.project_number || null)
+    const projectTotal = (core && perProjectTotal.get(core)) || (p.total_cost || 0)
     const existing = byOrgMap.get(p.org_name) || { projects: 0, funding: 0 }
     existing.projects++
-    existing.funding += p.total_cost || 0
+    existing.funding += projectTotal
     byOrgMap.set(p.org_name, existing)
   })
   const byOrg = Array.from(byOrgMap.entries())
@@ -361,7 +419,7 @@ function processResults(
 
   console.log(
     `[Projects Agent] Processed ${items.length} projects, ` +
-      `$${(totalFunding / 1e6).toFixed(1)}M total funding, ` +
+      `$${(totalFunding / 1e6).toFixed(1)}M total funding (sum across all budget periods), ` +
       `avg similarity: ${avgSimilarity.toFixed(3)}`
   )
 

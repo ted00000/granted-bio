@@ -14,6 +14,7 @@ interface FundingByYear {
   year: number
   funding: number
   projects: number
+  isPartial?: boolean
 }
 
 interface CategoryData {
@@ -540,9 +541,13 @@ export default function ReportDetailPage({
         Unknown: [212, 212, 212],
       }
 
+      // Light tint of the brand color, used to render partial-FY bars so a
+      // YTD slice is visually distinct from fully-reported years.
+      const brandColorLight: [number, number, number] = [243, 199, 188]
+
       // Draw a vertical bar chart in jsPDF coordinate space. Returns final y after chart.
       const drawVerticalBarChart = (
-        data: Array<{ label: string; value: number }>,
+        data: Array<{ label: string; value: number; isPartial?: boolean }>,
         cx: number,
         cy: number,
         cw: number,
@@ -580,15 +585,19 @@ export default function ReportDetailPage({
           doc.text(label, plotX - 4 - labelW, yPx + 3)
         }
 
-        // Bars
+        // Bars — partial-FY bars get a lighter brand tint so they read as YTD
         const barSlot = plotW / data.length
         const barW = Math.min(barSlot * 0.7, 50)
         const barOffset = (barSlot - barW) / 2
-        doc.setFillColor(...brandColor)
         data.forEach((d, idx) => {
           const h = (d.value / niceMax) * plotH
           const bx = plotX + idx * barSlot + barOffset
           const by = plotY + plotH - h
+          if (d.isPartial) {
+            doc.setFillColor(...brandColorLight)
+          } else {
+            doc.setFillColor(...brandColor)
+          }
           doc.rect(bx, by, barW, h, 'F')
           // Value label above bar
           doc.setTextColor(82, 82, 82)
@@ -596,9 +605,11 @@ export default function ReportDetailPage({
           const valueLabel = yLabelFn(d.value)
           const valW = doc.getTextWidth(valueLabel)
           doc.text(valueLabel, bx + barW / 2 - valW / 2, by - 3)
-          // X label below
-          const labelW = doc.getTextWidth(d.label)
-          doc.text(d.label, bx + barW / 2 - labelW / 2, plotY + plotH + 12)
+          // X label below — append "YTD" suffix for partial years so the
+          // distinction doesn't rely on color alone (accessibility)
+          const xLabel = d.isPartial ? `${d.label} YTD` : d.label
+          const labelW = doc.getTextWidth(xLabel)
+          doc.text(xLabel, bx + barW / 2 - labelW / 2, plotY + plotH + 12)
         })
 
         return cy + ch
@@ -661,7 +672,7 @@ export default function ReportDetailPage({
           const data = [...fundingStats.byYear]
             .sort((a, b) => a.year - b.year)
             .slice(-10)
-            .map((row) => ({ label: String(row.year), value: row.funding }))
+            .map((row) => ({ label: String(row.year), value: row.funding, isPartial: row.isPartial }))
           const chartHeight = 140
           addNewPageIfNeeded(chartHeight + 20)
           y = drawVerticalBarChart(data, margin, y, maxWidth, chartHeight, {
