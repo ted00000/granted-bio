@@ -54,8 +54,23 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { report_type, topic, data_limited, persona } = body
+    const { report_type, topic, data_limited, persona, interpretation } = body
     const reportPersona: ReportPersona = persona === 'investor' ? 'investor' : 'researcher'
+
+    // Optional human-chosen interpretation (from /api/reports/interpret-topic).
+    // If provided, the projects agent uses it directly instead of generating
+    // its own non-deterministic Claude rewrite. Validate shape minimally.
+    const injectedInterpretation =
+      interpretation &&
+      typeof interpretation.semanticQuery === 'string' &&
+      typeof interpretation.keywordQuery === 'string' &&
+      typeof interpretation.label === 'string'
+        ? {
+            semanticQuery: interpretation.semanticQuery as string,
+            keywordQuery: interpretation.keywordQuery as string,
+            label: interpretation.label as string,
+          }
+        : undefined
 
     if (!report_type) {
       return NextResponse.json({ error: 'report_type is required' }, { status: 400 })
@@ -127,7 +142,13 @@ export async function POST(request: NextRequest) {
     let reportId: string
 
     if (report_type === 'topic') {
-      reportId = await generateTopicReport(user.id, topic, data_limited ?? false, reportPersona)
+      reportId = await generateTopicReport(
+        user.id,
+        topic,
+        data_limited ?? false,
+        reportPersona,
+        injectedInterpretation
+      )
     } else if (report_type === 'portfolio') {
       reportId = await generatePortfolioReport(user.id)
     } else {

@@ -64,14 +64,28 @@ export async function checkProjectCount(topic: string): Promise<number> {
   return data?.length ?? 0
 }
 
+export interface InjectedInterpretation {
+  /** Natural-language phrase used as the embedding-search input. */
+  semanticQuery: string
+  /** Pipe-separated terms (currently informational; kept for future keyword filtering). */
+  keywordQuery: string
+  /** Human-readable label shown in the UI (e.g. 'Standard'). */
+  label: string
+}
+
 /**
  * Generate a topic-based research landscape report
+ *
+ * @param injectedInterpretation - Optional human-chosen interpretation from
+ *   the picker UI. If provided, anchors the projects agent on a known
+ *   semantic query instead of regenerating one via Claude on each run.
  */
 export async function generateTopicReport(
   userId: string,
   topic: string,
   dataLimited: boolean = false,
-  persona: ReportPersona = 'researcher'
+  persona: ReportPersona = 'researcher',
+  injectedInterpretation?: InjectedInterpretation
 ): Promise<string> {
   // Create report record with 'generating' status
   const { data: report, error: insertError } = await supabaseAdmin
@@ -100,7 +114,7 @@ export async function generateTopicReport(
     console.log(`[Report ${reportId}] Starting agent data gathering for "${topic}"`)
 
     await updateProgressStage(reportId, 'searching_projects')
-    const projectsOutput = await runProjectsAgent(topic)
+    const projectsOutput = await runProjectsAgent(topic, injectedInterpretation)
     console.log(`[Report ${reportId}] Projects agent complete: ${projectsOutput.items.length} projects`)
 
     // Use all project_number variants from pre-deduplication for linked data lookup
@@ -152,6 +166,7 @@ export async function generateTopicReport(
       topResearchers,
       dataLimited,
       persona,
+      interpretation: injectedInterpretation,
     })
 
     // Save completed report

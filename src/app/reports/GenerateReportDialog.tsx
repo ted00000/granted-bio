@@ -1,10 +1,19 @@
 'use client'
 
 import { useState } from 'react'
-import { X, AlertTriangle, Loader2, FlaskConical, TrendingUp, CreditCard, Sparkles } from 'lucide-react'
+import { X, AlertTriangle, Loader2, FlaskConical, TrendingUp, CreditCard, Sparkles, Telescope, Compass, Globe } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
 
 type Persona = 'researcher' | 'investor'
+type Step = 'input' | 'interpreting' | 'choose-interpretation' | 'checking' | 'confirm' | 'purchasing' | 'generating'
+
+interface Interpretation {
+  id: 'narrow' | 'standard' | 'broad'
+  label: string
+  description: string
+  semanticQuery: string
+  keywordQuery: string
+}
 
 interface GenerateReportDialogProps {
   onClose: () => void
@@ -17,9 +26,11 @@ export function GenerateReportDialog({
 }: GenerateReportDialogProps) {
   const [topic, setTopic] = useState('')
   const [persona, setPersona] = useState<Persona>('researcher')
-  const [step, setStep] = useState<'input' | 'checking' | 'confirm' | 'purchasing' | 'generating'>('input')
+  const [step, setStep] = useState<Step>('input')
   const [projectCount, setProjectCount] = useState<number | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [interpretations, setInterpretations] = useState<Interpretation[]>([])
+  const [selectedInterpretation, setSelectedInterpretation] = useState<Interpretation | null>(null)
 
   const { isAdmin, isAssociate, profile } = useAuth()
 
@@ -35,9 +46,37 @@ export function GenerateReportDialog({
 
   const canBypassPayment = isAdmin || isAssociate || (isActiveBeta && !betaCapReached)
 
-  const checkTopic = async () => {
+  // Step 1: Fetch 3 scoped interpretations of the topic from Claude.
+  // User confirms one before any data lookup or payment happens.
+  const fetchInterpretations = async () => {
     if (!topic.trim()) return
 
+    setStep('interpreting')
+    setError(null)
+
+    try {
+      const response = await fetch('/api/reports/interpret-topic', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic: topic.trim() }),
+      })
+      const data = await response.json()
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to interpret topic')
+      }
+      setInterpretations(data.interpretations)
+      setStep('choose-interpretation')
+    } catch (e) {
+      console.error('Error fetching interpretations:', e)
+      setError(e instanceof Error ? e.message : 'Failed to interpret topic')
+      setStep('input')
+    }
+  }
+
+  // Step 2: User picked an interpretation. Now check project count and route
+  // to either limited-data confirm, direct generation, or Stripe purchase.
+  const checkTopic = async (interp: Interpretation) => {
+    setSelectedInterpretation(interp)
     setStep('checking')
     setError(null)
 
@@ -56,11 +95,9 @@ export function GenerateReportDialog({
       if (data.project_count < 5) {
         setStep('confirm')
       } else if (canBypassPayment) {
-        // Admin bypass - generate directly
-        await generateReportDirect(false)
+        await generateReportDirect(false, interp)
       } else {
-        // Normal user - proceed to purchase
-        await purchaseReport(false)
+        await purchaseReport(false, interp)
       }
     } catch (e) {
       console.error('Error checking topic:', e)
@@ -70,9 +107,10 @@ export function GenerateReportDialog({
   }
 
   // Admin-only: Generate report directly without payment
-  const generateReportDirect = async (dataLimited: boolean) => {
+  const generateReportDirect = async (dataLimited: boolean, interp?: Interpretation) => {
     setStep('generating')
     setError(null)
+    const chosen = interp ?? selectedInterpretation
 
     try {
       const response = await fetch('/api/reports', {
@@ -83,6 +121,7 @@ export function GenerateReportDialog({
           topic: topic.trim(),
           persona,
           data_limited: dataLimited,
+          interpretation: chosen ?? undefined,
         }),
       })
 
@@ -101,9 +140,10 @@ export function GenerateReportDialog({
     }
   }
 
-  const purchaseReport = async (dataLimited: boolean) => {
+  const purchaseReport = async (dataLimited: boolean, interp?: Interpretation) => {
     setStep('purchasing')
     setError(null)
+    const chosen = interp ?? selectedInterpretation
 
     try {
       // Create Stripe checkout session for report purchase
@@ -115,6 +155,7 @@ export function GenerateReportDialog({
           topic: topic.trim(),
           persona,
           dataLimited,
+          interpretation: chosen ?? undefined,
         }),
       })
 
@@ -258,13 +299,70 @@ export function GenerateReportDialog({
                 placeholder="e.g., CAR-T cell therapy, CRISPR gene editing"
                 className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent"
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter') checkTopic()
+                  if (e.key === 'Enter') fetchInterpretations()
                 }}
               />
               {error && (
                 <p className="mt-2 text-sm text-rose-600">{error}</p>
               )}
             </>
+          )}
+
+          {step === 'interpreting' && (
+            <div className="flex flex-col items-center py-10">
+              <Loader2 className="w-8 h-8 text-[#E07A5F] animate-spin mb-3" />
+              <p className="text-gray-900 font-medium mb-1">Interpreting your topic</p>
+              <p className="text-sm text-gray-500 text-center max-w-xs">
+                Generating three search interpretations for you to choose from. Takes about 5 seconds.
+              </p>
+            </div>
+          )}
+
+          {step === 'choose-interpretation' && (
+            <div className="space-y-3">
+              <p className="text-sm text-gray-600 mb-3">
+                Pick the interpretation that best matches what you want to search for. Each option searches a different scope.
+              </p>
+              {interpretations.map((interp) => {
+                const Icon =
+                  interp.id === 'narrow' ? Telescope : interp.id === 'standard' ? Compass : Globe
+                return (
+                  <button
+                    key={interp.id}
+                    onClick={() => checkTopic(interp)}
+                    className="w-full text-left p-4 rounded-lg border-2 border-gray-200 hover:border-[#E07A5F] hover:bg-[#E07A5F]/5 transition-all"
+                  >
+                    <div className="flex items-start gap-3">
+                      <Icon className="w-5 h-5 text-[#E07A5F] flex-shrink-0 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-baseline gap-2 mb-1">
+                          <span className="text-sm font-semibold text-gray-900">{interp.label}</span>
+                          <span className="text-xs text-gray-500">{interp.description}</span>
+                        </div>
+                        <p className="text-sm text-gray-700 mb-2 leading-snug">
+                          &ldquo;{interp.semanticQuery}&rdquo;
+                        </p>
+                        <div className="flex flex-wrap gap-1">
+                          {interp.keywordQuery.split('|').slice(0, 8).map((term, i) => (
+                            <span
+                              key={i}
+                              className="inline-block px-1.5 py-0.5 text-[10px] bg-gray-100 text-gray-600 rounded"
+                            >
+                              {term.trim()}
+                            </span>
+                          ))}
+                          {interp.keywordQuery.split('|').length > 8 && (
+                            <span className="inline-block px-1.5 py-0.5 text-[10px] text-gray-400">
+                              +{interp.keywordQuery.split('|').length - 8} more
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
           )}
 
           {step === 'checking' && (
@@ -333,25 +431,30 @@ export function GenerateReportDialog({
               >
                 Cancel
               </button>
-              {canBypassPayment ? (
-                <button
-                  onClick={checkTopic}
-                  disabled={!topic.trim()}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-violet-600 rounded-lg hover:bg-violet-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <Sparkles className="w-4 h-4" />
-                  Generate
-                </button>
-              ) : (
-                <button
-                  onClick={checkTopic}
-                  disabled={!topic.trim()}
-                  className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <CreditCard className="w-4 h-4" />
-                  Purchase Report - $99
-                </button>
-              )}
+              <button
+                onClick={fetchInterpretations}
+                disabled={!topic.trim()}
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Continue
+              </button>
+            </>
+          )}
+
+          {step === 'choose-interpretation' && (
+            <>
+              <button
+                onClick={() => {
+                  setStep('input')
+                  setError(null)
+                }}
+                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Back
+              </button>
+              <span className="text-xs text-gray-400">
+                {canBypassPayment ? 'Pick to start generation' : 'Pick to continue to checkout ($99)'}
+              </span>
             </>
           )}
 

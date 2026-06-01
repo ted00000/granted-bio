@@ -27,11 +27,12 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { type, topic, persona, dataLimited } = body as {
+    const { type, topic, persona, dataLimited, interpretation } = body as {
       type: 'subscription' | 'report'
       topic?: string
       persona?: 'researcher' | 'investor'
       dataLimited?: boolean
+      interpretation?: { semanticQuery: string; keywordQuery: string; label: string }
     }
 
     // Get or create Stripe customer
@@ -99,6 +100,12 @@ export async function POST(request: NextRequest) {
           topic,
           persona,
           dataLimited: dataLimited ? 'true' : 'false',
+          // Persist the human-chosen interpretation so the webhook handler
+          // can pass it to generateTopicReport after payment succeeds.
+          // Stripe metadata values are strings; we JSON-encode here.
+          ...(interpretation
+            ? { interpretation: JSON.stringify(interpretation).slice(0, 500) }
+            : {}),
         },
       })
 

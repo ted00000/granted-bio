@@ -139,13 +139,28 @@ async function buildSemanticQuery(topic: string): Promise<string> {
  * Run the Projects Agent to gather project data for a topic
  * Uses pure semantic search aligned with UI for consistency
  * Returns up to 100 projects sorted by similarity (most relevant first)
+ *
+ * @param injectedInterpretation - Optional human-chosen interpretation from
+ *   the picker UI. When provided, skips the internal Claude-rewrite step
+ *   (which is non-deterministic at temp=0 and was causing identical topics
+ *   to produce non-reproducible result sets across report runs).
  */
-export async function runProjectsAgent(topic: string): Promise<ProjectsAgentOutput> {
+export async function runProjectsAgent(
+  topic: string,
+  injectedInterpretation?: { semanticQuery: string; keywordQuery: string; label: string }
+): Promise<ProjectsAgentOutput> {
   console.log(`[Projects Agent] Searching for "${topic}"`)
 
-  // Transform topic into optimized semantic query using Claude (aligned with UI)
-  const semanticQuery = await buildSemanticQuery(topic)
-  console.log(`[Projects Agent] Semantic query: "${semanticQuery}"`)
+  // Use injected interpretation if available; otherwise generate via Claude
+  // (legacy path, retained for backward compatibility and other call sites).
+  const semanticQuery = injectedInterpretation
+    ? injectedInterpretation.semanticQuery
+    : await buildSemanticQuery(topic)
+  if (injectedInterpretation) {
+    console.log(`[Projects Agent] Using injected interpretation '${injectedInterpretation.label}': "${semanticQuery}"`)
+  } else {
+    console.log(`[Projects Agent] Semantic query (auto-generated): "${semanticQuery}"`)
+  }
 
   // Generate embedding for semantic search
   const queryEmbedding = await generateEmbedding(semanticQuery)

@@ -143,6 +143,28 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       const persona: ReportPersona = metadata.persona === 'investor' ? 'investor' : 'researcher'
       const dataLimited = metadata.dataLimited === 'true'
 
+      // Recover the human-chosen interpretation that was attached at checkout
+      // time (best-effort; if parsing fails or it wasn't set, falls back to
+      // the legacy auto-rewrite path inside the projects agent).
+      let interpretation:
+        | { semanticQuery: string; keywordQuery: string; label: string }
+        | undefined
+      if (metadata.interpretation) {
+        try {
+          const parsed = JSON.parse(metadata.interpretation)
+          if (
+            parsed &&
+            typeof parsed.semanticQuery === 'string' &&
+            typeof parsed.keywordQuery === 'string' &&
+            typeof parsed.label === 'string'
+          ) {
+            interpretation = parsed
+          }
+        } catch (e) {
+          console.error('[Stripe Webhook] Failed to parse interpretation metadata:', e)
+        }
+      }
+
       console.log(`[Stripe Webhook] Starting report generation for user ${metadata.userId}`)
 
       // Generate report and link to purchase
@@ -150,7 +172,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         metadata.userId,
         metadata.topic,
         dataLimited,
-        persona
+        persona,
+        interpretation
       )
 
       // Get purchase ID to link report

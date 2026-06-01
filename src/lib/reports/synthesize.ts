@@ -29,6 +29,8 @@ interface SynthesisContext {
   topResearchers: ResearcherStats[]
   dataLimited?: boolean
   persona?: ReportPersona
+  /** Human-chosen search interpretation, if the report was generated through the picker UI. */
+  interpretation?: { semanticQuery: string; keywordQuery: string; label: string }
 }
 
 // Track cumulative token usage across all synthesis API calls
@@ -1504,7 +1506,11 @@ ${renderResearchers(context.topResearchers)}
 
 ### Methodology
 
-This report analyzes a curated subset of NIH-funded research projects most relevant to **${topic}**. Projects were identified using semantic search (AI-based conceptual matching) and filtered by match quality.
+This report analyzes a curated subset of NIH-funded research projects most relevant to **${topic}**. Projects were identified using semantic search (AI-based conceptual matching) and filtered by match quality.${
+    context.interpretation
+      ? `\n\n**Search Interpretation Used:** ${context.interpretation.label} - "${context.interpretation.semanticQuery}"`
+      : ''
+  }
 
 **Note on Funding Figures:** Per-project funding amounts shown in this report are the sum of award totals across all budget periods for each project (not just the most recent year). Funding-by-year figures show actual spend per fiscal year drawn from the underlying NIH RePORTER budget-period rows, so a multi-year project contributes to each year it received funding. The current NIH fiscal year (Oct 1 - Sep 30) is partial when this report is generated; that year is labeled "(YTD)" in tables and charts and should not be compared directly to fully-reported prior years.
 
