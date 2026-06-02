@@ -70,9 +70,18 @@ export default function UsersPage() {
     setUpdating(userId)
     setError(null)
 
+    // Reset the monthly search counter on any role change so the user starts
+    // the new role with a clean quota. Especially important when demoting from
+    // admin/associate to 'user' — otherwise a user who'd been doing hundreds
+    // of pro-level searches would land at the 10-search free limit already
+    // exceeded and be blocked until the monthly reset.
     const { error } = await supabase
       .from('user_profiles')
-      .update({ role: newRole })
+      .update({
+        role: newRole,
+        searches_this_month: 0,
+        searches_reset_at: new Date().toISOString(),
+      })
       .eq('id', userId)
 
     if (error) {
