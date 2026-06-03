@@ -40,6 +40,18 @@ export async function runTrialsAgent(
     `[Trials Agent] Path 1: fetching trials linked to ${projectNumbers.length} projects`
   )
 
+  // Build diagnostics object up-front so every exit path records what happened.
+  // Persisted via agent_outputs JSON column so we don't need ephemeral function
+  // logs to verify production behavior.
+  const diagnostics: NonNullable<TrialsAgentOutput['diagnostics']> = {
+    topicQueryProvided: Boolean(topicQuery && topicQuery.trim().length > 0),
+    topicQueryLength: topicQuery?.trim().length ?? 0,
+    path1Count: 0,
+    path2CandidateCount: 0,
+    path2FetchedRowCount: 0,
+    path2Status: 'skipped_no_query',
+  }
+
   // Path 1 — trials linked to topically-relevant projects
   let linkedTrials: RawTrialResult[] = []
   if (projectNumbers.length > 0) {
@@ -55,6 +67,7 @@ export async function runTrialsAgent(
       linkedTrials = data
     }
   }
+  diagnostics.path1Count = linkedTrials.length
 
   // Path 2 — trials matched semantically by study_title embedding.
   // The search_clinical_studies RPC returns id/nct/title/status + similarity
@@ -78,7 +91,12 @@ export async function runTrialsAgent(
 
       if (rpcError) {
         console.error('[Trials Agent] Path 2 RPC error:', rpcError)
-      } else if (candidates && candidates.length > 0) {
+        diagnostics.path2Status = 'rpc_error'
+        diagnostics.path2ErrorMessage = rpcError.message ?? String(rpcError)
+      } else if (!candidates || candidates.length === 0) {
+        diagnostics.path2Status = 'no_candidates'
+      } else {
+        diagnostics.path2CandidateCount = candidates.length
         const nctIds = Array.from(
           new Set(candidates.map((c: { nct_id: string }) => c.nct_id))
         )
@@ -89,22 +107,30 @@ export async function runTrialsAgent(
 
         if (fetchError) {
           console.error('[Trials Agent] Path 2 fetch error:', fetchError)
+          diagnostics.path2Status = 'fetch_error'
+          diagnostics.path2ErrorMessage = fetchError.message ?? String(fetchError)
         } else if (fullRows) {
           semanticTrials = fullRows
+          diagnostics.path2FetchedRowCount = fullRows.length
+          diagnostics.path2Status = 'ok'
         }
       }
     } catch (err) {
       console.error('[Trials Agent] Path 2 embedding error:', err)
+      diagnostics.path2Status = 'embedding_error'
+      diagnostics.path2ErrorMessage = err instanceof Error ? err.message : String(err)
     }
   }
 
   console.log(
-    `[Trials Agent] Path 1: ${linkedTrials.length} rows | Path 2: ${semanticTrials.length} rows`
+    `[Trials Agent] Path 1: ${linkedTrials.length} rows | Path 2: ${semanticTrials.length} rows (status: ${diagnostics.path2Status})`
   )
 
   if (linkedTrials.length === 0 && semanticTrials.length === 0) {
     console.log('[Trials Agent] No trials found from either path')
-    return emptyOutput()
+    const empty = emptyOutput()
+    empty.diagnostics = diagnostics
+    return empty
   }
 
   // Union both paths, dedupe by NCT ID. Path 1 wins on conflict because its
@@ -146,11 +172,15 @@ export async function runTrialsAgent(
       .in('nct_id', nctIds)
 
     if (refreshed) {
-      return processResults(refreshed)
+      const out = processResults(refreshed)
+      out.diagnostics = diagnostics
+      return out
     }
   }
 
-  return processResults(uniqueTrials)
+  const out = processResults(uniqueTrials)
+  out.diagnostics = diagnostics
+  return out
 }
 
 /**

@@ -120,6 +120,26 @@ export interface TrialsAgentOutput {
   items: TrialItem[]
   byPhase: Record<string, number>
   byStatus: Record<string, number>
+  /**
+   * Diagnostic counters from each lookup path. Persisted via agent_outputs
+   * so production runs leave durable evidence of how trials were sourced,
+   * independently of ephemeral function logs.
+   */
+  diagnostics?: {
+    topicQueryProvided: boolean
+    topicQueryLength: number
+    path1Count: number
+    path2CandidateCount: number
+    path2FetchedRowCount: number
+    path2Status:
+      | 'ok'
+      | 'skipped_no_query'
+      | 'embedding_error'
+      | 'rpc_error'
+      | 'no_candidates'
+      | 'fetch_error'
+    path2ErrorMessage?: string
+  }
 }
 
 export interface PatentsAgentOutput {
