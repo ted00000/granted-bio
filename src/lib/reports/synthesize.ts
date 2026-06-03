@@ -1444,7 +1444,7 @@ ${renderResearchers(context.topResearchers)}
 
 ## Key Publications
 
-${renderCuratedPublications(curatedPublications, agentOutputs.publications)}
+${renderCuratedPublications(curatedPublications, agentOutputs.publications, insights.publications)}
 
 ---
 
@@ -1495,7 +1495,7 @@ ${renderPatents(agentOutputs.patents, insights.patents)}
 
 ## Key Publications
 
-${renderCuratedPublications(curatedPublications, agentOutputs.publications)}
+${renderCuratedPublications(curatedPublications, agentOutputs.publications, insights.publications)}
 
 ---
 
@@ -1849,7 +1849,11 @@ function renderResearcherSignals(signals: SignalsAnalysis): string {
   return md || 'Research positioning analysis not available.\n'
 }
 
-function renderCuratedPublications(curated: CuratedPublication[], allPubs: AllAgentOutputs['publications']): string {
+function renderCuratedPublications(
+  curated: CuratedPublication[],
+  allPubs: AllAgentOutputs['publications'],
+  insight: string
+): string {
   if (curated.length === 0 && allPubs.items.length === 0) {
     return '*Note: This analysis includes only publications linked to NIH-funded projects.*\n\nNo publications found linked to NIH projects in this space.\n'
   }
@@ -1858,6 +1862,12 @@ function renderCuratedPublications(curated: CuratedPublication[], allPubs: AllAg
 
   // Disclaimer about NIH-linked sample
   md += '*Note: This analysis includes only publications linked to NIH-funded projects and may not represent the complete body of literature in this field.*\n\n'
+
+  // Lead-in narrative from generateSectionInsights — what scientific questions
+  // are being addressed and which methodological advances are visible.
+  if (insight) {
+    md += insight + '\n\n'
+  }
 
   // Show curated publications if available
   if (curated.length > 0) {
@@ -2113,52 +2123,6 @@ function renderPatents(patents: AllAgentOutputs['patents'], insight: string): st
   return md
 }
 
-function renderPublications(pubs: AllAgentOutputs['publications'], insight: string): string {
-  if (pubs.items.length === 0) {
-    return '*Note: This analysis includes only publications linked to NIH-funded projects.*\n\nNo publications found linked to NIH projects in this space.\n'
-  }
-
-  let md = ''
-
-  // Disclaimer about NIH-linked sample
-  md += '*Note: This analysis includes only publications linked to NIH-funded projects and may not represent the complete body of literature in this field.*\n\n'
-
-  if (insight) {
-    md += insight + '\n\n'
-  }
-  md += '### Publication Summary\n\n'
-  md += '| Metric | Value |\n'
-  md += '|--------|-------|\n'
-  md += `| Total Publications | ${pubs.items.length} |\n`
-  md += `| Unique Journals | ${pubs.byJournal.length} |\n\n`
-
-  // Only show "Top Journals" list if at least one journal has 2+ pubs
-  const topJournalCount = pubs.byJournal[0]?.count ?? 0
-  if (pubs.byJournal.length > 0 && topJournalCount >= 2) {
-    md += '### Top Journals\n\n'
-    md += '| Journal | Publications |\n'
-    md += '|---------|-------------|\n'
-    pubs.byJournal
-      .filter((j) => j.count >= 2)
-      .slice(0, 5)
-      .forEach((j) => {
-        md += `| ${normalizeJournalName(j.journal)} | ${j.count} |\n`
-      })
-    md += '\n'
-  }
-
-  md += '### Recent Publications\n\n'
-  pubs.items.slice(0, 15).forEach((p) => {
-    md += `#### ${p.publication_title || 'Untitled'}\n`
-    md += `- **PMID:** [${p.pmid}](https://pubmed.ncbi.nlm.nih.gov/${p.pmid})\n`
-    if (p.journal) md += `- **Journal:** ${normalizeJournalName(p.journal)}\n`
-    if (p.publication_date) md += `- **Year:** ${new Date(p.publication_date).getFullYear()}\n`
-    if (p.authors) md += `- **Authors:** ${p.authors}\n`
-    md += '\n'
-  })
-
-  return md
-}
 
 function renderOrganizations(orgs: OrgStats[]): string {
   if (orgs.length === 0) {
