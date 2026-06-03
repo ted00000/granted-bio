@@ -1750,7 +1750,7 @@ function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOu
 
   if (patents.items.length > 0) {
     md += '### Key Patents\n\n'
-    patents.items.slice(0, 10).forEach((p) => {
+    patents.items.slice(0, 15).forEach((p) => {
       md += `#### ${p.patent_title || 'Untitled Patent'}\n`
       md += `- **Patent #:** [${p.patent_id}](/patent/${p.patent_id})\n`
       if (p.assignee) md += `- **Assignee:** ${p.assignee}\n`

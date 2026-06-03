@@ -121,14 +121,27 @@ async function buildSemanticQuery(topic: string): Promise<string> {
 
     const text = response.content[0]
     if (text.type === 'text') {
-      try {
-        const parsed = JSON.parse(text.text.trim())
-        return parsed.semantic_query
-      } catch {
-        // If JSON parse fails, try to extract semantic_query
-        const match = text.text.match(/"semantic_query":\s*"([^"]+)"/)
-        if (match) return match[1]
+      // Strip markdown code fences if present, then regex-extract the JSON
+      // object. Matches the defensive pattern used by JSON parsers in
+      // synthesize.ts. Legacy path only — runs when no injectedInterpretation
+      // is supplied, which is rare in production now that the picker is
+      // wired through every report flow.
+      let jsonText = text.text.trim()
+      if (jsonText.startsWith('```')) {
+        jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
       }
+      const objectMatch = jsonText.match(/\{[\s\S]*\}/)
+      if (objectMatch) {
+        try {
+          const parsed = JSON.parse(objectMatch[0])
+          if (parsed.semantic_query) return parsed.semantic_query
+        } catch {
+          // fall through to regex extraction below
+        }
+      }
+      // Last-resort field extraction if structured parse fails
+      const match = text.text.match(/"semantic_query":\s*"([^"]+)"/)
+      if (match) return match[1]
     }
   } catch (error) {
     console.error('[Projects Agent] Claude query transformation failed:', error)
