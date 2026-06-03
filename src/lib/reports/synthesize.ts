@@ -1489,7 +1489,7 @@ ${renderClinicalPipeline(agentOutputs.trials, insights.clinicalPipeline)}
 
     md += `## Patent Activity
 
-${renderPatents(agentOutputs.patents, insights.patents)}
+${renderIPLandscape(ipLandscape, agentOutputs.patents, insights.patents)}
 
 ---
 
@@ -2081,42 +2081,6 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
     if (t.lead_sponsor) md += `- **Sponsor:** ${t.lead_sponsor}\n`
     if (t.conditions?.length) md += `- **Conditions:** ${t.conditions.join(', ')}\n`
     if (t.enrollment_count) md += `- **Enrollment:** ${t.enrollment_count.toLocaleString()} participants\n`
-    md += '\n'
-  })
-
-  return md
-}
-
-function renderPatents(patents: AllAgentOutputs['patents'], insight: string): string {
-  if (patents.items.length === 0) {
-    return '*Note: This analysis includes only patents linked to NIH-funded projects.*\n\nNo patents found linked to NIH projects in this space.\n'
-  }
-
-  let md = ''
-
-  // Disclaimer about NIH-linked sample
-  md += '*Note: This analysis includes only patents linked to NIH-funded projects. Commercial patents and international filings may exist outside this sample.*\n\n'
-
-  if (insight) {
-    md += insight + '\n\n'
-  }
-  md += '### Patent Summary\n\n'
-  md += '| Metric | Value |\n'
-  md += '|--------|-------|\n'
-  md += `| Total Patents | ${patents.items.length} |\n`
-  md += `| Unique Assignees | ${patents.byAssignee.length} |\n`
-  md += `| Recent (2 years) | ${patents.recentCount} |\n\n`
-
-  md += '### Key Patents\n\n'
-  patents.items.slice(0, 15).forEach((p) => {
-    md += `#### ${p.patent_title || 'Untitled Patent'}\n`
-    md += `- **Patent #:** [${p.patent_id}](/patent/${p.patent_id})\n`
-    if (p.assignee) md += `- **Assignee:** ${p.assignee}\n`
-    if (p.patent_date) md += `- **Date:** ${p.patent_date}\n`
-    if (p.patent_abstract) {
-      const excerpt = p.patent_abstract.substring(0, 200) + (p.patent_abstract.length > 200 ? '...' : '')
-      md += `\n> ${excerpt}\n`
-    }
     md += '\n'
   })
 
