@@ -57,5 +57,16 @@ export const FUNDING_ATTRIBUTION_THRESHOLD = THRESHOLD_BALANCED
  * linked project still has to clear the project-abstract threshold for its
  * funding to roll into Total Committed Funding. Umbrella-grant exclusion
  * remains intact.
+ *
+ * Tuning history:
+ * - 0.45 (initial): surfaced ~150 trials per Standard scope but included
+ *   topic-adjacent noise — breath tests, CT imaging, tissue biopsies — that
+ *   share the "early cancer detection" concept axis without being liquid
+ *   biopsy specifically.
+ * - 0.50 (current): empirical sweep showed real LB trials cluster from 0.50
+ *   upward (ctDNA-, cfDNA-, CTC-, plasma- titles all land 0.55–0.67), while
+ *   the topic-adjacent imaging/tissue/breath false positives mostly sit
+ *   between 0.45 and 0.50 and drop out. Trades sample size (~71 trials
+ *   vs ~150) for topic specificity.
  */
-export const TRIAL_INCLUSION_THRESHOLD = 0.45
+export const TRIAL_INCLUSION_THRESHOLD = 0.5
