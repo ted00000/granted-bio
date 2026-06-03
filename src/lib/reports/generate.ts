@@ -65,9 +65,9 @@ export async function checkProjectCount(topic: string): Promise<number> {
 }
 
 export interface InjectedInterpretation {
-  /** Natural-language phrase used as the embedding-search input. */
+  /** Natural-language phrase used as the embedding-search input for both projects and trial semantic lookup. */
   semanticQuery: string
-  /** Pipe-separated terms (currently informational; kept for future keyword filtering). */
+  /** Pipe-separated terms — UI-only metadata for the picker chips. Not used to drive backend search. */
   keywordQuery: string
   /** Human-readable label shown in the UI (e.g. 'Standard'). */
   label: string
@@ -128,8 +128,9 @@ export async function generateTopicReport(
     // Market agent runs independently (doesn't need project numbers)
     // Projects are pre-filtered for relevance, so linked data is inherently relevant
     await updateProgressStage(reportId, 'gathering_data')
+    const trialsTopicQuery = injectedInterpretation?.semanticQuery ?? topic
     const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
-      runTrialsAgent(projectNumbers, injectedInterpretation?.keywordQuery),
+      runTrialsAgent(projectNumbers, trialsTopicQuery),
       runPatentsAgent(projectNumbers),
       runPublicationsAgent(projectNumbers),
       runMarketAgent(topic),

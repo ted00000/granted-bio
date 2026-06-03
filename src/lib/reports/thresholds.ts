@@ -43,3 +43,19 @@ export const THRESHOLD_PRECISE = 0.50
  * sections, but the umbrella grants' funding is not attributed to the topic.
  */
 export const FUNDING_ATTRIBUTION_THRESHOLD = THRESHOLD_BALANCED
+
+/**
+ * Threshold for surfacing a clinical trial via direct semantic match against
+ * its title (the trials-agent Path 2 lookup). Higher than the project
+ * threshold because trial titles are short (10–15 tokens) — short-text
+ * embeddings score higher on lexical overlap since there's less surrounding
+ * context to dilute the signal, so the same nominal cosine value represents
+ * a tighter conceptual match than it would on a 300-token abstract.
+ *
+ * This is a separate axis from FUNDING_ATTRIBUTION_THRESHOLD: clearing it
+ * surfaces the trial in the Clinical Validation section, but the trial's
+ * linked project still has to clear the project-abstract threshold for its
+ * funding to roll into Total Committed Funding. Umbrella-grant exclusion
+ * remains intact.
+ */
+export const TRIAL_INCLUSION_THRESHOLD = 0.45

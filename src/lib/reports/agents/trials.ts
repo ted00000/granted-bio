@@ -1,7 +1,8 @@
 // Trials Agent
 // Fetches clinical trials via two parallel paths:
 //  1. Trials linked to topically-relevant projects (via project_number)
-//  2. Trials whose own title matches the topic keywords directly
+//  2. Trials whose own title semantically matches the topic (vector search
+//     over study_embedding, gated by TRIAL_INCLUSION_THRESHOLD)
 //
 // Path 2 catches trials linked through institutional umbrella grants
 // (P30 cancer centers, etc.) whose underlying projects don't semantically
@@ -9,23 +10,31 @@
 // Their existence is reported; their umbrella-grant funding is not rolled
 // into the report's funding totals (see FUNDING_ATTRIBUTION_THRESHOLD).
 //
+// Path 2 uses the same embedding-based mechanism as the projects agent
+// rather than keyword ilike, so the picker's Narrow/Standard/Broad scope
+// shapes trial recall coherently with project recall instead of swamping
+// the section with any trial whose title contains a single common term.
+//
 // Enriches data from ClinicalTrials.gov if needed.
 
 import { supabaseAdmin } from '@/lib/supabase'
+import { generateEmbedding } from '@/lib/openai'
 import type { TrialsAgentOutput, TrialItem } from '../types'
+import { TRIAL_INCLUSION_THRESHOLD } from '../thresholds'
 
 /**
  * Run the Trials Agent.
  *
  * @param projectNumbers - NIH project numbers of topically-relevant projects
  *   (path 1 source). All trials linked to these projects are included.
- * @param keywordQuery - Optional pipe-separated topic keywords from the user's
- *   chosen interpretation. When provided, additionally surfaces trials whose
- *   own title matches any of the keywords directly (path 2). Dedupes by NCT.
+ * @param topicQuery - Optional natural-language phrase (typically the user's
+ *   chosen interpretation's semanticQuery, or the raw topic). When provided,
+ *   additionally surfaces trials whose study_title embedding clears
+ *   TRIAL_INCLUSION_THRESHOLD against this phrase (path 2). Dedupes by NCT.
  */
 export async function runTrialsAgent(
   projectNumbers: string[],
-  keywordQuery?: string
+  topicQuery?: string
 ): Promise<TrialsAgentOutput> {
   console.log(
     `[Trials Agent] Path 1: fetching trials linked to ${projectNumbers.length} projects`
@@ -47,61 +56,69 @@ export async function runTrialsAgent(
     }
   }
 
-  // Path 2 — trials matched by topic keywords in the study title.
-  // We split the keywordQuery on '|' to get individual keywords/synonyms, then
-  // build an OR'd ilike clause. Capped at 12 keywords to keep the OR clause
-  // manageable; the most important terms come first in keyword expansions.
-  let keywordMatchedTrials: RawTrialResult[] = []
-  if (keywordQuery && keywordQuery.trim().length > 0) {
-    const keywords = keywordQuery
-      .split('|')
-      .map((k) => k.trim())
-      .filter((k) => k.length >= 3)
-      .slice(0, 12)
-
-    if (keywords.length > 0) {
-      // PostgREST .or() needs URL-encoded comma-separated conditions
-      const orClause = keywords
-        .map((k) => `study_title.ilike.%${k.replace(/[%,()]/g, '')}%`)
-        .join(',')
-
-      console.log(
-        `[Trials Agent] Path 2: keyword-matching trials with ${keywords.length} terms`
+  // Path 2 — trials matched semantically by study_title embedding.
+  // The search_clinical_studies RPC returns id/nct/title/status + similarity
+  // but not the richer fields we need (phase, enrollment, sponsor, etc.), so
+  // we use it as a candidate filter and then re-fetch full rows by NCT id.
+  let semanticTrials: RawTrialResult[] = []
+  if (topicQuery && topicQuery.trim().length > 0) {
+    console.log(
+      `[Trials Agent] Path 2: semantic title search at threshold ${TRIAL_INCLUSION_THRESHOLD}`
+    )
+    try {
+      const queryEmbedding = await generateEmbedding(topicQuery)
+      const { data: candidates, error: rpcError } = await supabaseAdmin.rpc(
+        'search_clinical_studies',
+        {
+          query_embedding: queryEmbedding,
+          match_threshold: TRIAL_INCLUSION_THRESHOLD,
+          match_count: 150,
+        }
       )
 
-      const { data, error } = await supabaseAdmin
-        .from('clinical_studies')
-        .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
-        .or(orClause)
-        .order('start_date', { ascending: false })
-        .limit(100)
+      if (rpcError) {
+        console.error('[Trials Agent] Path 2 RPC error:', rpcError)
+      } else if (candidates && candidates.length > 0) {
+        const nctIds = Array.from(
+          new Set(candidates.map((c: { nct_id: string }) => c.nct_id))
+        )
+        const { data: fullRows, error: fetchError } = await supabaseAdmin
+          .from('clinical_studies')
+          .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
+          .in('nct_id', nctIds)
 
-      if (error) {
-        console.error('[Trials Agent] Path 2 error:', error)
-      } else if (data) {
-        keywordMatchedTrials = data
+        if (fetchError) {
+          console.error('[Trials Agent] Path 2 fetch error:', fetchError)
+        } else if (fullRows) {
+          semanticTrials = fullRows
+        }
       }
+    } catch (err) {
+      console.error('[Trials Agent] Path 2 embedding error:', err)
     }
   }
 
   console.log(
-    `[Trials Agent] Path 1: ${linkedTrials.length} rows | Path 2: ${keywordMatchedTrials.length} rows`
+    `[Trials Agent] Path 1: ${linkedTrials.length} rows | Path 2: ${semanticTrials.length} rows`
   )
 
-  if (linkedTrials.length === 0 && keywordMatchedTrials.length === 0) {
+  if (linkedTrials.length === 0 && semanticTrials.length === 0) {
     console.log('[Trials Agent] No trials found from either path')
     return emptyOutput()
   }
 
   // Union both paths, dedupe by NCT ID. Path 1 wins on conflict because its
   // project-link metadata is what enriches narrative coherence in the report.
+  // Path 2 rows themselves may be duplicated (clinical_studies has one row
+  // per (nct_id, project_number) so a multi-linked trial returns multiple
+  // rows from the .in('nct_id') fetch); the NCT-keyed map collapses them.
   const seenTrials = new Map<string, RawTrialResult>()
   for (const trial of linkedTrials) {
     if (!seenTrials.has(trial.nct_id)) {
       seenTrials.set(trial.nct_id, trial)
     }
   }
-  for (const trial of keywordMatchedTrials) {
+  for (const trial of semanticTrials) {
     if (!seenTrials.has(trial.nct_id)) {
       seenTrials.set(trial.nct_id, trial)
     }
