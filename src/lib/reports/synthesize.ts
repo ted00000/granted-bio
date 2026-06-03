@@ -290,7 +290,7 @@ Projects are ranked by relevance. Give more emphasis to insights from [PRECISE] 
 
 ## PROJECT ABSTRACTS (analyze for funding insight)
 
-${formatProjectsWithTiers(agentOutputs.projects.items) || 'No project abstracts available'}
+${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 25)) || 'No project abstracts available'}
 
 **Sample Statistics:**
 - Projects: ${context.fundingStats.projectCount} (${agentOutputs.projects.items.filter(p => p.match_tier === 'precise').length} precise, ${agentOutputs.projects.items.filter(p => p.match_tier === 'balanced').length} balanced)
