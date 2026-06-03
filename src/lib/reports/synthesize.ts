@@ -379,7 +379,20 @@ Return JSON only, no markdown:
       return defaultInsights()
     }
 
-    const parsed = JSON.parse(textContent.text)
+    // Strip markdown fences before parsing. Claude reliably wraps JSON output
+    // in ```json ... ``` even when instructed not to; without this strip the
+    // bare JSON.parse throws and four section narratives silently vanish.
+    let jsonText = textContent.text.trim()
+    if (jsonText.startsWith('```')) {
+      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
+    }
+    const jsonMatch = jsonText.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      console.warn('[Synthesis Agent] No JSON object found in section insights response')
+      return defaultInsights()
+    }
+
+    const parsed = JSON.parse(jsonMatch[0])
     return {
       funding: parsed.funding || '',
       clinicalPipeline: parsed.clinicalPipeline || '',
