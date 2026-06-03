@@ -773,13 +773,22 @@ Return JSON only (array of 3-5 items):
       return []
     }
 
-    // Parse JSON from response (handle markdown code blocks)
+    // Parse JSON array from response. Strip ```json fences if present, then
+    // regex-extract just the array. Matches the defensive pattern used by
+    // every other JSON-output function in this file — without the regex
+    // extraction, any prefix text from Claude ("Here are the picks:\n[...")
+    // breaks parsing and silently empties the Key Publications section.
     let jsonText = textContent.text.trim()
     if (jsonText.startsWith('```')) {
       jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
     }
+    const arrayMatch = jsonText.match(/\[[\s\S]*\]/)
+    if (!arrayMatch) {
+      console.warn('[Synthesis Agent] No JSON array found in curated publications response')
+      return []
+    }
 
-    const parsed = JSON.parse(jsonText)
+    const parsed = JSON.parse(arrayMatch[0])
     return Array.isArray(parsed) ? parsed : []
   } catch (error) {
     console.warn('[Synthesis Agent] Failed to generate curated publications:', error)
