@@ -6,16 +6,19 @@ import { supabaseAdmin } from '@/lib/supabase'
 import Anthropic from '@anthropic-ai/sdk'
 import type { ProjectsAgentOutput, ProjectItem } from '../types'
 import { isPartialFiscalYear } from '../fiscal-year'
+import {
+  SEMANTIC_FLOOR,
+  THRESHOLD_BALANCED as SHARED_BALANCED,
+  THRESHOLD_PRECISE as SHARED_PRECISE,
+} from '../thresholds'
 
 const anthropic = new Anthropic()
 
-// Match tier thresholds (aligned with UI - tools.ts:1067)
-const THRESHOLD_BROAD = 0.20    // Low precision
-const THRESHOLD_BALANCED = 0.35 // Medium precision - report population
-const THRESHOLD_PRECISE = 0.50  // High precision - weighted more heavily
-
-// Fetch at broad threshold, filter to balanced for analysis
-const SEMANTIC_THRESHOLD = 0.15
+// Match tier thresholds — single source of truth in ../thresholds.ts so the
+// audit doc and other agents reference the same numeric values.
+const THRESHOLD_BALANCED = SHARED_BALANCED
+const THRESHOLD_PRECISE = SHARED_PRECISE
+const SEMANTIC_THRESHOLD = SEMANTIC_FLOOR
 const MAX_PROJECTS = 200  // Fetch more, filter to balanced subset
 
 /**

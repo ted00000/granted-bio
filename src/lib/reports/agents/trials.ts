@@ -1,51 +1,116 @@
 // Trials Agent
-// Fetches clinical trials linked to specific projects
-// Projects are pre-filtered for relevance, so linked trials are inherently relevant
-// Enriches data from ClinicalTrials.gov if needed
+// Fetches clinical trials via two parallel paths:
+//  1. Trials linked to topically-relevant projects (via project_number)
+//  2. Trials whose own title matches the topic keywords directly
+//
+// Path 2 catches trials linked through institutional umbrella grants
+// (P30 cancer centers, etc.) whose underlying projects don't semantically
+// match the topic — but the trials themselves are clearly about the topic.
+// Their existence is reported; their umbrella-grant funding is not rolled
+// into the report's funding totals (see FUNDING_ATTRIBUTION_THRESHOLD).
+//
+// Enriches data from ClinicalTrials.gov if needed.
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { TrialsAgentOutput, TrialItem } from '../types'
 
 /**
- * Run the Trials Agent to gather clinical trial data linked to specific projects
- * Projects are pre-filtered for topic relevance, so linked trials are inherently relevant
+ * Run the Trials Agent.
  *
- * @param projectNumbers - NIH project numbers to fetch trials for (already filtered for relevance)
+ * @param projectNumbers - NIH project numbers of topically-relevant projects
+ *   (path 1 source). All trials linked to these projects are included.
+ * @param keywordQuery - Optional pipe-separated topic keywords from the user's
+ *   chosen interpretation. When provided, additionally surfaces trials whose
+ *   own title matches any of the keywords directly (path 2). Dedupes by NCT.
  */
-export async function runTrialsAgent(projectNumbers: string[]): Promise<TrialsAgentOutput> {
-  console.log(`[Trials Agent] Fetching trials for ${projectNumbers.length} projects`)
+export async function runTrialsAgent(
+  projectNumbers: string[],
+  keywordQuery?: string
+): Promise<TrialsAgentOutput> {
+  console.log(
+    `[Trials Agent] Path 1: fetching trials linked to ${projectNumbers.length} projects`
+  )
 
-  if (projectNumbers.length === 0) {
+  // Path 1 — trials linked to topically-relevant projects
+  let linkedTrials: RawTrialResult[] = []
+  if (projectNumbers.length > 0) {
+    const { data, error } = await supabaseAdmin
+      .from('clinical_studies')
+      .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
+      .in('project_number', projectNumbers)
+      .order('start_date', { ascending: false })
+
+    if (error) {
+      console.error('[Trials Agent] Path 1 error:', error)
+    } else if (data) {
+      linkedTrials = data
+    }
+  }
+
+  // Path 2 — trials matched by topic keywords in the study title.
+  // We split the keywordQuery on '|' to get individual keywords/synonyms, then
+  // build an OR'd ilike clause. Capped at 12 keywords to keep the OR clause
+  // manageable; the most important terms come first in keyword expansions.
+  let keywordMatchedTrials: RawTrialResult[] = []
+  if (keywordQuery && keywordQuery.trim().length > 0) {
+    const keywords = keywordQuery
+      .split('|')
+      .map((k) => k.trim())
+      .filter((k) => k.length >= 3)
+      .slice(0, 12)
+
+    if (keywords.length > 0) {
+      // PostgREST .or() needs URL-encoded comma-separated conditions
+      const orClause = keywords
+        .map((k) => `study_title.ilike.%${k.replace(/[%,()]/g, '')}%`)
+        .join(',')
+
+      console.log(
+        `[Trials Agent] Path 2: keyword-matching trials with ${keywords.length} terms`
+      )
+
+      const { data, error } = await supabaseAdmin
+        .from('clinical_studies')
+        .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
+        .or(orClause)
+        .order('start_date', { ascending: false })
+        .limit(100)
+
+      if (error) {
+        console.error('[Trials Agent] Path 2 error:', error)
+      } else if (data) {
+        keywordMatchedTrials = data
+      }
+    }
+  }
+
+  console.log(
+    `[Trials Agent] Path 1: ${linkedTrials.length} rows | Path 2: ${keywordMatchedTrials.length} rows`
+  )
+
+  if (linkedTrials.length === 0 && keywordMatchedTrials.length === 0) {
+    console.log('[Trials Agent] No trials found from either path')
     return emptyOutput()
   }
 
-  // Get trials linked to these specific projects
-  const { data: linkedTrials, error } = await supabaseAdmin
-    .from('clinical_studies')
-    .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
-    .in('project_number', projectNumbers)
-    .order('start_date', { ascending: false })
-
-  if (error) {
-    console.error('[Trials Agent] Error fetching trials:', error)
-    return emptyOutput()
-  }
-
-  if (!linkedTrials || linkedTrials.length === 0) {
-    console.log('[Trials Agent] No trials found for these projects')
-    return emptyOutput()
-  }
-
-  // Deduplicate by NCT ID (a trial may be linked to multiple projects)
+  // Union both paths, dedupe by NCT ID. Path 1 wins on conflict because its
+  // project-link metadata is what enriches narrative coherence in the report.
   const seenTrials = new Map<string, RawTrialResult>()
   for (const trial of linkedTrials) {
     if (!seenTrials.has(trial.nct_id)) {
       seenTrials.set(trial.nct_id, trial)
     }
   }
+  for (const trial of keywordMatchedTrials) {
+    if (!seenTrials.has(trial.nct_id)) {
+      seenTrials.set(trial.nct_id, trial)
+    }
+  }
 
   const uniqueTrials = Array.from(seenTrials.values())
-  console.log(`[Trials Agent] Found ${uniqueTrials.length} unique trials (from ${linkedTrials.length} linked)`)
+  console.log(
+    `[Trials Agent] ${uniqueTrials.length} unique trials after union (path1 + path2)`
+  )
 
   // Check if any trials need enrichment
   const needsEnrichment = uniqueTrials.filter(

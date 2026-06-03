@@ -129,7 +129,7 @@ export async function generateTopicReport(
     // Projects are pre-filtered for relevance, so linked data is inherently relevant
     await updateProgressStage(reportId, 'gathering_data')
     const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
-      runTrialsAgent(projectNumbers),
+      runTrialsAgent(projectNumbers, injectedInterpretation?.keywordQuery),
       runPatentsAgent(projectNumbers),
       runPublicationsAgent(projectNumbers),
       runMarketAgent(topic),

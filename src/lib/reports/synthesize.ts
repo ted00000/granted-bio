@@ -1514,6 +1514,8 @@ This report analyzes a curated subset of NIH-funded research projects most relev
 
 **Note on Funding Figures:** Per-project funding amounts shown in this report are the sum of award totals across all budget periods for each project (not just the most recent year). Funding-by-year figures show actual spend per fiscal year drawn from the underlying NIH RePORTER budget-period rows, so a multi-year project contributes to each year it received funding. The current NIH fiscal year (Oct 1 - Sep 30) is partial when this report is generated; that year is labeled "(YTD)" in tables and charts and should not be compared directly to fully-reported prior years.
 
+**Note on Funding Attribution:** Clinical trials and patents are surfaced through two paths — direct linkage to topically-relevant projects, *and* direct keyword matches against the topic itself. The second path catches trials and patents that sit under broad institutional umbrella awards (e.g., P30 cancer center support grants, CTSA hubs) whose underlying parent grant covers many unrelated programs. Those trials and patents are reported because they are clearly about the topic, but their umbrella grants' funding is *not* rolled into Total Committed Funding — only projects whose own abstracts clear the topic-relevance threshold contribute to funding totals. This keeps the headline funding number topically attributable rather than inflated by institutional overhead grants that happen to host one relevant program among many.
+
 **Match Quality Tiers:**
 
 | Tier | Similarity | Description |
@@ -1601,6 +1603,7 @@ function renderBlindSpots(persona: ReportPersona): string {
 - **International activity is largely outside the sample.** NIH RePORTER captures US grantees and their direct collaborators. Major work in Europe, China, Japan, and elsewhere is not reflected unless tied to a US-funded project.
 - **Linked outputs require an NIH grant acknowledgment.** A clinical trial, patent, or publication only appears here if it was filed with an NIH project number. Industry-led trials, non-USPTO patents, and papers without NIH funding acks are missing — even when central to the field.
 - **Recent quarter activity may be incomplete.** NIH RePORTER updates with a lag of several weeks; some current-fiscal-year awards may not yet be visible.
+- **Umbrella institutional grants are not credited to topic funding.** Some trials and patents in this report are hosted under broad institutional support awards (P30 cancer centers, CTSA hubs, training grants) whose parent grant covers many programs beyond this topic. Those records appear in the trials and patents sections, but the host grants' dollars are deliberately excluded from Total Committed Funding to keep the headline number topically attributable. Real topic activity at those institutions is therefore likely higher than the funding figures alone suggest.
 - **Market context is web-sourced**, not exhaustive — see the Sources subsection in Market Context for what was retrieved.
 - **Project categorization is automated.** A single primary category is assigned per project by AI classification, with confidence scores. Some boundary cases (especially infrastructure vs. biotools) may be misassigned.
 
@@ -1938,7 +1941,7 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
     md += insight + '\n\n'
   }
   md += '### Funding Summary\n\n'
-  md += '*Funding figures sum award amounts across all budget periods for each project. Each fiscal year reflects actual spend in that year, not the most recent budget period only.*\n\n'
+  md += '*Funding figures sum award amounts across all budget periods for each project. Each fiscal year reflects actual spend in that year, not the most recent budget period only. Totals only include projects that meet the topic-relevance threshold — umbrella support grants (e.g., P30 cancer centers) that host a relevant trial but cover many unrelated programs are intentionally excluded so the headline number stays topically attributable.*\n\n'
   md += '| Metric | Value |\n'
   md += '|--------|-------|\n'
   md += `| Total Committed Funding | ${formatCurrency(stats.total)} |\n`
