@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { generateTopicReport, generatePortfolioReport } from '@/lib/reports'
+import { grantBypassCredits } from '@/lib/billing/credits'
 import type { ReportPersona } from '@/lib/reports/types'
 
 // Report generation runs 5 agents in parallel plus a synthesis chain;
@@ -153,6 +154,19 @@ export async function POST(request: NextRequest) {
       reportId = await generatePortfolioReport(user.id)
     } else {
       return NextResponse.json({ error: 'Invalid report_type' }, { status: 400 })
+    }
+
+    // Shadow-ledger write: when the bypass path produced the report, record
+    // the corresponding credit grant + immediate consumption so the ledger
+    // is consistent across paid and comped generations. Source distinguishes
+    // admin/associate from beta so support tooling can tell them apart.
+    if (canBypassPayment && report_type === 'topic') {
+      const source: 'admin_grant' | 'beta_grant' = isAdminOrAssociate
+        ? 'admin_grant'
+        : 'beta_grant'
+      // Fire-and-forget — a ledger write failure is bookkeeping, not a
+      // user-visible failure. The helper logs internally on error.
+      await grantBypassCredits({ userId: user.id, reportId, source })
     }
 
     return NextResponse.json({

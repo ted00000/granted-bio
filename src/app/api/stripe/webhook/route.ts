@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe/client'
 import { supabaseAdmin } from '@/lib/supabase'
 import { completeReportPurchase, linkReportToPurchase } from '@/lib/billing/usage'
+import { grantPurchaseCredits, hasCreditsForStripeSession } from '@/lib/billing/credits'
 import { generateTopicReport } from '@/lib/reports'
 import type { ReportPersona } from '@/lib/reports/types'
 import type Stripe from 'stripe'
@@ -186,6 +187,23 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       if (purchase) {
         await linkReportToPurchase(purchase.id, reportId)
         console.log(`[Stripe Webhook] Linked report ${reportId} to purchase ${purchase.id}`)
+      }
+
+      // Shadow-ledger write: record the credit grant alongside the existing
+      // purchase + report linkage so Phase 3 features (refresh entitlement
+      // surface, retry assistant) can read from the credit ledger as the
+      // source of truth. Idempotent against webhook retries via the
+      // stripe_session_id index.
+      const alreadyHasCredits = await hasCreditsForStripeSession(session.id)
+      if (!alreadyHasCredits) {
+        await grantPurchaseCredits({
+          userId: metadata.userId,
+          reportId,
+          stripeSessionId: session.id,
+        })
+        console.log(`[Stripe Webhook] Granted purchase credits for session ${session.id}`)
+      } else {
+        console.log(`[Stripe Webhook] Credits already granted for session ${session.id}, skipping`)
       }
     }
   }
