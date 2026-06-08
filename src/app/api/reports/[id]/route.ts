@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { findRefreshCreditForReport } from '@/lib/billing/credits'
 
 // GET - Get a single report by ID
+//
+// In addition to the report row, the response includes `refreshAvailable`
+// so the report detail page can render the "Refresh" button without a
+// second roundtrip.
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -33,7 +38,16 @@ export async function GET(
       return NextResponse.json({ error: 'Failed to fetch report' }, { status: 500 })
     }
 
-    return NextResponse.json({ report })
+    // Refresh entitlement check only applies to completed topic reports.
+    // Failed and in-progress reports can't be refreshed; portfolio reports
+    // aren't part of the credit model.
+    let refreshAvailable = false
+    if (report.status === 'complete' && report.report_type === 'topic') {
+      const credit = await findRefreshCreditForReport(id, user.id)
+      refreshAvailable = credit !== null
+    }
+
+    return NextResponse.json({ report, refreshAvailable })
   } catch (error) {
     console.error('Error in GET /api/reports/[id]:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

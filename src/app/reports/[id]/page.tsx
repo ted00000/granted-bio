@@ -2,7 +2,8 @@
 
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
-import { FileText, AlertCircle, FileDown, Loader2, FileType } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { Logo } from '@/components/Logo'
 import { MarkdownRenderer } from './MarkdownRenderer'
@@ -80,9 +81,13 @@ export default function ReportDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = use(params)
+  const router = useRouter()
   const [report, setReport] = useState<Report | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [refreshAvailable, setRefreshAvailable] = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
+  const [refreshError, setRefreshError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchReport()
@@ -106,6 +111,7 @@ export default function ReportDetailPage({
       }
 
       setReport(data.report)
+      setRefreshAvailable(Boolean(data.refreshAvailable))
     } catch (e) {
       console.error('Error fetching report:', e)
       setError(e instanceof Error ? e.message : 'Failed to load report')
@@ -113,6 +119,44 @@ export default function ReportDetailPage({
       setLoading(false)
     }
   }
+
+  // Refresh consumes the bound refresh entitlement and regenerates the
+  // same topic + interpretation against current NIH data. The original
+  // report stays untouched; the new report is created as a fresh row and
+  // we route the user to it so they see generation progress.
+  const refreshReport = async () => {
+    if (!report || refreshing) return
+    setRefreshing(true)
+    setRefreshError(null)
+
+    try {
+      const response = await fetch(`/api/reports/${id}/refresh`, {
+        method: 'POST',
+      })
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to refresh report')
+      }
+
+      // Route to the new report so the user sees the generation progress
+      // page immediately.
+      router.push(`/reports/${data.report_id}`)
+    } catch (e) {
+      console.error('Error refreshing report:', e)
+      setRefreshError(e instanceof Error ? e.message : 'Failed to refresh report')
+      setRefreshing(false)
+    }
+  }
+
+  // Smart timing nudge: surface the "new data may be available" banner if
+  // the report is older than 60 days AND a refresh credit is still
+  // available. NIH RePORTER updates monthly so 60+ days is virtually
+  // guaranteed to have new data on most topics.
+  const reportAgeDays = report?.created_at
+    ? Math.floor((Date.now() - new Date(report.created_at).getTime()) / (1000 * 60 * 60 * 24))
+    : 0
+  const showRefreshNudge = refreshAvailable && reportAgeDays >= 60
 
   const [exporting, setExporting] = useState<'pdf' | 'docx' | null>(null)
 
@@ -1446,6 +1490,24 @@ export default function ReportDetailPage({
             </div>
             {report.status === 'complete' && report.markdown_content && (
               <div className="flex items-center gap-3 text-xs">
+                {refreshAvailable && (
+                  <>
+                    <button
+                      onClick={refreshReport}
+                      disabled={refreshing}
+                      title="Re-synthesize this report against current NIH data. Uses your included refresh."
+                      className="flex items-center gap-1.5 text-gray-500 hover:text-[#E07A5F] transition-colors disabled:opacity-50"
+                    >
+                      {refreshing ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <RefreshCw className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      )}
+                      {refreshing ? 'Starting...' : 'Refresh'}
+                    </button>
+                    <span className="text-gray-300">|</span>
+                  </>
+                )}
                 <button
                   onClick={downloadPdf}
                   disabled={exporting !== null}
@@ -1475,6 +1537,41 @@ export default function ReportDetailPage({
             )}
           </div>
         </div>
+
+        {/* Smart timing nudge: report is >60 days old and the included
+            refresh is still available. NIH RePORTER updates monthly so
+            60+ days is virtually guaranteed to have new data. */}
+        {showRefreshNudge && (
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+            <RefreshCw className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
+            <div className="flex-1">
+              <p className="text-sm font-medium text-amber-900">
+                This report is {reportAgeDays} days old. New NIH data has likely been added since.
+              </p>
+              <p className="text-xs text-amber-800 mt-1">
+                Use your included refresh to re-synthesize on current data, free.
+              </p>
+            </div>
+            <button
+              onClick={refreshReport}
+              disabled={refreshing}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium rounded-md transition-colors disabled:opacity-50"
+            >
+              {refreshing ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <RefreshCw className="w-3.5 h-3.5" strokeWidth={1.5} />
+              )}
+              {refreshing ? 'Starting...' : 'Refresh now'}
+            </button>
+          </div>
+        )}
+
+        {refreshError && (
+          <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 mb-6 text-sm text-rose-800">
+            {refreshError}
+          </div>
+        )}
 
         {/* Report Content */}
         {report.status === 'generating' && (

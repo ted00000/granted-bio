@@ -87,7 +87,9 @@ export async function generateTopicReport(
   persona: ReportPersona = 'researcher',
   injectedInterpretation?: InjectedInterpretation
 ): Promise<string> {
-  // Create report record with 'generating' status
+  // Create report record with 'generating' status. Persist the chosen
+  // interpretation so the refresh / retry endpoints can reuse it without
+  // re-deriving from markdown.
   const { data: report, error: insertError } = await supabaseAdmin
     .from('user_reports')
     .insert({
@@ -98,6 +100,7 @@ export async function generateTopicReport(
       status: 'generating',
       data_limited: dataLimited,
       persona,
+      interpretation: injectedInterpretation ?? null,
     })
     .select('id')
     .single()
