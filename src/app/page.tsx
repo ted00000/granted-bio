@@ -184,7 +184,11 @@ export default function Home() {
       <MarketingNav />
 
       <main>
-        {/* Hero */}
+        {/* Hero — report-as-lead framing. Left column carries the
+            locked report value prop and a Sample CTA; right column
+            keeps the inline auth form retitled "Browse the data free"
+            so the validation step is one click rather than a
+            separate signup page (Phase 4 will move it). */}
         <section className="py-16 md:py-24 px-6 bg-white">
           <div className="max-w-6xl mx-auto">
             <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-start">
@@ -192,19 +196,40 @@ export default function Home() {
               <div className="space-y-8">
                 <div className="space-y-4">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#E07A5F]/10 text-[#E07A5F] rounded-full text-sm font-medium">
-                    <Database className="w-4 h-4" />
-                    Research Intelligence Platform
+                    <FileText className="w-4 h-4" />
+                    Intelligence Reports
                   </div>
                   <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 leading-tight">
-                    Get the full<br />
-                    research picture.
+                    A complete intelligence report on any life-sciences research topic.
                   </h1>
                   <p className="text-lg text-gray-500 leading-relaxed">
-                    We connect NIH grants to their publications, patents, and trials so you can
-                    see how research actually unfolds. Write better grants, make smarter investments,
-                    find the right partners.
+                    Synthesizing NIH funding, clinical trials, patents, and publications
+                    into insights no single source can produce.
+                  </p>
+                  <p className="text-2xl font-semibold text-gray-900 pt-2">
+                    $199, generated in minutes.
                   </p>
                 </div>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link
+                    href="/reports"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
+                  >
+                    See a Sample Report
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <a
+                    href="#browse-free"
+                    className="inline-flex items-center justify-center gap-2 px-5 py-3 border border-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                  >
+                    Browse the data free
+                  </a>
+                </div>
+
+                <p className="text-xs uppercase tracking-wider text-gray-400 pt-2">
+                  Data sources: NIH RePORTER · ClinicalTrials.gov · USPTO · PubMed
+                </p>
 
                 {/* Stats */}
                 <div className="grid grid-cols-4 gap-4 pt-6 border-t border-gray-100">
@@ -219,12 +244,16 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Right column - Auth */}
-              <div className="w-full md:max-w-sm md:ml-auto">
+              {/* Right column - Auth (the trust-building demo step) */}
+              <div id="browse-free" className="w-full md:max-w-sm md:ml-auto scroll-mt-24">
                 <div className="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm w-full">
-                  <h2 className="text-lg font-medium text-gray-900 mb-6">
-                    Get started free
+                  <h2 className="text-lg font-medium text-gray-900 mb-2">
+                    Browse the data first
                   </h2>
+                  <p className="text-sm text-gray-500 mb-6">
+                    Free account. Search every project, trial, patent, and publication —
+                    verify your topic has signal before you buy a report.
+                  </p>
                   <Suspense fallback={<AuthFormFallback />}>
                     <AuthForm />
                   </Suspense>
@@ -561,41 +590,41 @@ export default function Home() {
                     Intelligence Reports
                   </div>
                   <h2 className="text-2xl md:text-3xl font-semibold mb-4">
-                    Need deeper analysis?
+                    Insights you couldn't produce yourself.
                   </h2>
                   <p className="text-gray-300 mb-6">
-                    Get comprehensive intelligence reports on any topic. Our AI synthesizes
-                    funding patterns, competitive dynamics, IP landscape, and clinical development
-                    into actionable insights - in minutes, not hours.
+                    Cross-source synthesis of NIH funding, clinical trials, patents, and
+                    publications — analyzed into strategic narrative on where a field is going,
+                    who's leading, and where the white space sits. Generated in minutes.
                   </p>
                   <Link
                     href="/reports"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
                   >
-                    Learn About Reports
+                    See a Sample Report
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
                 <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                   <div className="text-center">
-                    <div className="text-4xl font-semibold mb-2">$99</div>
+                    <div className="text-4xl font-semibold mb-2">$199</div>
                     <div className="text-gray-400 mb-4">per report</div>
                     <ul className="text-sm text-gray-300 space-y-2 text-left">
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        Funding landscape analysis
+                        Complete report (PDF + web)
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        Competitive intelligence
+                        3 months of in-platform access
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        IP & patent analysis
+                        One free refresh within 12 months
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        Clinical development status
+                        Refine &amp; regenerate if not satisfied
                       </li>
                     </ul>
                   </div>
@@ -609,16 +638,21 @@ export default function Home() {
         <section className="py-16 px-6 bg-gradient-to-br from-[#E07A5F] to-[#C96A4F]">
           <div className="max-w-2xl mx-auto text-center">
             <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
-              Ready to stop searching and start finding?
+              Start with a free account.
             </h2>
             <p className="text-white/80 mb-8">
-              Get started free with 10 searches per month. No credit card required.
+              Browse the data, validate your topic has signal, then generate a report when ready.
             </p>
             <Link
-              href="#top"
+              href="#browse-free"
               onClick={(e) => {
                 e.preventDefault()
-                window.scrollTo({ top: 0, behavior: 'smooth' })
+                const el = document.getElementById('browse-free')
+                if (el) {
+                  el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                } else {
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                }
               }}
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#E07A5F] rounded-lg font-medium hover:bg-gray-50 transition-colors"
             >

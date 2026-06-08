@@ -138,7 +138,7 @@ export default function PricingPage() {
                 and strategic recommendations.
               </p>
               <div className="flex items-baseline gap-2 mb-4">
-                <span className="text-3xl font-semibold text-gray-900">$99</span>
+                <span className="text-3xl font-semibold text-gray-900">$199</span>
                 <span className="text-gray-500">per report</span>
               </div>
               <div className="flex flex-wrap gap-3 text-sm text-gray-600">
@@ -152,7 +152,7 @@ export default function PricingPage() {
                 </span>
                 <span className="flex items-center gap-1">
                   <Check className="w-4 h-4 text-emerald-500" />
-                  98% cheaper than BCC Research
+                  Cross-source synthesis you can't get elsewhere
                 </span>
               </div>
             </div>
@@ -185,7 +185,7 @@ export default function PricingPage() {
                 <tr className="border-t border-gray-200">
                   <td className="py-3 font-medium text-[#E07A5F]">granted.bio</td>
                   <td className="py-3">$588/year</td>
-                  <td className="py-3">$99</td>
+                  <td className="py-3">$199</td>
                   <td className="py-3">
                     <Check className="w-4 h-4 text-emerald-500" />
                   </td>
@@ -227,7 +227,7 @@ export default function PricingPage() {
           <div className="space-y-4">
             <FAQ
               question="Can I use reports without a Pro subscription?"
-              answer="Yes! Intelligence reports are available to all users at $99 each. A Pro subscription is only needed for expanded search access (500 searches/month vs 10)."
+              answer="Yes! Intelligence reports are available to all users at $199 each. A Pro subscription is only needed for expanded search access (500 searches/month vs 10)."
             />
             <FAQ
               question="What data sources do you use?"

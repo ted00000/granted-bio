@@ -53,12 +53,11 @@ function ReportsLanding() {
               Intelligence Reports
             </div>
             <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 mb-6">
-              Focused research intelligence<br />in minutes, not hours
+              A complete intelligence report<br />on any life-sciences research topic.
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Stop keyword-searching across NIH RePORTER, ClinicalTrials.gov, PubMed, and USPTO.
-              Our AI understands your topic semantically, surfaces the most relevant projects,
-              and synthesizes everything into actionable intelligence.
+              Synthesizing NIH funding, clinical trials, patents, and publications into
+              insights no single source can produce.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
@@ -69,10 +68,13 @@ function ReportsLanding() {
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <div className="text-gray-500">
-                <span className="text-2xl font-semibold text-gray-900">$99</span>
+                <span className="text-2xl font-semibold text-gray-900">$199</span>
                 <span className="text-sm ml-1">per report</span>
               </div>
             </div>
+            <p className="text-xs uppercase tracking-wider text-gray-400 mt-8">
+              Data sources: NIH RePORTER · ClinicalTrials.gov · USPTO · PubMed
+            </p>
           </div>
         </section>
 
@@ -423,7 +425,7 @@ function ReportsLanding() {
                 href="/"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
               >
-                Generate Your Report - $99
+                Generate Your Report - $199
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -447,7 +449,7 @@ function ReportsLanding() {
               Generate Your First Report
               <ArrowRight className="w-4 h-4" />
             </Link>
-            <p className="text-white/60 text-sm mt-4">$99 per report</p>
+            <p className="text-white/60 text-sm mt-4">$199 per report</p>
           </div>
         </section>
       </main>
@@ -621,7 +623,7 @@ function ReportsDashboard() {
                 onClick={() => setShowGenerateDialog(true)}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors text-sm"
               >
-                {canBypassPayment ? 'Generate Report' : 'Generate Report - $99'}
+                {canBypassPayment ? 'Generate Report' : 'Generate Report - $199'}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
