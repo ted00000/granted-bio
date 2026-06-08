@@ -725,9 +725,39 @@ Agent: "Found 23 companies in genomics/biotools with similar NIH funding:
 | **Institution** | Universities | $5K-20K/yr | Unlimited seats, API, unlimited reports |
 | **Enterprise** | Large Teams | Custom | API, CRM integration, dedicated support |
 
-### 6.3 Report Pricing (à la carte)
+### 6.3 Report Pricing — UPDATED June 2026
 
-| Report | Price | Contents |
+**Decision (June 2026):** Single unified topic-intelligence report at flat
+pricing. The older per-format pricing tiers below are superseded.
+
+| Product | Price | What buyer gets |
+|---------|-------|-----------------|
+| **Intelligence Report** | **$199** | Complete synthesized report on any life-sciences research topic. Cross-source synthesis of NIH funding, ClinicalTrials.gov, USPTO, PubMed. Includes 3 months of in-platform exploration, one free refresh within 12 months, and AI-assisted retry if not satisfied. |
+| **5-Pack (planned)** | TBD | 5 generation credits + 5 refresh entitlements, volume discount |
+| **Enterprise** | Custom | Bulk credits, dedicated support, talk-to-us flow |
+
+**Credit model (internal architecture, not surfaced to buyer as "credits"):**
+
+- 1 purchase → 1 generation credit + 1 refresh entitlement (bound to first
+  report on consumption) + auto-grant of retry credit on technical failure.
+- 12-month expiration on all credits from purchase.
+- Refresh entitlement is locked to the original report's topic and
+  interpretation; refresh = re-synthesize with current NIH data.
+- Retry credit (if granted) flows through AI-assisted refinement: user
+  states what didn't work, Claude proposes 3 reformulated interpretations,
+  user picks one before regeneration.
+
+**Marketing framing:** Pricing card never uses the word "credits." Buyers
+see *"$199 per report, one free refresh within 12 months, refine and
+regenerate free if not satisfied."*
+
+Full spec: [LANDING_AND_CREDITS_PLAN.md](LANDING_AND_CREDITS_PLAN.md)
+
+#### Superseded pricing tiers (kept for historical reference)
+
+The earlier per-format pricing below is no longer current:
+
+| Report (old) | Price (old) | Contents (old) |
 |--------|-------|----------|
 | Competitive Landscape | $49-99 | Funded projects, key players, trends, white space |
 | Prospecting List | $99-299 | Companies + contacts (price by count) |
@@ -1034,3 +1064,42 @@ See `SYSTEM_REVIEW.md` for full details on deferred items.
 - `/src/components/ui/PremiumBadge.tsx`
 - `/src/components/Breadcrumbs.tsx`
 - `/src/lib/retry.ts`
+
+### 9.11 Current Initiative — Landing Redesign + Credit System (June 2026)
+
+**Driver:** The current landing experience conflates the free-account
+product with the paid report product, has a broken header (logo
+distortion on mobile, redundant Account link, non-functional Search
+link, Reports CTA buried below the fold), and loses the marketing
+context on the /reports page itself. Reports are the lead artifact and
+the funnel needs to reflect that.
+
+**Decisions locked:**
+
+- **Pricing:** $199 per report, 12-month credit expiry, 3 months
+  in-platform access from generation, one free refresh per purchase.
+- **Persona priority:** Researcher → Investor → BD. BD is a different
+  motion (talk-to-us form, not self-serve).
+- **Free account = data preview, not report preview.** No free reports
+  ever. Free account is the trust-building step before paid commit.
+- **Retry policy:** AI-assisted refinement, not naive retry. Claude
+  analyzes the user's complaint plus the failed report's surfaced
+  projects and proposes 3 reformulated interpretations. User picks one
+  before retry credit is consumed.
+- **Architecture shift:** Stripe webhook stops triggering report
+  generation directly. Instead, it grants credits to the user's
+  account, and generation is a separate action that consumes a credit.
+
+**Full spec:** [LANDING_AND_CREDITS_PLAN.md](LANDING_AND_CREDITS_PLAN.md)
+
+**Implementation phases (independently shippable):**
+
+| Phase | Scope | Effort |
+|---|---|---|
+| 1 | Header fix + hero rewrite + /reports header recovery + inline search CTA | 1–2 days |
+| 2 | Credit ledger DB + Stripe webhook refactor + generation API consumes credit | 2–3 days |
+| 3 | Refresh entitlement + AI-assisted retry assistant + retry feedback table | 3–4 days |
+| 4 | Persona cards + /sample/liquid-biopsy page + BD form + How-it-works + FAQ | 2–3 days |
+| 5 | Bulk SKUs (later, when volume justifies) | TBD |
+
+**Status:** Plan locked. Phase 1 implementation starts next.
