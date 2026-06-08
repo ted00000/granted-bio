@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import {
   FileText,
   Trash2,
@@ -470,10 +471,23 @@ function ReportsLanding() {
 
 // Dashboard for authenticated users
 function ReportsDashboard() {
+  // Inbound query params from in-platform CTAs (e.g., the /chat inline
+  // "Generate the intelligence report" prompt). Auto-opens the dialog
+  // with the topic preloaded when both ?topic=... and ?generate=1 are
+  // present.
+  const searchParams = useSearchParams()
+  const inboundTopic = searchParams.get('topic')?.trim() || null
+  const shouldAutoGenerate = searchParams.get('generate') === '1'
+
   const [reports, setReports] = useState<Report[]>([])
   const [loading, setLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
-  const [showGenerateDialog, setShowGenerateDialog] = useState(false)
+  const [showGenerateDialog, setShowGenerateDialog] = useState(
+    Boolean(shouldAutoGenerate && inboundTopic)
+  )
+  const [presetTopic, setPresetTopic] = useState<string | null>(
+    shouldAutoGenerate ? inboundTopic : null
+  )
 
   const { isAdmin, isAssociate, profile, refetchProfile } = useAuth()
 
@@ -687,8 +701,14 @@ function ReportsDashboard() {
 
           {showGenerateDialog && (
             <GenerateReportDialog
-              onClose={() => setShowGenerateDialog(false)}
+              onClose={() => {
+                setShowGenerateDialog(false)
+                // Clear the preset so reopening via "Generate New Report"
+                // doesn't re-inject a stale topic from the URL.
+                setPresetTopic(null)
+              }}
               onGenerated={handleReportGenerated}
+              initialTopic={presetTopic ?? undefined}
             />
           )}
         </div>

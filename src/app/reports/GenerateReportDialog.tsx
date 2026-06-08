@@ -18,13 +18,21 @@ interface Interpretation {
 interface GenerateReportDialogProps {
   onClose: () => void
   onGenerated: () => void
+  /**
+   * Pre-fill the topic field when the dialog opens. Used when a user lands
+   * on /reports from an in-platform CTA (e.g., the inline "Generate the
+   * intelligence report" prompt on /chat search results) carrying their
+   * just-searched topic. Falls back to empty string when not supplied.
+   */
+  initialTopic?: string
 }
 
 export function GenerateReportDialog({
   onClose,
   onGenerated,
+  initialTopic,
 }: GenerateReportDialogProps) {
-  const [topic, setTopic] = useState('')
+  const [topic, setTopic] = useState(initialTopic ?? '')
   const [persona, setPersona] = useState<Persona>('researcher')
   const [step, setStep] = useState<Step>('input')
   const [projectCount, setProjectCount] = useState<number | null>(null)

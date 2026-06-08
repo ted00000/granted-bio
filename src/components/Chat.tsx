@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from 'react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Search, TrendingUp, Users, Activity, Bookmark, Download, FlaskConical, Sparkles, Crosshair, User, Building2, AlertTriangle } from 'lucide-react'
+import { Search, TrendingUp, Users, Activity, Bookmark, Download, FlaskConical, Sparkles, Crosshair, User, Building2, AlertTriangle, ArrowRight, FileText } from 'lucide-react'
 import type { PersonaType, KeywordSearchResult, SearchResultProject, TrialSearchResult, SearchMode } from '@/lib/chat/types'
 import { fetchWithRetry } from '@/lib/retry'
 import { PERSONA_METADATA } from '@/lib/chat/prompts'
@@ -2444,6 +2445,35 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                     )}
                   </div>
                 ) : null}
+
+                {/* Inline conversion CTA — visible when the user has just
+                    self-validated their topic has signal (results > 0).
+                    Routes to /reports with the topic preloaded so the
+                    generation dialog opens with the user's query already
+                    in the input. The wireframe places this as the
+                    highest-intent moment in the funnel. */}
+                {toolResults.length > 0 && searchContext && userQuery && (
+                  <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg p-4 mb-4 text-white">
+                    <div className="flex items-start gap-3">
+                      <FileText className="w-5 h-5 text-[#E07A5F] flex-shrink-0 mt-0.5" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium leading-snug">
+                          These results won&apos;t tell you what&apos;s emerging, who&apos;s converging, or where the gaps are.
+                        </p>
+                        <p className="text-xs text-gray-300 mt-1">
+                          Generate a complete intelligence report on this topic. <span className="font-semibold text-white">$199</span>, in minutes.
+                        </p>
+                        <Link
+                          href={`/reports?topic=${encodeURIComponent(userQuery)}&generate=1`}
+                          className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E07A5F] hover:bg-[#C96A4F] text-white text-xs font-medium rounded-md transition-colors"
+                        >
+                          Generate Report
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Show assistant message when no tool results (e.g., Name mode lookup failed) */}
                 {toolResults.length === 0 && lastAssistantMsg?.content && !isLoading && (
