@@ -62,9 +62,15 @@ CREATE TABLE IF NOT EXISTS report_credits (
 );
 
 -- Hot path: "does this user have any unused credits right now?"
+-- The predicate intentionally omits an expires_at check: NOW() is STABLE
+-- (not IMMUTABLE), and Postgres rejects non-IMMUTABLE functions in partial
+-- index predicates because the predicate would silently go stale over time.
+-- Queries against this index still filter `expires_at > NOW()` at runtime;
+-- the index is just marginally broader than the minimal "currently-spendable"
+-- set, which is irrelevant at the volumes this table will see.
 CREATE INDEX IF NOT EXISTS idx_report_credits_user_unused
   ON report_credits (user_id)
-  WHERE consumed_at IS NULL AND expires_at > NOW();
+  WHERE consumed_at IS NULL;
 
 -- Hot path: find a refresh entitlement for a specific report
 CREATE INDEX IF NOT EXISTS idx_report_credits_bound_report
