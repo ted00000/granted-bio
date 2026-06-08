@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { findRefreshCreditForReport } from '@/lib/billing/credits'
+import { findRefreshCreditForReport, findRetryCreditForReport } from '@/lib/billing/credits'
+
+const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000
 
 // GET - Get a single report by ID
 //
-// In addition to the report row, the response includes `refreshAvailable`
-// so the report detail page can render the "Refresh" button without a
-// second roundtrip.
+// Response also surfaces refresh/retry affordances so the report detail
+// page renders the right buttons without extra roundtrips:
+//   refreshAvailable: an unconsumed refresh credit is bound to this report
+//   retryAvailable: a retry credit exists OR could be self-serve-granted
+//     (completed within 14 days AND no prior retry on this original)
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -47,7 +51,25 @@ export async function GET(
       refreshAvailable = credit !== null
     }
 
-    return NextResponse.json({ report, refreshAvailable })
+    // Retry availability — separate axis from refresh. Available when:
+    //   - report is a topic report (not portfolio), AND
+    //   - an unconsumed retry credit exists (failure auto-grant or
+    //     prior self-serve grant), OR
+    //   - report is COMPLETE within the last 14 days AND no prior retry
+    //     credit exists for this original (eligible for self-serve grant
+    //     on first feedback submission).
+    let retryAvailable = false
+    if (report.report_type === 'topic') {
+      const existing = await findRetryCreditForReport(id, user.id)
+      if (existing) {
+        retryAvailable = true
+      } else if (report.status === 'complete' && report.created_at) {
+        const ageMs = Date.now() - new Date(report.created_at).getTime()
+        retryAvailable = ageMs <= FOURTEEN_DAYS_MS
+      }
+    }
+
+    return NextResponse.json({ report, refreshAvailable, retryAvailable })
   } catch (error) {
     console.error('Error in GET /api/reports/[id]:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

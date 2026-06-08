@@ -22,6 +22,7 @@ import { runPublicationsAgent } from './agents/publications'
 import { runMarketAgent } from './agents/market'
 import { synthesizeReport } from './synthesize'
 import { getCurrentNihFiscalYear, formatPartialFYLabel } from './fiscal-year'
+import { autoGrantRetryCreditOnFailure } from '@/lib/billing/credits'
 
 /**
  * Progress stage type for report generation
@@ -216,6 +217,14 @@ export async function generateTopicReport(
         updated_at: new Date().toISOString(),
       })
       .eq('id', reportId)
+
+    // Auto-grant a retry credit so the user has a recovery path without
+    // contacting support. Idempotent — duplicate failures (e.g. retried
+    // webhooks) won't double-grant. Logged-not-thrown internally.
+    await autoGrantRetryCreditOnFailure({
+      userId,
+      originalReportId: reportId,
+    })
 
     console.error(`[Report ${reportId}] Failed:`, error)
     throw error

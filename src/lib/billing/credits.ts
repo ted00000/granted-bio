@@ -185,3 +185,125 @@ export async function markCreditConsumed(params: {
     throw error
   }
 }
+
+/**
+ * Auto-grant a retry credit when a report's generation fails technically.
+ * Called from generate.ts's failure handler so the user has a recovery
+ * path without needing to contact support. Idempotent — if a retry credit
+ * already exists for this original report, this is a no-op.
+ *
+ * The grant is funded by goodwill (the user already paid for the failed
+ * attempt), so source='failure_auto_grant' is the correct attribution.
+ */
+export async function autoGrantRetryCreditOnFailure(params: {
+  userId: string
+  originalReportId: string
+}): Promise<void> {
+  // Idempotency: don't double-grant if a retry credit already exists for
+  // this original report.
+  const { data: existing } = await supabaseAdmin
+    .from('report_credits')
+    .select('id')
+    .eq('user_id', params.userId)
+    .eq('original_report_id', params.originalReportId)
+    .eq('source', 'failure_auto_grant')
+    .limit(1)
+    .maybeSingle()
+
+  if (existing) return
+
+  const expiresAt = twelveMonthsFromNow()
+  const { error } = await supabaseAdmin.from('report_credits').insert({
+    user_id: params.userId,
+    credit_type: 'retry',
+    source: 'failure_auto_grant',
+    expires_at: expiresAt,
+    original_report_id: params.originalReportId,
+    notes: 'Auto-granted when the original report generation failed',
+  })
+
+  if (error) {
+    console.error('[credits] autoGrantRetryCreditOnFailure failed:', error)
+  }
+}
+
+/**
+ * Self-serve retry grant. Called when the user submits feedback on a
+ * completed report and asks for a retry. Eligibility is gated by the
+ * 14-day window from the original report's created_at AND by checking
+ * that no prior retry credit (failure_auto_grant or self_serve_retry)
+ * exists for this original — one retry per original, no exceptions.
+ *
+ * Returns the granted credit id, or null when the user is ineligible.
+ */
+export async function grantSelfServeRetryCredit(params: {
+  userId: string
+  originalReportId: string
+  originalCreatedAt: string
+}): Promise<string | null> {
+  // Eligibility: no prior retry on this original
+  const { data: priorRetry } = await supabaseAdmin
+    .from('report_credits')
+    .select('id')
+    .eq('user_id', params.userId)
+    .eq('original_report_id', params.originalReportId)
+    .eq('credit_type', 'retry')
+    .limit(1)
+    .maybeSingle()
+
+  if (priorRetry) return null
+
+  // Eligibility: original report ≤ 14 days old
+  const ageMs = Date.now() - new Date(params.originalCreatedAt).getTime()
+  const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000
+  if (ageMs > FOURTEEN_DAYS_MS) return null
+
+  const expiresAt = twelveMonthsFromNow()
+  const { data, error } = await supabaseAdmin
+    .from('report_credits')
+    .insert({
+      user_id: params.userId,
+      credit_type: 'retry',
+      source: 'self_serve_retry',
+      expires_at: expiresAt,
+      original_report_id: params.originalReportId,
+      notes: 'Self-serve retry — granted on feedback submission within the 14-day window',
+    })
+    .select('id')
+    .single()
+
+  if (error || !data) {
+    console.error('[credits] grantSelfServeRetryCredit failed:', error)
+    return null
+  }
+  return data.id
+}
+
+/**
+ * Find the unspent retry credit bound to a specific original report.
+ * Returns the credit row or null. Used by the retry assistant endpoints
+ * to verify entitlement before doing work.
+ */
+export async function findRetryCreditForReport(
+  originalReportId: string,
+  userId: string
+): Promise<{ id: string; expiresAt: string } | null> {
+  const { data, error } = await supabaseAdmin
+    .from('report_credits')
+    .select('id, expires_at')
+    .eq('user_id', userId)
+    .eq('credit_type', 'retry')
+    .eq('original_report_id', originalReportId)
+    .is('consumed_at', null)
+    .gt('expires_at', new Date().toISOString())
+    .order('granted_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  if (error) {
+    console.error('[credits] findRetryCreditForReport failed:', error)
+    return null
+  }
+  if (!data) return null
+  return { id: data.id, expiresAt: data.expires_at }
+}

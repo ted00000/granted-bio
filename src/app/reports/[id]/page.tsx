@@ -3,7 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw } from 'lucide-react'
+import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw, Sparkles, X, ArrowRight } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { Logo } from '@/components/Logo'
 import { MarkdownRenderer } from './MarkdownRenderer'
@@ -89,6 +89,28 @@ export default function ReportDetailPage({
   const [refreshing, setRefreshing] = useState(false)
   const [refreshError, setRefreshError] = useState<string | null>(null)
 
+  // Retry assistant state
+  const [retryAvailable, setRetryAvailable] = useState(false)
+  type RetryStep = 'feedback' | 'analyzing' | 'choose' | 'generating'
+  const [retryStep, setRetryStep] = useState<RetryStep | null>(null)
+  type RetryFeedbackCategory =
+    | 'projects_wrong'
+    | 'too_narrow'
+    | 'too_broad'
+    | 'missed_aspect'
+    | 'wrong_field'
+  const [feedbackCategory, setFeedbackCategory] = useState<RetryFeedbackCategory | null>(null)
+  const [feedbackText, setFeedbackText] = useState('')
+  interface RetryProposal {
+    label: string
+    semanticQuery: string
+    keywordQuery: string
+    rationale: string
+  }
+  const [proposals, setProposals] = useState<RetryProposal[]>([])
+  const [feedbackId, setFeedbackId] = useState<string | null>(null)
+  const [retryError, setRetryError] = useState<string | null>(null)
+
   useEffect(() => {
     fetchReport()
   }, [id])
@@ -112,6 +134,7 @@ export default function ReportDetailPage({
 
       setReport(data.report)
       setRefreshAvailable(Boolean(data.refreshAvailable))
+      setRetryAvailable(Boolean(data.retryAvailable))
     } catch (e) {
       console.error('Error fetching report:', e)
       setError(e instanceof Error ? e.message : 'Failed to load report')
@@ -157,6 +180,81 @@ export default function ReportDetailPage({
     ? Math.floor((Date.now() - new Date(report.created_at).getTime()) / (1000 * 60 * 60 * 24))
     : 0
   const showRefreshNudge = refreshAvailable && reportAgeDays >= 60
+
+  // Retry-assistant flow handlers
+  const openRetryModal = () => {
+    setRetryStep('feedback')
+    setFeedbackCategory(null)
+    setFeedbackText('')
+    setProposals([])
+    setFeedbackId(null)
+    setRetryError(null)
+  }
+
+  const closeRetryModal = () => {
+    if (retryStep === 'analyzing' || retryStep === 'generating') return
+    setRetryStep(null)
+    setRetryError(null)
+  }
+
+  const submitFeedback = async () => {
+    if (!feedbackCategory) return
+    setRetryStep('analyzing')
+    setRetryError(null)
+
+    try {
+      const response = await fetch(`/api/reports/${id}/retry/refine`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          feedbackCategory,
+          feedbackText: feedbackText.trim() || null,
+        }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Failed to refine')
+
+      setProposals(data.proposals ?? [])
+      setFeedbackId(data.feedback_id ?? null)
+      setRetryStep('choose')
+    } catch (e) {
+      console.error('Error refining retry:', e)
+      setRetryError(e instanceof Error ? e.message : 'Failed to refine')
+      setRetryStep('feedback')
+    }
+  }
+
+  const chooseProposalAndGenerate = async (proposal: typeof proposals[number]) => {
+    setRetryStep('generating')
+    setRetryError(null)
+
+    try {
+      const response = await fetch(`/api/reports/${id}/retry/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          feedback_id: feedbackId,
+          chosen_interpretation: proposal,
+        }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Failed to generate retry')
+
+      router.push(`/reports/${data.report_id}`)
+    } catch (e) {
+      console.error('Error generating retry:', e)
+      setRetryError(e instanceof Error ? e.message : 'Failed to generate retry')
+      setRetryStep('choose')
+    }
+  }
+
+  const FEEDBACK_OPTIONS: { value: RetryFeedbackCategory; label: string }[] = [
+    { value: 'projects_wrong', label: "The projects weren't quite what I was looking for" },
+    { value: 'too_narrow', label: 'Too narrow — missed adjacent areas' },
+    { value: 'too_broad', label: 'Too broad — too much off-topic material' },
+    { value: 'missed_aspect', label: 'Missed a specific aspect I care about' },
+    { value: 'wrong_field', label: 'Wrong research field entirely' },
+  ]
 
   const [exporting, setExporting] = useState<'pdf' | 'docx' | null>(null)
 
@@ -1490,6 +1588,19 @@ export default function ReportDetailPage({
             </div>
             {report.status === 'complete' && report.markdown_content && (
               <div className="flex items-center gap-3 text-xs">
+                {retryAvailable && (
+                  <>
+                    <button
+                      onClick={openRetryModal}
+                      title="Not what you expected? Refine your search and regenerate, free."
+                      className="flex items-center gap-1.5 text-gray-500 hover:text-[#E07A5F] transition-colors"
+                    >
+                      <Sparkles className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      Refine
+                    </button>
+                    <span className="text-gray-300">|</span>
+                  </>
+                )}
                 {refreshAvailable && (
                   <>
                     <button
@@ -1598,15 +1709,30 @@ export default function ReportDetailPage({
             <h2 className="text-lg font-medium text-gray-900 mb-2">
               Report Generation Failed
             </h2>
-            <p className="text-gray-500 mb-2">
+            <p className="text-gray-500 mb-6">
               {report.error_message || 'An error occurred while generating the report.'}
             </p>
-            <Link
-              href="/reports"
-              className="text-[#E07A5F] hover:text-[#C96A4F] font-medium"
-            >
-              Go back to reports
-            </Link>
+            {retryAvailable ? (
+              <div className="space-y-3">
+                <button
+                  onClick={openRetryModal}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#E07A5F] text-white text-sm font-medium rounded-lg hover:bg-[#C96A4F] transition-colors"
+                >
+                  <Sparkles className="w-4 h-4" />
+                  Refine your search and try again
+                </button>
+                <p className="text-xs text-gray-400">
+                  Free retry included with this report. We&apos;ll help you reformulate.
+                </p>
+              </div>
+            ) : (
+              <Link
+                href="/reports"
+                className="text-[#E07A5F] hover:text-[#C96A4F] font-medium"
+              >
+                Go back to reports
+              </Link>
+            )}
           </div>
         )}
 
@@ -1623,6 +1749,190 @@ export default function ReportDetailPage({
           </div>
         )}
       </main>
+
+      {/* Retry assistant modal — captures dissatisfaction feedback, asks
+          Claude for three reformulated interpretations, shows the picker,
+          consumes the retry credit on generate. The "analyzing" and
+          "generating" steps block close because cancelling mid-flight
+          would orphan a Claude call (and on generating, a new report). */}
+      {retryStep !== null && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeRetryModal()
+          }}
+        >
+          <div className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-start justify-between p-6 border-b border-gray-100">
+              <div>
+                <div className="flex items-center gap-2 text-xs text-[#E07A5F] font-medium mb-1">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Refine & Regenerate
+                </div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  {retryStep === 'feedback' && "What didn't work?"}
+                  {retryStep === 'analyzing' && 'Analyzing your feedback...'}
+                  {retryStep === 'choose' && 'Pick a refined interpretation'}
+                  {retryStep === 'generating' && 'Starting your new report...'}
+                </h2>
+              </div>
+              {(retryStep === 'feedback' || retryStep === 'choose') && (
+                <button
+                  onClick={closeRetryModal}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                  aria-label="Close"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+
+            <div className="p-6">
+              {retryStep === 'feedback' && (
+                <div className="space-y-4">
+                  <p className="text-sm text-gray-600">
+                    Tell us what didn&apos;t work and we&apos;ll have Claude reformulate the search.
+                    Free — uses your included retry, doesn&apos;t cost a new report.
+                  </p>
+                  <div className="space-y-2">
+                    {FEEDBACK_OPTIONS.map((opt) => (
+                      <label
+                        key={opt.value}
+                        className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                          feedbackCategory === opt.value
+                            ? 'border-[#E07A5F] bg-[#FDF2EF]'
+                            : 'border-gray-200 hover:border-gray-300'
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name="feedback-category"
+                          value={opt.value}
+                          checked={feedbackCategory === opt.value}
+                          onChange={() => setFeedbackCategory(opt.value)}
+                          className="mt-0.5 text-[#E07A5F] focus:ring-[#E07A5F]"
+                        />
+                        <span className="text-sm text-gray-700">{opt.label}</span>
+                      </label>
+                    ))}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                      Tell us more (optional)
+                    </label>
+                    <textarea
+                      value={feedbackText}
+                      onChange={(e) => setFeedbackText(e.target.value)}
+                      rows={3}
+                      placeholder="e.g. I was looking for methylation-based detection, not fragmentomics."
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#E07A5F] focus:border-transparent resize-none"
+                    />
+                  </div>
+                  {retryError && (
+                    <p className="text-sm text-rose-600">{retryError}</p>
+                  )}
+                  <div className="flex justify-end gap-2 pt-2">
+                    <button
+                      onClick={closeRetryModal}
+                      className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={submitFeedback}
+                      disabled={!feedbackCategory}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#E07A5F] text-white text-sm font-medium rounded-lg hover:bg-[#C96A4F] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      Continue
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {retryStep === 'analyzing' && (
+                <div className="py-12 text-center">
+                  <Loader2 className="w-8 h-8 text-[#E07A5F] animate-spin mx-auto mb-4" />
+                  <p className="text-sm text-gray-600">
+                    Claude is analyzing your report and proposing three refined interpretations.
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">This takes about 10 seconds.</p>
+                </div>
+              )}
+
+              {retryStep === 'choose' && (
+                <div className="space-y-4">
+                  <p className="text-sm text-gray-600">
+                    Based on what you told us, here are three ways to re-run this. Pick one
+                    and we&apos;ll regenerate — your retry is included.
+                  </p>
+                  <div className="space-y-3">
+                    {proposals.map((p, i) => (
+                      <button
+                        key={i}
+                        onClick={() => chooseProposalAndGenerate(p)}
+                        className="w-full text-left p-4 border border-gray-200 rounded-lg hover:border-[#E07A5F] hover:bg-[#FDF2EF]/30 transition-colors"
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-gray-900 text-sm mb-1">
+                              {p.label}
+                            </div>
+                            <div className="text-xs text-gray-500 italic mb-2">
+                              &ldquo;{p.semanticQuery}&rdquo;
+                            </div>
+                            <div className="flex flex-wrap gap-1 mb-2">
+                              {p.keywordQuery
+                                .split('|')
+                                .slice(0, 8)
+                                .map((kw, ki) => (
+                                  <span
+                                    key={ki}
+                                    className="inline-block px-2 py-0.5 text-[10px] bg-gray-100 text-gray-600 rounded"
+                                  >
+                                    {kw.trim()}
+                                  </span>
+                                ))}
+                            </div>
+                            <p className="text-xs text-gray-600">{p.rationale}</p>
+                          </div>
+                          <ArrowRight className="w-4 h-4 text-gray-400 flex-shrink-0 mt-1" />
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                  {retryError && (
+                    <p className="text-sm text-rose-600">{retryError}</p>
+                  )}
+                  <div className="flex justify-between items-center pt-2">
+                    <button
+                      onClick={() => setRetryStep('feedback')}
+                      className="text-sm text-gray-500 hover:text-gray-700"
+                    >
+                      ← Back to feedback
+                    </button>
+                    <button
+                      onClick={closeRetryModal}
+                      className="text-sm text-gray-500 hover:text-gray-700"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {retryStep === 'generating' && (
+                <div className="py-12 text-center">
+                  <Loader2 className="w-8 h-8 text-[#E07A5F] animate-spin mx-auto mb-4" />
+                  <p className="text-sm text-gray-600">
+                    Generating your refined report. We&apos;ll route you to it in a moment.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
