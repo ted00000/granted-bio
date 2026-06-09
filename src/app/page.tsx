@@ -301,85 +301,54 @@ export default function Home() {
           </div>
         </section>
 
-        {/* How It Works */}
+        {/* How It Works — 4-step flow matching the locked wireframe.
+            Replaces the previous Without/With granted.bio comparison
+            because the new positioning anchors on the report as the
+            artifact, not on search-vs-keyword friction. */}
         <section className="py-16 px-6 bg-white border-y border-gray-100">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-semibold text-gray-900 text-center mb-4">
-              Semantic search, not keyword guessing
+          <div className="max-w-5xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 text-center mb-4">
+              How it works
             </h2>
             <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-              Traditional database searches rely on exact keywords - you miss relevant projects
-              that use different terminology. Our AI understands meaning and finds what matters.
+              From topic to full intelligence report in four steps. About two minutes of
+              generation, three months of exploration.
             </p>
 
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* The Problem */}
-              <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200">
-                <div className="flex items-center gap-2 mb-4">
-                  <X className="w-5 h-5 text-red-500" />
-                  <h3 className="font-semibold text-gray-900">Without granted.bio</h3>
+            <div className="grid md:grid-cols-4 gap-6">
+              {[
+                {
+                  step: 1,
+                  title: 'Choose your topic',
+                  body: 'Type a research area in your own words. Anything specific enough to define a field works.',
+                },
+                {
+                  step: 2,
+                  title: 'Pick an interpretation',
+                  body: 'We propose three scopes — Narrow, Standard, Broad — so you decide how wide to cast.',
+                },
+                {
+                  step: 3,
+                  title: 'We synthesize',
+                  body: 'Projects, trials, patents, publications cross-linked and analyzed. About two minutes.',
+                },
+                {
+                  step: 4,
+                  title: 'You explore',
+                  body: 'The report renders as a navigable document. Every reference stays live for 3 months.',
+                },
+              ].map(({ step, title, body }) => (
+                <div
+                  key={step}
+                  className="bg-white border border-gray-200 rounded-2xl p-5 shadow-sm flex flex-col"
+                >
+                  <div className="w-8 h-8 rounded-full bg-[#E07A5F]/10 text-[#E07A5F] font-semibold flex items-center justify-center mb-4">
+                    {step}
+                  </div>
+                  <h3 className="font-semibold text-gray-900 mb-2">{title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{body}</p>
                 </div>
-                <ul className="space-y-3 text-sm text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400 mt-1">-</span>
-                    Search 4 different databases separately
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400 mt-1">-</span>
-                    Learn each site's different query syntax
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400 mt-1">-</span>
-                    Guess which keywords researchers might have used
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400 mt-1">-</span>
-                    Miss relevant projects that use different terminology
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400 mt-1">-</span>
-                    Manually cross-reference and de-duplicate results
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-red-400 mt-1">-</span>
-                    Hours of work for incomplete coverage
-                  </li>
-                </ul>
-              </div>
-
-              {/* The Solution */}
-              <div className="bg-[#E07A5F]/5 rounded-2xl p-6 border border-[#E07A5F]/20">
-                <div className="flex items-center gap-2 mb-4">
-                  <Check className="w-5 h-5 text-[#E07A5F]" />
-                  <h3 className="font-semibold text-gray-900">With granted.bio</h3>
-                </div>
-                <ul className="space-y-3 text-sm text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#E07A5F] mt-1">+</span>
-                    One search across all 4 databases
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#E07A5F] mt-1">+</span>
-                    Natural language - ask what you mean
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#E07A5F] mt-1">+</span>
-                    AI understands concepts, not just words
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#E07A5F] mt-1">+</span>
-                    Finds related projects using different terminology
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#E07A5F] mt-1">+</span>
-                    Results ranked by semantic relevance
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-[#E07A5F] mt-1">+</span>
-                    Complete picture in minutes
-                  </li>
-                </ul>
-              </div>
+              ))}
             </div>
           </div>
         </section>
@@ -463,25 +432,25 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Who It's For */}
+        {/* Who It's For — persona priority ordering locked in the plan:
+            Researcher (lead) > Investor > BD. BD has a different CTA
+            ("Talk to us") because the BD motion is enterprise, not
+            self-serve. */}
         <section className="py-20 px-6 bg-gradient-to-b from-gray-50 to-white border-y border-gray-100">
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="inline-block px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-medium mb-4">
-                Built For You
-              </span>
+            <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-4">
-                Research intelligence for every role
+                Who it's for
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Whether you're writing grants, evaluating investments, or building qualified leads,
-                semantic search helps you find what matters faster.
+                Three audiences, one report. Each draws different value from the same
+                cross-source synthesis.
               </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {/* Researchers */}
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              {/* Researcher — lead persona */}
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
                 <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-5 text-white">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
@@ -490,30 +459,20 @@ export default function Home() {
                     <h3 className="font-semibold">Researchers</h3>
                   </div>
                 </div>
-                <div className="p-5">
-                  <ul className="space-y-3 text-sm text-gray-600">
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                      Find funded competitors for grant applications
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                      Identify collaborators and mentors
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                      Discover research gaps to pursue
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-blue-500 mt-0.5 flex-shrink-0" />
-                      Track funding trends by institute
-                    </li>
-                  </ul>
+                <div className="p-5 flex-1 flex flex-col">
+                  <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                    Position your work in the funding landscape. See what's accelerating,
+                    who's converging, where the white space is. A competitive map of your
+                    field that takes hours instead of weeks.
+                  </p>
+                  <p className="text-xs text-gray-500 mt-auto">
+                    Used for: grant positioning, identifying collaborators, gap analysis.
+                  </p>
                 </div>
               </div>
 
-              {/* Investors */}
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              {/* Investor */}
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
                 <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 p-5 text-white">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
@@ -522,57 +481,41 @@ export default function Home() {
                     <h3 className="font-semibold">Investors</h3>
                   </div>
                 </div>
-                <div className="p-5">
-                  <ul className="space-y-3 text-sm text-gray-600">
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      Validate markets through funding signals
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      Assess technical risk and maturity
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      Map IP landscape and competitors
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                      Track clinical development progress
-                    </li>
-                  </ul>
+                <div className="p-5 flex-1 flex flex-col">
+                  <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                    Pre-private signal on what's becoming a market. NIH funding precedes
+                    commercial activity by 3-7 years. Get a defensible view of the underlying
+                    science before a pitch deck shows up.
+                  </p>
+                  <p className="text-xs text-gray-500 mt-auto">
+                    Used for: thesis development, technical diligence, identifying overlooked platforms.
+                  </p>
                 </div>
               </div>
 
-              {/* Business Intelligence */}
-              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              {/* BD — enterprise motion, different CTA */}
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden flex flex-col">
                 <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-5 text-white">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
                       <Briefcase className="w-5 h-5 text-white" />
                     </div>
-                    <h3 className="font-semibold">Business Intelligence</h3>
+                    <h3 className="font-semibold">Business Development</h3>
                   </div>
                 </div>
-                <div className="p-5">
-                  <ul className="space-y-3 text-sm text-gray-600">
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                      Identify key players and organizations
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                      Discover partnership opportunities
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                      Monitor competitive landscape
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-purple-500 mt-0.5 flex-shrink-0" />
-                      Track funded projects by area
-                    </li>
-                  </ul>
+                <div className="p-5 flex-1 flex flex-col">
+                  <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                    Identify partnership and licensing targets earlier. Surface PIs and
+                    institutions producing the technology you need before they&apos;re on
+                    everyone else&apos;s list.
+                  </p>
+                  <Link
+                    href="/contact"
+                    className="inline-flex items-center gap-1.5 text-sm text-purple-600 hover:text-purple-700 font-medium mb-1"
+                  >
+                    Talk to us about enterprise pricing
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -630,6 +573,66 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ — answers the most common pre-purchase questions before the
+            Final CTA. Uses native <details> so it's accessible and works
+            without client-side state. */}
+        <section className="py-16 px-6 bg-white border-y border-gray-100">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 text-center mb-12">
+              Frequently asked questions
+            </h2>
+            <div className="space-y-3">
+              {[
+                {
+                  q: "What's in a report?",
+                  a: 'A complete synthesized intelligence report — executive summary, field maturity assessment, competitive topology, funding landscape, key projects with insights, market context, clinical validation status, patent and IP landscape, key publications, top organizations and researchers. About 30 pages of analysis. See the sample for a real example.',
+                },
+                {
+                  q: 'What data sources do you use?',
+                  a: 'NIH RePORTER (federal grants), ClinicalTrials.gov (active and completed trials), USPTO (patents), and PubMed (publications). All cross-linked at the project_number level so a project, its funded trials, its filed patents, and its published papers appear together.',
+                },
+                {
+                  q: 'How accurate is the AI synthesis?',
+                  a: 'The data layer is deterministic — every claim links to the underlying NIH-indexed record. The narrative layer uses Claude with strict sample-aware framing: hedged language, small-N caveats, and explicit acknowledgment of what NIH-linked data does and does not capture. Reports are auditable; the methodology section explains exactly how each section was generated.',
+                },
+                {
+                  q: 'What does "3 months of access" include?',
+                  a: 'Three months from generation to navigate the report inside the platform — click any project, trial, patent, or publication reference and explore the underlying record. The PDF is yours to keep; the in-platform exploration is what the three months gates.',
+                },
+                {
+                  q: 'What does the free refresh do?',
+                  a: 'Within 12 months of purchase you can re-synthesize the same report against current NIH data, free. NIH RePORTER updates monthly; if material new projects or trials appear in your topic during your window, refresh gives you the updated picture without paying again.',
+                },
+                {
+                  q: "What if I'm not happy with my report?",
+                  a: "We'll help you refine your search and regenerate, free. The platform asks what didn't work, Claude proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per report, within 14 days of generation.",
+                },
+                {
+                  q: 'Can I share the PDF with my team?',
+                  a: 'Yes — the PDF is yours. In-platform exploration of every linked record is tied to your account for the 3-month window.',
+                },
+                {
+                  q: 'Do credits expire?',
+                  a: '12 months from purchase. Generation and refresh share the same expiry. Plenty of time to use what you bought.',
+                },
+              ].map(({ q, a }, i) => (
+                <details
+                  key={i}
+                  className="group border border-gray-200 rounded-xl px-5 py-4 bg-white hover:border-gray-300 transition-colors"
+                >
+                  <summary className="flex items-center justify-between cursor-pointer list-none gap-3">
+                    <span className="font-medium text-gray-900 text-sm">{q}</span>
+                    <span className="text-gray-400 group-open:rotate-45 transition-transform text-lg leading-none">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-3 text-sm text-gray-600 leading-relaxed">{a}</p>
+                </details>
+              ))}
             </div>
           </div>
         </section>
