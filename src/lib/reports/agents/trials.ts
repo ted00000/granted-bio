@@ -73,6 +73,13 @@ export async function runTrialsAgent(
   // The search_clinical_studies RPC returns id/nct/title/status + similarity
   // but not the richer fields we need (phase, enrollment, sponsor, etc.), so
   // we use it as a candidate filter and then re-fetch full rows by NCT id.
+  //
+  // The RPC scans an ivfflat index over 38K clinical_studies embeddings;
+  // under load it can blow past the Supabase service-role 8s statement
+  // timeout. We retry once with a smaller match_count when the first call
+  // fails with a timeout — fewer index probes, finishes well inside 8s,
+  // returns most of the topically-relevant trials at the cost of dropping
+  // the bottom of the long tail. Better than zero trials in the report.
   let semanticTrials: RawTrialResult[] = []
   if (topicQuery && topicQuery.trim().length > 0) {
     console.log(
@@ -80,19 +87,42 @@ export async function runTrialsAgent(
     )
     try {
       const queryEmbedding = await generateEmbedding(topicQuery)
-      const { data: candidates, error: rpcError } = await supabaseAdmin.rpc(
-        'search_clinical_studies',
-        {
+
+      const callRpc = async (matchCount: number) => {
+        return supabaseAdmin.rpc('search_clinical_studies', {
           query_embedding: queryEmbedding,
           match_threshold: TRIAL_INCLUSION_THRESHOLD,
-          match_count: 150,
-        }
-      )
+          match_count: matchCount,
+        })
+      }
+
+      const isTimeoutError = (msg: string | undefined | null) => {
+        if (!msg) return false
+        return /statement timeout|canceling statement/i.test(msg)
+      }
+
+      let { data: candidates, error: rpcError } = await callRpc(150)
+
+      // Retry once with degraded match_count if the first call hit a
+      // statement timeout. 60 is well under the index-probe cost of 150
+      // and reliably finishes under 8s in practice.
+      if (rpcError && isTimeoutError(rpcError.message)) {
+        console.warn(
+          '[Trials Agent] Path 2 RPC timed out at match_count=150; retrying with match_count=60'
+        )
+        const retry = await callRpc(60)
+        candidates = retry.data
+        rpcError = retry.error
+        diagnostics.path2ErrorMessage = `Initial call timed out; retried at match_count=60 (${
+          rpcError ? 'still failed' : 'succeeded'
+        })`
+      }
 
       if (rpcError) {
         console.error('[Trials Agent] Path 2 RPC error:', rpcError)
         diagnostics.path2Status = 'rpc_error'
-        diagnostics.path2ErrorMessage = rpcError.message ?? String(rpcError)
+        diagnostics.path2ErrorMessage =
+          diagnostics.path2ErrorMessage ?? rpcError.message ?? String(rpcError)
       } else if (!candidates || candidates.length === 0) {
         diagnostics.path2Status = 'no_candidates'
       } else {
