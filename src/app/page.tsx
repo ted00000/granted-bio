@@ -213,7 +213,7 @@ export default function Home() {
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
-                    href="/reports"
+                    href="/sample/liquid-biopsy"
                     className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
                   >
                     See a Sample Report
@@ -598,7 +598,7 @@ export default function Home() {
                     who's leading, and where the white space sits. Generated in minutes.
                   </p>
                   <Link
-                    href="/reports"
+                    href="/sample/liquid-biopsy"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
                   >
                     See a Sample Report
