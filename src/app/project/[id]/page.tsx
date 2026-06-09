@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Bookmark, FileText, Heart, BookOpen, Lightbulb, Activity, Pencil } from 'lucide-react'
-import { AppLayout } from '@/components/AppLayout'
+import { DetailLayout } from '@/components/DetailLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { CategoryEditModal } from '@/components/CategoryEditModal'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
@@ -114,7 +114,7 @@ export default function ProjectPage() {
   const [isSaved, setIsSaved] = useState(false)
   const [savingProject, setSavingProject] = useState(false)
   const [showCategoryModal, setShowCategoryModal] = useState(false)
-  const { isAdmin } = useAuth()
+  const { user, isAdmin } = useAuth()
 
   // Determine where the breadcrumb should send the user when they click "Projects".
   // Priority: explicit searchState.returnUrl (set by the search flow) → document.referrer
@@ -146,8 +146,10 @@ export default function ProjectPage() {
     }
   }, [])
 
-  // Check if project is saved
+  // Check if project is saved. Skip when logged out — the save APIs
+  // require auth and the bookmark button isn't shown to public visitors.
   useEffect(() => {
+    if (!user) return
     const checkSaved = async () => {
       try {
         const response = await fetch(`/api/saved-projects/check?application_id=${id}`)
@@ -158,7 +160,7 @@ export default function ProjectPage() {
       }
     }
     checkSaved()
-  }, [id])
+  }, [id, user])
 
   const toggleSave = async () => {
     if (savingProject) return
@@ -229,20 +231,20 @@ export default function ProjectPage() {
 
   if (loading) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full flex items-center justify-center bg-[#FAFAF9]">
           <div className="flex flex-col items-center gap-3">
             <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
             <span className="text-sm text-gray-400">Loading project...</span>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
   if (error || !data) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
@@ -257,7 +259,7 @@ export default function ProjectPage() {
             </div>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
@@ -282,7 +284,7 @@ export default function ProjectPage() {
   }
 
   return (
-    <AppLayout>
+    <DetailLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
           {/* Breadcrumbs and bookmark */}
@@ -293,23 +295,25 @@ export default function ProjectPage() {
                 { label: project.title.length > 40 ? project.title.slice(0, 40) + '...' : project.title },
               ]}
             />
-            <button
-              onClick={toggleSave}
-              disabled={savingProject}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
-                isSaved
-                  ? 'bg-[#E07A5F]/10'
-                  : 'hover:bg-[#E07A5F]/10'
-              }`}
-              title={isSaved ? 'Remove from saved' : 'Save project'}
-            >
-              <Bookmark
-                className="w-4 h-4"
-                fill={isSaved ? 'currentColor' : 'none'}
-                strokeWidth={1.5}
-              />
-              <span className="text-sm">Save</span>
-            </button>
+            {user && (
+              <button
+                onClick={toggleSave}
+                disabled={savingProject}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
+                  isSaved
+                    ? 'bg-[#E07A5F]/10'
+                    : 'hover:bg-[#E07A5F]/10'
+                }`}
+                title={isSaved ? 'Remove from saved' : 'Save project'}
+              >
+                <Bookmark
+                  className="w-4 h-4"
+                  fill={isSaved ? 'currentColor' : 'none'}
+                  strokeWidth={1.5}
+                />
+                <span className="text-sm">Save</span>
+              </button>
+            )}
           </div>
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
           {/* Main Content */}
@@ -602,6 +606,6 @@ export default function ProjectPage() {
         currentConfidence={project.primary_category_confidence}
         projectTitle={project.title}
       />
-    </AppLayout>
+    </DetailLayout>
   )
 }

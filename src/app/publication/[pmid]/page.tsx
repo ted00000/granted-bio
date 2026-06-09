@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { BookOpen, Calendar, Users, Building2, ExternalLink, Bookmark } from 'lucide-react'
-import { AppLayout } from '@/components/AppLayout'
+import { DetailLayout } from '@/components/DetailLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface PublicationData {
   pmid: string
@@ -57,6 +58,7 @@ export default function PublicationDetailPage() {
   const [isLocalOnly, setIsLocalOnly] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
   const [savingPub, setSavingPub] = useState(false)
+  const { user } = useAuth()
 
   // Breadcrumb back-target — uses document.referrer when same-origin so the
   // breadcrumb returns to the actual source page (e.g. /project/[id], search).
@@ -73,8 +75,10 @@ export default function PublicationDetailPage() {
     }
   }, [])
 
-  // Check if publication is saved
+  // Check if publication is saved. Skip for logged-out visitors — the
+  // API requires auth and the bookmark button is hidden in that case.
   useEffect(() => {
+    if (!user) return
     const checkSaved = async () => {
       try {
         const response = await fetch(`/api/saved-publications/check?pmid=${pmid}`)
@@ -89,7 +93,7 @@ export default function PublicationDetailPage() {
     if (pmid) {
       checkSaved()
     }
-  }, [pmid])
+  }, [pmid, user])
 
   const toggleSavePublication = async () => {
     if (savingPub || !publication) return
@@ -155,20 +159,20 @@ export default function PublicationDetailPage() {
 
   if (loading) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full flex items-center justify-center bg-[#FAFAF9]">
           <div className="flex flex-col items-center gap-3">
             <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
             <span className="text-sm text-gray-400">Loading publication...</span>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
   if (error || !publication) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
@@ -184,14 +188,14 @@ export default function PublicationDetailPage() {
             </div>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
   const authors = formatAuthors(publication.author_list)
 
   return (
-    <AppLayout>
+    <DetailLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
           {/* Breadcrumbs and save */}
@@ -202,23 +206,25 @@ export default function PublicationDetailPage() {
                 { label: publication.pub_title && publication.pub_title.length > 40 ? publication.pub_title.slice(0, 40) + '...' : publication.pub_title || `PMID: ${pmid}` },
               ]}
             />
-            <button
-              onClick={toggleSavePublication}
-              disabled={savingPub}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
-                isSaved
-                  ? 'bg-[#E07A5F]/10'
-                  : 'hover:bg-[#E07A5F]/10'
-              }`}
-              title={isSaved ? 'Remove from saved' : 'Save publication'}
-            >
-              <Bookmark
-                className="w-4 h-4"
-                fill={isSaved ? 'currentColor' : 'none'}
-                strokeWidth={1.5}
-              />
-              <span className="text-sm">Save</span>
-            </button>
+            {user && (
+              <button
+                onClick={toggleSavePublication}
+                disabled={savingPub}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
+                  isSaved
+                    ? 'bg-[#E07A5F]/10'
+                    : 'hover:bg-[#E07A5F]/10'
+                }`}
+                title={isSaved ? 'Remove from saved' : 'Save publication'}
+              >
+                <Bookmark
+                  className="w-4 h-4"
+                  fill={isSaved ? 'currentColor' : 'none'}
+                  strokeWidth={1.5}
+                />
+                <span className="text-sm">Save</span>
+              </button>
+            )}
           </div>
 
           {/* Title Section */}
@@ -375,6 +381,6 @@ export default function PublicationDetailPage() {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </DetailLayout>
   )
 }

@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { FileText, Calendar, Users, Building2, Tag, ExternalLink, Quote, Bookmark } from 'lucide-react'
-import { AppLayout } from '@/components/AppLayout'
+import { DetailLayout } from '@/components/DetailLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface PatentData {
   patent_id: string
@@ -67,6 +68,7 @@ export default function PatentDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [isSaved, setIsSaved] = useState(false)
   const [savingPatent, setSavingPatent] = useState(false)
+  const { user } = useAuth()
 
   // Breadcrumb back-target — uses document.referrer when same-origin so the
   // breadcrumb returns to the actual source page (e.g. /org/[name], search).
@@ -83,8 +85,10 @@ export default function PatentDetailPage() {
     }
   }, [])
 
-  // Check if patent is saved
+  // Check if patent is saved. Skip for logged-out visitors — the API
+  // requires auth and the bookmark button is hidden in that case.
   useEffect(() => {
+    if (!user) return
     const checkSaved = async () => {
       try {
         const response = await fetch(`/api/saved-patents/check?patent_id=${patentId}`)
@@ -99,7 +103,7 @@ export default function PatentDetailPage() {
     if (patentId) {
       checkSaved()
     }
-  }, [patentId])
+  }, [patentId, user])
 
   const toggleSavePatent = async () => {
     if (savingPatent || !patent) return
@@ -163,20 +167,20 @@ export default function PatentDetailPage() {
 
   if (loading) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full flex items-center justify-center bg-[#FAFAF9]">
           <div className="flex flex-col items-center gap-3">
             <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
             <span className="text-sm text-gray-400">Loading patent...</span>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
   if (error || !patent) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
@@ -192,12 +196,12 @@ export default function PatentDetailPage() {
             </div>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
   return (
-    <AppLayout>
+    <DetailLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
           {/* Breadcrumbs and save */}
@@ -208,23 +212,25 @@ export default function PatentDetailPage() {
                 { label: patent.patent_title && patent.patent_title.length > 40 ? patent.patent_title.slice(0, 40) + '...' : patent.patent_title || `Patent ${patentId}` },
               ]}
             />
-            <button
-              onClick={toggleSavePatent}
-              disabled={savingPatent}
-              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
-                isSaved
-                  ? 'bg-[#E07A5F]/10'
-                  : 'hover:bg-[#E07A5F]/10'
-              }`}
-              title={isSaved ? 'Remove from saved' : 'Save patent'}
-            >
-              <Bookmark
-                className="w-4 h-4"
-                fill={isSaved ? 'currentColor' : 'none'}
-                strokeWidth={1.5}
-              />
-              <span className="text-sm">Save</span>
-            </button>
+            {user && (
+              <button
+                onClick={toggleSavePatent}
+                disabled={savingPatent}
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg transition-colors text-[#E07A5F] ${
+                  isSaved
+                    ? 'bg-[#E07A5F]/10'
+                    : 'hover:bg-[#E07A5F]/10'
+                }`}
+                title={isSaved ? 'Remove from saved' : 'Save patent'}
+              >
+                <Bookmark
+                  className="w-4 h-4"
+                  fill={isSaved ? 'currentColor' : 'none'}
+                  strokeWidth={1.5}
+                />
+                <span className="text-sm">Save</span>
+              </button>
+            )}
           </div>
 
           {/* Title Section */}
@@ -366,6 +372,6 @@ export default function PatentDetailPage() {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </DetailLayout>
   )
 }
