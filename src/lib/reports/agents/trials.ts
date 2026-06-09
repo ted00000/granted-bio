@@ -74,12 +74,13 @@ export async function runTrialsAgent(
   // but not the richer fields we need (phase, enrollment, sponsor, etc.), so
   // we use it as a candidate filter and then re-fetch full rows by NCT id.
   //
-  // The RPC scans an ivfflat index over 38K clinical_studies embeddings;
-  // under load it can blow past the Supabase service-role 8s statement
-  // timeout. We retry once with a smaller match_count when the first call
-  // fails with a timeout — fewer index probes, finishes well inside 8s,
-  // returns most of the topically-relevant trials at the cost of dropping
-  // the bottom of the long tail. Better than zero trials in the report.
+  // The RPC uses an HNSW index over the clinical_studies study_embedding
+  // column (see 20260609_hnsw_clinical_studies.sql), so this query
+  // typically returns in well under 1 second. The retry-with-degraded-
+  // match_count below is defense in depth: if a transient connection or
+  // network issue causes the first call to time out, we fall back to a
+  // smaller match_count that costs less work, so the report never silently
+  // ends up with zero semantic trials.
   let semanticTrials: RawTrialResult[] = []
   if (topicQuery && topicQuery.trim().length > 0) {
     console.log(
