@@ -2450,30 +2450,44 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                     self-validated their topic has signal (results > 0).
                     Routes to /reports with the topic preloaded so the
                     generation dialog opens with the user's query already
-                    in the input. The wireframe places this as the
-                    highest-intent moment in the funnel. */}
-                {toolResults.length > 0 && searchContext && userQuery && (
-                  <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg p-4 mb-4 text-white">
-                    <div className="flex items-start gap-3">
-                      <FileText className="w-5 h-5 text-[#E07A5F] flex-shrink-0 mt-0.5" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium leading-snug">
-                          These results won&apos;t tell you what&apos;s emerging, who&apos;s converging, or where the gaps are.
-                        </p>
-                        <p className="text-xs text-gray-300 mt-1">
-                          Generate a complete intelligence report on this topic. <span className="font-semibold text-white">$199</span>, in minutes.
-                        </p>
-                        <Link
-                          href={`/reports?topic=${encodeURIComponent(userQuery)}&generate=1`}
-                          className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E07A5F] hover:bg-[#C96A4F] text-white text-xs font-medium rounded-md transition-colors"
-                        >
-                          Generate Report
-                          <ArrowRight className="w-3.5 h-3.5" />
-                        </Link>
+                    in the input. Per LANDING_AND_CREDITS_PLAN.md §8 this
+                    is the highest-intent moment in the funnel — the user
+                    has just confirmed the data exists for their topic. */}
+                {toolResults.length > 0 && searchContext && userQuery && (() => {
+                  const data = searchContext.originalResults as { total_count?: number; all_results?: unknown[] }
+                  const total = data.total_count ?? data.all_results?.length ?? 0
+                  return (
+                    <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg p-4 mb-4 text-white">
+                      <div className="flex items-start gap-3">
+                        <FileText className="w-5 h-5 text-[#E07A5F] flex-shrink-0 mt-0.5" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium leading-snug">
+                            {total > 0 ? (
+                              <>
+                                Found {total.toLocaleString()} result{total === 1 ? '' : 's'} on &ldquo;{userQuery}&rdquo;.{' '}
+                                <span className="text-gray-300 font-normal">
+                                  None of these will tell you what&apos;s emerging, who&apos;s converging, or where the gaps are.
+                                </span>
+                              </>
+                            ) : (
+                              <>None of these will tell you what&apos;s emerging, who&apos;s converging, or where the gaps are.</>
+                            )}
+                          </p>
+                          <p className="text-xs text-gray-300 mt-2">
+                            Generate the intelligence report — <span className="font-semibold text-white">$199</span>, in minutes.
+                          </p>
+                          <Link
+                            href={`/reports?topic=${encodeURIComponent(userQuery)}&generate=1`}
+                            className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E07A5F] hover:bg-[#C96A4F] text-white text-xs font-medium rounded-md transition-colors"
+                          >
+                            Generate Report
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )
+                })()}
 
                 {/* Show assistant message when no tool results (e.g., Name mode lookup failed) */}
                 {toolResults.length === 0 && lastAssistantMsg?.content && !isLoading && (

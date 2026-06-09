@@ -5,9 +5,6 @@ import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import {
-  Search,
-  Clock,
-  Database,
   ArrowRight,
   Check,
   FlaskConical,
@@ -263,40 +260,119 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Value Props */}
-        <section className="py-16 px-6 border-t border-gray-100">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
-                  <Search className="w-6 h-6 text-blue-600" />
+        {/* What you actually get — §2 of the plan. Three preview cards
+            stand in for screenshots of the liquid biopsy sample report,
+            so visitors see the shape of the artifact before clicking
+            into the sample page. Numbers are pulled from that report. */}
+        <section className="py-16 px-6 border-t border-gray-100 bg-white">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-3">
+                What you actually get
+              </h2>
+              <p className="text-gray-600 max-w-2xl mx-auto">
+                Three layers of analysis, cross-linked. The preview below uses the public
+                sample report on liquid biopsy.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-5">
+              {/* Executive Summary preview */}
+              <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col">
+                <div className="text-[10px] uppercase tracking-wider text-[#E07A5F] font-semibold mb-2">
+                  Executive Summary
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Semantic Understanding</h3>
-                <p className="text-sm text-gray-600">
-                  AI understands your topic conceptually, not just keywords. Search for "CRISPR delivery"
-                  and find projects describing "guide RNA transport" or "Cas9 cellular uptake."
+                <h3 className="font-semibold text-gray-900 mb-3">
+                  Strategic narrative
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                  Where the field is going, who&apos;s leading, where the white space sits.
+                  Hedged for sample size, framed for the decision you&apos;re making.
                 </p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
-                  <Database className="w-6 h-6 text-emerald-600" />
+                <div className="mt-auto bg-white border border-gray-100 rounded-lg p-3 text-xs text-gray-500 leading-relaxed">
+                  &ldquo;Methylation-based assays now dominate funded approaches,
+                  with multi-omic platforms emerging as the next inflection&hellip;&rdquo;
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Four Databases, One Search</h3>
-                <p className="text-sm text-gray-600">
-                  NIH RePORTER, ClinicalTrials.gov, PubMed, and USPTO - all unified.
-                  No more switching between sites with different interfaces and query syntaxes.
-                </p>
               </div>
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-4">
-                  <Clock className="w-6 h-6 text-purple-600" />
+
+              {/* Funding Landscape preview */}
+              <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col">
+                <div className="text-[10px] uppercase tracking-wider text-[#E07A5F] font-semibold mb-2">
+                  Funding Landscape
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Minutes, Not Hours</h3>
-                <p className="text-sm text-gray-600">
-                  Skip the hours of hit-or-miss keyword searching. Get focused, relevant
-                  results ranked by semantic relevance - what actually matters surfaces first.
+                <h3 className="font-semibold text-gray-900 mb-3">
+                  $102.1M across 125 projects
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                  Year-over-year trajectory, top categories, leading institutions,
+                  funding mechanism breakdown.
                 </p>
+                <div className="mt-auto flex items-end gap-1.5 h-16">
+                  {[40, 55, 35, 70, 90, 80, 95].map((h, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 bg-[#E07A5F]/30 rounded-t"
+                      style={{ height: `${h}%` }}
+                    />
+                  ))}
+                </div>
+                <div className="flex justify-between text-[10px] text-gray-400 mt-1.5">
+                  <span>2019</span>
+                  <span>FY 2025</span>
+                </div>
               </div>
+
+              {/* IP Landscape preview */}
+              <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col">
+                <div className="text-[10px] uppercase tracking-wider text-[#E07A5F] font-semibold mb-2">
+                  IP Landscape
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-3">
+                  Concentration &amp; dominant holders
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed mb-4">
+                  Patent holders, filing trends, FTO assessment — surfaced from cross-linked
+                  USPTO records.
+                </p>
+                <div className="mt-auto space-y-2">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-gray-600">Top assignees</span>
+                    <span className="text-gray-400">share</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {[
+                      { name: 'Grail Inc.', pct: 68 },
+                      { name: 'Guardant Health', pct: 42 },
+                      { name: 'Exact Sciences', pct: 28 },
+                    ].map((row) => (
+                      <div key={row.name} className="flex items-center gap-2 text-xs">
+                        <span className="w-24 truncate text-gray-700">{row.name}</span>
+                        <div className="flex-1 h-1.5 bg-gray-100 rounded">
+                          <div
+                            className="h-full bg-[#E07A5F]/50 rounded"
+                            style={{ width: `${row.pct}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-sm text-gray-500 text-center mt-10 max-w-2xl mx-auto leading-relaxed italic">
+              Every claim in the report links to the underlying project, trial, patent,
+              or publication. Drill into any reference, see the original abstract, follow
+              the data — for 3 months from purchase.
+            </p>
+            <div className="text-center mt-6">
+              <Link
+                href="/sample/liquid-biopsy"
+                className="inline-flex items-center gap-2 text-[#E07A5F] hover:text-[#C96A4F] font-medium text-sm"
+              >
+                See the full sample report
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </section>
@@ -349,85 +425,6 @@ export default function Home() {
                   <p className="text-sm text-gray-600 leading-relaxed">{body}</p>
                 </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* What You Can Search */}
-        <section className="py-16 px-6">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl font-semibold text-gray-900 text-center mb-4">
-              Everything you need, connected
-            </h2>
-            <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-              Four essential databases unified under one semantic search.
-              Understand who's funded, what's patented, what's published, and what's in trials.
-            </p>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                    <span className="text-blue-600 font-semibold text-sm">NIH</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">NIH RePORTER</h3>
-                    <p className="text-xs text-gray-500">154K projects indexed</p>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Active and historical NIH grants. See who's funded, how much, by which institute,
-                  and track funding trajectories over time.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center">
-                    <span className="text-emerald-600 font-semibold text-sm">CT</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">ClinicalTrials.gov</h3>
-                    <p className="text-xs text-gray-500">38K+ trials indexed</p>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Active and completed clinical trials. Phase distribution, sponsors,
-                  enrollment status, and regulatory pathway insights.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center">
-                    <span className="text-purple-600 font-semibold text-sm">PM</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">PubMed</h3>
-                    <p className="text-xs text-gray-500">207K publications indexed</p>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Scientific publications linked to funded research. Key investigators,
-                  publication records, and citation impact.
-                </p>
-              </div>
-
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center">
-                    <span className="text-amber-600 font-semibold text-sm">US</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">USPTO Patents</h3>
-                    <p className="text-xs text-gray-500">49K patents indexed</p>
-                  </div>
-                </div>
-                <p className="text-sm text-gray-600">
-                  Patent landscape and IP positions. Key holders, filing trends,
-                  and freedom-to-operate considerations.
-                </p>
-              </div>
             </div>
           </div>
         </section>

@@ -10,15 +10,9 @@ import {
   AlertCircle,
   Loader2,
   CheckCircle,
-  FlaskConical,
-  TrendingUp,
   Check,
   ArrowRight,
-  BarChart3,
-  Users,
-  Microscope,
-  Shield,
-  Clock,
+  Sparkles,
 } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { MarketingNav } from '@/components/MarketingNav'
@@ -39,429 +33,135 @@ interface Report {
   updated_at: string
 }
 
-// Marketing page for non-authenticated visitors
+// Logged-out /reports — per LANDING_AND_CREDITS_PLAN.md §7. Title +
+// sample link + pricing card + CTA. No mid-funnel loss of conversion:
+// the marketing header from MarketingNav stays consistent with the home
+// page, and the page is intentionally lean (the home page is where we
+// do the long-form pitch).
 function ReportsLanding() {
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
       <MarketingNav showSignIn />
 
       <main>
-        {/* Hero */}
-        <section className="py-16 md:py-24 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-sm font-medium mb-6">
-              <FileText className="w-4 h-4" />
-              Intelligence Reports
-            </div>
-            <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 mb-6">
-              A complete intelligence report<br />on any life-sciences research topic.
+        {/* Hero — short, since the home page already does the heavy
+            lifting. The visitor landed here on intent. */}
+        <section className="py-16 md:py-20 px-6">
+          <div className="max-w-3xl mx-auto text-center">
+            <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-gray-900 mb-5">
+              Generate a complete intelligence report on any topic.
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Synthesizing NIH funding, clinical trials, patents, and publications into
-              insights no single source can produce.
+            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+              NIH funding, clinical trials, patents, and publications, synthesized
+              into strategic narrative. About two minutes of generation, three
+              months of exploration.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
-                href="/"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
+                href="/sample/liquid-biopsy"
+                className="inline-flex items-center gap-2 px-5 py-3 border border-gray-200 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
               >
-                Generate Your Report
+                <Sparkles className="w-4 h-4 text-[#E07A5F]" />
+                See a Sample Report
+              </Link>
+              <Link
+                href="/signup"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
+              >
+                Get Started Free
                 <ArrowRight className="w-4 h-4" />
               </Link>
-              <div className="text-gray-500">
-                <span className="text-2xl font-semibold text-gray-900">$199</span>
-                <span className="text-sm ml-1">per report</span>
-              </div>
             </div>
-            <p className="text-xs uppercase tracking-wider text-gray-400 mt-8">
+            <p className="text-xs uppercase tracking-wider text-gray-400 mt-6">
               Data sources: NIH RePORTER · ClinicalTrials.gov · USPTO · PubMed
             </p>
           </div>
         </section>
 
-        {/* Value Props */}
-        <section className="py-16 px-6 bg-white border-y border-gray-100">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center mx-auto mb-4">
-                  <Clock className="w-6 h-6 text-blue-600" />
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Minutes, Not Hours</h3>
-                <p className="text-sm text-gray-600">
-                  Skip hours of hit-or-miss keyword searching across NIH RePORTER,
-                  ClinicalTrials.gov, PubMed, and USPTO. Get focused intelligence in minutes.
-                </p>
+        {/* Pricing card — matches the home page §5 card so the
+            conversion language is consistent across surfaces. */}
+        <section className="py-12 px-6 bg-white border-y border-gray-100">
+          <div className="max-w-xl mx-auto">
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
+              <div className="text-center mb-6">
+                <div className="text-4xl font-semibold text-gray-900">$199</div>
+                <div className="text-gray-500 text-sm mt-1">per report</div>
               </div>
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center mx-auto mb-4">
-                  <Microscope className="w-6 h-6 text-emerald-600" />
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Intelligent, Not Random</h3>
-                <p className="text-sm text-gray-600">
-                  AI understands your topic semantically, not just keywords. We surface the
-                  most relevant projects and synthesize what actually matters.
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center mx-auto mb-4">
-                  <BarChart3 className="w-6 h-6 text-purple-600" />
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">Deep Dive Ready</h3>
-                <p className="text-sm text-gray-600">
-                  Every report links to the underlying data. Use our search tool to explore
-                  any project, patent, or trial in detail.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* How It Works */}
-        <section className="py-16 px-6">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-semibold text-gray-900 text-center mb-4">
-              Semantic understanding, not keyword guessing
-            </h2>
-            <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-              Traditional database searches rely on exact keywords - you miss relevant projects
-              that use different terminology. Our AI understands meaning: search for "CRISPR delivery"
-              and find projects describing "guide RNA transport" or "Cas9 cellular uptake."
-            </p>
-
-            <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
-              <div className="grid md:grid-cols-3 gap-8 text-center">
-                <div>
-                  <div className="w-10 h-10 rounded-full bg-[#E07A5F]/10 text-[#E07A5F] flex items-center justify-center mx-auto mb-3 text-lg font-semibold">
-                    1
-                  </div>
-                  <h3 className="font-medium text-gray-900 mb-2">Semantic Search</h3>
-                  <p className="text-sm text-gray-500">
-                    AI searches 4 databases for conceptual matches, not just exact text
-                  </p>
-                </div>
-                <div>
-                  <div className="w-10 h-10 rounded-full bg-[#E07A5F]/10 text-[#E07A5F] flex items-center justify-center mx-auto mb-3 text-lg font-semibold">
-                    2
-                  </div>
-                  <h3 className="font-medium text-gray-900 mb-2">Relevance Ranking</h3>
-                  <p className="text-sm text-gray-500">
-                    Results ranked by semantic relevance - the most important surface first
-                  </p>
-                </div>
-                <div>
-                  <div className="w-10 h-10 rounded-full bg-[#E07A5F]/10 text-[#E07A5F] flex items-center justify-center mx-auto mb-3 text-lg font-semibold">
-                    3
-                  </div>
-                  <h3 className="font-medium text-gray-900 mb-2">Focused Synthesis</h3>
-                  <p className="text-sm text-gray-500">
-                    Report analyzes top-ranked projects - signal without the noise
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* What's Included */}
-        <section className="py-16 px-6 bg-gray-50">
-          <div className="max-w-5xl mx-auto">
-            <h2 className="text-2xl font-semibold text-gray-900 text-center mb-12">
-              What's in a report
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                    <Microscope className="w-4 h-4 text-blue-600" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900">Funding Landscape</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Total NIH investment and funding trends over time
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Breakdown by institute, mechanism, and funding type
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Key projects and their funding trajectories
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center">
-                    <Users className="w-4 h-4 text-purple-600" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900">Competitive Landscape</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Leading institutions and their research focus
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Key investigators and their publication records
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Industry players and their IP positions
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center">
-                    <Shield className="w-4 h-4 text-amber-600" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900">IP & Patent Analysis</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Patent landscape and filing trends
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Key patent holders and their portfolios
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Freedom-to-operate considerations
-                  </li>
-                </ul>
-              </div>
-
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-emerald-600" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900">Clinical Development</h3>
-                </div>
-                <ul className="space-y-2 text-sm text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Active trials by phase and status
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Sponsor landscape and enrollment trends
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                    Regulatory pathway assessment
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Two Personas */}
-        <section className="py-20 px-6 bg-gradient-to-b from-gray-50 to-white border-y border-gray-100">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-              <span className="inline-block px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-medium mb-4">
-                Choose Your Lens
-              </span>
-              <h2 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-4">
-                Same data. Different insights.
-              </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Whether you're writing an R01 or evaluating a biotech investment,
-                our AI frames the analysis for your specific goals.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-              {/* Research Report */}
-              <div className="bg-white rounded-2xl border-2 border-blue-100 shadow-lg shadow-blue-50/50 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-                      <FlaskConical className="w-7 h-7 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold">Research Report</h3>
-                      <p className="text-blue-100">For researchers & academics</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-gray-600 mb-6">
-                    Designed for PIs, postdocs, and research teams preparing grant applications,
-                    literature reviews, or exploring new research directions.
-                  </p>
-                  <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4">
-                    What you'll get
-                  </h4>
-                  <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-blue-600" />
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-900">Competitive landscape</span>
-                        <p className="text-sm text-gray-500">Who else is working on this? What approaches are funded?</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-blue-600" />
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-900">Collaboration opportunities</span>
-                        <p className="text-sm text-gray-500">Key investigators, complementary expertise, potential mentors</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-blue-600" />
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-900">Research gaps & directions</span>
-                        <p className="text-sm text-gray-500">Where's the field heading? What's underfunded?</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-blue-600" />
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-900">Funding alignment</span>
-                        <p className="text-sm text-gray-500">Which institutes fund this? Active RFAs and priorities</p>
-                      </div>
-                    </li>
-                  </ul>
-                  <div className="mt-6 pt-6 border-t border-gray-100">
-                    <p className="text-sm text-gray-500">
-                      Ideal for R01 Significance and Innovation sections.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Investment Report */}
-              <div className="bg-white rounded-2xl border-2 border-emerald-100 shadow-lg shadow-emerald-50/50 overflow-hidden">
-                <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 p-6 text-white">
-                  <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
-                      <TrendingUp className="w-7 h-7 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold">Investment Report</h3>
-                      <p className="text-emerald-100">For investors & BD teams</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <p className="text-gray-600 mb-6">
-                    Built for VCs, corporate development, and BD teams evaluating opportunities,
-                    conducting due diligence, or mapping competitive landscapes.
-                  </p>
-                  <h4 className="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4">
-                    What you'll get
-                  </h4>
-                  <ul className="space-y-4">
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-900">Market validation</span>
-                        <p className="text-sm text-gray-500">NIH funding as a proxy for scientific conviction</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-900">Technical risk assessment</span>
-                        <p className="text-sm text-gray-500">Phase distribution, mechanism maturity, key risks</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-900">IP landscape</span>
-                        <p className="text-sm text-gray-500">Patent holders, filing trends, FTO considerations</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      </div>
-                      <div>
-                        <span className="font-medium text-gray-900">Clinical development</span>
-                        <p className="text-sm text-gray-500">Active trials, sponsors, regulatory pathway</p>
-                      </div>
-                    </li>
-                  </ul>
-                  <div className="mt-6 pt-6 border-t border-gray-100">
-                    <p className="text-sm text-gray-500">
-                      Accelerate due diligence for any life science investment thesis.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center mt-12">
-              <p className="text-gray-500 mb-6">
-                Both reports include: funding analysis, key players, publications, patents, and clinical trials
-              </p>
+              <ul className="space-y-3 text-sm text-gray-700 mb-6">
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                  Complete intelligence report (PDF + web)
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                  Full access to every linked project, trial, patent, publication
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                  3 months of in-platform exploration from generation
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                  One free refresh within 12 months
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                  Not what you expected? Refine and regenerate, free.
+                </li>
+              </ul>
               <Link
-                href="/"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
+                href="/signup"
+                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
               >
-                Generate Your Report - $199
+                Buy a Report
                 <ArrowRight className="w-4 h-4" />
               </Link>
+              <p className="text-center text-xs text-gray-500 mt-4">
+                Need 5+ reports?{' '}
+                <Link href="/contact" className="text-[#E07A5F] hover:text-[#C96A4F] underline">
+                  Talk to us about volume.
+                </Link>
+              </p>
             </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="py-16 px-6 bg-gradient-to-br from-[#E07A5F] to-[#C96A4F]">
+        {/* Free account positioning — same §6 framing as home. Keeps
+            the soft path open for visitors not ready to buy. */}
+        <section className="py-16 px-6">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-2xl md:text-3xl font-semibold text-white mb-4">
-              Ready to accelerate your research?
+            <h2 className="text-2xl font-semibold text-gray-900 mb-3">
+              Not ready to commit? Browse the data first.
             </h2>
-            <p className="text-white/80 mb-8">
-              Get comprehensive intelligence on any life science topic.
-              No subscription required.
+            <p className="text-gray-600 mb-6">
+              A free account lets you search every project, trial, patent, and
+              publication in our database. Verify your topic has signal before
+              you buy the report.
             </p>
             <Link
-              href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#E07A5F] rounded-lg font-medium hover:bg-gray-50 transition-colors"
+              href="/signup"
+              className="inline-flex items-center gap-2 text-[#E07A5F] hover:text-[#C96A4F] font-medium"
             >
-              Generate Your First Report
+              Create a Free Account
               <ArrowRight className="w-4 h-4" />
             </Link>
-            <p className="text-white/60 text-sm mt-4">$199 per report</p>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-gray-100 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between text-sm text-gray-500">
-          <p>granted.bio - AI-powered life science intelligence</p>
-          <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-gray-900">Privacy</Link>
-            <Link href="/terms" className="hover:text-gray-900">Terms</Link>
+        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm text-gray-400">
+          <p>Data from NIH RePORTER, ClinicalTrials.gov, USPTO &amp; PubMed</p>
+          <div className="flex items-center gap-6">
+            <a href="mailto:hello@granted.bio" className="hover:text-gray-600 transition-colors">
+              Contact
+            </a>
+            <Link href="/privacy" className="hover:text-gray-600 transition-colors">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-gray-600 transition-colors">
+              Terms
+            </Link>
           </div>
         </div>
       </footer>
