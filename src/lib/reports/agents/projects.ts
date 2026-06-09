@@ -405,6 +405,18 @@ function processResults(
     }
     coresInYear.add(core)
   }
+  // Threshold below which a year is treated as data-coverage-sparse rather
+  // than a real read on NIH funding for that year. The projects table has
+  // skeletal pre-2024 history (tens of rows per year for 2016-2020, low
+  // hundreds for 2021-2022) compared to tens of thousands per year from
+  // 2024 onward. A year that surfaces with only one or two topic-matched
+  // projects is reporting on the rows we happen to have, not on the
+  // actual funding picture — and renders as a misleading-looking single
+  // bar in the chart. Hiding these is more honest than showing them.
+  // The current-FY (YTD) entry is preserved regardless because its label
+  // already explains the partial count.
+  const YEAR_COVERAGE_THRESHOLD = 5
+
   const byYear = Array.from(yearFunding.entries())
     .map(([year, funding]) => ({
       year,
@@ -412,6 +424,7 @@ function processResults(
       projects: yearCoreSet.get(year)?.size ?? 0,
       isPartial: isPartialFiscalYear(year),
     }))
+    .filter((entry) => entry.isPartial || entry.projects >= YEAR_COVERAGE_THRESHOLD)
     .sort((a, b) => b.year - a.year)
 
   // byCategory: project counts from deduped, funding from project totals.
