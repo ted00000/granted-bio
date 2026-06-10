@@ -1669,7 +1669,7 @@ export default function ReportDetailPage({
               </p>
             </div>
             <button
-              onClick={refreshReport}
+              onClick={() => setShowRefreshConfirm(true)}
               disabled={refreshing}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-medium rounded-md transition-colors disabled:opacity-50"
             >
