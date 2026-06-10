@@ -200,8 +200,9 @@ export default function Home() {
                     A complete intelligence report on any life-sciences research topic.
                   </h1>
                   <p className="text-lg text-gray-500 leading-relaxed">
-                    Synthesizing NIH funding, clinical trials, patents, and publications
-                    into insights no single source can produce.
+                    Cross-linking NIH funding, clinical trials, patents, and publications
+                    to reveal patterns, momentum, and opportunity gaps — for grant
+                    positioning, investment diligence, and partnership scouting.
                   </p>
                   <p className="text-2xl font-semibold text-gray-900 pt-2">
                     $199, generated in minutes.
@@ -319,20 +320,19 @@ export default function Home() {
                     { year: 'FY25', pct: 100 },
                     { year: 'FY26', pct: 6 },
                   ].map(({ year, pct }) => (
-                    <div key={year} className="flex-1 flex flex-col items-center gap-1">
-                      <div className="w-full flex-1 flex items-end">
-                        <div
-                          className="w-full bg-[#E07A5F]/30 rounded-t"
-                          style={{ height: `${pct}%` }}
-                        />
-                      </div>
-                    </div>
+                    <div
+                      key={year}
+                      className="flex-1 bg-[#E07A5F]/30 rounded-t"
+                      style={{ height: `${pct}%` }}
+                    />
                   ))}
                 </div>
-                <div className="flex justify-around text-[10px] text-gray-400 mt-1.5">
-                  <span>FY24</span>
-                  <span>FY25</span>
-                  <span>FY26</span>
+                <div className="flex gap-2 mt-1.5">
+                  {['FY24', 'FY25', 'FY26'].map((y) => (
+                    <span key={y} className="flex-1 text-center text-[10px] text-gray-400">
+                      {y}
+                    </span>
+                  ))}
                 </div>
               </div>
 
@@ -548,7 +548,7 @@ export default function Home() {
                     Intelligence Reports
                   </div>
                   <h2 className="text-2xl md:text-3xl font-semibold mb-4">
-                    Insights you couldn't produce yourself.
+                    Weeks of cross-source work, done in two minutes.
                   </h2>
                   <p className="text-gray-300 mb-6">
                     Cross-source synthesis of NIH funding, clinical trials, patents, and

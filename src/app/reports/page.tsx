@@ -53,8 +53,8 @@ function ReportsLanding() {
             </h1>
             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
               NIH funding, clinical trials, patents, and publications, synthesized
-              into strategic narrative. About two minutes of generation, three
-              months of exploration.
+              into strategic narrative — generated in two minutes, with access to
+              drill into every linked record for three months.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
