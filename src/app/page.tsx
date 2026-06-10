@@ -405,8 +405,7 @@ export default function Home() {
               How it works
             </h2>
             <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-              From topic to full intelligence report in four steps. About two minutes of
-              generation, three months of exploration.
+              Reports generate in two minutes and include three months of in-platform exploration.
             </p>
 
             <div className="grid md:grid-cols-4 gap-6">
