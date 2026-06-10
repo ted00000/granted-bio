@@ -79,7 +79,7 @@ export default async function SampleLiquidBiopsyPage() {
   if (!report || !report.markdown_content) {
     return (
       <div className="min-h-screen bg-[#FAFAF9]">
-        <MarketingNav showSignIn />
+        <MarketingNav />
         <main className="max-w-4xl mx-auto px-6 py-16 text-center">
           <p className="text-gray-600">
             Sample report is temporarily unavailable. Please try again in a moment.
@@ -100,7 +100,7 @@ export default async function SampleLiquidBiopsyPage() {
 
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
-      <MarketingNav showSignIn />
+      <MarketingNav />
 
       {/* Sample banner — sticky-ish framing so visitors always know
           this is the artifact, and there's a clear path to "get one

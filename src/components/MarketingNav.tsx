@@ -5,15 +5,6 @@ import { usePathname } from 'next/navigation'
 import { FileText, ArrowRight } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 
-interface MarketingNavProps {
-  /**
-   * Show the Sign In button on the right. Off by default (the home page
-   * carries the auth form inline, so the Sign In button is redundant
-   * there). Pass true on marketing pages that aren't the home page.
-   */
-  showSignIn?: boolean
-}
-
 // Match a nav link against the current pathname. Uses startsWith so
 // nested sample/report routes (e.g. /sample/liquid-biopsy → /sample,
 // /reports/[id] → /reports) still light up their parent nav item.
@@ -22,7 +13,7 @@ function isActive(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
-export function MarketingNav({ showSignIn = false }: MarketingNavProps) {
+export function MarketingNav() {
   const pathname = usePathname()
 
   const baseLink =
@@ -65,20 +56,16 @@ export function MarketingNav({ showSignIn = false }: MarketingNavProps) {
             Pricing
           </Link>
 
-          {showSignIn ? (
-            <>
-              <Link href="/login" className={linkClass('/login')}>
-                Sign In
-              </Link>
-              <Link
-                href="/signup"
-                className="ml-1 inline-flex items-center gap-1 text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
-              >
-                Get Started Free
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </>
-          ) : null}
+          <Link href="/login" className={linkClass('/login')}>
+            Sign In
+          </Link>
+          <Link
+            href="/signup"
+            className="ml-1 inline-flex items-center gap-1 text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
+          >
+            Get Started Free
+            <ArrowRight className="w-4 h-4" />
+          </Link>
         </div>
       </div>
     </header>

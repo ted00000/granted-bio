@@ -41,7 +41,7 @@ interface Report {
 function ReportsLanding() {
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
-      <MarketingNav showSignIn />
+      <MarketingNav />
 
       <main>
         {/* Hero — short, since the home page already does the heavy

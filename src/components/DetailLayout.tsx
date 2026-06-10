@@ -38,7 +38,7 @@ export function DetailLayout({ children }: DetailLayoutProps) {
 
   return (
     <div className="fixed inset-0 flex flex-col bg-white overflow-hidden">
-      <MarketingNav showSignIn />
+      <MarketingNav />
       <SampleGateBanner />
       <main className="flex-1 min-w-0 overflow-hidden">{children}</main>
     </div>
