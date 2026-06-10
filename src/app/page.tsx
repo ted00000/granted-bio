@@ -277,7 +277,9 @@ export default function Home() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-5">
-              {/* Executive Summary preview */}
+              {/* Executive Summary preview — snippet pulled from the
+                  current public sample report so what visitors read here
+                  matches what they see when they click through. */}
               <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col">
                 <div className="text-[10px] uppercase tracking-wider text-[#E07A5F] font-semibold mb-2">
                   Executive Summary
@@ -290,69 +292,85 @@ export default function Home() {
                   Hedged for sample size, framed for the decision you&apos;re making.
                 </p>
                 <div className="mt-auto bg-white border border-gray-100 rounded-lg p-3 text-xs text-gray-500 leading-relaxed">
-                  &ldquo;Methylation-based assays now dominate funded approaches,
-                  with multi-omic platforms emerging as the next inflection&hellip;&rdquo;
+                  &ldquo;The core scientific question has shifted from whether
+                  circulating tumor DNA can be detected to how sensitively, specifically,
+                  and early it can be detected&hellip;&rdquo;
                 </div>
               </div>
 
-              {/* Funding Landscape preview */}
+              {/* Funding Landscape preview — totals + bar visual pulled
+                  from the current sample. After the byYear coverage
+                  filter, the sample's funding-by-year window is 2024-2026,
+                  so the mini-chart shows three bars matching that scope. */}
               <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col">
                 <div className="text-[10px] uppercase tracking-wider text-[#E07A5F] font-semibold mb-2">
                   Funding Landscape
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  $102.1M across 125 projects
+                  $101.9M across 123 projects
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed mb-4">
                   Year-over-year trajectory, top categories, leading institutions,
                   funding mechanism breakdown.
                 </p>
-                <div className="mt-auto flex items-end gap-1.5 h-16">
-                  {[40, 55, 35, 70, 90, 80, 95].map((h, i) => (
-                    <div
-                      key={i}
-                      className="flex-1 bg-[#E07A5F]/30 rounded-t"
-                      style={{ height: `${h}%` }}
-                    />
+                <div className="mt-auto flex items-end gap-2 h-16">
+                  {[
+                    { year: 'FY24', pct: 79 },
+                    { year: 'FY25', pct: 100 },
+                    { year: 'FY26', pct: 6 },
+                  ].map(({ year, pct }) => (
+                    <div key={year} className="flex-1 flex flex-col items-center gap-1">
+                      <div className="w-full flex-1 flex items-end">
+                        <div
+                          className="w-full bg-[#E07A5F]/30 rounded-t"
+                          style={{ height: `${pct}%` }}
+                        />
+                      </div>
+                    </div>
                   ))}
                 </div>
-                <div className="flex justify-between text-[10px] text-gray-400 mt-1.5">
-                  <span>2019</span>
-                  <span>FY 2025</span>
+                <div className="flex justify-around text-[10px] text-gray-400 mt-1.5">
+                  <span>FY24</span>
+                  <span>FY25</span>
+                  <span>FY26</span>
                 </div>
               </div>
 
-              {/* IP Landscape preview */}
+              {/* IP Landscape preview — the liquid biopsy NIH-linked
+                  patent slice is small (6 patents, all academic). The
+                  card reflects that honestly: patent counts per assignee,
+                  not fabricated industry share bars. */}
               <div className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col">
                 <div className="text-[10px] uppercase tracking-wider text-[#E07A5F] font-semibold mb-2">
                   IP Landscape
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  Concentration &amp; dominant holders
+                  Linked patents &amp; holders
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed mb-4">
-                  Patent holders, filing trends, FTO assessment — surfaced from cross-linked
-                  USPTO records.
+                  USPTO patents cross-linked to NIH-funded projects. Holder
+                  concentration, filing recency, FTO context.
                 </p>
                 <div className="mt-auto space-y-2">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-gray-600">Top assignees</span>
-                    <span className="text-gray-400">share</span>
+                    <span className="text-gray-400">patents</span>
                   </div>
                   <div className="space-y-1.5">
                     {[
-                      { name: 'Grail Inc.', pct: 68 },
-                      { name: 'Guardant Health', pct: 42 },
-                      { name: 'Exact Sciences', pct: 28 },
+                      { name: 'Johns Hopkins', count: 2 },
+                      { name: 'Dana-Farber', count: 1 },
+                      { name: 'Cornell', count: 1 },
                     ].map((row) => (
                       <div key={row.name} className="flex items-center gap-2 text-xs">
                         <span className="w-24 truncate text-gray-700">{row.name}</span>
                         <div className="flex-1 h-1.5 bg-gray-100 rounded">
                           <div
                             className="h-full bg-[#E07A5F]/50 rounded"
-                            style={{ width: `${row.pct}%` }}
+                            style={{ width: `${(row.count / 2) * 100}%` }}
                           />
                         </div>
+                        <span className="text-gray-500 w-3 text-right">{row.count}</span>
                       </div>
                     ))}
                   </div>
