@@ -57,7 +57,7 @@ export async function runTrialsAgent(
   if (projectNumbers.length > 0) {
     const { data, error } = await supabaseAdmin
       .from('clinical_studies')
-      .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
+      .select('nct_id, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
       .in('project_number', projectNumbers)
       .order('start_date', { ascending: false })
 
@@ -133,7 +133,7 @@ export async function runTrialsAgent(
         )
         const { data: fullRows, error: fetchError } = await supabaseAdmin
           .from('clinical_studies')
-          .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
+          .select('nct_id, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
           .in('nct_id', nctIds)
 
         if (fetchError) {
@@ -199,7 +199,7 @@ export async function runTrialsAgent(
     const nctIds = uniqueTrials.map((t) => t.nct_id)
     const { data: refreshed } = await supabaseAdmin
       .from('clinical_studies')
-      .select('nct_id, study_title, study_status, phase, enrollment_count, lead_sponsor, conditions, brief_summary')
+      .select('nct_id, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
       .in('nct_id', nctIds)
 
     if (refreshed) {
@@ -233,6 +233,7 @@ function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
     nct_id: t.nct_id,
     study_title: t.study_title,
     phase: t.phase || null,
+    study_type: t.study_type || null,
     study_status: t.study_status || null,
     lead_sponsor: t.lead_sponsor || null,
     conditions: t.conditions || null,
@@ -242,7 +243,7 @@ function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
   // Group by phase
   const byPhase: Record<string, number> = {}
   items.forEach((t) => {
-    const phase = normalizePhase(t.phase)
+    const phase = normalizePhase(t.phase, t.study_type)
     byPhase[phase] = (byPhase[phase] || 0) + 1
   })
 
@@ -264,10 +265,18 @@ function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
 }
 
 /**
- * Normalize phase values for grouping
+ * Normalize phase values for grouping. Observational studies don't have
+ * phases — ClinicalTrials.gov inconsistently returns `phases: ["NA"]` or
+ * omits the array entirely. Without the study_type hint, the omitted case
+ * collapsed to "Unknown" and the explicit-NA case to "N/A", splitting the
+ * same kind of study across two chart bars. Routing observational → N/A
+ * keeps "Unknown" reserved for genuine data gaps (interventional with
+ * missing phase).
  */
-function normalizePhase(phase: string | null): string {
-  if (!phase) return 'Unknown'
+function normalizePhase(phase: string | null, studyType: string | null): string {
+  if (!phase) {
+    return studyType?.toUpperCase() === 'OBSERVATIONAL' ? 'N/A' : 'Unknown'
+  }
 
   const p = phase.toUpperCase()
   if (p.includes('PHASE1') || p === 'PHASE 1') return 'Phase 1'
@@ -351,6 +360,7 @@ interface RawTrialResult {
   study_title: string
   study_status?: string | null
   phase?: string | null
+  study_type?: string | null
   enrollment_count?: number | null
   lead_sponsor?: string | null
   conditions?: string[] | null

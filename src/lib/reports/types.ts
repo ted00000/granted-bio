@@ -56,6 +56,7 @@ export interface TrialItem {
   nct_id: string
   study_title: string
   phase: string | null
+  study_type: string | null
   study_status: string | null
   lead_sponsor: string | null
   conditions: string[] | null

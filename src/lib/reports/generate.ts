@@ -495,6 +495,7 @@ interface TrialData {
   nct_id: string
   study_title?: string | null
   phase?: string | null
+  study_type?: string | null
   study_status?: string | null
   lead_sponsor?: string | null
   conditions?: string[] | null
@@ -514,6 +515,7 @@ function transformSavedTrialsToItems(
         nct_id: t.nct_id,
         study_title: t.study_title || 'Untitled Study',
         phase: t.phase || null,
+        study_type: t.study_type || null,
         study_status: t.study_status || null,
         lead_sponsor: t.lead_sponsor || null,
         conditions: t.conditions || null,
