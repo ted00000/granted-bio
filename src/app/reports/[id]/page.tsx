@@ -88,6 +88,7 @@ export default function ReportDetailPage({
   const [refreshAvailable, setRefreshAvailable] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
   const [refreshError, setRefreshError] = useState<string | null>(null)
+  const [showRefreshConfirm, setShowRefreshConfirm] = useState(false)
 
   // Retry assistant state
   const [retryAvailable, setRetryAvailable] = useState(false)
@@ -147,8 +148,12 @@ export default function ReportDetailPage({
   // same topic + interpretation against current NIH data. The original
   // report stays untouched; the new report is created as a fresh row and
   // we route the user to it so they see generation progress.
+  //
+  // Gated behind a confirm modal because the entitlement is one-shot —
+  // once spent, the user has to buy a new report to refresh again.
   const refreshReport = async () => {
     if (!report || refreshing) return
+    setShowRefreshConfirm(false)
     setRefreshing(true)
     setRefreshError(null)
 
@@ -1604,7 +1609,7 @@ export default function ReportDetailPage({
                 {refreshAvailable && (
                   <>
                     <button
-                      onClick={refreshReport}
+                      onClick={() => setShowRefreshConfirm(true)}
                       disabled={refreshing}
                       title="Re-synthesize this report against current NIH data. Uses your included refresh."
                       className="flex items-center gap-1.5 text-gray-500 hover:text-[#E07A5F] transition-colors disabled:opacity-50"
@@ -1749,6 +1754,66 @@ export default function ReportDetailPage({
           </div>
         )}
       </main>
+
+      {/* Refresh confirm modal — refresh is a one-shot entitlement
+          bound to this report, so the user gets a clear go / no-go
+          before we burn it. Click-outside cancels (no consume). */}
+      {showRefreshConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowRefreshConfirm(false)
+          }}
+        >
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full">
+            <div className="flex items-start justify-between p-6 border-b border-gray-100">
+              <div>
+                <div className="flex items-center gap-2 text-xs text-[#E07A5F] font-medium mb-1">
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  Use your included refresh?
+                </div>
+                <h2 className="text-lg font-semibold text-gray-900">
+                  This is your one free refresh.
+                </h2>
+              </div>
+              <button
+                onClick={() => setShowRefreshConfirm(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+                aria-label="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                We&apos;ll re-synthesize this report against current NIH data using
+                the same topic and interpretation. Your original stays untouched
+                — a new report is created.
+              </p>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                After this, refreshing again will require buying a new report.
+              </p>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <button
+                  onClick={() => setShowRefreshConfirm(false)}
+                  className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={refreshReport}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#E07A5F] text-white text-sm font-medium rounded-lg hover:bg-[#C96A4F] transition-colors"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Use my refresh
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Retry assistant modal — captures dissatisfaction feedback, asks
           Claude for three reformulated interpretations, shows the picker,
