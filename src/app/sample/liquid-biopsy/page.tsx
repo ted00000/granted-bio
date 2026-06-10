@@ -16,7 +16,7 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { MarketingNav } from '@/components/MarketingNav'
 import { MarkdownRenderer } from '../../reports/[id]/MarkdownRenderer'
 
-const SAMPLE_REPORT_ID = '868ffab3-e49c-456a-b335-2e24ad7ce379'
+const SAMPLE_REPORT_ID = '52f09f31-667d-4069-ae1d-a7c049960fc5'
 
 // Revalidate hourly. The sample report's content is stable; we don't
 // want every visitor hammering the database for the same markdown.
