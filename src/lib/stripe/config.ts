@@ -12,7 +12,13 @@ export interface TierLimits {
 
 export const TIER_LIMITS: Record<BillingTier, TierLimits> = {
   free: {
-    searchesPerMonth: 10,
+    // 15 monthly searches. The first 10 are uninterrupted; at search
+    // 10 the client surfaces a one-time soft modal framing the
+    // remaining 5 as a goodwill bonus alongside the report pitch.
+    // The hard wall fires at 15. Bumped from 10 when Pro Search was
+    // removed from the marketing surface so free users have more
+    // room to validate their topic before the report ask lands.
+    searchesPerMonth: 15,
     resultsLimit: 10,
     canExport: false,
     canSeeEmails: false,
@@ -26,6 +32,12 @@ export const TIER_LIMITS: Record<BillingTier, TierLimits> = {
     canSeeAbstracts: true,
   },
 }
+
+// Threshold at which the free tier's "we gave you 5 more on us" soft
+// modal fires (once per month per device, via localStorage). The
+// effective monthly cap is TIER_LIMITS.free.searchesPerMonth; this is
+// just the conversion-moment trigger.
+export const FREE_SEARCH_SOFT_PITCH_AT = 10
 
 // Stripe price IDs (set in environment).
 //

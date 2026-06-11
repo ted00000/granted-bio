@@ -10,6 +10,7 @@ import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
 import { UpgradePrompt } from './billing/UpgradePrompt'
 import { useAuth } from '@/contexts/AuthContext'
+import { FREE_SEARCH_SOFT_PITCH_AT } from '@/lib/stripe/config'
 
 const ICONS = {
   search: Search,
@@ -1487,7 +1488,12 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const [mobileView, setMobileView] = useState<'results' | 'filters'>('results')  // Mobile toggle between views
   const [initialQueryProcessed, setInitialQueryProcessed] = useState(false)
   const [showUpgradePrompt, setShowUpgradePrompt] = useState(false)
-  const [upgradeInfo, setUpgradeInfo] = useState<{ tier: 'free' | 'pro'; limit: number; subscriptionStatus?: string | null } | null>(null)
+  const [upgradeInfo, setUpgradeInfo] = useState<{
+    mode: 'soft' | 'hard'
+    searchesUsed: number
+    limit: number
+    subscriptionStatus?: string | null
+  } | null>(null)
   const [newSearchMode, setNewSearchMode] = useState<SearchMode>(searchMode)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const messagesContainerRef = useRef<HTMLDivElement>(null)
@@ -1501,6 +1507,33 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const { refetchUsage, usage, profile } = useAuth()
   const metadata = PERSONA_METADATA[persona]
   const IconComponent = ICONS[metadata.icon]
+
+  // Soft pitch: when a free user crosses FREE_SEARCH_SOFT_PITCH_AT
+  // (10/15), surface the modal once per month per device with the
+  // "5 more on us" framing + report CTA. The localStorage key is
+  // scoped to YYYY-MM so the gate naturally clears at month boundary
+  // without depending on the API to send us a new signal. Beta/pro
+  // users (effectively unlimited) are excluded.
+  useEffect(() => {
+    if (!usage || profile?.tier !== 'free') return
+    if (usage.searchesUsed < FREE_SEARCH_SOFT_PITCH_AT) return
+    if (usage.searchesUsed >= usage.searchLimit) return // hard wall handler owns this
+    if (showUpgradePrompt) return // don't stack on top of the hard modal
+
+    const monthKey = new Date().toISOString().slice(0, 7) // YYYY-MM
+    const flagKey = `granted_soft_pitch_seen_${monthKey}`
+    if (typeof window === 'undefined') return
+    if (window.localStorage.getItem(flagKey)) return
+
+    setUpgradeInfo({
+      mode: 'soft',
+      searchesUsed: usage.searchesUsed,
+      limit: usage.searchLimit,
+      subscriptionStatus: usage.subscriptionStatus,
+    })
+    setShowUpgradePrompt(true)
+    window.localStorage.setItem(flagKey, '1')
+  }, [usage, profile?.tier, showUpgradePrompt])
 
   // Restore search state from sessionStorage on mount
   useEffect(() => {
@@ -1925,11 +1958,17 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
         { maxRetries: 2, initialDelayMs: 1000 }
       )
 
-      // Handle search limit exceeded
+      // Handle search limit exceeded — hard wall, user is out for the
+      // month. Modal explains the reset date and pitches the report.
       if (response.status === 402) {
         const data = await response.json()
         if (data.type === 'search_limit') {
-          setUpgradeInfo({ tier: data.tier, limit: data.limit, subscriptionStatus: data.subscriptionStatus })
+          setUpgradeInfo({
+            mode: 'hard',
+            searchesUsed: data.limit,
+            limit: data.limit,
+            subscriptionStatus: data.subscriptionStatus,
+          })
           setShowUpgradePrompt(true)
           // Remove the empty assistant message we added
           setMessages(prev => prev.filter(m => m.id !== assistantId))
@@ -2257,10 +2296,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                   </p>
                   <button
                     type="button"
-                    onClick={() => router.push('/pricing')}
+                    onClick={() => router.push('/reports')}
                     className="mt-1 text-sm text-amber-700 hover:text-amber-900 font-medium underline underline-offset-2"
                   >
-                    Upgrade to Pro for 500 searches/month
+                    Generate a report instead — $199
                   </button>
                 </div>
               </div>
@@ -2782,11 +2821,14 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
         </>
       )}
 
-      {/* Upgrade Prompt Modal */}
+      {/* Upgrade Prompt Modal — soft mode fires once per month when
+          the user crosses the soft pitch threshold (see the
+          searchesUsed effect above). Hard mode fires when the API
+          returns 402. */}
       {showUpgradePrompt && upgradeInfo && (
         <UpgradePrompt
-          type="search_limit"
-          tier={upgradeInfo.tier}
+          mode={upgradeInfo.mode}
+          searchesUsed={upgradeInfo.searchesUsed}
           limit={upgradeInfo.limit}
           subscriptionStatus={upgradeInfo.subscriptionStatus}
           onClose={() => setShowUpgradePrompt(false)}
