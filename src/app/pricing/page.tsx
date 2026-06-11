@@ -1,49 +1,27 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Check, X, Zap, FileText, Search, ArrowRight } from 'lucide-react'
+import { Check, FileText, ArrowRight } from 'lucide-react'
 import { MarketingNav } from '@/components/MarketingNav'
 
+// /pricing — the canonical pricing surface.
+//
+// Single product: $199 intelligence reports. The Free account tier
+// exists alongside as the "browse the data before you buy" funnel
+// step, not as a parallel paid SKU. The earlier two-tier presentation
+// (Free vs Pro Search $49/mo) was removed 2026-06-11 with the
+// simplification — the Pro Search code is preserved (commented) in
+// src/lib/stripe/config.ts and src/app/api/stripe/checkout/route.ts
+// for possible future revival.
+
 export default function PricingPage() {
-  const router = useRouter()
-  const [loading, setLoading] = useState<'subscription' | null>(null)
-
-  const handleSubscribe = async () => {
-    setLoading('subscription')
-    try {
-      const response = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'subscription' }),
-      })
-
-      const data = await response.json()
-
-      if (data.url) {
-        window.location.href = data.url
-      } else if (data.error) {
-        console.error('Checkout error:', data.error)
-        // If unauthorized, redirect to login
-        if (response.status === 401) {
-          router.push('/?redirect=/pricing')
-        }
-      }
-    } catch (err) {
-      console.error('Checkout error:', err)
-    } finally {
-      setLoading(null)
-    }
-  }
-
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
       <MarketingNav />
 
       <main className="max-w-5xl mx-auto px-6 py-16">
         {/* Hero */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 mb-4">
             Simple, transparent pricing
           </h1>
@@ -52,123 +30,91 @@ export default function PricingPage() {
           </p>
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          {/* Free Tier */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-8">
+        {/* Two cards: Reports as the featured product, Free as the
+            data-browsing on-ramp. */}
+        <div className="grid md:grid-cols-2 gap-6 mb-16">
+          {/* Intelligence Reports — primary */}
+          <div className="bg-white rounded-2xl border-2 border-[#E07A5F] p-8 relative shadow-sm">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#E07A5F] text-white text-xs font-medium rounded-full">
+              Get the report
+            </div>
+
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Free</h2>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 rounded-lg bg-[#FDF2EF] flex items-center justify-center">
+                  <FileText className="w-4 h-4 text-[#E07A5F]" strokeWidth={1.5} />
+                </div>
+                <h2 className="text-xl font-semibold text-gray-900">Intelligence Report</h2>
+              </div>
               <p className="text-gray-600 text-sm">
-                Get started with basic search access
+                A complete cross-source synthesis on any life-sciences topic.
+              </p>
+            </div>
+
+            <div className="mb-6">
+              <span className="text-4xl font-semibold text-gray-900">$199</span>
+              <span className="text-gray-500"> per report</span>
+            </div>
+
+            <Link
+              href="/reports"
+              className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors mb-8"
+            >
+              Generate a Report
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+
+            <ul className="space-y-3">
+              <Feature>Researcher, investor, or BD lens</Feature>
+              <Feature>Full access to every linked project, trial, patent, publication</Feature>
+              <Feature>3 months of in-platform drill-down access</Feature>
+              <Feature>One free refresh within 12 months</Feature>
+              <Feature>Refine &amp; regenerate, free, if not satisfied</Feature>
+            </ul>
+          </div>
+
+          {/* Free account — the data-browsing on-ramp */}
+          <div className="bg-white rounded-2xl border border-gray-200 p-8 flex flex-col">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">Free account</h2>
+              <p className="text-gray-600 text-sm">
+                Browse the underlying data and validate your topic has signal
+                before you buy a report.
               </p>
             </div>
 
             <div className="mb-6">
               <span className="text-4xl font-semibold text-gray-900">$0</span>
-              <span className="text-gray-500">/month</span>
             </div>
 
             <Link
-              href="/"
+              href="/signup"
               className="block w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-medium text-center hover:bg-gray-200 transition-colors mb-8"
             >
               Get Started Free
             </Link>
 
             <ul className="space-y-3">
-              <Feature included>10 searches per month</Feature>
-              <Feature included>Basic search results (10 per query)</Feature>
-              <Feature included>Project, trial, and publication data</Feature>
-              <Feature>Full result details</Feature>
-              <Feature>Export to CSV</Feature>
-              <Feature>PI names and affiliations</Feature>
-            </ul>
-          </div>
-
-          {/* Pro Tier */}
-          <div className="bg-white rounded-2xl border-2 border-[#E07A5F] p-8 relative">
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#E07A5F] text-white text-xs font-medium rounded-full">
-              Most Popular
-            </div>
-
-            <div className="mb-6">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Pro Search</h2>
-              <p className="text-gray-600 text-sm">
-                Full platform access for serious researchers
-              </p>
-            </div>
-
-            <div className="mb-6">
-              <span className="text-4xl font-semibold text-gray-900">$49</span>
-              <span className="text-gray-500">/month</span>
-            </div>
-
-            <button
-              onClick={handleSubscribe}
-              disabled={loading === 'subscription'}
-              className="block w-full py-3 px-4 bg-[#E07A5F] text-white rounded-lg font-medium text-center hover:bg-[#C96A4F] transition-colors mb-8 disabled:opacity-50"
-            >
-              {loading === 'subscription' ? 'Loading...' : 'Subscribe to Pro'}
-            </button>
-
-            <ul className="space-y-3">
-              <Feature included>500 searches per month</Feature>
-              <Feature included>Full result details (200 per query)</Feature>
-              <Feature included>Project abstracts and summaries</Feature>
-              <Feature included>Export to CSV</Feature>
-              <Feature included>PI names and affiliations</Feature>
+              <Feature>Semantic search across NIH RePORTER, CT.gov, USPTO, PubMed</Feature>
+              <Feature>Project, trial, patent, and publication details</Feature>
+              <Feature>10 searches per month</Feature>
+              <Feature>Verify your topic before purchase</Feature>
             </ul>
           </div>
         </div>
 
-        {/* Reports Section */}
-        <div className="bg-white rounded-2xl border border-gray-200 p-8 mb-16">
-          <div className="flex items-start gap-6">
-            <div className="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
-              <FileText className="w-6 h-6 text-amber-600" />
-            </div>
-            <div className="flex-1">
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                Intelligence Reports
-              </h2>
-              <p className="text-gray-600 mb-4">
-                Comprehensive research or investment intelligence on any topic.
-                Includes funding analysis, competitive landscape, IP assessment,
-                and strategic recommendations.
-              </p>
-              <div className="flex items-baseline gap-2 mb-4">
-                <span className="text-3xl font-semibold text-gray-900">$199</span>
-                <span className="text-gray-500">per report</span>
-              </div>
-              <div className="flex flex-wrap gap-3 text-sm text-gray-600">
-                <span className="flex items-center gap-1">
-                  <Check className="w-4 h-4 text-emerald-500" />
-                  Researcher, investor, or BD lens
-                </span>
-                <span className="flex items-center gap-1">
-                  <Check className="w-4 h-4 text-emerald-500" />
-                  One free refresh within 12 months
-                </span>
-                <span className="flex items-center gap-1">
-                  <Check className="w-4 h-4 text-emerald-500" />
-                  Refine &amp; regenerate, free, if not satisfied
-                </span>
-              </div>
-            </div>
-            <Link
-              href="/reports"
-              className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors flex-shrink-0"
-            >
-              Generate Report
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
+        {/* Need more? — BD / enterprise punchline pointing at /contact.
+            Mirrors the home page §5 footer line. */}
+        <p className="text-center text-sm text-gray-500 mb-16">
+          Need 5+ reports for a team?{' '}
+          <Link href="/contact" className="text-[#E07A5F] hover:text-[#C96A4F] underline">
+            Talk to us about volume.
+          </Link>
+        </p>
 
-        {/* Time ROI — replaces the prior "How we compare" cost-comparison
-            table. Per the locked pricing-framing rule we don't lead with
-            "cheaper than X"; instead we anchor on the time the synthesis
-            takes to build by hand, even with AI assistance. */}
+        {/* Time ROI — per the locked pricing-framing rule we don't lead
+            with "cheaper than X"; instead we anchor on the time the
+            synthesis takes to build by hand, even with AI assistance. */}
         <div className="bg-gray-50 rounded-2xl p-8 mb-16">
           <h2 className="text-xl font-semibold text-gray-900 mb-2 text-center">
             What this takes to build by hand
@@ -256,27 +202,33 @@ export default function PricingPage() {
           </p>
         </div>
 
-        {/* FAQ */}
+        {/* FAQ — kept short. The home page §7 FAQ does the long-form
+            work; this surface only needs the most common pre-purchase
+            questions specifically about pricing and access. */}
         <div className="max-w-3xl mx-auto">
           <h2 className="text-xl font-semibold text-gray-900 mb-6 text-center">
             Frequently asked questions
           </h2>
           <div className="space-y-4">
             <FAQ
-              question="Can I use reports without a Pro subscription?"
-              answer="Yes! Intelligence reports are available to all users at $199 each. A Pro subscription is only needed for expanded search access (500 searches/month vs 10)."
+              question="Do I need an account to buy a report?"
+              answer="Yes — a free account is required so the report ties to your login and you can drill into every linked record for the 3-month window. Signing up takes a few seconds and doesn't cost anything."
             />
             <FAQ
               question="What data sources do you use?"
-              answer="We aggregate data from NIH RePORTER (grants), ClinicalTrials.gov, USPTO (patents), and PubMed (publications). All data is linked and searchable through our AI-powered interface."
+              answer="NIH RePORTER (grants), ClinicalTrials.gov (active and completed trials), USPTO (patents), and PubMed (publications). All cross-linked at the project_number level so a project, its funded trials, its filed patents, and its published papers appear together."
             />
             <FAQ
-              question="Can I cancel my subscription anytime?"
-              answer="Yes, you can cancel your Pro subscription at any time. You'll retain access until the end of your current billing period."
+              question="What's included in a report?"
+              answer="Executive summary, field maturity assessment, competitive topology, funding landscape, key projects with insights, clinical validation status, patent and IP landscape, key publications, top organizations and researchers. About 30 pages of analysis, tailored to your chosen lens (researcher, investor, or BD)."
             />
             <FAQ
-              question="What's included in an Intelligence Report?"
-              answer="Each report includes executive summary, funding analysis, competitive landscape, IP assessment, clinical development status, key publications, and strategic recommendations tailored to your chosen persona (Researcher or Investor)."
+              question="What if I'm not happy with my report?"
+              answer="We'll help you refine your search and regenerate, free. The platform asks what didn't work, Claude proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per report, within 14 days of generation."
+            />
+            <FAQ
+              question="Do credits expire?"
+              answer="12 months from purchase. Generation and refresh share the same expiry. Plenty of time to use what you bought."
             />
           </div>
         </div>
@@ -285,7 +237,7 @@ export default function PricingPage() {
       {/* Footer */}
       <footer className="border-t border-gray-100 bg-white">
         <div className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between text-sm text-gray-500">
-          <p>granted.bio - AI-powered life science intelligence</p>
+          <p>granted.bio — AI-powered life science intelligence</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-gray-900">Privacy</Link>
             <Link href="/terms" className="hover:text-gray-900">Terms</Link>
@@ -296,15 +248,11 @@ export default function PricingPage() {
   )
 }
 
-function Feature({ children, included = false }: { children: React.ReactNode; included?: boolean }) {
+function Feature({ children }: { children: React.ReactNode }) {
   return (
-    <li className="flex items-center gap-3 text-sm">
-      {included ? (
-        <Check className="w-4 h-4 text-emerald-500 flex-shrink-0" />
-      ) : (
-        <X className="w-4 h-4 text-gray-300 flex-shrink-0" />
-      )}
-      <span className={included ? 'text-gray-700' : 'text-gray-400'}>{children}</span>
+    <li className="flex items-start gap-3 text-sm">
+      <Check className="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5" />
+      <span className="text-gray-700">{children}</span>
     </li>
   )
 }

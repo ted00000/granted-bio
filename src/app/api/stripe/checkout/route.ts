@@ -38,35 +38,42 @@ export async function POST(request: NextRequest) {
     // Get or create Stripe customer
     const customerId = await getOrCreateStripeCustomer(user.id, user.email || '')
 
-    if (type === 'subscription') {
-      // Pro Search subscription checkout
-      if (!STRIPE_PRICES.PRO_SUBSCRIPTION) {
-        return NextResponse.json(
-          { error: 'Pro subscription price not configured' },
-          { status: 500 }
-        )
-      }
-
-      const session = await stripe.checkout.sessions.create({
-        customer: customerId,
-        mode: 'subscription',
-        payment_method_types: ['card'],
-        line_items: [
-          {
-            price: STRIPE_PRICES.PRO_SUBSCRIPTION,
-            quantity: 1,
-          },
-        ],
-        success_url: `${appUrl}/account?checkout=success`,
-        cancel_url: `${appUrl}/pricing?checkout=canceled`,
-        metadata: {
-          userId: user.id,
-          type: 'subscription',
-        },
-      })
-
-      return NextResponse.json({ url: session.url })
-    } else if (type === 'report') {
+    // Pro Search subscription checkout — disabled 2026-06-11 as part of
+    // the pricing simplification. The branch is preserved (commented
+    // out) so it can be revived if a repositioned subscription product
+    // is brought back later. Until then, /api/stripe/checkout only
+    // accepts type === 'report'. See src/lib/stripe/config.ts for the
+    // matching commented-out PRO_SUBSCRIPTION price ID.
+    //
+    // if (type === 'subscription') {
+    //   if (!STRIPE_PRICES.PRO_SUBSCRIPTION) {
+    //     return NextResponse.json(
+    //       { error: 'Pro subscription price not configured' },
+    //       { status: 500 }
+    //     )
+    //   }
+    //
+    //   const session = await stripe.checkout.sessions.create({
+    //     customer: customerId,
+    //     mode: 'subscription',
+    //     payment_method_types: ['card'],
+    //     line_items: [
+    //       {
+    //         price: STRIPE_PRICES.PRO_SUBSCRIPTION,
+    //         quantity: 1,
+    //       },
+    //     ],
+    //     success_url: `${appUrl}/account?checkout=success`,
+    //     cancel_url: `${appUrl}/pricing?checkout=canceled`,
+    //     metadata: {
+    //       userId: user.id,
+    //       type: 'subscription',
+    //     },
+    //   })
+    //
+    //   return NextResponse.json({ url: session.url })
+    // } else
+    if (type === 'report') {
       // One-time report payment
       if (!topic || !persona) {
         return NextResponse.json(
