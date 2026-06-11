@@ -122,7 +122,7 @@ export default function PricingPage() {
           <p className="text-sm text-gray-500 text-center mb-8 max-w-2xl mx-auto">
             Even with AI assistance, building the equivalent synthesis is
             real engineering work — querying, cross-linking, deduping, and
-            verifying across four datasets.
+            verifying across 4 massive datasets.
           </p>
 
           <div className="grid md:grid-cols-2 gap-6">
