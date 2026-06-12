@@ -378,7 +378,37 @@ export default function Home() {
               </div>
             </div>
 
-            <p className="text-sm text-gray-500 text-center mt-10 max-w-2xl mx-auto leading-relaxed italic">
+            {/* Full TOC — the 3 hero cards above show the most
+                visually-rich previews; this strip names every section
+                so the visitor sees the report's actual breadth.
+                Sections are listed in the order they appear in the
+                generated report. */}
+            <div className="mt-10">
+              <p className="text-xs uppercase tracking-wider text-gray-400 text-center mb-4">
+                Every report includes
+              </p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-w-4xl mx-auto">
+                {[
+                  'Executive Summary',
+                  'Field Maturity',
+                  'Competitive Topology',
+                  'Funding Landscape',
+                  'Market Context',
+                  'Clinical Validation',
+                  'IP Landscape',
+                  'Key Publications',
+                ].map((section) => (
+                  <div
+                    key={section}
+                    className="px-3 py-2 bg-white border border-gray-200 rounded-lg text-xs text-gray-700 text-center"
+                  >
+                    {section}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <p className="text-sm text-gray-500 text-center mt-8 max-w-2xl mx-auto leading-relaxed italic">
               Every claim in the report links to the underlying project, trial, patent,
               or publication. Drill into any reference, see the original abstract, follow
               the data — for 3 months from purchase.
