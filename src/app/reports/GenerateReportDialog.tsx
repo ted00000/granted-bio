@@ -461,7 +461,7 @@ export function GenerateReportDialog({
                 Back
               </button>
               <span className="text-xs text-gray-400">
-                {canBypassPayment ? 'Pick to start generation' : 'Pick to continue to checkout ($99)'}
+                {canBypassPayment ? 'Pick to start generation' : 'Pick to continue to checkout ($199)'}
               </span>
             </>
           )}
@@ -488,7 +488,7 @@ export function GenerateReportDialog({
                   className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors"
                 >
                   <CreditCard className="w-4 h-4" />
-                  Purchase Anyway - $99
+                  Purchase Anyway - $199
                 </button>
               )}
             </>

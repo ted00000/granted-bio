@@ -434,7 +434,7 @@ export default function AccountPage() {
                   <p className="text-sm text-gray-500">
                     {isBeta
                       ? `${betaReportsUsed} of ${BETA_REPORT_CAP} used · ${betaReportsRemaining} remaining`
-                      : '$99 per report'}
+                      : '$199 per report'}
                   </p>
                 </div>
               </div>
