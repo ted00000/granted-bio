@@ -10,7 +10,7 @@ import { PERSONA_METADATA } from '@/lib/chat/prompts'
 import { FilterChips } from './FilterChips'
 import { UpgradePrompt } from './billing/UpgradePrompt'
 import { useAuth } from '@/contexts/AuthContext'
-import { FREE_SEARCH_SOFT_PITCH_AT } from '@/lib/stripe/config'
+import { FREE_SEARCH_SOFT_PITCH_AT, getDisplayedSearchLimit } from '@/lib/stripe/config'
 
 const ICONS = {
   search: Search,
@@ -2285,25 +2285,37 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
               {metadata.description}
             </p>
 
-            {/* Search limit warning - show when approaching limit */}
-            {usage && !usage.isUnlimited && profile?.tier === 'free' && usage.searchesUsed >= usage.searchLimit * 0.8 && usage.searchesUsed < usage.searchLimit && (
-              <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm text-amber-800">
-                    <span className="font-medium">Running low on searches.</span>{' '}
-                    You&apos;ve used {usage.searchesUsed} of {usage.searchLimit} free searches this month.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => router.push('/reports')}
-                    className="mt-1 text-sm text-amber-700 hover:text-amber-900 font-medium underline underline-offset-2"
-                  >
-                    Generate a report instead — $199
-                  </button>
+            {/* Search limit warning. Uses the displayed (possibly masked)
+                limit so the banner triggers at 80% of what the user
+                sees, not 80% of the actual cap — keeps the bonus 5
+                hidden until the soft-pitch modal reveals it. */}
+            {usage && !usage.isUnlimited && profile?.tier === 'free' && (() => {
+              const displayedLimit = getDisplayedSearchLimit(
+                usage.searchesUsed,
+                usage.searchLimit,
+                profile.tier
+              )
+              if (usage.searchesUsed < displayedLimit * 0.8) return null
+              if (usage.searchesUsed >= usage.searchLimit) return null
+              return (
+                <div className="mb-4 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-amber-800">
+                      <span className="font-medium">Running low on searches.</span>{' '}
+                      You&apos;ve used {usage.searchesUsed} of {displayedLimit} free searches this month.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => router.push('/reports')}
+                      className="mt-1 text-sm text-amber-700 hover:text-amber-900 font-medium underline underline-offset-2"
+                    >
+                      Generate a report instead — $199
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
+              )
+            })()}
 
             {/* Input right after content */}
             <form onSubmit={handleSubmit} className="mb-4">

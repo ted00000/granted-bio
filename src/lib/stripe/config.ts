@@ -39,6 +39,23 @@ export const TIER_LIMITS: Record<BillingTier, TierLimits> = {
 // just the conversion-moment trigger.
 export const FREE_SEARCH_SOFT_PITCH_AT = 10
 
+// What the UI displays as the user's monthly search limit. We hide
+// the bonus 5 until they've actually crossed the soft-pitch threshold,
+// so the "we gave you 5 more on us" modal lands as a real gift
+// instead of contradicting a sidebar that already revealed the full
+// 15. Once searchesUsed >= FREE_SEARCH_SOFT_PITCH_AT the displayed
+// limit reveals as the full cap. Pro / beta / admin / unlimited users
+// see their real limit at all times.
+export function getDisplayedSearchLimit(
+  searchesUsed: number,
+  actualLimit: number,
+  tier: 'free' | 'pro' | 'beta' | null | undefined
+): number {
+  if (tier !== 'free') return actualLimit
+  if (searchesUsed < FREE_SEARCH_SOFT_PITCH_AT) return FREE_SEARCH_SOFT_PITCH_AT
+  return actualLimit
+}
+
 // Stripe price IDs (set in environment).
 //
 // PRO_SUBSCRIPTION is commented out as part of the 2026-06-11 pricing

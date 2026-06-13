@@ -19,6 +19,7 @@ import { AppLayout } from '@/components/AppLayout'
 import { AccountPageSkeleton } from '@/components/ui/Skeleton'
 import { LoadError } from '@/components/ui/ErrorState'
 import { useAuth } from '@/contexts/AuthContext'
+import { getDisplayedSearchLimit } from '@/lib/stripe/config'
 
 type ReportPurchase = {
   id: string
@@ -140,8 +141,16 @@ export default function AccountPage() {
     )
   }
 
+  // Displayed limit masks the bonus 5 free searches until the user
+  // crosses the soft-pitch threshold — keeps the "we gave you 5 more
+  // on us" reveal honest. Server-side cap is unchanged.
+  const displayedSearchLimit = getDisplayedSearchLimit(
+    usage.searchesUsed,
+    usage.searchLimit,
+    usage.tier
+  )
   const usagePercent = Math.min(
-    (usage.searchesUsed / usage.searchLimit) * 100,
+    (usage.searchesUsed / displayedSearchLimit) * 100,
     100
   )
   const isPro = usage.tier === 'pro'
@@ -386,7 +395,7 @@ export default function AccountPage() {
                         {usage.searchesUsed}
                       </span>
                       <span className="text-sm text-gray-500">
-                        of {usage.searchLimit} searches
+                        of {displayedSearchLimit} searches
                       </span>
                     </div>
                     <div className="h-2 bg-gray-100 rounded-full overflow-hidden">

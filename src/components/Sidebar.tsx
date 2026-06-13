@@ -4,9 +4,9 @@ import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
 import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Users, Settings, Shield } from 'lucide-react'
-import { PremiumBadge } from '@/components/ui/PremiumBadge'
 import { Logo } from '@/components/Logo'
 import { useAuth } from '@/contexts/AuthContext'
+import { getDisplayedSearchLimit } from '@/lib/stripe/config'
 import type { PersonaType } from '@/lib/chat/types'
 
 interface SidebarProps {
@@ -141,12 +141,6 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
                 <span className={`text-sm font-medium ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-gray-900' : ''}`}>
                   Reports
                 </span>
-                {/* Premium badge is a paywall hint — only show to actual free
-                    users. Admins/associates have role-based unlimited access
-                    even though their DB tier defaults to 'free'. */}
-                {profile?.tier === 'free' && !isAdmin && !isAssociate && (
-                  <PremiumBadge size="sm" />
-                )}
               </div>
             </div>
           </Link>
@@ -266,24 +260,35 @@ export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarPr
               </Link>
             )
           })()}
-          {/* Usage indicator - show for free users always, pro users only when approaching limit, never for unlimited */}
-          {usage && !usage.isUnlimited && (profile?.tier === 'free' || usage.searchesUsed >= usage.searchLimit * 0.8) && (
-            <Link
-              href="/account"
-              className={`
-                px-3 py-1.5 text-xs rounded flex items-center justify-between
-                ${usage.searchesUsed >= usage.searchLimit * 0.9
-                  ? 'bg-rose-50 text-rose-600'
-                  : usage.searchesUsed >= usage.searchLimit * 0.7
-                    ? 'bg-amber-50 text-amber-600'
-                    : 'bg-gray-50 text-gray-500'
-                }
-              `}
-            >
-              <span>Searches</span>
-              <span className="font-medium">{usage.searchesUsed}/{usage.searchLimit}</span>
-            </Link>
-          )}
+          {/* Usage indicator. Displayed limit is masked for free users
+              so the bonus 5 stays hidden until the soft modal reveals
+              it — see getDisplayedSearchLimit. Color thresholds are
+              computed against the displayed limit so the indicator
+              reaches red at displayedLimit, not the actual cap. */}
+          {usage && !usage.isUnlimited && (profile?.tier === 'free' || usage.searchesUsed >= usage.searchLimit * 0.8) && (() => {
+            const displayedLimit = getDisplayedSearchLimit(
+              usage.searchesUsed,
+              usage.searchLimit,
+              profile?.tier
+            )
+            return (
+              <Link
+                href="/account"
+                className={`
+                  px-3 py-1.5 text-xs rounded flex items-center justify-between
+                  ${usage.searchesUsed >= displayedLimit * 0.9
+                    ? 'bg-rose-50 text-rose-600'
+                    : usage.searchesUsed >= displayedLimit * 0.7
+                      ? 'bg-amber-50 text-amber-600'
+                      : 'bg-gray-50 text-gray-500'
+                  }
+                `}
+              >
+                <span>Searches</span>
+                <span className="font-medium">{usage.searchesUsed}/{displayedLimit}</span>
+              </Link>
+            )
+          })()}
           <Link
             href="/account"
             onClick={() => setIsOpen(false)}
