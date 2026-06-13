@@ -88,7 +88,7 @@ export default function PricingPage() {
             </div>
 
             <Link
-              href="/signup"
+              href="/signup?redirect=/reports"
               className="block w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-medium text-center hover:bg-gray-200 transition-colors mb-8"
             >
               Get Started Free

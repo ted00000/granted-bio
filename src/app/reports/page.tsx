@@ -65,7 +65,7 @@ function ReportsLanding() {
                 See a Sample Report
               </Link>
               <Link
-                href="/signup"
+                href="/signup?redirect=/reports"
                 className="inline-flex items-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
               >
                 Get Started Free
@@ -110,7 +110,7 @@ function ReportsLanding() {
                 </li>
               </ul>
               <Link
-                href="/signup"
+                href="/signup?redirect=/reports"
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
               >
                 Buy a Report
