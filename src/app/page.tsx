@@ -79,6 +79,9 @@ function AuthForm() {
           We sent a sign-in link to<br />
           <span className="text-gray-900">{email}</span>
         </p>
+        <p className="mt-3 text-xs text-gray-400">
+          Not in your inbox? Check your spam or promotions folder.
+        </p>
         <button
           onClick={() => setMagicLinkSent(false)}
           className="mt-4 text-sm text-gray-500 hover:text-gray-900"
