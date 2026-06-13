@@ -79,7 +79,7 @@ function AuthForm() {
           We sent a sign-in link to<br />
           <span className="text-gray-900">{email}</span>
         </p>
-        <p className="mt-3 text-xs text-gray-400">
+        <p className="mt-3 text-xs font-medium text-[#E07A5F]">
           Not in your inbox? Check your spam or promotions folder.
         </p>
         <button
