@@ -682,8 +682,19 @@ export async function searchProjectsKeyword(
   params: HybridSearchParams,
   userAccess: UserAccess
 ): Promise<KeywordSearchResult> {
+  // The chat-facing keyword search pool is intentionally NOT capped by
+  // userAccess.resultsLimit. Tier limits gate report generation and
+  // drill-down depth — not how many semantic matches the search can
+  // see. Capping the pool here made free users observe a smaller
+  // total_count than pro users for the same query, which weakens the
+  // "Found N results" framing in the in-search CTA and is confusing
+  // when a user switches accounts. Display capping (showing_count,
+  // sample_results) still applies downstream.
+  // userAccess is part of the function signature contract but no
+  // longer used here — see comment above.
+  void userAccess
   const { keyword_query, filters, limit = 100 } = params
-  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+  const effectiveLimit = limit
 
   try {
     // Split query into words for matching
@@ -1435,8 +1446,16 @@ export async function searchProjectsSemantic(
   params: HybridSearchParams,
   userAccess: UserAccess
 ): Promise<KeywordSearchResult> {
+  // The chat-facing hybrid search pool is intentionally NOT capped by
+  // userAccess.resultsLimit. See the matching comment in
+  // searchProjectsKeyword above — tier gates report generation and
+  // drill-down, not search recall.
+  // userAccess is part of the function signature contract but no
+  // longer used here — see comment above.
+  void userAccess
   const { keyword_query, semantic_query, filters, limit = 100 } = params
-  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+  void keyword_query
+  const effectiveLimit = limit
   // Low threshold - with probes=100, semantic search should have good recall
   // Client-side can filter by similarity for precision (Low: >0.20, Med: >0.35, High: >0.50)
   const threshold = 0.15
