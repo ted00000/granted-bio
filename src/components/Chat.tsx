@@ -2517,11 +2517,11 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                               <>
                                 Found {total.toLocaleString()} result{total === 1 ? '' : 's'} on &ldquo;{userQuery}&rdquo;.{' '}
                                 <span className="text-gray-300 font-normal">
-                                  None of these will tell you what&apos;s emerging, who&apos;s converging, or where the gaps are.
+                                  The intelligence report connects them into the strategic picture — what&apos;s emerging, who&apos;s converging, where the opportunity gaps sit.
                                 </span>
                               </>
                             ) : (
-                              <>None of these will tell you what&apos;s emerging, who&apos;s converging, or where the gaps are.</>
+                              <>Connect the field into the strategic picture — what&apos;s emerging, who&apos;s converging, where the opportunity gaps sit.</>
                             )}
                           </p>
                           <p className="text-xs text-gray-300 mt-2">
