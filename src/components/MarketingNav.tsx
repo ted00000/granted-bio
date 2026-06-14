@@ -67,11 +67,12 @@ export function MarketingNav() {
             Pricing
           </Link>
 
-          {/* Sign In opens the same modal as the deep-page CTAs. The
-              shared AuthForm handles both new sign-ups and returning
-              sign-ins (the magic-link / Google flow doesn't care), so
-              the "Sign In" label is a recognizable affordance for
-              returning visitors without us needing a separate flow. */}
+          {/* Sign In and Get Started Free both open the same modal —
+              the underlying AuthForm handles new sign-ups and returning
+              sign-ins identically (Google or magic link), so a single
+              auth surface serves both intents. Keeping both labels in
+              the nav preserves the recognizable affordances; the modal
+              copy addresses both audiences explicitly. */}
           <button
             type="button"
             onClick={() => setSignInOpen(true)}
@@ -79,13 +80,14 @@ export function MarketingNav() {
           >
             Sign In
           </button>
-          <Link
-            href="/signup"
+          <button
+            type="button"
+            onClick={() => setSignInOpen(true)}
             className="ml-1 inline-flex items-center gap-1 text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
           >
             Get Started Free
             <ArrowRight className="w-4 h-4" />
-          </Link>
+          </button>
         </div>
       </div>
 
