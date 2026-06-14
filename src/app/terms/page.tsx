@@ -31,10 +31,10 @@ export default function TermsPage() {
             <p>
               These Terms of Service (&ldquo;Terms&rdquo;) govern your use of
               the granted.bio website, platform, and intelligence reports
-              (collectively, the &ldquo;Service&rdquo;), operated by{' '}
-              <strong>[LEGAL ENTITY NAME]</strong> (&ldquo;granted.bio,&rdquo;
-              &ldquo;we,&rdquo; &ldquo;us&rdquo;). By accessing or using the
-              Service, you agree to be bound by these Terms.
+              (collectively, the &ldquo;Service&rdquo;), operated by
+              granted.bio (&ldquo;granted.bio,&rdquo; &ldquo;we,&rdquo;
+              &ldquo;us&rdquo;). By accessing or using the Service, you agree
+              to be bound by these Terms.
             </p>
 
             <Section title="1. The Service">
@@ -253,13 +253,12 @@ export default function TermsPage() {
 
             <Section title="12. Governing law and disputes">
               <p>
-                These Terms are governed by the laws of the State of{' '}
-                <strong>[STATE OF INCORPORATION]</strong>, without regard to
-                its conflict-of-laws principles. Any dispute arising out of
-                or relating to these Terms or the Service shall be resolved
-                in the state or federal courts located in{' '}
-                <strong>[COUNTY, STATE]</strong>, and you consent to the
-                personal jurisdiction of those courts.
+                These Terms are governed by the laws of the State of
+                Connecticut, without regard to its conflict-of-laws
+                principles. Any dispute arising out of or relating to these
+                Terms or the Service shall be resolved in the state or
+                federal courts located in the State of Connecticut, and you
+                consent to the personal jurisdiction of those courts.
               </p>
             </Section>
 

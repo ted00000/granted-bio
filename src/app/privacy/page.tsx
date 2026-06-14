@@ -29,7 +29,7 @@ export default function PrivacyPage() {
             </p>
 
             <p>
-              This Privacy Policy describes how <strong>[LEGAL ENTITY NAME]</strong>{' '}
+              This Privacy Policy describes how granted.bio
               (&ldquo;granted.bio,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;) collects,
               uses, and shares information when you use the granted.bio website,
               platform, and intelligence reports (collectively, the
