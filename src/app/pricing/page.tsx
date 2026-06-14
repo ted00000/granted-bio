@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Check, FileText, ArrowRight } from 'lucide-react'
 import { MarketingNav } from '@/components/MarketingNav'
 import { SignUpModal } from '@/components/SignUpModal'
+import { GenerateReportCTA } from '@/components/GenerateReportCTA'
 
 // /pricing — the canonical pricing surface.
 //
@@ -60,13 +61,12 @@ export default function PricingPage() {
               <span className="text-gray-500"> per report</span>
             </div>
 
-            <Link
-              href="/reports"
+            <GenerateReportCTA
               className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors mb-8"
             >
               Generate a Report
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </GenerateReportCTA>
 
             <ul className="space-y-3">
               <Feature>Researcher, investor, or BD lens</Feature>

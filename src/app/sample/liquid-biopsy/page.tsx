@@ -14,6 +14,7 @@ import Link from 'next/link'
 import { Sparkles, ArrowRight, FileText } from 'lucide-react'
 import { supabaseAdmin } from '@/lib/supabase'
 import { MarketingNav } from '@/components/MarketingNav'
+import { GenerateReportCTA } from '@/components/GenerateReportCTA'
 import { MarkdownRenderer } from '../../reports/[id]/MarkdownRenderer'
 
 const SAMPLE_REPORT_ID = '52f09f31-667d-4069-ae1d-a7c049960fc5'
@@ -114,13 +115,12 @@ export default async function SampleLiquidBiopsyPage() {
               intelligence we generate for any life-sciences research topic.
             </span>
           </div>
-          <Link
-            href="/reports"
+          <GenerateReportCTA
             className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E07A5F] hover:bg-[#C96A4F] text-white text-xs font-medium rounded-md transition-colors whitespace-nowrap"
           >
             Generate on your topic — $199
             <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          </GenerateReportCTA>
         </div>
       </div>
 
@@ -175,13 +175,12 @@ export default async function SampleLiquidBiopsyPage() {
           <p className="text-white text-lg font-semibold mb-8">
             $199, generated in minutes.
           </p>
-          <Link
-            href="/reports"
+          <GenerateReportCTA
             className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#E07A5F] rounded-lg font-medium hover:bg-gray-50 transition-colors"
           >
             Generate a Report
             <ArrowRight className="w-4 h-4" />
-          </Link>
+          </GenerateReportCTA>
         </div>
       </section>
 
