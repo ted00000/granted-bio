@@ -137,21 +137,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     initAuth()
 
-    // Listen for auth changes
+    // Listen for auth changes. Only clear profile/usage on an explicit
+    // SIGNED_OUT — Supabase fires INITIAL_SESSION / TOKEN_REFRESHED /
+    // USER_UPDATED through the same channel and any of them can briefly
+    // arrive with session=null during a token-refresh race. The
+    // previous version would null out profile on that transient null,
+    // even though the user was still authenticated, causing the UI to
+    // flip from "Hi {firstName}" back to the anonymous welcome screen
+    // mid-session.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event: AuthChangeEvent, session: Session | null) => {
-        const newUser = session?.user ?? null
-        setUser(newUser)
+      async (event: AuthChangeEvent, session: Session | null) => {
+        if (event === 'SIGNED_OUT') {
+          setUser(null)
+          setProfile(null)
+          setUsage(null)
+          return
+        }
 
+        const newUser = session?.user ?? null
         if (newUser) {
+          setUser(newUser)
           await Promise.all([
             fetchProfile(newUser.id),
             fetchUsage()
           ])
-        } else {
-          setProfile(null)
-          setUsage(null)
         }
+        // Other events without a session (rare in practice) are
+        // intentionally ignored — initAuth or a later SIGNED_IN /
+        // INITIAL_SESSION will populate state.
       }
     )
 
