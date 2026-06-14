@@ -258,7 +258,8 @@ export async function createPendingReportPurchase(
   userId: string,
   checkoutSessionId: string,
   topic: string,
-  persona: 'researcher' | 'investor'
+  persona: 'researcher' | 'investor',
+  amountCents: number
 ): Promise<string> {
   const { data, error } = await supabaseAdmin
     .from('report_purchases')
@@ -267,6 +268,7 @@ export async function createPendingReportPurchase(
       stripe_checkout_session_id: checkoutSessionId,
       topic,
       persona,
+      amount_cents: amountCents,
       status: 'pending',
     })
     .select('id')

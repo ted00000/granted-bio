@@ -29,6 +29,8 @@ type ReportPurchase = {
   created_at: string
   completed_at: string | null
   report_id: string | null
+  amount_cents: number
+  stripe_payment_intent_id: string | null
 }
 
 type ApiUsage = {
@@ -98,21 +100,11 @@ export default function AccountPage() {
     }
   }
 
-  const handleUpgrade = async () => {
-    try {
-      const response = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'subscription' }),
-      })
-      const data = await response.json()
-      if (data.url) {
-        window.location.href = data.url
-      }
-    } catch (err) {
-      console.error('Checkout error:', err)
-    }
-  }
+  // handleUpgrade for the Pro Search subscription was removed when the
+  // Pro tier was dropped from the marketing surface (2026-06-11). The
+  // upgrade CTAs on this page now route to /reports directly. The
+  // subscription branch of /api/stripe/checkout is still commented out
+  // for possible future revival.
 
   if (loading) {
     return (
@@ -317,13 +309,13 @@ export default function AccountPage() {
                   Manage
                 </button>
               ) : (
-                <button
-                  onClick={handleUpgrade}
+                <Link
+                  href="/reports"
                   className="flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white text-sm font-medium rounded-lg hover:bg-[#C96A4F] transition-colors"
                 >
-                  Upgrade to Pro
+                  Generate a Report
                   <ArrowRight className="w-4 h-4" />
-                </button>
+                </Link>
               )}
             </div>
           </section>
@@ -415,13 +407,12 @@ export default function AccountPage() {
                   {!isPro && usagePercent >= 80 && (
                     <p className="text-sm text-amber-600 mt-3">
                       Running low on searches.{' '}
-                      <button
-                        onClick={handleUpgrade}
+                      <Link
+                        href="/reports"
                         className="font-medium underline hover:no-underline"
                       >
-                        Upgrade to Pro
-                      </button>{' '}
-                      to get up to 500 monthly searches.
+                        Generate a report instead — $199
+                      </Link>
                     </p>
                   )}
                 </div>
@@ -495,6 +486,16 @@ export default function AccountPage() {
                           {purchase.status.charAt(0).toUpperCase() +
                             purchase.status.slice(1)}
                         </span>
+                        {purchase.status === 'completed' && purchase.stripe_payment_intent_id && (
+                          <a
+                            href={`/receipt/${purchase.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-gray-500 hover:text-gray-900 hover:underline"
+                          >
+                            Receipt
+                          </a>
+                        )}
                         {purchase.report_id && (
                           <Link
                             href={`/reports/${purchase.report_id}`}

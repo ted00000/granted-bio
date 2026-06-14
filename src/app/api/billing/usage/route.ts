@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     // Also get report purchase history
     const { data: purchases } = await supabaseAdmin
       .from('report_purchases')
-      .select('id, topic, persona, status, created_at, completed_at, report_id')
+      .select('id, topic, persona, status, created_at, completed_at, report_id, amount_cents, stripe_payment_intent_id')
       .eq('user_id', user.id)
       .order('created_at', { ascending: false })
       .limit(10)

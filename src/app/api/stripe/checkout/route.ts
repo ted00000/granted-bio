@@ -116,8 +116,16 @@ export async function POST(request: NextRequest) {
         },
       })
 
-      // Create pending purchase record
-      await createPendingReportPurchase(user.id, session.id, topic, persona)
+      // Create pending purchase record. Pass REPORT_PRICE_CENTS so the
+      // ledger row carries the actual charge amount — the column has a
+      // legacy DB default of 9900 that pre-dates the $99 -> $199 fix.
+      await createPendingReportPurchase(
+        user.id,
+        session.id,
+        topic,
+        persona,
+        REPORT_PRICE_CENTS
+      )
 
       return NextResponse.json({ url: session.url, sessionId: session.id })
     }
