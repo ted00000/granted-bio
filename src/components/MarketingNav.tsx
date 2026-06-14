@@ -39,6 +39,14 @@ export function MarketingNav() {
         </Link>
 
         <div className="flex items-center gap-1 text-sm">
+          {/* Home points at / where the inline sign-in form lives. The
+              logo also routes here, but a labeled Home link gives
+              visitors who don't realize the logo is clickable an
+              explicit way back, and gives anyone with an existing
+              account a clear path to the sign-in form. */}
+          <Link href="/" className={linkClass('/')}>
+            Home
+          </Link>
           <Link
             href="/sample/liquid-biopsy"
             className={linkClass('/sample/liquid-biopsy', 'hidden sm:inline-block')}
@@ -56,9 +64,6 @@ export function MarketingNav() {
             Pricing
           </Link>
 
-          <Link href="/login" className={linkClass('/login')}>
-            Sign In
-          </Link>
           <Link
             href="/signup"
             className="ml-1 inline-flex items-center gap-1 text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
