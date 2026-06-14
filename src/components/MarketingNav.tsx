@@ -1,9 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { FileText, ArrowRight } from 'lucide-react'
 import { Logo } from '@/components/Logo'
+import { SignUpModal } from '@/components/SignUpModal'
 
 // Match a nav link against the current pathname. Uses startsWith so
 // nested sample/report routes (e.g. /sample/liquid-biopsy → /sample,
@@ -15,6 +17,7 @@ function isActive(pathname: string, href: string): boolean {
 
 export function MarketingNav() {
   const pathname = usePathname()
+  const [signInOpen, setSignInOpen] = useState(false)
 
   const baseLink =
     'px-3 py-2 rounded-lg transition-colors hover:bg-gray-50'
@@ -64,6 +67,18 @@ export function MarketingNav() {
             Pricing
           </Link>
 
+          {/* Sign In opens the same modal as the deep-page CTAs. The
+              shared AuthForm handles both new sign-ups and returning
+              sign-ins (the magic-link / Google flow doesn't care), so
+              the "Sign In" label is a recognizable affordance for
+              returning visitors without us needing a separate flow. */}
+          <button
+            type="button"
+            onClick={() => setSignInOpen(true)}
+            className={linkClass('/login')}
+          >
+            Sign In
+          </button>
           <Link
             href="/signup"
             className="ml-1 inline-flex items-center gap-1 text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
@@ -73,6 +88,13 @@ export function MarketingNav() {
           </Link>
         </div>
       </div>
+
+      <SignUpModal
+        open={signInOpen}
+        onClose={() => setSignInOpen(false)}
+        title="Sign in to granted.bio"
+        description="Returning? Use the same email or Google account you signed up with. New here? Either option creates an account on the spot."
+      />
     </header>
   )
 }
