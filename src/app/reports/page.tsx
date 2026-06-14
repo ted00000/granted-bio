@@ -16,6 +16,7 @@ import {
 } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { MarketingNav } from '@/components/MarketingNav'
+import { SignUpModal } from '@/components/SignUpModal'
 import { GenerateReportDialog } from './GenerateReportDialog'
 import { useAuth } from '@/contexts/AuthContext'
 import { fetchWithRetry } from '@/lib/retry'
@@ -39,6 +40,10 @@ interface Report {
 // page, and the page is intentionally lean (the home page is where we
 // do the long-form pitch).
 function ReportsLanding() {
+  const [signUpOpen, setSignUpOpen] = useState<
+    null | { title?: string; description?: string }
+  >(null)
+
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
       <MarketingNav />
@@ -64,13 +69,20 @@ function ReportsLanding() {
                 <Sparkles className="w-4 h-4 text-[#E07A5F]" />
                 See a Sample Report
               </Link>
-              <Link
-                href="/signup?redirect=/reports"
+              <button
+                type="button"
+                onClick={() =>
+                  setSignUpOpen({
+                    title: 'Create a free account to start',
+                    description:
+                      "A free account is required to generate a report — it ties the report to your login so you can drill into every linked record for 3 months. Signing up takes a few seconds.",
+                  })
+                }
                 className="inline-flex items-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
               >
                 Get Started Free
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </button>
             </div>
             <p className="text-xs uppercase tracking-wider text-gray-400 mt-6">
               Data sources: NIH RePORTER · ClinicalTrials.gov · USPTO · PubMed
@@ -109,13 +121,20 @@ function ReportsLanding() {
                   Not what you expected? Refine and regenerate, free.
                 </li>
               </ul>
-              <Link
-                href="/signup?redirect=/reports"
+              <button
+                type="button"
+                onClick={() =>
+                  setSignUpOpen({
+                    title: 'Create a free account to continue',
+                    description:
+                      'A free account is required so the report ties to your login and you can drill into every linked record during the 3-month window. Signing up takes a few seconds.',
+                  })
+                }
                 className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
               >
                 Buy a Report
                 <ArrowRight className="w-4 h-4" />
-              </Link>
+              </button>
               <p className="text-center text-xs text-gray-500 mt-4">
                 Need 5+ reports?{' '}
                 <Link href="/contact" className="text-[#E07A5F] hover:text-[#C96A4F] underline">
@@ -138,13 +157,14 @@ function ReportsLanding() {
               publication in our database. Verify your topic has signal before
               you buy the report.
             </p>
-            <Link
-              href="/signup"
+            <button
+              type="button"
+              onClick={() => setSignUpOpen({})}
               className="inline-flex items-center gap-2 text-[#E07A5F] hover:text-[#C96A4F] font-medium"
             >
               Create a Free Account
               <ArrowRight className="w-4 h-4" />
-            </Link>
+            </button>
           </div>
         </section>
       </main>
@@ -165,6 +185,14 @@ function ReportsLanding() {
           </div>
         </div>
       </footer>
+
+      <SignUpModal
+        open={signUpOpen !== null}
+        onClose={() => setSignUpOpen(null)}
+        redirect="/reports"
+        title={signUpOpen?.title}
+        description={signUpOpen?.description}
+      />
     </div>
   )
 }

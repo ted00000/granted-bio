@@ -1,8 +1,10 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { Check, FileText, ArrowRight } from 'lucide-react'
 import { MarketingNav } from '@/components/MarketingNav'
+import { SignUpModal } from '@/components/SignUpModal'
 
 // /pricing — the canonical pricing surface.
 //
@@ -15,6 +17,8 @@ import { MarketingNav } from '@/components/MarketingNav'
 // for possible future revival.
 
 export default function PricingPage() {
+  const [signUpOpen, setSignUpOpen] = useState(false)
+
   return (
     <div className="min-h-screen bg-[#FAFAF9]">
       <MarketingNav />
@@ -87,12 +91,13 @@ export default function PricingPage() {
               <span className="text-4xl font-semibold text-gray-900">$0</span>
             </div>
 
-            <Link
-              href="/signup?redirect=/reports"
+            <button
+              type="button"
+              onClick={() => setSignUpOpen(true)}
               className="block w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg font-medium text-center hover:bg-gray-200 transition-colors mb-8"
             >
               Get Started Free
-            </Link>
+            </button>
 
             <ul className="space-y-3">
               <Feature>Semantic search across NIH RePORTER, CT.gov, USPTO, PubMed</Feature>
@@ -244,6 +249,12 @@ export default function PricingPage() {
           </div>
         </div>
       </footer>
+
+      <SignUpModal
+        open={signUpOpen}
+        onClose={() => setSignUpOpen(false)}
+        redirect="/reports"
+      />
     </div>
   )
 }
