@@ -91,7 +91,7 @@ Include ALL item IDs in your response, categorized as either relevant or not_rel
 
   try {
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1024,
       messages: [{ role: 'user', content: prompt }],
     })
