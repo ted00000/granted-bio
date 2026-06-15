@@ -187,7 +187,6 @@ function ChatContent() {
     <AppLayout
       currentPersona={selectedPersona}
       onPersonaChange={handlePersonaChange}
-      userName={userName}
     >
       {selectedPersona ? (
         <Chat

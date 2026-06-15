@@ -12,14 +12,18 @@ import type { PersonaType } from '@/lib/chat/types'
 interface SidebarProps {
   currentPersona?: PersonaType | null
   onPersonaChange?: (persona: PersonaType) => void
-  userName?: string | null
 }
 
-export function Sidebar({ currentPersona, onPersonaChange, userName }: SidebarProps) {
+export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const { isAdmin, isAssociate, usage, signOut, profile } = useAuth()
+  // Read the displayed name from AuthContext directly so every
+  // AppLayout-wrapped surface (reports, account, projects, etc.)
+  // shows it consistently — previously only /chat passed userName
+  // through and the sidebar went blank everywhere else.
+  const userName = profile?.firstName ?? null
 
   const handleSignOut = async () => {
     await signOut()
