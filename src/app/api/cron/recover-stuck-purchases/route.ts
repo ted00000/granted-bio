@@ -18,7 +18,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe/client'
 import { supabaseAdmin } from '@/lib/supabase'
-import { runReportGenerationForSession } from '@/app/api/stripe/webhook/route'
+import {
+  parsePurchaseInterpretation,
+  runReportGenerationForSession,
+} from '@/app/api/stripe/webhook/route'
 import { linkReportToPurchase } from '@/lib/billing/usage'
 import { grantPurchaseCredits, hasCreditsForStripeSession } from '@/lib/billing/credits'
 import type { ReportPersona } from '@/lib/reports/types'
@@ -57,7 +60,9 @@ export async function GET(request: NextRequest) {
 
   const { data: stuck, error } = await supabaseAdmin
     .from('report_purchases')
-    .select('id, stripe_checkout_session_id, user_id, recovery_attempts, completed_at')
+    .select(
+      'id, stripe_checkout_session_id, user_id, recovery_attempts, completed_at, interpretation'
+    )
     .eq('status', 'completed')
     .is('report_id', null)
     .lt('completed_at', cutoff)
@@ -183,19 +188,13 @@ export async function GET(request: NextRequest) {
         continue
       }
       // Stuck in 'generating' beyond the safety window. The
-      // background after() is dead. Mark this row as failed so the
-      // user sees the right status, then fall through to a fresh
-      // generation attempt below.
-      await supabaseAdmin
-        .from('user_reports')
-        .update({
-          status: 'failed',
-          error_message:
-            'Generation did not complete in time; recovered by stuck-purchase cron.',
-        })
-        .eq('id', generating.id)
+      // background after() is dead. We'll delete this row (and any
+      // failed leftovers) below after the atomic claim — running
+      // generation fresh produces a clean new row instead of leaving
+      // the orphan around. The user briefly seeing a deleted-row gap
+      // is preferable to ending up with N duplicates across retries.
       console.log(
-        `[cron/recover-stuck-purchases] marked stuck report ${generating.id} as failed; retrying generation`
+        `[cron/recover-stuck-purchases] report ${generating.id} stuck in generating; will delete and regenerate`
       )
     }
 
@@ -218,27 +217,42 @@ export async function GET(request: NextRequest) {
       continue
     }
 
+    // Clean up any non-complete rows left behind by prior recovery
+    // attempts or a dead after(). generateTopicReport unconditionally
+    // INSERTs a fresh row, so without this deletion each retry stacks
+    // an additional failed/stuck row alongside the eventual successful
+    // one. We've already confirmed no `complete` row exists for this
+    // user+topic (the linked-existing branch above would have taken
+    // it), so deleting `not eq 'complete'` is safe and won't touch
+    // legitimate prior generations.
+    const orphanIds = (existing ?? [])
+      .filter((r) => r.status !== 'complete')
+      .map((r) => r.id)
+    if (orphanIds.length > 0) {
+      const { error: cleanupError } = await supabaseAdmin
+        .from('user_reports')
+        .delete()
+        .in('id', orphanIds)
+      if (cleanupError) {
+        console.error(
+          `[cron/recover-stuck-purchases] failed to delete orphan rows ${orphanIds.join(',')}:`,
+          cleanupError.message
+        )
+        // Continue anyway — duplicate rows are better than no retry.
+      } else {
+        console.log(
+          `[cron/recover-stuck-purchases] deleted ${orphanIds.length} orphan row(s) before regeneration`
+        )
+      }
+    }
+
     const persona: ReportPersona =
       metadata.persona === 'investor' ? 'investor' : 'researcher'
     const dataLimited = metadata.dataLimited === 'true'
-    let interpretation:
-      | { semanticQuery: string; keywordQuery: string; label: string }
-      | undefined
-    if (metadata.interpretation) {
-      try {
-        const parsed = JSON.parse(metadata.interpretation)
-        if (
-          parsed &&
-          typeof parsed.semanticQuery === 'string' &&
-          typeof parsed.keywordQuery === 'string' &&
-          typeof parsed.label === 'string'
-        ) {
-          interpretation = parsed
-        }
-      } catch {
-        // best-effort, fall through
-      }
-    }
+    // Source of truth for interpretation is the purchase row (JSONB,
+    // no truncation), not Stripe metadata. See the matching note in
+    // the checkout + webhook routes.
+    const interpretation = parsePurchaseInterpretation(purchase.interpretation)
 
     try {
       await runReportGenerationForSession(

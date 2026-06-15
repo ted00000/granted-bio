@@ -259,7 +259,8 @@ export async function createPendingReportPurchase(
   checkoutSessionId: string,
   topic: string,
   persona: 'researcher' | 'investor',
-  amountCents: number
+  amountCents: number,
+  interpretation?: { semanticQuery: string; keywordQuery: string; label: string }
 ): Promise<string> {
   const { data, error } = await supabaseAdmin
     .from('report_purchases')
@@ -269,6 +270,7 @@ export async function createPendingReportPurchase(
       topic,
       persona,
       amount_cents: amountCents,
+      interpretation: interpretation ?? null,
       status: 'pending',
     })
     .select('id')

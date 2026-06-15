@@ -157,11 +157,23 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     // generation in parallel. If this background work dies (instance
     // killed, deploy mid-flight), the recovery cron picks the
     // purchase up after the grace window and retries.
+    //
+    // Read the interpretation from the report_purchases row, not from
+    // Stripe metadata — Stripe caps each metadata value at 500 chars
+    // and broad interpretations exceed that, so we persist it on the
+    // purchase row in full. See the corresponding change in
+    // /api/stripe/checkout.
     if (metadata.type === 'report' && metadata.topic && metadata.persona && metadata.userId) {
       const persona: ReportPersona = metadata.persona === 'investor' ? 'investor' : 'researcher'
       const dataLimited = metadata.dataLimited === 'true'
-      const interpretation = parseInterpretationMetadata(metadata.interpretation)
       const { userId, topic } = metadata
+
+      const { data: purchaseRow } = await supabaseAdmin
+        .from('report_purchases')
+        .select('interpretation')
+        .eq('stripe_checkout_session_id', session.id)
+        .single()
+      const interpretation = parsePurchaseInterpretation(purchaseRow?.interpretation)
 
       after(async () => {
         try {
@@ -194,23 +206,25 @@ interface Interpretation {
   label: string
 }
 
-// Pull the human-chosen interpretation out of the Stripe session
-// metadata blob. Best-effort: a missing or malformed value falls back
-// to the legacy auto-rewrite path inside the projects agent.
-function parseInterpretationMetadata(raw: string | undefined): Interpretation | undefined {
-  if (!raw) return undefined
-  try {
-    const parsed = JSON.parse(raw)
-    if (
-      parsed &&
-      typeof parsed.semanticQuery === 'string' &&
-      typeof parsed.keywordQuery === 'string' &&
-      typeof parsed.label === 'string'
-    ) {
-      return parsed
+// Validate the interpretation read from report_purchases.interpretation
+// (JSONB). Best-effort: a missing or malformed value falls back to
+// the legacy auto-rewrite path inside the projects agent. Exported
+// so the recovery cron can use the same shape check.
+export function parsePurchaseInterpretation(
+  raw: unknown
+): Interpretation | undefined {
+  if (!raw || typeof raw !== 'object') return undefined
+  const parsed = raw as Record<string, unknown>
+  if (
+    typeof parsed.semanticQuery === 'string' &&
+    typeof parsed.keywordQuery === 'string' &&
+    typeof parsed.label === 'string'
+  ) {
+    return {
+      semanticQuery: parsed.semanticQuery,
+      keywordQuery: parsed.keywordQuery,
+      label: parsed.label,
     }
-  } catch (e) {
-    console.error('[Stripe Webhook] Failed to parse interpretation metadata:', e)
   }
   return undefined
 }

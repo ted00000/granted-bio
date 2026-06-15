@@ -21,6 +21,7 @@
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
+import { safeRedirectOr } from '@/lib/auth/safe-redirect'
 
 interface AuthFormProps {
   /** Optional explicit redirect destination after auth completes. */
@@ -29,7 +30,15 @@ interface AuthFormProps {
 
 export function AuthForm({ redirect: redirectProp }: AuthFormProps = {}) {
   const searchParams = useSearchParams()
-  const redirect = redirectProp || searchParams.get('redirect') || '/chat'
+  // The redirect value flows through Supabase as the magic-link/OAuth
+  // `next` param and ultimately ends up concatenated as
+  // `${origin}${next}` in the auth callback. Run it through the same
+  // safe-path validator the callback uses, so a malicious URL param
+  // can't redirect the post-auth browser off-origin (phishing).
+  const redirect = safeRedirectOr(
+    redirectProp || searchParams.get('redirect'),
+    '/chat'
+  )
   const authError = searchParams.get('error')
 
   const [email, setEmail] = useState('')
@@ -48,7 +57,7 @@ export function AuthForm({ redirect: redirectProp }: AuthFormProps = {}) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/api/auth/callback?next=${redirect}`,
+        redirectTo: `${window.location.origin}/api/auth/callback?next=${encodeURIComponent(redirect)}`,
       },
     })
 
@@ -66,7 +75,7 @@ export function AuthForm({ redirect: redirectProp }: AuthFormProps = {}) {
     const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
-        emailRedirectTo: `${window.location.origin}/api/auth/callback?next=${redirect}`,
+        emailRedirectTo: `${window.location.origin}/api/auth/callback?next=${encodeURIComponent(redirect)}`,
       },
     })
 

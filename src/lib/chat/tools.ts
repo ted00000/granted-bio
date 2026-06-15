@@ -1209,13 +1209,23 @@ export async function searchProjects(
   }
 }
 
-// Hybrid search: combines keyword + semantic search with RRF scoring
+// Hybrid search: combines keyword + semantic search with RRF scoring.
+//
+// Like searchProjectsKeyword and searchProjectsSemantic above, the
+// chat-facing pool is intentionally NOT capped by userAccess.resultsLimit
+// — tier limits gate report generation and drill-down, not how broad
+// a search the user can run. Capping the hybrid pool was the original
+// "neural organoids returns 66 not 150 for free users" bug; the first
+// fix only landed in the keyword and semantic paths. This is the same
+// fix for the hybrid path, which is the default Smart-mode entry point.
 export async function searchProjectsHybrid(
   params: HybridSearchParams,
   userAccess: UserAccess
 ): Promise<KeywordSearchResult> {
+  void userAccess
   const { keyword_query, semantic_query, filters, limit = 100 } = params
-  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+  void keyword_query
+  const effectiveLimit = limit
 
   try {
     // Run keyword and semantic searches in parallel
@@ -2330,13 +2340,20 @@ async function getTrialKeywordMatchingIds(query: string): Promise<Set<string>> {
   return matchingIds
 }
 
-// Semantic-only search for clinical trials with similarity scores for client-side precision filtering
+// Semantic-only search for clinical trials with similarity scores for client-side precision filtering.
+//
+// Like the projects-facing searches, the chat pool is intentionally
+// NOT capped by userAccess.resultsLimit — tier gates report generation
+// and drill-down, not search breadth. Keeping the cap here would let
+// a free user see fewer trial matches than a pro user for the same
+// query and weaken the in-search CTA's "Found N results" framing.
 export async function searchTrials(
   params: SearchTrialsParams,
   userAccess: UserAccess
 ): Promise<TrialSearchResult> {
+  void userAccess
   const { query, filters, limit = 100 } = params
-  const effectiveLimit = Math.min(limit, userAccess.resultsLimit)
+  const effectiveLimit = limit
   // Higher threshold for trials since there's no precision filter UI
   const threshold = 0.35
 

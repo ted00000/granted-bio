@@ -107,24 +107,29 @@ export async function POST(request: NextRequest) {
           topic,
           persona,
           dataLimited: dataLimited ? 'true' : 'false',
-          // Persist the human-chosen interpretation so the webhook handler
-          // can pass it to generateTopicReport after payment succeeds.
-          // Stripe metadata values are strings; we JSON-encode here.
-          ...(interpretation
-            ? { interpretation: JSON.stringify(interpretation).slice(0, 500) }
-            : {}),
+          // Note: the chosen interpretation is NOT stored on Stripe
+          // metadata. Stripe caps each metadata value at 500 chars
+          // and broad-scope interpretations routinely exceed that,
+          // which previously caused silent truncation + a JSON parse
+          // failure in the webhook + a silent fallback to the legacy
+          // auto-rewrite path (different scope than what the user
+          // paid for). The interpretation is persisted in full on
+          // the report_purchases row instead — see
+          // createPendingReportPurchase below.
         },
       })
 
       // Create pending purchase record. Pass REPORT_PRICE_CENTS so the
       // ledger row carries the actual charge amount — the column has a
       // legacy DB default of 9900 that pre-dates the $99 -> $199 fix.
+      // Also persist the interpretation here (full JSONB, no truncation).
       await createPendingReportPurchase(
         user.id,
         session.id,
         topic,
         persona,
-        REPORT_PRICE_CENTS
+        REPORT_PRICE_CENTS,
+        interpretation
       )
 
       return NextResponse.json({ url: session.url, sessionId: session.id })

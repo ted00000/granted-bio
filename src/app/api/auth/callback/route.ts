@@ -1,10 +1,15 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { safeRedirectOr } from '@/lib/auth/safe-redirect'
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/chat'
+  // safeRedirectOr rejects anything that isn't a same-origin path
+  // (no `https://evil.com`, no `//evil.com`, no `javascript:`, etc.).
+  // Without this, an attacker who could influence the magic-link URL
+  // or the OAuth state could steer the post-auth browser anywhere.
+  const next = safeRedirectOr(searchParams.get('next'), '/chat')
   const type = searchParams.get('type')
 
   if (code) {
