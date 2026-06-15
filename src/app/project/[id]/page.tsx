@@ -5,8 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Bookmark, FileText, Heart, BookOpen, Lightbulb, Activity, Pencil } from 'lucide-react'
 import { DetailLayout } from '@/components/DetailLayout'
-import { Breadcrumbs } from '@/components/Breadcrumbs'
-import { useReturnBreadcrumb } from '@/lib/hooks/useReturnBreadcrumb'
+import { BackButton } from '@/components/BackButton'
 import { CategoryEditModal } from '@/components/CategoryEditModal'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import { useAuth } from '@/contexts/AuthContext'
@@ -115,7 +114,6 @@ export default function ProjectPage() {
   const [savingProject, setSavingProject] = useState(false)
   const [showCategoryModal, setShowCategoryModal] = useState(false)
   const { user, isAdmin } = useAuth()
-  const { returnUrl, returnLabel } = useReturnBreadcrumb('/chat', 'Projects')
 
   // Check if project is saved. Skip when logged out — the save APIs
   // require auth and the bookmark button isn't shown to public visitors.
@@ -218,12 +216,7 @@ export default function ProjectPage() {
       <DetailLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <Breadcrumbs
-              items={[
-                { label: returnLabel, href: returnUrl },
-                { label: 'Project' },
-              ]}
-            />
+            <BackButton />
             <div className="text-center py-8 mt-8">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">Project Not Found</h1>
               <p className="text-gray-500">{error}</p>
@@ -258,14 +251,9 @@ export default function ProjectPage() {
     <DetailLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Breadcrumbs and bookmark */}
+          {/* Back button and bookmark */}
           <div className="flex items-center justify-between mb-6">
-            <Breadcrumbs
-              items={[
-                { label: returnLabel, href: returnUrl },
-                { label: project.title.length > 40 ? project.title.slice(0, 40) + '...' : project.title },
-              ]}
-            />
+            <BackButton />
             {user && (
               <button
                 onClick={toggleSave}

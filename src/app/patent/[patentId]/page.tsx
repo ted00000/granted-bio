@@ -5,8 +5,7 @@ import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { FileText, Calendar, Users, Building2, Tag, ExternalLink, Quote, Bookmark } from 'lucide-react'
 import { DetailLayout } from '@/components/DetailLayout'
-import { Breadcrumbs } from '@/components/Breadcrumbs'
-import { useReturnBreadcrumb } from '@/lib/hooks/useReturnBreadcrumb'
+import { BackButton } from '@/components/BackButton'
 import { useAuth } from '@/contexts/AuthContext'
 
 interface PatentData {
@@ -71,7 +70,6 @@ export default function PatentDetailPage() {
   const [savingPatent, setSavingPatent] = useState(false)
   const { user } = useAuth()
 
-  const { returnUrl, returnLabel } = useReturnBreadcrumb('/chat', 'Patents')
 
   // Check if patent is saved. Skip for logged-out visitors — the API
   // requires auth and the bookmark button is hidden in that case.
@@ -171,13 +169,8 @@ export default function PatentDetailPage() {
       <DetailLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <Breadcrumbs
-              items={[
-                { label: returnLabel, href: returnUrl },
-                { label: 'Patent' },
-              ]}
-            />
-            <div className="text-center py-8">
+            <BackButton />
+            <div className="text-center py-8 mt-8">
               <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Patent not found'}</h1>
               <p className="text-gray-500">The patent US{patentId} could not be found.</p>
@@ -192,14 +185,9 @@ export default function PatentDetailPage() {
     <DetailLayout>
       <div className="h-full overflow-y-auto bg-[#FAFAF9]">
         <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-          {/* Breadcrumbs and save */}
+          {/* Back button and save */}
           <div className="flex items-center justify-between mb-6">
-            <Breadcrumbs
-              items={[
-                { label: returnLabel, href: returnUrl },
-                { label: patent.patent_title && patent.patent_title.length > 40 ? patent.patent_title.slice(0, 40) + '...' : patent.patent_title || `Patent ${patentId}` },
-              ]}
-            />
+            <BackButton />
             {user && (
               <button
                 onClick={toggleSavePatent}

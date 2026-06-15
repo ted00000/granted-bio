@@ -6,8 +6,7 @@ import Link from 'next/link'
 import { Building2, ChevronLeft, ChevronRight, FlaskConical, Search, X, Bookmark } from 'lucide-react'
 import { DetailLayout } from '@/components/DetailLayout'
 import { useAuth } from '@/contexts/AuthContext'
-import { Breadcrumbs } from '@/components/Breadcrumbs'
-import { useReturnBreadcrumb } from '@/lib/hooks/useReturnBreadcrumb'
+import { BackButton } from '@/components/BackButton'
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
@@ -122,7 +121,6 @@ export default function OrgPage() {
   const [savingOrg, setSavingOrg] = useState(false)
   const { user } = useAuth()
 
-  const { returnUrl, returnLabel } = useReturnBreadcrumb('/', 'Organizations')
 
   // Check if org is saved. Skip for logged-out visitors — the
   // saved-people API requires auth and the bookmark button is hidden
@@ -250,12 +248,7 @@ export default function OrgPage() {
       <DetailLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
-            <Breadcrumbs
-              items={[
-                { label: returnLabel, href: returnUrl },
-                { label: decodeURIComponent(name) },
-              ]}
-            />
+            <div className="mb-4"><BackButton /></div>
             <div className="text-center py-8">
               <Building2 className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h1 className="text-xl font-semibold text-gray-900 mb-2">{error || 'Organization not found'}</h1>
@@ -273,14 +266,9 @@ export default function OrgPage() {
         {/* Top header with org info and bookmark */}
         <div className="flex-shrink-0 border-b border-gray-100 bg-white">
           <div className="px-5 py-4">
-            {/* Breadcrumbs and bookmark */}
+            {/* Back button and bookmark */}
             <div className="flex items-center justify-between mb-4">
-              <Breadcrumbs
-                items={[
-                  { label: returnLabel, href: returnUrl },
-                  { label: data.org_name.length > 40 ? data.org_name.slice(0, 40) + '...' : data.org_name },
-                ]}
-              />
+              <BackButton />
               {user && (
               <button
                 onClick={toggleSaveOrg}
