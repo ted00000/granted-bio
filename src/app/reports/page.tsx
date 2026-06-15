@@ -218,7 +218,7 @@ function ReportsDashboard() {
     shouldAutoGenerate ? inboundTopic : null
   )
 
-  const { user, isAdmin, isAssociate, profile, refetchProfile } = useAuth()
+  const { user, isAdmin, profile, refetchProfile } = useAuth()
 
   // Active beta = beta tier with non-expired window
   const isActiveBeta =
@@ -236,7 +236,11 @@ function ReportsDashboard() {
       ))
     : null
 
-  const canBypassPayment = isAdmin || isAssociate || (isActiveBeta && !betaCapReached)
+  // Associates get expanded search but NOT free report generation —
+  // they pay like regular users. Only admins and active beta users
+  // (within the cap) bypass payment. See the matching check at
+  // /api/reports for the server-side enforcement.
+  const canBypassPayment = isAdmin || (isActiveBeta && !betaCapReached)
 
   useEffect(() => {
     fetchReports()

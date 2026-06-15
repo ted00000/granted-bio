@@ -40,7 +40,7 @@ export function GenerateReportDialog({
   const [interpretations, setInterpretations] = useState<Interpretation[]>([])
   const [selectedInterpretation, setSelectedInterpretation] = useState<Interpretation | null>(null)
 
-  const { isAdmin, isAssociate, profile } = useAuth()
+  const { isAdmin, profile } = useAuth()
 
   // Active beta gets free reports up to a lifetime cap of 3
   const isActiveBeta =
@@ -52,7 +52,13 @@ export function GenerateReportDialog({
   const reportsRemaining = Math.max(0, BETA_REPORT_CAP - reportsUsed)
   const betaCapReached = isActiveBeta && reportsUsed >= BETA_REPORT_CAP
 
-  const canBypassPayment = isAdmin || isAssociate || (isActiveBeta && !betaCapReached)
+  // Associates get expanded search but NOT free report generation —
+  // they pay like regular users. Only admins and active beta users
+  // (within the cap) bypass payment. Server-side check at
+  // /api/reports re-enforces this; the client copy of the flag is
+  // cosmetic (it just decides whether to show "Purchase Anyway -
+  // $199" vs "Generate Anyway").
+  const canBypassPayment = isAdmin || (isActiveBeta && !betaCapReached)
 
   // Step 1: Fetch 3 scoped interpretations of the topic from Claude.
   // User confirms one before any data lookup or payment happens.

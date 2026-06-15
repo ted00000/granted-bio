@@ -118,7 +118,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const canBypassPayment = isAdminOrAssociate || isActiveBeta
+    // Associates get expanded search but NOT free report generation —
+    // they pay $199 like any regular user. Only admins and active beta
+    // users bypass payment. (The isAdminOrAssociate flag is preserved
+    // above for the beta-cap exemption: an associate running as beta
+    // for testing isn't subject to the 3-report cap.)
+    const canBypassPayment = profile?.role === 'admin' || isActiveBeta
 
     // If user cannot bypass payment, verify they have a completed purchase for this topic
     if (!canBypassPayment && report_type === 'topic') {
