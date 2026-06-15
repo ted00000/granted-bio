@@ -17,6 +17,7 @@ import {
 import { AppLayout } from '@/components/AppLayout'
 import { MarketingNav } from '@/components/MarketingNav'
 import { SignUpModal } from '@/components/SignUpModal'
+import { NameCapturePrompt } from '@/components/NameCapturePrompt'
 import { GenerateReportDialog } from './GenerateReportDialog'
 import { useAuth } from '@/contexts/AuthContext'
 import { fetchWithRetry } from '@/lib/retry'
@@ -217,7 +218,7 @@ function ReportsDashboard() {
     shouldAutoGenerate ? inboundTopic : null
   )
 
-  const { isAdmin, isAssociate, profile, refetchProfile } = useAuth()
+  const { user, isAdmin, isAssociate, profile, refetchProfile } = useAuth()
 
   // Active beta = beta tier with non-expired window
   const isActiveBeta =
@@ -288,6 +289,24 @@ function ReportsDashboard() {
     // Refresh the global profile so the beta progress banner ticks up
     // (reportsGenerated comes from useAuth and is computed at fetch time).
     refetchProfile()
+  }
+
+  // Name capture gate. New users who arrive here via the
+  // GenerateReportCTA modal flow have authenticated but haven't been
+  // through the /chat welcome screen, so their profile.firstName is
+  // still null. Block the dashboard until we've captured a name —
+  // otherwise receipts, future emails, and any later personalization
+  // will all be nameless. needsName mirrors the /chat check: user is
+  // present, profile loaded, but firstName is missing.
+  const needsName = !!user && profile !== null && !profile.firstName
+  if (needsName) {
+    return (
+      <AppLayout>
+        <div className="h-full overflow-y-auto bg-[#FAFAF9]">
+          <NameCapturePrompt />
+        </div>
+      </AppLayout>
+    )
   }
 
   return (
