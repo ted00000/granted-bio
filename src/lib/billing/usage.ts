@@ -282,13 +282,26 @@ export async function createPendingReportPurchase(
 }
 
 /**
- * Mark a report purchase as completed
+ * Atomically mark a report purchase as completed and return whether
+ * this call won the claim. The WHERE status='pending' clause makes
+ * the update a single SQL statement that only one concurrent invocation
+ * can satisfy — any later/concurrent webhook retry sees status already
+ * !='pending' and the update affects 0 rows, signaling to the caller
+ * that another invocation already owns the work.
+ *
+ * This is the only safe idempotency point for the long-running
+ * generation in the webhook: marking status='completed' happens first,
+ * then ~2 minutes of generation work, then linkReportToPurchase. The
+ * previous "status=='completed' AND report_id is set" check could not
+ * catch retries during that 2-minute window, which is exactly when
+ * Stripe retries the most (because it didn't see a 200 response within
+ * its ~30s expectation).
  */
 export async function completeReportPurchase(
   checkoutSessionId: string,
   paymentIntentId: string
-): Promise<void> {
-  const { error } = await supabaseAdmin
+): Promise<{ claimed: boolean }> {
+  const { data, error } = await supabaseAdmin
     .from('report_purchases')
     .update({
       status: 'completed',
@@ -296,10 +309,14 @@ export async function completeReportPurchase(
       completed_at: new Date().toISOString(),
     })
     .eq('stripe_checkout_session_id', checkoutSessionId)
+    .eq('status', 'pending')
+    .select('id')
 
   if (error) {
     throw new Error(`Failed to complete purchase: ${error.message}`)
   }
+
+  return { claimed: (data?.length ?? 0) > 0 }
 }
 
 /**

@@ -123,20 +123,21 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     const paymentIntentId = session.payment_intent as string
     const metadata = session.metadata || {}
 
-    // Idempotency check: see if this session already has a completed purchase with a report
-    const { data: existingPurchase } = await supabaseAdmin
-      .from('report_purchases')
-      .select('id, status, report_id')
-      .eq('stripe_checkout_session_id', session.id)
-      .single()
-
-    if (existingPurchase?.status === 'completed' && existingPurchase?.report_id) {
-      console.log(`[Stripe Webhook] Purchase for session ${session.id} already completed with report ${existingPurchase.report_id}, skipping`)
+    // Atomic claim: completeReportPurchase only succeeds if the row's
+    // status was still 'pending'. If a previous webhook invocation
+    // already claimed it, claimed === false and we bail. This is the
+    // only correct idempotency point — the prior "status=='completed'
+    // AND report_id is set" check did not catch retries during the
+    // ~2-minute generation window (when status had already flipped to
+    // 'completed' but the linkage had not yet been written), which is
+    // exactly when Stripe retries because our generation runs much
+    // longer than its ~30s response expectation. See
+    // src/lib/billing/usage.ts:completeReportPurchase for the SQL.
+    const { claimed } = await completeReportPurchase(session.id, paymentIntentId)
+    if (!claimed) {
+      console.log(`[Stripe Webhook] Session ${session.id} already claimed by another invocation, skipping`)
       return
     }
-
-    // Mark purchase as completed
-    await completeReportPurchase(session.id, paymentIntentId)
     console.log(`[Stripe Webhook] Completed report purchase for session ${session.id}`)
 
     // Trigger report generation
