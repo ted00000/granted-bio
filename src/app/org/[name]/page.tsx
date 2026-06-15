@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Building2, ChevronLeft, ChevronRight, FlaskConical, Search, X, Bookmark } from 'lucide-react'
-import { AppLayout } from '@/components/AppLayout'
+import { DetailLayout } from '@/components/DetailLayout'
+import { useAuth } from '@/contexts/AuthContext'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 
 // Display names for categories
@@ -118,9 +119,13 @@ export default function OrgPage() {
   // Bookmark state
   const [isSaved, setIsSaved] = useState(false)
   const [savingOrg, setSavingOrg] = useState(false)
+  const { user } = useAuth()
 
-  // Check if org is saved
+  // Check if org is saved. Skip for logged-out visitors — the
+  // saved-people API requires auth and the bookmark button is hidden
+  // in that case.
   useEffect(() => {
+    if (!user) return
     const checkSaved = async () => {
       try {
         const orgName = decodeURIComponent(name)
@@ -132,7 +137,7 @@ export default function OrgPage() {
       }
     }
     checkSaved()
-  }, [name])
+  }, [name, user])
 
   const toggleSaveOrg = async () => {
     if (savingOrg) return
@@ -226,20 +231,20 @@ export default function OrgPage() {
   // Show full-page loading only on initial load
   if (loading && !data) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full flex items-center justify-center bg-[#FAFAF9]">
           <div className="flex flex-col items-center gap-3">
             <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
             <span className="text-sm text-gray-400">Loading organization...</span>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
   if (error || !data) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
@@ -255,12 +260,12 @@ export default function OrgPage() {
             </div>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
   return (
-    <AppLayout>
+    <DetailLayout>
       <div className="h-full flex flex-col bg-[#FAFAF9]">
         {/* Top header with org info and bookmark */}
         <div className="flex-shrink-0 border-b border-gray-100 bg-white">
@@ -273,6 +278,7 @@ export default function OrgPage() {
                   { label: data.org_name.length > 40 ? data.org_name.slice(0, 40) + '...' : data.org_name },
                 ]}
               />
+              {user && (
               <button
                 onClick={toggleSaveOrg}
                 disabled={savingOrg}
@@ -290,6 +296,7 @@ export default function OrgPage() {
                 />
                 <span className="text-sm">Save</span>
               </button>
+              )}
             </div>
             {/* Org info */}
             <div>
@@ -664,6 +671,6 @@ export default function OrgPage() {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </DetailLayout>
   )
 }

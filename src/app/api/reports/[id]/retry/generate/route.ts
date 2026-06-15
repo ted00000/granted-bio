@@ -12,7 +12,9 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { generateTopicReport } from '@/lib/reports'
 import {
   findRetryCreditForReport,
-  markCreditConsumed,
+  tryClaimCredit,
+  finalizeCreditConsumption,
+  releaseCredit,
 } from '@/lib/billing/credits'
 import type { ReportPersona } from '@/lib/reports/types'
 
@@ -87,23 +89,44 @@ export async function POST(
       )
     }
 
+    // Atomically claim the credit BEFORE running generation — closes
+    // the TOCTOU window between the eligibility check and the ~2-minute
+    // generation. See the matching pattern in /api/reports/[id]/refresh.
+    const claimed = await tryClaimCredit(retryCredit.id)
+    if (!claimed) {
+      return NextResponse.json(
+        { error: 'A retry is already in progress for this report.' },
+        { status: 409 }
+      )
+    }
+
     // Generate the new report with the user's chosen interpretation.
     const persona: ReportPersona =
       originalReport.persona === 'investor' ? 'investor' : 'researcher'
-    const newReportId = await generateTopicReport(
-      user.id,
-      originalReport.topic,
-      originalReport.data_limited ?? false,
-      persona,
-      {
-        label: chosen.label,
-        semanticQuery: chosen.semanticQuery,
-        keywordQuery: chosen.keywordQuery,
-      }
-    )
 
-    // Consume the credit + bind it to the new report.
-    await markCreditConsumed({
+    let newReportId: string
+    try {
+      newReportId = await generateTopicReport(
+        user.id,
+        originalReport.topic,
+        originalReport.data_limited ?? false,
+        persona,
+        {
+          label: chosen.label,
+          semanticQuery: chosen.semanticQuery,
+          keywordQuery: chosen.keywordQuery,
+        }
+      )
+    } catch (err) {
+      // Release the claim so the user can retry without losing their
+      // retry credit.
+      await releaseCredit(retryCredit.id)
+      throw err
+    }
+
+    // Finalize the credit's consumed_for_report_id (consumed_at was
+    // already set during the atomic claim above).
+    await finalizeCreditConsumption({
       creditId: retryCredit.id,
       consumedForReportId: newReportId,
     })

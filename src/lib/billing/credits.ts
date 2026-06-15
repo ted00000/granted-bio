@@ -167,6 +167,13 @@ export async function findRefreshCreditForReport(
 /**
  * Mark a previously-granted credit as consumed and bind it to the report it
  * produced. Used by Phase 3 when a refresh or retry is spent.
+ *
+ * NOTE: this is the non-atomic finalize step. For new code use the
+ * tryClaimCredit + finalize / release pair below — markCreditConsumed
+ * with no `consumed_at IS NULL` guard let two parallel requests both
+ * pass the eligibility check, both run ~2 minutes of generation, and
+ * both call this function, with only one credit consumed and a
+ * duplicate orphan report left behind.
  */
 export async function markCreditConsumed(params: {
   creditId: string
@@ -183,6 +190,74 @@ export async function markCreditConsumed(params: {
   if (error) {
     console.error('[credits] markCreditConsumed failed:', error)
     throw error
+  }
+}
+
+/**
+ * Atomically claim a credit before running generation. Returns true if
+ * this caller won the claim. Used to close the TOCTOU window between
+ * "did this user have an unspent credit?" and "we just spent it" —
+ * without this, two parallel POSTs (double-click, retry-after-timeout)
+ * could both pass the eligibility check, both run a full ~2-minute
+ * generation, only one consume the credit, and leave a duplicate
+ * orphan report.
+ *
+ * The atomic guarantee comes from PostgREST's WHERE consumed_at IS
+ * NULL clause: at most one concurrent UPDATE can match.
+ *
+ * Pair with finalizeCreditConsumption (on success) or releaseCredit
+ * (on generation failure).
+ */
+export async function tryClaimCredit(creditId: string): Promise<boolean> {
+  const { data, error } = await supabaseAdmin
+    .from('report_credits')
+    .update({ consumed_at: new Date().toISOString() })
+    .eq('id', creditId)
+    .is('consumed_at', null)
+    .select('id')
+
+  if (error) {
+    console.error('[credits] tryClaimCredit failed:', error)
+    throw error
+  }
+  return (data?.length ?? 0) > 0
+}
+
+/**
+ * After a successful claim + generation, write the resulting report
+ * id onto the credit so the ledger reflects what the credit produced.
+ */
+export async function finalizeCreditConsumption(params: {
+  creditId: string
+  consumedForReportId: string
+}): Promise<void> {
+  const { error } = await supabaseAdmin
+    .from('report_credits')
+    .update({ consumed_for_report_id: params.consumedForReportId })
+    .eq('id', params.creditId)
+
+  if (error) {
+    console.error('[credits] finalizeCreditConsumption failed:', error)
+    throw error
+  }
+}
+
+/**
+ * Release a claim previously made by tryClaimCredit when the work
+ * the claim was meant to fund (e.g., generation) fails. Leaves
+ * consumed_for_report_id unchanged (it was never set in the claim
+ * step).
+ */
+export async function releaseCredit(creditId: string): Promise<void> {
+  const { error } = await supabaseAdmin
+    .from('report_credits')
+    .update({ consumed_at: null })
+    .eq('id', creditId)
+
+  if (error) {
+    console.error('[credits] releaseCredit failed:', error)
+    // Don't throw — the caller is already in an error path; logging
+    // is enough. A stranded claim is recoverable by support.
   }
 }
 

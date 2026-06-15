@@ -4,8 +4,9 @@ import { useState, useEffect, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { User, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Building2, Search, X, Bookmark } from 'lucide-react'
-import { AppLayout } from '@/components/AppLayout'
+import { DetailLayout } from '@/components/DetailLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { useAuth } from '@/contexts/AuthContext'
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
@@ -101,6 +102,7 @@ export default function ResearcherPage() {
   // Bookmark state
   const [isSaved, setIsSaved] = useState(false)
   const [savingResearcher, setSavingResearcher] = useState(false)
+  const { user } = useAuth()
 
   // Breadcrumb back-target — defaults to '/chat' but uses document.referrer
   // when the user came from another same-origin page (e.g. /org/[name],
@@ -118,8 +120,11 @@ export default function ResearcherPage() {
     }
   }, [])
 
-  // Check if researcher is saved
+  // Check if researcher is saved. Skip for logged-out visitors —
+  // the saved-people API requires auth and the bookmark button is
+  // hidden in that case.
   useEffect(() => {
+    if (!user) return
     const checkSaved = async () => {
       try {
         const researcherName = decodeURIComponent(name)
@@ -131,7 +136,7 @@ export default function ResearcherPage() {
       }
     }
     checkSaved()
-  }, [name])
+  }, [name, user])
 
   const toggleSaveResearcher = async () => {
     if (savingResearcher) return
@@ -225,20 +230,20 @@ export default function ResearcherPage() {
   // Show full-page loading only on initial load
   if (loading && !data) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full flex items-center justify-center bg-[#FAFAF9]">
           <div className="flex flex-col items-center gap-3">
             <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
             <span className="text-sm text-gray-400">Loading researcher...</span>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
   if (error || !data) {
     return (
-      <AppLayout>
+      <DetailLayout>
         <div className="h-full overflow-y-auto bg-[#FAFAF9]">
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
@@ -254,12 +259,12 @@ export default function ResearcherPage() {
             </div>
           </div>
         </div>
-      </AppLayout>
+      </DetailLayout>
     )
   }
 
   return (
-    <AppLayout>
+    <DetailLayout>
       <div className="h-full flex flex-col bg-[#FAFAF9]">
         {/* Top header with researcher info and bookmark */}
         <div className="flex-shrink-0 border-b border-gray-100 bg-white">
@@ -272,6 +277,7 @@ export default function ResearcherPage() {
                   { label: decodeURIComponent(name).length > 30 ? decodeURIComponent(name).slice(0, 30) + '...' : decodeURIComponent(name) },
                 ]}
               />
+              {user && (
               <button
                 onClick={toggleSaveResearcher}
                 disabled={savingResearcher}
@@ -289,6 +295,7 @@ export default function ResearcherPage() {
                 />
                 <span className="text-sm">Save</span>
               </button>
+              )}
             </div>
             {/* Researcher info */}
             <div>
@@ -631,6 +638,6 @@ export default function ResearcherPage() {
           </div>
         </div>
       </div>
-    </AppLayout>
+    </DetailLayout>
   )
 }

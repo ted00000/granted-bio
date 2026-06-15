@@ -195,20 +195,35 @@ function processInline(text: string): React.ReactNode {
     }
 
     // Link: [text](url)
+    //
+    // URL allowlist: same-origin paths (start with `/` but not `//`)
+    // render as in-app Link, http(s):// open in new tab. Anything else
+    // — `javascript:`, `data:`, `vbscript:`, file:, etc. — is rendered
+    // as plain text. The synthesis Claude prompt is constrained to
+    // produce only same-origin and http(s) URLs, but report markdown
+    // is user-influenced (topic text, NIH abstracts, etc.) and a
+    // prompt-injection that emitted `[click me](javascript:alert(1))`
+    // would otherwise execute on click.
     const linkMatch = remaining.match(/^\[([^\]]+)\]\(([^)]+)\)/)
     if (linkMatch) {
       const [, linkText, url] = linkMatch
-      if (url.startsWith('/')) {
+      const trimmedUrl = url.trim()
+      const isSameOrigin =
+        trimmedUrl.startsWith('/') && !trimmedUrl.startsWith('//')
+      const isHttp =
+        trimmedUrl.startsWith('http://') || trimmedUrl.startsWith('https://')
+
+      if (isSameOrigin) {
         parts.push(
-          <Link key={key++} href={url} className="text-[#E07A5F] hover:text-[#C96A4F] underline">
+          <Link key={key++} href={trimmedUrl} className="text-[#E07A5F] hover:text-[#C96A4F] underline">
             {linkText}
           </Link>
         )
-      } else {
+      } else if (isHttp) {
         parts.push(
           <a
             key={key++}
-            href={url}
+            href={trimmedUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-[#E07A5F] hover:text-[#C96A4F] underline"
@@ -216,6 +231,9 @@ function processInline(text: string): React.ReactNode {
             {linkText}
           </a>
         )
+      } else {
+        // Disallowed scheme — render the visible text only, no link.
+        parts.push(<span key={key++}>{linkText}</span>)
       }
       remaining = remaining.slice(linkMatch[0].length)
       continue

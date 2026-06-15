@@ -9,7 +9,6 @@ import { Logo } from '@/components/Logo'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { Search, Users, Activity, FileText } from 'lucide-react'
-import { PremiumBadge } from '@/components/ui/PremiumBadge'
 
 interface PersonaSelectorProps {
   onSelect: (persona: PersonaType) => void
@@ -297,7 +296,11 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
                 </div>
               </div>
 
-              {/* Intelligence Reports - Premium */}
+              {/* Intelligence Reports — paid à la carte, not gated
+                  behind a tier. Per BRAND.md §6, no Premium badge on
+                  Reports. The button itself is the discoverable
+                  affordance; the price is named on /reports and
+                  /pricing. */}
               <div>
                 <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-4">Analyze</p>
                 <button
@@ -308,7 +311,6 @@ export function PersonaSelector({ onSelect }: PersonaSelectorProps) {
                     <div className="text-gray-400 group-hover:text-[#E07A5F] transition-colors">
                       <FileText className="w-5 h-5" strokeWidth={1.5} />
                     </div>
-                    <PremiumBadge />
                   </div>
                   <h2 className="text-base font-medium text-gray-900 mb-1">
                     Intelligence Reports

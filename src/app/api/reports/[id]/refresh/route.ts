@@ -18,7 +18,12 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { generateTopicReport } from '@/lib/reports'
-import { findRefreshCreditForReport, markCreditConsumed } from '@/lib/billing/credits'
+import {
+  findRefreshCreditForReport,
+  tryClaimCredit,
+  finalizeCreditConsumption,
+  releaseCredit,
+} from '@/lib/billing/credits'
 import type { ReportPersona } from '@/lib/reports/types'
 
 export const runtime = 'nodejs'
@@ -84,6 +89,23 @@ export async function POST(
       )
     }
 
+    // Atomically claim the credit BEFORE running generation. This
+    // closes the TOCTOU window between the eligibility check above
+    // and the generation call below — without it, a double-click or
+    // a retry-after-timeout would let two requests both pass the
+    // check, both run ~2 minutes of generation (~$1 of Claude cost
+    // each), and produce two reports, only one of which is bound to
+    // the credit. tryClaimCredit returns false if another request
+    // already won, in which case we surface 409 and let the client
+    // decide what to do.
+    const claimed = await tryClaimCredit(refreshCredit.id)
+    if (!claimed) {
+      return NextResponse.json(
+        { error: 'A refresh is already in progress for this report.' },
+        { status: 409 }
+      )
+    }
+
     // Generate the new report using the same topic + interpretation + persona.
     // injectedInterpretation comes from the original report row when present;
     // historical pre-picker reports fall back to topic-only generation.
@@ -103,17 +125,25 @@ export async function POST(
           })
         : undefined
 
-    const newReportId = await generateTopicReport(
-      user.id,
-      originalReport.topic,
-      originalReport.data_limited ?? false,
-      persona,
-      injectedInterpretation
-    )
+    let newReportId: string
+    try {
+      newReportId = await generateTopicReport(
+        user.id,
+        originalReport.topic,
+        originalReport.data_limited ?? false,
+        persona,
+        injectedInterpretation
+      )
+    } catch (err) {
+      // Generation failed — release the claim so the user can retry
+      // without burning their refresh entitlement.
+      await releaseCredit(refreshCredit.id)
+      throw err
+    }
 
-    // Mark the refresh credit consumed against the new report. The original
-    // report stays as-is for comparison.
-    await markCreditConsumed({
+    // Finalize the credit's consumed_for_report_id (consumed_at was
+    // set during the atomic claim above).
+    await finalizeCreditConsumption({
       creditId: refreshCredit.id,
       consumedForReportId: newReportId,
     })

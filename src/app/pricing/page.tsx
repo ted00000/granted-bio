@@ -242,7 +242,7 @@ export default function PricingPage() {
       {/* Footer */}
       <footer className="border-t border-gray-100 bg-white">
         <div className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between text-sm text-gray-500">
-          <p>granted.bio — AI-powered life science intelligence</p>
+          <p>granted.bio — Cross-source life-sciences intelligence</p>
           <div className="flex gap-6">
             <Link href="/privacy" className="hover:text-gray-900">Privacy</Link>
             <Link href="/terms" className="hover:text-gray-900">Terms</Link>
