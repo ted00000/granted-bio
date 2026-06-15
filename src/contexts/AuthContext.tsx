@@ -78,8 +78,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (profileRes.data) {
           const data = profileRes.data
           // Map DB tier to UI tier. Beta gets 'beta' if not expired, otherwise 'free'.
+          // Role override: admin and associate roles always map to 'pro' regardless
+          // of DB tier — associates carry DB tier='free' (no Stripe subscription)
+          // but get pro-equivalent access (500 searches/mo, expanded results).
+          // Without this override the sidebar would render the free-tier "0/10"
+          // search counter for associates.
           let uiTier: 'free' | 'pro' | 'beta' = 'free'
-          if (data.tier === 'beta') {
+          if (data.role === 'admin' || data.role === 'associate') {
+            uiTier = 'pro'
+          } else if (data.tier === 'beta') {
             uiTier =
               data.beta_expires_at && new Date(data.beta_expires_at) > new Date()
                 ? 'beta'
