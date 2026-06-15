@@ -19,6 +19,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe/client'
 import { supabaseAdmin } from '@/lib/supabase'
 import { runReportGenerationForSession } from '@/app/api/stripe/webhook/route'
+import { linkReportToPurchase } from '@/lib/billing/usage'
+import { grantPurchaseCredits, hasCreditsForStripeSession } from '@/lib/billing/credits'
 import type { ReportPersona } from '@/lib/reports/types'
 
 export const runtime = 'nodejs'
@@ -30,6 +32,10 @@ export const maxDuration = 800
 const GRACE_WINDOW_MS = 10 * 60 * 1000 // 10 minutes
 const MAX_ATTEMPTS = 3
 const BATCH_LIMIT = 3 // process at most 3 stuck purchases per cron tick
+// How long a user_reports row can stay in status='generating' before
+// we consider the background after() dead and clean up. Generation
+// takes ~2 min normally; 10 min is a generous safety margin.
+const STUCK_GENERATING_MS = 10 * 60 * 1000
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -51,7 +57,7 @@ export async function GET(request: NextRequest) {
 
   const { data: stuck, error } = await supabaseAdmin
     .from('report_purchases')
-    .select('id, stripe_checkout_session_id, user_id, recovery_attempts')
+    .select('id, stripe_checkout_session_id, user_id, recovery_attempts, completed_at')
     .eq('status', 'completed')
     .is('report_id', null)
     .lt('completed_at', cutoff)
@@ -68,24 +74,135 @@ export async function GET(request: NextRequest) {
   }
 
   if (!stuck || stuck.length === 0) {
-    return NextResponse.json({ recovered: 0, skipped: 0, failed: 0 })
+    return NextResponse.json({
+      inspected: 0,
+      recovered: 0,
+      linked_existing: 0,
+      still_running: 0,
+      failed: 0,
+    })
   }
 
   console.log(`[cron/recover-stuck-purchases] found ${stuck.length} stuck purchase(s)`)
 
   let recovered = 0
+  let linkedExisting = 0
+  let stillRunning = 0
   let failed = 0
 
   for (const purchase of stuck) {
-    if (!purchase.stripe_checkout_session_id) {
+    if (!purchase.stripe_checkout_session_id || !purchase.completed_at) {
       failed++
       continue
     }
 
-    // Increment attempts BEFORE running so a crash mid-retry still
-    // counts toward the max. Atomic so concurrent cron invocations
-    // (shouldn't happen with Vercel cron but cheap to be safe) don't
-    // double-process.
+    // Resolve Stripe metadata first so we have user_id + topic to
+    // check for existing user_reports rows. Skipping the lookup here
+    // would force us to re-run generation blindly and risk creating
+    // a duplicate user_reports row when after() managed to insert one
+    // before dying.
+    let session
+    try {
+      session = await stripe.checkout.sessions.retrieve(
+        purchase.stripe_checkout_session_id
+      )
+    } catch (err) {
+      console.error(
+        `[cron/recover-stuck-purchases] failed to fetch Stripe session for purchase ${purchase.id}:`,
+        err instanceof Error ? err.message : err
+      )
+      failed++
+      continue
+    }
+
+    const metadata = session.metadata || {}
+    if (!metadata.userId || !metadata.topic || !metadata.persona) {
+      console.error(
+        `[cron/recover-stuck-purchases] purchase ${purchase.id} missing required metadata; cannot recover`
+      )
+      failed++
+      continue
+    }
+
+    // Look for user_reports rows this purchase's after() may have
+    // produced before dying. Match user_id + topic + created_at >
+    // purchase.completed_at — the topic string matches the Stripe
+    // metadata exactly because both come from the same dialog input.
+    const { data: existing } = await supabaseAdmin
+      .from('user_reports')
+      .select('id, status, created_at')
+      .eq('user_id', metadata.userId)
+      .eq('topic', metadata.topic)
+      .gt('created_at', purchase.completed_at)
+      .order('created_at', { ascending: false })
+
+    const complete = existing?.find((r) => r.status === 'complete')
+    if (complete) {
+      // Partial-progress recovery: generation succeeded but the
+      // post-generation link / credit-grant steps died before
+      // committing. Wire the existing report up to the purchase and
+      // grant credits. Don't consume a recovery attempt — this isn't
+      // a generation retry.
+      try {
+        await linkReportToPurchase(purchase.id, complete.id)
+        const alreadyHasCredits = await hasCreditsForStripeSession(
+          purchase.stripe_checkout_session_id
+        )
+        if (!alreadyHasCredits) {
+          await grantPurchaseCredits({
+            userId: metadata.userId,
+            reportId: complete.id,
+            stripeSessionId: purchase.stripe_checkout_session_id,
+          })
+        }
+        linkedExisting++
+        console.log(
+          `[cron/recover-stuck-purchases] linked existing complete report ${complete.id} to purchase ${purchase.id}`
+        )
+      } catch (err) {
+        console.error(
+          `[cron/recover-stuck-purchases] failed to link existing report ${complete.id} for purchase ${purchase.id}:`,
+          err instanceof Error ? err.message : err
+        )
+        failed++
+      }
+      continue
+    }
+
+    const generating = existing?.find((r) => r.status === 'generating')
+    if (generating) {
+      const ageMs = Date.now() - new Date(generating.created_at).getTime()
+      if (ageMs < STUCK_GENERATING_MS) {
+        // after() is plausibly still running. Skip this tick and
+        // re-check on the next cron run. Don't consume a recovery
+        // attempt — we haven't tried anything yet.
+        stillRunning++
+        console.log(
+          `[cron/recover-stuck-purchases] report ${generating.id} still generating (age ${Math.round(ageMs / 1000)}s), skipping`
+        )
+        continue
+      }
+      // Stuck in 'generating' beyond the safety window. The
+      // background after() is dead. Mark this row as failed so the
+      // user sees the right status, then fall through to a fresh
+      // generation attempt below.
+      await supabaseAdmin
+        .from('user_reports')
+        .update({
+          status: 'failed',
+          error_message:
+            'Generation did not complete in time; recovered by stuck-purchase cron.',
+        })
+        .eq('id', generating.id)
+      console.log(
+        `[cron/recover-stuck-purchases] marked stuck report ${generating.id} as failed; retrying generation`
+      )
+    }
+
+    // No existing complete or still-running report — atomically
+    // claim this recovery attempt and run generation. The compare-
+    // and-set on recovery_attempts protects against concurrent cron
+    // invocations (very unlikely with Vercel cron, but cheap).
     const { data: claim, error: claimError } = await supabaseAdmin
       .from('report_purchases')
       .update({ recovery_attempts: purchase.recovery_attempts + 1 })
@@ -95,46 +212,35 @@ export async function GET(request: NextRequest) {
       .select('id')
 
     if (claimError || !claim || claim.length === 0) {
-      console.log(`[cron/recover-stuck-purchases] purchase ${purchase.id} already claimed elsewhere, skipping`)
+      console.log(
+        `[cron/recover-stuck-purchases] purchase ${purchase.id} already claimed by another invocation, skipping`
+      )
       continue
     }
 
-    try {
-      const session = await stripe.checkout.sessions.retrieve(
-        purchase.stripe_checkout_session_id
-      )
-      const metadata = session.metadata || {}
-
-      if (!metadata.userId || !metadata.topic || !metadata.persona) {
-        console.error(
-          `[cron/recover-stuck-purchases] purchase ${purchase.id} missing required metadata; cannot recover`
-        )
-        failed++
-        continue
-      }
-
-      const persona: ReportPersona =
-        metadata.persona === 'investor' ? 'investor' : 'researcher'
-      const dataLimited = metadata.dataLimited === 'true'
-      let interpretation:
-        | { semanticQuery: string; keywordQuery: string; label: string }
-        | undefined
-      if (metadata.interpretation) {
-        try {
-          const parsed = JSON.parse(metadata.interpretation)
-          if (
-            parsed &&
-            typeof parsed.semanticQuery === 'string' &&
-            typeof parsed.keywordQuery === 'string' &&
-            typeof parsed.label === 'string'
-          ) {
-            interpretation = parsed
-          }
-        } catch {
-          // best-effort, fall through
+    const persona: ReportPersona =
+      metadata.persona === 'investor' ? 'investor' : 'researcher'
+    const dataLimited = metadata.dataLimited === 'true'
+    let interpretation:
+      | { semanticQuery: string; keywordQuery: string; label: string }
+      | undefined
+    if (metadata.interpretation) {
+      try {
+        const parsed = JSON.parse(metadata.interpretation)
+        if (
+          parsed &&
+          typeof parsed.semanticQuery === 'string' &&
+          typeof parsed.keywordQuery === 'string' &&
+          typeof parsed.label === 'string'
+        ) {
+          interpretation = parsed
         }
+      } catch {
+        // best-effort, fall through
       }
+    }
 
+    try {
       await runReportGenerationForSession(
         purchase.stripe_checkout_session_id,
         metadata.userId,
@@ -143,22 +249,24 @@ export async function GET(request: NextRequest) {
         dataLimited,
         interpretation
       )
-
       recovered++
-      console.log(`[cron/recover-stuck-purchases] recovered purchase ${purchase.id}`)
+      console.log(
+        `[cron/recover-stuck-purchases] regenerated and linked purchase ${purchase.id}`
+      )
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Unknown error'
       console.error(
-        `[cron/recover-stuck-purchases] recovery failed for purchase ${purchase.id}:`,
-        message
+        `[cron/recover-stuck-purchases] regeneration failed for purchase ${purchase.id}:`,
+        err instanceof Error ? err.message : err
       )
       failed++
     }
   }
 
   return NextResponse.json({
-    recovered,
-    failed,
     inspected: stuck.length,
+    recovered,
+    linked_existing: linkedExisting,
+    still_running: stillRunning,
+    failed,
   })
 }
