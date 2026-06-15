@@ -534,25 +534,15 @@ function StatusBadge({ status, progressStage }: { status: Report['status']; prog
   )
 }
 
-// Main component that decides which view to show
+// Main component that decides which view to show.
+// Uses AuthContext as the single source of truth — previously the page
+// did its own /api/reports fetch and treated ANY error (including
+// transient network blips during a Vercel redeploy) as logged-out,
+// which would flip an authenticated visitor to the marketing landing.
 export default function ReportsPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
+  const { user, isLoading } = useAuth()
 
-  useEffect(() => {
-    checkAuth()
-  }, [])
-
-  const checkAuth = async () => {
-    try {
-      const response = await fetch('/api/reports')
-      setIsAuthenticated(response.status !== 401)
-    } catch {
-      setIsAuthenticated(false)
-    }
-  }
-
-  // Loading state
-  if (isAuthenticated === null) {
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
@@ -560,6 +550,5 @@ export default function ReportsPage() {
     )
   }
 
-  // Show marketing page for visitors, dashboard for users
-  return isAuthenticated ? <ReportsDashboard /> : <ReportsLanding />
+  return user ? <ReportsDashboard /> : <ReportsLanding />
 }
