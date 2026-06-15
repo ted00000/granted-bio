@@ -1,7 +1,18 @@
 // Stripe webhook handler
-// Handles subscription lifecycle and report payment events
+// Handles subscription lifecycle and report payment events.
+//
+// Report generation is run in the background via Next.js after() so
+// the webhook returns 200 to Stripe in ~100ms instead of waiting on
+// the ~2-minute generation. Without this, Stripe's ~30s response
+// expectation triggered retries that hit the same handler again,
+// causing duplicate generations. The atomic claim in
+// completeReportPurchase guarantees that even if retries do arrive,
+// only one invocation runs generation. If the background work itself
+// dies (function instance killed mid-flight, deploy, etc.), the
+// recovery cron at /api/cron/recover-stuck-purchases picks the
+// purchase up after a grace window and retries.
 
-import { NextRequest, NextResponse } from 'next/server'
+import { after, NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe/client'
 import { supabaseAdmin } from '@/lib/supabase'
 import { completeReportPurchase, linkReportToPurchase } from '@/lib/billing/usage'
@@ -140,73 +151,115 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
     console.log(`[Stripe Webhook] Completed report purchase for session ${session.id}`)
 
-    // Trigger report generation
+    // Spawn the long-running generation in the background so the
+    // webhook can return 200 to Stripe within ~100ms. The atomic
+    // claim above prevents a retry from kicking off a second
+    // generation in parallel. If this background work dies (instance
+    // killed, deploy mid-flight), the recovery cron picks the
+    // purchase up after the grace window and retries.
     if (metadata.type === 'report' && metadata.topic && metadata.persona && metadata.userId) {
       const persona: ReportPersona = metadata.persona === 'investor' ? 'investor' : 'researcher'
       const dataLimited = metadata.dataLimited === 'true'
+      const interpretation = parseInterpretationMetadata(metadata.interpretation)
+      const { userId, topic } = metadata
 
-      // Recover the human-chosen interpretation that was attached at checkout
-      // time (best-effort; if parsing fails or it wasn't set, falls back to
-      // the legacy auto-rewrite path inside the projects agent).
-      let interpretation:
-        | { semanticQuery: string; keywordQuery: string; label: string }
-        | undefined
-      if (metadata.interpretation) {
+      after(async () => {
         try {
-          const parsed = JSON.parse(metadata.interpretation)
-          if (
-            parsed &&
-            typeof parsed.semanticQuery === 'string' &&
-            typeof parsed.keywordQuery === 'string' &&
-            typeof parsed.label === 'string'
-          ) {
-            interpretation = parsed
-          }
-        } catch (e) {
-          console.error('[Stripe Webhook] Failed to parse interpretation metadata:', e)
+          await runReportGenerationForSession(
+            session.id,
+            userId,
+            topic,
+            persona,
+            dataLimited,
+            interpretation
+          )
+        } catch (err) {
+          // Don't rethrow — after() failures don't get communicated
+          // to Stripe anyway (we already returned 200), and we want
+          // the recovery cron to see the still-empty report_id and
+          // retry.
+          console.error(
+            `[Stripe Webhook] Background generation failed for session ${session.id}:`,
+            err
+          )
         }
-      }
-
-      console.log(`[Stripe Webhook] Starting report generation for user ${metadata.userId}`)
-
-      // Generate report and link to purchase
-      const reportId = await generateTopicReport(
-        metadata.userId,
-        metadata.topic,
-        dataLimited,
-        persona,
-        interpretation
-      )
-
-      // Get purchase ID to link report
-      const { data: purchase } = await supabaseAdmin
-        .from('report_purchases')
-        .select('id')
-        .eq('stripe_checkout_session_id', session.id)
-        .single()
-
-      if (purchase) {
-        await linkReportToPurchase(purchase.id, reportId)
-        console.log(`[Stripe Webhook] Linked report ${reportId} to purchase ${purchase.id}`)
-      }
-
-      // Shadow-ledger write: record the credit grant alongside the existing
-      // purchase + report linkage so Phase 3 features (refresh entitlement
-      // surface, retry assistant) can read from the credit ledger as the
-      // source of truth. Idempotent against webhook retries via the
-      // stripe_session_id index.
-      const alreadyHasCredits = await hasCreditsForStripeSession(session.id)
-      if (!alreadyHasCredits) {
-        await grantPurchaseCredits({
-          userId: metadata.userId,
-          reportId,
-          stripeSessionId: session.id,
-        })
-        console.log(`[Stripe Webhook] Granted purchase credits for session ${session.id}`)
-      } else {
-        console.log(`[Stripe Webhook] Credits already granted for session ${session.id}, skipping`)
-      }
+      })
     }
+  }
+}
+
+interface Interpretation {
+  semanticQuery: string
+  keywordQuery: string
+  label: string
+}
+
+// Pull the human-chosen interpretation out of the Stripe session
+// metadata blob. Best-effort: a missing or malformed value falls back
+// to the legacy auto-rewrite path inside the projects agent.
+function parseInterpretationMetadata(raw: string | undefined): Interpretation | undefined {
+  if (!raw) return undefined
+  try {
+    const parsed = JSON.parse(raw)
+    if (
+      parsed &&
+      typeof parsed.semanticQuery === 'string' &&
+      typeof parsed.keywordQuery === 'string' &&
+      typeof parsed.label === 'string'
+    ) {
+      return parsed
+    }
+  } catch (e) {
+    console.error('[Stripe Webhook] Failed to parse interpretation metadata:', e)
+  }
+  return undefined
+}
+
+// Run report generation for a paid session, link it to the purchase,
+// and grant the credit-ledger entries. Exported so the recovery cron
+// can call the same path. Idempotent at each step: generation is
+// gated by the atomic purchase claim, linkReportToPurchase is safe
+// to call repeatedly, and grantPurchaseCredits is itself
+// idempotent against the stripe_session_id index.
+export async function runReportGenerationForSession(
+  sessionId: string,
+  userId: string,
+  topic: string,
+  persona: ReportPersona,
+  dataLimited: boolean,
+  interpretation: Interpretation | undefined
+): Promise<void> {
+  console.log(`[Stripe Webhook] Starting report generation for user ${userId}`)
+
+  const reportId = await generateTopicReport(
+    userId,
+    topic,
+    dataLimited,
+    persona,
+    interpretation
+  )
+
+  const { data: purchase } = await supabaseAdmin
+    .from('report_purchases')
+    .select('id')
+    .eq('stripe_checkout_session_id', sessionId)
+    .single()
+
+  if (purchase) {
+    await linkReportToPurchase(purchase.id, reportId)
+    console.log(`[Stripe Webhook] Linked report ${reportId} to purchase ${purchase.id}`)
+  }
+
+  const alreadyHasCredits = await hasCreditsForStripeSession(sessionId)
+  if (!alreadyHasCredits) {
+    await grantPurchaseCredits({
+      userId,
+      reportId,
+      stripeSessionId: sessionId,
+    })
+    console.log(`[Stripe Webhook] Granted purchase credits for session ${sessionId}`)
+  } else {
+    console.log(`[Stripe Webhook] Credits already granted for session ${sessionId}, skipping`)
   }
 }
 

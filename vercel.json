@@ -3,6 +3,18 @@
     {
       "path": "/api/cron/expire-beta",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/recover-stuck-purchases",
+      "schedule": "*/5 * * * *"
     }
-  ]
+  ],
+  "functions": {
+    "src/app/api/stripe/webhook/route.ts": {
+      "maxDuration": 800
+    },
+    "src/app/api/cron/recover-stuck-purchases/route.ts": {
+      "maxDuration": 800
+    }
+  }
 }
