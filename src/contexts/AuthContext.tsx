@@ -45,62 +45,79 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // { found: true } on success, { found: false } when the row is
   // definitively missing (PostgREST error code PGRST116 = "no rows"),
   // and { found: 'error' } for transient failures (network, perm).
+  //
   // Callers use the missing case to detect ghost sessions — cookies
   // whose underlying auth.users row was deleted (cascade-removing
-  // user_profiles) but whose JWT is still valid until expiry. The
-  // user_profiles row is auto-created by a Supabase trigger on
-  // auth.users insert, so a missing row for a valid JWT is always
-  // a ghost, never a mid-signup race.
+  // user_profiles) but whose JWT is still valid until expiry.
+  //
+  // For a brand-new sign-up there's a brief window between the
+  // Supabase auth trigger inserting user_profiles and that row being
+  // visible to client reads (replication lag / pooler caching /
+  // transaction visibility). To avoid misclassifying that race as a
+  // ghost, we retry once with a short delay on the first PGRST116.
+  // A real ghost stays missing on the retry; a new sign-up resolves.
   const fetchProfile = useCallback(
     async (
       userId: string
     ): Promise<{ found: true } | { found: false } | { found: 'error' }> => {
-      const [profileRes, reportsRes] = await Promise.all([
-        supabase
-          .from('user_profiles')
-          .select('role, tier, first_name, beta_expires_at, subscription_status')
-          .eq('id', userId)
-          .single(),
-        supabase
-          .from('user_reports')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', userId),
-      ])
+      const tryOnce = async (): Promise<
+        { found: true } | { found: false } | { found: 'error' }
+      > => {
+        const [profileRes, reportsRes] = await Promise.all([
+          supabase
+            .from('user_profiles')
+            .select('role, tier, first_name, beta_expires_at, subscription_status')
+            .eq('id', userId)
+            .single(),
+          supabase
+            .from('user_reports')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', userId),
+        ])
 
-      if (profileRes.data) {
-        const data = profileRes.data
-        // Map DB tier to UI tier. Beta gets 'beta' if not expired, otherwise 'free'.
-        let uiTier: 'free' | 'pro' | 'beta' = 'free'
-        if (data.tier === 'beta') {
-          uiTier =
-            data.beta_expires_at && new Date(data.beta_expires_at) > new Date()
-              ? 'beta'
-              : 'free'
-        } else if (
-          data.subscription_status === 'active' &&
-          data.tier &&
-          data.tier !== 'free'
-        ) {
-          uiTier = 'pro'
+        if (profileRes.data) {
+          const data = profileRes.data
+          // Map DB tier to UI tier. Beta gets 'beta' if not expired, otherwise 'free'.
+          let uiTier: 'free' | 'pro' | 'beta' = 'free'
+          if (data.tier === 'beta') {
+            uiTier =
+              data.beta_expires_at && new Date(data.beta_expires_at) > new Date()
+                ? 'beta'
+                : 'free'
+          } else if (
+            data.subscription_status === 'active' &&
+            data.tier &&
+            data.tier !== 'free'
+          ) {
+            uiTier = 'pro'
+          }
+
+          setProfile({
+            role: data.role || 'user',
+            tier: uiTier,
+            firstName: data.first_name,
+            betaExpiresAt: data.beta_expires_at,
+            reportsGenerated: reportsRes.count ?? 0,
+          })
+          return { found: true }
         }
 
-        setProfile({
-          role: data.role || 'user',
-          tier: uiTier,
-          firstName: data.first_name,
-          betaExpiresAt: data.beta_expires_at,
-          reportsGenerated: reportsRes.count ?? 0,
-        })
-        return { found: true }
+        // PostgREST returns code PGRST116 when .single() finds no rows.
+        // Any other error code is a transient failure (network, RLS, etc.)
+        // and should not trigger a sign-out.
+        if (profileRes.error?.code === 'PGRST116') {
+          return { found: false }
+        }
+        return { found: 'error' }
       }
 
-      // PostgREST returns code PGRST116 when .single() finds no rows.
-      // Any other error code is a transient failure (network, RLS, etc.)
-      // and should not trigger a sign-out.
-      if (profileRes.error?.code === 'PGRST116') {
-        return { found: false }
-      }
-      return { found: 'error' }
+      const first = await tryOnce()
+      if (first.found !== false) return first
+
+      // First read returned PGRST116. Retry once after a short delay
+      // to absorb a fresh-signup commit lag before declaring ghost.
+      await new Promise((resolve) => setTimeout(resolve, 1200))
+      return await tryOnce()
     },
     [supabase]
   )
