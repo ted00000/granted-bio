@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation'
 import { FileText, ArrowRight } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SignUpModal } from '@/components/SignUpModal'
+import { useOptionalAuth } from '@/contexts/AuthContext'
 
 // Match a nav link against the current pathname. Uses startsWith so
 // nested sample/report routes (e.g. /sample/liquid-biopsy → /sample,
@@ -18,6 +19,20 @@ function isActive(pathname: string, href: string): boolean {
 export function MarketingNav() {
   const pathname = usePathname()
   const [signInOpen, setSignInOpen] = useState(false)
+  // useOptionalAuth so MarketingNav can render outside the
+  // AuthProvider tree without throwing (e.g., if it's ever embedded
+  // in a server-rendered shell). isLoading covers the brief window
+  // before AuthContext resolves on a fresh page load — during it we
+  // keep showing the logged-out CTAs to avoid a flash of the
+  // logged-in nav for visitors who aren't actually authed.
+  const auth = useOptionalAuth()
+  // Require BOTH user and profile to consider the visitor logged in.
+  // A ghost session (valid JWT but the user_profiles row was cascade-
+  // deleted in the dashboard) would otherwise show the "Open dashboard"
+  // CTA even though the dashboard would 401 on the next request.
+  // AuthContext's ghost-cleanup catches up on its own; this check is
+  // the belt-and-suspenders for the brief window before it does.
+  const isLoggedIn = !!auth?.user && !!auth?.profile && !auth.isLoading
 
   const baseLink =
     'px-3 py-2 rounded-lg transition-colors hover:bg-gray-50'
@@ -67,27 +82,41 @@ export function MarketingNav() {
             Pricing
           </Link>
 
-          {/* Sign In and Get Started Free both open the same modal —
-              the underlying AuthForm handles new sign-ups and returning
-              sign-ins identically (Google or magic link), so a single
-              auth surface serves both intents. Keeping both labels in
-              the nav preserves the recognizable affordances; the modal
-              copy addresses both audiences explicitly. */}
-          <button
-            type="button"
-            onClick={() => setSignInOpen(true)}
-            className={linkClass('/login')}
-          >
-            Sign In
-          </button>
-          <button
-            type="button"
-            onClick={() => setSignInOpen(true)}
-            className="ml-1 inline-flex items-center gap-1 text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
-          >
-            Get Started Free
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          {/* Auth CTAs adapt to the visitor's state:
+              - Logged out: Sign In + Get Started Free, both opening
+                the same modal. The modal copy addresses both
+                returning and new visitors.
+              - Logged in: a single "Open dashboard" link to /reports
+                so a returning authed user has an obvious next step
+                and isn't confronted with sign-in CTAs that would do
+                nothing meaningful for them. */}
+          {isLoggedIn ? (
+            <Link
+              href="/reports"
+              className="ml-1 inline-flex items-center gap-1 text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
+            >
+              Open dashboard
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => setSignInOpen(true)}
+                className={linkClass('/login')}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => setSignInOpen(true)}
+                className="ml-1 inline-flex items-center gap-1 text-white bg-[#E07A5F] px-4 py-2 rounded-lg hover:bg-[#C96A4F] transition-colors"
+              >
+                Get Started Free
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </>
+          )}
         </div>
       </div>
 

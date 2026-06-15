@@ -39,12 +39,18 @@ export function GenerateReportCTA({
   children,
 }: GenerateReportCTAProps) {
   const router = useRouter()
-  const { user, isLoading } = useAuth()
+  const { user, profile, isLoading } = useAuth()
   const [signUpOpen, setSignUpOpen] = useState(false)
 
+  // Gate the "logged-in" branch on BOTH user and profile being present.
+  // A ghost session (valid JWT but the user_profiles row was cascade-
+  // deleted) has user=truthy + profile=null and would otherwise route
+  // to /reports, where every authed action then fails. With profile
+  // required, the ghost case correctly falls through to the modal —
+  // and the AuthContext's ghost-cleanup will catch up on its own.
   const onClick = () => {
     if (isLoading) return
-    if (user) {
+    if (user && profile) {
       router.push(redirectTo)
     } else {
       setSignUpOpen(true)

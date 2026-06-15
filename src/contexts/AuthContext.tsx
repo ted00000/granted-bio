@@ -41,46 +41,69 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const supabase = createBrowserSupabaseClient()
 
-  const fetchProfile = useCallback(async (userId: string) => {
-    // Fetch profile + lifetime report count in parallel
-    const [profileRes, reportsRes] = await Promise.all([
-      supabase
-        .from('user_profiles')
-        .select('role, tier, first_name, beta_expires_at, subscription_status')
-        .eq('id', userId)
-        .single(),
-      supabase
-        .from('user_reports')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', userId)
-    ])
+  // Fetch the user_profiles row + lifetime report count. Returns
+  // { found: true } on success, { found: false } when the row is
+  // definitively missing (PostgREST error code PGRST116 = "no rows"),
+  // and { found: 'error' } for transient failures (network, perm).
+  // Callers use the missing case to detect ghost sessions — cookies
+  // whose underlying auth.users row was deleted (cascade-removing
+  // user_profiles) but whose JWT is still valid until expiry. The
+  // user_profiles row is auto-created by a Supabase trigger on
+  // auth.users insert, so a missing row for a valid JWT is always
+  // a ghost, never a mid-signup race.
+  const fetchProfile = useCallback(
+    async (
+      userId: string
+    ): Promise<{ found: true } | { found: false } | { found: 'error' }> => {
+      const [profileRes, reportsRes] = await Promise.all([
+        supabase
+          .from('user_profiles')
+          .select('role, tier, first_name, beta_expires_at, subscription_status')
+          .eq('id', userId)
+          .single(),
+        supabase
+          .from('user_reports')
+          .select('*', { count: 'exact', head: true })
+          .eq('user_id', userId),
+      ])
 
-    if (profileRes.data) {
-      const data = profileRes.data
-      // Map DB tier to UI tier. Beta gets 'beta' if not expired, otherwise 'free'.
-      let uiTier: 'free' | 'pro' | 'beta' = 'free'
-      if (data.tier === 'beta') {
-        uiTier =
-          data.beta_expires_at && new Date(data.beta_expires_at) > new Date()
-            ? 'beta'
-            : 'free'
-      } else if (
-        data.subscription_status === 'active' &&
-        data.tier &&
-        data.tier !== 'free'
-      ) {
-        uiTier = 'pro'
+      if (profileRes.data) {
+        const data = profileRes.data
+        // Map DB tier to UI tier. Beta gets 'beta' if not expired, otherwise 'free'.
+        let uiTier: 'free' | 'pro' | 'beta' = 'free'
+        if (data.tier === 'beta') {
+          uiTier =
+            data.beta_expires_at && new Date(data.beta_expires_at) > new Date()
+              ? 'beta'
+              : 'free'
+        } else if (
+          data.subscription_status === 'active' &&
+          data.tier &&
+          data.tier !== 'free'
+        ) {
+          uiTier = 'pro'
+        }
+
+        setProfile({
+          role: data.role || 'user',
+          tier: uiTier,
+          firstName: data.first_name,
+          betaExpiresAt: data.beta_expires_at,
+          reportsGenerated: reportsRes.count ?? 0,
+        })
+        return { found: true }
       }
 
-      setProfile({
-        role: data.role || 'user',
-        tier: uiTier,
-        firstName: data.first_name,
-        betaExpiresAt: data.beta_expires_at,
-        reportsGenerated: reportsRes.count ?? 0,
-      })
-    }
-  }, [supabase])
+      // PostgREST returns code PGRST116 when .single() finds no rows.
+      // Any other error code is a transient failure (network, RLS, etc.)
+      // and should not trigger a sign-out.
+      if (profileRes.error?.code === 'PGRST116') {
+        return { found: false }
+      }
+      return { found: 'error' }
+    },
+    [supabase]
+  )
 
   const fetchUsage = useCallback(async () => {
     try {
@@ -106,6 +129,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let cancelled = false
 
+    // Clear a ghost session — a JWT cookie whose underlying
+    // auth.users row no longer exists (most common after a test-user
+    // delete in the Supabase dashboard, but also possible if an admin
+    // hard-deletes someone). The JWT itself is valid until expiry, so
+    // getUser() happily returns a user object, but every authed query
+    // fails because the cascade deleted the user_profiles row. Left
+    // unhandled, the app behaves as if the user is logged in (CTAs
+    // route to the dashboard, etc.) even though every action will
+    // actually fail. Signing out forces the cookie to clear and the
+    // next render shows the real logged-out UI.
+    const cleanupGhostSession = async () => {
+      try {
+        await fetch('/api/auth/signout', { method: 'POST' })
+      } catch (e) {
+        console.error('[AuthContext] ghost cleanup: server signout failed:', e)
+      }
+      try {
+        await supabase.auth.signOut()
+      } catch (e) {
+        console.error('[AuthContext] ghost cleanup: browser signout failed:', e)
+      }
+      if (!cancelled) {
+        setUser(null)
+        setProfile(null)
+        setUsage(null)
+      }
+    }
+
     // Get initial user — guarded with timeout + try/catch so a hanging or thrown
     // auth call can never strand isLoading=true (which would leave the app
     // showing a permanent spinner). Timeout covers the ENTIRE chain
@@ -117,10 +168,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (cancelled) return
         setUser(user)
         if (user) {
-          await Promise.all([
+          const [profileResult] = await Promise.all([
             fetchProfile(user.id),
-            fetchUsage()
+            fetchUsage(),
           ])
+          if (profileResult.found === false) {
+            console.warn(
+              `[AuthContext] ghost session detected for ${user.id} — signing out`
+            )
+            await cleanupGhostSession()
+          }
         }
       }
       const timeoutPromise = new Promise<never>((_, reject) =>
@@ -157,10 +214,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const newUser = session?.user ?? null
         if (newUser) {
           setUser(newUser)
-          await Promise.all([
+          const [profileResult] = await Promise.all([
             fetchProfile(newUser.id),
-            fetchUsage()
+            fetchUsage(),
           ])
+          if (profileResult.found === false) {
+            console.warn(
+              `[AuthContext] ghost session detected for ${newUser.id} — signing out`
+            )
+            await cleanupGhostSession()
+          }
         }
         // Other events without a session (rare in practice) are
         // intentionally ignored — initAuth or a later SIGNED_IN /
