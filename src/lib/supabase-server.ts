@@ -30,9 +30,16 @@ export async function createServerSupabaseClient() {
 export async function createServerSupabaseAdmin() {
   const cookieStore = await cookies()
 
+  // Accept either env-var name; see src/lib/supabase.ts for the
+  // rationale. Vercel auto-provisions SUPABASE_SERVICE_ROLE_KEY when
+  // a Supabase integration is connected.
+  const serviceKey =
+    process.env.SUPABASE_SERVICE_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_KEY!,
+    serviceKey!,
     {
       cookies: {
         getAll() {

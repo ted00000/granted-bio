@@ -28,6 +28,13 @@ function isString(v: unknown): v is string {
 function validatePayload(body: unknown): ContactPayload | null {
   if (!body || typeof body !== 'object') return null
   const b = body as Record<string, unknown>
+
+  // Honeypot field. Real visitors don't see the `website` input on the
+  // form — it's hidden via CSS. Bots fill every input; if this is
+  // populated, silently reject (the bot still gets a 200 so it doesn't
+  // know we blocked it).
+  if (isString(b.website) && b.website.trim().length > 0) return null
+
   if (!isString(b.name) || b.name.trim().length === 0) return null
   if (!isString(b.email) || !b.email.includes('@')) return null
   if (!isString(b.company) || b.company.trim().length === 0) return null
@@ -108,6 +115,20 @@ async function sendContactEmail(payload: ContactPayload): Promise<void> {
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
+
+    // Detect honeypot independently so bots get a 200 (no signal they
+    // were blocked). Real visitors who hit the validation error get a
+    // 400 with a helpful message.
+    if (
+      body &&
+      typeof body === 'object' &&
+      typeof (body as Record<string, unknown>).website === 'string' &&
+      ((body as Record<string, string>).website).trim().length > 0
+    ) {
+      console.log('[contact] honeypot tripped, silently accepting and discarding')
+      return NextResponse.json({ ok: true })
+    }
+
     const payload = validatePayload(body)
     if (!payload) {
       return NextResponse.json(
@@ -132,7 +153,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error in POST /api/contact:', error)
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Internal server error' },
+      { error: 'Failed to submit. Please try again.' },
       { status: 500 }
     )
   }

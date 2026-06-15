@@ -144,12 +144,13 @@ export async function GET(request: NextRequest) {
     const complete = existing?.find((r) => r.status === 'complete')
     if (complete) {
       // Partial-progress recovery: generation succeeded but the
-      // post-generation link / credit-grant steps died before
-      // committing. Wire the existing report up to the purchase and
-      // grant credits. Don't consume a recovery attempt — this isn't
-      // a generation retry.
+      // post-generation grant / link steps died before committing.
+      // Grant credits BEFORE linking the report — same ordering as
+      // the webhook's runReportGenerationForSession. If the grant
+      // throws, leaving the purchase unlinked means we'll re-enter
+      // this branch on the next cron tick. Don't consume a recovery
+      // attempt — this isn't a generation retry.
       try {
-        await linkReportToPurchase(purchase.id, complete.id)
         const alreadyHasCredits = await hasCreditsForStripeSession(
           purchase.stripe_checkout_session_id
         )
@@ -160,6 +161,7 @@ export async function GET(request: NextRequest) {
             stripeSessionId: purchase.stripe_checkout_session_id,
           })
         }
+        await linkReportToPurchase(purchase.id, complete.id)
         linkedExisting++
         console.log(
           `[cron/recover-stuck-purchases] linked existing complete report ${complete.id} to purchase ${purchase.id}`

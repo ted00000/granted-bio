@@ -53,7 +53,7 @@ export default function Home() {
                     positioning, investment diligence, and partnership scouting.
                   </p>
                   <p className="text-2xl font-semibold text-gray-900 pt-2">
-                    $199, generated in minutes.
+                    $199, generated in two minutes.
                   </p>
                 </div>
 
@@ -430,7 +430,7 @@ export default function Home() {
                   <p className="text-gray-300 mb-6">
                     Cross-source synthesis of NIH funding, clinical trials, patents, and
                     publications — analyzed into strategic narrative on where a field is going,
-                    who's leading, and where the white space sits. Generated in minutes.
+                    who's leading, and where the opportunity gaps sit. Generated in two minutes.
                   </p>
                   <Link
                     href="/sample/liquid-biopsy"
@@ -451,7 +451,7 @@ export default function Home() {
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        3 months of in-platform access
+                        3 months of in-platform drill-down access
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />

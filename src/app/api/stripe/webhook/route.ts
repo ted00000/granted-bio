@@ -253,17 +253,14 @@ export async function runReportGenerationForSession(
     interpretation
   )
 
-  const { data: purchase } = await supabaseAdmin
-    .from('report_purchases')
-    .select('id')
-    .eq('stripe_checkout_session_id', sessionId)
-    .single()
-
-  if (purchase) {
-    await linkReportToPurchase(purchase.id, reportId)
-    console.log(`[Stripe Webhook] Linked report ${reportId} to purchase ${purchase.id}`)
-  }
-
+  // Grant credits BEFORE linking the purchase. If credits throw, the
+  // purchase stays unlinked, and the recovery cron picks it up on the
+  // next tick (looks for purchases with status='completed' and
+  // report_id IS NULL). The cron's "linked existing" branch then
+  // links + re-attempts the grant (no-op via the hasCreditsForStripeSession
+  // idempotency check if the first grant actually succeeded). If we
+  // linked first, a grant failure would orphan a purchase with no
+  // ledger row and no recovery signal.
   const alreadyHasCredits = await hasCreditsForStripeSession(sessionId)
   if (!alreadyHasCredits) {
     await grantPurchaseCredits({
@@ -274,6 +271,17 @@ export async function runReportGenerationForSession(
     console.log(`[Stripe Webhook] Granted purchase credits for session ${sessionId}`)
   } else {
     console.log(`[Stripe Webhook] Credits already granted for session ${sessionId}, skipping`)
+  }
+
+  const { data: purchase } = await supabaseAdmin
+    .from('report_purchases')
+    .select('id')
+    .eq('stripe_checkout_session_id', sessionId)
+    .single()
+
+  if (purchase) {
+    await linkReportToPurchase(purchase.id, reportId)
+    console.log(`[Stripe Webhook] Linked report ${reportId} to purchase ${purchase.id}`)
   }
 }
 

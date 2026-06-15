@@ -179,7 +179,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   } catch (error) {
     console.error('Company detail error:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch company details', details: String(error) },
+      { error: 'Failed to fetch company details' },
       { status: 500 }
     )
   }

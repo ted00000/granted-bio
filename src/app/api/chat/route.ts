@@ -401,7 +401,7 @@ RULES:
   } catch (error) {
     console.error('Chat API error:', error)
     return new Response(
-      JSON.stringify({ error: 'Chat failed', details: String(error) }),
+      JSON.stringify({ error: 'Chat failed' }),
       { status: 500, headers: { 'Content-Type': 'application/json' } }
     )
   }

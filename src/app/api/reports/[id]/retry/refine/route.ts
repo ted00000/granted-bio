@@ -178,7 +178,9 @@ export async function POST(
     })
   } catch (error) {
     console.error('Error in POST /api/reports/[id]/retry/refine:', error)
-    const message = error instanceof Error ? error.message : 'Internal server error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Failed to refine. Please try again or contact support.' },
+      { status: 500 }
+    )
   }
 }

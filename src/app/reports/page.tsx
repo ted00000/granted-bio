@@ -428,6 +428,27 @@ function ReportsDashboard() {
                         </>
                       )}
                     </div>
+                    {report.status === 'failed' && (
+                      // Failed reports leave the user uncertain whether
+                      // they were charged. The atomic-claim webhook
+                      // pattern means a failed generation does NOT
+                      // consume a generation credit (the purchase row
+                      // stays pending until the recovery cron picks it
+                      // up). We surface that reassurance + a contact
+                      // path here so the user isn't left wondering.
+                      <div className="mt-2 text-xs text-rose-700 bg-rose-50 border border-rose-100 rounded-md px-2.5 py-1.5">
+                        Generation didn&apos;t complete. You haven&apos;t been
+                        charged for this attempt. Email{' '}
+                        <a
+                          href="mailto:admin@granted.bio"
+                          className="font-medium underline pointer-events-auto"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          admin@granted.bio
+                        </a>{' '}
+                        and we&apos;ll regenerate or refund.
+                      </div>
+                    )}
                   </Link>
                   <button
                     onClick={() => deleteReport(report.id)}

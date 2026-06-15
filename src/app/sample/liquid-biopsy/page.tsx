@@ -19,15 +19,18 @@ import { MarkdownRenderer } from '../../reports/[id]/MarkdownRenderer'
 
 const SAMPLE_REPORT_ID = '52f09f31-667d-4069-ae1d-a7c049960fc5'
 
-// Revalidate hourly. The sample report's content is stable; we don't
-// want every visitor hammering the database for the same markdown.
-export const revalidate = 3600
+// Revalidate every 60 seconds. The sample report's content is stable
+// in the happy case (one row read), but if the underlying row is ever
+// deleted or replaced, ISR was caching the "temporarily unavailable"
+// fallback for up to an hour. 60s keeps the per-visitor DB cost
+// negligible while limiting the bad-state cache window to a minute.
+export const revalidate = 60
 
 export const metadata = {
   title:
     'Sample Intelligence Report — Liquid Biopsy for Early Cancer Detection | granted.bio',
   description:
-    'See exactly what a granted.bio intelligence report contains. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative on the liquid biopsy field. Generated in minutes.',
+    'See exactly what a granted.bio intelligence report contains. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative on the liquid biopsy field. Generated in two minutes.',
 }
 
 interface FundingByYear {
@@ -173,7 +176,7 @@ export default async function SampleLiquidBiopsyPage() {
             into insights no single source can produce.
           </p>
           <p className="text-white text-lg font-semibold mb-8">
-            $199, generated in minutes.
+            $199, generated in two minutes.
           </p>
           <GenerateReportCTA
             className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#E07A5F] rounded-lg font-medium hover:bg-gray-50 transition-colors"

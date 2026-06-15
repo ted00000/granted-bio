@@ -1525,6 +1525,12 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
     if (typeof window === 'undefined') return
     if (window.localStorage.getItem(flagKey)) return
 
+    // Don't set the "seen" flag here — set it on modal dismiss instead
+    // (see the soft-mode close handler below). Setting it pre-render
+    // would mark the modal "seen" even when render never committed
+    // (tab close mid-mount, navigation, error), leaving the user
+    // permanently locked out of the soft pitch for the month without
+    // ever having actually seen it.
     setUpgradeInfo({
       mode: 'soft',
       searchesUsed: usage.searchesUsed,
@@ -1532,7 +1538,6 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
       subscriptionStatus: usage.subscriptionStatus,
     })
     setShowUpgradePrompt(true)
-    window.localStorage.setItem(flagKey, '1')
   }, [usage, profile?.tier, showUpgradePrompt])
 
   // Restore search state from sessionStorage on mount
@@ -2843,7 +2848,26 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
           searchesUsed={upgradeInfo.searchesUsed}
           limit={upgradeInfo.limit}
           subscriptionStatus={upgradeInfo.subscriptionStatus}
-          onClose={() => setShowUpgradePrompt(false)}
+          onClose={() => {
+            // For the soft pitch, mark "seen for this month" only
+            // when the user actually dismisses. The pre-render flag
+            // write (previous behavior) could leave the user locked
+            // out of the modal for the rest of the month if the
+            // render never committed.
+            if (upgradeInfo.mode === 'soft' && typeof window !== 'undefined') {
+              const monthKey = new Date().toISOString().slice(0, 7)
+              try {
+                window.localStorage.setItem(
+                  `granted_soft_pitch_seen_${monthKey}`,
+                  '1'
+                )
+              } catch {
+                // private-mode localStorage refusal — fine, modal
+                // will re-fire next session
+              }
+            }
+            setShowUpgradePrompt(false)
+          }}
         />
       )}
     </div>

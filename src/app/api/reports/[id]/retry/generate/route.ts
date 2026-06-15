@@ -156,7 +156,8 @@ export async function POST(
     })
   } catch (error) {
     console.error('Error in POST /api/reports/[id]/retry/generate:', error)
-    const message = error instanceof Error ? error.message : 'Internal server error'
+    const message = 'Retry generation failed. Please try again or contact support.'
+    void error
     return NextResponse.json({ error: message }, { status: 500 })
   }
 }

@@ -69,10 +69,16 @@ export async function grantPurchaseCredits(params: {
 
   const { error } = await supabaseAdmin.from('report_credits').insert(rows)
   if (error) {
-    // Don't throw — the report has already been generated and the user has
-    // their artifact. A failed ledger write is a recoverable bookkeeping
-    // problem, not a user-visible failure.
+    // Throw so the caller's catch can see this — a missing ledger row
+    // means the user paid but the refresh button never appears for
+    // them. Originally we logged-not-threw; the webhook's after() ran
+    // grant AFTER linkReportToPurchase, so a grant failure left a
+    // linked purchase with no credit row and no way for the recovery
+    // cron to detect it. The webhook now runs grant BEFORE link, so
+    // a thrown grant failure leaves the purchase unlinked and the
+    // recovery cron picks it up on the next tick.
     console.error('[credits] grantPurchaseCredits failed:', error)
+    throw new Error(`grantPurchaseCredits failed: ${error.message}`)
   }
 }
 

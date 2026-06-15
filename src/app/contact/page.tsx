@@ -35,6 +35,11 @@ export default function ContactPage() {
   const [topicOfInterest, setTopicOfInterest] = useState('')
   const [headcount, setHeadcount] = useState('')
   const [message, setMessage] = useState('')
+  // Honeypot. Bots fill every field they find; humans don't see it
+  // (it's positioned off-screen + aria-hidden + tabIndex=-1). Server
+  // silently accepts the submission and discards it if this comes
+  // back populated. See /api/contact/route.ts.
+  const [website, setWebsite] = useState('')
 
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -65,6 +70,7 @@ export default function ContactPage() {
           topicOfInterest,
           headcount: headcount || undefined,
           message: message || undefined,
+          website,
         }),
       })
 
@@ -127,6 +133,32 @@ export default function ContactPage() {
             onSubmit={handleSubmit}
             className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 space-y-5"
           >
+            {/* Honeypot — bots fill every input; humans can't see this
+                (positioned off-screen, aria-hidden, taken out of tab
+                order). Server silently discards submissions where this
+                comes back populated. */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: 'absolute',
+                left: '-10000px',
+                width: '1px',
+                height: '1px',
+                overflow: 'hidden',
+              }}
+            >
+              <label htmlFor="website">Website (leave blank)</label>
+              <input
+                id="website"
+                type="text"
+                name="website"
+                value={website}
+                onChange={(e) => setWebsite(e.target.value)}
+                autoComplete="off"
+                tabIndex={-1}
+              />
+            </div>
+
             <div className="grid sm:grid-cols-2 gap-5">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1.5">
