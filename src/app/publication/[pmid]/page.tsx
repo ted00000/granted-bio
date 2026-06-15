@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { BookOpen, Calendar, Users, Building2, ExternalLink, Bookmark } from 'lucide-react'
 import { DetailLayout } from '@/components/DetailLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { useReturnBreadcrumb } from '@/lib/hooks/useReturnBreadcrumb'
 import { useAuth } from '@/contexts/AuthContext'
 
 interface PublicationData {
@@ -60,20 +61,7 @@ export default function PublicationDetailPage() {
   const [savingPub, setSavingPub] = useState(false)
   const { user } = useAuth()
 
-  // Breadcrumb back-target — uses document.referrer when same-origin so the
-  // breadcrumb returns to the actual source page (e.g. /project/[id], search).
-  const [returnUrl, setReturnUrl] = useState('/chat')
-  useEffect(() => {
-    if (typeof document === 'undefined' || !document.referrer) return
-    try {
-      const url = new URL(document.referrer)
-      if (url.origin === window.location.origin) {
-        setReturnUrl(url.pathname + url.search)
-      }
-    } catch {
-      // invalid referrer URL, keep default
-    }
-  }, [])
+  const { returnUrl, returnLabel } = useReturnBreadcrumb('/chat', 'Publications')
 
   // Check if publication is saved. Skip for logged-out visitors — the
   // API requires auth and the bookmark button is hidden in that case.
@@ -177,7 +165,7 @@ export default function PublicationDetailPage() {
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
               items={[
-                { label: 'Publications', href: returnUrl },
+                { label: returnLabel, href: returnUrl },
                 { label: 'Publication' },
               ]}
             />
@@ -202,7 +190,7 @@ export default function PublicationDetailPage() {
           <div className="flex items-center justify-between mb-6">
             <Breadcrumbs
               items={[
-                { label: 'Publications', href: returnUrl },
+                { label: returnLabel, href: returnUrl },
                 { label: publication.pub_title && publication.pub_title.length > 40 ? publication.pub_title.slice(0, 40) + '...' : publication.pub_title || `PMID: ${pmid}` },
               ]}
             />

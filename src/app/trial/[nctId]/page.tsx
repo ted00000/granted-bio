@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, Bookmark } from 'lucide-react'
 import { DetailLayout } from '@/components/DetailLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { useReturnBreadcrumb } from '@/lib/hooks/useReturnBreadcrumb'
 import { useAuth } from '@/contexts/AuthContext'
 
 interface TrialData {
@@ -80,20 +81,7 @@ export default function TrialDetailPage() {
   const [savingTrial, setSavingTrial] = useState(false)
   const { user } = useAuth()
 
-  // Breadcrumb back-target — uses document.referrer when same-origin so the
-  // breadcrumb returns to the actual source page (e.g. /org/[name], /trials).
-  const [returnUrl, setReturnUrl] = useState('/chat')
-  useEffect(() => {
-    if (typeof document === 'undefined' || !document.referrer) return
-    try {
-      const url = new URL(document.referrer)
-      if (url.origin === window.location.origin) {
-        setReturnUrl(url.pathname + url.search)
-      }
-    } catch {
-      // invalid referrer URL, keep default
-    }
-  }, [])
+  const { returnUrl, returnLabel } = useReturnBreadcrumb('/chat', 'Trials')
 
   // Check if trial is saved. Skip for logged-out visitors — the API
   // requires auth and the bookmark button is hidden in that case.
@@ -199,7 +187,7 @@ export default function TrialDetailPage() {
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
               items={[
-                { label: 'Trials', href: returnUrl },
+                { label: returnLabel, href: returnUrl },
                 { label: 'Trial' },
               ]}
             />
@@ -224,7 +212,7 @@ export default function TrialDetailPage() {
           <div className="flex items-center justify-between mb-6">
             <Breadcrumbs
               items={[
-                { label: 'Trials', href: returnUrl },
+                { label: returnLabel, href: returnUrl },
                 { label: trial.study_title.length > 40 ? trial.study_title.slice(0, 40) + '...' : trial.study_title },
               ]}
             />

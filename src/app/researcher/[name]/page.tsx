@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { User, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Activity, Building2, Search, X, Bookmark } from 'lucide-react'
 import { DetailLayout } from '@/components/DetailLayout'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { useReturnBreadcrumb } from '@/lib/hooks/useReturnBreadcrumb'
 import { useAuth } from '@/contexts/AuthContext'
 
 // Display names for categories
@@ -104,21 +105,7 @@ export default function ResearcherPage() {
   const [savingResearcher, setSavingResearcher] = useState(false)
   const { user } = useAuth()
 
-  // Breadcrumb back-target — defaults to '/chat' but uses document.referrer
-  // when the user came from another same-origin page (e.g. /org/[name],
-  // /people, search results), so the breadcrumb returns to the actual source.
-  const [returnUrl, setReturnUrl] = useState('/chat')
-  useEffect(() => {
-    if (typeof document === 'undefined' || !document.referrer) return
-    try {
-      const url = new URL(document.referrer)
-      if (url.origin === window.location.origin) {
-        setReturnUrl(url.pathname + url.search)
-      }
-    } catch {
-      // invalid referrer URL, keep default
-    }
-  }, [])
+  const { returnUrl, returnLabel } = useReturnBreadcrumb('/chat', 'Researchers')
 
   // Check if researcher is saved. Skip for logged-out visitors —
   // the saved-people API requires auth and the bookmark button is
@@ -248,7 +235,7 @@ export default function ResearcherPage() {
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
               items={[
-                { label: 'Researchers', href: returnUrl },
+                { label: returnLabel, href: returnUrl },
                 { label: 'Researcher' },
               ]}
             />
@@ -273,7 +260,7 @@ export default function ResearcherPage() {
             <div className="flex items-center justify-between mb-4">
               <Breadcrumbs
                 items={[
-                  { label: 'Researchers', href: returnUrl },
+                  { label: returnLabel, href: returnUrl },
                   { label: decodeURIComponent(name).length > 30 ? decodeURIComponent(name).slice(0, 30) + '...' : decodeURIComponent(name) },
                 ]}
               />

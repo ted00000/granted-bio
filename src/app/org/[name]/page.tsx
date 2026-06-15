@@ -7,6 +7,7 @@ import { Building2, ChevronLeft, ChevronRight, FlaskConical, Search, X, Bookmark
 import { DetailLayout } from '@/components/DetailLayout'
 import { useAuth } from '@/contexts/AuthContext'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { useReturnBreadcrumb } from '@/lib/hooks/useReturnBreadcrumb'
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
@@ -120,6 +121,8 @@ export default function OrgPage() {
   const [isSaved, setIsSaved] = useState(false)
   const [savingOrg, setSavingOrg] = useState(false)
   const { user } = useAuth()
+
+  const { returnUrl, returnLabel } = useReturnBreadcrumb('/', 'Organizations')
 
   // Check if org is saved. Skip for logged-out visitors — the
   // saved-people API requires auth and the bookmark button is hidden
@@ -249,7 +252,7 @@ export default function OrgPage() {
           <div className="max-w-5xl mx-auto pl-3 pr-5 py-6 sm:pl-4 sm:pr-6 pt-[calc(0.75rem+env(safe-area-inset-top))] lg:pt-6">
             <Breadcrumbs
               items={[
-                { label: 'Organizations', href: '/' },
+                { label: returnLabel, href: returnUrl },
                 { label: decodeURIComponent(name) },
               ]}
             />
@@ -274,7 +277,7 @@ export default function OrgPage() {
             <div className="flex items-center justify-between mb-4">
               <Breadcrumbs
                 items={[
-                  { label: 'Organizations', href: '/' },
+                  { label: returnLabel, href: returnUrl },
                   { label: data.org_name.length > 40 ? data.org_name.slice(0, 40) + '...' : data.org_name },
                 ]}
               />
