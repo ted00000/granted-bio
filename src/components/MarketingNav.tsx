@@ -87,10 +87,9 @@ export function MarketingNav() {
 
           {/* Auth CTAs adapt to the visitor's state:
               - Logged out: Sign In + Get Started Free, both opening
-                the same modal. The modal copy addresses both
-                returning and new visitors. Sign In is hidden on mobile
-                since it's redundant with Get Started Free (both open
-                the same modal) and would crowd the wrapped row.
+                the same modal. They're kept as distinct labels so
+                returning visitors self-identify with "Sign In" rather
+                than the new-user "Get Started Free" framing.
               - Logged in: a single "Open dashboard" link to /reports
                 so a returning authed user has an obvious next step
                 and isn't confronted with sign-in CTAs that would do
@@ -108,7 +107,7 @@ export function MarketingNav() {
               <button
                 type="button"
                 onClick={() => setSignInOpen(true)}
-                className={`${linkClass('/login')} hidden sm:inline-block`}
+                className={linkClass('/login')}
               >
                 Sign In
               </button>
