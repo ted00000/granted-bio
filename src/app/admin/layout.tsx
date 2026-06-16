@@ -67,6 +67,12 @@ export default async function AdminLayout({
               >
                 Beta
               </Link>
+              <Link
+                href="/admin/feedback"
+                className="text-sm font-medium text-gray-700 hover:text-blue-600"
+              >
+                Feedback
+              </Link>
               <span className="text-sm text-gray-500">{user.email}</span>
               <AdminSignOut />
             </nav>

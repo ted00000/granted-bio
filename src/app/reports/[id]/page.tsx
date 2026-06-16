@@ -1795,6 +1795,18 @@ export default function ReportDetailPage({
                 After this, refreshing again will require buying a new report.
               </p>
 
+              <p className="text-xs text-gray-500 leading-relaxed bg-gray-50 rounded-lg p-3">
+                Something look off in the report? Email{' '}
+                <a
+                  href="mailto:hello@granted.bio"
+                  className="text-[#E07A5F] hover:text-[#C96A4F] font-medium"
+                >
+                  hello@granted.bio
+                </a>{' '}
+                first — if it&apos;s a bug on our side we can usually fix it without
+                using your refresh.
+              </p>
+
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   onClick={() => setShowRefreshConfirm(false)}
@@ -1858,6 +1870,17 @@ export default function ReportDetailPage({
                   <p className="text-sm text-gray-600">
                     Tell us what didn&apos;t work and we&apos;ll have Claude reformulate the search.
                     Free — uses your included retry, doesn&apos;t cost a new report.
+                  </p>
+                  <p className="text-xs text-gray-500 leading-relaxed bg-gray-50 rounded-lg p-3">
+                    Spotted a bug or something clearly wrong? Email{' '}
+                    <a
+                      href="mailto:hello@granted.bio"
+                      className="text-[#E07A5F] hover:text-[#C96A4F] font-medium"
+                    >
+                      hello@granted.bio
+                    </a>{' '}
+                    first — if it&apos;s a fix on our side we can usually handle it
+                    without using your retry.
                   </p>
                   <div className="space-y-2">
                     {FEEDBACK_OPTIONS.map((opt) => (
