@@ -69,7 +69,7 @@ export default function PricingPage() {
             </GenerateReportCTA>
 
             <ul className="space-y-3">
-              <Feature>Researcher, investor, or BD lens</Feature>
+              <Feature>Researcher or investor lens</Feature>
               <Feature>Full access to every linked project, trial, patent, publication</Feature>
               <Feature>3 months of in-platform drill-down access</Feature>
               <Feature>One free refresh within 12 months</Feature>
@@ -225,7 +225,7 @@ export default function PricingPage() {
             />
             <FAQ
               question="What's included in a report?"
-              answer="Executive summary, field maturity assessment, competitive topology, funding landscape, key projects with insights, clinical validation status, patent and IP landscape, key publications, top organizations and researchers. About 30 pages of analysis, tailored to your chosen lens (researcher, investor, or BD)."
+              answer="Executive summary, field maturity assessment, competitive topology, funding landscape, key projects with insights, clinical validation status, patent and IP landscape, key publications, top organizations and researchers. About 30 pages of analysis, tailored to your chosen lens (researcher or investor)."
             />
             <FAQ
               question="What if I'm not happy with my report?"
