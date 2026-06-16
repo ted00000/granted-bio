@@ -110,7 +110,7 @@ export default async function SampleLiquidBiopsyPage() {
           this is the artifact, and there's a clear path to "get one
           on my topic." */}
       <div className="bg-[#E07A5F]/10 border-b border-[#E07A5F]/20">
-        <div className="max-w-4xl mx-auto px-6 py-5 sm:py-3 flex flex-col sm:flex-row items-center sm:justify-between gap-3">
+        <div className="max-w-4xl mx-auto px-6 py-7 sm:py-3 flex flex-col sm:flex-row items-center sm:justify-between gap-3">
           <div className="flex items-center gap-2 text-sm">
             <Sparkles className="w-4 h-4 text-[#E07A5F] flex-shrink-0" />
             <span className="text-gray-700">
