@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FileText, ArrowRight, Menu, X } from 'lucide-react'
+import { FileText, ArrowRight } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SignUpModal } from '@/components/SignUpModal'
 import { useOptionalAuth } from '@/contexts/AuthContext'
@@ -19,7 +19,6 @@ function isActive(pathname: string, href: string): boolean {
 export function MarketingNav() {
   const pathname = usePathname()
   const [signInOpen, setSignInOpen] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
   // useOptionalAuth so MarketingNav can render outside the
   // AuthProvider tree without throwing (e.g., if it's ever embedded
   // in a server-rendered shell). isLoading covers the brief window
@@ -43,32 +42,29 @@ export function MarketingNav() {
   const linkClass = (href: string, extra = '') =>
     `${baseLink} ${isActive(pathname, href) ? active : inactive} ${extra}`.trim()
 
-  // Full-width row in the mobile drop panel — larger tap target than
-  // the desktop link style and aligns left for scan-ability.
-  const mobileLinkBase =
-    'block w-full px-3 py-3 rounded-lg transition-colors hover:bg-gray-50 text-base'
-  const mobileLinkClass = (href: string, extra = '') =>
-    `${mobileLinkBase} ${isActive(pathname, href) ? active : inactive} ${extra}`.trim()
-
-  const closeMenu = () => setMenuOpen(false)
-  const openSignIn = () => {
-    setMenuOpen(false)
-    setSignInOpen(true)
-  }
-
   return (
     <header className="border-b border-gray-100 bg-white">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      {/* Layout: stacked on mobile (logo on its own row above, nav below)
+          so the logo gets visual presence and the nav links get full
+          width for legibility / tap targets. Side-by-side on sm+ where
+          there's room. */}
+      <div className="max-w-6xl mx-auto px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-center sm:justify-between gap-3 sm:gap-4">
         <Link
           href="/"
           aria-label="granted.bio home"
           className="flex items-center flex-shrink-0 hover:opacity-80 transition-opacity"
         >
-          <Logo className="h-9 sm:h-10" />
+          {/* Bigger logo on mobile now that it's on its own row;
+              desktop stays at h-10. */}
+          <Logo className="h-14 sm:h-10" />
         </Link>
 
-        {/* Desktop nav — visible from sm up */}
-        <div className="hidden sm:flex items-center gap-1 text-sm">
+        <div className="flex items-center gap-1 text-sm flex-wrap justify-center sm:justify-end">
+          {/* Home points at / where the inline sign-in form lives. The
+              logo also routes here, but a labeled Home link gives
+              visitors who don't realize the logo is clickable an
+              explicit way back, and gives anyone with an existing
+              account a clear path to the sign-in form. */}
           <Link href="/" className={linkClass('/')}>
             Home
           </Link>
@@ -89,6 +85,15 @@ export function MarketingNav() {
             Pricing
           </Link>
 
+          {/* Auth CTAs adapt to the visitor's state:
+              - Logged out: Sign In + Get Started Free, both opening
+                the same modal. They're kept as distinct labels so
+                returning visitors self-identify with "Sign In" rather
+                than the new-user "Get Started Free" framing.
+              - Logged in: a single "Open dashboard" link to /reports
+                so a returning authed user has an obvious next step
+                and isn't confronted with sign-in CTAs that would do
+                nothing meaningful for them. */}
           {isLoggedIn ? (
             <Link
               href="/reports"
@@ -117,85 +122,7 @@ export function MarketingNav() {
             </>
           )}
         </div>
-
-        {/* Hamburger — mobile only */}
-        <button
-          type="button"
-          onClick={() => setMenuOpen((o) => !o)}
-          className="sm:hidden p-2 -mr-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors"
-          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-nav"
-        >
-          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
       </div>
-
-      {/* Mobile drop panel — rendered only when open. Stacked links with
-          larger tap targets; closing on tap so navigation feels
-          immediate. */}
-      {menuOpen && (
-        <div id="mobile-nav" className="sm:hidden border-t border-gray-100 bg-white">
-          <nav className="max-w-6xl mx-auto px-6 py-3 flex flex-col gap-1">
-            <Link href="/" onClick={closeMenu} className={mobileLinkClass('/')}>
-              Home
-            </Link>
-            <Link
-              href="/sample/liquid-biopsy"
-              onClick={closeMenu}
-              className={mobileLinkClass('/sample/liquid-biopsy')}
-            >
-              Sample
-            </Link>
-            <Link
-              href="/reports"
-              onClick={closeMenu}
-              className={mobileLinkClass('/reports', 'flex items-center gap-2')}
-            >
-              <FileText className="w-4 h-4" strokeWidth={1.5} />
-              <span>Reports</span>
-            </Link>
-            <Link
-              href="/pricing"
-              onClick={closeMenu}
-              className={mobileLinkClass('/pricing')}
-            >
-              Pricing
-            </Link>
-
-            <div className="border-t border-gray-100 my-2" />
-
-            {isLoggedIn ? (
-              <Link
-                href="/reports"
-                onClick={closeMenu}
-                className="inline-flex items-center justify-center gap-1 text-white bg-[#E07A5F] px-4 py-3 rounded-lg hover:bg-[#C96A4F] transition-colors text-base font-medium"
-              >
-                Open dashboard
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            ) : (
-              <>
-                <button
-                  type="button"
-                  onClick={openSignIn}
-                  className={mobileLinkClass('/login', 'text-left')}
-                >
-                  Sign In
-                </button>
-                <button
-                  type="button"
-                  onClick={openSignIn}
-                  className="inline-flex items-center justify-center gap-1 text-white bg-[#E07A5F] px-4 py-3 rounded-lg hover:bg-[#C96A4F] transition-colors text-base font-medium mt-1"
-                >
-                  Get Started Free
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </>
-            )}
-          </nav>
-        </div>
-      )}
 
       <SignUpModal
         open={signInOpen}
