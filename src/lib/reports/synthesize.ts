@@ -72,10 +72,14 @@ export async function synthesizeReport(
     generateIPLandscapeAssessment(topic, agentOutputs, context, usageTracker),
   ])
 
-  // Generate project insights (needs executive summary first for context)
+  // Generate project insights (needs executive summary first for context).
+  // Use the same funding-sorted top 10 the "Top Funded Projects" section
+  // will render — otherwise insights end up generated for similarity-top
+  // projects that may not appear in the rendered list, and shown projects
+  // end up with no insight.
   const projectInsights = await generateProjectInsights(
     topic,
-    agentOutputs.projects.items.slice(0, 10),
+    topFundedProjects(agentOutputs.projects.items, 10),
     executiveSummary,
     context,
     usageTracker
@@ -1421,7 +1425,7 @@ ${renderFundingLandscape(context.fundingStats, insights.funding)}
 
 ## Key Research Projects
 
-${renderProjects(agentOutputs.projects.items.slice(0, 10), projectInsights)}
+${renderProjects(topFundedProjects(agentOutputs.projects.items, 10), projectInsights)}
 
 ---
 
@@ -1474,7 +1478,7 @@ ${renderFundingLandscape(context.fundingStats, insights.funding)}
 
 ## Key Research Projects
 
-${renderProjects(agentOutputs.projects.items.slice(0, 10), projectInsights)}
+${renderProjects(topFundedProjects(agentOutputs.projects.items, 10), projectInsights)}
 
 ---
 
@@ -2012,6 +2016,17 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
   }
 
   return md
+}
+
+// The projects agent returns items sorted by semantic similarity. The
+// "Top Funded Projects" section needs them ranked by total_cost desc, so
+// we re-sort before slicing. Defensive .slice() so we don't mutate the
+// caller's array (other sections still rely on similarity order).
+function topFundedProjects(projects: ProjectItem[], n: number): ProjectItem[] {
+  return projects
+    .slice()
+    .sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
+    .slice(0, n)
 }
 
 function renderProjects(projects: ProjectItem[], projectInsights?: Record<string, string>): string {
