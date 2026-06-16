@@ -141,9 +141,9 @@ export default function Home() {
                   Hedged for sample size, framed for the decision you&apos;re making.
                 </p>
                 <div className="mt-auto bg-white border border-gray-100 rounded-lg p-3 text-xs text-gray-500 leading-relaxed">
-                  &ldquo;The core scientific question has shifted from whether
-                  circulating tumor DNA can be detected to how sensitively, specifically,
-                  and early it can be detected&hellip;&rdquo;
+                  &ldquo;A clear convergence around multi-analyte, epigenomics-first
+                  approaches as the dominant paradigm for improving sensitivity at
+                  early disease stages&hellip;&rdquo;
                 </div>
               </div>
 
@@ -156,7 +156,7 @@ export default function Home() {
                   Funding Landscape
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-3">
-                  $101.9M across 123 projects
+                  $102.1M across 125 projects
                 </h3>
                 <p className="text-sm text-gray-600 leading-relaxed mb-4">
                   Year-over-year trajectory, top categories, leading institutions,
@@ -164,7 +164,7 @@ export default function Home() {
                 </p>
                 <div className="mt-auto flex items-end gap-2 h-16">
                   {[
-                    { year: 'FY24', pct: 79 },
+                    { year: 'FY24', pct: 78 },
                     { year: 'FY25', pct: 100 },
                     { year: 'FY26', pct: 6 },
                   ].map(({ year, pct }) => (
@@ -206,8 +206,8 @@ export default function Home() {
                   </div>
                   <div className="space-y-1.5">
                     {[
-                      { name: 'Johns Hopkins', count: 2 },
-                      { name: 'Dana-Farber', count: 1 },
+                      { name: 'Johns Hopkins', count: 3 },
+                      { name: 'Dana-Farber', count: 2 },
                       { name: 'Cornell', count: 1 },
                     ].map((row) => (
                       <div key={row.name} className="flex items-center gap-2 text-xs">
@@ -215,7 +215,7 @@ export default function Home() {
                         <div className="flex-1 h-1.5 bg-gray-100 rounded">
                           <div
                             className="h-full bg-[#E07A5F]/50 rounded"
-                            style={{ width: `${(row.count / 2) * 100}%` }}
+                            style={{ width: `${(row.count / 3) * 100}%` }}
                           />
                         </div>
                         <span className="text-gray-500 w-3 text-right">{row.count}</span>
