@@ -44,19 +44,22 @@ export function MarketingNav() {
 
   return (
     <header className="border-b border-gray-100 bg-white">
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-        {/* Logo: flex-shrink-0 prevents squeezing on narrow viewports.
-            Smaller on mobile (h-7) than desktop (h-10) so it doesn't
-            crowd the nav links. */}
+      {/* Layout: stacked on mobile (logo on its own row above, nav below)
+          so the logo gets visual presence and the nav links get full
+          width for legibility / tap targets. Side-by-side on sm+ where
+          there's room. */}
+      <div className="max-w-6xl mx-auto px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-center sm:justify-between gap-3 sm:gap-4">
         <Link
           href="/"
           aria-label="granted.bio home"
           className="flex items-center flex-shrink-0 hover:opacity-80 transition-opacity"
         >
-          <Logo className="h-7 sm:h-10" />
+          {/* Bigger logo on mobile now that it's on its own row;
+              desktop stays at h-10. */}
+          <Logo className="h-9 sm:h-10" />
         </Link>
 
-        <div className="flex items-center gap-1 text-sm">
+        <div className="flex items-center gap-1 text-sm flex-wrap justify-center sm:justify-end">
           {/* Home points at / where the inline sign-in form lives. The
               logo also routes here, but a labeled Home link gives
               visitors who don't realize the logo is clickable an
@@ -67,7 +70,7 @@ export function MarketingNav() {
           </Link>
           <Link
             href="/sample/liquid-biopsy"
-            className={linkClass('/sample/liquid-biopsy', 'hidden sm:inline-block')}
+            className={linkClass('/sample/liquid-biopsy')}
           >
             Sample
           </Link>
@@ -76,7 +79,7 @@ export function MarketingNav() {
             className={linkClass('/reports', 'flex items-center gap-2')}
           >
             <FileText className="w-4 h-4" strokeWidth={1.5} />
-            <span className="hidden sm:inline">Reports</span>
+            <span>Reports</span>
           </Link>
           <Link href="/pricing" className={linkClass('/pricing')}>
             Pricing
@@ -85,7 +88,9 @@ export function MarketingNav() {
           {/* Auth CTAs adapt to the visitor's state:
               - Logged out: Sign In + Get Started Free, both opening
                 the same modal. The modal copy addresses both
-                returning and new visitors.
+                returning and new visitors. Sign In is hidden on mobile
+                since it's redundant with Get Started Free (both open
+                the same modal) and would crowd the wrapped row.
               - Logged in: a single "Open dashboard" link to /reports
                 so a returning authed user has an obvious next step
                 and isn't confronted with sign-in CTAs that would do
@@ -103,7 +108,7 @@ export function MarketingNav() {
               <button
                 type="button"
                 onClick={() => setSignInOpen(true)}
-                className={linkClass('/login')}
+                className={`${linkClass('/login')} hidden sm:inline-block`}
               >
                 Sign In
               </button>
