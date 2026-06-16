@@ -183,19 +183,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Get initial user — guarded with timeout + try/catch so a hanging or thrown
     // auth call can never strand isLoading=true (which would leave the app
-    // showing a permanent spinner). Timeout covers the ENTIRE chain
-    // (getUser + profile + usage) — a hang in any step must not strand
-    // isLoading=true. Previously only getUser was guarded.
+    // showing a permanent spinner). Timeout covers getUser + fetchProfile,
+    // not fetchUsage. fetchUsage was previously in the critical path which
+    // made isLoading wait on a Vercel cold-start of /api/billing/usage —
+    // observed in production as a 10s spinner on first page load. Usage is
+    // only consumed by the sidebar search counter / upsell prompts; nothing
+    // in the auth or checkout flow needs it to be ready synchronously, so
+    // we fire it as a side effect and let it populate state when it
+    // resolves.
     const initAuth = async () => {
       const inner = async () => {
         const { data: { user } } = await supabase.auth.getUser()
         if (cancelled) return
         setUser(user)
         if (user) {
-          const [profileResult] = await Promise.all([
-            fetchProfile(user.id),
-            fetchUsage(),
-          ])
+          fetchUsage()
+          const profileResult = await fetchProfile(user.id)
           if (profileResult.found === false) {
             console.warn(
               `[AuthContext] ghost session detected for ${user.id} — signing out`
@@ -238,10 +241,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const newUser = session?.user ?? null
         if (newUser) {
           setUser(newUser)
-          const [profileResult] = await Promise.all([
-            fetchProfile(newUser.id),
-            fetchUsage(),
-          ])
+          fetchUsage()
+          const profileResult = await fetchProfile(newUser.id)
           if (profileResult.found === false) {
             console.warn(
               `[AuthContext] ghost session detected for ${newUser.id} — signing out`
