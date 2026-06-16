@@ -56,7 +56,7 @@ export function MarketingNav() {
         >
           {/* Bigger logo on mobile now that it's on its own row;
               desktop stays at h-10. */}
-          <Logo className="h-9 sm:h-10" />
+          <Logo className="h-14 sm:h-10" />
         </Link>
 
         <div className="flex items-center gap-1 text-sm flex-wrap justify-center sm:justify-end">
