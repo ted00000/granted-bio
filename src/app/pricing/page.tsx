@@ -229,7 +229,7 @@ export default function PricingPage() {
             />
             <FAQ
               question="What if I'm not happy with my report?"
-              answer="We'll help you refine your search and regenerate, free. The platform asks what didn't work, Claude proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per report, within 14 days of generation."
+              answer="We'll help you refine your search and regenerate, free. The platform asks what didn't work, our analysis engine proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per report, within 14 days of generation."
             />
             <FAQ
               question="Do credits expire?"

@@ -489,7 +489,7 @@ export default function Home() {
                 },
                 {
                   q: 'How accurate is the AI synthesis?',
-                  a: 'The data layer is deterministic — every claim links to the underlying NIH-indexed record. The narrative layer uses Claude with strict sample-aware framing: hedged language, small-N caveats, and explicit acknowledgment of what NIH-linked data does and does not capture. Reports are auditable; the methodology section explains exactly how each section was generated.',
+                  a: 'The data layer is deterministic — every claim links to the underlying NIH-indexed record. The narrative layer runs through our analysis engine with strict sample-aware framing: hedged language, small-N caveats, and explicit acknowledgment of what NIH-linked data does and does not capture. Reports are auditable; the methodology section explains exactly how each section was generated.',
                 },
                 {
                   q: 'What does "3 months of access" include?',
@@ -501,7 +501,7 @@ export default function Home() {
                 },
                 {
                   q: "What if I'm not happy with my report?",
-                  a: "We'll help you refine your search and regenerate, free. The platform asks what didn't work, Claude proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per report, within 14 days of generation.",
+                  a: "We'll help you refine your search and regenerate, free. The platform asks what didn't work, our analysis engine proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per report, within 14 days of generation.",
                 },
                 {
                   q: 'Can I share the PDF with my team?',

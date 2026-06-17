@@ -1868,7 +1868,7 @@ export default function ReportDetailPage({
               {retryStep === 'feedback' && (
                 <div className="space-y-4">
                   <p className="text-sm text-gray-600">
-                    Tell us what didn&apos;t work and we&apos;ll have Claude reformulate the search.
+                    Tell us what didn&apos;t work and our analysis engine will reformulate the search.
                     Free — uses your included retry, doesn&apos;t cost a new report.
                   </p>
                   <p className="text-xs text-gray-500 leading-relaxed bg-gray-50 rounded-lg p-3">
@@ -1942,7 +1942,7 @@ export default function ReportDetailPage({
                 <div className="py-12 text-center">
                   <Loader2 className="w-8 h-8 text-[#E07A5F] animate-spin mx-auto mb-4" />
                   <p className="text-sm text-gray-600">
-                    Claude is analyzing your report and proposing three refined interpretations.
+                    Our analysis engine is reviewing your report and proposing three refined interpretations.
                   </p>
                   <p className="text-xs text-gray-400 mt-1">This takes about 10 seconds.</p>
                 </div>

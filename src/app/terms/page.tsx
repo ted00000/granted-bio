@@ -166,13 +166,14 @@ export default function TermsPage() {
               </p>
               <p>
                 <strong>AI-generated synthesis.</strong> The narrative
-                portion of each report is produced using large language
-                models (currently Anthropic Claude). Every factual claim in
-                the report is linked to the underlying NIH-indexed record so
-                you can verify it. While we use prompting techniques designed
-                to keep synthesis grounded and to surface uncertainty, AI
-                output may contain errors or omissions. You are responsible
-                for verifying any claim before relying on it for a material
+                portion of each report is produced by our analysis engine,
+                which currently runs on large language models provided by
+                Anthropic. Every factual claim in the report is linked to
+                the underlying NIH-indexed record so you can verify it.
+                While we use prompting techniques designed to keep
+                synthesis grounded and to surface uncertainty, AI output
+                may contain errors or omissions. You are responsible for
+                verifying any claim before relying on it for a material
                 decision.
               </p>
               <p>
