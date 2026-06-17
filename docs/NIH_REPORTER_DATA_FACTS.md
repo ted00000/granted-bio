@@ -83,6 +83,10 @@ methodology language so buyers know the boundaries:
   the iEdison database. Not all recipients of NIH funding are
   compliant with the iEdison reporting requirements, particularly
   after their NIH support has ended."
+- **Patents are issued-only.** Per the ExPORTER FAQ: "Only issued
+  patents are listed; patent applications in-progress are excluded."
+  Worth surfacing in any FTO-adjacent framing — buyers running an
+  FTO analysis need to know pending applications aren't here.
 - **Temporal association ambiguity.** "Publications are associated
   with projects, but cannot be identified with any particular year of
   the project or fiscal year of funding."
@@ -100,19 +104,112 @@ haven't drifted into over-claiming. Specifically:
 
 ## Programmatic access
 
-- **API.** `https://api.reporter.nih.gov/?urls.primaryName=V2.0` —
-  what granted.bio currently uses for project + publication ingest.
-- **ExPORTER (bulk).** Annual extracts available at the ExPORTER page.
-  Updated at fiscal-year close with finalized R&D contracts and
-  intramural data; the three prior fiscal years are also re-released
-  at that time. Useful for backfill but not real-time.
-- **Spending categories lag.** "The previous fiscal year's Project
-  file will be updated with the addition of data for NIH Spending
-  Categories field approximately 3 weeks after the completion and
-  release of the RCDC Categorical Spending information."
+### RePORTER API (live)
 
-**Operational implication:** the API is the right primary source. The
-annual bulk ExPORTER files are the right *secondary* source — pull
-once per fiscal year close (~Oct) to reconcile finalized intramural +
-contract data against the API record. Sets up a cheap consistency
-check that catches drift before customers do.
+- Endpoint: `https://api.reporter.nih.gov/?urls.primaryName=V2.0`
+- **Covers:** Projects, Abstracts (as a field on each project record),
+  Publications (with PMID linkage keyed on Core Project Number).
+- **Does NOT cover:** Patents, Clinical Studies (neither documented in
+  the V2 spec as of 16JUN2026).
+- Live, refreshed weekly per upstream's Sunday-night cadence.
+
+**Available date filters on the Projects criteria object:**
+`project_start_date`, `project_end_date`, `award_notice_date`,
+`date_added` ("Dates are available from 1/1/2011"). Each takes
+`from_date` and `to_date`.
+
+**No `last_modified_date` filter exists.** This is the operational
+gotcha. The API lets us fetch what's NEW since a given date (via
+`award_notice_date` or `date_added`) but does not let us efficiently
+fetch what was MODIFIED. Since the FAQ explicitly states that
+administrative changes to existing awards happen in real time, this
+means the API alone cannot keep modifications current — we have to
+lean on ExPORTER's "three prior FYs" retroactive updates to absorb
+those.
+
+**Rate limits:**
+- "It is recommended that users post no more than one URL request per
+  second"
+- "Limit large jobs to either weekends or weekdays between 9:00 PM
+  and 5:00 AM EST"
+- "Failure to comply with this policy may require administrators to
+  block your IP address."
+
+**Pagination:**
+- Default page size: 50; **max 500**
+- **Max offset: 14,999** for Projects, 9,999 for Publications →
+  effectively a 15,000-record hard cap per query. Larger result sets
+  require chunking by a date or other field.
+
+### ExPORTER bulk
+
+Confirmed file types and URL paths:
+
+| File | URL pattern | Documented cadence |
+|------|-------------|--------------------|
+| Projects | `/exporter/projects/download/<fy>` | "End of each fiscal year" + retroactive updates to 3 prior FYs |
+| Abstracts | `/exporter/abstracts/download/<fy>` | Same as Projects (separated from Projects "due to file size considerations") |
+| Publications | `/exporter/publications/download/<fy>` | "Publication and Publication Link files are updated" at FY close |
+| Link tables (project ↔ publication, etc.) | `/exporter/linktables/download/<fy>` | At FY close |
+| **Patents** | `/exporter/patents/download` (no FY) | **Not documented in FAQ.** Observed 6/15/2026 refresh on the live site — cadence appears irregular |
+| **Clinical Studies** | `/exporter/clinicalstudies/download` (no FY) | **Not documented in FAQ.** Observed 6/15/2026 refresh on the live site — cadence appears irregular |
+
+- **Spending categories field lag.** "The previous fiscal year's
+  Project file will be updated with the addition of data for NIH
+  Spending Categories field approximately 3 weeks after the
+  completion and release of the RCDC Categorical Spending
+  information."
+- **CRISP Legacy.** Separate downloads cover FY 1970 onward (CRISP
+  terms; not comparable to modern project concepts per the
+  pre-/post-2008 discontinuity).
+
+### Caveat on documented vs. observed ExPORTER cadence
+
+The FAQ states Projects/Abstracts/Publications refresh at fiscal-year
+close. NIH FY ends Sep 30, so by that schedule the current files
+should date from Oct/Nov 2025. Observed file dates on the live site
+as of 16JUN2026 are **3/9/2026** for those three — which doesn't
+match the documented cadence. Either there are undocumented interim
+releases, or the file date reflects a "last touched" timestamp
+distinct from the FY-close cycle. **Practical conclusion:** do not
+trust the calendar to know when ExPORTER updates. Poll the URL's
+`Last-Modified` HTTP header on a schedule and react when it changes.
+
+### Operational strategy (under construction)
+
+Both ExPORTER and the API are mandatory infrastructure — they do
+different jobs and neither subsumes the other.
+
+- **ExPORTER bulk** carries: backwards-edits to existing awards
+  (modifications are NOT exposed via API), patents (no API), clinical
+  studies (no API). Updates on an irregular cadence that the FAQ
+  doesn't fully document — poll `Last-Modified` HTTP headers daily,
+  re-ingest when they advance.
+- **RePORTER API** carries: new awards filtered on `award_notice_date`
+  or `date_added`, weekly. Closes the lag-time gap between ExPORTER
+  refreshes for projects/abstracts/publications.
+
+The catch-up plan we're scoping:
+
+1. Audit DB high-water mark per entity vs. row counts in the
+   currently-published ExPORTER files (3/9 for projects/abstracts/
+   publications; 6/15 for patents/clinical_studies as of 16JUN2026).
+2. Re-download all 5 ExPORTER files at their current versions and
+   ingest — gets us to parity with ExPORTER (closes the 3-month
+   patent/trial gap; confirms we captured every row from the 3/9
+   project/abstract/pub snapshot).
+3. **For Projects/Abstracts/Publications:** API catch-up from 3/9 →
+   today, filtered on `award_notice_date >= 2026-03-09` (or
+   `date_added`, whichever is more reliable per testing). Chunk by
+   month if any single query approaches the 15,000-record cap.
+   Schedule to run overnight ET to respect rate-limit guidance.
+4. **Ongoing weekly cron** for Projects/Abstracts/Publications via
+   the API, Monday morning ET. Filter on `award_notice_date >=
+   last_run`. Run at 1 req/sec.
+5. **Daily ExPORTER `Last-Modified` poll** for all 5 file types. When
+   any advances, download + re-ingest. This catches the project/
+   abstract/publication modification cycle that the API can't expose,
+   and is the only path for patent + clinical_studies updates.
+6. Continue using ClinicalTrials.gov API + USPTO/Google Patents
+   links for runtime enrichment of trial / patent records — already
+   wired, not part of the bulk-refresh plan.
