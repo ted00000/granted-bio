@@ -328,23 +328,22 @@ def run_etl(
     print("\nLoading clinical studies to Supabase...")
     stats['clinical_studies_loaded'] = batch_insert(supabase, 'clinical_studies', clinical_studies, on_conflict='nct_id')
 
-    # Load project-publication links (only for loaded projects and publications)
+    # Load project-publication links. Previously this was filtered to only
+    # links where BOTH endpoints appeared in the current batch. That silently
+    # dropped valid cross-batch links — e.g., FY2025 projects → FY2024 pubs
+    # already in the DB. Removed that filter; FK constraints catch the
+    # genuinely-invalid rows. Explicit on_conflict on the composite PK so
+    # behavior doesn't depend on client auto-detection of the unique key.
     print("\nLoading publication links to Supabase...")
-    loaded_project_nums = {p['project_number'] for p in classified_projects if p.get('project_number')}
-    loaded_pmids = {p['pmid'] for p in publications if p.get('pmid')}
-
     links = []
     for proj_num, pmids in project_pubs.items():
-        if proj_num not in loaded_project_nums:
-            continue
         for pmid in pmids:
-            if pmid in loaded_pmids:
-                links.append({
-                    'project_number': proj_num,
-                    'pmid': pmid,
-                })
-    print(f"  Filtered to {len(links)} links for loaded projects/publications")
-    stats['links_loaded'] = batch_insert(supabase, 'project_publications', links)
+            links.append({
+                'project_number': proj_num,
+                'pmid': pmid,
+            })
+    print(f"  Generated {len(links)} project-publication links")
+    stats['links_loaded'] = batch_insert(supabase, 'project_publications', links, on_conflict='project_number,pmid')
 
     # Generate embeddings if requested
     if not skip_embeddings:
