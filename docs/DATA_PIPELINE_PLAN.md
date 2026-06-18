@@ -8,6 +8,47 @@ It is grounded in a thorough review of the current code done
 
 ---
 
+## Standard Operating Procedure — Delta-targeted ingest
+
+**Delta-targeted ingest is the SOP for every data refresh from this
+point forward.** Full-file upsert via `load_to_supabase.py` is the
+anomaly, not the default.
+
+For each refresh:
+
+1. **Diff first.** Run the per-entity diff script (e.g.,
+   `scripts/diff-clinical-studies.ts`) against the new bulk file or
+   API response. Read-only, no DB writes, no API spend. Tells you
+   exactly how many rows are new, changed, and orphaned.
+2. **Decide.** If new + changed is meaningful, proceed to step 3.
+   If it's zero, you're done — log it and move on.
+3. **Ingest only the delta.** Run the per-entity delta loader (e.g.,
+   `etl/load_clinical_studies_delta.py`) against the same file. The
+   loader applies the change-detection logic that matches the diff
+   script and upserts only what the diff identified as new or changed.
+   `updated_at` on unchanged rows is never touched.
+4. **Run downstream stages selectively.** Embeddings via the default
+   (NULL-only) mode of the existing embedding scripts. No blanket
+   regens. No `--refresh` flag invocations.
+5. **Log it.** Note what you did, what file you used, what the diff
+   showed, and any issues. Until the dashboard captures this
+   automatically (Phase 4+), a paragraph in a shared note or a
+   commit message is enough.
+
+**When full-file upsert IS appropriate** (the exceptions):
+
+- Recovering from a known corrupted load where targeted ingest can't
+  identify everything that needs to be re-written.
+- Initial bootstrap of a new entity table (no DB state to diff against).
+- After a schema change that requires every row to be re-processed
+  through the loader's normalization step.
+
+In every other case: diff first, then targeted delta ingest. If you're
+about to run a full upsert and none of the exceptions above apply, stop
+and ask whether you actually have a reason.
+
+---
+
 ## What we're solving
 
 We launched with a snapshot of NIH data. The platform's value comes

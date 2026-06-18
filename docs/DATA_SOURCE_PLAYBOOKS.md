@@ -18,6 +18,38 @@ Re-date the header when revising.
 
 ---
 
+## The pattern (SOP)
+
+Every entity refresh follows the same three-step shape:
+
+1. **Diff** (`scripts/diff-<entity>.ts`) — read CSV/API, query DB,
+   report new/changed/orphan counts. No writes, no paid API calls.
+2. **Delta ingest** (`etl/load_<entity>_delta.py`) — read CSV again,
+   apply same change-detection logic as the diff script, upsert only
+   new + changed rows. `updated_at` on unchanged rows is never touched.
+3. **Downstream stages** — embeddings via default (NULL-only) mode of
+   the existing scripts; no `--refresh` invocations.
+
+Full-file ingest via `load_to_supabase.py` is the anomaly, not the
+default. See `DATA_PIPELINE_PLAN.md` for the rules on when full
+upsert is appropriate.
+
+**Current per-entity tooling status (17JUN2026):**
+
+| Entity | Diff script | Delta loader | Status |
+|---|---|---|---|
+| Clinical studies | `scripts/diff-clinical-studies.ts` | `etl/load_clinical_studies_delta.py` | ✓ Both shipped |
+| Patents | not built yet | not built yet | Pending |
+| Projects | not built yet | not built yet | Pending |
+| Abstracts | not built yet | not built yet | Pending |
+| Publications | not built yet | not built yet | Pending |
+| Project-Publication links | not built yet | not built yet | Pending |
+
+Each pending pair gets built when we're about to refresh that entity,
+not before. Same template, different natural keys + diff fields.
+
+---
+
 ## Per-source playbooks
 
 ### Source 1 — Projects (ExPORTER, per fiscal year)
