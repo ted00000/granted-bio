@@ -161,11 +161,17 @@ def compute_delta(
 
 
 def upsert_in_batches(
-    supabase: Client, rows: List[Dict[str, Any]], batch_size: int = 500
+    supabase: Client, rows: List[Dict[str, Any]], batch_size: int = 100
 ) -> int:
     """
     Upsert with explicit on_conflict on the composite (nct_id, project_number)
     natural key. Requires the matching unique constraint to exist in prod.
+
+    Batch size of 100 (not 500) is intentional: PostgREST has a statement
+    timeout (~8s) and composite-key ON CONFLICT against a multi-tens-of-
+    thousands-row table is slow enough that 500-row batches hit the
+    timeout. If 100 still times out, drop to 50; ANALYZE on the table
+    can also help the planner pick the new index.
     """
     total = 0
     total_batches = (len(rows) + batch_size - 1) // batch_size
