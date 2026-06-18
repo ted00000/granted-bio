@@ -65,23 +65,35 @@ from prior runs:
 These rows stay invisible until the next NULL-only embedding run
 "happens to" fill them.
 
-**Example observed 2026-06-17.** Clinical studies delta ingest added
-646 new rows. The embedding script then found **904** rows with NULL
-`study_embedding`. The extra 258 were pre-existing gaps from prior
-loads, filled tonight as a side effect of the new-row pass. Cost was
-negligible (~$0.0001 for 258 trials), so on this entity the drift
-self-healed for free.
+**Examples observed:**
+
+- **2026-06-17 (clinical_studies):** delta ingest added 646 new rows;
+  embedding script found 904 NULLs → 258 pre-existing gaps (~0.7% of
+  table). Self-healed for ~$0.0003.
+- **2026-06-18 (patents):** delta ingest added 740 new rows; embedding
+  script found **3,461 NULLs → 2,721 pre-existing gaps (~5.5% of
+  table)**. Self-healed for ~$0.0014.
+
+The patents number is ~8× larger than the clinical_studies number as a
+share of table size. Two data points isn't a trend yet, but it does
+suggest that **every entity table is likely carrying some level of
+NULL-embedding drift** from earlier pipeline runs. We won't know the
+true scope on projects/abstracts/publications until we run their
+delta-ingest cycles too.
 
 **What to do.**
 
 - **Today** (informal): when the embedding-script row count exceeds
   the delta count by a meaningful margin (>5% or several hundred rows),
   note the gap in your run log so we can compare entities over time.
-- **Phase 1+ (dashboard)**: surface a *NULL-embedding count* per
-  entity as a first-class health metric on `/admin/data-sources`.
-  Renders cheaply (one `SELECT COUNT(*) WHERE embedding IS NULL` per
-  entity per daily cron). Gives us a passive signal of every-entity
-  embedding coverage without us having to run anything.
+- **Phase 1+ (dashboard) — high priority now that the patents number
+  is large.** Surface a *NULL-embedding count* per entity as a
+  first-class health metric on `/admin/data-sources`. Renders cheaply
+  (one `SELECT COUNT(*) WHERE embedding IS NULL` per entity per daily
+  cron). Gives us a passive signal of every-entity embedding coverage
+  without us having to run anything. Should be one of the first
+  metrics surfaced because the patents finding shows the drift can be
+  multi-thousand without any visible failure signal.
 - **If the gap is large** (thousands of rows on an entity that has
   always run NULL-only): may indicate an earlier batch failure we
   didn't catch. Worth investigating before just filling them.
