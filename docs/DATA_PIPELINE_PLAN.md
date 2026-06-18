@@ -1,4 +1,4 @@
-# Data Pipeline Maintenance Plan — 17JUN2026
+# Data Pipeline Maintenance Plan — 18JUN2026
 
 This is the plan for how we keep our data fresh after launch. It's
 written in plain language. Re-date the header when revising.
@@ -46,6 +46,48 @@ For each refresh:
 In every other case: diff first, then targeted delta ingest. If you're
 about to run a full upsert and none of the exceptions above apply, stop
 and ask whether you actually have a reason.
+
+## Watch-for condition: NULL-embedding drift
+
+**Symptom.** After a delta ingest, the downstream embedding script (run
+in default NULL-only mode) reports MORE rows to embed than the delta
+loader just inserted.
+
+**Why.** Every entity table can accumulate rows with NULL embeddings
+from prior runs:
+
+- Earlier loads that failed mid-stream (loader inserted the row but
+  the embedding script crashed before reaching it)
+- Rows inserted by code paths that pre-date the embedding script
+- Network or rate-limit errors during a prior embedding run that the
+  script logged but skipped past
+
+These rows stay invisible until the next NULL-only embedding run
+"happens to" fill them.
+
+**Example observed 2026-06-17.** Clinical studies delta ingest added
+646 new rows. The embedding script then found **904** rows with NULL
+`study_embedding`. The extra 258 were pre-existing gaps from prior
+loads, filled tonight as a side effect of the new-row pass. Cost was
+negligible (~$0.0001 for 258 trials), so on this entity the drift
+self-healed for free.
+
+**What to do.**
+
+- **Today** (informal): when the embedding-script row count exceeds
+  the delta count by a meaningful margin (>5% or several hundred rows),
+  note the gap in your run log so we can compare entities over time.
+- **Phase 1+ (dashboard)**: surface a *NULL-embedding count* per
+  entity as a first-class health metric on `/admin/data-sources`.
+  Renders cheaply (one `SELECT COUNT(*) WHERE embedding IS NULL` per
+  entity per daily cron). Gives us a passive signal of every-entity
+  embedding coverage without us having to run anything.
+- **If the gap is large** (thousands of rows on an entity that has
+  always run NULL-only): may indicate an earlier batch failure we
+  didn't catch. Worth investigating before just filling them.
+
+Same condition applies to **classification** drift once Phase 3 hash
+guards land — surface the classify-NULL count per entity the same way.
 
 ---
 
