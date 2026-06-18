@@ -324,9 +324,12 @@ def run_etl(
     print("\nLoading patents to Supabase...")
     stats['patents_loaded'] = batch_insert(supabase, 'patents', patents, on_conflict='patent_id')
 
-    # Load clinical studies
+    # Load clinical studies — upsert on the composite (nct_id, project_number)
+    # natural key. A single NCT can be linked to multiple NIH projects, so the
+    # correct uniqueness is the pair, not nct_id alone. The matching unique
+    # constraint was added in migration 20260617_clinical_studies_composite_unique.sql.
     print("\nLoading clinical studies to Supabase...")
-    stats['clinical_studies_loaded'] = batch_insert(supabase, 'clinical_studies', clinical_studies, on_conflict='nct_id')
+    stats['clinical_studies_loaded'] = batch_insert(supabase, 'clinical_studies', clinical_studies, on_conflict='nct_id,project_number')
 
     # Load project-publication links. Previously this was filtered to only
     # links where BOTH endpoints appeared in the current batch. That silently
