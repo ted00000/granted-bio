@@ -39,7 +39,7 @@ upsert is appropriate.
 | Entity | Diff script | Delta loader | Status |
 |---|---|---|---|
 | Clinical studies | `scripts/diff-clinical-studies.ts` | `etl/load_clinical_studies_delta.py` | ✓ Both shipped |
-| Patents | not built yet | not built yet | Pending |
+| Patents | `scripts/diff-patents.ts` | `etl/load_patents_delta.py` | ✓ Both shipped |
 | Projects | not built yet | not built yet | Pending |
 | Abstracts | not built yet | not built yet | Pending |
 | Publications | not built yet | not built yet | Pending |
