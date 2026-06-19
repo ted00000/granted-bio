@@ -619,7 +619,10 @@ export async function keywordSearch(
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
       pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
-      // Enriched counts from projects_enriched view
+      // Linked-record counts. The projects_enriched materialized view that
+      // these comments used to reference was never actually queried — and
+      // its current definition returned hardcoded 0s anyway. These fields
+      // come from elsewhere in the result-assembly path or default to 0.
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
       clinical_trial_count: p.clinical_trial_count || 0
@@ -1125,7 +1128,10 @@ export async function searchProjects(
       // Note: has_patents/publications/trials filters not supported in fallback mode
       // since enrichment data isn't available here
 
-      // Return results with default counts (enrichment requires projects_enriched view)
+      // Return results with default counts. (Earlier intent was to source
+      // these from a projects_enriched view; the view was orphaned and
+      // dropped 2026-06-18. Real linked-record counts would need a JOIN
+      // at query time, which we don't do in this fallback path.)
       const limitedResults = results.slice(0, effectiveLimit)
       const enrichedResults = limitedResults.map(r => ({
         ...r,
