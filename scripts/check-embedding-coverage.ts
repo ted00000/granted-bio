@@ -22,9 +22,12 @@ interface CheckTarget {
   label: string
 }
 
+// projects.title_embedding and projects.phr_embedding were dropped on
+// 2026-06-18 (see migration 20260618_drop_unused_project_embeddings.sql).
+// abstract_embedding is a blended vector of title + phr + terms + abstract
+// per etl/generate_embeddings_batched.py:108 — the single source of
+// per-project semantic signal.
 const TARGETS: CheckTarget[] = [
-  { table: 'projects', column: 'title_embedding', label: 'projects.title_embedding' },
-  { table: 'projects', column: 'phr_embedding', label: 'projects.phr_embedding' },
   { table: 'projects', column: 'abstract_embedding', label: 'projects.abstract_embedding' },
   { table: 'publications', column: 'publication_embedding', label: 'publications.publication_embedding' },
   { table: 'patents', column: 'patent_embedding', label: 'patents.patent_embedding' },
