@@ -43,15 +43,20 @@ interface QueueResponse {
   boundary: string
   boundary_label: string
   confidence_max: number
+  category_filter: string | null
+  category_filter_locked: boolean
   total_matching: number
   reviewed_count: number
   items: QueueItem[]
   boundaries: Boundary[]
 }
 
+const OPEN_QUEUE_KEY = 'low_confidence_open'
+
 export default function CategorizationReviewPage() {
   const [boundary, setBoundary] = useState('biotools_infrastructure')
   const [confidenceMax, setConfidenceMax] = useState(80)
+  const [categoryFilter, setCategoryFilter] = useState('')
   const [queue, setQueue] = useState<QueueResponse | null>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -60,6 +65,8 @@ export default function CategorizationReviewPage() {
   const [reasonCode, setReasonCode] = useState('')
   const [notes, setNotes] = useState('')
   const [expandedAbstract, setExpandedAbstract] = useState(false)
+
+  const isOpenQueue = boundary === OPEN_QUEUE_KEY
 
   const loadQueue = useCallback(async () => {
     setLoading(true)
@@ -70,6 +77,9 @@ export default function CategorizationReviewPage() {
         confidence_max: String(confidenceMax),
         limit: '20'
       })
+      if (isOpenQueue && categoryFilter) {
+        params.set('category', categoryFilter)
+      }
       const res = await fetch(`/api/admin/categorization-review?${params}`)
       if (!res.ok) {
         const data = await res.json()
@@ -84,11 +94,19 @@ export default function CategorizationReviewPage() {
     } finally {
       setLoading(false)
     }
-  }, [boundary, confidenceMax])
+  }, [boundary, confidenceMax, isOpenQueue, categoryFilter])
 
   useEffect(() => {
     loadQueue()
   }, [loadQueue])
+
+  // When switching INTO the open queue, snap the default threshold down to 30
+  // (the lowest-confidence sweep is the whole point of this mode). When
+  // switching OUT, restore the 80 default. Operator can still override.
+  useEffect(() => {
+    setConfidenceMax(isOpenQueue ? 30 : 80)
+    if (!isOpenQueue) setCategoryFilter('')
+  }, [isOpenQueue])
 
   // Reset per-item state when item changes
   useEffect(() => {
@@ -191,6 +209,22 @@ export default function CategorizationReviewPage() {
             className="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white w-24"
           />
         </div>
+        {isOpenQueue && (
+          <div>
+            <label htmlFor="category-filter" className="block text-xs font-medium text-gray-700 mb-1">Category (optional)</label>
+            <select
+              id="category-filter"
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+              className="border border-gray-300 rounded-md px-3 py-2 text-sm bg-white"
+            >
+              <option value="">— Any —</option>
+              {CATEGORIES.map(c => (
+                <option key={c.key} value={c.key}>{c.label}</option>
+              ))}
+            </select>
+          </div>
+        )}
         <button
           onClick={loadQueue}
           disabled={loading}
@@ -202,7 +236,9 @@ export default function CategorizationReviewPage() {
           <div className="ml-auto text-sm text-gray-600">
             <span className="font-medium">{queue.items.length}</span> in this page
             {' · '}
-            <span className="font-medium">{queue.reviewed_count}</span> reviewed total
+            <span className="font-medium">{queue.total_matching.toLocaleString()}</span> match filter
+            {' · '}
+            <span className="font-medium">{queue.reviewed_count.toLocaleString()}</span> reviewed total
           </div>
         )}
       </div>

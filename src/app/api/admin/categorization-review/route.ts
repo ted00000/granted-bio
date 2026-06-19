@@ -24,8 +24,22 @@ const VALID_REASON_CODES = [
   'other'
 ] as const
 
-// Boundary presets: each defines a SQL filter for surfacing likely borderline cases
-const BOUNDARIES = {
+// Boundary presets: each defines a SQL filter for surfacing likely borderline cases.
+// `category: null` means the preset doesn't pin a specific category — useful for an
+// "open" low-confidence sweep across the whole table. When category is null, the
+// optional `category` query param can be used to filter to a single category.
+type BoundaryPreset = {
+  label: string
+  category: string | null
+  activity_codes: string[] | null
+}
+
+const BOUNDARIES: Record<string, BoundaryPreset> = {
+  low_confidence_open: {
+    label: 'Low confidence (any category)',
+    category: null,
+    activity_codes: null
+  },
   biotools_infrastructure: {
     label: 'Biotools ↔ Infrastructure',
     category: 'infrastructure',
@@ -41,9 +55,7 @@ const BOUNDARIES = {
     category: 'biotools',
     activity_codes: null
   }
-} as const
-
-type BoundaryKey = keyof typeof BOUNDARIES
+}
 
 async function requireAdmin() {
   const supabase = await createServerSupabaseClient()
@@ -69,10 +81,11 @@ export async function GET(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url)
-  const boundary = (searchParams.get('boundary') || 'biotools_infrastructure') as BoundaryKey
+  const boundary = searchParams.get('boundary') || 'biotools_infrastructure'
   const confidenceMax = Number(searchParams.get('confidence_max') || '80')
   const limit = Math.min(Number(searchParams.get('limit') || '20'), 100)
   const offset = Number(searchParams.get('offset') || '0')
+  const categoryParam = searchParams.get('category')
 
   const preset = BOUNDARIES[boundary]
   if (!preset) {
@@ -96,8 +109,14 @@ export async function GET(request: NextRequest) {
       'application_id, project_number, activity_code, title, org_name, primary_category, primary_category_confidence, fiscal_year',
       { count: 'exact' }
     )
-    .eq('primary_category', preset.category)
     .lt('primary_category_confidence', confidenceMax)
+
+  // Preset category wins. If the preset doesn't pin a category, accept an
+  // optional `category` filter from the caller.
+  const effectiveCategory = preset.category ?? (categoryParam && VALID_CATEGORIES.includes(categoryParam as typeof VALID_CATEGORIES[number]) ? categoryParam : null)
+  if (effectiveCategory) {
+    query = query.eq('primary_category', effectiveCategory)
+  }
 
   if (preset.activity_codes) {
     query = query.in('activity_code', preset.activity_codes)
@@ -142,6 +161,8 @@ export async function GET(request: NextRequest) {
     boundary,
     boundary_label: preset.label,
     confidence_max: confidenceMax,
+    category_filter: effectiveCategory,
+    category_filter_locked: preset.category !== null,
     total_matching: count || 0,
     reviewed_count: reviewedIds.size,
     items: enriched,
