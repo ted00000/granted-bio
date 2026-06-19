@@ -18,6 +18,42 @@ Re-date the header when revising.
 
 ---
 
+## Retention policy
+
+**The platform retains the current fiscal year + the two prior fiscal
+years. Older data is not ingested and (over time) is purged from the DB
+on FY rollover.**
+
+Today (2026-06-19): FY2024 + FY2025 + FY2026.
+After Sep 30, 2026 (next FY close): FY2025 + FY2026 + FY2027.
+
+**Why.** Our product delivers insights contemporary to current
+conditions. Awards from 3+ years ago add noise without serving the
+core use case (researchers asking "what's funded NOW in my space,"
+"who's working on this RIGHT NOW," "what's the current investment
+trajectory"). A bigger DB also costs more to host, search, and embed.
+
+**Implications:**
+
+- **ExPORTER FY-bounded files**: we only download files within the
+  retention window. Pre-window FYs are ignored regardless of upstream
+  availability.
+- **NIH FAQ alignment**: NIH refreshes the "three prior FYs" at FY
+  close. That's 4 FYs of actively-maintained upstream data (current +
+  3 prior). Our window uses 3 of them (current + 2 prior), so the
+  oldest of NIH's actively-refreshed FYs is deliberately *not*
+  ingested.
+- **FY rollover cleanup**: on each Sep 30 rollover, projects with
+  `fiscal_year < window_floor` become eligible for purge. Abstracts,
+  publication links, project_patents, and clinical_studies rows tied
+  to those projects follow via FK cascade. Publications/patents/NCTs
+  themselves stay if they have links to retained projects.
+- **All-time files (patents, clinical studies)**: the file itself is
+  cumulative, but the LINKS we care about respect retention because
+  they reference project_numbers that exist in our retained projects.
+  Patent and trial *records* whose only links were to purged projects
+  get pruned via the same FY rollover step.
+
 ## The pattern (SOP)
 
 Every entity refresh follows the same three-step shape:
