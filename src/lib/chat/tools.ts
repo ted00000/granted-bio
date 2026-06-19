@@ -2096,10 +2096,13 @@ export async function findSimilar(
   const effectiveLimit = Math.min(limit, 10, userAccess.resultsLimit)
 
   try {
-    // Get the source project's embedding (use abstract_embedding for best semantic match)
+    // Get the source project's embedding. abstract_embedding is a
+    // blended vector of title + phr + terms + abstract per
+    // etl/generate_embeddings_batched.py:108, so it carries the full
+    // project-level semantic signal in a single column.
     const { data: sourceProject, error: sourceError } = await supabaseAdmin
       .from('projects')
-      .select('abstract_embedding, title_embedding, title')
+      .select('abstract_embedding, title')
       .eq('application_id', project_id)
       .single()
 
@@ -2107,8 +2110,7 @@ export async function findSimilar(
       throw new Error('Project not found')
     }
 
-    // Prefer abstract embedding, fall back to title embedding
-    const embedding = sourceProject?.abstract_embedding || sourceProject?.title_embedding
+    const embedding = sourceProject?.abstract_embedding
     if (!embedding) {
       throw new Error('Project has no embedding for similarity search')
     }

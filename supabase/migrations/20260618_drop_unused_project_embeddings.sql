@@ -1,0 +1,32 @@
+-- Drop the two NULL-everywhere embedding columns from projects.
+--
+-- Background:
+-- The original projects schema defined three embedding columns:
+--   * title_embedding     VECTOR(1536)
+--   * phr_embedding       VECTOR(1536)
+--   * abstract_embedding  VECTOR(1536)
+-- with the intent of storing per-field semantic vectors.
+--
+-- The actual embedding pipeline at
+-- etl/generate_embeddings_batched.py:108 took a different path:
+-- it concatenates title + phr + terms + abstract into one blended
+-- input string and stores the resulting vector in abstract_embedding.
+-- The "abstract_embedding" column is therefore a project-level
+-- blended embedding, not just-the-abstract — the name is misleading
+-- but the data is correct.
+--
+-- title_embedding and phr_embedding have been NULL on 100% of
+-- ~154,159 project rows since launch (verified 2026-06-18 via
+-- scripts/check-embedding-coverage.ts). The signal from title and
+-- PHR is already captured inside abstract_embedding, so dropping
+-- these columns loses zero semantic content.
+--
+-- Code reference: the only place in the app that mentioned
+-- title_embedding was a fallback in src/lib/chat/tools.ts that
+-- never fired (abstract_embedding is always populated). That
+-- reference is removed in the same commit as this migration.
+--
+-- No indexes exist on title_embedding or phr_embedding.
+
+ALTER TABLE public.projects DROP COLUMN IF EXISTS title_embedding;
+ALTER TABLE public.projects DROP COLUMN IF EXISTS phr_embedding;
