@@ -1,0 +1,440 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 124 of 459 (50 projects):
+
+---
+application_id: 10866535
+activity_code: T32
+title: Interdisciplinary and Inclusive Predoctoral Training in Molecular, Cellular, and Biochemical Sciences
+org_name: BROWN UNIVERSITY
+phr: PROJECT NARRATIVE Solving complex problems in human health and modern biology requires a diverse group of biomedical researchers who are trained in rigorous and transparent implementation and reporting of quantitative analysis of biological data. Accordingly, this program is designed to build and sustain an equitable and inclusive training environment in which a diverse group of PhD students will successfully gain quantitative, conceptual, technical, and professional skills that will allow them to conduct the rigorous and reproducible research to meet this challenge.
+terms: Biochemical;Molecular;pre-doctoral;Science;Training
+---
+application_id: 10973362
+activity_code: F99
+title: Effects of environmental adversity on molecular aging in the immune system of companion dogs
+org_name: ARIZONA STATE UNIVERSITY-TEMPE CAMPUS
+phr: Aging demonstrates striking individual diversity, as evidenced by the differing health paths and results observed among individuals of the same chronological age and is often influenced by environmental factors. In the F99 phase, I explore the interplay between environmental adversity and epigenetic changes during aging using a canine cohort. While the K00 phase expands on the previous research to focus on gender-specific environmental determinants of aging in women, drawing from diverse human cohort studies to identify high-risk groups and develop targeted interventions for enhancing healthy aging.
+terms: Address;Affect;Age;age acceleration;Age disparity;age related;age related biomarkers;age related changes;age-related disease;Aging;aging population;aging process;Animal Model;Animals;Autoimmune Diseases;Automobile Driving;Bioinformatics;Biological;Biological Markers;Biology of Aging;Canis familiaris;Cardiovascular Diseases;Cessation of life;Chronology;Clinical;cohort;Cohort Studies;companion animal;Cues;Data;Development;Diabetes Mellitus;Diagnosis;Disease;Disease Marker;disorder risk;diverse data;DNA Methylation;drivers of aging;effective intervention;Environment;Environmental Exposure;Environmental Impact;Environmental Monitoring;Environmental Risk Factor;epigenetic clock;Epigenetic Process;epigenome;epigenomics;Equity;Ethnic Origin;Exclusion;Exhibits;experience;Face;Fellowship;Gender;Genes;Genetic;Genomics;Geroscience;Goals;Health;health care availability;health care disparity;healthspan;healthy aging;Heterogeneity;high risk population;Human;Immune system;Impairment;Individual;individual variation;insight;Interdisciplinary Study;Intervention;Knowledge;late life;life span;Link;Lived experience;Longevity;Longitudinal cohort;Longitudinal cohort study;Medical;men;Menopause;Minor;model organism;Molecular;Molecular Biology;mortality;novel;Onset of illness;Outcome;Perimenopause;Personal Satisfaction;personalized health care;Persons;Phase;Play;Population;Populations at Risk;Positioning Attribute;Postdoctoral Fellow;Pre-Eclampsia;Predisposition;Prevalence;Prevention;Process;psychologic;Race;Reproductive Health;Research;Research Project Grants;Risk;Role;Route;sex;Sex Differences;Shapes;Site;social;Social support;Study of Women&apos;s Health Across the Nation;Surveys;Techniques;Testing;Training;United States;Variant;Weight;Woman;Women&apos;s Group;Women&apos;s Health;Work
+---
+application_id: 10846601
+activity_code: T32
+title: Chemical Biology Training Interface
+org_name: STATE UNIVERSITY NEW YORK STONY BROOK
+phr: PROJECT NARRATIVE The Chemical Biology Training Program at Stony Brook University trains students to work at the interface of chemistry and biology and to apply quantitative skills to solve biomedical problems so that they can make major contributions to the health and welfare of the United States. The training program provides students with skills to communicate the significance of their work to the public and provides a venue for discussing career plans and developing plans to successfully pursue their chosen career path. Training in chemical biology provides graduate students with the chemical and biological methods necessary for developing new and improved diagnostics and therapeutics.
+terms: Biology;Chemicals;Training
+---
+application_id: 11096853
+activity_code: T32
+title: Molecular Mechanisms of Disease
+org_name: UNIVERSITY OF NEBRASKA LINCOLN
+phr: Project Narrative
+Understanding how normal processes in the cell operate incorrectly at the molecular level during disease
+initiation and progression is vital to develop strategies to control disease. Interdisciplinary research that
+integrates methodologies across traditional fields is needed to advance the definition of molecular processes.
+The predoctoral program in Molecular Mechanisms of Disease at the University of Nebraska-
+Lincoln provides collaborative research projects, student-centered teaching, and diverse career development
+opportunities to develop a workforce of team-oriented scientists with critical expertise in the interdisciplinary
+study of disease progression.
+terms: <Disease><Disorder><Molecular>
+---
+application_id: 11096854
+activity_code: T32
+title: Training Program at the Chemistry Biology Interface
+org_name: UNIVERSITY OF ILLINOIS AT URBANA-CHAMPAIGN
+phr: Project Narrative
+To form successful multidisciplinary research teams of chemists and biologists with the ability to
+solve longstanding problems that impact human health, chemists and biologists must have an
+understanding of the language, concepts, and techniques of each group. The Chemistry-Biology
+Interface Training Program (CBI-TP) at the University of Illinois, Urbana-Champaign (UIUC)
+addresses this critical need through a variety of activities aimed at training the next generation of
+scientists with expertise at the chemistry-biology interface.
+terms: <Biology><Chemistry><Training Programs>
+---
+application_id: 10890172
+activity_code: K99
+title: Imaging brain-wide subarachnoid and perivascular cerebrospinal fluid flow in aging and Alzheimer's disease
+org_name: MASSACHUSETTS GENERAL HOSPITAL
+phr: PROJECT NARRATIVE Cerebrospinal fluid flow plays an essential role in brain’s waste clearance system, and disrupted CSF flow is implicated in Alzheimer's disease. The goal of this project is to obtain previously unavailable knowledge on brain- wide CSF flow dynamics and pathways in the human brain using novel MR imaging technologies, and investigate the alteration of CSF flow in aging and in Alzheimer's disease, particularly its correlation with neuropathological protein depositions in AD patients, laying the foundation for future studies to discover CSF-flow-based imaging biomarkers and therapeutic interventions for Alzheimer's disease.
+terms: aged;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease pathology;Alzheimer&apos;s disease patient;Alzheimer&apos;s disease related dementia;Amyloid beta-Protein;Animals;Arachnoid mater;Area;Automobile Driving;Blood Vessels;Brain;Brain imaging;Brain Mapping;Cardiac;career;career development;Cerebrospinal Fluid;cerebrospinal fluid clearance;cerebrospinal fluid flow;Circulation;Clinical;Communities;Data;Deposition;Elderly;Flowmetry;Foundations;Functional Magnetic Resonance Imaging;Future;General Hospitals;glymphatic system;Goals;Grant;healthy aging;Human;human study;Image;imaging biomarker;Imaging Device;imaging modality;Imaging Techniques;Imaging technology;Impairment;improved;innovation;Investigation;Knowledge;Link;Magnetic Resonance Imaging;Maps;Massachusetts;Measurement;Measures;Mentors;Methodology;Methods;Modeling;Morphologic artifacts;Motion;multidisciplinary;Nerve Degeneration;neural;Neurodegenerative Disorders;neuroimaging;neuropathology;new therapeutic target;non-invasive imaging;novel;Outcome;Outcome Study;Participant;Pathogenesis;Pathway interactions;Patients;Physics;Physiologic pulse;Physiology;Play;Positron-Emission Tomography;Process;programs;Proteins;Protocols documentation;Research;Research Personnel;research study;Resolution;Resources;Respiration;Role;Scanning;signal processing;Signal Transduction;skills;Spatial Distribution;spatiotemporal;Specificity;Subarachnoid Space;System;tau aggregation;tau Proteins;Techniques;Technology;Testing;therapeutic development;Therapeutic Intervention;Time;tool;Training;Translating;Translational Research;Transportation;wasting;Work
+---
+application_id: 10869941
+activity_code: T32
+title: Medical Scientist Training Program
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: MSTP Project Narrative Progress towards solving major health problems will require a steady source of well-trained new investigators who have the clinical background to appreciate major medical issues and the research skills to tackle them. Over the years, MD-PhD programs have proven to be a highly effective way to train such investigators. We seek funding to continue our highly successful MD-PhD Program at The Johns Hopkins University School of Medicine.
+terms: Medical;Scientist;Training Programs
+---
+application_id: 10906984
+activity_code: K99
+title: Associations of Mitochondrial DNA Alterations with Alzheimer's Disease Related Brain Health
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: PROJECT NARRATIVE The proposed work aims to investigate the temporal relationships between mtDNA alterations and midlife brain health. This study will also examine childhood risk factors preceding mitochondrial dysfunction. Knowledge gained from this study may contribute important insights into the biology underlying brain health and provide novel strategies for the targeted prevention of mitochondrial dysfunction and its brain health sequelae.
+terms: Acceleration;Adult;Affect;Aging;aging brain;aging related;Alzheimer disease prevention;Alzheimer&apos;s Disease;Alzheimer&apos;s disease model;Amyloid;apolipoprotein E-4;Articulation;Award;Bioenergetics;Biology;Black Populations;Blood;Blood Pressure;Body mass index;Brain;brain health;brain magnetic resonance imaging;brain research;brain tissue;Cardiac health;cardiometabolism;cardiovascular disorder risk;career;Cephalic;Cerebrovascular Circulation;Cerebrum;Childhood;Clinical;Cognition;cognitive function;Cohort Studies;Data;Dementia;Development;Diagnosis;DNA copy number;drug development;early detection biomarkers;Early Diagnosis;effective therapy;epidemiologic data;Epidemiology;follow-up;Functional disorder;Functional Magnetic Resonance Imaging;Funding;genome wide association study;Genomics;Genotype;global health;Glucose;Growth;Health;health data;Heart;heteroplasmy;Homeostasis;Impaired cognition;improved;innovation;insight;Knowledge;Life;Life Cycle Stages;Linear Regressions;Link;Lipids;Measurement;Measures;Mediating;Mediation;Mendelian randomization;Mentors;Meta-Analysis;Methods;middle age;Mitochondria;Mitochondrial DNA;mitochondrial DNA alteration;mitochondrial DNA mutation;mitochondrial dysfunction;Modeling;Molecular;multiple omics;Mutation;Neurobiology;neurocognitive test;novel marker;novel strategies;older adult;Organ;Participant;Photons;Play;Population;Prevalence;prevent;Prevention;preventive intervention;programs;prospective;Renal function;Research;Resources;Risk Factors;risk stratification;Role;Sampling;Scanning;statistics;Syndrome;Testing;Time;tomography;tool;Training;Trans-Omics for Precision Medicine;United States National Institutes of Health;Validation;Variant;White Matter Hyperintensity;Work
+---
+application_id: 11119258
+activity_code: T32
+title: Medical Scientist Training Program
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: MSTP Project Narrative Progress towards solving major health problems will require a steady source of well-trained new investigators who have the clinical background to appreciate major medical issues and the research skills to tackle them. Over the years, MD-PhD programs have proven to be a highly effective way to train such investigators. We seek funding to continue our highly successful MD-PhD Program at The Johns Hopkins University School of Medicine.
+terms: Medical;Scientist;Training Programs
+---
+application_id: 10923787
+activity_code: T32
+title: Molecular Mechanisms of Disease
+org_name: UNIVERSITY OF NEBRASKA LINCOLN
+phr: Understanding how normal processes in the cell operate incorrectly at the molecular level during disease initiation and progression is vital to develop strategies to control disease. Interdisciplinary research that integrates methodologies across traditional fields is needed to advance the definition of molecular processes. The proposed predoctoral program in Molecular Mechanisms of Disease at the University of Nebraska- Lincoln will use collaborative research projects, student-centered teaching, and diverse career development opportunities to develop a workforce of team-oriented scientists with critical expertise in the interdisciplinary study of disease progression.
+terms: Disease;Molecular
+---
+application_id: 11092718
+activity_code: T32
+title: Graduate Training in the Pharmacological Sciences
+org_name: EMORY UNIVERSITY
+phr: This application requests funds to support the training of 8 graduate students per year in an interdisciplinary Pharmacological Sciences graduate program. Fifty-four training faculty from 16 departments provide a wealth of research training opportunities for students. The goal is to produce broadly trained scientists who will contribute to the biomedical workforce, especially to the discovery, development and regulation of novel therapeutic agents that will improve healthcare in the United States and worldwide.
+terms: <Science><Training><pharmacologic>
+---
+application_id: 10844523
+activity_code: T32
+title: Biotechnology Training Program
+org_name: UNIVERSITY OF VIRGINIA
+phr: PROJECT NARRATIVE We are developing a new generation of diverse young scientists who are broadly skilled with the latest tools of scientific excellence and rigor to be inquisitive and critical as they expand the frontiers of science. We are training these future leaders to be broadly cognizant of the potential of many different scientific careers.
+terms: Biotechnology;Training Programs
+---
+application_id: 10842366
+activity_code: T32
+title: Training Program at the Chemistry Biology Interface
+org_name: UNIVERSITY OF ILLINOIS AT URBANA-CHAMPAIGN
+phr: PROJECT NARRATIVE To form successful multidisciplinary research teams of chemists and biologists with the ability to solve longstanding problems that impact human health, chemists and biologists must have an understanding of the language, concepts, and techniques of each group. The Chemistry-Biology Interface Training Program (CBI-TP) at the University of Illinois, Urbana-Champaign addresses this critical need through a variety of activities aimed at training the next generation of scientists with expertise at the chemistry-biology interface.
+terms: Biology;Chemistry;Training Programs
+---
+application_id: 10914187
+activity_code: T32
+title: Medical Scientist Training Program
+org_name: YALE UNIVERSITY
+phr: Project Narrative The Medical Scientist Training Program (MSTP) at Yale proposes an integrated curriculum that teaches clinical medicine and provides experiential training in the design, execution and presentation of responsible, rigorous and reproducible research. The MSTP is committed to the recruitment and retention of a diverse and inclusive community of MD-PhD trainees in traditional and non-traditional PhD disciplines relevant to human health and disease. The inclusion of physician-scientist faculty from a range of clinical disciplines in the MSTP and a focus on career development training for students ensure that graduates will remain engaged in research-intensive careers that make full use of their dual-degree training.
+terms: Medical;Scientist;Training Programs
+---
+application_id: 11095374
+activity_code: T32
+title: Training Program in Integrative Developmental Process
+org_name: TRUSTEES OF INDIANA UNIVERSITY
+phr: Project Narrative
+The Integrative Training Program in Developmental Process trains researchers in typical
+and atypical patterns of behavioral and brain development, with goal of understanding
+how early achievements (for example, motor development, language learning, sleep
+patterns) set the stage for and support later achievements (for example, in sustained
+attention, behavioral control, school success). By understanding how development
+builds on itself and the potential multiple pathways to healthy developmental outcomes,
+we may foster healthy outcomes in children facing challenges from poverty, from
+sensory-motor disabilities, and from developmental disorders such as autism.
+terms: <Developmental Process><Training Programs>
+---
+application_id: 10723240
+activity_code: K99
+title: The Role of Nuclear Factor Erythroid 2-related factor 2 in Sarcopenic Obesity
+org_name: LSU PENNINGTON BIOMEDICAL RESEARCH CTR
+phr: PROJECT NARRATIVE Sarcopenic obesity is strongly associated with a decline in physical function and less independence in older adults. As such, there is immense value in determining strategies to mitigate sarcopenic obesity to improve the quality of life in older adults. The proposed study will pave the way for novel mechanistic insights and the discovery of new therapeutics for healthspan during aging with obesity.
+terms: Acute;Address;Affect;age-related disease;aged;Aging;Antioxidants;Apoptosis;Area;Attenuated;Award;Behavior Therapy;Biogenesis;Biology;biomedical profession;career;Career Transition Award;Cell Culture Techniques;Cells;Cessation of life;Chloroquine;Chronic Disease;Dedications;Defect;Development;Dynamin;effective therapy;Elderly;energy efficiency;Equilibrium;Erythroid;experimental study;Extramural Activities;fitness;frailty;Fumarates;Funding;Future;Generations;Genetic;genetic manipulation;Geroscience;Goals;graduate student;Health;Health Care Costs;healthspan;high risk;Hospitalization;Impairment;implementation facilitation;improved;In Vitro;inhibitor;insight;Institutionalization;Knowledge;Learning;life span;Life Style;Link;Lipids;loss of function;Mediating;Metabolic;MG132;Mitochondria;mitochondrial DNA mutation;Mitochondrial RNA;Modeling;Molecular;Morbidity - disease rate;mRNA Decay;Mus;Muscle;Muscle Fibers;muscle form;Muscle function;Muscle Mitochondria;muscle strength;Muscular Atrophy;new therapeutic target;novel;novel therapeutics;Nuclear;nuclear factor-erythroid 2;obese patients;Obesity;old mice;older adult;older patient;Organelles;oxidation;Oxidation-Reduction;oxidative damage;Oxidative Stress;Oxidative Stress Induction;Pathway interactions;Patients;Pharmaceutical Preparations;pharmacologic;Phase;Phosphorylation;Physical Function;Positioning Attribute;Postdoctoral Fellow;prevent;Probability;Production;programs;Protein Biosynthesis;protein expression;Protein Import;Proteins;proteostasis;Public Health;Quality Control;Quality of life;Reactive Oxygen Species;Regulation;Research;Research Design;Risk;RNA;RNA Interference;Role;sarcopenia;sarcopenic obesity;Scientist;Series;Signal Transduction;Skeletal Muscle;skills;Small Interfering RNA;Syndrome;System;Techniques;Testing;Therapeutic;Time;trafficking;Training;Transgenic Mice;treatment strategy;Underrepresented Minority;United States National Institutes of Health;Weight
+---
+application_id: 10949450
+activity_code: K99
+title: Patterns and Mechanisms Underlying Somatic Mutations Across Long-Lived Bats
+org_name: UNIVERSITY OF CALIFORNIA BERKELEY
+phr: Aging-associated somatic mutational spectra are a record of an organism’s lifelong attempts to maintain cellular homeostasis. Uncovering the mechanisms underlying longevity-associated mutational signatures furthers the NIA’s goal of understanding the biology of aging by improving our understanding of the progression of an aging-related biomarker, and by enabling the discovery of novel processes that lead to aging-related disorders.
+terms: Address;Age;Aging;aging process;aging related;Animals;Automobile Driving;Biological;Biological Markers;Biology;Biology of Aging;Cause of Death;Cell Line;cell type;Cells;Chiroptera;Collaborations;Collection;combinatorial;Comparative Biology;comparative genomics;Controlled Environment;CRISPR interference;Data;Dementia;design;Development;differential expression;directed differentiation;Disease;DNA Damage;DNA Double Strand Break;DNA Repair;Embryoid bodies;Evolution;experimental study;Fibroblasts;follow-up;Foundations;functional genomics;Future;gene repair;Genes;Genetic;Genomics;Goals;hallmarks of aging;Heart Diseases;Homeostasis;improved;In Vitro;in vivo;Individual;induced pluripotent stem cell;interest;knock-down;Knowledge;Libraries;Life;life span;Longevity;Longitudinal Studies;Malignant Neoplasms;Mammals;Mitotic;Mutation;Mutation Spectra;Names;nano;North America;novel;Organ;Organism;Organoids;Pattern;Positioning Attribute;Process;programs;Protocols documentation;rate of aging;Recording of previous events;repaired;Research;Research Personnel;Resolution;response;Risk Factors;Sample Size;Sampling;single cell sequencing;Skin;skin biopsy;Skin Tissue;Somatic Mutation;Stress;Surveys;Taxonomy;Techniques;Testing;Time;Tissue Sample;Tissues;trait;Trees;Variant;Wing;Work
+---
+application_id: 11065430
+activity_code: F31
+title: Defining factors affecting natural killer cells' antibody-dependent responses in COVID-19
+org_name: STANFORD UNIVERSITY
+phr: PROJECT NARRATIVE
+The factors affecting natural killer (NK) cells’ antibody-dependent responses to COVID-19 are not yet clear.
+This proposed work will investigate the impact COVID-19 vaccination and infection, immunosuppressant drugs,
+and contact with SARS-CoV-2-infected cells have on NK cells’ antibody-dependent responses using COVID-19
+clinical samples and replication-competent SARS-CoV-2. These experiments will provide crucial insights into
+how vaccination and therapeutic strategies should seek to enhance NK cells’ antibody-dependent responses to
+COVID-19.
+terms: <2019 novel corona virus><2019 novel coronavirus><2019-nCoV><2019-nCoV variant><2019-nCoV variant forms><2019-nCoV variant strains><Ab-dependent cellular cytotoxicity><Affect><Antibodies><Antigens><Area><CMV><COVID infected patient><COVID patient><COVID positive patient><COVID-19><COVID-19 affected><COVID-19 consequence><COVID-19 effect><COVID-19 impact><COVID-19 impacted><COVID-19 infected patient><COVID-19 infection><COVID-19 patient><COVID-19 positive patient><COVID-19 vaccination><COVID-19 variant><COVID-19 variant forms><COVID-19 variant strains><COVID-19 virus><COVID-19 virus infection><COVID19 infection><COVID19 patient><COVID19 positive patient><COVID19 virus><CV-19><Cell Body><Cell Communication and Signaling><Cell Function><Cell Isolation><Cell Physiology><Cell Process><Cell Segregation><Cell Separation><Cell Separation Technology><Cell Signaling><Cell surface><Cells><Cellular Function><Cellular Physiology><Cellular Process><Cellular Stress><Cellular Stress Response><Certification><Charge><Classification><Clinical><Co-culture><CoV-2><CoV2><Cocultivation><Coculture><Coculture Techniques><Communicable Diseases><Confocal Microscopy><Coronavirus Infectious Disease 2019><Creativeness><Cytomegalovirus><Cytotoxic cell><Data><Disease><Disease Outcome><Disorder><Drug Interactions><Drugs><Effector Cell><Goals><HCMV><Human><Immune><Immune response><Immunes><Immunocompetent><Immunocompromised><Immunocompromised Host><Immunocompromised Patient><Immunosuppressants><Immunosuppressed Host><Immunosuppression><Immunosuppression Effect><Immunosuppressive Agents><Immunosuppressive Effect><Immunosuppressive drug><Immunosuppressive treatment><Impairment><Incidence><Individual><Infection><Infectious Diseases><Infectious Disorder><Intracellular Communication and Signaling><K lymphocyte><Knowledge><Ligands><Mass Photometry/Spectrum Analysis><Mass Spectrometry><Mass Spectroscopy><Mass Spectrum><Mass Spectrum Analyses><Mass Spectrum Analysis><Mediating><Medication><Memory><Mice><Mice Mammals><Modern Man><Murine><Mus><NK Cells><Natural Killer Cells><Pathogenesis><Pathway interactions><Pharmaceutical Preparations><Phosphorylation><Post-vaccination infection><Process><Protein Phosphorylation><Proteins><Proteomics><Public Health><Qualifying><Research><Role><SARS corona virus 2><SARS-CO-V2><SARS-COVID-2><SARS-CoV-2><SARS-CoV-2 infected patient><SARS-CoV-2 infection><SARS-CoV-2 patient><SARS-CoV-2 positive patient><SARS-CoV-2 vaccination><SARS-CoV-2 variant><SARS-CoV-2 variant forms><SARS-CoV-2 variant strains><SARS-CoV2><SARS-CoV2 infection><SARS-associated corona virus 2><SARS-associated coronavirus 2><SARS-coronavirus-2><SARS-related corona virus 2><SARS-related coronavirus 2><SARSCoV2><Salivary Gland Viruses><Sampling><Severe Acute Respiratory Coronavirus 2><Severe Acute Respiratory Distress Syndrome CoV 2><Severe Acute Respiratory Distress Syndrome Corona Virus 2><Severe Acute Respiratory Distress Syndrome Coronavirus 2><Severe Acute Respiratory Syndrome CoV 2><Severe Acute Respiratory Syndrome-associated coronavirus 2><Severe Acute Respiratory Syndrome-related coronavirus 2><Severe acute respiratory syndrome associated corona virus 2><Severe acute respiratory syndrome coronavirus 2><Severe acute respiratory syndrome coronavirus 2 infection><Severe acute respiratory syndrome coronavirus 2 vaccination><Severe acute respiratory syndrome related corona virus 2><Shapes><Signal Transduction><Signal Transduction Systems><Signaling><Signaling Molecule><Subcellular Process><Surface><System><Systematics><Testing><Therapeutic><Training><Transfection><Tumor Cell><Vaccination><Vaccinee><Variant><Variation><Virus><Visualization><Work><Wuhan coronavirus><anti-viral immunity><antibody dependent cell mediated cytotoxicity><antibody dependent cytotoxicity><antibody mediated cellular cytotoxicity><antibody-dependent cell cytotoxicity><antibody-dependent cellular cytotoxicity><antibody-mediated cytotoxicity><antiviral immunity><biological signal transduction><breakthrough infection><cell sorting><cell stress><coronavirus disease 2019><coronavirus disease 2019 consequence><coronavirus disease 2019 effect><coronavirus disease 2019 impact><coronavirus disease 2019 infected patient><coronavirus disease 2019 infection><coronavirus disease 2019 patient><coronavirus disease 2019 positive patient><coronavirus disease 2019 vaccination><coronavirus disease 2019 variant><coronavirus disease 2019 variant forms><coronavirus disease 2019 variant strains><coronavirus disease 2019 virus><coronavirus disease infected patient><coronavirus disease patient><coronavirus disease positive patient><coronavirus disease-19><coronavirus disease-19 impact><coronavirus disease-19 patient><coronavirus disease-19 virus><coronavirus infectious disease-19><coronavirus patient><creativity><cytokine><cytomegalovirus group><cytotoxic><drug/agent><engineered NK cell><engineered natural killer cell><experience><experiment><experimental research><experimental study><experiments><hCoV19><host response><immune competent><immune suppression><immune suppressive activity><immune suppressive agent><immune suppressive function><immune suppressor><immune system response><immunogen><immunoresponse><immunosuppressed patient><immunosuppressive activity><immunosuppressive function><immunosuppressive response><immunosuppressive substance><immunosuppressor><infected with COVID-19><infected with COVID19><infected with SARS-CoV-2><infected with SARS-CoV2><infected with coronavirus disease 2019><infected with severe acute respiratory syndrome coronavirus 2><insight><interest><life-threatening COVID><life-threatening COVID-19><life-threatening SARS-CoV-2><life-threatening coronavirus disease><life-threatening coronavirus disease 2019><life-threatening severe acute respiratory syndrome coronavirus 2><nCoV2><neoplastic cell><neutralizing antibody><novel><overexpress><overexpression><pathway><patient infected with COVID><patient infected with COVID-19><patient infected with SARS-CoV-2><patient infected with coronavirus disease><patient infected with coronavirus disease 2019><patient infected with severe acute respiratory syndrome coronavirus 2><patient with COVID><patient with COVID-19><patient with COVID19><patient with SARS-CoV-2><patient with coronavirus disease><patient with coronavirus disease 2019><patient with severe acute respiratory distress syndrome coronavirus 2><response><serious COVID><serious COVID-19><serious SARS-CoV-2><serious coronavirus disease><serious coronavirus disease 2019><serious severe acute respiratory syndrome coronavirus 2><severe COVID><severe COVID-19><severe COVID19><severe SARS-CoV-2><severe acute respiratory syndrome coronavirus 2 infected patient><severe acute respiratory syndrome coronavirus 2 patient><severe acute respiratory syndrome coronavirus 2 positive patient><severe acute respiratory syndrome coronavirus 2 variant><severe acute respiratory syndrome coronavirus 2 variant forms><severe acute respiratory syndrome coronavirus 2 variant strains><severe coronavirus disease><severe coronavirus disease 19><severe coronavirus disease 2019><severe severe acute respiratory syndrome coronavirus 2><social role><tool><vaccinate against COVID-19><vaccinate against SARS-CoV-2><vaccinate against coronavirus disease 2019><vaccinate against severe acute respiratory syndrome coronavirus 2><vaccinated individual><vaccinated participant><vaccinated patient><vaccinated person><vaccinated subject><vaccination against COVID-19><vaccination against SARS-CoV-2><vaccination against Severe acute respiratory syndrome coronavirus 2><vaccination against coronavirus disease 2019>
+---
+application_id: 10850786
+activity_code: T32
+title: Developmental Biology Training Program
+org_name: UNIVERSITY OF OREGON
+phr: PROJECT NARRATIVE Our long-standing predoctoral Developmental Biology Training Program prepares creative and rigorous scientific leaders. Development biology research reveals mechanisms that go awry in congenital defects and adult diseases, including many cancers that arise from uncontrolled developmental programs. A detailed understanding of these diseases, and thus the rationale design of innovative diagnostics and therapeutics, depends on multifaceted training of the next generation of developmental biologists.
+terms: Developmental Biology;Training Programs
+---
+application_id: 11009246
+activity_code: T32
+title: PT/PHD Predoctoral Training Program Diversity Supplement
+org_name: UNIVERSITY OF DELAWARE
+phr: PROJECT NARRATIVE (from most recent renewal) This very successful and innovative training program fuses two independent training programs, a professional Doctorate in Physical Therapy (DPT) and the PhD in Biomechanics and Movement Sciences. The goal of this training program is to train students with the greatest potential to become outstanding research scientists in the field of physical rehabilitation. The program attracts outstanding students and has trained some of our countries most promising rehabilitation clinician scientists.
+terms: Doctor of Philosophy;pre-doctoral;Training Programs
+---
+application_id: 11094244
+activity_code: T32
+title: PT/PHD Predoctoral Training Program
+org_name: UNIVERSITY OF DELAWARE
+phr: PROJECT NARRATIVE
+This highly successful and innovative training program fuses two independent training programs,
+a professional Doctorate in Physical Therapy (DPT) and the PhD in Biomechanics and
+Movement Sciences. The goal of this training program is to train students with the greatest
+potential to become outstanding research scientists in the field of rehabilitation. The
+program attracts outstanding students and has trained some of our country’s most promising
+rehabilitation clinician scientists.
+terms: <Doctor of Philosophy><Ph.D.><PhD><Training Programs><pre-doc><pre-doctoral>
+---
+application_id: 11093831
+activity_code: T32
+title: Northwestern Center for Reproductive Science Predoctoral Training Program in Reproductive Science, Medicine, and Technology
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: PROJECT NARRATIVE
+Reproduction is essential for life and provides a window into overall health. The Northwestern Center for
+Reproductive Science Predoctoral Training Program in Reproductive Science, Medicine, and
+Technology (CRS Training Program) supports and trains a sophisticated workforce in reproductive science
+and medicine who will make the discoveries necessary to enable a healthy future for all people. The CRS
+Training Program combines rigorous didactic coursework and laboratory research with training opportunities in
+the technologies of the future, generating a new kind of scholar who can succeed in a fast-paced, competitive
+scientific environment.
+terms: <Medicine><Reproductive Sciences><Technology><Training Programs><pre-doc><pre-doctoral>
+---
+application_id: 11093872
+activity_code: T32
+title: Computational Social Science Training Program
+org_name: UNIVERSITY OF CALIFORNIA BERKELEY
+phr: PROJECT NARRATIVE
+Advanced data analytics is transforming social and behavioral science research on medicine and health. This
+training program in Computational Social Science will equip a diverse cadre of social and behavioral science
+health investigators to conduct novel research using advanced computational and statistical methods,
+preparing them for transdisciplinary careers in data analytics. All aspects of the training will emphasize rigor in
+research and reproducibility of research results.
+terms: <Social Sciences><Training Programs>
+---
+application_id: 11033872
+activity_code: K99
+title: Generation of new neurons in the aging adult brain: identifying mechanisms of adult neurogenesis by exploiting single cell spatial transcriptomics.
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: Project Narrative Unlike many cell types in other tissues, neurons are not renewed during aging, with a very limited generation of new neurons in young adults and none (or almost none) known to be produced in the aging mammalian nervous system. Recently, I successfully converted dormant, radial glial-like and subependymal-like cells into new functional neurons in the aged mouse neurogenic niches (subgranular and subventricular zone) by using a therapeutically viable injection of an antisense oligonucleotide (ASO) to produce transient suppression of synthesis of Polypyrimidine Tract Binding Protein (PTBP1). The research program I propose here will build on that glia-to-neuron conversion coupled with combination of traditional single nuclear sequencing, immunofluorescence and state-of-the-ar...
+terms: 1 year old;2 year old;Adult;adult neurogenesis;Advisory Committees;Age Months;aged;Aging;Antisense Oligonucleotides;Astrocytes;Atlases;Automobile Driving;Behavior;Binding Proteins;Brain;Brain Diseases;C9ORF72;career;cell type;Cells;Cerebrospinal Fluid;Cessation of life;Clinical;Collaborations;Communities;Corpus striatum structure;Coupled;dentate gyrus;Development;Disease;disease model;Disease Progression;disease-causing mutation;Dose;effective therapy;Embryonic Development;Event;Faculty;Fluorescent in Situ Hybridization;Frontotemporal Dementia;Future;Generations;Goals;Hippocampus;Human;Huntington Disease;Huntington gene;Immunofluorescence Immunologic;Injections;Injury;insight;Learning;Life;Location;Mediating;Mentors;Messenger RNA;Modeling;Molecular;mouse model;Mus;mutant;Nerve Degeneration;nerve stem cell;Nervous System;Neurodegenerative Disorders;neurogenesis;Neuroglia;Neurologic;neuron loss;neuronal replacement;Neurons;novel strategies;Nuclear;Nuclear RNA;old mice;Pathology;Pathway interactions;Patients;Pharmacologic Substance;Phase;phase III trial;Polypyrimidine Tract-Binding Protein;Population;Positioning Attribute;Postdoctoral Fellow;Process;professor;programs;Radial;Research;Research Institute;Resolution;RNA-Binding Proteins;spatial transcriptomics;Subependymal;subventricular zone;Technology;tenure track;Testing;Therapeutic;therapy development;Time;Tissues;Training;transcriptome;transcriptome sequencing;young adult
+---
+application_id: 10895284
+activity_code: T32
+title: Training Program in Social Environments and Population Health
+org_name: PENNSYLVANIA STATE UNIVERSITY, THE
+phr: PROJECT NARRATIVE The principal goal of our training program is to provide a rigorous, innovative, and multidisciplinary training program on Social Environments and Population Health that integrates research, study, and associated activities. The training program, anchored in the Penn State Dual-Degree Demography Program, the Population Research Institute, and associated departments and programs, has a long history of successfully recruiting promising predoctoral and postdoctoral candidates in the population sciences and placing them in high-impact, research-intensive positions.
+terms: population health;Social Environment;Training Programs
+---
+application_id: 10836015
+activity_code: T32
+title: T32 Institutional Pediatric Research
+org_name: CHILDREN'S HOSP OF PHILADELPHIA
+phr: Project Narrative The overall goal of this NRSA-T32 program is to foster the development of pediatric investigators who are prepared to pursue independent academic careers examining important issues relevant to health and disease in children. We accomplish this goal by training outstanding pediatric fellows to become successful physician- scientists, addressing questions of fundamental importance to health and disease in children. Candidates for our program are enrolled in our subspecialty fellowship programs and are identified through national searches for talented pediatricians with signficant potential for success as physician-scientists, with particular emphasis on recruitment of women, underrepresented minorities, individuals with disabilities, and other disadvantaged individuals .
+terms: Institution;Pediatric Research
+---
+application_id: 11094361
+activity_code: T32
+title: Interdisciplinary Training in Genome Sciences
+org_name: UNIVERSITY OF WASHINGTON
+phr: NARRATIVE
+Genomics is integral to modern biomedical research and diagnosis. Genome-wide studies are used to identify
+potential genetic causes of disease and investigate fundamental questions of biology and development. Our
+program will train pre- and postdoctoral trainees for future biomedical and interdisciplinary research in
+genomics and computational biology.
+terms: <Training><genome sciences><genomic science>
+---
+application_id: 10854824
+activity_code: T32
+title: Data Science Training in Demography and Population Health
+org_name: UNIVERSITY OF WASHINGTON
+phr: The Center for Studies in Demography and Ecology (CSDE) at the University of Washington proposes a training program to create a new generation of population scientists and demographers equipped with skills to conduct data intensive research with advanced computational and statistical methods. At the core of this program is a collaboration between CSDE, the eScience Institute (UW’s data science center), and the Center for Statistics and the Social Sciences (CSSS), three units with long standing relationships, a proven track record (including a BD2K track in Big Data for Demographic Research), and combined expertise in demographic methods, data science, computer science and statistical methods. Through this collaboration, trainees will take a series of coursework in the following areas: adva...
+terms: Data Science;Demography;population health;Training
+---
+application_id: 11010017
+activity_code: K23
+title: Using implementation science to adapt a targeted transportation intervention for patients with diabetic retinopathy (PRONTO-EYE)
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: PROJECT NARRATIVE Diabetic retinopathy is the most common cause of preventable vision loss in the U.S. and disproportionately affects minorities and people with limited socioeconomic resources. The proposed study will co-design, implement, and evaluate a ride-share transportation intervention, adapted from the existing PROgram for Non- emergency TranspOrtation (PRONTO), in patients with diabetic retinopathy residing in neighborhoods with high social vulnerability with a goal to increase adherence to scheduled ophthalmology visits as a critical step in reducing vision loss. This study will prioritize the association of social vulnerability with missed ophthalmology appointments to help guide a targeted patient-centered intervention.
+terms: Academy;Address;Adherence;Adoption;Adult;Affect;Appointment;Award;blind;Blindness;care providers;career;Caring;Chicago;Chronic;Clinic;Clinical;Communities;Complications of Diabetes Mellitus;Consolidated Framework for Implementation Research;Data;design;Diabetes Mellitus;Diabetic Retinopathy;Diagnosis;Discipline;Early Diagnosis;Early treatment;Educational workshop;effective intervention;effectiveness/implementation hybrid;effectiveness/implementation study;Electronic Health Record;Eligibility Determination;ethnic minority;Evaluation;evidence base;experience;Exposure to;Eye;Eye diseases;Future;Goals;Grant;Health;health disparity;health equity promotion;Health Services Accessibility;Health system;healthcare infrastructure;high risk;Home;Hospitals;Human;human centered design;Illinois;implementation outcomes;implementation science;implementation strategy;Improve Access;improved;indexing;Individual;Institute of Medicine (U.S.);Insurance;Intervention;Interview;K-Series Research Career Programs;Letters;Managed Care;Maps;Measures;Medicaid;Medicine;Mentors;Mentorship;Methodology;Methods;Minority;multi-site trial;Names;National Eye Institute;Neighborhoods;novel;Ophthalmology;Outcome;patient oriented;patient-level barriers;Patients;Penetration;Persons;Pilot Projects;pilot test;poor health outcome;Population;population health;post intervention;prevent;primary outcome;Proctor framework;programs;prototype;Proxy;racial minority;Recommendation;Reporting;Research;Research Personnel;Resources;Risk;Risk Reduction;Schedule;Services;social vulnerability;socioeconomics;Strategic Planning;stressor;Surveys;Target Populations;Testing;therapy design;Time;Training;Translational Research;Transportation;underserved community;United States;Universities;Visit;Visual;Visual impairment;Work
+---
+application_id: 10870059
+activity_code: T32
+title: University of Michigan Training Program in Genomic Science
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: NARRATIVE This proposal seeks continued funding for the University of Michigan Genome Science Training Program (GSTP). The goal of the GSTP is to train graduate students and postdoctoral fellows at the interface of the mathematical sciences and human genetics and genomics, a critical area of genome science in which well- trained individuals are in high demand and short supply.
+terms: genome sciences;Michigan;Training Programs;Universities
+---
+application_id: 10845484
+activity_code: T32
+title: Institutional Training Grant in Genomic Science
+org_name: WASHINGTON UNIVERSITY
+phr: Project Narrative Genome science refers to high-throughput, technology intensive, and computational approaches to understanding how variation in the human genome translates into phenotypic differences between individuals. The proposed program will train PhD and MD/PhD students to drive innovation in genome science and to apply their discoveries to improving patient outcomes.
+terms: genome sciences;Grant;Institution;Training
+---
+application_id: 11092968
+activity_code: T32
+title: University of Michigan Training Program in Genomic Science
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: This proposal seeks continued support for the University of Michigan Genome Science Training Program (GSTP). The goal of the GSTP is to train graduate students to be leaders working at the interface of genetics and genomics and the mathematical and computational sciences, a critical area of genome science in which well-trained individuals are in high demand and short supply. The GSTP has a demonstrated record of success having trained >150 scientists and leaders in genome science.
+terms: <Michigan><Training Programs><Universities><genome sciences><genomic science>
+---
+application_id: 10890178
+activity_code: K99
+title: Separating late gene transcription from viral DNA replication in KSHV
+org_name: UNIVERSITY OF CALIFORNIA BERKELEY
+phr: Project Narrative: In the life cycle of the human oncogenic virus Kaposi’s sarcoma-associated herpesvirus, the expression of key viral lates genes is dependent on replication of the viral genome. Here, we propose to use a variety of functional genomics methods to discover the viral proteins, viral DNA regulatory regions, and functional host interactors that maintain this dependency. Together, these will allow us to develop and test new models for this key therapeutic target in this human oncovirus.
+terms: Acquired Immunodeficiency Syndrome;Affect;Automobile Driving;Binding;Biological;Cancer Etiology;Cells;CRISPR/Cas technology;Data;Dependence;DNA;DNA biosynthesis;DNA-Directed DNA Polymerase;DNA-Directed RNA Polymerase;Double Stranded DNA Virus;ds-DNA;Elements;Essential Genes;Event;functional genomics;gammaherpesvirus;Gene Expression;Genes;Genetic;Genetic Transcription;Genome;Genomic approach;Genomic Instability;Herpesviridae;Human;human DNA;Human Herpesvirus 8;Immunocompromised Host;Individual;Infection;Integration Host Factors;Knowledge;Late Gene Transcriptions;Life Cycle Stages;Link;Lytic;lytic replication;Malignant Neoplasms;Measures;Methods;Modeling;Molecular;Mutagenesis;mutant;Mutation;Nucleic Acid Regulatory Sequences;Oncogenic;Oncogenic Viruses;Oncornaviruses;particle;Pathogenicity;Patients;Phenotype;Play;Postdoctoral Fellow;prevent;Process;Proteins;Regulatory Element;Replication Origin;RNA;Role;Testing;Therapeutic;therapeutic target;Transcription Coactivator;transcription factor;Viral;viral DNA;Viral Genes;Viral Genome;Viral Proteins;Virion;Virus;Virus Diseases;virus genetics;Virus Replication;Work
+---
+application_id: 11094948
+activity_code: T32
+title: Training Program in Computational Genomics
+org_name: UNIVERSITY OF PENNSYLVANIA
+phr: The goal of this project is to create a training program for graduate students to acquire skills to apply Data Science and Artificial Intelligence techniques to genomics of human diseases. Success of the program will contribute to training the next generation of the biomedical workforce in the application of state-of-the-art computation to genomics data.
+terms: <Genomics><Training Programs>
+---
+application_id: 10834935
+activity_code: T32
+title: Quantitative and Computational Biology Graduate Program
+org_name: PRINCETON UNIVERSITY
+phr: Genomics technology and the computer have revolutionized biomedical science. To enable the success of future biomedical researchers, a paradigm shift in graduate education is required, one in which biology and the more quantitative sciences, especially computation, are given equal weight. The NHGRI training program at Princeton has been one of the pioneer programs fulfilling this role.
+terms: Computational Biology;programs
+---
+application_id: 11094042
+activity_code: K99
+title: Regulation of Pathologic Inflammasome Responses to SARS-CoV-2
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: Project Narrative Acute respiratory distress syndrome (ARDS) underlies many COVID-19 fatalities and is linked to uncontrolled production of inflammatory mediators. The goal of this proposal is to understand how lung damage from SARS- CoV-2 infection, the virus that causes COVID-19, promotes this harmful inflammatory response and to identify specific molecules that mediate this response. Mechanistic insight from this work will inform therapeutic design and has broader relevance to all viral pathogens that cause ARDS.
+terms: 2019-nCoV;Acute Lung Injury;Acute Respiratory Distress Syndrome;Adaptor Signaling Protein;Advisory Committees;airway epithelium;anakinra;biomarker identification;Body Weight;Bystander Effect;CASP1 gene;Cell Communication;Cell Culture Techniques;Cell Death;Cell Death Induction;Cell secretion;cell type;Cells;Clinical Trials;Coculture Techniques;Collaborations;Communities;COVID-19;COVID-19 mortality;COVID-19 patient;COVID-19 test;CRISPR/Cas technology;Cues;cytokine;cytokine release syndrome;Data;design;Disease;DNA;env Gene Products;Epithelial Cells;Epithelium;Exogenous Factors;Faculty;Gene Deletion;Genes;Goals;Health;Hemorrhage;Human;Immune;In Vitro;in vivo;in vivo evaluation;Infection;Infection Control;Inflammasome;Inflammation;Inflammation Mediators;Inflammatory;Inflammatory Response;Innate Immune Response;insight;Interleukin 6 Receptor;Interleukin-1;Interleukin-1 beta;Interleukin-6;Leukocytes;Ligands;Link;Lung;lung injury;Lytic;Mediating;member;Meta-Analysis;Modeling;Molecular;Molecular Biology;Molecular Target;mouse model;multiple omics;Mus;Myelogenous;Myeloid Cells;Names;Outcome;pathogen;pathogenic virus;Pathologic;Pathway interactions;Patient-Focused Outcomes;Patients;Pattern;Pattern recognition receptor;Phosphorylation;Phosphotransferases;post SARS-CoV-2 infection;Post-Translational Protein Processing;Production;programs;protein complex;Proteins;receptor;Receptor Signaling;Regulation;Research;Research Personnel;response;Role;Sampling;SARS-CoV-2 antibody;SARS-CoV-2 infection;SARS-CoV-2 variant;severe COVID-19;Severities;Signal Transduction;single-cell RNA sequencing;skills;Source;Stimulus;success;System;Testing;Therapeutic;therapeutic target;Tissues;TNF gene;Toll-like receptors;Universities;Virion;Virus;Virus Diseases;Vision;Work
+---
+application_id: 10835072
+activity_code: K99
+title: Girk3 in bone biology and disease
+org_name: MAYO CLINIC ROCHESTER
+phr: PROJECT NARRATIVE Osteoporosis is a prevalent disease characterized by low bone mineral density, bone fragility, and fractures. Mice lacking the potassium ion channel Girk3 have elevated bone mass and reduced circulating cytokines in adulthood, making Girk3 a novel target for bone remodeling. This research will determine the physiological and cellular mechanisms by which Girk3 regulates cytokine production and bone mass and test whether Girk3 deletion prevents ovariectomy-induced osteoporosis in a cytokine-dependent manner.
+terms: Adult;Affect;Age;aged;aging process;Applied Skills;Award;Bioinformatics;Biological Assay;Biological Markers;Biology;Blood;bone;bone cell;Bone Density;Bone Development;Bone Diseases;bone fragility;bone loss;Bone Marrow;Bone Marrow Cells;bone mass;Bone remodeling;Bone Resorption;Calvaria;career;career development;Cell Lineage;Cells;Cellularity;Clinic;Continuous Infusion;cytokine;Cytometry;Data;Development;Development Plans;Disease;Educational workshop;Endocrinology;Enzyme-Linked Immunosorbent Assay;experimental study;Female;Foundations;Fracture;Goals;GTP-Binding Proteins;Harvest;Hematopoietic;IL3 Gene;improved;In Vitro;Inflammation Process;Inflammatory;innovation;Interleukin-1;Interleukin-1 beta;inward rectifier potassium channel;Ion Channel;Ion Channel Gating;Ions;Knowledge;Laboratories;Lead;Learning;Macrophage;male;Measures;Mechanics;meetings;Membrane;men;Mentors;Mentorship;Messenger RNA;Methods;microCT;Modeling;Molecular;monocyte;mouse model;Mus;Musculoskeletal;novel;old mice;Osteoblasts;Osteoclasts;Osteocytes;Osteogenesis;Osteoporosis;osteoporosis with pathological fracture;Ovariectomy;Phase;Physiological;Physiological Processes;Population;Positioning Attribute;Postdoctoral Fellow;Postmenopausal Osteoporosis;Potassium;Potassium Channel;pre-doctoral;prevent;Production;programs;Publications;Publishing;Research;research and development;Research Personnel;Role;Safety;Serum;Signal Pathway;Signal Transduction;single-cell RNA sequencing;skeletal;Skeleton;skills;success;symposium;synergism;Testing;Time;tool;Training;transcriptome;transcriptomics;Wild Type Mouse;Woman;Work
+---
+application_id: 10878776
+activity_code: T32
+title: HEMATOLOGY TRAINING
+org_name: UNIVERSITY OF WASHINGTON
+phr: PROJECT NARRATIVE There continues to be a need for rigorous scientists, and especially physician-scientists, in the field of hematology, since this discipline is at the forefront of translational investigation and modern medicine. This grant will support the training of hematology researchers at a critical time in their careers - the transition from post- doctoral fellow to independent investigator - and develop scientists that will advance hematology and health care in the USA.
+terms: Hematology;Training
+---
+application_id: 10910912
+activity_code: T32
+title: Training Program in Lung Biology and Pathobiology
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: Narrative This training grant application focused on lung biology and pathobiology requests continuing support for 7 predoctoral and 6 postdoctoral trainees. The Training Program is grounded in 5 inter-related thematic areas of research training: (1) Biology and Pathobiology of Lung Vasculature, (2) Regenerative Mechanisms in Lung and Vascular Biology, (3) Cellular and Humoral Bases of Lung Inflammation and Injury, (4) Cell Signaling Mechanisms in Lung Injury, and (5) Lung and Vascular Genomics. We are well positioned to continue to train a highly-qualitied group of young scientists, providing a range of skills needed in a rapidly-evolving and increasingly competitive scientific environment that can be applied in careers in both academic research and alternative pathways.
+terms: Biology;Lung;Training Programs
+---
+application_id: 10830258
+activity_code: K99
+title: Fibrosis, inflammation, and osteophyte formation in post-traumatic osteoarthritis
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Post-traumatic osteoarthritis (PTOA) is a complex degenerative joint disease that arises after injury and is characterized by pain, cartilage degradation, synovial inflammation and fibrosis, and formation of ectopic bone growths called osteophytes. PTOA is a chronic, debilitating condition that affects millions worldwide, yet there are currently no disease-modifying treatments. The overarching objective of this proposal is to comprehensively characterize cells and processes responsible for PTOA progression and to provide insights for the development of effective PTOA treatments that will meaningfully and tangibly improve patient outcomes.
+terms: Acceleration;Actins;Affect;Agonist;Arthritis;arthropathies;articular cartilage;ATAC-seq;Automobile Driving;beta catenin;Binding;Bioinformatics;Biological Assay;Biology;bone;Bone Growth;Bone Spur;career;Cartilage;cartilage degradation;Cell Nucleus;Cell Surface Receptors;cell type;Cells;Characteristics;Chondrocytes;Chronic;Clinical Research;Complex;Coupled;cytokine;Data;Degenerative polyarthritis;Development;differentiation in vitro;Disease;effective therapy;Fibroblasts;Fibrosis;G-Protein-Coupled Receptors;Goals;Health;Human;Hypertrophy;Immune;improved;In Vitro;inducible Cre;Inflammation;Inflammatory;Injections;injured;Injury;insight;Interleukin-6;joint function;joint injury;Joints;Kinetics;Knee;Knockout Mice;Knowledge acquisition;Label;Leucine-Rich Repeat;Link;Long term disability;Macrophage;Macrophage Activation;Mediating;Mentorship;mineralization;Molecular;Molecular Biology;Molecular Immunology;Multimodal Imaging;multiple omics;Mus;Musculoskeletal;Myofibroblast;neutralizing antibody;novel;Osteoblasts;osteochondral tissue;Osteogenesis;osteogenic;Outcome;Pain;pain sensitivity;Pathogenesis;Pathogenicity;Pathologic;Pathology;Patient-Focused Outcomes;pharmacologic;Phase;Population;Positioning Attribute;preclinical study;Process;progenitor;Proteins;Proteoglycan;receptor;Reporter;Reporter Genes;Research;Role;Science;Secondary to;Severities;Signal Pathway;Signal Transduction;single nucleus RNA-sequencing;single-cell RNA sequencing;skill acquisition;skills;Smooth Muscle;Synovial Cell;Synovial Fluid;Synovial Membrane;Synovitis;Technical Expertise;Testing;Tissues;Training;transcriptome sequencing;Transgenic Organisms;Traumatic Arthropathy;Vocational Guidance;Work
+---
+application_id: 10905011
+activity_code: T32
+title: Multi-Disciplinary Research Training in Respiratory Disease
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: NARRATIVE The T32 Colorado Training Program is designed to provide our Trainees with a comprehensive, integrative, and formal career development experience with the goal of positioning them to become the next generation of leaders in Pulmonary and Critical Care Medicine. Key outcomes for the CTP program will be the success rate of Trainees, including retention in academic positions, securing career development awards, high-quality peer- reviewed publications, development of intellectual property, and alignment with values of academic medicine.
+terms: Interdisciplinary Study;Research Training;Respiratory Disease
+---
+application_id: 11014231
+activity_code: T32
+title: Hematology Training
+org_name: UNIVERSITY OF WASHINGTON
+phr: PROJECT NARRATIVE
+There continues to be a need for rigorous scientists, and especially physician-scientists, in the field of hematology
+since this discipline is at the forefront of translational investigation and molecular medicine and is understaffed.
+This grant will support the training of hematology researchers at a critical time in their careers - the transition
+from post-doctoral fellow to independent investigator - and thus advance basic, translational, and clinical
+hematology research and health care in the USA.
+terms: <Hematology><Training>
+---
+application_id: 11012971
+activity_code: T32
+title: Cardiovasology
+org_name: MAYO CLINIC ROCHESTER
+phr: The “Cardiovasology” Training Program at Mayo Clinic is an avenue for advanced training of the specialized workforce of physicians/scientists focused on heart health and disease, with a focus on heart failure. This proposal expands Program faculty and scope, deepens and broadens its scientific expertise, fosters excellence of mentors and trainees, and integrates new training in emerging technologies and innovations. This Program builds on over four-decades of success in attracting, mentoring and retaining talented individuals that will form the next generation of science leaders and scholars in this country.
+terms: N/A
+---
+application_id: 11016376
+activity_code: T32
+title: Training Program in Hematology
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: The goal of this Program is to attract and to train exceptional postdoctoral fellows for careers in academic adult
+hematology. Improved understanding of stem cell biology, hemoglobinopathies, thrombotic microangiopathies,
+bone marrow failure states, and myeloproliferative diseases will aid in translating laboratory findings into novel
+clinical therapies.
+terms: <Hematology><Training Programs>
+---
+application_id: 11196802
+activity_code: T32
+title: Training Grant in Cardiovascular Research
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: NARRATIVE
+The Cardiovascular Research Training Program at Brigham and Women's Hospital aims to
+prepare trainees for independent careers in investigative pursuits. This T-32 focusses on 1)
+Myocardial Cellular and Molecular Biology and Genetics, 2) Vascular Cell and Molecular
+Biology, and 3) Translational/Clinical Cardiovascular Research. Our environment offers
+substantial resources to trainees to ensure continuation of our longstanding record of preparing
+a talented pool of trainees for productive independent research careers.
+terms: <Cardiovascular><Cardiovascular Body System><Cardiovascular Organ System><Cardiovascular system><Grant><Heart Vascular><Research><Training><circulatory system>
+---
+application_id: 10880562
+activity_code: T32
+title: Wisconsin Allergy Research Training (WISCART) Program
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: Allergic diseases and asthma are among the most common diseases, and are increasing for reasons that are not well understood. The goal of this program is to provide training in clinical and translational research to physician scientists who wish to pursue academic careers devoted to research, education and leadership in these critical areas of unmet medical need.
+terms: Hypersensitivity;Research Training;Training Programs;Wisconsin
+---
+application_id: 11071240
+activity_code: F31
+title: Association of Discrimination Reported During Pregnancy with Cardiovascular Disease Risk in Mothers
+org_name: UNIVERSITY OF DENVER (COLORADO SEMINARY)
+phr: PROJECT NARRATIVE Cardiovascular disease (CVD) is the leading cause of death among women, and pregnancy is a sensitive period for the onset of future maternal CVD and a potential window of opportunity to reduce disparities in maternal CVD. This longitudinal study investigates the association of discrimination during pregnancy on maternal cardiovascular disease (CVD) risk and evaluates whether childhood experiences increase vulnerability to the effects of this association. By assessing psychosocial stressors, including discrimination, adverse and positive childhood experiences, alongside CVD risk factors in a diverse cohort of over 200 mothers, this project could elucidate early predictors of maternal CVD and inform targeted interventions for preventing future cardiovascular conditions.
+terms: Address;Adult;adverse childhood events;adverse pregnancy outcome;American Heart Association;arterial stiffness;Behavioral;Biological;Blood Pressure;Blood Volume;Body fat;Body mass index;Buffers;Cardiac;Cardiac Output;Cardiovascular Diseases;cardiovascular disorder risk;cardiovascular health;cardiovascular risk factor;Cardiovascular system;career;Cause of Death;Childbirth;Childhood;cohort;Discrimination;disparity reduction;Doctor of Philosophy;Enrollment;ethnic diversity;experience;Fellowship;Funding;Future;General Population;Goals;graduate student;Grant;high body mass index;Hypertension;hypertensive disease of pregnancy;indexing;Individual;Intervention;Knowledge;Life;Life Experience;Link;longitudinal analysis;longitudinal design;Longitudinal Studies;Maternal Health;maternal stress;Mentors;Mentorship;Methodology;Mothers;Onset of illness;Pathway interactions;perceived discrimination;Perinatal;perinatal period;Physiology;Population;post pregnancy;Postpartum Period;Predisposition;Pregnancy;prenatal;prepregnancy;prevent;Prevention;Productivity;prospective;psychosocial;Psychosocial Assessment and Care;Psychosocial Stress;psychosocial stressors;racial diversity;Reporting;Research;Research Personnel;resilience factor;Risk Factors;risk prediction model;Role;skills;socioeconomics;Statistical Data Interpretation;stressor;Testing;Training;United States National Institutes of Health;Universities;waist circumference;Woman;Women&apos;s mortality;Writing
+---
+application_id: 11198058
+activity_code: T32
+title: Training Grant in Circadian and Sleep Research-Resubmission
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: Project Narrative
+There is an urgent need to better understand the interactions between sleep and, circadian function and
+dysfunction and their implications for human health, including cardiometabolic health, as progress in this area is
+crucial for the development and implementation of preventive and therapeutic strategies to address the epidemics
+of chronic disease that represent a major threat to public health in America and elsewhere. The proposed Training
+Program in Circadian and Sleep Research is uniquely poised to offer the multidisciplinary training needed to
+prepare investigators in basic, translational and patient-oriented research to lead efforts to improve our
+understanding of the role of sleep and circadian integrated functions (and dysfunction) for health and disease, and
+to d...
+terms: <Grant><Research><Sleep><Training><circadian>
+---
+application_id: 10875480
+activity_code: T32
+title: Training Program in Cardiometabolic Diseases
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: PROJECT NARRATIVE Cardiovascular disease remains the major cause of death in the US. Through the renewal and expansion of this highly successful postdoctoral training program, we align ourselves with the stated goal of the NHLBI to “provide a sustained flow of qualified physician-scientists able to think critically and translate findings freely between the basic and clinical spheres.” We will accomplish this goal through strong mentorship by established experts in the field, specialized didactics, and intensive training through basic, translational and/or clinical research projects tackling the major forms of cardiovascular disease.
+terms: Cardiometabolic Disease;Training Programs
+---
+application_id: 10912005
+activity_code: T32
+title: Hypertension and Cardiorenal Diseases Research Training Program
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: Project Narrative Hypertension has long been recognized as a major risk factor for cardiovascular diseases, including coronary artery disease, heart failure and stroke, and for ESRD. In the southeastern United States, and especially in Mississippi, cardiovascular and renal diseases occur much more frequently than in the rest of the country. The objective of the multidisciplinary Hypertension and Cardiorenal Diseases Research (HCDR) Training Program is to recruit, train, and mentor pre-doctoral and postdoctoral students in cardiovascular and renal research so that they become the next generation of researchers in this field.
+terms: Cardiorenal syndrome;Hypertension;Research Training;Training Programs

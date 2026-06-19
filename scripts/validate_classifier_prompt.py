@@ -34,10 +34,35 @@ from supabase import create_client
 # Import the NEW prompt + helpers from the canonical module
 from classifier import (
     BATCH_PROMPT as NEW_PROMPT,
-    MODEL,
+    MODEL as DEFAULT_MODEL,
     PROJECTS_PER_API_CALL,
-    _normalize_classification,
+    VALID_CATEGORIES,
+    classify_projects as new_classify_projects,
 )
+
+
+def _normalize_classification(raw):
+    """Normalize for the OLD-prompt validation path. Accepts all 9
+    categories (training and infrastructure included) since the OLD prompt
+    was designed to predict them. For the NEW path we use the production
+    classifier function directly, which has its own restricted normalization.
+    """
+    app_id = raw.get('application_id')
+    if not app_id:
+        return None
+    category = (raw.get('primary_category') or 'other').lower()
+    if category not in VALID_CATEGORIES:
+        category = 'other'
+    try:
+        confidence = float(raw.get('category_confidence', 50))
+    except (TypeError, ValueError):
+        confidence = 50.0
+    confidence = max(0.0, min(100.0, confidence))
+    return {
+        'application_id': app_id,
+        'primary_category': category,
+        'category_confidence': confidence,
+    }
 
 
 # The OLD prompt — same content that lived in classify_projects_batched.py
@@ -115,7 +140,7 @@ def fetch_abstracts(supabase, app_ids: List[str]) -> Dict[str, str]:
     return abstracts
 
 
-def run_prompt(client, prompt_template, projects, abstracts_map):
+def run_prompt(client, model, prompt_template, projects, abstracts_map):
     """Run one prompt against batches of projects. Returns dict mapping
     application_id → predicted primary_category."""
     predictions: Dict[str, str] = {}
@@ -129,6 +154,7 @@ def run_prompt(client, prompt_template, projects, abstracts_map):
             abstract = abstracts_map.get(app_id, '')
             prompt_input.append({
                 'application_id': app_id,
+                'activity_code': p.get('activity_code', ''),
                 'title': p.get('title', ''),
                 'org_name': p.get('org_name', ''),
                 'phr': '',
@@ -139,7 +165,7 @@ def run_prompt(client, prompt_template, projects, abstracts_map):
 
         try:
             message = client.messages.create(
-                model=MODEL,
+                model=model,
                 max_tokens=4096,
                 messages=[{'role': 'user', 'content': prompt}],
             )
@@ -169,6 +195,8 @@ def main():
     parser.add_argument('--sample-size', type=int, default=500)
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--disagreements', default='etl/category_disagreements_clean.json')
+    parser.add_argument('--model', default=DEFAULT_MODEL, help=f'Anthropic model id (default: {DEFAULT_MODEL})')
+    parser.add_argument('--old-model', default=DEFAULT_MODEL, help='Model for the OLD prompt (default: same as --model)')
     args = parser.parse_args()
 
     print('=' * 72)
@@ -196,10 +224,12 @@ def main():
     print(f'  Got abstracts for {len(abstracts):,} of {len(sample)} sampled projects')
     print()
 
-    # Build the project payload that both prompts consume
+    # Build the project payload that both prompts consume. activity_code is
+    # essential — without it Pass 1 deterministic routing can't fire.
     projects = [
         {
             'application_id': str(p['application_id']),
+            'activity_code': p.get('activity_code', '') or '',
             'title': p.get('title', '') or '',
             'org_name': p.get('org_name', '') or '',
         }
@@ -215,15 +245,26 @@ def main():
     client = Anthropic(api_key=os.environ['ANTHROPIC_API_KEY'])
 
     print('-' * 72)
-    print('Running OLD prompt...')
+    print(f'Running OLD prompt (pure-LLM, model={args.old_model})...')
     print('-' * 72)
-    old_preds = run_prompt(client, OLD_PROMPT, projects, abstracts)
+    old_preds = run_prompt(client, args.old_model, OLD_PROMPT, projects, abstracts)
 
     print()
     print('-' * 72)
-    print('Running NEW prompt...')
+    print(f'Running NEW classifier (Python Pass 1 + Haiku Pass 2)...')
     print('-' * 72)
-    new_preds = run_prompt(client, NEW_PROMPT, projects, abstracts)
+    # Use the production classify_projects function end-to-end. It applies
+    # Pass 1 deterministic activity-code routing in Python, then sends only
+    # the remainder to the LLM with the content-only prompt.
+    new_results = new_classify_projects(projects, abstracts)
+    new_preds = {str(r['application_id']): r['primary_category'] for r in new_results}
+
+    pass1_count = len(projects) - sum(1 for p in projects if str(p['application_id']) not in new_preds or new_preds[str(p['application_id'])] not in ('basic_research', 'biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other'))
+    # Count how many were Pass 1 routed (training or infrastructure)
+    pass1_routed = sum(1 for r in new_results if r['primary_category'] in ('training', 'infrastructure'))
+    llm_routed = sum(1 for r in new_results if r['primary_category'] not in ('training', 'infrastructure'))
+    print(f'  Pass 1 (Python): {pass1_routed} projects routed without LLM')
+    print(f'  Pass 2 (LLM):    {llm_routed} projects classified by Haiku')
 
     # Score
     old_matches = sum(1 for aid, t in truth.items() if old_preds.get(aid) == t)

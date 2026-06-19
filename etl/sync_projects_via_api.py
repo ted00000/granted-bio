@@ -45,7 +45,7 @@ from process_projects import (
     parse_date,
     parse_cost,
 )
-from classify_projects import classify_biotools_confidence
+from classifier import classify_projects as run_classifier
 
 
 API_URL = 'https://api.reporter.nih.gov/v2/projects/search'
@@ -265,30 +265,11 @@ def main() -> None:
         print('No bio-related projects in the API response. Done.')
         return
 
-    # 3. Classify the bio rows (Claude Haiku via classify_projects_v2)
-    # Pull abstracts out of the dict for separate abstract upsert later.
-    print(f'Classifying {len(bio_rows):,} new projects (Claude Haiku)...')
-    classified: List[Dict[str, Any]] = []
+    # 3. Pull abstracts out for separate abstract upsert later, and build
+    # the per-project payload the canonical classifier expects.
     abstracts_to_load: List[Dict[str, Any]] = []
-    classification_errors = 0
-    for i, row in enumerate(bio_rows):
-        if i % 500 == 0 and i > 0:
-            print(f'  {i:,} / {len(bio_rows):,} classified')
-        try:
-            scores = classify_biotools_confidence(row)
-            row['biotools_confidence'] = scores['score']
-            row['biotools_signals'] = json.dumps(scores['signals'])
-            row['biotools_reasoning'] = scores['reasoning']
-            row['primary_category'] = (
-                'biotools' if scores['confidence'] != 'LOW' else 'other'
-            )
-            row['primary_category_confidence'] = scores['score']
-        except Exception as e:
-            classification_errors += 1
-            if classification_errors <= 5:
-                print(f'  classify error on {row.get("application_id")}: {str(e)[:120]}')
-            # Fall through; row still gets ingested without classification scores
-
+    abstracts_map: Dict[str, str] = {}
+    for row in bio_rows:
         abstract_text = row.pop('_abstract_text', '')
         if abstract_text:
             abstracts_to_load.append({
@@ -296,8 +277,26 @@ def main() -> None:
                 'abstract_text': abstract_text,
                 'abstract_length': len(abstract_text),
             })
+            abstracts_map[row['application_id']] = abstract_text
+
+    # 4. Classify via the canonical classifier (Python Pass 1 + Haiku Pass 2).
+    print(f'Classifying {len(bio_rows):,} new projects (Pass 1 in code + Haiku for content)...')
+    classifications = run_classifier(bio_rows, abstracts_map)
+    print(f'  Classified: {len(classifications):,} / {len(bio_rows):,}')
+
+    # Merge classifications back into the bio_rows by application_id.
+    class_by_id = {str(c['application_id']): c for c in classifications}
+    classified: List[Dict[str, Any]] = []
+    for row in bio_rows:
+        app_id = str(row.get('application_id'))
+        c = class_by_id.get(app_id)
+        if c:
+            row['primary_category'] = c['primary_category']
+            row['primary_category_confidence'] = c['category_confidence']
+            row['org_type'] = c['org_type']
+        # If classifier failed for a row we still ingest it; primary_category
+        # stays NULL and the row surfaces in the admin review queue.
         classified.append(row)
-    print(f'  Classified: {len(classified):,} (errors: {classification_errors})')
     print()
 
     if args.dry_run:

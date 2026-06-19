@@ -1,0 +1,564 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 454 of 459 (50 projects):
+
+---
+application_id: 11400277
+activity_code: F32
+title: Training in Behavioral Design Interventions to Address Stigma among Men Who have Sex with Men
+org_name: YALE UNIVERSITY
+phr: In Malaysia, the high HIV prevalence among men who have sex with men (MSM) is exacerbated by significant
+stigma, hindering effective HIV prevention and treatment. This research proposal explores the implementation
+of rapid-start antiretroviral therapy (RS-ART) to reduce stigma and improve treatment outcomes for MSM. The
+study will employ asynchronous online focus groups and facilitate process improvement with clinical staff using
+NIATx quality improvement to assess RS-ART's effectiveness as a stigma reduction intervention, with dyadic
+analysis conducted to gain skills for a future K01.
+terms: <AIDS Virus><AIDS care><AIDS prevention><AIDS related stigma><AIDS stigma><Acceleration><Acquired Immune Deficiency Syndrome Virus><Acquired Immunodeficiency Syndrome Virus><Address><Adherence><Affect><Applications Grants><Architecture><Behavior><Behavioral><Behavioral trial><Biometrics><Biometry><Biostatistics><Capital><Charge><Clinic><Clinical><Cognitive Discrimination><Cohort Studies><Concurrent Studies><Country><Death Rate><Decision Making><Development><Diagnosis><Discrimination><Education><Educational aspects><Effectiveness><Engineering><Engineering / Architecture><Epidemic><Evidence based practice><Exploration, Preparation, Implementation, and Sustainability><Exploration, Preparation, Implementation, and Sustainment><Federation of Malaya><Fellowship><Focus Groups><Future><Goals><Grant Proposals><Guidelines><HIV><HIV Care><HIV Prevention><HIV associated stigma><HIV incidence><HIV individuals><HIV infected individuals><HIV infected men><HIV infected persons><HIV infection prevalence><HIV internalized stigma><HIV intervention><HIV medical care><HIV patient care><HIV people><HIV positive individuals><HIV positive men><HIV prevalence><HIV related care><HIV related patient care><HIV related stigma><HIV stigma><HIV therapeutic><HIV therapy><HIV treatment><HIV+ men><HIV-1 care><HIV-1 incidence><HIV-1 infection incidence><HIV-1 infection prevalence><HIV-1 intervention><HIV-1 prevalence><HIV-1 prevention><HIV-1 therapeutic><HIV-1 therapy><HIV-1 treatment><HIV-based discrimination><HIV-related discrimination><HIV-related social stigma><HIV/AIDS incidence><HIV/AIDS prevalence><HIV/AIDS prevention><HIV/AIDS stigma><Health><Health Care Providers><Health Personnel><Homosexuality><Human Immunodeficiency Virus therapy><Human Immunodeficiency Virus treatment><Human Immunodeficiency Viruses><Incidence><Individual><Infection><Injecting drug user><Injection Drug User><International Agencies><International Perspectives><Intervention><Investigators><Judgment><LAV-HTLV-III><LMIC><Laws><Learning><Low income><Lymphadenopathy-Associated Virus><MD students><MSM><Malay Federation><Malaya><Malaysia><Males living with HIV><Man who have sex with Man><Medical><Medical Students><Men with HIV><Mentors><Mentorship><Multinational Perspectives><Neurosciences><Newly Diagnosed><Opportunistic Infections><Outcome><PLWH><PWH><PWID><Patients><Phase><Physicians><Police><Policies><Politics><Population><Position><Positioning Attribute><Prevent HIV><Preventative strategy><Prevention strategy><Preventive strategy><Process><Protocol><Protocols documentation><Psychology><Public Health><Public Policy><Recommendation><Research><Research Personnel><Research Proposals><Researchers><Risk><Role><Sexual Transmission><Social Marketing><Specialty><Stereotyping><Stigma around HIV><Stigma in HIV><Stigma related to HIV><Techniques><Testing><Training><Training Programs><Treatment outcome><Viral><Virus-HIV><antiretroviral therapy><antiretroviral treatment><barriers to implementation><behavioral economics><care of HIV-1><career><community marginalization><cost><design><designing><developmental><disparity in health><effective intervention><experience><hands on research><health care personnel><health care settings><health care worker><health disparity><health provider><health workforce><human immunodeficiency virus care><human immunodeficiency virus incidence><human immunodeficiency virus prevalence><humiliation><implementation barriers><implementation challenges><implementation facilitation><implementation science><implementation strategy><improved><individuals infected with HIV><individuals with HIV><individuals with human immunodeficiency virus><innovate><innovation><innovative><insight><intervention design><lens><lenses><low and middle-income countries><man living with HIV><marginalized community><marginalized group><marginalized individual><marginalized people><marginalized population><medical personnel><medical school students><medical specialties><member><men diagnosed with HIV><men having sex with men><men infected with HIV><men living with HIV><men who have sex with men><men who have sex with other men><mortality><mortality rate><multidisciplinary><pandemic><pandemic disease><people infected with HIV><people infected with human immunodeficiency virus><people living with HIV><people who inject drugs><people who inject illicit drugs><people with HIV><people with human immunodeficiency virus><persons who inject drugs><post-doctoral training><prevent AIDS><prevent human immunodeficiency virus><primary care clinic><process improvement><programs><prospective><sexually transmitted><skills><skills training><social role><social stigma><sodomy><stigma><stigma associated with HIV><strategies for implementation><systematic review><therapy design><tool><treat HIV><treat Human Immunodeficiency Virus><treatment as prevention><treatment design><treatment provider><treatment strategy><treatment-based prevention>
+---
+application_id: 11071981
+activity_code: K23
+title: Biomarker Discovery in Portopulmonary Hypertension
+org_name: UNIVERSITY OF CINCINNATI
+phr: PROJECT NARRATIVE
+Portopulmonary hypertension (PoPH) patients suffer from a cardiovascular disease with very high morbidity
+and mortality that occurs exclusively in those with underlying liver disease. Although both the incidence and
+prevalence of chronic liver disease and PoPH have been increasing, the mechanisms by which liver
+dysfunction leads to PoPH, the optimal markers of disease, and the best treatments to improve outcomes in
+this high-risk population, are all poorly developed. This work, focusing on dysregulated vascular endothelial
+growth factor signaling and hepatocellular dysfunction, addresses this urgent and growing clinical need by
+identifying and developing new biomarkers that will enable more accurate diagnosis, improved risk
+stratification, and more precise treatment for p...
+terms: <Address><Affect><Animal Model><Animal Models and Related Studies><Arterial Disorder><Arteriopathy><Assay><BNP Gene Product><BNP-32><Benchmarking><Best Practice Analysis><Bioassay><Biological><Biological Assay><Biological Markers><Blood Serum><Blood Vessels><Body Tissues><Bone Morphogenetic Protein Gene><Bone Morphogenetic Proteins><Brain Natriuretic Peptide-32><Brain natriuretic peptide><Cardiac Catheterization><Cardiac Catheterization Procedures><Cardiovascular Diseases><Cell Communication and Signaling><Cell Signaling><Cirrhosis><Clinical><Clinical Data><Clinical Research><Clinical Study><Collaborations><Data><Data Analyses><Data Analysis><Data Banks><Databanks><Dedications><Deterioration><Development><Development Plans><Diagnosis><Diagnostic><Differential Gene Expression><Disease><Disease Marker><Disorder><Dysfunction><Early Diagnosis><Early treatment><Endothelial Cells><Ensure><Environment><Epidemiology><Estrogen Metabolism><Estrogens><Exhibits><FLT VEGF Receptor><FLT1><FLT1 RTK><FLT1 Receptor Tyrosine Kinase><FLT1 gene><FMS-Related Tyrosine Kinase 1 Gene><Flt-1><Foundations><Functional disorder><Future><Gene Expression><Genes><Goals><Heart Catheterization><Heart Catheterization Procedure><Hepatic><Hepatic Cirrhosis><Hepatic Disorder><Hepatic Stellate Cell><Hepatic Transplantation><Incidence><Insertion of catheter into heart chamber><Institution><Intracellular Communication and Signaling><Ito Cell><Knowledge><Liver><Liver Cirrhosis><Liver Dysfunction><Liver Grafting><Liver Transplant><Liver diseases><Long-term cohort><Longitudinal cohort><Lung Diseases><Measures><Mentors><Modeling><Molecular><Morbidity><Morbidity - disease rate><NGS Method><NGS system><NIH><National Institutes of Health><Natriuretic Factor-32><Natriuretic Peptide Hormones><Natriuretic Peptides><Nesiritide><Nuclear RNA><Outcome><PKC(alpha)><PKCA><PKCα><PRKCA><PRKCA gene><Pathogenesis><Pathway interactions><Patient Care><Patient Care Delivery><Patient outcome><Patient-Centered Outcomes><Patient-Focused Outcomes><Patients><Peptides><Physiopathology><Population><Portal Hypertension><Prevalence><Prognosis><Prognostic Marker><Protein Kinase C Alpha><Protein Kinase C α><Protein Kinase Calpha><Protein Secretion><Proteins><Proto-Oncogene Protein flt><Public Health><Pulmonary Diseases><Pulmonary Disorder><Pulmonary Vascular Resistance><R-Series Research Projects><R01 Mechanism><R01 Program><RNA Seq><RNA sequencing><RNAseq><Receptor Protein><Receptor Tyrosine Kinase,Class V><Regulation><Research><Research Grants><Research Project Grants><Research Projects><Research Resources><Resources><Sampling><Serum><Severity of illness><Signal Pathway><Signal Transduction><Signal Transduction Systems><Signaling><Single-Nucleus Sequencing><Specificity><Testing><Therapeutic><Therapeutic Estrogen><Tissue Banks><Tissue Collection><Tissue repository><Tissue-Specific Differential Gene Expression><Tissue-Specific Gene Expression><Tissues><Training><Translational Research><Translational Science><Type-B Natriuretic Peptide><Tyrosine Protein Kinase FRT><Tyrosine Protein Kinase Receptor FLT><United States National Institutes of Health><VEGF><VEGF Receptor flt-1 Protein><VEGFR-1><VEGFR1><VEGFs><Validation><Vascular Endothelial Growth Factor Receptor-1><Vascular Endothelial Growth Factor/Vascular Permeability Factor Receptor Gene><Vascular Endothelial Growth Factors><Vascular remodeling><Work><accurate diagnosis><aggressive therapy><aggressive treatment><angiogenesis><benchmark><bio-markers><biobank><biologic><biologic marker><biological signal transduction><biomarker><biomarker discovery><biomarker validation><biorepository><bone morphogenic protein><brain Natriuretic factor><candidate biomarker><candidate identification><candidate marker><cardiovascular disorder><care for patients><care of patients><career development><caring for patients><chronic hepatic disease><chronic hepatic disorder><chronic liver disease><chronic liver disorder><cirrhotic><clinical care><clinical practice><clinical significance><clinically significant><cohort><data depository><data interpretation><data repository><data set repository><dataset repository><developmental><diagnostic ability><diagnostic biomarker><diagnostic capability><diagnostic marker><diagnostic power><diagnostic utility><diagnostic value><differential expression><differentially expressed><disease of the lung><disease phenotype><disease severity><disorder of the lung><early detection><early therapy><epidemiologic><epidemiological><experience><fms-Like Tyrosine Kinase><hepatic body system><hepatic disease><hepatic organ system><hepatopathy><high risk group><high risk individual><high risk people><high risk population><hypertensive><impaired pulmonary vascularization><improved><improved outcome><interdisciplinary approach><liver disorder><liver transplantation><lung artery blood pressure><lung disorder><lung vascular disease><lung vascular remodeling><marker validation><model of animal><mortality><multidisciplinary approach><new diagnostics><new marker><next gen sequencing><next generation diagnostics><next generation sequencing><nextgen sequencing><novel><novel biomarker><novel diagnostics><novel marker><participant enrollment><pathophysiology><pathway><patient enrollment><patient oriented outcomes><portopulmonary hypertension><predictive biological marker><predictive biomarkers><predictive marker><predictive molecular biomarker><pressure><pressure in pulmonary arteries><prognostic ability><prognostic biomarker><prognostic indicator><prognostic performance><prognostic power><prognostic utility><prognostic value><prognostication><prospective><protein kinase Cα><pulmonary><pulmonary arterial blood pressure><pulmonary arterial hypertension><pulmonary arterial pressure><pulmonary artery hypertension><pulmonary artery pressure><pulmonary artery systolic pressure><pulmonary vascular disease><pulmonary vascular disorder><pulmonary vascular dysfunction><pulmonary vascular remodeling><pulmonary vasculopathy><receptor><response><response to therapy><response to treatment><risk stratification><sNuc-Seq><single nucleus RNA-sequencing><single nucleus seq><single-nucleus RNA-seq><snRNA sequencing><snRNA-seq><specific biomarkers><stellate cell><stratify risk><success><targeted drug therapy><targeted drug treatments><targeted therapeutic><targeted therapeutic agents><targeted therapy><targeted treatment><therapeutic response><therapeutic target><therapy response><tool><transcriptional differences><transcriptome sequencing><transcriptomic sequencing><transcriptomics><translation research><translational investigation><treatment response><treatment responsiveness><validations><vascular>
+---
+application_id: 10906672
+activity_code: T32
+title: Training Program in Free Radical and Radiation Biology
+org_name: UNIVERSITY OF IOWA
+phr: Project Narrative:
+There is growing evidence that disruptions in redox biology and oxidative stress mediated by oxygen free
+radicals (as well as other reactive oxygen and nitrogen species) are causally involved in initiation, growth,
+invasion, metastasis, and treatment of cancer. Free Radical Biology also has strong mechanistic links to
+radiation biology, cancer biology, inflammation, and degenerative diseases associated with aging. Given the
+rapidly expanding importance of these concepts in translational biomedical research, the unique Training
+Program in Free Radical and Radiation Biology meets a national need for scientists to develop novel
+mechanism based approaches to reduce the health effects of cancer and educate the next generation of
+leaders in this field that spans both basic and...
+terms: <Free Radicals><Radiation Biology><Radiobiology><Training Programs>
+---
+application_id: 10914023
+activity_code: T32
+title: Research Training in the Neuroscience of Aging
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: Project Narrative
+We describe a training program that seeks to identify a group of highly talented predoctoral students to become
+the next generation of researchers in the neuroscience of aging who will provide significant advances in the
+understanding and treatment of age-related changes in brain function and age-related neurodegenerative
+conditions such as Alzheimer's disease. Predoctoral students are offered a flexible, interdisciplinary program of
+course work, coupled with basic and/or translational research in the neuroscience of aging, to achieve these
+important goals that will contribute to improved public health.
+terms: <Aging><Neurosciences><Research Training>
+---
+application_id: 11035542
+activity_code: K99
+title: Parent Social Buffering and Dyadic Music Intervention to Decrease Distress in Infants and Young Children during Hematopoietic Stem Cell Transplant and their Parents
+org_name: INDIANA UNIVERSITY INDIANAPOLIS
+phr: PROJECT NARRATIVE
+The proposed research is relevant to public health because it aims to lower high and sustained levels
+of distress experienced by infants/young children (IYC) during hematopoietic stem cell transplant and
+their parents, intending to prevent IYC adjustment and developmental problems and traumatic stress
+symptoms in parents after treatment ends. Developmentally, IYC are unable to effectively self-
+regulate and rely on parents to manage and buffer the impact of stressful events; however, high
+parent distress makes this buffering process less effective. Through a series of studies, we will adapt
+an established interactive, music-based play intervention to support parent buffering behaviors and
+lower distress in both the IYC and parent during transplant, addressing the absence ...
+terms: <0-11 years old><Address><Admission><Admission activity><After Care><After-Treatment><Aftercare><Area><Behavior><Behavioral><Buffers><Calibration><Cancer Treatment><Child><Child Youth><Childhood><Children (0-21)><Clinical><Data><Development><Distress><Enrollment><Evaluation><Event><Evidence based intervention><Exposure to><Goals><HSC transplantation><Health><Hematopoietic Stem Cell Transplant><Hematopoietic Stem Cell Transplantation><Hospital Admission><Hospitalization><Impairment><Infant><Intervention><Intervention Trial><Interventional trial><Interview><Investigators><Learning><Malignant Neoplasm Therapy><Malignant Neoplasm Treatment><Manuals><Measures><Mediation><Medical><Memory><Mentors><Modeling><Music><Music Intervention><Music Therapy><Negotiating><Negotiation><Oncology><Oncology Cancer><Outcome><Pain><Painful><Parent-Child Relations><Parent-Child Relationship><Parents><Patients><Pattern><Phase><Play><Play Intervention><Play Therapy><Position><Positioning Attribute><Probabilistic Models><Probability Models><Procedures><Process><Public Health><Randomized><Reporting><Research><Research Personnel><Researchers><Risk><Scientist><Series><Site><Statistical Models><Stress><Stressful Event><Symptom Burden><Symptoms><Testing><Training><Training Programs><Transplantation><Trauma><United States><acceptability and feasibility><age group><animation><anti-cancer therapy><attentional control><biological adaptation to stress><blood stem cell transplantation><cancer therapy><cancer-directed therapy><clinical significance><clinically significant><develop therapy><developmental><efficacy trial><emotional distress><enroll><experience><feeling distress><feeling upset><hematopoietic cell transplantation><hematopoietic cellular transplantation><hematopoietic progenitor cell transplantation><high risk><intervention development><kids><multi-site trial><multisite trial><parent><parent child interaction><parent offspring interaction><pediatric><pilot trial><post treatment><post-traumatic stress symptoms><post-traumatic symptoms><posttraumatic stress symptoms><posttraumatic symptoms><prevent><preventing><programs><randomisation><randomization><randomly assigned><reaction; crisis><skills><social><statistical linear mixed models><statistical linear models><stress response><stress symptom><stress; reaction><stressful experience><stressful life event><stressful life experience><theories><therapy development><transplant><transplant therapy><transplant treatment><transplantation therapy><transplantation treatment><traumatic event><traumatic stress><treatment development><treatment risk><trial design><youngster>
+---
+application_id: 10917117
+activity_code: T32
+title: Research on Eating and Activity for Community Health (REACH): An Applied Epidemiology Training Program to Improve Weight-Related Health in Youth and Families from Diverse Communities
+org_name: UNIVERSITY OF MINNESOTA
+phr: Narrative
+There is an urgent need to reduce the high prevalence and unequal distribution of weight-related problems,
+including obesity, poor dietary intake, inadequate physical activity, body dissatisfaction, and disordered eating
+behaviors. It is essential to train the next generation of scientists in how to conduct innovative and impactful
+research to ensure positive weight-related health among youth and families from diverse communities.
+There is a clear need for the proposed training program, which will utilize a health equity lens to address a
+broad spectrum of weight-related problems across critical periods of the life course and ensure that future
+scientists are trained in both observational and intervention research and in translating research into action.
+terms: <Communities><Community Health><Eating><Epidemiology><Family><Food Intake><Health><Research><Training Programs><Weight><Youth><Youth 10-21><community-based health><epidemiologic><epidemiological><improved><weights>
+---
+application_id: 10933937
+activity_code: T32
+title: Pathways in Biological Sciences Training Program
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: The Pathways in Biological Sciences (PiBS) program trains a select group of PhD students to prepare them for success in the rapidly growing number of future careers while they conduct their graduate research on the most pressing problems in modern biology and human health. PiBS ensures the acquisition of critical scientific, leadership, and communication skills. PiBS trainees will benefit society and public health through their career-long contributions to a variety of biological endeavors, including research, industry, education, consulting, communication, and policy.
+terms: <Biologic Sciences><Biological Sciences><Bioscience><Life Sciences><Pathway interactions><Training Programs><pathway>
+---
+application_id: 10935436
+activity_code: T32
+title: RESTEP in AZ: Regenerative Engineering, Science, and Technology Education Program in Arizona
+org_name: ARIZONA STATE UNIVERSITY-TEMPE CAMPUS
+phr: PROJECT NARRATIVE
+ This training program, led by the faculty of Arizona State University (ASU), will develop a new generation of
+scientists and engineers who will drive the advancement of regenerative engineering and its application to
+improve human health. This project is relevant to public health and NIH’s mission as it focuses on the training
+and workforce development of the next generation of biomedical researchers and scientists.
+terms: <Arizona><Educational Technology><Regenerative engineering><Science><programs>
+---
+application_id: 10935425
+activity_code: T32
+title: Synthetic Biology and Biotechnology (SB2) Predoctoral Training Program
+org_name: BOSTON UNIVERSITY (CHARLES RIVER CAMPUS)
+phr: Project Narrative
+Synthetic biology is a fast-growing discipline that aims to re-engineer cells and other biological systems to solve
+critical challenges in human health and the environment. Graduate students participating in this training program
+will learn the principles and practices of how to engineer biology, gain unique exposure to the biotechnology
+landscape in Boston, and obtain the professional skills necessary for success in interdisciplinary research. They
+will play vital roles in advancing this discipline and delivering on the promise of synthetic biology to revolutionize
+biotechnology.
+terms: <Biotech><Biotechnology><Training Programs><pre-doc><pre-doctoral><synthetic biology>
+---
+application_id: 10992637
+activity_code: T32
+title: Basic Microbiology and Infectious Disease
+org_name: UNIVERSITY OF FLORIDA
+phr: NARRATIVE
+Infectious disease is a pervasive problem in human heath. The continuing goal of this training program
+in Basic Microbiology and Infectious Disease is to provide exceptional training in the mechanisms of
+infectious disease that bridges the gap between basic and clinical science. This will help enhance the
+quality of the biomedical research workforce in the United States.
+terms: <Communicable Diseases><Infectious Diseases><Infectious Disorder><Microbiology>
+---
+application_id: 10844180
+activity_code: T32
+title: Fundamental Training Program in Biochemistry and Molecular Biology Research
+org_name: UNIVERSITY OF NEBRASKA MEDICAL CENTER
+phr: Project Narrative: This training program in the fundamentals of biochemistry and molecular biology is designed to equip the next generation of scientists with the skills and basic knowledge that provide the foundation for all modern biomedical science. Key to our mission is to enhance the diversity of our trainees by recruiting and retaining a diverse student body. Students who graduate from this program will be trained in critical thinking, ethical and independent research, and a variety of key skills in biochemistry and molecular biology that will lead to employment in academic and biomedical research in industry, teaching, and a variety of additional science careers.
+terms: Biochemistry;Molecular Biology;Research;Training Programs
+---
+application_id: 11013908
+activity_code: T32
+title: Weill Cornell Initiative for Maximizing Student Development
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: The Weill Cornell Initiative for Maximizing Student Development (Weill Cornell IMSD) will increase the number of doctoral students who are trained to conduct exceptional research and to continue as leaders in biomedical research careers. By advancing the development of highly trained biomedical researchers, the Weill Cornell IMSD program will address the critical need to improve health outcomes through rigorous research.
+terms: <Development><Students><developmental>
+---
+application_id: 11059235
+activity_code: K99
+title: Examining the Implementation and Impact of School Resource Officer Policy Reform in the United States
+org_name: UNIVERSITY OF WASHINGTON
+phr: PROJECT NARRATIVE
+States are adopting policy reforms for school resource officer programs to promote school safety, youth
+development, and mental health. The proposed project will analyze state SRO policies and examine their
+impacts on school-level exclusionary discipline and arrests, including racial and ethnic inequities in these
+outcomes. The project will also investigate whether and how state SRO policy reforms are implemented in
+school districts with and without school-wide positive behavioral interventions and supports systems to inform
+the development of a state SRO law implementation toolkit that promotes positive behavioral support for
+students.
+terms: <Address><Administrator><Adopted><Adverse effects><Area><Award><Behavior><Behavior Conditioning Therapy><Behavior Modification><Behavior Therapy><Behavior Treatment><Behavioral><Behavioral Conditioning Therapy><Behavioral Modification><Behavioral Therapy><Behavioral Treatment><Child Health><Color><Communities><Community Actions><Complex><Conditioning Therapy><Congresses><Crime><Criminal Justice><Criminology><Development><Discipline><Education><Educational aspects><Educational process of instructing><Effectiveness><Emotional><Evaluation><Exposure to><Goals><Health><Iatrogenesis><Inequity><Injury><Intervention><Interview><Investigators><Law Enforcement><Law Enforcement Officers><Laws><Link><Medicine><Mental Health><Mental Hygiene><Mentorship><Methodology><NICHD><National Institute of Child Health and Human Development><Outcome><Pathway interactions><Police><Police officer><Policies><Policy Analyses><Policy Analysis><Preventative strategy><Prevention><Prevention strategy><Preventive strategy><Program Evaluation><Protocol><Protocols documentation><Psychiatry><Psychological Health><Public Health><Qualitative Research><R-Series Research Projects><R01 Mechanism><R01 Program><Research><Research Grants><Research Methodology><Research Methods><Research Personnel><Research Project Grants><Research Projects><Research Resources><Researchers><Resources><Role><Safety><Sampling><Schools><Security><Social Support System><Structure><Students><Support System><Surveillance Methods><Survey Instrument><Surveys><System><Teaching><Testing><Training><United States><Variant><Variation><Work><Youth><Youth 10-21><acceptability and feasibility><adolescent health><adolescent mental health><adulthood transition><behavior intervention><behavioral intervention><classroom environment><college atmosphere><collegial atmosphere><collegiate atmosphere><community based participatory research><community intervention><community led research><community level intervention><community participatory research><community partnered participatory research><community-based intervention><cultural competence><culturally competent><design><designing><developmental><disability><disparities in race><disparity due to race><disparity in ethnic><education atmosphere><educational atmosphere><educational environment><ethnic based disparity><ethnic disadvantage><ethnic disparity><ethnic inequality><ethnic inequity><ethnicity disparity><facilitators to implementation><feasibility testing><high school><iatrogenic><iatrogenically><iatrogenicity><implementation facilitators><implementation science><implementation tool><improved><inequality due to race><inequity due to race><injuries><intellectual atmosphere><learning atmosphere><learning environment><longitudinal database><marginalized group><marginalized individual><marginalized people><marginalized population><mortality><participatory action research><pathway><policy evaluation><prevent><prevent school violence><prevent violence><prevent youth violence><preventing><programs><race based disparity><race based inequality><race based inequity><race disparity><race related disparity><race related inequality><race related inequity><racial disparity><racial inequality><racial inequity><racially unequal><research and methods><response><school atmosphere><school climate><school district><school shooting><school violence><school violence prevention><skills><social><social role><socio-economic><socio-economically><socioeconomically><socioeconomics><success><theories><tool><training atmosphere><transition from adolescence to adulthood><transition into adulthood><transition to adulthood><university atmosphere><violence prevention><youth age><youth violence prevention>
+---
+application_id: 11014780
+activity_code: T32
+title: Clinical Therapeutics
+org_name: UNIVERSITY OF CHICAGO
+phr: PROJECT NARRATIVE
+This postdoctoral training program in Clinical Therapeutics is the core function of the Committee on Clinical
+Pharmacology and Pharmacogenomics at the University of Chicago and has the goal of providing advanced
+research training for clinicians and translational scientists in the areas of clinical pharmacology,
+pharmacogenomics, and therapeutics. Upon completion of the program, graduates are accomplished in state-
+of-the-art research methodology, experimental design, and data interpretation and presentation, and are
+uniquely prepared for a competitive research career in clinical therapeutics, as well as certification in Clinical
+Pharmacology.
+terms: <Clinical><Therapeutic>
+---
+application_id: 11015224
+activity_code: T32
+title: Cardiovascular Epidemiology Institutional Training
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: PROJECT NARRATIVE:
+This grant trains future leaders in cardiovascular disease prevention by providing rigorous training in
+epidemiology, biostatistics, and related disciplines. The program benefits from the wide depth and breadth of
+courses, faculty expertise, and ongoing research studies at Johns Hopkins. The program emphasizes
+innovative methods and multidisciplinary work to improve prevention and decrease disparities in cardiovascular
+health.
+terms: <Institution><Training><cardiovascular disease epidemiology><cardiovascular disorder epidemiology><cardiovascular epidemiology>
+---
+application_id: 10818607
+activity_code: T32
+title: CTSA Predoctoral T32 at the University of Michigan
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Project Narrative The CTSA Predoctoral T32 at the University of Michigan will build upon its strong foundation of engaging predoctoral trainees to provide training, education, and mentoring in translational research and science to support their emerging careers. By leveraging the unique strengths of the University of Michigan, building on our robust evaluation program, and adhering to our foundational programmatic elements, we will develop and retain a diverse group of next-generation translational research and science team leaders.
+terms: Michigan;pre-doctoral;Universities
+---
+application_id: 11016773
+activity_code: T32
+title: Training Program in Lung Biology and Pathobiology
+org_name: UNIVERSITY OF ILLINOIS AT CHICAGO
+phr: Narrative
+This training grant application seeks support for 5 predoctoral and 3 postdoctoral trainees. These individuals will
+undergo training provided by well-positioned multi-disciplinary faculty in the rapidly evolving and increasingly
+competitive field of lung biology and pathobiology. The 5 thematic areas of research training include (1) Lung
+Vascular Homeostasis, Pathobiology, and Regeneration; (2) Cellular, Humoral, and Mechanical Bases of Lung
+Injury and Repair; (3) Microbiome and Metabolism in Lung Biology and Pathobiology; (4) Lung Genomics and
+Data Science in Inflamed and Regenerated Vessels, and (5) Therapeutics Targeting Lung Vessel Regeneration.
+The goal is to cultivate highly qualified groups of young scientists capable of developing their careers in academic
+research and al...
+terms: <Biology><Lung><Lung Respiratory System><Training Programs>
+---
+application_id: 11087554
+activity_code: K99
+title: Optimal Dosing of CNS Drugs for Children
+org_name: UTAH STATE HIGHER EDUCATION SYSTEM--UNIVERSITY OF UTAH
+phr: NARRATIVE
+This research will enhance public health by improving the safety and efficacy of drugs that treat diseases of the
+central nervous system (CNS) in children. Specifically, this research will provide significant new insight
+regarding the mechanisms of drug passage into the CNS of children and enable optimal, patient-specific
+pharmacotherapy to treat CNS diseases in children.
+terms: <0-11 years old><Address><Affect><Age><Award><BBB permeabilization><BBB permeable><Binding Proteins><Biological Markers><Blood - brain barrier anatomy><Blood Plasma><Blood-Brain Barrier><Body Tissues><Brain><Brain Nervous System><CNS Diseases><CNS Nervous System><CNS agent><CNS disorder><CNS infection><Cefatriaxone><Cefepime><Ceftriaxone><Cell Components><Cell Structure><Cellular Structures><Central Nervous System><Central Nervous System Agents><Central Nervous System Diseases><Central Nervous System Disorders><Central Nervous System Drugs><Central Nervous System Infections><Central Nervous System Infectious Disease><Central Nervous System Infectious Disorder><Cerebrospinal Fluid><Chemicals><Child><Child Youth><Childhood><Children (0-21)><Children's Hospital><Clinical Research><Clinical Study><Clinical Trials><Concentration measurement><Data><Dexmedetomidine><Disease><Disease Management><Disorder><Disorder Management><Dose><Drug Exposure><Drug Kinetics><Drug Modelings><Drug Targeting><Drug Therapy><Drugs><Encephalon><Engineering><Epilepsy><Epileptic Seizures><Epileptics><Faculty><Funding><Future><Hemato-Encephalic Barrier><History><Human><In Vitro><Infection><Inflammatory><Infrastructure><Investigators><Knowledge><Levetiracetam><Ligand Binding Protein><Ligand Binding Protein Gene><Literature><Lumbar Puncture><Macromolecular Structure><Math Models><Measurement><Measures><Medication><Membrane Transport Proteins><Membrane Transporters><Meningitis><Mental Depression><Mentors><Mentorship><Methods><Minimal Risk Study><Modeling><Modern Man><Molecular Structure><Nervous System Diseases><Nervous System Disorder><Neuraxis><Neurologic Disorders><Neurological Disorders><Outcome><Pathway interactions><Patients><Pediatric Hospitals><Permeability><Pharmaceutical Preparations><Pharmacokinetics><Pharmacological Treatment><Pharmacotherapy><Phase><Physiologic><Physiological><Physiology><Plasma><Plasma Serum><Principal Investigator><Process><Property><Protein Binding><Public Health><Qualifying><Recording of previous events><Regimen><Research><Research Design><Research Personnel><Research Resources><Researchers><Resources><Reticuloendothelial System, Serum, Plasma><Risk><Safety><Sampling><Seizure Disorder><Spinal Puncture><Study Type><System><Therapeutic><Time><Tissues><Toxic effect><Toxicities><Training><Treatment Failure><Universities><Utah><Vancomycin><Ventricular><Work><age associated difference><age based difference><age dependent difference><age dependent variation><age difference><age related difference><age related variation><age specific difference><ages><bio-markers><biologic marker><biomarker><blood-brain barrier permeabilization><blood-brain barrier permeable><bloodbrain barrier><bloodbrain barrier permeabilization><bloodbrain barrier permeable><bound protein><career><cefepim><centrally acting drug><cerebral spinal fluid><clinical validation><computer based prediction><cytokine><depression><design><designing><differ by age><difference across age><difference in age><drug efficacy><drug intervention><drug treatment><drug/agent><epilepsia><epileptogenic><experience><histories><improved><in vitro Model><inhibitor><insight><kids><lipophilicity><mathematic model><mathematical model><mathematical modeling><model-based simulation><models and simulation><neurological disease><pathway><pediatric><pharmaceutical intervention><pharmacokinetic model><pharmacological intervention><pharmacological therapy><pharmacology intervention><pharmacology treatment><pharmacometrics><pharmacotherapeutics><predictive modeling><prospective><simulation><skills><specific biomarkers><spinal fluid><study design><therapy failure><tool><variation by age><virtual><youngster>
+---
+application_id: 11045065
+activity_code: T32
+title: Pediatric Training Program Hematology and Oncology
+org_name: WASHINGTON UNIVERSITY
+phr: PROJECT NARRATIVE
+This program is designed to train the next generation of leaders in pediatric hematology-oncology biomedical
+science. The focus is on providing a strong guidance and mentoring around investigations pertaining to areas
+of clinical and basic research at the forefront of pediatric hematology-oncology including, but not limited to,
+genomics, epigenomics, developmental biology, cellular therapies, clinical trial design, and survivorship.
+Qualified trainees, both MD’s and MD/PhD’s, will be selected for their potential to assume academic
+positions in pediatric departments at major medical schools. The training program compliments multiple
+other existing training programs in the Department of Pediatrics and the Washington University School of
+Medicine.
+terms: <Childhood><Hematology><Oncology><Oncology Cancer><Training Programs><pediatric>
+---
+application_id: 11051845
+activity_code: T32
+title: Behavioral-Biomedical Interface: Translational and Prevention Sciences Training
+org_name: UNIVERSITY OF SOUTH CAROLINA AT COLUMBIA
+phr: Project Narrative
+This institutional training grant supports the University of South Carolina Behavioral-Biomedical
+Interface Program, which helps to prepare future behavioral scientists to be better equipped to
+address the complex challenges inherent in health research. Pre-doctoral trainees in public
+health and psychology acquire important biological and biomedical foundations in concert with
+their behavioral science disciplinary training. This program adds scientists to the workforce who
+are able to more effectively translate research into understanding, preventing, and treating
+health disorders of major societal import.
+terms: <Behavioral><Prevention><Science><Training>
+---
+application_id: 11055966
+activity_code: T32
+title: Training in Molecular Virology, Viral Pathogenesis and Viral Vectors
+org_name: UNIVERSITY OF IOWA
+phr: The major goal of the University of Iowa Virology Predoctoral Training Program is to produce
+outstanding independent virologists who will pursue careers in academic or other virology-
+related careers. Students in the program will spend 90% of their pursuing virology research
+under the supervision of a funded participating faculty member. Laboratory work will be
+supplemented by opportunities to hone their skills in data presentation and teaching.
+terms: <Molecular Virology><Training><Viral Pathogenesis><Viral Vector><virus pathogenesis>
+---
+application_id: 11058465
+activity_code: T32
+title: Training Grant in Comparative Molecular Medicine
+org_name: NORTH CAROLINA STATE UNIVERSITY RALEIGH
+phr: Team-based interdisciplinary molecular medicine has become increasingly complex, teams more
+interdisciplinary, and communication and leadership skills more critical. This training program in Comparative
+Molecular Medicine addresses two critical national needs in biomedical research. First, is the growing need
+for developing new training approaches that better address the increasingly complex, interdisciplinary and
+collaborative research environment of today. Second, the need to educate PhD students that understand the
+ethical principles of rigor and reproducibility and responsible conduct of research and can successfully
+function, and become leaders, in the highly collaborative scientific environment of today that combines basic
+scientists, translational scientists and clinicians from many...
+terms: <Grant><Molecular Medicine><Training><comparative>
+---
+application_id: 11056163
+activity_code: T32
+title: Pharmacological Sciences Training Program (PSTP)
+org_name: GEORGETOWN UNIVERSITY
+phr: The Pharmacological Sciences Training Program (PSTP) at Georgetown University Medical Center is an interdisciplinary training program for a community of doctoral candidates across Ph.D. disciplines who are dedicated to thesis research in pharmacological science; we provide Ph.D. students with advanced training in physiology and pharmacotherapeutics, with a view ranging from cellular signaling networks to organ function to behavior and systems medicine. Faculty mentors in the PSTP share a common research interest in identifying drug targets within cellular signaling pathways to treat human disease. Trainees will prepare for future careers in academia, pharma or biotechnology industry, or drug regulatory agencies through dissertation research and through internship experiences.
+terms: <Science><Training Programs><pharmacologic>
+---
+application_id: 11059147
+activity_code: T32
+title: Molecular and Cellular Alcohol Research Training
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: The goal of this grant is to train alcohol research scientists. Training scientists in alcohol
+research methods is essential to understanding the complex nature of binge drinking and
+alcohol use disorder. Multi-disciplinary training in molecular mechanisms of alcoholic pathology
+will cover fetal, brain, genetic, behavioral and other pathologies involved in long-term drinking.
+terms: <Molecular><Research Training><alcohol related research><alcohol research><ethanol research>
+---
+application_id: 11060071
+activity_code: T32
+title: DIABETES PREVENTION / RISK / OMICS / METABOLISM / THERAPY (PROMT) INTERDISCIPLINARY TRAINING
+org_name: BECKMAN RESEARCH INSTITUTE/CITY OF HOPE
+phr: Recent technological advances are opening the door to exciting new therapeutic strategies for treating diabetes and its complications. Despite the need for a new generation of technologically skilled translational research leaders, individuals with rigorous analytical science backgrounds who are cross-trained in diabetes research and drug development are rare. The PROMT T32 training program addresses this unmet need by providing a unique predoctoral learning experience focused on leading-edge training in state-of-the-art technologies, translational diabetes research and therapeutic development with an emphasis on providing students with structured support needed to thrive as scientific leaders.
+terms: <Diabetes prevention><Intermediary Metabolism><Metabolic Processes><Metabolism><Risk><Training>
+---
+application_id: 11061027
+activity_code: T32
+title: Clinical Neuroscience Research Training Program in Psychiatry
+org_name: YALE UNIVERSITY
+phr: NARRATIVE
+Mental illness affects approximately 15% of the population, creates enormous disability and cost, and has been
+stubbornly persistent over the decades. To fundamentally alter this trajectory we must recruit and train the
+next generation of physician-scientist researchers who will generate the advances in diagnosis, treatment,
+prevention, and cure that we need to alleviate this burden. Yale’s T32-funded Clinical Neuroscience Research
+Training Program, of which this is a renewal application, has an exceptional track record of training psychiatric
+physician-scientists, which we here aim to continue and enhance.
+terms: <Clinical><Neurosciences Research><Psychiatry><Training Programs>
+---
+application_id: 10879040
+activity_code: T32
+title: Lab Research Training in Pediatric Oncology-Hematology
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: Project Narrative This program provides postdoctoral education, training, and experience in field-leading laboratory research on childhood cancers for pediatric oncology-hematology physician-scientists. It ensures that a pipeline of well- trained physician-scientists can continue the progress that has been made in the treatment of these life- threatening diseases affecting children.
+terms: Hematology;Pediatric Oncology;Research Training
+---
+application_id: 10991801
+activity_code: R25
+title: PSID, CDS, and TA: Data Enhancements and User Training, Support, and Outreach
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: Project Narrative This project will develop an integrated set of data enhancements and user education tools and activities to ex- pand researchers’ use of data from the Panel Study of Income Dynamics (PSID), the PSID Child Development Supplement (CDS), and the PSID Transition into Adulthood Supplement (TAS).
+terms: Acceleration;aged;Behavior;Charge;Child;child bearing;Child Development;cohort;college;Communities;Complex;Consumption;Contracts;Data;Data Analyses;data archive;data centers;Data Collection;Data Set;design;Development;Documentation;Economics;Education;Educational process of instructing;Educational workshop;Enrollment;Ensure;Exercise;experience;Family;Family dynamics;Feedback;follow-up;Fostering;Funding;Generations;Goals;graduate student;Health;Health behavior;health disparity;Health Status;Household;Income;innovation;interest;intergenerational;Investments;later life;lectures;Life;Life Cycle Stages;Link;Location;Longitudinal Surveys;Marriage;Measurement;meetings;member;migration;National Institute of Child Health and Human Development;Neighborhoods;Obesity;online version;Outcome;outreach;panel study of income dynamics;Personal Satisfaction;Policies;Postdoctoral Fellow;Poverty;Process;Productivity;Professional Organizations;professor;Research;Research Personnel;Research Support;Resources;response;Sampling;Savings;Schools;Series;Services;Slide;Smoking;social;Social Sciences;Socioeconomic Status;Surveys;symposium;Teenagers;Time;time use;tool;Training;transition to adulthood;transmission process;Video Recording;Wages;web site;webinar;young adult
+---
+application_id: 11070391
+activity_code: T32
+title: Training Program on Genetic Variation and Human Phenotypes
+org_name: VANDERBILT UNIVERSITY
+phr: NARRATIVE Our training program in human genetics offers pre-doctoral students the opportunity to
+learn and apply human genetics science in a highly collaborative and collegial environment rich in
+resources that can stimulate human genetics research. BioVU, the biobank at Vanderbilt University, for
+example, has more than 250,000 subjects and past human genetics students have been unusually
+productive because of the opportunities in conducting human genetic studies in these data. Our
+students receive a broad-based education and have traditionally pursued a wide range of research in
+human genetics and professional careers.
+terms: <Genetic Diversity><Genetic Variation><Human><Modern Man><Phenotype><Training Programs>
+---
+application_id: 11070312
+activity_code: T32
+title: Cornell University Combined DVM-PhD Medical Scientist Training Program (MSTP)
+org_name: CORNELL UNIVERSITY
+phr: The MSTP at Cornell’s College of Veterinary Medicine (CVM) aims to develop a comprehensive pool of well-trained veterinary clinician-scientists with the disciplinary knowledge and skills that will uniquely prepare them for leadership roles in biomedical research to advance human health at the individual and population levels. By virtue of their broad knowledge of comparative disease and strong intellectual and lateral thinking abilities, veterinary clinician-scientists are uniquely suited to play key roles in advancing NIH goals in biomedical science and public health. Funding from the proposed MSTP will allow us to provide comprehensive programming and opportunities for Combined DVM-PhD Degree trainees, foster team science, and nurture the research and professional skills necessary for ou...
+terms: <Doctor of Philosophy><Medical><Ph.D.><PhD><Scientist><Training Programs><Universities>
+---
+application_id: 11072041
+activity_code: T32
+title: Training in the Cognitive Neuroscience of Communication
+org_name: UNIVERSITY OF CONNECTICUT STORRS
+phr: Project Narrative
+Communication disorders affect millions of individuals, with significant impacts in terms of disability and quality
+of life. The development of assessment and treatment strategies for these disorders requires that the next
+generation of researchers understand the mechanisms underlying these communication disorders; however,
+progress has been hampered by a shortage of clinically-knowledgeable communication scientists with the
+methodological skills required to study these underlying mechanisms. The current training plan seeks to prepare
+predoctoral and postdoctoral trainees studying the cognitive neuroscience of communication by supplying them
+with the necessary methodological expertise and tools to conduct and disseminate impactful research on
+communication disorders while...
+terms: <Communication><Training><cognitive neuroscience>
+---
+application_id: 11072032
+activity_code: T32
+title: Genetic Approaches to Development and Disease
+org_name: COLUMBIA UNIVERSITY HEALTH SCIENCES
+phr: PROJECT NARRATIVE
+This proposal describes a new PhD training program, Genetic Approaches to Development and Disease (GADD)
+at Columbia University Irving Medical Center (CUIMC). The underlying philosophy of this program is that genetic
+approaches, including forward and reverse genetics as well as genomics and epigenomics, represent effective
+strategies for dissecting the molecular mechanisms underlying development and disease in vivo. GADD students
+receive advanced training in genetic analyses using model organisms, current genetic and genomic techniques,
+biostatistics, history of genetics, and the ethics of modern genetics.
+terms: <Development><Disease><Disorder><developmental><genetic approach><genetic strategy>
+---
+application_id: 11072090
+activity_code: T32
+title: Clinical Research Training for Psychologists
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: The goal of this training program is to train psychological clinical scientists to conduct research that will promote the scientific and training priorities of NIMH and enhance the public health. Clinical psychologists are well-qualified to promote the translation of research findings to the clinical setting in meaningful ways because they have been in the forefront of the development of efficacious treatments that incorporate evidence-based mechanisms associated with specific psychopathology. This training program seeks to capitalize on the unique foundational skill set of clinical psychologists and to further equip these scientists to make meaningful scientific contributions to enhance mental health across the lifespan.
+terms: <Clinical Research><Clinical Study><Psychologist><Research Training>
+---
+application_id: 10992180
+activity_code: K23
+title: Evaluation of Multi-level factors Associated with post-ERCP Outcomes
+org_name: UT SOUTHWESTERN MEDICAL CENTER
+phr: Project Narrative Endoscopic retrograde cholangiopancreatography (ERCP) has transformed the treatment of pancreaticobiliary diseases in the United States (US) but outcomes of the procedure, and it’s most dreaded complication, post- ERCP pancreatitis, can vary by the physician performing the procedure. Despite this known variability, there have been no national population-based studies aimed at understanding the patient, provider, and system level factors that influence these variations and whether potential interventions, such as selective referral to high volume physicians, may mitigate these risks. Understanding factors that contribute to variations in care, as proposed in this project, has the potential to improve patient outcomes, reduce the cost of care after an ERCP, and shape future...
+terms: Acceleration;Address;Adverse event;Award;beneficiary;care costs;career;career development;Caregivers;Caring;Case Mixes;Clinical;cohort;comorbidity;complex data;Complication;cost;cost effectiveness;Data;Data Set;Decision Analysis;demographics;Development;Digestive System Disorders;Disease;economic evaluation;Educational Intervention;Endoscopic Retrograde Cholangiopancreatography;Endoscopy;Ensure;Environment;Equipment;Evaluation;Evidence based intervention;Expenditure;experience;Facilities and Administrative Costs;Financial Hardship;Foundations;Future;Gastroenterologist;Goals;Health Care Costs;health care service utilization;health economics;Health Services Research;Health system;high risk;Hospitals;improved;Incidence;Inpatients;Intervention;Intervention Strategies;Interview;Liver diseases;Logistic Regressions;Measurable;Measures;medical specialties;Medicare;Mentors;Modeling;Morbidity - disease rate;multilevel analysis;Outcome;Outpatients;Pancreatitis;Patient Care;Patient-Focused Outcomes;Patients;Phase;Physicians;Policies;Policy Maker;Population Study;Procedures;Productivity;productivity loss;prospective;Prospective cohort;Provider;Reporting;Research;Research Personnel;Resources;risk mitigation;Sample Size;sex;Shapes;Societies;Statistical Data Interpretation;Statistical Methods;success;Surveys;System;Texas;Training;United States;Universities;Variant;Work
+---
+application_id: 10839990
+activity_code: K01
+title: Skeletal Muscle as a Target for Cardio-Metabolic Disease in Sarcopenic Obesity
+org_name: OKLAHOMA STATE UNIVERSITY STILLWATER
+phr: The tandem threat of aging and obesity is rising in the U.S., resulting in a disease termed “sarcopenic obesity”, in which the aged experience synergistic muscle loss with both pathologies in combination with increases in body mass and adiposity. Combating the obesity epidemic and encouraging healthy aging is a top priority for the NIH/NIA and they recommend that doctors work closely with obese patients to encourage lifestyle changes, specifically exercise (more muscle mass), while simultaneously treating obese-induced pathologies (glycemic control and high blood pressure). This application seeks to understand the role of muscle mass and its influence on blood pressure regulation and will identify specific pathways and mechanisms induced by increased muscle mass to therapeutically treat ob...
+terms: absorption;Acceleration;Adult;Age;Age Months;aged;Aging;aging population;aging related;Amino Acids;Animal Model;Biology;Blood;blood glucose regulation;blood lipid;Blood Pressure;Blood Pressure Monitors;blood pressure regulation;Blood Vessels;burden of illness;Cardiometabolic Disease;cardiometabolism;Cardiovascular Diseases;Cardiovascular Physiology;Cardiovascular system;Child;Clinic;Conscious;cytokine;Data;db/db mouse;Development;Disease;Dual-Energy X-Ray Absorptiometry;effective intervention;Elderly;Endothelium;Enterobacteria phage P1 Cre recombinase;Enzymes;Epidemic;Equilibrium;Evaluation;Exercise;exercise intervention;experience;Fiber;fitness;Functional disorder;GDF8 gene;Genes;Glucose;Glucose tolerance test;glycemic control;Goals;Growth;Hand;Health;healthy aging;human model;Hypertension;impaired glucose tolerance;improved;improved outcome;in vivo;indexing;Injury to Kidney;Intervention;juvenile animal;Kidney;Knock-out;Life Style;Link;Literature;Locomotion;Medical;Metabolic;Metabolic dysfunction;Methods;Modeling;mouse model;Mus;Muscle;muscle aging;Muscle Fibers;muscle form;Muscle function;Muscle Proteins;muscle strength;Muscular Atrophy;Myography;NADPH Oxidase 1;novel;Obese Mice;obese patients;Obesity;Obesity Epidemic;obesity treatment;Organ;Outcome;overexpression;oxidant stress;Oxidants;Pathology;Pathway interactions;patient population;Phenotype;Play;Population;pressure;Prevalence;prevent;Prevention;Production;programs;protein degradation;Recommendation;Renal function;Renal Hypertension;Research;Risk Factors;Role;sarcopenia;sarcopenic obesity;Skeletal Muscle;skeletal muscle growth;Stream;Superoxides;Telemetry;Testing;Therapeutic;Thinness;Tissues;Training;Transgenic Organisms;Translating;United States National Institutes of Health;Vascular Diseases;Work
+---
+application_id: 11073057
+activity_code: T32
+title: Infection and Inflammation as Drivers of Aging (IIDA) Predoctoral Training Program
+org_name: UNIVERSITY OF ARIZONA
+phr: NARRATIVE
+ This multidisciplinary training program is designed to train pre-doctoral students (6 per year) to
+investigate the underlying the roles of Infection and Inflammation as Drivers of Aging. Increased training in
+biomedical sciences pertinent to the biology of aging is critical to address the needs of the growing number of
+older adults, that will make over a quarter of the US population and ~1.5 billion people worldwide by 2050.
+Specific training in the roles of infection and inflammation as drivers of aging will help understand and treat
+sources of inflammation that propagate and aggravate many chronic diseases of old age, including arthritis,
+cancers, cardiovascular, metabolic and neurodegenerative diseases, like Alzheimer’s and Parkinsons.
+terms: <Infection><Inflammation><Training Programs><drivers of aging><gerodriver><pre-doc><pre-doctoral>
+---
+application_id: 11074025
+activity_code: T32
+title: Predoctoral Training Program in Human Genetics
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: NARRATIVE
+Advances in human genetics and genomics continue at an astounding rate and increasingly they are being
+integrated into medical practice. The Johns Hopkins Predoctoral Training Program in Human Genetics (HG)
+aims to educate highly motivated and capable students with the knowledge and experimental tools that will
+enable them to answer important questions at the interface between genetics and medicine. Ultimately, our
+trainees will be the leaders in delivering the promise of genetics to human health.
+terms: <Human Genetics><Training Programs><pre-doc><pre-doctoral>
+---
+application_id: 11074555
+activity_code: T32
+title: Training Program in Immunology and Inflammation
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: PROJECT NARRATIVE
+Inflammation is a basic immunological mechanism that helps to protect the host from injury and infection
+under normal physiological conditions. Pathological inflammation is a pervasive component in many
+human diseases including chronic infections, autoimmune diseases, vascular and neurological diseases,
+and cancer. Training a new generation of the brightest scientists in the study of immunology and
+inflammation will facilitate the understanding and ultimately treatment of multiple diseases of public
+health importance.
+terms: <Immunology><Inflammation><Training Programs>
+---
+application_id: 11074681
+activity_code: T32
+title: Cellular and Molecular Biology at Michigan
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: No Change. Original Text below.
+The research performed by students in the CMB program addresses fundamental questions about the nation’s pressing public health concerns, including prevalent chronic disorders (e.g., cancer, diabetes, heart disease), neurological conditions (e.g., Alzheimer’s, epilepsy, addiction), and infectious diseases. Training a broad pool of students, using evidence-based approaches that combine broad exposure and focused training of students in cellular and molecular approaches, effective mentor training, and program evaluation at multiple levels, fills a critical need for producing well- trained scientists in the biomedical workforce who work to advance fundamental knowledge in areas relevant to advancing health, reducing illness and improving the quality of human li...
+terms: <Cellular biology><DNA Molecular Biology><Michigan><Molecular Biology><cell biology>
+---
+application_id: 11075318
+activity_code: T32
+title: Training Program in Investigative Hepatology
+org_name: YALE UNIVERSITY
+phr: PROJECT NARRATIVE
+Liver disease affects nearly one in three Americans and a billion people worldwide. The purpose of this grant is
+to provide training to physicians and other scientists to pursue basic, translational and clinical research into the
+causes of the various forms of liver disease and to develop new and more effective treatments.
+terms: <Hepatology><Training Programs>
+---
+application_id: 11076204
+activity_code: T32
+title: Psychosocial Determinants and Biological Pathways to Healthy Aging (Pathways)
+org_name: PENNSYLVANIA STATE UNIVERSITY, THE
+phr: PROJECT NARRATIVE
+Social and behavioral experiences have large and pervasive effects on health outcomes during midlife and
+older adulthood. Understanding the biological pathways by which psychosocial determinants operate promises
+substantial improvements in public health as well as savings in healthcare costs. This training program will
+prepare a new generation of researchers in aging to integrate research methods and findings that span from
+basic biological mechanisms to complex social phenomena.
+terms: <Biological><Pathway interactions><biologic><healthy aging><healthy human aging><pathway><psychosocial>
+---
+application_id: 11075877
+activity_code: T32
+title: G-RISE at New Mexico State University
+org_name: NEW MEXICO STATE UNIVERSITY LAS CRUCES
+phr: Project Narrative
+A well-trained workforce is essential for maintaining the nation's scientific competiveness and leadership in
+promoting biomedical research that will improve human health. The G-RISE at New Mexico State University
+program will increase the number of highly trained PhD recipients who havethe skills, knowledge, creativity,
+and motivation to find innovative treatments for diseases and disorders that limit longevity and impair the
+quality of human life.
+terms: <New Mexico><Universities>
+---
+application_id: 11076238
+activity_code: T32
+title: Brown University Training Program in the Molecular Biology of Aging
+org_name: BROWN UNIVERSITY
+phr: While the rapid increase of our elderly population has led to a burden of disease and disability that threatens our society, new research is identifying universal mechanisms that determine and even regulate the aging of all organisms and impact all organ systems. Our aim is to train the next generation of scientists to engage in interdisciplinary research aimed at discovering and implementing therapies that alleviate the suffering caused by age-associated degenerative processes. Our goal is to provide rigorous training to our students and postdocs to become leaders in the broad area of aging biology, and to increase the quality and international competitiveness of the national work force in this area.
+terms: <Biology of Aging><DNA Molecular Biology><Molecular Biology><Training Programs><Universities>
+---
+application_id: 11077237
+activity_code: T32
+title: Translational Epidemiology - Training for Research on Aging and Chronic disease
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: NARRATIVE
+This resubmitted training program will prepare PhD students and postdoctoral researchers to conduct research
+on prevention and treatment of chronic diseases such as cancer, stroke, or Alzheimer’s Disease and Related
+Disorders among older adults. Our program emphasizes giving trainees the skills to move from evidence to
+public health impact via implementation and translational efforts. This proposal would renew support for a
+second cycle building on the successes of the first five years of the program.
+terms: <Aging><Chronic Disease><Chronic Illness><Epidemiology><Research Training><chronic disorder><epidemiologic><epidemiological>
+---
+application_id: 11081620
+activity_code: T32
+title: Pitt Integrated Clinical and Geroscience Research Training Program
+org_name: UNIVERSITY OF PITTSBURGH AT PITTSBURGH
+phr: NARRATIVE
+This is the fourth competing renewal of the Pitt Integrated Clinical and Geroscience Research Training
+Program T32 with an overarching long-term goal to produce a new generation of investigators committed to
+performing collaborative aging research across clinical, translational, and basic sciences. The University of
+Pittsburgh offers an outstanding milieu for this training, with exceptional depth and breadth of multidisciplinary
+aging research; experienced, involved, and well-funded mentors; and extensive resources for training in aging
+research across the clinical, translational, and biological perspective. The training program – one of only a few
+in the nation to train within an integrated clinical and biological perspective – focuses on two levels of trainees:
+1) a 2-to-3-year...
+terms: <Clinical><Geroscience><Research Training><Training Programs><geroscientific>
+---
+application_id: 11079459
+activity_code: T32
+title: Educating and Training Tomorrow’s Biomedical Workforce
+org_name: MOREHOUSE SCHOOL OF MEDICINE
+phr: Public Health Relevance
+Morehouse School of Medicine’s training program addresses the critical need for development of a sustainable pool of biomedical scientists as leading investigators for the 21st century. This will be accomplished by developing and implementing innovative strategies that expand on the strengths of existing programs at Morehouse School of Medicine.
+terms: <Training>
+---
+application_id: 11081672
+activity_code: T32
+title: Vanderbilt Interdisciplinary Training Program in Alzheimer's Disease
+org_name: VANDERBILT UNIVERSITY
+phr: NARRATIVE
+The prevalence of Alzheimer’s disease is rising dramatically as the population ages, with 13.8 million
+Americans expected to be affected by 2050. There is a pressing need to prepare basic and clinical scientists
+with cutting-edge, interdisciplinary research training to foster innovative research advances that address the
+complex, overlapping pathological processes underlying this growing public health issue.
+terms: <AD dementia><Alzheimer Type Dementia><Alzheimer disease dementia><Alzheimer sclerosis><Alzheimer syndrome><Alzheimer's><Alzheimer's Disease><Alzheimers Dementia><Primary Senile Degenerative Dementia><Training Programs><primary degenerative dementia><senile dementia of the Alzheimer type>
+---
+application_id: 11081651
+activity_code: T32
+title: Training Program in Translational Behavioral Science in HIV and Mental Health
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: This T32 program will train postdoctoral fellows in research methods in HIV and mental health across the Translational Science Spectrum. Fellows will engage in a rigorous training program in which they will: 1) specialize and gain depth of knowledge in two Translational Science Skill Domains (i.e., Quantitative Methods, Qualitative Methods, Interventions & Trials, Implementation Science) through mentored research with a primary and secondary mentor; and 2) gain breadth of knowledge in all four domains through a formal training curriculum. We will place fellows at the forefront of translational science in HIV and mental health, with the ultimate goal of more rapidly moving basic science discoveries to efficacious interventions and onward toward implementation.
+terms: <AIDS Virus><Acquired Immune Deficiency Syndrome Virus><Acquired Immunodeficiency Syndrome Virus><Behavioral Sciences><HIV><Human Immunodeficiency Viruses><LAV-HTLV-III><Lymphadenopathy-Associated Virus><Mental Health><Mental Hygiene><Psychological Health><Training Programs><Virus-HIV>
+---
+application_id: 10876981
+activity_code: T32
+title: Advanced Research Training in Communication Sciences and Disorders
+org_name: BOSTON UNIVERSITY (CHARLES RIVER CAMPUS)
+phr: PROJECT NARRATIVE Disorders of human communication commonly occur after stroke or head injury, or may appear in early childhood in the form of delayed language development, acquired or congenital hearing impairment, or impaired speech. Reducing the disabling effects of communication disorders on people requires a specialized, highly trained research workforce, relying heavily on a coordinated effort to provide newly emerging scientists with a comprehensive clinical perspective and skillset. The proposed training project is designed to prepare excellent new researchers in the discipline of communication sciences and disorders.
+terms: Communication;Disease;Research Training;Science
+---
+application_id: 11082206
+activity_code: T32
+title: Training in Pediatric Gastroenterology, Hepatology, and Nutrition
+org_name: BOSTON CHILDREN'S HOSPITAL
+phr: PROJECT NARRATIVE:
+The goal of this application is to prepare MD, MD/PhD pediatricians, and PhD basic scientists for careers in
+independent research on topics relevant to digestive diseases in infancy, childhood, and adult life. Post-doctoral
+training in both basic and clinical research relevant to the GI tract is provided.
+terms: <Childhood><Gastroenterology><Hepatology><Nutrition><Training><pediatric>

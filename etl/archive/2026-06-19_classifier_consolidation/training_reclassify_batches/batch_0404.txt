@@ -1,0 +1,533 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 404 of 459 (50 projects):
+
+---
+application_id: 11023044
+activity_code: K08
+title: Nanoparticle-Enhanced Radiation Therapy for DIPG
+org_name: CHILDREN'S HOSPITAL OF LOS ANGELES
+phr: Project Narrative DIPG is one of the most lethal pediatric brain cancers, affecting children aged 5-9 yrs old, without a current cure or significant improvement in the efficacy of treatment over the past 3+ decades. With the promise of improving quality of life, improving the safety of radiation, or increasing length of survival for children with DIPG, nanoparticle-enhanced radiation therapy first requires validation in a pre-clinical DIPG model, and additional mechanistic investigation. The included project proposal is focused on the pre-clinical development and refinement of this technique.
+terms: 3-Dimensional;Affect;aged;Alternative Therapies;animal imaging;Animal Model;Biochemical;Biocompatible Materials;Biological;Biological Assay;Biological Sciences;biological systems;Biology;biomaterial compatibility;Brain;Brain Diseases;Brain Neoplasms;Brain Stem;Brain Stem Neoplasms;career development;cell killing;Cells;Cellular biology;Characteristics;chemotherapy;Child;Childhood;Childhood Brain Stem Neoplasm;Childhood Malignant Brain Tumor;Chlorotoxin;Clinical;clinical translation;Clinical Trials;Coculture Techniques;Comet Assay;Convection;cytotoxicity;Data;Deposition;design;Development;Development Plans;Diffuse intrinsic pontine glioma;DNA;Doctor of Philosophy;Dose;Dose Fractionation;electron energy;ethylene glycol;Evaluation;Excision;Film;Flow Cytometry;fractionated radiation;Funding;Gamma-H2AX;Glioblastoma;Glioma;Goals;H2AFX gene;Histology;Home;Homing;human disease;Immunohistochemistry;improved;In Vitro;in vivo;Injury;Institution;interest;Intravenous;Investigation;Iron;iron oxide;iron oxide nanoparticle;irradiation;K-Series Research Career Programs;Knowledge;Length;live cell imaging;Location;Magnetic Resonance Imaging;Magnetic Resonance Spectroscopy;Malignant neoplasm of brain;materials science;Mediating;meetings;Mentors;Mentorship;Methods;Microbiology;Microscopy;Modeling;Modernization;Molecular Biology;mouse model;multidisciplinary;Mus;nanoparticle;neoplastic cell;neuro-oncology;neurosurgery;new technology;novel;novel therapeutic intervention;Nucleosome Core Particle;Oncology;Operative Surgical Procedures;Outcome;Pediatric Neoplasm;Phosphorylation;Photons;Physical Chemistry;Pontine structure;pre-clinical;preclinical development;Proteins;Publications;Quality of life;quality of life improvement;quantitative imaging;Radiation;Radiation Accidents;Radiation Dose Unit;radiation effect;Radiation Induced DNA Damage;Radiation Physics;Radiation therapy;Radiobiology;Recurrence;Regimen;Research;Research Personnel;Research Project Grants;Resected;Resources;Safety;Scientist;side effect;stem-like cell;Stromal Cells;submicron;success;Supratentorial;Surface;Survival Analysis;Techniques;Technology;Testing;Therapeutic;Thick;Thinness;tissue/cell culture;Tissues;Training;Translating;translation to humans;translational applications;treatment effect;Treatment Efficacy;tumor;Tumor Biology;two-dimensional;Validation;Work;Xenograft Model;Xenograft procedure
+---
+application_id: 10762986
+activity_code: R25
+title: St. Louis Summer Research Immersion Program
+org_name: WASHINGTON UNIVERSITY
+phr: Narrative The future of child and adolescent development and behavioral medicine lies in enhancing the diversity and inclusiveness of the research and clinical workforce. The proposed St. Louis Summer Research Immersion Program in Pediatric Neuroscience (SSRIP) will provide a unique and innovative research training experience to high school students who might not otherwise have access to such opportunities. Thus, this proposed R25 program will `grow the pipeline' for early stage learners for research careers in Pediatric Neuroscience, which has been designated by the NIH/NINDS as a priority area for a diverse workforce.
+terms: Acceleration;Address;Adolescent Development;Affect;Area;Behavioral;Behavioral Medicine;Behavioral Research;Behavioral Sciences;Biomedical Research;Brain Diseases;career;Child Development;Child Health;Child Psychiatry;Childhood;Clinical;Clinical Research;Cognitive;college;Communities;community engagement;Creativeness;Development;Disparity;disparity elimination;Diverse Workforce;diversity and inclusion;Education;Education Projects;education research;educational atmosphere;Educational Curriculum;Ensure;Equity;equity, diversity, and inclusion;experience;Exposure to;Faculty;faculty research;Fostering;Funding;Funding Opportunities;Future;Goals;graduate student;Grant;hands-on learning;health disparity;health equity;High School Student;Immersion;Individual;Inequity;Infrastructure;innovation;Institution;interest;Knowledge;Laboratories;Lead;Leadership;Lifelong disability;Literature;matriculation;medical schools;Medical Students;Mentors;Mentorship;Methods;Minority Groups;Mission;Modeling;National Institute of Neurological Disorders and Stroke;neurobehavioral;Neurologic;Neurology;Neurosciences;Neurosciences Research;neurosurgery;outreach;Participant;Prevention;programs;Reproducibility;Research;Research Methodology;Research Personnel;Research Priority;Research Project Grants;Research Technics;Research Training;Resources;Scholars Program;Science;Scientific Inquiry;Scientist;Series;skills;social;social health determinants;Structure;Students;summer program;summer research;symposium;synergism;Talents;Training;Training Programs;undergraduate student;Underrepresented Populations;Underrepresented Students;underserved community;United States National Institutes of Health;Universities;virtual;Washington;work-study;Writing
+---
+application_id: 11136276
+activity_code: T32
+title: Training in Translational Research of Skin Diseases
+org_name: UNIVERSITY OF COLORADO DENVER
+phr: Narrative
+The support for training of young scientists and clinicians for future careers in research is a fundamental part of
+the NIAMS mission. The broad scope of this training program in many areas of cutaneous biology and skin
+diseases, combined with a focus on regenerative medicine and stem cell biology, are also ideal for NIAMS
+support.
+terms: <Cutaneous Disorder><Dermatoses><Skin Diseases><Skin Diseases and Manifestations><Training><Translational Research><Translational Science><cutaneous disease><dermal disease><dermal disorder><skin disorder><translation research><translational investigation>
+---
+application_id: 11136358
+activity_code: T32
+title: Interdisciplinary Predoctoral Neuroscience Training Program in the Neuroscience Graduate Program.
+org_name: BROWN UNIVERSITY
+phr: NARRATIVE
+This is a broadly based predoctoral training program in Neuroscience with the objective of providing
+individualized, high quality training to predoctoral students interested in pursuing scientific careers in the
+biological and biomedical sciences. The program includes a focused emphasis on training in quantitative thinking
+and experimental design and analysis and would support students in their first two years of graduate studies,
+before they start their dissertation research. We request 8 predoctoral training slots for students in their first two
+years of our program.
+terms: <Neurosciences><Training Programs><pre-doc><pre-doctoral><programs>
+---
+application_id: 11136327
+activity_code: T32
+title: Training Program in Neuroscience
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: Narrative
+The mission of the Neuroscience Training Program (NTP) at Johns Hopkins University is to provide students
+with instruction in the neurosciences at the beginning of their graduate career to enable them to contribute to
+the advancement of scientific knowledge and improve human health through diverse careers. By serving as
+focal point for faculty, students and fellows conducting neuroscience research at Johns Hopkins, the program
+enhances collaborations that lead to a greater understanding of the role of the nervous system in health and
+disease.
+terms: <Neurosciences><Training Programs>
+---
+application_id: 10794246
+activity_code: K08
+title: Astrocyte-specific TLR4 signaling and Blood Brain Barrier permeability following acute focal cerebral ischemia
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: PROJECT NARRATIVE Current treatment options for stroke are time-limited and require expertise, and equipment, that is not widely available to most patients who have suffered a stroke. This proposal is investigating the effect of blocking one of the known ways in which the immune system responds to stroke to determine if this approach can lessen the damage that occurs after stroke. The overall goal of these studies is to obtain more information needed to develop different treatment options that can improve outcomes from stroke.
+terms: Acute;Adhesives;Affect;Antibodies;Astrocytes;Attenuated;Award;behavioral outcome;Blood - brain barrier anatomy;blood-brain barrier permeabilization;Brain;Brain Injuries;career;Cell Survival;Cells;Cerebral Ischemia;cerebral microvasculature;clinically relevant;Complement;Data;deprivation;Development;Equipment;Excision;Extravasation;flexibility;Fluorescence;foot;Foundations;Funding;Gelatinase B;Gene Expression;Genetic Recombination;Glucose;Goals;HMGB1 gene;Hypoxia;Immune;immune activation;Immune system;Immunoglobulin G;Immunohistochemistry;immunoregulation;improved;improved outcome;in vitro Model;in vivo;Incubated;Inflammation;injured;Ischemia;Knowledge;Lead;Ligands;Macrophage;Mechanics;Mediating;Microglia;Middle Cerebral Artery Occlusion;Modeling;Molecular;Mus;Natural Immunity;neurobehavioral;neuron loss;neurovascular;neurovascular unit;novel therapeutics;Outcome;Oxygen;Pathway interactions;Patients;Pattern;Permeability;Phase;phosphoproteomics;post stroke;Process;Rattus;Recombinants;Research;response;Role;Serum;Signal Induction;Signal Pathway;Signal Transduction;Specificity;Stains;Stroke;stroke outcome;stroke therapy;Tamoxifen;Testing;Therapeutic;thrombolysis;Time;tissue injury;Tissues;TLR4 gene;Toll-like receptors;transcriptome sequencing;transcriptomics;Validation;Vascular Permeabilities;Walking;Western Blotting
+---
+application_id: 11126569
+activity_code: T32
+title: CTSA Postdoctoral T32 at University of Arkansas for Medical Sciences
+org_name: UNIV OF ARKANSAS FOR MED SCIS
+phr: PROJECT NARRATIVE
+ We propose a new T32 Postdoctoral Training Program focused on Health Sciences Innovation and
+Entrepreneurship (HSIE) Training Program, which will offer mentored research training to postdoctoral fellows
+in the Colleges of Medicine, Nursing, Pharmacy and Public Health. This inter-professional training will be
+coupled to didactic and experiential learning to equip trainees with the skillset to catalyze research discoveries
+into health care applications. Program graduates will be uniquely positioned as translational scientists to
+succeed as academic investigators or pursue other exciting career options that depend on scientific and
+operation principles of the translation process.
+terms: <Arkansas><Medical><Postdoc><Postdoctoral Fellow><Research Associate><Science><Universities><post-doc><post-doctoral><post-doctoral trainee><research associates>
+---
+application_id: 11003336
+activity_code: K08
+title: Impact of Diet Induced Obesity on Acute Lung Injury
+org_name: WEILL MEDICAL COLL OF CORNELL UNIV
+phr: PROJECT NARRATIVE Obesity afflicts approximately 42% of the adults in the United States and obese patients are at increased risk of developing acute respiratory distress syndrome (ARDS), a final pathway of acute lung injury from infectious or sterile etiologies with high mortality. We have found evidence that increased acute lung injury in high fat diet induced obesity is linked to elevated free fatty acids in the lung with associated alterations in fatty acid oxidation, de novo fatty acid synthesis and mitochondrial fusion enzymes. In this proposal, we aim to uncover a link between dysregulated fatty acid metabolism, mitochondrial dysfunction and increased susceptibility to acute lung injury in obesity, with the ultimate goal of supporting the development of therapies for obese patients a...
+terms: Acetyl Coenzyme A;Acute;Acute Lung Injury;Acute Respiratory Distress Syndrome;acylcarnitine;Address;Adult;Advisory Committees;alveolar epithelium;Amines;authority;Bacterial Pneumonia;biobank;Bioenergetics;Biological;Biology;Body mass index;career;career development;Carnitine Palmitoyltransferase I;cell type;Cells;Chimeric Proteins;Clinical;Communities;comparison control;Complex;Critical Illness;Cytosol;Databases;Development Plans;diet-induced obesity;Diffuse;Down-Regulation;Environment;Enzymes;Etiology;fatty acid metabolism;fatty acid oxidation;Fatty Acids;Fatty-acid synthase;Functional disorder;Generations;Genetic;genetic approach;Goals;Health;High Fat Diet;Hyperoxia;Impairment;Inflammatory;Injury;insight;Interdisciplinary Study;Lead;Levocarnitine;Link;lipid metabolism;Lipids;Lung;lung injury;Measures;Medicine;Mentors;Mentorship;Metabolic;Metabolic Pathway;Metabolism;metabolomics;Mitochondria;mitochondrial dysfunction;mitochondrial metabolism;Modeling;Morphology;mortality;mouse model;Multiple Trauma;Nonesterified Fatty Acids;Obese Mice;obese patients;obese person;Obesity;oxidation;Pathogenesis;Pathway interactions;Patient Admission;Patients;pharmacologic;Physiological;Plasma;Play;Pneumonia;Predisposition;Process;Regulation;Research;Research Personnel;Resources;Respiration;Risk;Role;Shapes;skills;Sterility;Stress;Testing;therapy development;Toxic effect;Training;United States;Ventilator-induced lung injury;Viral Pneumonia;Weight
+---
+application_id: 10881944
+activity_code: F31
+title: Regulation of thrombin-induced p38 MAPK pro-inflammatory signaling by deubiquitinases
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: PROJECT NARRATIVE Cardiovascular disease (CVD) remains a leading cause of death in the United States and is linked to inflammatory signaling that promotes endothelial barrier dysfunction, a hallmark of inflammatory responses. Thrombin is generated during vascular injury and inflammation and promotes endothelial barrier disruption through p38 MAPK signaling. However, the pathways that regulate p38 MAPK signaling following thrombin stimulation is not known and important to understand to develop new strategies for the treatment of CVD.
+terms: Actins;Adaptor Signaling Protein;Adherens Junction;Automobile Driving;Binding;Binding Proteins;Biochemical;Biological Assay;Blood Vessels;Cardiovascular Diseases;Cause of Death;Cell membrane;Cells;Centers for Disease Control and Prevention (U.S.);Complex;Cytoskeleton;Deubiquitination;Development;Early Endosome;Endosomes;Endothelial Cells;endothelial dysfunction;Endothelium;Enzymes;Extravasation;Functional disorder;G Protein-Coupled Receptor Signaling;G-Protein-Coupled Receptors;Generations;genome-wide;Goals;GPR3 gene;Human;In Vitro;in vivo;Inflammation;Inflammation Mediators;Inflammatory;Inflammatory Response;Knowledge;Libraries;Link;MAP3K7 gene;MAP3K7IP1 gene;Mediating;Methods;Microscopic;Microscopy;Mitogen-Activated Protein Kinases;Molecular;mouse model;Mus;Myosin Light Chains;novel therapeutic intervention;p38 Mitogen Activated Protein Kinase;PAR-1 Receptor;Pathway interactions;Permeability;Phosphotransferases;Process;protein complex;recruit;Regulation;Research;response;RNA interference screen;Role;Signal Pathway;Signal Transduction;Small Interfering RNA;Testing;therapeutic development;Thrombin;Time;Ubiquitin;ubiquitin isopeptidase;ubiquitin-protein ligase;Ubiquitination;United States;vascular inflammation;vascular injury;Work
+---
+application_id: 11136383
+activity_code: T32
+title: Neural Injury & Plasticity
+org_name: GEORGETOWN UNIVERSITY
+phr: Project Narrative
+This research training program is focused on the scientific and professional development of advanced
+predoctoral thesis students in the area of neural injury and responses to injury. With respect to public health,
+this program will create a cadre of neuroscientists trained for research and/or management of research
+programs, through which new and more effective treatments for acute and degenerative disorders of the
+nervous system can be implemented.
+terms: <CNS plasticity><Neuronal Plasticity><central nervous system plasticity><nerve injury><neural injury><neural plasticity><neuroplastic><neuroplasticity>
+---
+application_id: 11044078
+activity_code: K08
+title: Astrocyte-specific TLR4 signaling and Blood Brain Barrier permeability following acute focal cerebral ischemia
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: PROJECT NARRATIVE Current treatment options for stroke are time-limited and require expertise, and equipment, that is not widely available to most patients who have suffered a stroke. This proposal is investigating the effect of blocking one of the known ways in which the immune system responds to stroke to determine if this approach can lessen the damage that occurs after stroke. The overall goal of these studies is to obtain more information needed to develop different treatment options that can improve outcomes from stroke.
+terms: Acute;Adhesives;Affect;Antibodies;Astrocytes;Attenuated;Award;behavioral outcome;Blood - brain barrier anatomy;blood-brain barrier permeabilization;Brain;Brain Injuries;career;Cell Survival;Cells;Cerebral Ischemia;cerebral microvasculature;clinically relevant;Complement;Data;deprivation;Development;Equipment;Excision;Extravasation;flexibility;Fluorescence;foot;Foundations;Funding;Gelatinase B;Gene Expression;Genetic Recombination;Glucose;Goals;HMGB1 gene;Hypoxia;Immune;immune activation;Immune system;Immunoglobulin G;Immunohistochemistry;immunoregulation;improved;improved outcome;in vitro Model;in vivo;Incubated;Inflammation;injured;Ischemia;Knowledge;Lead;Ligands;Macrophage;Mechanics;Mediating;Microglia;Middle Cerebral Artery Occlusion;Modeling;Molecular;Mus;Natural Immunity;neurobehavioral;neuron loss;neurovascular;neurovascular unit;novel therapeutics;Outcome;Oxygen;Pathway interactions;Patients;Pattern;Permeability;Phase;phosphoproteomics;post stroke;Process;Rattus;Recombinants;Research;response;Role;Serum;Signal Induction;Signal Pathway;Signal Transduction;Specificity;Stains;Stroke;stroke outcome;stroke therapy;Tamoxifen;Testing;Therapeutic;thrombolysis;Time;tissue injury;Tissues;TLR4 gene;Toll-like receptors;transcriptome sequencing;transcriptomics;Validation;Vascular Permeabilities;Walking;Western Blotting
+---
+application_id: 11173736
+activity_code: K01
+title: Understanding disparities in cardiovascular toxicity among breast cancer survivors in Arkansas
+org_name: UNIV OF ARKANSAS FOR MED SCIS
+phr: Public Health Relevance/Project Narrative Section
+Enter the text here that is the new public health relevance information for your application. Using no more than two or three sentences, describe the relevance of this research to public health. 
+Cardiovascular (CV) toxicities from common cancer therapies (trastuzumab, anthracyclines, or left chest radiation) can lead to cardiovascular disease (heart failure, myocardial infarction, and stroke) and are more common in certain breast cancer survivor populations, including individuals living in rural areas or neighborhoods with limited resources. However, it remains unclear how demographic, economic, and geographic factors together influence CV toxicity in breast cancer survivors, and few studies have examined their combined impact on outcomes....
+terms: <Active Follow-up><Address><Adult-Onset Diabetes Mellitus><Affect><Anthracycline><Anti-ERB-2><Anti-HER2/c-erbB2 Monoclonal Antibody><Anti-c-ERB-2><Anti-c-erbB2 Monoclonal Antibody><Anti-erbB-2><Anti-erbB2 Monoclonal Antibody><Anti-p185-HER2><Apoplexy><Application Context><Arkansas><Bayesian Modeling><Bayesian adaptive designs><Bayesian adaptive models><Bayesian belief network><Bayesian belief updating model><Bayesian framework><Bayesian hierarchical model><Bayesian network model><Bayesian nonparametric models><Bayesian spatial data model><Bayesian spatial image models><Bayesian spatial models><Bayesian statistical models><Bayesian tracking algorithms><Brain Vascular Accident><Breast Cancer><Breast Cancer survivor><Breast Cancer survivorship><CVD prevention><Cancer Survivor><Cancer Survivorship><Cancer Treatment><Cancers><Cardiac><Cardiac infarction><Cardiometabolic Disease><Cardiometabolic Disorder><Cardiovascular><Cardiovascular Body System><Cardiovascular Diseases><Cardiovascular Organ System><Cardiovascular system><Career Development Awards><Career Development Awards and Programs><Career Development Programs K-Series><Cerebral Stroke><Cerebrovascular Apoplexy><Cerebrovascular Stroke><Characteristics><Chest><Clinical><Clinical Decision Support Systems><Clinical Medical Sciences><Clinical Medicine><Communities><Competence><Complex><Data><Data Analyses><Data Analysis><Data Bases><Databases><Demographic Factors><Development><Diagnosis><Dimensions><Disease Outcome><Disparities><Disparity><Dysfunction><Dyslipidemias><EHR system><Economic Factors><Economical Factors><Economics><Electronic Health Record><Environmental Factor><Environmental Risk Factor><Exhibits><Functional disorder><General Population><General Public><Geographic Factor><Geography><Goals><Grant><HER2 Monoclonal Antibody><Health><Health Care><Heart Vascular><Heart failure><Herceptin><Hypertension><Iatrogenic Cancer><Individual><Insurance Coverage><Insurance Status><Intervention><Investigators><Joints><K-Awards><K-Series Research Career Programs><Ketosis-Resistant Diabetes Mellitus><Left><Link><Machine Learning><Malignant Breast Neoplasm><Malignant Neoplasm Therapy><Malignant Neoplasm Treatment><Malignant Neoplasms><Malignant Tumor><Maturity-Onset Diabetes Mellitus><Mediating><Mediation><Medical><MoAb HER2><Modeling><Morbidity><Morbidity - disease rate><Myocardial Infarct><Myocardial Infarction><NHLBI><NIDDM><National Heart, Lung, and Blood Institute><Negotiating><Negotiation><Neighborhoods><Non-Insulin Dependent Diabetes><Non-Insulin-Dependent Diabetes Mellitus><Noninsulin Dependent Diabetes><Noninsulin Dependent Diabetes Mellitus><Oncology><Oncology Cancer><Outcome><Outcomes Research><Patients><Physiopathology><Population><Population Group><Prevention program><Preventive Medicine><Public Health><Radiation><Recurrent Neoplasm><Recurrent tumor><Research><Research Career Program><Research Personnel><Research Resources><Researchers><Resources><Risk><Role><Science><Services><Slow-Onset Diabetes Mellitus><Stable Diabetes Mellitus><Stroke><Survivors><T2 DM><T2D><T2DM><Text><Therapy Related Malignant Neoplasm><Therapy Related Malignant Tumor><Therapy-Associated Cancers><Therapy-Related Cancer><Thorace><Thoracic><Thorax><Toxic effect><Toxicities><Training><Trastuzumab><Treatment-Associated Cancer><Treatment-Related Cancer><Type 2 Diabetes Mellitus><Type 2 diabetes><Type II Diabetes Mellitus><Type II diabetes><Universities><Variant><Variation><Vascular Hypertensive Disease><Vascular Hypertensive Disorder><World Health><active followup><adult onset diabetes><advanced analytics><analytical method><analyzing longitudinal><anti-cancer therapy><brain attack><c-erb-2 Monoclonal Antibody><cancer epidemiology><cancer registry><cancer therapy><cancer-directed therapy><cardiac disease prevention><cardiac failure><cardiac infarct><cardiometabolic><cardiometabolism><cardiovascular disease prevention><cardiovascular disease risk><cardiovascular disorder><cardiovascular disorder prevention><cardiovascular disorder risk><cardiovascular health><cardiovascular risk><cardiovascular risk factor><cerebral vascular accident><cerebrovascular accident><circulatory system><clinical data repository><co-morbid><co-morbidity><cohort><community factor><community-level factor><comorbidity><contextual factors><coronary attack><coronary infarct><coronary infarction><data base><data interpretation><developmental><economic><electronic health care record><electronic health information><electronic health medical record><electronic health plan record><electronic health record system><electronic health registry><electronic medical health record><environmental risk><experience><follow up><follow-up><followed up><followup><heart attack><heart infarct><heart infarction><high blood pressure><high risk><hyperpiesia><hyperpiesis><hypertensive disease><hypertensive disorder><improved><intervention program><ketosis resistant diabetes><longitudinal analysis><machine based learning><machine learning based method><machine learning based prediction model><machine learning based predictive model><machine learning method><machine learning methodologies><machine learning prediction><machine learning prediction model><malignancy><malignant breast tumor><maturity onset diabetes><mortality><neoplasm recurrence><neoplasm registry><neoplasm/cancer><pathophysiology><patient population><population health><prediction algorithm><preventative medicine><programs><public health relevance><rhuMAb HER2><risk prediction algorithm><risk prediction model><risk stratification><rural area><rural location><rural region><skills><social role><stratify risk><stroked><strokes><tool><type 2 DM><type II DM><type two diabetes>
+---
+application_id: 11003793
+activity_code: K08
+title: Lung resident Treg suppression of Th2 resident memory T cells in allergicasthma
+org_name: UNIVERSITY OF MINNESOTA
+phr: PROJECT NARRATIVE T helper type 2 tissue-resident memory cells (Th2-Trm) are key drivers of allergic asthma due to their persistence in the airways and amnestic responses upon local allergen re-exposure. FoxP3+ regulatory T cells (Tregs) are potent suppressors of allergic inflammation. This proposal explores the possibility that allergen- specific tissue resident (r) Tregs in the lung are particularly effective at suppressing allergic inflammation due to their positioning in a unique niche alongside Th2-Trm through shared chemokine receptor systems.
+terms: Adoptive Transfer;Advisory Committees;Affect;airborne allergen;airway hyperresponsiveness;Allergens;Allergic;Allergic Disease;Allergic inflammation;Asthma;asthma model;Award;Bioinformatics;Biological Response Modifiers;Boston;Candidate Disease Gene;career development;CCL1 gene;CCL8 gene;CCR8 gene;Cell Maintenance;Cell Separation;Cells;Cellular biology;chemokine;chemokine receptor;Chronic;Clustered Regularly Interspaced Short Palindromic Repeats;CRISPR screen;CRISPR/Cas technology;CXCR6 gene;Data;Development Plans;Disease;disease model;effective therapy;eosinophil;Exposure to;Extrinsic asthma;FOXP3 gene;Funding;Gene Expression Profile;General Hospitals;Genes;Genetic Transcription;genome editing;Goals;Homeostasis;human disease;Immunology;immunoregulation;in vivo;Inflammation;Inflammatory;Inhalation;Interleukin-13;Kinetics;Knowledge;Ligands;Lung;Maintenance;Maps;Massachusetts;Mediating;Memory;Mentors;Mentorship;Metaplasia;Microscopy;Modeling;mouse model;mucosal site;Mucous body substance;Mus;novel;novel therapeutics;Parabiosis;Pediatric Hospitals;Peptides;Phase;Phenotype;Positioning Attribute;programs;Pyroglyphidae;recruit;Regulatory T-Lymphocyte;Reporter;Research;Research Methodology;Research Personnel;Residencies;Resolution;response;Role;single-cell RNA sequencing;skills;Structure of parenchyma of lung;System;Systems Biology;T cell differentiation;T-Lymphocyte;Testing;Th2 Cells;Therapeutic;tissue resident memory T cell;Tissues;Training;transcriptomics;Transgenic Organisms;Translational Research;United States National Institutes of Health;Work
+---
+application_id: 11004105
+activity_code: F30
+title: Unexpected mechanism underlying mislocalization of thrombocytopenia-associated ETV6 point mutation
+org_name: UT SOUTHWESTERN MEDICAL CENTER
+phr: PROJECT NARRATIVE Germline ETV6 mutations are associated with familial thrombocytopenia and ~30% of carriers develop hematologic malignancies, but the pathophysiologic mechanisms of disease are poorly understood. Preliminary data we have gathered demonstrates that one of these mutations, Pro214Leu, creates a de novo nuclear export signal that leads to the cytoplasmic localization of ETV6. A preliminary bioinformatics approach suggests that creation of a de novo nuclear export signal by a missense mutation may be a generalized mechanism of human disease.
+terms: Affect;Amino Acids;Animal Model;Binding;Bioinformatics;Biological Models;biophysical techniques;Blood Platelets;Cell model;Cell Nucleus;Cells;Chemicals;Childhood Precursor B Lymphoblastic Leukemia;Chronic Myelomonocytic Leukemia;ClinVar;conditional knockout;Cytoplasm;Data;Development;Disease;DNA Binding;DNA Binding Domain;Dysmyelopoietic Syndromes;ETV6 gene;Exhibits;exportin 1 protein;Family;Functional disorder;Functional Imaging;gene repression;Genetic;genetic approach;Genetic Markers;Genetic Variation;Germ Lines;Germ-Line Mutation;Goals;Hematologic Neoplasms;Hematopoietic;Heterozygote;Hour;human disease;In Vitro;Induced Mutation;Inherited;inhibitor;Knockout Mice;leptomycin B;leukemia;Malignant Neoplasms;Mammalian Cell;Maps;Mediating;Megakaryocytes;meter;Missense Mutation;mouse model;mutant;Mutate;Mutation;mutation carrier;novel;novel marker;Nuclear;Nuclear Export;Penetrance;Peripheral;Platelet Count measurement;Point Mutation;Production;protein function;protein reconstitution;Proteins;public database;Recurrence;Risk;RUNX1 gene;Signal Transduction;Somatic Mutation;stem cell maintenance;Tertiary Protein Structure;Thrombocytopenia;Thrombopoiesis;tool;transcription factor;Transcription Repressor;Transgenic Mice;Work
+---
+application_id: 11187072
+activity_code: K01
+title: A Technology-enhanced and Multilevel Approach to Promote Cervical Cancer Prevention Among Women Living with HIV
+org_name: GEORGE WASHINGTON UNIVERSITY
+phr: PROJECT NARRATIVE
+Women living with HIV (WLH) have a greater risk of developing invasive cervical cancer due to greater incidence and
+longer persistence of high-risk
+human papillomavirus
+infection.
+The primary objectives of this NCI K01 proposal are to:
+(1) conduct formative research and pilot test the provider-level and patient-level components of the My Self-Sampling for
+HPV Awareness, Results, and Empowerment (MySHARE+) intervention to increase cervical cancer screening (HPV self-
+collection; Pap triage adherence) among under/never-screened WLH and (2) provide Dr. Le with didactic training, directed
+mentorship, and experiential learning opportunities to develop cancer prevention and control research methods skills and
+content expertise in quasi-experimental studies and cluster-RCTs usin...
+terms: <AIDS Virus><AIDS prevention><Acceleration><Acquired Immune Deficiency Syndrome Virus><Acquired Immunodeficiency Syndrome Virus><Active Follow-up><Active Learning><Address><Adherence><Adoption><Appointments and Schedules><Area><Award><Awareness><Behavior><Cancer Burden><Cancer Control><Cancer Control Research><Cancer Control Science><Cancer Detection><Cancers><Career Development Awards><Career Development Awards and Programs><Career Development Programs K-Series><Caring><Cervical Cancer><Cervical Cancer Screening><Cervix Cancer><Cities><Clinic><Clinical><Cluster randomization trial><Cluster randomized trial><Collaborations><Collection><Communities><Complex><Control Groups><Cooperative Learning><Cues><Data><EMR system><EXTMR><Early Diagnosis><Education><Education for Intervention><Educational Intervention><Educational aspects><Eligibility><Eligibility Determination><Enhancement Technology><Enrollment><Epithelial Dysplasia><Experiential Learning><Extramural><Extramural Activities><Faculty><Funding><Future><Goals><Government><Guidelines><HIV><HIV Prevention><HIV diagnosis><HIV/AIDS prevention><HPV><HPV infection><HPV positive><HPV screening><HPV(+)><HPV+><HPV-High Risk><Health><Health Care Providers><Health Personnel><High Risk Oncogenic HPV><High risk HPV><High risk Human Papillomavirus><High risk Human papilloma virus><Home><Human Immunodeficiency Viruses><Human Papilloma Virus><Human Papilloma Virus screening><Human Papillomavirus><Human Resources><Human papilloma virus infection><Human papillomavirus infection><Incidence><Infection><Infectious Human Wart Virus><Institution><Instruction><Instruction Intervention><Intention><Interdisciplinary Research><Interdisciplinary Study><Intervention><Intervention Studies><Interview><Intraepithelial Neoplasia><Intraepithelial Neoplasms><Investigators><K-Awards><K-Series Research Career Programs><Knowledge><LAV-HTLV-III><Location><Lymphadenopathy-Associated Virus><Malignant Cervical Neoplasm><Malignant Cervical Tumor><Malignant Neoplasm of the Cervix><Malignant Neoplasms><Malignant Tumor><Malignant Tumor of the Cervix><Malignant Tumor of the Cervix Uteri><Malignant Uterine Cervix Neoplasm><Malignant Uterine Cervix Tumor><Malignant neoplasm of cervix uteri><Manpower><Measures><Mentors><Mentorship><Methodology><Methods><Mission><Modality><Multidisciplinary Collaboration><Multidisciplinary Research><National Cancer Burden><Outcome><Patient Education><Patient Instruction><Patient Training><Patient-Centered Care><Patients><Persons><Pre-Post Tests><Preventative screening><Preventive screening><Protocol Screening><Provider><Quasi-experiment><Quasi-experimental analysis><Quasi-experimental approach><Quasi-experimental design><Quasi-experimental methods><Quasi-experimental research><Quasi-experimental study><Quasi-experimental technique><R-Series Research Projects><R01 Mechanism><R01 Program><Randomized><Recommendation><Records><Reporting><Research><Research Activity><Research Career Program><Research Grants><Research Methodology><Research Methods><Research Personnel><Research Project Grants><Research Projects><Research Support><Research Training><Researchers><Risk><Sampling><Scientific Advances and Accomplishments><Screening for cancer><Security><Self Efficacy><Speculums><Survey Instrument><Surveys><System><Technology><Testing><Text Messaging><Training><Training Activity><Training Intervention><Transportation><Triage><Uterine Cervix Cancer><Virus-HIV><Visit><Vulnerable Populations><Wait Time><Woman><World Health Organization><acceptability and feasibility><access to health care><accessibility of health care><accessibility to health care><active followup><behavioral health><biobehavior><biobehavioral><cancer disparity><cancer health disparity><cancer prevention><cancer-related health disparity><career><cervical cancer early detection><cervical cancer prevention><cervical screening><cervicovaginal><compare to control><comparison control><cost><delivered remotely><digital health><disparities affecting females><disparities affecting women><disparities among females><disparities among women><disparities facing women><disparities impacting women><disparities in females><disparities in women><disparity in cancer><disparity in health><early cancer detection><early detection><electronic medical record system><electronic medical system><empowerment><enroll><evidence base><female disparities><female prevention><follow up><follow-up><followed up><followup><health IT><health and care delivery><health care access><health care availability><health care delivery><health care personnel><health care service access><health care service availability><health care worker><health delivery systems><health disparity><health information technology><health provider><health services delivery><health workforce><high risk><homes><hrHPV><human papillomavirus +><human papillomavirus positive><implementation science><improved><innovate><innovation><innovative><instructional intervention><intervention research><interventional research><interventional study><interventions research><m-Health><mHealth><mHealth therapeutic><mHealth therapy><mHealth treatment><malignancy><marginalized group><marginalized individual><marginalized people><marginalized population><medical personnel><meeting><meetings><mhealth interventions><mobile health><mobile health intervention><mobile health therapeutic><mobile health therapy><mobile health treatment><neoplasm/cancer><participant enrollment><patient enrollment><patient-clinician communication><patient-doctor communication><patient-provider communication><personnel><pilot test><precancer cervical detection><preference><presence of HPV><presence of human papillomavirus><prevent in females><prevent in women><prevention among females><prevention among women><prevention in females><prevention in women><primary care health service><primary care provider><primary care setting><primary health service><primary outcome><programs><providers from primary care><providers of primary care><randomisation><randomization><randomly assigned><recruit><remote delivery><research and methods><scientific accomplishments><scientific advances><screening><screening cancer patients><screening disparities><screening uptake><screenings><secondary outcome><self testing><shared decision making><short message service><skills><sms messaging><social><technology intervention><technology-based interventions><technology-enabled interventions><technology-focused interventions><texting><tool><training module><treatment provider><vulnerable group><vulnerable individual><vulnerable people><wart virus><women's disparities><women's prevention>
+---
+application_id: 11117164
+activity_code: T32
+title: The Training Program in Reproductive, Perinatal, and Pediatric Life Course Epidemiology
+org_name: HARVARD UNIVERSITY D/B/A HARVARD SCHOOL OF PUBLIC HEALTH
+phr: Project Narrative
+Significant advances have been made in reproductive, perinatal, and pediatric (RPP) epidemiologic research
+over the last several decades. However, important challenges remain to deepen our understanding of the
+critical periods of risk, identify determinants, elucidate mechanisms, investigate outcomes, and determine their
+impact on health and disease across the life course. The Training Program in Reproductive, Perinatal, and
+Pediatric (RPP) Life Course Epidemiology addresses this challenge by preparing the next generation of life
+course-oriented, cutting-edge, innovative, transdisciplinary researchers who will serve as independent
+investigators equipped to advance our understanding of significant RPP health research, apply cutting-edge
+evidence to inform clinical practice...
+terms: <Childhood><Life course epidemiology><Lifecourse epidemiology><Perinatal><Peripartum><Training Programs><pediatric><reproductive>
+---
+application_id: 11127581
+activity_code: T32
+title: Pulmonary Focused Foundations in Innovation and Scholarship (PuFFInS)
+org_name: MEDICAL UNIVERSITY OF SOUTH CAROLINA
+phr: PROJECT NARRATIVE
+There is an urgent, unmet public health need to improve outcomes for chronic lung diseases, which
+disproportionately impacts the Southeast. This program will provide research training for investigators who will
+ultimately improve the healthcare and outcomes for individuals with lung diseases with particular emphasis on
+lung cancer prevention, screening and implementation, critical care, telehealth, and rare lung diseases, including
+pulmonary fibrosis, sarcoidosis and cystic fibrosis. Training in innovation and entrepreneurship will enable
+investigators to create innovative solutions to challenges in health, to catalyze interdisciplinary entrepreneurial
+efforts, and ultimately become change agents to address national and global health problems.
+terms: <Foundations><Scholarship><innovate><innovation><innovative><pulmonary>
+---
+application_id: 11075762
+activity_code: F30
+title: HLA risk alleles cause Type 1 Diabetes by modifying the selection of T cell receptors that recognize pancreatic beta cell antigens
+org_name: HARVARD MEDICAL SCHOOL
+phr: Project Narrative Type 1 Diabetes (T1D) is an autoimmune disease in which T cells destroy pancreatic β-cells. Each T cell targets specific antigens via recognition through its T cell antigen receptor (TCR), which must survive thymic selection before it can migrate to the pancreas or other peripheral tissues. With paired TCR and transcriptomic data at single-cell resolution, this project investigates the hypothesis that human leukocyte antigen (HLA) alleles confer risk for T1D via the thymic selection of β-cell-specific TCRs that are predisposed for inflammatory T cell states.
+terms: Accounting;Affect;Age;Algorithms;Alleles;Antigen Receptors;antigen-specific T cells;Antigenic Variation;Antigens;attributable risk;Autoantigens;autoencoder;Autoimmune Diseases;Autoimmunity;autoreactive T cell;Beta Cell;Bioinformatics;bioinformatics tool;case control;Cells;Charge;Clinical;cohort;Computing Methodologies;Data;Data Set;design;dimension reduction;Disease;effector T cell;Electrostatics;engineered beta cell;Environment;Familiarity;Foundations;functional genomics;G6PC2 gene;Generations;Genes;Genetic;Genetic study;Genetic Transcription;genomic data;Genotype;Heritability;HLA Antigens;Human Genetics;Hydrophobicity;Immune response;Immunologics;Immunology;Individual;Inflammation;Inflammatory;insight;Insulin-Dependent Diabetes Mellitus;Intervention;islet;Learning;Libraries;Manuscripts;Mediating;Memory;Mentorship;method development;Methods;migration;Monitor;Mucous Membrane;novel;Oral;Organoids;Pancreas;Pathogenicity;Pattern;Peripheral;Persons;Phenotype;Physicians;Positioning Attribute;preproinsulin;Publishing;Receptor Gene;Regulatory T-Lymphocyte;Research;Resolution;Resources;Risk;risk variant;Scientist;Serum;skills;Specificity;Statistical Models;Structure of beta Cell of islet;T cell differentiation;T cell therapy;T-Cell Antigen Receptor Specificity;T-Cell Receptor;T-Lymphocyte;T-Lymphocyte Subsets;Testing;therapeutic target;Thymus Gland;Tissues;Training;training data;transcriptome;transcriptomics;translational impact;V(D)J Recombination;Work;Writing;Yeasts
+---
+application_id: 11136989
+activity_code: T32
+title: Pediatric Hematology Research Training Program
+org_name: CHILDREN'S HOSP OF PHILADELPHIA
+phr: NARRATIVE
+ Research in pediatric benign hematology plays an important role in advancing the diagnosis and treatment of
+inherited disorders including sickle cell disease and the thalassemias, hemophilia and thrombophilia, bone marrow
+failure syndromes, and benign vasculogenesis disorders. Improved therapy and cure for inherited and acquired
+pediatric blood diseases will improve the quality of life of affected individuals, reduce hospital admissions, and
+minimize in-hospital acquired clotting complications. The study of benign pediatric hematology disorders is very
+much underserved as recognized by the NIH and our training program has been a nationally recognized leader
+in attracting and fostering the development of talented trainees who become the future pediatric science and
+leaders, advan...
+terms: <Pediatric Hematology><Research Training><Training Programs>
+---
+application_id: 11136959
+activity_code: T32
+title: Training Program in Lung Biology and Translational Medicine
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: PROJECT NARRATIVE
+This Training Program in Lung Biology and Translational Medicine at the University of Alabama at Birmingham
+(UAB) is designed to train the next generation of biomedical scientists and physician-scientists with the
+application of innovative techniques/tools and approaches to address emerging public health concerns related
+to respiratory disease.
+terms: <Biology><Lung><Lung Respiratory System><Training Programs><translational medicine>
+---
+application_id: 10826718
+activity_code: F32
+title: Synthetic Biology Approach in Engineered Algae for Improved Milk Fat Composition in Formula
+org_name: UNIVERSITY OF CALIFORNIA BERKELEY
+phr: Project Narrative Human milk fat, which provides over 50% of an infant’s energy requirement during early lactation, has an optimized composition with respect to fatty acid chain length and regiospecific distribution. The fat ingredient of infant formula, which is typically derived from vegetable oil blends, does not match the structural diversity of human milk lipids with respect to chemical composition, and hence lacks some significant nutritional benefits of human milk fat. This project aims to provide a healthy and sustainable lipid source for infant formula by engineering an oleaginous green alga for human milk fat production through a synthetic biology approach that exploits the vast knowledge base of plant and algal lipid metabolism.
+terms: absorption;Acyl Carrier Protein;Acyl Coenzyme A;Acyltransferase;Address;Algae;Biomass;bone health;Calcium;Calcium ion;Calories;Carrier Proteins;chelation;Chemicals;Chlamydomonas reinhardtii;Chloroplasts;Complex;Consumption;cost;Development;dietary;Digestion;Effectiveness;Energy-Generating Resources;Engineering;Environment;Enzymes;Epithelial Cells;Esterification;Esterified Fatty Acids;Esters;Exclusive Breastfeeding;Failure;Fat Substitutes;fatty acid biosynthesis;Fatty acid glycerol esters;Fatty Acids;Fatty-acid synthase;Feces;Friends;Gene Expression;Genetic;Genome;Glycerol;Goals;Green Algae;Human;Human Engineering;Human Milk;Immunization;improved;Individual;Infant;Infant formula;infant outcome;Institution;Intake;intestinal epithelium;knowledge base;Laboratories;Lactation;Length;Lipase;lipid metabolism;lipid structure;Lipids;lower income families;lysophosphatidic acid;Mass Fragmentography;Maternal Health;Medium chain fatty acid;metabolic engineering;Methods;milk fat;Modification;Monitor;Monoglycerides;Mothers;nutrition;Nutritional;Oils;Oleates;Oleic Acids;oleoyl-(acyl-carrier-protein) hydrolase;Organism;Output;palm oil;Palmitates;Palmitic Acids;Pancreas;Phosphatidic Acid;Plants;poor health outcome;Positioning Attribute;Post-Translational Protein Processing;Precipitation;Prevalence;prevent;Process;Production;Proteomics;Research;Role;rural area;Soaps;Source;Specificity;Structure;Substrate Specificity;Surveys;synthetic biology;System;tool;Training;Triglycerides;Variant;Vegetable Oils;Vertebral column;Western Blotting
+---
+application_id: 11114795
+activity_code: K08
+title: Particulate matter size, epithelial barrier dysfunction, and chronic rhinosinusitis
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: PROJECT NARRATIVE
+Chronic rhinosinusitis (CRS) affects over 20 million individuals and costs our healthcare system $22B every
+year, yet it remains poorly understood with limited treatment options. Keeping in mind the increasing levels of
+forest fires in the U.S. – a major source of atmospheric particulate matter (PM) – the proposed research is
+relevant to public health as it will 1) elucidate a fundamental understanding of PM disease mechanisms; (2)
+identify key players driving disease pathophysiology for therapeutic targeting; and (3) accrue knowledge that
+will help inform air quality policies and standards. The proposed research will further the NIH's mission to
+acquire novel fundamental knowledge about living systems that can be used to enhance health and reduce
+illness and disability.
+terms: <Accessory Sinuses><Address><Affect><Air><Anosmia><Anxiety><Atmosphere><Automobile Driving><Bioinformatics><Body Tissues><Career Development Awards><Career Development Awards and Programs><Career Development Programs K-Series><Cell Body><Cell Culture Techniques><Cells><Cephalalgia><Cephalgia><Cephalodynia><Charge><Chronic><Cognitive Disturbance><Cognitive Impairment><Cognitive decline><Cognitive function abnormal><Coronary Arteriosclerosis><Coronary Artery Disease><Coronary Artery Disorder><Coronary Atherosclerosis><Cranial Pain><Data><Diameter><Disease><Disease Outcome><Disorder><Disturbance in cognition><Down-Regulation><Drainage><Drainage procedure><Dysfunction><ESKD><ESRD><Economic Burden><Electric Resistance><Electrical Resistance><End stage renal failure><End-Stage Kidney Disease><End-Stage Renal Disease><Environmental Exposure><Environmental Factor><Environmental Risk Factor><Epithelial Cells><Epithelium><Exhibits><Exposure to><FLIM imaging><Face Pain><Facial Pain><Fatigue><Filtration><Filtration Fractionation><Functional disorder><Future><Genes><Gills><Goals><Head Pain><Headache><Health><Health Care Systems><Human><Image><Imaging Device><Imaging Instrument><Imaging Tool><Impaired cognition><Impairment><In Vitro><Individual><Infection><Inflammatory><Investigation><K-Awards><K-Series Research Career Programs><Kidney Diseases><Knowledge><Label><Laboratories><Lack of Energy><Learning><Link><Liquid substance><Measures><Mediating><Mental Depression><Mentors><Mentorship><Michigan><Mission><Modeling><Modern Man><Molecular><Monitor><Morbidity><Morbidity - disease rate><Movement><Mucous body substance><Mucus><NIH><Nasal><Nasal Cavity Polyp><Nasal Passages Nose><Nasal Polyps><Nasal Sinuses><Nasal cavity/Paranasal><Nasal cavity/Paranasal sinuses><National Institutes of Health><Nephropathy><Nose><Occluding Junctions><Operative Procedures><Operative Surgical Procedures><Organism><Paralysis Agitans><Paranasal Sinuses><Parkinson><Parkinson Disease><Particle Size><Particulate Matter><Pathogenicity><Patients><Penetration><Permeability><Persons><Physiopathology><Policies><Population><Position><Positioning Attribute><Prevalence><Primary Parkinsonism><Proteins><Public Health><QOL><Quality of life><Renal Disease><Research><Research Career Program><Respiratory System, Nose, Nasal Passages><Risk><Role><Scientist><Severity of illness><Sinus><Sleep Disorders><Source><Spinal Column><Spine><Surgical><Surgical Interventions><Surgical Procedure><Symptoms><System><Techniques><Technology><Testing><Tight Junctions><Time><Tissues><Training><Translational Research Enterprise><United States National Institutes of Health><Universities><Vertebral column><Visualization><Zonula Occludens><anosphrasia><atherosclerotic coronary disease><backbone><body movement><career><cell culture><cell cultures><chronic rhinosinusitis><cognitive dysfunction><cognitive loss><coronary arterial disease><cost><depression><determine efficacy><disability><disease severity><driving><effective therapy><effective treatment><efficacy analysis><efficacy assessment><efficacy determination><efficacy evaluation><efficacy examination><environmental risk><evaluate efficacy><examine efficacy><fluid><fluorescence life-time imaging><fluorescence life-time imaging microscopy><fluorescence lifetime imaging><fluorescence lifetime imaging microscopy><forest fires><head ache><imaging><improved><innovate><innovation><innovative><kidney disorder><lentiviral-transduced><lentivirally transduced><lentivirus transduced><liquid><living system><loss of smell><meter><mucous><novel><olfactory loss><overexpress><overexpression><particle><pathophysiology><protein expression><renal disorder><residence><residential building><residential site><restoration><seal><skills><sleep diseases><sleep dysfunction><sleep illness><sleep problem><social role><spatial and temporal><spatial temporal><spatiotemporal><surgery><surgery outcome><surgical outcome><targeted drug therapy><targeted drug treatments><targeted therapeutic><targeted therapeutic agents><targeted therapy><targeted treatment><therapeutic target><translation research enterprise><translational research program><wearable><wearable device><wearable electronics><wearable system><wearable technology><wearable tool><wearables>
+---
+application_id: 10826745
+activity_code: F32
+title: Investigating the chromatin landscape of complex tissues through cell-type-specific patterns
+org_name: FRED HUTCHINSON CANCER CENTER
+phr: Project Narrative Cells of complex tissues have specialized functions and identities to aid in the overall homeostasis of the tissue. However, the role chromatin modifications contribute to cell-type identity and function needs to be better understood. Using a sensitive chromatin profiling technique, I will characterize the genome-wide landscape of chromatin modifications and RNA Polymerase II in individual cell types based on a genetic marker or histone modification level to understand how chromatin varies from cell to cell and aid in cellular identity.
+terms: Affect;Age;age effect;age related;Aging;Biological Models;Biological Process;Biology;Cell Count;Cell Differentiation process;cell injury;Cell Maintenance;Cell Physiology;Cell Separation;cell type;Cells;Chromatin;chromatin modification;Complex;Critical Pathways;Cytology;Development;Digestion;Disease;Drosophila genus;Drosophila melanogaster;Enteroendocrine Cell;Enzymes;Epigenetic Process;Fluorescence-Activated Cell Sorting;fly;Funding;Gene Expression Profile;Gene Expression Profiling;Gene Expression Regulation;Gene Silencing;genetic manipulation;Genetic Markers;Genetic Transcription;Genome;genome-wide;Histone H3;histone modification;Histones;Homeostasis;hormonal signals;Individual;insight;interest;Intestines;Investigation;knock-down;life span;Lysine;mammalian genome;Maps;Mediating;Methylation;Microbe;Mission;Mitotic;Modification;National Institute of General Medical Sciences;nutrient absorption;Organism;Pathway interactions;Pattern;Phenotype;Play;Polycomb;Population;Post-Translational Protein Processing;prevent;Process;progenitor;Proliferating;Research;RNA Polymerase II;Role;Source;stem;stem cell population;stem cells;Stimulus;System;Tail;Techniques;Tissues;uH2A
+---
+application_id: 10764205
+activity_code: T32
+title: Climate Change and Lung Health Training Program
+org_name: UNIVERSITY OF IOWA
+phr: PROJECT NARRATIVE Climate change is one of the most important global problems of our time. The consequences for human health are already being felt, and pulmonary morbidity and mortality are increasingly impacted by wildfires, urban and rural air pollution, altered aero-allergen exposures, the repercussions of severe storms and flooding, the changing patterns and severity of pulmonary infections, and other factors. Our goal is to train students and postdoctoral fellows for cutting edge research in the pulmonary impact of climate change and strategies to mitigate the effects.
+terms: climate change;lung health;Training Programs
+---
+application_id: 11137072
+activity_code: T32
+title: Ruth L. Kirschstein National Research Service Award (NRSA) Institutional Research Training Grant (Parent T32)
+org_name: UNIVERSITY OF CHICAGO
+phr: Project Narrative
+The long-standing goal of the University of Chicago MD/PhD training program in Growth, Development and
+Disabilities is to train outstanding physician-scientists. Formal training is provided for each degree,
+supplemented with ample, dedicated mentoring and advising to assure the attainment of this goal. The
+participants’ progress is followed throughout their time in the training program and their subsequent career
+trajectories.
+terms: <Grant><Institution><NRSA><National Research Service Awards><Parents><Research Training><parent>
+---
+application_id: 11137099
+activity_code: T32
+title: Pathophysiology of Myocardial Disease
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: PROJECT NARRATIVE
+Heart and vascular disease is a leading cause of disability and death in the United States. The
+Johns Hopkins Cardiology Post-doctoral Training Program, now in its 44th consecutive year,
+provides broad multi-disciplinary training spanning from basic science up through to
+population/outcomes research. Our goal is to train the next generation of academic
+cardiovascular research leaders to continue the work of tackling these important and common
+diseases.
+terms: <Cardiomyopathies><Dysfunction><Functional disorder><Myocardial Diseases><Myocardial Disorder><Myocardiopathies><Physiopathology><myocardium disease><myocardium disorder><pathophysiology>
+---
+application_id: 10764235
+activity_code: K08
+title: Discovery of Novel Genetic Variants Underlying Unexplained Hypertrophic Cardiomyopathy by Whole Genome Sequencing, RNA-seq and iPSC modeling
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: PROJECT NARRATIVE Hypertrophic cardiomyopathy (HCM) is the most common inherited cardiovascular disease with substantial morbidity and mortality, and the leading cause of sudden cardiac death in young people, for which, yet no effective treatment is available, and the etiologies for 40-70% of cases are not known. My studies suggested a role for non-coding variants in pathogenesis of unexplained HCM. In this proposal, I will apply multiple methods including whole genome sequencing, RNA sequencing and induced pluripotent stem cells (iPSCs) modeling to investigate the role of non-coding variants, and uncover novel HCM genes and their pathogenic mechanisms for novel diagnostics and therapeutic intervention, thereby improving care and reducing medical costs for patients.
+terms: Advisory Committees;Age;Alleles;Award;Bioinformatics;Blood;Candidate Disease Gene;Cardiac;Cardiac Myocytes;Cardiology;Cardiomyopathies;Cardiovascular Diseases;Cardiovascular system;career;career development;Caring;Childhood;Clinical;Clustered Regularly Interspaced Short Palindromic Repeats;Code;Collaborations;Computational Biology;Data;differential expression;Disease;disease model;disease-causing mutation;DNA;dominant genetic mutation;Early Diagnosis;Early identification;effective therapy;Energy consumption;Environment;epigenomics;Etiology;Exclusion;Exhibits;exome sequencing;experimental study;Extramural Activities;Five-Year Plans;Foundations;Funding;Future;Gene Expression;gene function;Genes;Genetic;Genetic Predisposition to Disease;genetic variant;genome sequencing;Genomics;Goals;Grant;Health;Heart;Heart Transplantation;Heterozygote;Hospitals;Human;Human Genetics;human induced pluripotent stem cells;Hypertrophic Cardiomyopathy;improved;in silico;Individual;induced pluripotent stem cell;induced pluripotent stem cell derived cardiomyocytes;Inherited;insight;instructor;Investigation;Laboratory Organism;Left ventricular structure;loss of function;Loss of Heterozygosity;Medical Care Costs;medical schools;Medicine;Mentors;Mentorship;Methods;model organism;Modeling;Molecular;Morbidity - disease rate;mortality;mutant;Mutation;mutation carrier;National Heart, Lung, and Blood Institute;novel;novel diagnostics;novel therapeutic intervention;Null Lymphocytes;Online Mendelian Inheritance In Man;Onset of illness;Pathogenesis;Pathogenicity;Pathway interactions;Patient Care;Patients;Persons;Phenotype;Physiology;Prevalence;proband;protein function;Proteins;rare variant;Relaxation;Research;research and development;Research Personnel;RNA Splicing;Role;Sarcomeres;Scientist;skills;Solid;Somatic Mutation;Spliced Genes;statistics;stem cell model;sudden cardiac death;Sudden Death;symposium;Tissue Sample;Tissues;Training;Trans-Omics for Precision Medicine;transcriptome sequencing;Translating;Untranslated RNA;Variant;variant of unknown significance;whole genome;Woman
+---
+application_id: 11137108
+activity_code: T32
+title: Innate Immunity Training Program
+org_name: UNIV OF MASSACHUSETTS MED SCH WORCESTER
+phr: Modified Public Health Relevance Section
+
+The Innate Immunity Training Program proposed here is designed to educate the next generation of biomedical researchers in cutting-edge, high quality science. Innate immunity is of critical importance to several common human diseases including septic shock, heart disease (atherosclerosis), autoimmune diseases, and nearly all infectious diseases. Trainees will receive a comprehensive classroom-based foundation in innate immunity (and allied ﬁelds) upon which their laboratory research experience will build.
+terms: <Innate Immunity><Native Immunity><Natural Immunity><Non-Specific Immunity><Nonspecific Immunity><Training Programs>
+---
+application_id: 10845368
+activity_code: F31
+title: The Role of Dopamine in Cognitive Resilience to Alzheimer's Disease Pathology in Healthy Older Adults
+org_name: BRANDEIS UNIVERSITY
+phr: PROJECT NARRATIVE A substantial proportion of the population maintains stable cognitive function despite the development of Alzheimer’s disease (AD)-related pathology. The neural mechanisms underlying this cognitive resilience are poorly understood, though an understanding of these mechanisms has immense therapeutic potential. The proposed research will investigate the independent and interactive effects of one candidate mechanism – compensatory elevation of dopamine synthesis – and AD-related pathology on memory performance and local functional connectivity using a multi-modal neuroimaging approach in aging.
+terms: Acceleration;Acute;Adult;Affect;Age;age effect;age related changes;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease pathology;Alzheimer&apos;s disease therapeutic;Alzheimer’s disease biomarker;Amyloid beta-Protein;Animal Model;Anterior;Attention;Berry;blood oxygen level dependent;Boston;Brain;brain tissue;career;cingulate cortex;Cognition;Cognitive;Cognitive aging;cognitive function;cognitive performance;cognitive reserve;cognitive testing;Cohort Studies;college;Communication;Compensation;Development;Disease;Dopamine;dopamine system;experience;Faculty;Functional Magnetic Resonance Imaging;General Hospitals;Genes;Goals;healthy aging;Hippocampus;Human;human subject;Impaired cognition;in vivo;Individual;innovation;insight;interest;Intervention;Link;Maintenance;Massachusetts;Measures;Medial;Memory;Memory impairment;Mentors;Mentorship;Metabolic;Methods;Midbrain structure;Monitor;Motivation;multimodal neuroimaging;neural;Neurofibrillary Tangles;neuroimaging;neuroimaging marker;neuromechanism;Neuromodulator;Neurons;neuropathology;Neuropsychology;neuroregulation;Neurotransmitters;older adult;Parkinson Disease;Pathologic;Pathology;Pattern;Performance;Population;Positron-Emission Tomography;Predisposition;Prefrontal Cortex;preservation;Prevalence;Prevention Research;Process;Proxy;Qualifying;Research;Research Support;resilience;Rest;Rodent Model;Role;Sampling;Senile Plaques;Signal Transduction;Site;statistics;Structure;System;Testing;Therapeutic;tomography;Traction;Training;Universities;Up-Regulation;Work;young adult;Youth
+---
+application_id: 11137695
+activity_code: T32
+title: Surgical Oncology Basic Science and Translational Research Training Program
+org_name: WASHINGTON UNIVERSITY
+phr: Surgeon-scientists are in a unique position to facilitate the clinical translation of basic science and clinical effectiveness research discoveries, with the potential for significant improvements in patient care. The Surgical Oncology Basic Science and Translational Research Training Program will provide a meritorious cadre of surgical trainees from general surgery and other surgical subspecialties the opportunity to develop essential skill sets in basic science, translational, and public health research.
+terms: <Basic Research><Basic Science><Surgical Oncology><Training Programs><Translational Research><Translational Science><oncologic surgery><translation research><translational investigation>
+---
+application_id: 11138580
+activity_code: T32
+title: NRSA Training Grant in Quantitative Neuroscience
+org_name: PRINCETON UNIVERSITY
+phr: This is an application for support for advanced predoctoral and postdoctoral training in quantitative
+neuroscience. By instructing our trainees in computational modeling and advanced data analysis techniques,
+we aim to train scientists that will be able to bridge the key gap in our understanding of how the brain works:
+how do myriad single molecules and neurons collectively give rise to the mind? This is important for both
+basic science and clinical science - these modeling and data analysis techniques will give trainees a rich
+vocabulary and a powerful toolkit for exploring how pathologies of small-scale elements (e.g., deficits in
+neurotransmission at dopaminergic terminals) can lead to mental disorders (e.g., schizophrenia).
+terms: <Grant><NRSA><National Research Service Awards><Neurosciences><Training>
+---
+application_id: 11138705
+activity_code: T32
+title: Training in Comparative Lung Biology and Medicine
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: PROJECT NARRATIVE
+The UC Davis T32 in Comparative Lung Biology and Medicine prepares predoctoral and postdoctoral trainees
+during a critical and formative period in their research careers. The program aims to train the next generation of
+scientists through interdisciplinary research and coursework that address issues of direct relevance to the NHLBI
+mission. Our faculty and trainees foster a creative training and scientific milieu that facilitates their development
+into independent investigators in academic and government research careers.
+terms: <Biology><Lung><Lung Respiratory System><Medicine><Training><comparative>
+---
+application_id: 11138778
+activity_code: T32
+title: UAB Training Program in Neurodegeneration
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: NARRATIVE
+The aging of the US population will lead to unprecedented growth in the number of people affected by
+neurodegenerative disease. The UAB Training Program in Neurodegeneration is addressing this problem by
+training scientists in diverse aspects of research on neurodegeneration so that they can leverage the emerging
+knowledge in this field and develop the cures of the future for these common and serious disorders.
+terms: <Nerve Degeneration><Neuron Degeneration><Training Programs><neural degeneration><neurodegeneration><neurodegenerative><neurological degeneration><neuronal degeneration>
+---
+application_id: 10848184
+activity_code: T32
+title: Predoctoral Training Program in Genetics
+org_name: YALE UNIVERSITY
+phr: Project Narrative  Human health and lifespan depend critically on genetics. Basic research on the principles of genetics can lead to dramatic improvements in the prevention, diagnosis, and treatment of a vast number of human diseases. The proposed program is designed to provide training in genetics research to predoctoral students and to prepare them for leadership in scientific research and research-related careers.
+terms: Genetic;pre-doctoral;Training Programs
+---
+application_id: 11140283
+activity_code: T32
+title: Multimodal Delineation of Neurodegenerative Mechanisms
+org_name: YALE UNIVERSITY
+phr: PROJECT NARRATIVE
+The MDNM training program supports the rigorous education of diverse graduate students in the mechanisms
+of neurodegeneration, thus expanding the pool of scientists searching for disease-modifying therapies for these
+devastating diseases. It is expected that graduates will go on to leading positions in universities, research
+institutes, and industry, where their research will advance therapeutic treatments for neurodegenerative
+disorders that afflict society.
+terms: <Nerve Degeneration><Neuron Degeneration><multi-modality><multimodality><neural degeneration><neurodegeneration><neurodegenerative><neurological degeneration><neuronal degeneration>
+---
+application_id: 11140496
+activity_code: T32
+title: ENDOCRINE & METABOLISM TRAINING GRANT
+org_name: UT SOUTHWESTERN MEDICAL CENTER
+phr: Endocrine disorders such as diabetes, obesity, dyslipidemias, thyroid disease and polycystic ovarian
+syndrome are all associated with enormous costs; both with respect to their morbidity and mortality and
+their burden on the health care system. This proposal aims to provide resources that train young
+investigators at the MD or PhD level who will play a key role in extending our understanding of basic
+metabolic processes at the subcellular, cellular, organ and system level. Moreover, translating these
+new insights into both mechanistic and translational advances for disorders related to metabolic
+dysfunction.
+terms: <Endocrine><Grant><Intermediary Metabolism><Metabolic Processes><Metabolism><Training>
+---
+application_id: 10848185
+activity_code: T32
+title: Predoctoral Training at the Interface Chemistry and Biology
+org_name: YALE UNIVERSITY
+phr: Project Narrative The Chemistry/Biology Interface Training Program (CBITP) at Yale University will provide rigorous, cutting- edge training in chemical biology research to prepare early-career scientists for research and research-related careers in academia, industry, and the non-profit sector. The CBITP is organized around the belief that the rigorous training of diverse individuals with the brightest minds and a deep commitment to probing basic biological mechanisms using chemical approaches will lead to: 1) new discoveries that could open completely new fields; 2) a unique multidisciplinary workforce; and 3) new economic opportunities in the biotech/biopharma space.
+terms: Biology;Chemistry;pre-doctoral;Training
+---
+application_id: 11141057
+activity_code: T32
+title: Institutional Training in the Genomic Sciences
+org_name: UNIVERSITY OF WISCONSIN-MADISON
+phr: Project Narrative
+Modern medical practice is now relying on the fruits of genomic research for analyzing the genetic
+makeup of patients and their cancers. New medical treatments are increasingly being tailored to
+individual patients for increasing their effectiveness and lessening side-effects. We propose to train
+scientists who will be developing the systems and analysis that will enable greater use of genomic
+information for biomedical researchers and the general public when they see a doctor.
+terms: <Institution><Training><genome sciences><genomic science>
+---
+application_id: 11141663
+activity_code: T32
+title: Neuroscience Training Program
+org_name: UNIVERSITY OF IOWA
+phr: Project Narrative
+The Iowa Neuroscience Training Program emphasizes a highly interdisciplinary orientation, tied to the Jointly
+Sponsored Predoctoral Training Program in the Neurosciences’ mission to foster work toward the diagnosis,
+treatment, and prevention of nervous system disorders, and the basic sciences fundamental to this purpose.
+Our Program remains committed to training a diverse, quantitatively literate, and highly expert workforce of
+neuroscientists who will go into leadership roles related to the Nation’s biomedical and behavioral research
+agendas. The Program’s interdisciplinary training produces neuroscientists who are conversant across the
+many disciplines that comprise contemporary neuroscience.
+terms: <Neurosciences><Training Programs>
+---
+application_id: 11142612
+activity_code: T32
+title: Biostatistics for Research in Genomics and Cancer
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: Narrative
+This training grant clearly has major relevance in public health as it is designed to train the next
+wave of biostatistical researchers in cancer genomics, which is one of the largest and growing
+areas of biomedical research, in which the demand for well trained biostatistical researchers is
+much greater than the supply.
+terms: <Biometrics><Biometry><Biostatistics><Cancers><Genomics><Malignant Neoplasms><Malignant Tumor><Research><malignancy><neoplasm/cancer>
+---
+application_id: 11005001
+activity_code: F30
+title: Mitochondrial mRNA structure as a driver of Leigh Syndrome
+org_name: UNIVERSITY OF MIAMI SCHOOL OF MEDICINE
+phr: Leigh’s syndrome is a devastating newborn neurodevelopmental mitochondrial disorder. This is a genetically heterogeneous disorder always associated with cellular lesions that affect mitochondrial bioenergetics. This project will examine the molecular mechanism underlying two forms of LS due to mutations in LRPPRC or TACO1, which are involved in different aspects of mitochondrial RNA metabolism and gene expression. These studies will uncover the role of these proteins on mitochondrial mRNA folding and test whether accumulation of aberrant RNA secondary structures is a common theme leading to pathogenesis.
+terms: Aerobic;Affect;Age;Appearance;ATP Synthesis Pathway;Attenuated;base;Binding;Binding Sites;Biochemical;Bioenergetics;Biogenesis;Biological Assay;Cell Line;cell type;Chemicals;Child;Childhood;Collaborations;Complex;complex IV;CRISPR/Cas technology;crosslink;Cultured Cells;cytochrome c oxidase;Cytochrome-c Oxidase Deficiency;Cytoplasmic Granules;Data;Defect;Development;Developmental Delay Disorders;dimethyl sulfate;Disease;DNA;Ensure;Enzymes;Etiology;Functional disorder;Gene Expression;Gene Expression Regulation;gene-editing approach;Genes;genetic variant;Goals;High-Throughput Nucleotide Sequencing;Human;Human Cell Line;Immunoprecipitation;Infant;innovation;interest;Knock-out;Knowledge;Lead;Leigh Disease;Lesion;Leucine;Medicine;Messenger RNA;Mission;Mitochondria;Mitochondrial Diseases;Mitochondrial DNA;mitochondrial messenger RNA;Mitochondrial Proteins;Mitochondrial RNA;Modification;Molecular;mouse model;mRNA Expression;mRNA Stability;mRNA Translation;mutant;Mutate;Mutation;National Institute of Child Health and Human Development;Nerve Degeneration;Newborn Infant;Nuclear;oligomycin sensitivity-conferring protein;Oxidative Phosphorylation;Pathogenesis;Pathogenicity;Pathology;Pathway interactions;Patients;Phenotype;Physicians;Physiological;Polyadenylation;Polyadenylation Pathway;polypeptide;posttranscriptional;prevent;Property;Protein Biosynthesis;Proteins;PTGS1 gene;reconstitution;Regulation;Respiratory Chain;Ribonucleosides;Ribosomal RNA;ribosome profiling;RNA;RNA Folding;RNA metabolism;RNA Processing;RNA Stability;Role;Scientist;skills;Structural defect;Structural Models;Structure;success;System;Technology;Testing;Therapeutic;therapeutic target;Training;Trans-Activators;Transcript;Transcription Process;transcriptome;Transfer RNA;Translations;Variant
+---
+application_id: 11143138
+activity_code: T32
+title: Translational Science Training to Reduce the Impact of Alcohol on HIV Infection
+org_name: UNIVERSITY OF FLORIDA
+phr: This T32 Training Program is relevant to public health in the United States because it will train the next generation of researchers with skills to help reduce the impact of alcohol on HIV infection and related outcomes. We seek to train researchers who have a wide range of expertise to work with communities to improve health outcomes related to alcohol and HIV infection.
+terms: <Alcohol Chemical Class><Alcohols><HIV Infections><HTLV-III Infections><HTLV-III-LAV Infections><Human T-Lymphotropic Virus Type III Infections><Training><Translational Research><Translational Science><translation research><translational investigation>
+---
+application_id: 11143220
+activity_code: T32
+title: Research Training to Promote Scientist Diversity & Health Equity in Cardiovascular & Lung Disease
+org_name: UNIVERSITY OF TEXAS AT AUSTIN
+phr: The proposed training program at the University of Texas at Austin is an inter-professional education partnership between the Schools of Social Work and Medicine. The proposed program aims to recruit and retain promising pre- and postdoctoral scholars to train and engage them in behavioral, population, and implementation science research to promote cardiovascular and respiratory health. Key innovations include recruitment and mentoring activities, including a team-based mentoring approach with a near-peer mentoring component, and cross-fertilization of social work and medical trainees.
+terms: <Cardiovascular Diseases><Lung Diseases><Pulmonary Diseases><Pulmonary Disorder><Research Training><Scientist><cardiovascular disorder><disease of the lung><disorder of the lung><diversity and equity><health equity><lung disorder>
+---
+application_id: 11143290
+activity_code: T32
+title: Alcohol Research in the Science/Practitioner Model
+org_name: SAN DIEGO STATE UNIVERSITY
+phr: Project Narrative
+Alcohol use and related disorders are a global public health issue. According to the World Health Organization
+(WHO), alcohol consumption ranks as a leading risk factor for disease burden and in 2016, alcohol use resulted
+in 7.2% of all premature deaths, with young people being disproportionately affected. Specialized training is
+required to tackle this immense problem, particularly as it relates to clinical research. This proposal focuses on
+providing this training to pre- and postdoctoral fellows working with faculty at San Diego State University and the
+University of California San Diego.
+terms: <Modeling><Science><alcohol related research><alcohol research><ethanol research>
+---
+application_id: 11143704
+activity_code: T32
+title: Transdisciplinary Training In Cardiovascular Research
+org_name: UNIV OF MASSACHUSETTS MED SCH WORCESTER
+phr: PROJECT NARRATIVE
+We propose to train graduate and medical students, and junior physicians and
+scientists, to become successful researchers in topics related to heart, lung and
+vessel disease. Modern medicine and public health more and more need physicians
+and scientists from different research backgrounds to work in teams and across
+traditional boundaries. This will allow them to have more novel ideas by bringing
+together very different perspectives. Our program aims to train such individuals.
+terms: <Cardiovascular><Cardiovascular Body System><Cardiovascular Organ System><Cardiovascular system><Heart Vascular><Research><Training><circulatory system>
+---
+application_id: 11143731
+activity_code: T32
+title: Training in Oncology Population Sciences (TOPS)
+org_name: DANA-FARBER CANCER INST
+phr: PROJECT NARRATIVE
+Research investigation in population science is essential to ensure that discoveries from molecular medicine
+and clinical trials translate to routine practice and ultimately decrease the population-level burden of cancer.
+The Dana-Farber Harvard Cancer Center’s (DF/HCC) T32 Training in Oncology Population Sciences (TOPS)
+program equips postdoctoral fellows with the skills necessary to evaluate cancer care quality and
+effectiveness, and to develop, test and implement interventions to improve care delivery thereby ensuring that
+T1/T2 discoveries translate across the T3/T4 bridge to achieve maximal impact on population health.
+Postdoctoral fellows pursue a two-year program of mentored research, coursework and professional skills
+training that supports innovation and leverage...
+terms: <Oncology><Oncology Cancer><Population Sciences><Training>
+---
+application_id: 11143767
+activity_code: T32
+title: Research Training Program in Vision Science
+org_name: MEDICAL COLLEGE OF WISCONSIN
+phr: PROJECT NARRATIVE
+The goal of the project is to train a new generation of Vision Science researchers at the pre-doctoral level that
+are highly competent in the newest technologies and at the same time mindful of the important role of
+interdisciplinary, collaborative and translational research in major scientific advances. Our challenge is to
+expose them to the major problems that need to be solved in vision research while providing in depth training
+in the technologies essential for research.
+terms: <Research Training><Training Programs><vision science><visual science>
+---
+application_id: 11143882
+activity_code: T32
+title: Diabetes Research Training Program
+org_name: UNIVERSITY OF IOWA
+phr: PROJECT NARRATIVE
+Current diabetes treatments are woefully inadequate, and diabetes remains a leading cause of disability and
+death among Americans. Our program will meet a growing need within our region and the country for a cohort
+of capable diabetes investigators, by training new scientists in cutting edge research aimed at better treating
+and preventing diabetes. The trainees in this program will be scientists who are not yet independent but have
+earned their PhD and/or MD and intend to head their own diabetes research laboratories.
+terms: <Diabetes Mellitus><Research Training><Training Programs><diabetes>
+---
+application_id: 11144342
+activity_code: T32
+title: Vanderbilt Infection Pathogenesis and Epidemiology Research Training Program
+org_name: VANDERBILT UNIVERSITY MEDICAL CENTER
+phr: Modified Public Health Relevance Section 
+The continued epidemics of HIV, tuberculosis, and other infections of major public health importance indicate a substantial need for translational science researchers who can bridge infectious disease epidemiology and pathogenesis research.
+terms: <Epidemiologic Research><Epidemiologic Studies><Epidemiological Studies><Epidemiology Research><Infection><Pathogenesis><Training Programs><epidemiologic investigation><epidemiology study>
+---
+application_id: 11144965
+activity_code: T32
+title: TriMED: Measuring, Modeling and Manipulating Excitability and Disease
+org_name: WASHINGTON UNIVERSITY
+phr: PUBLIC NARRATIVE
+The brain is the archetypal electrical organ, but all organs have electrical signals, and many therapeutic drugs
+act by modulating these signals. This proposal describes a Training Program that is specifically geared to
+training scientists in this critical area.
+terms: <Disease><Disorder><Measures><Modeling>

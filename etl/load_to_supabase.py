@@ -25,7 +25,10 @@ from process_projects import load_projects
 from process_publications import load_publications
 from process_patents import load_patents
 from process_clinical import load_clinical_studies
-from classify_projects import classify_biotools_confidence
+# Inline classification was removed 2026-06-19 as part of the classifier
+# consolidation. Projects go into the DB with primary_category=NULL and are
+# classified by classify_projects_batched.py (Step 6 of load_fiscal_year.sh),
+# which now wraps etl/classifier.py — the single canonical classifier.
 
 
 def get_supabase_client() -> Client:
@@ -244,48 +247,23 @@ def run_etl(
     # Build publications map by PMID
     pubs_by_pmid = {p['pmid']: p for p in publications}
 
-    # Step 2: Classify projects
-    print("\n[6/6] Classifying projects...")
+    # Inline classification was removed 2026-06-19. Projects get inserted
+    # with primary_category=NULL and primary_category_confidence=NULL; the
+    # post-load classifier (classify_projects_batched.py, which wraps the
+    # canonical etl/classifier.py) fills them in via Pass 1 (Python) +
+    # Pass 2 (Haiku).
+    print("\n[6/6] Preparing projects for insert (classification deferred to post-load step)...")
     classified_projects = []
     abstracts_to_load = []
 
-    for i, project in enumerate(projects):
-        if i % 1000 == 0 and i > 0:
-            print(f"  Classified {i}/{len(projects)} projects...")
-
+    for project in projects:
         app_id = project.get('application_id')
-        proj_num = project.get('project_number')
-
-        # Get related data
         abstract_text = abstracts_map.get(app_id)
-        proj_publications = []
-        if proj_num and proj_num in project_pubs:
-            for pmid in project_pubs[proj_num]:
-                if pmid in pubs_by_pmid:
-                    proj_publications.append(pubs_by_pmid[pmid])
 
-        proj_patents = project_patents.get(proj_num, [])
-        proj_clinical = project_clinical.get(proj_num, [])
-
-        # Run classification
-        classification = classify_biotools_confidence(
-            project,
-            abstract=abstract_text,
-            publications=proj_publications,
-            patents=proj_patents,
-            clinical_studies=proj_clinical,
-        )
-
-        # Add classification results to project
-        project['biotools_confidence'] = classification['score']
-        project['biotools_signals'] = json.dumps(classification['signals'])
-        project['biotools_reasoning'] = classification['reasoning']
-        project['primary_category'] = 'biotools' if classification['confidence'] != 'LOW' else 'other'
-        project['primary_category_confidence'] = classification['score']
-
+        # Leave primary_category and primary_category_confidence unset so the
+        # post-load classifier can write authoritative values.
         classified_projects.append(project)
 
-        # Prepare abstract for loading
         if abstract_text:
             abstracts_to_load.append({
                 'application_id': app_id,
@@ -293,15 +271,10 @@ def run_etl(
                 'abstract_length': len(abstract_text),
             })
 
-    print(f"  Classified {len(classified_projects)} projects")
+    print(f"  Prepared {len(classified_projects)} projects for insert")
 
-    # Count by confidence level
-    high_conf = sum(1 for p in classified_projects if p['biotools_confidence'] >= 60)
-    mod_conf = sum(1 for p in classified_projects if 35 <= p['biotools_confidence'] < 60)
-    low_conf = sum(1 for p in classified_projects if p['biotools_confidence'] < 35)
-    print(f"  HIGH confidence (60+): {high_conf}")
-    print(f"  MODERATE confidence (35-59): {mod_conf}")
-    print(f"  LOW confidence (<35): {low_conf}")
+    # Legacy biotools_confidence stats removed alongside the inline classifier.
+    # Distribution will be tracked by classify_projects_batched.py post-load.
 
     # Step 3: Load to Supabase
     print("\n" + "=" * 60)

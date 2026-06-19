@@ -1,276 +1,141 @@
 """
-Classify all projects using Claude Haiku API with proper batching.
+Bulk reclassifier: classify every project in the DB using the canonical
+classifier (etl/classifier.py).
 
-Sends multiple projects per API call for faster processing.
-Uses offset pagination to ensure all projects are processed.
+This script is the orchestrator that load_fiscal_year.sh step 6 invokes.
+It now wraps etl/classifier.py rather than embedding its own prompt — the
+canonical Pass 1 (Python) + Pass 2 (Haiku) logic lives there.
+
+Important: this runs blanket reclassification across the whole projects
+table. For ongoing maintenance (only new + content-changed rows), use
+etl/sync_projects_via_api.py (new awards) or etl/reclassify_existing.py
+(targeted reclassification of low-confidence subsets).
+
+Usage:
+    python3 etl/classify_projects_batched.py [--limit N] [--dry-run]
 """
 
+import argparse
+import json
 import os
 import sys
-import json
 from dotenv import load_dotenv
+
 load_dotenv('.env.local')
 
 from supabase import create_client
-from anthropic import Anthropic
 
-# Configuration
-PROJECTS_PER_API_CALL = 20  # Send 20 projects per Claude call
-DB_BATCH_SIZE = 100  # Fetch 100 from DB at a time
-
-# Initialize clients
-print("=" * 60)
-print("PROJECT CLASSIFICATION WITH CLAUDE HAIKU (BATCHED)")
-print("=" * 60)
-print("\nInitializing...", flush=True)
-
-supabase = create_client(
-    os.environ['NEXT_PUBLIC_SUPABASE_URL'],
-    os.environ['SUPABASE_SERVICE_KEY']
-)
-print("✓ Connected to Supabase", flush=True)
-
-anthropic_client = Anthropic(api_key=os.environ['ANTHROPIC_API_KEY'])
-model = "claude-3-5-haiku-latest"  # Use latest model
-print(f"✓ Anthropic client ready (model: {model})", flush=True)
-
-# Get total count
-total_result = supabase.table('projects').select('application_id', count='exact').execute()
-total_projects = total_result.count
-print(f"✓ Total projects: {total_projects:,}\n", flush=True)
-
-# Load abstracts
-print("Loading abstracts...", flush=True)
-abstracts_response = supabase.table('abstracts').select('application_id, abstract_text').limit(100000).execute()
-abstracts_map = {a['application_id']: a['abstract_text'] for a in abstracts_response.data}
-print(f"✓ Loaded {len(abstracts_map):,} abstracts\n", flush=True)
-
-# Prompt template for batch classification
-BATCH_PROMPT = """Classify each NIH grant. Return a JSON array with one object per project.
-
-Projects to classify:
-{projects_json}
-
-For each project, return:
-{{
-  "application_id": "the project's application_id",
-  "primary_category": "training|infrastructure|basic_research|biotools|therapeutics|diagnostics|medical_device|digital_health|other",
-  "category_confidence": 0-100,
-  "org_type": "company|university|hospital|research_institute|other"
-}}
-
-## PASS 1: ACTIVITY CODE PRE-FILTER (Check FIRST!)
-
-**Always → training:** T32, T34, T35, T90, TL1, TL4, F30-F33, F99, K01-K99, D43, D71, R25, R90
-**Always → infrastructure:** P30, P50, P51, S10, G20, U13, R13, U24, U2C
-
-If activity code matches above → classify immediately, skip content analysis.
-
-## PASS 2: CONTENT ANALYSIS
-
-Ask: "What is the PRIMARY DELIVERABLE?"
-- Knowledge/understanding → basic_research
-- Tool/assay/platform FOR researchers → biotools
-- Drug/treatment → therapeutics
-- Clinical test → diagnostics
-- Physical device for patients → medical_device
-- Patient-facing software → digital_health
-- None of above → other
-
-## 8 DISAMBIGUATION RULES
-
-1. **Assays/probes/model systems → biotools** NOT basic_research (if DEVELOPING the tool)
-2. **USES vs DEVELOPS:** "Uses RNA-seq to study X" → basic_research. "Improves RNA-seq method" → biotools
-3. **Biomarker intent:** "Identify biomarkers" → basic_research. "Validate clinical panel" → diagnostics. "Build detection platform" → biotools
-4. **Drug studies:** "Understand how drug X works" → basic_research. "Optimize drug X for efficacy" → therapeutics
-5. **AI/ML by application:** ML for protein folding → basic_research. ML drug screening → therapeutics. ML tool for researchers → biotools. ML clinical decision support → digital_health
-6. **digital_health requires patient/clinician deployment:** Software for researchers → biotools
-7. **Combination projects:** Classify by PRIMARY innovation (usually title focus or Aim 1)
-8. **other = genuinely residual:** Re-read abstract for hidden deliverables before using
-
-## Organization types:
-- company: Inc., LLC, Corp., Therapeutics, Biosciences, SBIR/STTR
-- university: Academic institutions
-- hospital: Medical centers, health systems
-- research_institute: Broad, Scripps, Fred Hutchinson, etc.
-- other: Government, non-profits
-
-Return ONLY the JSON array, no other text."""
+# Canonical classifier
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from classifier import classify_projects, PROJECTS_PER_API_CALL
 
 
-def classify_batch(projects):
-    """Classify a batch of projects with a single API call."""
-    # Prepare projects for the prompt
-    projects_for_prompt = []
-    for p in projects:
-        abstract = abstracts_map.get(p['application_id'], '')
-        projects_for_prompt.append({
-            'application_id': p['application_id'],
-            'title': p.get('title', ''),
-            'org_name': p.get('org_name', ''),
-            'phr': (p.get('phr') or '')[:1000],  # Limit length
-            'abstract': abstract[:1500] if abstract else '',  # Limit length
-        })
-
-    prompt = BATCH_PROMPT.format(projects_json=json.dumps(projects_for_prompt, indent=2))
-
-    try:
-        message = anthropic_client.messages.create(
-            model=model,
-            max_tokens=4096,
-            messages=[{"role": "user", "content": prompt}]
-        )
-
-        # Parse response
-        text = message.content[0].text.strip()
-
-        # Handle markdown code blocks
-        if text.startswith('```json'):
-            text = text[7:]
-        if text.startswith('```'):
-            text = text[3:]
-        if text.endswith('```'):
-            text = text[:-3]
-        text = text.strip()
-
-        results = json.loads(text)
-        return results, None
-
-    except Exception as e:
-        return None, str(e)
+DB_BATCH_SIZE = 100
 
 
-def update_database(classifications):
-    """Update the database with classification results."""
-    valid_categories = ['training', 'infrastructure', 'basic_research', 'biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other']
-    valid_org_types = ['company', 'university', 'hospital', 'research_institute', 'other']
+def get_supabase():
+    return create_client(
+        os.environ['NEXT_PUBLIC_SUPABASE_URL'],
+        os.environ['SUPABASE_SERVICE_KEY'],
+    )
 
+
+def fetch_abstracts(supabase, app_ids):
+    """Fetch abstracts for the given application_ids in chunks."""
+    out = {}
+    chunk = 500
+    for i in range(0, len(app_ids), chunk):
+        batch = app_ids[i:i + chunk]
+        result = supabase.table('abstracts').select('application_id, abstract_text').in_('application_id', batch).execute()
+        for row in (result.data or []):
+            out[str(row['application_id'])] = row.get('abstract_text') or ''
+    return out
+
+
+def update_db(supabase, classifications):
+    """Write classifications back to the projects table."""
     updated = 0
     for c in classifications:
         try:
-            app_id = c.get('application_id')
-            if not app_id:
-                continue
-
-            category = c.get('primary_category', 'other').lower()
-            if category not in valid_categories:
-                category = 'other'
-
-            org_type = c.get('org_type', 'other').lower()
-            if org_type not in valid_org_types:
-                org_type = 'other'
-
-            confidence = float(c.get('category_confidence', 50))
-            confidence = max(0, min(100, confidence))
-
             supabase.table('projects').update({
-                'primary_category': category,
-                'primary_category_confidence': confidence,
-                'org_type': org_type
-            }).eq('application_id', app_id).execute()
-
+                'primary_category': c['primary_category'],
+                'primary_category_confidence': c['category_confidence'],
+                'org_type': c['org_type'],
+            }).eq('application_id', c['application_id']).execute()
             updated += 1
         except Exception as e:
-            print(f"    DB error for {c.get('application_id')}: {e}")
-
+            print(f"  DB update error for {c.get('application_id')}: {str(e)[:120]}")
     return updated
 
 
-# Statistics
-total_classified = 0
-total_errors = 0
-total_cost = 0.0
-offset = 0
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--limit', type=int, default=None, help='Stop after N projects')
+    parser.add_argument('--dry-run', action='store_true', help='Skip DB writes')
+    args = parser.parse_args()
 
-print("=" * 60)
-print("STARTING CLASSIFICATION")
-print("=" * 60)
-api_calls_needed = (total_projects + PROJECTS_PER_API_CALL - 1) // PROJECTS_PER_API_CALL
-print(f"Projects per API call: {PROJECTS_PER_API_CALL}")
-print(f"Estimated API calls: {api_calls_needed:,}")
-print(f"Estimated time: ~{api_calls_needed * 3 / 60:.1f} minutes")
-print(f"Estimated cost: ~${total_projects * 0.0003:.2f}\n", flush=True)
+    print('=' * 64)
+    print('Bulk project classification (canonical classifier)')
+    print('=' * 64)
 
-while offset < total_projects:
-    batch_num = offset // DB_BATCH_SIZE + 1
-    print(f"\n{'='*60}")
-    print(f"BATCH {batch_num} (offset {offset:,})")
-    print(f"{'='*60}", flush=True)
+    supabase = get_supabase()
 
-    # Fetch projects from database
-    response = supabase.table('projects').select(
-        'application_id, title, org_name, phr'
-    ).range(offset, offset + DB_BATCH_SIZE - 1).execute()
+    # Get total count
+    total_result = supabase.table('projects').select('application_id', count='exact').execute()
+    total_projects = total_result.count
+    print(f'  Total projects in DB: {total_projects:,}')
+    if args.limit:
+        print(f'  Limit applied: {args.limit:,}')
+    if args.dry_run:
+        print('  DRY RUN — no DB writes')
+    print()
 
-    projects = response.data
-    if not projects:
-        print("No more projects to fetch.")
-        break
+    total_classified = 0
+    total_errors = 0
+    offset = 0
 
-    print(f"Fetched {len(projects)} projects from database", flush=True)
+    while True:
+        if args.limit and total_classified >= args.limit:
+            break
 
-    # Process in smaller batches for API calls
-    batch_classified = 0
-    batch_errors = 0
+        # Fetch a page of projects
+        page = supabase.table('projects').select(
+            'application_id, activity_code, title, org_name, phr, funding_mechanism'
+        ).range(offset, offset + DB_BATCH_SIZE - 1).execute()
 
-    for i in range(0, len(projects), PROJECTS_PER_API_CALL):
-        api_batch = projects[i:i + PROJECTS_PER_API_CALL]
-        api_batch_num = i // PROJECTS_PER_API_CALL + 1
-        total_api_batches = (len(projects) + PROJECTS_PER_API_CALL - 1) // PROJECTS_PER_API_CALL
+        projects = page.data or []
+        if not projects:
+            break
 
-        print(f"  API call {api_batch_num}/{total_api_batches}: classifying {len(api_batch)} projects...", end=" ", flush=True)
+        # Fetch corresponding abstracts
+        app_ids = [str(p['application_id']) for p in projects]
+        abstracts = fetch_abstracts(supabase, app_ids)
 
-        results, error = classify_batch(api_batch)
+        # Normalize application_id to string for the classifier
+        for p in projects:
+            p['application_id'] = str(p.get('application_id'))
 
-        if error:
-            print(f"ERROR: {error}")
-            batch_errors += len(api_batch)
-            total_errors += len(api_batch)
-            continue
+        # Classify the page
+        classifications = classify_projects(projects, abstracts)
+        page_classified = len(classifications)
+        page_errors = len(projects) - page_classified
 
-        if results:
-            updated = update_database(results)
-            batch_classified += updated
-            total_classified += updated
+        if not args.dry_run:
+            update_db(supabase, classifications)
 
-            # Estimate cost
-            cost = len(api_batch) * 0.0003
-            total_cost += cost
+        total_classified += page_classified
+        total_errors += page_errors
+        offset += DB_BATCH_SIZE
 
-            print(f"OK ({updated} updated)")
-        else:
-            print("No results returned")
-            batch_errors += len(api_batch)
-            total_errors += len(api_batch)
+        print(f'  Progress: {total_classified:,} / {total_projects:,} '
+              f'({total_classified / total_projects * 100:.1f}%) — '
+              f'page classified={page_classified}, errors={page_errors}')
 
-    print(f"\n✓ Batch {batch_num} complete: {batch_classified} classified, {batch_errors} errors")
-    print(f"  Progress: {total_classified:,} / {total_projects:,} ({total_classified/total_projects*100:.1f}%)")
-    print(f"  Total cost: ${total_cost:.2f}", flush=True)
+    print()
+    print('=' * 64)
+    print(f'Done. {total_classified:,} classified, {total_errors:,} errors.')
+    print('=' * 64)
 
-    offset += DB_BATCH_SIZE
 
-print(f"\n{'='*60}")
-print("CLASSIFICATION COMPLETE")
-print("=" * 60)
-print(f"Total classified: {total_classified:,}")
-print(f"Total errors: {total_errors}")
-print(f"Total cost: ${total_cost:.2f}")
-
-# Get final distribution
-print(f"\n{'='*60}")
-print("FINAL CATEGORY DISTRIBUTION")
-print("=" * 60)
-for cat in ['training', 'infrastructure', 'basic_research', 'biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other']:
-    result = supabase.table('projects').select('application_id', count='exact').eq('primary_category', cat).execute()
-    pct = (result.count / total_projects * 100) if total_projects > 0 else 0
-    print(f"  {cat:20} {result.count:6,} ({pct:5.1f}%)")
-
-print(f"\n{'='*60}")
-print("FINAL ORG TYPE DISTRIBUTION")
-print("=" * 60)
-for org in ['company', 'university', 'hospital', 'research_institute', 'other']:
-    result = supabase.table('projects').select('application_id', count='exact').eq('org_type', org).execute()
-    pct = (result.count / total_projects * 100) if total_projects > 0 else 0
-    print(f"  {org:20} {result.count:6,} ({pct:5.1f}%)")
-
-print("\n" + "=" * 60)
+if __name__ == '__main__':
+    main()

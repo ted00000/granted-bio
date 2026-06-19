@@ -1,0 +1,116 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 459 of 459 (8 projects):
+
+---
+application_id: 11097161
+activity_code: K02
+title: Research Career Enhancement in Implementation Science to Address Primary Prevention, Harm Reduction, and Evidence-Based Interventions for Opioid Use Disorder from the Emergency Department
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: PROJECT NARRATIVE
+The U.S. opioid overdose crisis continues to escalate with over 80,000 Americans dying from an opioid
+overdose in 2021 alone. There is a critical public health need to develop effective interventions to prevent and
+treat opioid use disorder and ensure that evidence-based interventions actually reach and benefit patients, and
+in an equitable manner. This K02 Independent Scientist Award will provide the PI with protected time from
+clinical duties in support of an intensive period of research career enhancement to acquire additional skills,
+training, and experience in implementation science approaches to address primary prevention and treatment of
+opioid use disorder from the emergency department.
+terms: <Acceleration><Accident and Emergency department><Acute><Address><Administrator><Adopted><Adoption><Affect><American><Assess implementation><Career Mobility><Caring><Cessation of life><Chronic><Clinical><Clinical Trials><Clinical Trials Design><Communities><Cost Analyses><Cost Analysis><Data><Death><Development><ED care><ED visit><ER care><ER visit><Emergency Care><Emergency Department><Emergency Department care><Emergency Medicine><Emergency Room care><Emergency care visit><Emergency department visit><Emergency health care><Emergency hospital visit><Emergency medical care><Emergency medical service><Emergency room><Emergency room visit><Ensure><Equity><Evidence based intervention><Evidence based treatment><Exposure to><Fostering><Funding><Future><General Population><General Public><Goals><Guidelines><Harm Minimization><Harm Reduction><Health Care Systems><Health Services><Health Services Evaluation><Health Services Research><Health system><Hybrids><Implementation assessment><Independent Scientist Award><Intervention><Investigators><Investments><K02 Award><K12><K12 Award><K12 Mechanism><K12 Program><Knowledge><Leadership><Literature><Low Back Ache><Low Back Pain><Low Backache><Lumbago><Measurable><Medical Care Research><Medicine><Mentored Clinical Scientist Development Program><Mentorship><Methods><Modality><Modeling><Multiple Partners><NIDA><NIH><Naloxone><Narcan><Narcanti><National Institute of Drug Abuse><National Institute on Drug Abuse><National Institutes of Health><Opiate user><Opiates><Opioid><Opioid drug user><Out-patients><Outcome><Outcomes Research><Outpatients><PWUO><Pain><Painful><Patients><Persons><Physiatric Procedure><Physical Medicine Procedure><Physical Therapeutics><Physical therapy><Physicians><Physiotherapy><Play><Preparation><Preventative strategy><Prevention><Prevention strategy><Preventive strategy><Primary Prevention><Public Health><Quantitative Evaluations><Randomization trial><Recommendation><Recovery Support><Research><Research Activity><Research Personnel><Research Training><Researchers><Role><Scientist><Site><Symptoms><Therapeutic Intervention><Time><Trainers Training><Training><Training Activity><Translations><United States National Institutes of Health><Work><addiction><addictive disorder><assess cost><career><career advancement><career transition><chronic pain><clinical research site><clinical site><context for implementation><cost assessment><cost evaluation><design><designing><develop therapy><developmental><dissemination science><distribute naloxone><effective intervention><effectiveness and implementation trial><effectiveness trial><effectiveness/implementation hybrid trial><effectiveness/implementation trial><emergency service><evaluate cost><evaluate implementation><evaluation of implementation><evidence base><examine cost><experience><implementation context><implementation cost><implementation design><implementation determinants><implementation evaluation><implementation factors><implementation investment><implementation outcomes><implementation research design><implementation science><implementation strategy><intervention development><intervention therapy><licit opioid><naloxone availability><naloxone dispensary><naloxone dispensation><naloxone dispensing><naloxone distribution><naloxone provision><non-narcotic analgesic><non-opiate analgesic><non-opioid><non-opioid analgesic><non-opioid therapeutics><nonnarcotic analgesics><nonopiate analgesic><nonopioid><nonopioid analgesics><novel><opiate consumption><opiate drug use><opiate intake><opiate medication><opiate overdose><opiate related overdose><opiate use><opiate use disorder><opioid consumption><opioid drug overdose><opioid drug use><opioid induced overdose><opioid intake><opioid intoxication><opioid medication><opioid medication overdose><opioid overdose><opioid poisoning><opioid related overdose><opioid toxicity><opioid use><opioid use disorder><opioid user><overdose death><overdose fatalities><overdose prevention><people who use opioids><persons who use opioids><preparations><prescribed opiate><prescribed opioid><prescription opiate><prescription opioid><prevent><preventing><programs><provide naloxone><randomized trial><services research><skills><social role><strategies for implementation><therapy development><training module><translation><treatment development>
+---
+application_id: 11110493
+activity_code: T32
+title: Research Training in the Epidemiology of Aging
+org_name: UNIVERSITY OF MARYLAND BALTIMORE
+phr: Relevance to Public Health
+The increasing life span is leading to greater numbers of older persons in the population. This
+training program is designed to prepare outstanding scientists to pursue topics that are relevant
+for understanding the health and functional status of an aging population, preventing the
+functional declines and disabilities that often accompany becoming older, and maximizing function
+in those with existing disabilities and disabling conditions.
+terms: <Aging><Epidemiology><Research Training><epidemiologic><epidemiological>
+---
+application_id: 11111252
+activity_code: T32
+title: Training Program in Quantitative Biology & Physiology (QBP)
+org_name: BOSTON UNIVERSITY (CHARLES RIVER CAMPUS)
+phr: This program is designed to train engineers who can improve health by combining expertise in quantitative biomedical science, artificial intelligence and machine learning, and computational science.
+terms: <Biology><Physiology><Training Programs>
+---
+application_id: 11111275
+activity_code: T32
+title: Research in practice: translating infectious disease epidemiology RIP-TIDE
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: PROJECT NARRATIVE
+Public health response to infectious disease epidemics requires multidisciplinary, quantitative, and critical skills
+to address all aspects of control from preparedness to elimination. The proposed training program will provide
+foundational training in epidemiological study design and inference, ethics, and advanced methodological
+training in one of three methodological areas: (1) Transmission Modeling and Infectious Disease Dynamics, (2)
+Molecular Epidemiology and Phylogenetics, and (3) Disease Mapping and Burden Estimation. As part of this
+program, trainees will apply these methods to practical issues in policy and disease control through practicums
+and projects in translational research and implementation.
+terms: <Infectious Disease Epidemiology><Infectious Epidemiology><Translating><research in practice>
+---
+application_id: 11111359
+activity_code: T32
+title: Interdisciplinary Anesthesiology Research Training Program
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: Project Narrative
+The goal of this training program is to develop the next generation of clinician-scientist in the field of
+Anesthesiology. We propose to continue a unique training experience that addresses core clinical problems in
+anesthesiology and utilize collaborative research experiences across the campus. Fellows with their mentoring
+team have the ability to work beyond, within, and in larger collaboratives to undertake research at the broadest
+level to involve as many disciplines necessary to adequately address the questions asked to solve unique
+problems.
+terms: <Anesthesiology><Research Training><Training Programs>
+---
+application_id: 10757029
+activity_code: F30
+title: The role of PTPN11 and NPM1 mutations in acute myeloid leukemia development and therapy resistance
+org_name: OHIO STATE UNIVERSITY
+phr: PROJECT NARRATIVE The goal of this proposal is to study the immunophenotype of PTPN11 and NPM1 mutant acute myeloid leukemia (AML) and the mechanism of resistance to cytotoxic and targeted therapies. Because PTPN11 mutations can activate similar signaling pathways as FLT3-ITD, we hypothesize that the addition of PTPN11 mutations to NPM1+ AML can clinically phenocopy NPM1+/FLT3-ITD AML with adverse outcomes and therapy resistance. Successful completion of these aims will provide an understanding of the biology of PTPN11 and NPM1 mutant AML and how these cells resist treatment so that more effective therapies can be developed for this patient population.
+terms: Acute Myelocytic Leukemia;acute myeloid leukemia cell;Address;adverse outcome;Animals;anti-cancer research;Apoptotic;Biology;Cell Line;Cells;Chemoresistance;chemotherapy;Clinical;Clinical Skills;Clonal Expansion;Communication;Comprehensive Cancer Center;Critical Thinking;cytokine;Cytotoxic Chemotherapy;Data;Data Set;Development;Disease;Disease-Free Survival;Doctor of Philosophy;doctoral student;effective therapy;Engraftment;Experimental Designs;FDA approved;FLT3 gene;Foundations;Frequencies;Future;Genes;Genetic;Goals;Hematologic Neoplasms;Hematology;Human;human disease;immunodeficiency;Immunodeficient Mouse;Immunophenotyping;Immunosuppression;Impairment;improved;Inferior;Interleukin-10;Knowledge;Laboratories;leukemogenesis;Malignant - descriptor;MAP Kinase Gene;MCL1 gene;Measures;Modeling;mouse model;Mus;mutant;Mutate;Mutation;Myeloid Cells;Myeloid Progenitor Cells;New Agents;NF-kappa B;novel;novel therapeutics;nucleophosmin;Ohio;Outcome;overexpression;Pathway interactions;patient population;patient subsets;Patient-Focused Outcomes;Patients;Pharmaceutical Preparations;Phenocopy;Phenotype;PIK3CG gene;Play;Pre-Clinical Model;preclinical study;programs;Proliferating;Proteins;Proto-Oncogene Proteins c-akt;PTPN11 gene;PTPN22 gene;Relapse;Reporting;Research;Research Personnel;Research Proposals;Research Training;Resistance;resistance mechanism;response;Rest;Role;Signal Pathway;Signal Transduction;skills;Supervision;T-Lymphocyte;targeted treatment;Technical Expertise;Testing;Therapeutic;therapy development;Time;Training;transcription factor;Transgenic Organisms;translational scientist;treatment response;treatment strategy
+---
+application_id: 11112293
+activity_code: T32
+title: Immunohematology/Transfusion Medicine Research Training
+org_name: YALE UNIVERSITY
+phr: Project Narrative/Public Health Relevance
+The newly emerging areas of stem cell biology, cell based therapies, gene therapy, cellular
+immunology, recombinant cytokines, and improving the safety and efficacy of transfused blood
+components have potential for the improvement of transfusion practices and the management
+of hematologic diseases. Thus, it is critical to train the next generation of investigators who can
+conduct basic, translational, and clinical research in Immunohematology and Transfusion
+Medicine. This proposed program renewal, with a 20 year successful history, aims to
+accomplish these goals.
+terms: <Research Training><immunohematology><transfusion medicine>
+---
+application_id: 11112307
+activity_code: T32
+title: Northwestern University Mental Health, Earlier: Transdiagnostic, Transdisciplinary, Translational Training Program in Neurodevelopmental Mechanisms of Psychopathology
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: Project Narrative
+ This T32 proposal will establish the first transdisciplinary postdoctoral training program
+focusing on transdiagnostic, neurodevelopmental mechanisms of psychopathology, with an
+expanded focus on lifespan and environmental context. All postdoctoral fellows will have two co-
+mentors: (1) A co-mentor with expertise in neurodevelopmental and/or environmental
+mechanisms of psychopathology; and (2) a co-mentor in one of the following areas: (a)
+prevention, intervention, or implementation, (b) computational psychiatry and data science, or (c)
+the intersection of mental health and pediatric health. The transdisciplinary mentorship and
+didactic training will launch the next generation of neurodevelopmental clinical science
+researchers poised to accelerate the pace of clinical tr...
+terms: <Diagnostic><Mental Health><Mental Hygiene><Psychological Health><Psychopathology><Training Programs><Universities><abnormal psychology>

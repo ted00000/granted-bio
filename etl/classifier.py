@@ -1,49 +1,57 @@
 """
 Canonical project classifier for granted.bio.
 
-This module is the SINGLE source of truth for how projects are categorized.
-All other code paths — sync_projects_via_api.py (new awards from API),
-classify_projects_batched.py (bulk reclassification), reclassify_existing.py
-(fixing existing data) — import from here. There is no inline classification
-in load_to_supabase.py or any other loader. Whatever ends up in
-projects.primary_category came from this function.
+Hybrid architecture:
+  - Pass 1 (activity-code routing) runs DETERMINISTICALLY in Python below.
+    Training and infrastructure codes get assigned the right category here,
+    confidence 95, with no API call. This is ~30% of typical NIH samples.
+  - Pass 2 (content analysis) runs via Claude Haiku on projects whose
+    activity codes don't trigger Pass 1.
+  - org_type runs DETERMINISTICALLY in Python (using the existing
+    determine_org_type from process_projects.py) for all projects, Pass 1
+    or not. The LLM is never trusted with org_type.
 
-The classifier uses Claude Haiku in batched API calls (20 projects per call)
-with an embedded prompt that codifies the 9-category schema:
-  training | infrastructure | basic_research | biotools | therapeutics
-  | diagnostics | medical_device | digital_health | other
-
-Same prompt also assigns org_type (company, university, hospital,
-research_institute, other).
-
-History note: Before 2026-06-19 there were ~10 parallel classifier
-implementations in etl/ — a 5-tier biotools-only legacy, a deterministic
-rule-based "semantic_classifier" not actually wired to production, plus
-many one-off batch scripts. All were archived as part of the
-classification cleanup (see etl/archive/2026-06-19_classification_consolidation/).
-This module is what survived as the canonical path.
+Why this shape: validation against historical disagreements showed that
+both Haiku and Sonnet were unreliable at honoring explicit deterministic
+rules ("K-series → training") when content reasoning competed. Putting
+the deterministic rules in code instead of the prompt removes the failure
+mode entirely. Models are good at ambiguous content disambiguation —
+let them focus there.
 
 Public API:
-    classify_projects(projects, abstracts_map) -> list[dict]
-        projects: list of dicts with application_id, title, org_name, phr
-        abstracts_map: dict mapping application_id -> abstract_text
-        returns: list of {application_id, primary_category,
-                          category_confidence (0-100), org_type}
+    classify_projects(projects, abstracts_map, on_progress=None) -> list[dict]
+        projects: list of dicts with application_id, activity_code, title,
+            org_name, phr. funding_mechanism is optional but improves org_type
+            detection.
+        abstracts_map: dict mapping application_id -> abstract_text.
+        on_progress: optional callable(batch_num, total_batches, classified,
+            errors) called after each LLM batch for caller-side progress UI.
+        returns: list of {application_id, primary_category, category_confidence,
+            org_type}. Projects that fail the LLM call are absent from the
+            output — the caller can diff input IDs vs output IDs to find them.
 
-The function does NOT write to the DB. Callers decide what to do with the
-results (update specific rows, log, validate, etc.).
+History note: This module supersedes 10+ parallel classifier implementations
+in etl/ that were tangled together before 2026-06-19. The 5-tier biotools
+legacy, the rule-based semantic_classifier, and various one-off batch
+scripts were archived. This module is the single source of truth.
 """
 
 import json
 import os
+import sys
 from typing import Dict, List, Any, Optional, Tuple
 
-# Anthropic client is initialized lazily on first call so that scripts
-# importing this module without classifying don't need ANTHROPIC_API_KEY set.
+# Reuse the existing Python org_type determination from process_projects.
+# This sidesteps inconsistent LLM org_type calls and gives us a deterministic
+# answer for every project.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from process_projects import determine_org_type
+
+
 _anthropic_client = None
 
 
-MODEL = 'claude-3-5-haiku-latest'
+MODEL = 'claude-haiku-4-5-20251001'
 PROJECTS_PER_API_CALL = 20
 
 VALID_CATEGORIES = [
@@ -67,276 +75,145 @@ VALID_ORG_TYPES = [
 ]
 
 
-BATCH_PROMPT = """Classify each NIH grant. Return a JSON array with one object per project.
+# Pass 1 deterministic rules — codified here so the LLM cannot override them.
+# Activity codes here were chosen because they are nearly always one category
+# in the NIH grant universe. Ambiguous codes (R01, U54, U10, U01, etc.) are
+# intentionally NOT in Pass 1 — the LLM gets to use content for those.
+
+# Single-letter prefixes that always route to training. Catches K01-K99 (Career
+# Development), F30-F33/F99 (Fellowships), T-series (Training Grants),
+# D-series including DP1/DP2/DP5 (Director's awards) and D43/D71.
+TRAINING_PREFIXES = ('T', 'F', 'K', 'D')
+
+# Additional codes that go to training, derived from analysis of historical
+# correction data:
+# - R25: education project
+# - R36: dissertation award
+# - R38: stimulating access to research in residency
+# - R90: residency-based research training
+# - UE5: education project cooperative agreement
+# - ZIE: NIH intramural training/education
+TRAINING_EXACT_CODES = frozenset({'R25', 'R36', 'R38', 'R90', 'UE5', 'ZIE'})
+
+# Exact activity codes that route to infrastructure. Substantially expanded
+# 2026-06-19 after disagreement-data analysis showed P01/P20/P40/P41/P42/P60/P2C
+# and U41/U42 dominate the infrastructure ground truth.
+INFRASTRUCTURE_EXACT_CODES = frozenset({
+    # Program projects and center grants
+    'P01', 'P20', 'P30', 'P40', 'P41', 'P42', 'P50', 'P51', 'P60', 'P2C',
+    # Instrumentation
+    'S10', 'G20',
+    # Conferences, coordination, and resource cooperative agreements
+    'U13', 'R13', 'U24', 'U2C', 'U41', 'U42',
+    # NIH intramural (Z series, excluding ZIE which is training)
+    'ZIA', 'ZIC', 'ZIJ',
+    # Contracts and other transactions
+    'N01', 'N02', 'OT2', 'OT3',
+    # Institutional support
+    'S07', 'S08', 'S09', 'S11',
+})
+
+
+# Prompt for Pass 2 content classification. Pass 1 routing and org_type
+# detection were both moved to Python — neither appears here. The prompt
+# returns only primary_category + category_confidence.
+BATCH_PROMPT = """Classify each NIH grant. Return a JSON array.
 
 Projects to classify:
 {projects_json}
 
-For each project, return:
-{{
-  "application_id": "the project's application_id",
-  "primary_category": "training|infrastructure|basic_research|biotools|therapeutics|diagnostics|medical_device|digital_health|other",
-  "category_confidence": 0-100,
-  "org_type": "company|university|hospital|research_institute|other"
-}}
+## THE CORE QUESTION
 
-## PASS 1: ACTIVITY CODE PRE-FILTER (Check FIRST!)
+For each project, answer ONE question:
 
-**Always → training:** T32, T34, T35, T90, TL1, TL4, F30-F33, F99, K01-K99, D43, D71, R25, R90
-**Always → infrastructure:** P30, P50, P51, S10, G20, U13, R13, U24, U2C
-**Always → infrastructure (contract / intramural):** ZIA (NIH intramural research projects), N01, N02 (NIH research contracts), OT2, OT3 (other transactions / collaborative agreements), S07, S08, S09, S11 (institutional support)
+> "What concrete THING will exist at the end of this project that doesn't exist now?"
 
-If activity code matches above → classify immediately, skip content analysis. These codes denote funding mechanisms whose primary deliverable is training, institutional capacity, or services — not new science.
+| If the project produces… | Category |
+|---|---|
+| A new tool / assay / method / software / resource / model system for OTHER RESEARCHERS to use | **biotools** |
+| A new drug, biologic, vaccine, cell therapy, or other treatment for a PATIENT (or under preclinical/clinical development toward one) | **therapeutics** |
+| A new clinical TEST used on patients to detect, diagnose, or monitor disease | **diagnostics** |
+| A new physical DEVICE used on or by a patient | **medical_device** |
+| Patient-facing or clinician-facing SOFTWARE (apps, decision support, telemedicine) | **digital_health** |
+| Just new scientific UNDERSTANDING — no tangible artifact at the end | **basic_research** |
+| Genuinely doesn't fit any of the above (set confidence ≤ 30) | **other** |
 
-## SBIR / STTR SPECIAL HANDLING
+## THE KEY DISTINCTION
 
-Activity codes R41, R42, R43, R44 are SBIR/STTR — Small Business Innovation Research and Small Business Technology Transfer. By statute, these fund small business product development. They are almost never basic_research, training, or infrastructure.
+basic_research is NOT a thing — it's knowledge. If the deliverable is "we'll understand X better" or "a paper describing Y," it's basic_research.
 
-For SBIR/STTR awards, classify into one of:
-- biotools, therapeutics, diagnostics, medical_device, or digital_health
-depending on the PRODUCT being developed.
+biotools and therapeutics ARE things:
+- A biotool is something another lab can pick up and use.
+- A therapy is something a doctor can give to a patient.
 
-Notes:
-- Phase I (R43, R41) is feasibility / proof-of-concept for the product.
-- Phase II (R44, R42) is development toward commercialization.
-- "Development of," "system," "platform," and "novel" language is normal for SBIR and does NOT by itself signal biotools — apply the standard primary-deliverable test.
-- If a SBIR/STTR genuinely doesn't fit any product category, use "other" with confidence ≤ 30 to flag for review.
+When in doubt, ask: at the project's end, what would I be able to put on a table?
+- A paper or a database of knowledge → basic_research
+- A reagent, kit, software, method, or research resource → biotools
+- A drug candidate, vaccine, or treatment regimen → therapeutics
+- A clinical assay or biomarker panel for diagnosis → diagnostics
+- A wearable, implant, or surgical tool → medical_device
+- A patient app or clinical decision support system → digital_health
 
-## PASS 2: CONTENT ANALYSIS
+## COMMON CONFUSIONS
 
-Ask: "What is the PRIMARY DELIVERABLE?"
-- Knowledge/understanding → basic_research
-- Tool/assay/platform FOR researchers → biotools
-- Drug/treatment → therapeutics
-- Clinical test → diagnostics
-- Physical device for patients → medical_device
-- Patient-facing software → digital_health
-- None of above → other
+**Mentioning a drug ≠ developing a drug.** A project using rapamycin to study mTOR is producing knowledge about mTOR (basic_research). A project developing a rapamycin analog for clinical use is producing a drug candidate (therapeutics).
 
-## basic_research IS A PRIMARY CATEGORY, NOT A FALLBACK
+**Mentioning a disease ≠ diagnostics or therapeutics.** Most NIH research mentions diseases. Disease relevance doesn't make the deliverable a treatment. Ask: is there a new TREATMENT at the end? A new TEST? Or just new UNDERSTANDING?
 
-basic_research is the largest and most heterogeneous category. It covers any project whose primary deliverable is biological knowledge — understanding mechanism, characterizing a phenomenon, or discovering new biology.
+**Method development ≠ basic_research.** "Development of a new mass spec method for X" produces a method other researchers will use → biotools. "Using mass spec to characterize X" produces knowledge → basic_research.
 
-Characteristic patterns:
-- Mechanism studies (signaling, gene regulation, structure-function)
-- Discovery / characterization (new genes, pathways, cell types, phenomena)
-- Model system USE for studying biology (developing a model system FOR others to use is biotools — note the distinction)
-- Cohort or epidemiological studies of disease biology
-- Comparative biology / evolution
-- Single-cell / multi-omic profiling for biological understanding
-- Imaging studies focused on biological process visualization
+**Software audience matters.** Research software for scientists → biotools. Patient or clinician-facing software → digital_health.
 
-If a project mentions a disease, drug, or clinical application but the PRIMARY OUTPUT is biological understanding rather than a tangible deliverable (drug, test, device, software, tool), it is basic_research.
+## SBIR / STTR
 
-Disease relevance ≠ therapeutic development.
-Tool use ≠ tool development.
-Diagnostic context ≠ diagnostic development.
+Activity codes R41/R42/R43/R44 fund small-business product development by statute. They will be biotools, therapeutics, diagnostics, medical_device, or digital_health. Pick by what the company is building.
 
-## DISAMBIGUATION RULES
+## WORKED EXAMPLES
 
-1. **Assays/probes/model systems → biotools** NOT basic_research (if DEVELOPING the tool for others to use)
+EXAMPLE 1 — mechanism study with drug context (basic_research)
+Title: "Investigating the molecular mechanism of P-gp/NHERF-1 network at feto-maternal interface"
+Deliverable: knowledge about P-gp/NHERF-1 signaling. No new drug, no new tool, no new test.
+→ basic_research (90)
 
-2. **USES vs DEVELOPS:** "Uses RNA-seq to study X" → basic_research. "Improves RNA-seq method" → biotools
+EXAMPLE 2 — preclinical drug development (therapeutics)
+Title: "Preclinical optimization of a bispecific antibody targeting CD3 and CD20 for relapsed B-cell lymphoma"
+Deliverable: an optimized antibody candidate for clinical advancement. A thing, intended for patients.
+→ therapeutics (85)
 
-3. **Biomarker intent:** "Identify biomarkers" → basic_research. "Validate clinical panel" → diagnostics. "Build detection platform" → biotools
+EXAMPLE 3 — new research tool (biotools)
+Title: "Rapid structure-based software to enhance antibody affinity for high-throughput screening"
+Deliverable: software that other researchers will use to design antibodies. The software is the thing.
+→ biotools (85)
 
-4. **CRITICAL DISTINCTION — studying-a-drug vs developing-a-drug:**
+EXAMPLE 4 — new clinical test (diagnostics)
+Title: "Validation of a multi-analyte blood test for early Alzheimer's disease detection"
+Deliverable: a clinical test doctors will run on patients to detect Alzheimer's.
+→ diagnostics (85)
 
-   A project that USES a drug to study biology → basic_research.
-   A project that DEVELOPS or OPTIMIZES a drug → therapeutics.
+EXAMPLE 5 — using a tool to study biology (basic_research)
+Title: "The role of RNA m6A modification in the regulation of HIV latency and reactivation"
+Deliverable: understanding of how m6A regulates viral latency. HIV is a disease context, but the project produces knowledge, not a treatment.
+→ basic_research (90)
 
-   Three tests, applied in order:
+## WHEN UNCERTAIN
 
-   TEST A — strip the drug name. Does the project still make sense as a basic biology study?
-     YES → basic_research (e.g., "We use rapamycin to investigate mTOR signaling in cancer")
-     NO → therapeutics (e.g., "Develop a rapamycin analog with improved selectivity")
-
-   TEST B — what is the project DELIVERING at the end?
-     Mechanism knowledge → basic_research
-     Validated target for future drug development → basic_research
-     Improved drug candidate / new dosing / new formulation → therapeutics
-     Efficacy data toward an IND or clinical trial → therapeutics
-
-   TEST C — what is the verb in the title or Aim 1?
-     "Studying," "investigating," "characterizing," "elucidating," "examining," "exploring" → basic_research
-     "Developing," "optimizing," "validating efficacy of," "advancing to clinic," "translating to" → therapeutics
-
-5. **AI/ML by application domain:** ML for protein folding → basic_research. ML drug screening → therapeutics. ML tool for researchers → biotools. ML clinical decision support → digital_health
-
-6. **digital_health requires patient or clinician deployment:** Software for researchers → biotools, not digital_health
-
-7. **Combination projects:** Classify by PRIMARY innovation (usually title focus or Aim 1)
-
-8. **other = genuinely residual:** Re-read abstract for hidden deliverables before using
-
-9. **The "for [disease]" pattern is NOT determinative:**
-
-   Many basic research projects describe their work as "for cancer," "for Alzheimer's," "for autism" etc. without being therapeutic, diagnostic, or biotools work.
-
-   Examples of "for [disease]" that ARE basic_research:
-   - "Novel signaling pathway for cancer therapy" (mechanism work with therapeutic implications; not a therapy itself)
-   - "New mouse model for Alzheimer's" (model use; unless explicit "for use by other researchers")
-   - "Single-cell atlas for liver disease" (descriptive biology with disease context)
-
-   Examples of "for [disease]" that are NOT basic_research:
-   - "Developing a diagnostic test for early Alzheimer's" → diagnostics
-   - "Optimizing antibody for breast cancer immunotherapy" → therapeutics
-   - "Building an open-access cancer organoid biobank" → biotools
-
-   Test: strip the disease context. Is there still a deliverable beyond knowledge?
-
-## THERAPEUTICS KEYWORD EXPANSION
-
-Strong therapeutic signals include the following terms in the title or abstract, especially when paired with disease context or efficacy/safety language:
-
-- "treating [disease/condition]" / "treatment of [disease/condition]"
-- "therapeutic" / "therapy" / "therapies"
-- "biologic" / "biologics" / "biological agent"
-- "radiotherapeutic" / "radiotherapy" / "radio-conjugate"
-- "CAR-T" / "CAR-NK" / "CAR-M" / "CAR-microglia" or any "CAR-X" cell therapy
-- "ADC" / "antibody-drug conjugate" / "immunoconjugate"
-- "mRNA vaccine" / "mRNA therapeutic"
-- "nanoparticle" + therapeutic context (delivery, drug, formulation)
-- "gene therapy" / "gene editing" with explicit therapeutic intent
-- "small molecule" + ("inhibitor" OR "agonist" OR "antagonist") + disease
-- "monoclonal antibody" / "mAb" + disease context
-- "vaccine" + disease prevention or treatment context
-
-BUT: these terms alone do NOT make a project therapeutic. Apply Rule 4 (USES vs DEVELOPS). Many basic research projects mention these terms while studying biology, not developing a treatment.
-
-## WORKED EXAMPLES (real NIH grants, classifications are ground truth from manual review)
-
-EXAMPLE 1 — therapeutics → basic_research (most common misclassification)
-
-PROJECT:
-  title: "Investigating the molecular mechanism of P-gp/NHERF-1 network at feto-maternal interface and role of paracrine signaling of EVs containing drug transporter proteins"
-  org: University of Texas Med Br Galveston
-  activity: R01
-
-ANALYSIS:
-  "Investigating the molecular mechanism" is unambiguous basic_research vocabulary. The mention of "drug transporter proteins" makes this read therapeutically at first glance, but applying Rule 4 Test A: strip "drug transporter" and the project still makes sense as a study of P-gp/NHERF-1 signaling at the placental interface. The deliverable is mechanism knowledge, not a drug. Confidence: high.
-
-CLASSIFICATION: basic_research (confidence 90)
-
-EXAMPLE 2 — biotools → basic_research
-
-PROJECT:
-  title: "The role of RNA m6A modification in the regulation of HIV latency and reactivation"
-  org: Case Western Reserve University
-  activity: R61
-
-ANALYSIS:
-  "The role of X in the regulation of Y" is mechanism vocabulary. HIV is a disease context, but Rule 9 reminds us that disease relevance ≠ therapeutic development. The project studies how m6A modification regulates viral latency — knowledge work, not tool development, not therapeutic development. The R61 activity code is exploratory R-series, consistent with mechanism research. Confidence: high.
-
-CLASSIFICATION: basic_research (confidence 90)
-
-EXAMPLE 3 — basic_research → biotools (the developing-a-tool case)
-
-PROJECT:
-  title: "Functional MRI Method Development"
-  org: National Institute of Mental Health
-  activity: ZIA
-
-ANALYSIS:
-  Despite ZIA being a Pass 1 infrastructure code, the title explicitly says "Method Development." This is the developing-a-tool case Rule 2 highlights: the deliverable is a new MRI method for other researchers to use, not knowledge produced by USING fMRI. When activity code and content disagree this strongly, content wins. Confidence: moderate-high.
-
-CLASSIFICATION: biotools (confidence 80)
-
-EXAMPLE 4 — basic_research → therapeutics (Phase 2 trial, clear development)
-
-PROJECT:
-  title: "Phase 2 Clinical Trial of Ciliary Neurotrophic Factor (CNTF) for Macular Telangiectasia Type 2 (MacTel)"
-  org: National Eye Institute
-  activity: ZIA
-
-ANALYSIS:
-  "Phase 2 Clinical Trial" is unambiguous therapeutic development. The "for [disease]" pattern (Rule 9) usually doesn't determine therapeutics, but a Phase 2 trial is testing efficacy in patients — that's the developing-a-drug end of Rule 4. ZIA activity code would normally route to infrastructure under Pass 1, but a clinical trial is a deliverable, not institutional infrastructure. Confidence: very high.
-
-CLASSIFICATION: therapeutics (confidence 95)
-
-EXAMPLE 5 — SBIR R44 case: software for researchers, not patients
-
-PROJECT:
-  title: "Rapid structure-based software to enhance antibody affinity and developability for high-throughput screening: Aiming toward total in silico design of antibodies"
-  org: DNASTAR, Inc.
-  activity: R44
-
-ANALYSIS:
-  R44 is SBIR Phase II — by statute, product development. The product here is software for researchers doing antibody design (biotools per Rule 6: software for researchers → biotools, not digital_health). The "antibody" mention could read therapeutics, but the software is for OTHER scientists to use in their antibody work, not a therapeutic in itself. Confidence: high.
-
-CLASSIFICATION: biotools (confidence 85)
-  org_type: company (R44 SBIR + "Inc." suffix)
-
-EXAMPLE 6 — digital_health → biotools (software audience matters)
-
-PROJECT:
-  title: "Development of Computational Tools and Their Applications to Various Biological Systems"
-  org: Lehigh University
-  activity: R35
-
-ANALYSIS:
-  "Development of Computational Tools" is biotools (Rule 6: software for researchers → biotools). The phrase "Applications to Various Biological Systems" indicates the tools are used for biological research, not for patient-facing clinical decision support. Rule 6 is explicit: digital_health requires patient or clinician deployment. Confidence: high.
-
-CLASSIFICATION: biotools (confidence 85)
-
-## ORGANIZATION TYPES
-
-### company (private commercial entities)
-Signals:
-- Names ending in Inc., LLC, Corp., Corporation, Ltd., Co.
-- "Therapeutics," "Biosciences," "Pharma," "Diagnostics" in the org name
-- All SBIR/STTR awards (activity codes R41/R42/R43/R44) are companies
-- "Holdings," "Capital," "Ventures" suffixes (parent companies)
-
-### university (academic degree-granting institutions)
-Signals:
-- "University of," "University," "College" in name
-- "Institute of Technology" (MIT, Caltech, Georgia Tech) — academic
-- Includes university medical schools and affiliated medical centers (UCSF, UCLA Health, Johns Hopkins Medicine, etc.)
-- State universities and land-grant institutions
-
-### hospital (independent medical centers and health systems)
-Signals:
-- "Hospital," "Medical Center," "Health System," "Clinic" in name AND NOT university-affiliated
-- Independent hospitals: Mayo Clinic, Cleveland Clinic, Mass General Brigham, Memorial Sloan-Kettering, MD Anderson
-- VA Medical Centers (Department of Veterans Affairs)
-- Children's hospitals: Boston Children's, CHOP, Cincinnati Children's
-
-### research_institute (independent non-profit research orgs)
-Signals:
-- "Institute" without a university degree-granting parent: Broad, Salk, Scripps, Whitehead, Fred Hutchinson, Cold Spring Harbor, Allen Institute
-- Foundation labs: Howard Hughes Medical Institute (HHMI), Chan Zuckerberg (CZI), Wellcome
-- Federally Funded Research and Development Centers (FFRDCs)
-
-### other
-Signals:
-- Government agencies (NIH intramural divisions, FDA, CDC, VA Office)
-- Foundations and 501(c)(3) non-profits without dedicated research labs
-- Professional societies
-- International organizations
-- Anything ambiguous after the above rules
-
-Edge cases:
-- Hospital + university affiliation: classify by the org_name on the award itself, not by the affiliation
-- Industry-academic partnerships: classify by the org_name receiving the award
-- If genuinely ambiguous after applying all rules, default to "other". The admin review queue will catch it.
-
-## WHEN YOU ARE GENUINELY UNCERTAIN
-
-If after applying all rules and tests you cannot confidently classify a project into one of the nine categories, set:
-
+If after applying the test you can't confidently choose, set:
   primary_category: "other"
   category_confidence: ≤ 30
 
-Low-confidence "other" classifications surface in the admin review queue for human inspection. It is BETTER to flag for review than to force a confident wrong answer.
+That routes the project to admin review. Better to flag for review than to force a wrong confident answer.
 
-DO NOT over-use this escape. Most projects fit cleanly into one of the nine categories. Use the review path only when the abstract is genuinely unparseable, internally contradictory, or describes work that spans multiple categories with no clear primary.
+For each project return:
+{{
+  "application_id": "the project's application_id",
+  "primary_category": "basic_research|biotools|therapeutics|diagnostics|medical_device|digital_health|other",
+  "category_confidence": 0-100
+}}
 
 Return ONLY the JSON array, no other text."""
 
 
 def _get_client():
-    """Lazy init so modules can import classifier without needing the API key."""
     global _anthropic_client
     if _anthropic_client is None:
         from anthropic import Anthropic
@@ -344,26 +221,57 @@ def _get_client():
     return _anthropic_client
 
 
+def _classify_by_activity_code(activity_code: str) -> Optional[str]:
+    """Pass 1 deterministic activity-code routing.
+
+    Returns the category if the activity code matches a Pass 1 rule, else
+    None (caller should send the project to LLM content analysis).
+    """
+    if not activity_code:
+        return None
+    code = activity_code.strip().upper()
+    if not code:
+        return None
+
+    if code in TRAINING_EXACT_CODES:
+        return 'training'
+    if code[0] in TRAINING_PREFIXES:
+        return 'training'
+    if code in INFRASTRUCTURE_EXACT_CODES:
+        return 'infrastructure'
+    return None
+
+
+def _resolve_org_type(project: Dict[str, Any]) -> str:
+    """Deterministic org_type via the existing process_projects helper.
+
+    Falls back to 'other' if determine_org_type returns something we don't
+    recognize (defensive — shouldn't happen in practice).
+    """
+    org_name = project.get('org_name') or ''
+    funding_mech = project.get('funding_mechanism') or ''
+    org_type = determine_org_type(org_name, funding_mech) or 'other'
+    if org_type not in VALID_ORG_TYPES:
+        return 'other'
+    return org_type
+
+
 def _classify_batch(
     projects: List[Dict[str, Any]], abstracts_map: Dict[str, str]
 ) -> Tuple[Optional[List[Dict[str, Any]]], Optional[str]]:
-    """Classify one batch of up to PROJECTS_PER_API_CALL projects via one API call.
-
-    Returns (results, None) on success or (None, error_message) on failure.
-    """
+    """Send one batch to Haiku for Pass 2 content classification."""
     projects_for_prompt = []
     for p in projects:
         app_id = p.get('application_id')
         abstract = abstracts_map.get(app_id, '')
-        projects_for_prompt.append(
-            {
-                'application_id': app_id,
-                'title': p.get('title', ''),
-                'org_name': p.get('org_name', ''),
-                'phr': (p.get('phr') or '')[:1000],
-                'abstract': abstract[:1500] if abstract else '',
-            }
-        )
+        projects_for_prompt.append({
+            'application_id': app_id,
+            'activity_code': p.get('activity_code', ''),
+            'title': p.get('title', ''),
+            'org_name': p.get('org_name', ''),
+            'phr': (p.get('phr') or '')[:1000],
+            'abstract': abstract[:1500] if abstract else '',
+        })
 
     prompt = BATCH_PROMPT.format(projects_json=json.dumps(projects_for_prompt, indent=2))
 
@@ -374,35 +282,35 @@ def _classify_batch(
             max_tokens=4096,
             messages=[{'role': 'user', 'content': prompt}],
         )
-
         text = message.content[0].text.strip()
-        # Strip markdown code fences if the model wraps the JSON
         if text.startswith('```json'):
             text = text[7:]
         if text.startswith('```'):
             text = text[3:]
         if text.endswith('```'):
             text = text[:-3]
-        text = text.strip()
-
-        return json.loads(text), None
+        return json.loads(text.strip()), None
     except Exception as e:
         return None, str(e)
 
 
-def _normalize_classification(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
-    """Validate + clamp one classification dict from the LLM response."""
+def _normalize_llm_result(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """Validate + clamp one classification dict from the LLM response.
+
+    Returns just application_id + primary_category + category_confidence.
+    org_type is added by the caller from Python's deterministic detection.
+    """
     app_id = raw.get('application_id')
     if not app_id:
         return None
 
     category = (raw.get('primary_category') or 'other').lower()
-    if category not in VALID_CATEGORIES:
+    # The prompt restricts the LLM to seven content categories — training and
+    # infrastructure should never come back from the LLM. If they somehow do,
+    # downgrade to 'other' so they surface for review.
+    content_categories = {'basic_research', 'biotools', 'therapeutics', 'diagnostics', 'medical_device', 'digital_health', 'other'}
+    if category not in content_categories:
         category = 'other'
-
-    org_type = (raw.get('org_type') or 'other').lower()
-    if org_type not in VALID_ORG_TYPES:
-        org_type = 'other'
 
     try:
         confidence = float(raw.get('category_confidence', 50))
@@ -414,7 +322,6 @@ def _normalize_classification(raw: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         'application_id': app_id,
         'primary_category': category,
         'category_confidence': confidence,
-        'org_type': org_type,
     }
 
 
@@ -423,43 +330,67 @@ def classify_projects(
     abstracts_map: Dict[str, str],
     on_progress: Optional[callable] = None,
 ) -> List[Dict[str, Any]]:
-    """Classify a list of projects.
+    """Classify a list of projects via Pass 1 (Python) + Pass 2 (Haiku).
 
-    Args:
-        projects: list of dicts. Each must have application_id, title,
-            org_name, phr.
-        abstracts_map: dict mapping application_id -> abstract_text.
-            Pass {} if abstracts aren't available; classification will
-            still run on title + phr but accuracy may drop.
-        on_progress: optional callable(batch_num, total_batches, classified,
-            errors) called after each batch for caller-side progress UI.
-
-    Returns:
-        list of classification dicts (one per successfully classified
-        project): application_id, primary_category, category_confidence,
-        org_type. Projects that failed classification (LLM error, parse
-        failure, etc.) are NOT in the output — the caller can diff input
-        IDs against output IDs to find them.
+    See module docstring for shape contract.
     """
     if not projects:
         return []
 
     results: List[Dict[str, Any]] = []
-    errors = 0
-    total_batches = (len(projects) + PROJECTS_PER_API_CALL - 1) // PROJECTS_PER_API_CALL
+    needs_llm: List[Dict[str, Any]] = []
 
-    for i in range(0, len(projects), PROJECTS_PER_API_CALL):
-        batch = projects[i : i + PROJECTS_PER_API_CALL]
+    for p in projects:
+        app_id = p.get('application_id')
+        org_type = _resolve_org_type(p)
+
+        # Pass 1: deterministic activity-code routing
+        pass1 = _classify_by_activity_code(p.get('activity_code', ''))
+        if pass1 is not None:
+            results.append({
+                'application_id': app_id,
+                'primary_category': pass1,
+                'category_confidence': 95.0,
+                'org_type': org_type,
+            })
+            continue
+
+        # Carry the resolved org_type alongside the project for merging post-LLM
+        p_with_orgtype = dict(p)
+        p_with_orgtype['_resolved_org_type'] = org_type
+        needs_llm.append(p_with_orgtype)
+
+    if not needs_llm:
+        return results
+
+    # Pass 2: Haiku content classification on what's left
+    errors = 0
+    total_batches = (len(needs_llm) + PROJECTS_PER_API_CALL - 1) // PROJECTS_PER_API_CALL
+
+    for i in range(0, len(needs_llm), PROJECTS_PER_API_CALL):
+        batch = needs_llm[i:i + PROJECTS_PER_API_CALL]
         batch_num = (i // PROJECTS_PER_API_CALL) + 1
 
-        raw_results, error = _classify_batch(batch, abstracts_map)
+        # Strip the carry-along field before sending to LLM
+        batch_for_llm = [
+            {k: v for k, v in p.items() if k != '_resolved_org_type'}
+            for p in batch
+        ]
+        org_type_by_id = {
+            str(p['application_id']): p['_resolved_org_type']
+            for p in batch
+        }
+
+        raw_results, error = _classify_batch(batch_for_llm, abstracts_map)
         if error or not raw_results:
             errors += len(batch)
         else:
             for raw in raw_results:
-                normalized = _normalize_classification(raw)
-                if normalized:
-                    results.append(normalized)
+                norm = _normalize_llm_result(raw)
+                if norm:
+                    app_id_str = str(norm['application_id'])
+                    norm['org_type'] = org_type_by_id.get(app_id_str, 'other')
+                    results.append(norm)
                 else:
                     errors += 1
 

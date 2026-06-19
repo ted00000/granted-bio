@@ -1,0 +1,550 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 402 of 459 (50 projects):
+
+---
+application_id: 11110297
+activity_code: T32
+title: Training Grant in Clinical Pharmacology
+org_name: MAYO CLINIC ROCHESTER
+phr: NARRATIVE
+Clinical Pharmacology is the scientific discipline that addresses all aspects of human-drug interactions,
+including mechanisms of drug action and the mechanistic basis for individual variation in drug response.
+Clinical Pharmacology is undergoing rapid change with the integration of “multiple omics” science and modern
+computational techniques such as artificial intelligence and machine learning. The long-standing Mayo Clinic
+Clinical Pharmacology Training Program has embraced these advances and incorporated them into a Training
+Program designed to prepare healthcare professionals to contribute to our understanding of human drug
+interactions by the application of all of the tools of modern biomedical and computational science.
+terms: <Clinical Pharmacology><Grant><Training>
+---
+application_id: 11143892
+activity_code: K26
+title: Mentored Training in Molecular Epidemiology of Chronic Kidney Disease in Diverse Populations
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: This proposal addresses a critical need of increasing the US workforce for research in chronic kidney disease, a disease that affects one in seven U.S. adults and has a high impact in public health. The proposed mentoring of trainees and junior investigators focuses on molecular epidemiology research of chronic kidney disease to improve the understanding of disease etiology and risk, and ultimately guide public health prevention and interventions, and develop therapeutic tools for clinicians to effectively treat the disease. The mentoring will be accomplished through activities based on Dr. Franceschini’s extensive research program and the University of North Carolina graduate school.
+terms: <21+ years old><Address><Adult><Adult Human><Affect><American Heart Association><Area><Atherosclerosis Risk in Communities><Award><Biometrics><Biometry><Biostatistics><Cardiovascular Diseases><Causality><Cause of Death><Cessation of life><Chronic Kidney Failure><Chronic Renal Disease><Chronic Renal Failure><Clinical><Cohort Studies><Concurrent Studies><Data><Death><Dedications><Disease><Disorder><Doctor of Philosophy><Education><Educational aspects><Educational process of instructing><Enrollment><Epidemiologic Research><Epidemiologic Studies><Epidemiological Studies><Epidemiologist><Epidemiology><Epidemiology Research><Epigenetic><Epigenetic Change><Epigenetic Mechanism><Epigenetic Process><Etiology><Faculty><Female Health><Funding><Gene variant><Genetic><Genetic Research><Gills><Goals><Grant><HCHS/SOL Study><HCHS/SOL cohort><Heart><Hispanic Community Health Study/Study of Latinos><Individual><International><Intervention><Investigators><Joints><Kidney><Kidney Urinary System><Leadership><Learning><Life Style><Lifestyle><Mentors><Mentorship><Methods><Molecular><Molecular Epidemiology><NIH><National Institutes of Health><Nephrology><North Carolina><Paper><Persons><Ph.D.><PhD><Physicians><Population><Population Heterogeneity><Position><Positioning Attribute><Postdoc><Postdoctoral Fellow><Prevention><Principal Investigator><Proteomics><Public Health><Publications><R-Series Research Projects><R01 Mechanism><R01 Program><Recommendation><Research><Research Associate><Research Grants><Research Personnel><Research Project Grants><Research Projects><Research Support><Researchers><Risk><Risk Factors><Schools><Scientific Publication><Scientist><Societies><Source><TL1><TNF Ligand-Related Molecule 1><TNF15><TNFSF15><TNFSF15 gene><TOPMed><Teaching><Text><Therapeutic><Time><Training><Training Programs><Trans-Omics for Precision Medicine><Tumor Necrosis Factor Ligand Superfamily Member 15><United States National Institutes of Health><Universities><VEGI><Vascular Endothelial Growth Inhibitor><Women's Health><Work><Writing><adulthood><agricultural community><allelic variant><base><bases><burden of disease><burden of illness><cardiovascular disease epidemiology><cardiovascular disorder><cardiovascular disorder epidemiology><cardiovascular epidemiology><career><causation><chronic kidney disease><design><designing><disability><disease burden><disease causation><diverse populations><enroll><epidemiologic><epidemiologic investigation><epidemiological><epidemiology study><epigenetically><experience><genetic epidemiologic study><genetic epidemiology><genetic variant><genomic variant><global gene expression><global transcription profile><graduate school><graduate student><heterogeneous population><improved><medical college><medical schools><meeting><meetings><metabolism measurement><metabolomics><metabonomics><molecular biomarker><molecular marker><multidisciplinary><next generation><population diversity><post-doc><post-doctoral><post-doctoral trainee><pre-doc><pre-doctoral><premature><prematurity><professor><programs><recruit><renal><research associates><school of medicine><skills><tool><transcriptome>
+---
+application_id: 11311700
+activity_code: D43
+title: Molecular Virology/Epidemiology HIV Training in Kazakhstan (MoVE-Kaz)
+org_name: UNIVERSITY OF SOUTH FLORIDA
+phr: Project Narrative
+In order to reduce the incidence of HIV in Kazakhstan, improve surveillance, and better monitor drug
+resistance to enable appropriate therapy, we propose this Fogarty training grant: Molecular Virology and
+Epidemiology in Kazakhstan (MoVE-Kaz). A partnership of key Kazakh institutions, supported by U.S. and
+Belgian universities, 12 early career scientists and clinicians will be trained in molecular epidemiology and HIV
+disease control and prevention.
+terms: <AIDS Virus><Acquired Immune Deficiency Syndrome Virus><Acquired Immunodeficiency Syndrome Virus><Belgium><Central Asia><Collaborations><Communities><Data><Drug resistance><Eastern Europe><Emerging infection><Epidemic><Epidemiologic Research><Epidemiologic Studies><Epidemiological Studies><Epidemiology><Epidemiology Research><Ethics><Faculty><Funding><Grant><HIV><HIV Infections><HTLV-III Infections><HTLV-III-LAV Infections><Harm Minimization><Harm Reduction><Health Care Professional><Health Professional><Human Immunodeficiency Viruses><Human T-Lymphotropic Virus Type III Infections><Individual><Infection><International><Intervention><Kazakhstan><Kazakstan><Knowledge><LAV-HTLV-III><Link><Lymphadenopathy-Associated Virus><Mentors><Molecular Epidemiology><Molecular Virology><NIDA><National Institute of Drug Abuse><National Institute on Drug Abuse><Patient Care><Patient Care Delivery><Persons><Phylogenetic Analysis><Phylogenetics><Physicians><Population><Public Health><Research><Scientist><Services><Training><Training Programs><Transmission><Universities><Variant><Variation><Viral><Virus-HIV><care for patients><care of patients><caring for patients><cohort><drug resistant><emergent infection><epidemiologic><epidemiologic investigation><epidemiological><epidemiology study><ethical><experience><hands on research><high risk><improved><indexing><programs><resistance to Drug><resistant to Drug><skills><tool><transmission process><viral transmission><virus transmission>
+---
+application_id: 10868550
+activity_code: T32
+title: Pre- and Postdoctoral Training in Toxicology
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: PROJECT NARRATIVE This interdisciplinary training program is designed to provide the necessary resources, infrastructure, and research opportunities for predoctoral and postdoctoral trainees interested in toxicology and environmental health effects on human diseases. The goal of the Curriculum in Toxicology and Environmental Medicine at UNC-CH is to train new scientists that are able to enhance our understanding of how the environment affects human disease.
+terms: post-doctoral training;pre-doctoral;Toxicology;Training
+---
+application_id: 11110448
+activity_code: T32
+title: Emerging and Tropical Infectious Diseases
+org_name: UNIVERSITY OF TEXAS MED BR GALVESTON
+phr: PROJECT NARRATIVE
+Emerging and tropical infectious diseases are an important public health concern. Yet, there are
+insufficient numbers of trained investigators to undertake related research, especially for vector-borne
+diseases. This program will address this shortage by training future outstanding investigators in a
+dynamic environment.
+terms: <emergent tropical disease><emerging tropical disease><emerging tropical infectious disease>
+---
+application_id: 11097161
+activity_code: K02
+title: Research Career Enhancement in Implementation Science to Address Primary Prevention, Harm Reduction, and Evidence-Based Interventions for Opioid Use Disorder from the Emergency Department
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: PROJECT NARRATIVE
+The U.S. opioid overdose crisis continues to escalate with over 80,000 Americans dying from an opioid
+overdose in 2021 alone. There is a critical public health need to develop effective interventions to prevent and
+treat opioid use disorder and ensure that evidence-based interventions actually reach and benefit patients, and
+in an equitable manner. This K02 Independent Scientist Award will provide the PI with protected time from
+clinical duties in support of an intensive period of research career enhancement to acquire additional skills,
+training, and experience in implementation science approaches to address primary prevention and treatment of
+opioid use disorder from the emergency department.
+terms: <Acceleration><Accident and Emergency department><Acute><Address><Administrator><Adopted><Adoption><Affect><American><Assess implementation><Career Mobility><Caring><Cessation of life><Chronic><Clinical><Clinical Trials><Clinical Trials Design><Communities><Cost Analyses><Cost Analysis><Data><Death><Development><ED care><ED visit><ER care><ER visit><Emergency Care><Emergency Department><Emergency Department care><Emergency Medicine><Emergency Room care><Emergency care visit><Emergency department visit><Emergency health care><Emergency hospital visit><Emergency medical care><Emergency medical service><Emergency room><Emergency room visit><Ensure><Equity><Evidence based intervention><Evidence based treatment><Exposure to><Fostering><Funding><Future><General Population><General Public><Goals><Guidelines><Harm Minimization><Harm Reduction><Health Care Systems><Health Services><Health Services Evaluation><Health Services Research><Health system><Hybrids><Implementation assessment><Independent Scientist Award><Intervention><Investigators><Investments><K02 Award><K12><K12 Award><K12 Mechanism><K12 Program><Knowledge><Leadership><Literature><Low Back Ache><Low Back Pain><Low Backache><Lumbago><Measurable><Medical Care Research><Medicine><Mentored Clinical Scientist Development Program><Mentorship><Methods><Modality><Modeling><Multiple Partners><NIDA><NIH><Naloxone><Narcan><Narcanti><National Institute of Drug Abuse><National Institute on Drug Abuse><National Institutes of Health><Opiate user><Opiates><Opioid><Opioid drug user><Out-patients><Outcome><Outcomes Research><Outpatients><PWUO><Pain><Painful><Patients><Persons><Physiatric Procedure><Physical Medicine Procedure><Physical Therapeutics><Physical therapy><Physicians><Physiotherapy><Play><Preparation><Preventative strategy><Prevention><Prevention strategy><Preventive strategy><Primary Prevention><Public Health><Quantitative Evaluations><Randomization trial><Recommendation><Recovery Support><Research><Research Activity><Research Personnel><Research Training><Researchers><Role><Scientist><Site><Symptoms><Therapeutic Intervention><Time><Trainers Training><Training><Training Activity><Translations><United States National Institutes of Health><Work><addiction><addictive disorder><assess cost><career><career advancement><career transition><chronic pain><clinical research site><clinical site><context for implementation><cost assessment><cost evaluation><design><designing><develop therapy><developmental><dissemination science><distribute naloxone><effective intervention><effectiveness and implementation trial><effectiveness trial><effectiveness/implementation hybrid trial><effectiveness/implementation trial><emergency service><evaluate cost><evaluate implementation><evaluation of implementation><evidence base><examine cost><experience><implementation context><implementation cost><implementation design><implementation determinants><implementation evaluation><implementation factors><implementation investment><implementation outcomes><implementation research design><implementation science><implementation strategy><intervention development><intervention therapy><licit opioid><naloxone availability><naloxone dispensary><naloxone dispensation><naloxone dispensing><naloxone distribution><naloxone provision><non-narcotic analgesic><non-opiate analgesic><non-opioid><non-opioid analgesic><non-opioid therapeutics><nonnarcotic analgesics><nonopiate analgesic><nonopioid><nonopioid analgesics><novel><opiate consumption><opiate drug use><opiate intake><opiate medication><opiate overdose><opiate related overdose><opiate use><opiate use disorder><opioid consumption><opioid drug overdose><opioid drug use><opioid induced overdose><opioid intake><opioid intoxication><opioid medication><opioid medication overdose><opioid overdose><opioid poisoning><opioid related overdose><opioid toxicity><opioid use><opioid use disorder><opioid user><overdose death><overdose fatalities><overdose prevention><people who use opioids><persons who use opioids><preparations><prescribed opiate><prescribed opioid><prescription opiate><prescription opioid><prevent><preventing><programs><provide naloxone><randomized trial><services research><skills><social role><strategies for implementation><therapy development><training module><translation><treatment development>
+---
+application_id: 11110493
+activity_code: T32
+title: Research Training in the Epidemiology of Aging
+org_name: UNIVERSITY OF MARYLAND BALTIMORE
+phr: Relevance to Public Health
+The increasing life span is leading to greater numbers of older persons in the population. This
+training program is designed to prepare outstanding scientists to pursue topics that are relevant
+for understanding the health and functional status of an aging population, preventing the
+functional declines and disabilities that often accompany becoming older, and maximizing function
+in those with existing disabilities and disabling conditions.
+terms: <Aging><Epidemiology><Research Training><epidemiologic><epidemiological>
+---
+application_id: 11111252
+activity_code: T32
+title: Training Program in Quantitative Biology & Physiology (QBP)
+org_name: BOSTON UNIVERSITY (CHARLES RIVER CAMPUS)
+phr: This program is designed to train engineers who can improve health by combining expertise in quantitative biomedical science, artificial intelligence and machine learning, and computational science.
+terms: <Biology><Physiology><Training Programs>
+---
+application_id: 11111275
+activity_code: T32
+title: Research in practice: translating infectious disease epidemiology RIP-TIDE
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: PROJECT NARRATIVE
+Public health response to infectious disease epidemics requires multidisciplinary, quantitative, and critical skills
+to address all aspects of control from preparedness to elimination. The proposed training program will provide
+foundational training in epidemiological study design and inference, ethics, and advanced methodological
+training in one of three methodological areas: (1) Transmission Modeling and Infectious Disease Dynamics, (2)
+Molecular Epidemiology and Phylogenetics, and (3) Disease Mapping and Burden Estimation. As part of this
+program, trainees will apply these methods to practical issues in policy and disease control through practicums
+and projects in translational research and implementation.
+terms: <Infectious Disease Epidemiology><Infectious Epidemiology><Translating><research in practice>
+---
+application_id: 11111359
+activity_code: T32
+title: Interdisciplinary Anesthesiology Research Training Program
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: Project Narrative
+The goal of this training program is to develop the next generation of clinician-scientist in the field of
+Anesthesiology. We propose to continue a unique training experience that addresses core clinical problems in
+anesthesiology and utilize collaborative research experiences across the campus. Fellows with their mentoring
+team have the ability to work beyond, within, and in larger collaboratives to undertake research at the broadest
+level to involve as many disciplines necessary to adequately address the questions asked to solve unique
+problems.
+terms: <Anesthesiology><Research Training><Training Programs>
+---
+application_id: 10757029
+activity_code: F30
+title: The role of PTPN11 and NPM1 mutations in acute myeloid leukemia development and therapy resistance
+org_name: OHIO STATE UNIVERSITY
+phr: PROJECT NARRATIVE The goal of this proposal is to study the immunophenotype of PTPN11 and NPM1 mutant acute myeloid leukemia (AML) and the mechanism of resistance to cytotoxic and targeted therapies. Because PTPN11 mutations can activate similar signaling pathways as FLT3-ITD, we hypothesize that the addition of PTPN11 mutations to NPM1+ AML can clinically phenocopy NPM1+/FLT3-ITD AML with adverse outcomes and therapy resistance. Successful completion of these aims will provide an understanding of the biology of PTPN11 and NPM1 mutant AML and how these cells resist treatment so that more effective therapies can be developed for this patient population.
+terms: Acute Myelocytic Leukemia;acute myeloid leukemia cell;Address;adverse outcome;Animals;anti-cancer research;Apoptotic;Biology;Cell Line;Cells;Chemoresistance;chemotherapy;Clinical;Clinical Skills;Clonal Expansion;Communication;Comprehensive Cancer Center;Critical Thinking;cytokine;Cytotoxic Chemotherapy;Data;Data Set;Development;Disease;Disease-Free Survival;Doctor of Philosophy;doctoral student;effective therapy;Engraftment;Experimental Designs;FDA approved;FLT3 gene;Foundations;Frequencies;Future;Genes;Genetic;Goals;Hematologic Neoplasms;Hematology;Human;human disease;immunodeficiency;Immunodeficient Mouse;Immunophenotyping;Immunosuppression;Impairment;improved;Inferior;Interleukin-10;Knowledge;Laboratories;leukemogenesis;Malignant - descriptor;MAP Kinase Gene;MCL1 gene;Measures;Modeling;mouse model;Mus;mutant;Mutate;Mutation;Myeloid Cells;Myeloid Progenitor Cells;New Agents;NF-kappa B;novel;novel therapeutics;nucleophosmin;Ohio;Outcome;overexpression;Pathway interactions;patient population;patient subsets;Patient-Focused Outcomes;Patients;Pharmaceutical Preparations;Phenocopy;Phenotype;PIK3CG gene;Play;Pre-Clinical Model;preclinical study;programs;Proliferating;Proteins;Proto-Oncogene Proteins c-akt;PTPN11 gene;PTPN22 gene;Relapse;Reporting;Research;Research Personnel;Research Proposals;Research Training;Resistance;resistance mechanism;response;Rest;Role;Signal Pathway;Signal Transduction;skills;Supervision;T-Lymphocyte;targeted treatment;Technical Expertise;Testing;Therapeutic;therapy development;Time;Training;transcription factor;Transgenic Organisms;translational scientist;treatment response;treatment strategy
+---
+application_id: 11112293
+activity_code: T32
+title: Immunohematology/Transfusion Medicine Research Training
+org_name: YALE UNIVERSITY
+phr: Project Narrative/Public Health Relevance
+The newly emerging areas of stem cell biology, cell based therapies, gene therapy, cellular
+immunology, recombinant cytokines, and improving the safety and efficacy of transfused blood
+components have potential for the improvement of transfusion practices and the management
+of hematologic diseases. Thus, it is critical to train the next generation of investigators who can
+conduct basic, translational, and clinical research in Immunohematology and Transfusion
+Medicine. This proposed program renewal, with a 20 year successful history, aims to
+accomplish these goals.
+terms: <Research Training><immunohematology><transfusion medicine>
+---
+application_id: 11112307
+activity_code: T32
+title: Northwestern University Mental Health, Earlier: Transdiagnostic, Transdisciplinary, Translational Training Program in Neurodevelopmental Mechanisms of Psychopathology
+org_name: NORTHWESTERN UNIVERSITY AT CHICAGO
+phr: Project Narrative
+ This T32 proposal will establish the first transdisciplinary postdoctoral training program
+focusing on transdiagnostic, neurodevelopmental mechanisms of psychopathology, with an
+expanded focus on lifespan and environmental context. All postdoctoral fellows will have two co-
+mentors: (1) A co-mentor with expertise in neurodevelopmental and/or environmental
+mechanisms of psychopathology; and (2) a co-mentor in one of the following areas: (a)
+prevention, intervention, or implementation, (b) computational psychiatry and data science, or (c)
+the intersection of mental health and pediatric health. The transdisciplinary mentorship and
+didactic training will launch the next generation of neurodevelopmental clinical science
+researchers poised to accelerate the pace of clinical tr...
+terms: <Diagnostic><Mental Health><Mental Hygiene><Psychological Health><Psychopathology><Training Programs><Universities><abnormal psychology>
+---
+application_id: 10886064
+activity_code: T32
+title: Research Training Fellowship in Complementary and Integrative Healthcare
+org_name: UNIV OF NORTH CAROLINA CHAPEL HILL
+phr: PROJECT NARRATIVE As the U.S. public expands its use of complementary, alternative and integrative health (CIH) modalities, there continues to be an important need for well-trained researchers to investigate CIH safety, efficacy, and effectiveness, as well as to explore implementation strategies for integrating effective CIH therapies into health care practice. The UNC Research Training Fellowship in Complementary and Integrative Healthcare, now in its second decade, will continue to meet the need for rigorous, interdisciplinary training of future leaders in CAM and integrative-healthcare research. The program will train young investigators in clinical research methods in mind-body and natural products research, with emphasis on high-impact research that can facilitate increased access to ...
+terms: Complementary Health;Fellowship;Healthcare;Integrative Medicine;Research Training
+---
+application_id: 11112320
+activity_code: T32
+title: Postdoctoral Training in Suicide Research
+org_name: BROWN UNIVERSITY
+phr: Project Narrative
+Suicidal behavior is a major public health problem in the United States with rates deaths
+by suicide and suicide attempts increasing over the past 10 years. While there have
+been multiple calls for increased research into the causes and interventions to reduce
+suicidal behavior, effective research has been limited by the small number of
+researchers trained to conduct high quality suicide research. This application proposes a
+post-doctoral training program that will train young investigators to conduct cutting edge
+research regarding suicidal behavior.
+terms: <Research><Suicide><fatal attempt><fatal suicide><intent to die><post-doctoral training><suicides>
+---
+application_id: 11112383
+activity_code: T32
+title: Cellular and Molecular Pharmacology Training Program
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: PROJECT NARRATIVE
+The Cell and Molecular Pharmacology Training Program seeks to provide students with interdisciplinary
+training and state-of-the-art education in pharmacological sciences. Didactic and experiential efforts
+combine to deliver professional and soft skills that prepare graduates for careers in academia, industry,
+public policy and science education, where understanding drug action and knowledge of biomedical
+sciences are needed.
+terms: <Molecular><Pharmacology><Training Programs>
+---
+application_id: 11234633
+activity_code: F30
+title: Alleviating Mitochondrial Dysfunction in PERK-deficient Neurodegenerative Disease
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: PROJECT NARRATIVE
+Mitochondrial dysfunction and endoplasmic reticulum (ER) stress are hallmarks of pathologic aging and are
+intricately linked in the onset and pathogenesis of etiologically-diverse neurodegenerative disorders including
+Alzheimer’s disease (AD) and related dementias (ADRDs). PERK—an ER stress-responsive kinase that acts as
+an effector of both unfolded protein response (UPR) and integrated stress response (ISR) signaling—regulates
+mitochondrial adaptation in response to ER stress and is deficient in neurodegenerative tauopathies such as AD
+and progressive supranuclear palsy (PSP). Here I will define a critical role for PERK in regulating adaptive
+mitochondrial remodeling during neurodegeneration, and I will establish pharmacologic ISR activation as a
+potential therapeutic st...
+terms: <AD dementia><AD related dementia><ADRD><Affect><Alleles><Allelomorphs><Alzheimer Type Dementia><Alzheimer disease dementia><Alzheimer sclerosis><Alzheimer syndrome><Alzheimer's><Alzheimer's Disease><Alzheimer's and related dementias><Alzheimer's dementia and related dementia><Alzheimer's dementia or related dementia><Alzheimer's disease and related dementia><Alzheimer's disease and related disorders><Alzheimer's disease or a related dementia><Alzheimer's disease or a related disorder><Alzheimer's disease or related dementia><Alzheimer's disease related dementia><Alzheimers Dementia><Ampullary Crest><Apoptosis><Apoptosis Pathway><Biology><Causality><Cell Body><Cell Communication and Signaling><Cell Culture Techniques><Cell Signaling><Cell model><Cells><Cellular Stress><Cellular Stress Response><Cellular model><Chaperone><Chronic><Clinical><Complex><Crista ampullaris><Degenerative Neurologic Disorders><Disease><Disorder><EIF-2 alpha><EIF-2alpha><EIF-2α><ER stress><Endoplasmic Reticulum><Environmental Factor><Environmental Risk Factor><Ergastoplasm><Etiology><Fibroblasts><Gene Expression Monitoring><Gene Expression Pattern Analysis><Gene Expression Profiling><Gene Transcription><Genes><Genetic><Genetic Induction><Genetic Transcription><Goals><Health><Human><Impairment><Individual><Intracellular Communication and Signaling><Kinases><Link><Membrane><Mitochondria><Modeling><Modern Man><Molecular Chaperones><Morphology><Nerve Cells><Nerve Degeneration><Nerve Unit><Nervous System Degenerative Diseases><Neural Cell><Neural Degenerative Diseases><Neural degenerative Disorders><Neurocyte><Neurodegenerative Diseases><Neurodegenerative Disorders><Neurologic Degenerative Conditions><Neuron Degeneration><Neuronal Dysfunction><Neurons><PERK kinase><PRK-like ER kinase><Pathogenesis><Pathologic><Patients><Phosphatides><Phospholipids><Phosphorylation><Phosphotransferase Gene><Phosphotransferases><Primary Senile Degenerative Dementia><Programmed Cell Death><Progressive Supranuclear Ophthalmoplegia><Progressive Supranuclear Palsy><Protein Cleavage><Protein Import><Protein Phosphorylation><Proteins><Proteolysis><RNA Expression><RNA Seq><RNA sequencing><RNAseq><Regulation><Respiratory Chain><Role><Signal Induction><Signal Pathway><Signal Transduction><Signal Transduction Systems><Signaling><Site><Steele-Richardson-Olszewski Disease><Steele-Richardson-Olszewski Syndrome><Stress><Stress Response Signaling><Tauopathies><Therapeutic><Transcript Expression Analyses><Transcript Expression Analysis><Transcription><Transphosphorylases><Variant><Variation><aberrant aging><abnormal aging><abrogation of mitochondrial dysfunction><alleviating mitochondrial dysfunction><alpha Subunit Eukaryotic Initiation Factor 2><ameliorating mitochondrial dysfunction><analyze gene expression><attenuation of mitochondrial dysfunction><biological adaptation to stress><biological signal transduction><causation><cell culture><cell cultures><cell stress><clinical diagnosis><crista ampulla><cristae><degenerative diseases of motor and sensory neurons><degenerative neurological diseases><disease causation><dysfunctional age related change><dysfunctional aging><endoplasmic reticulum stress><environmental risk><gene expression analysis><gene expression assay><human model><impaired aging><improved><interest><maladaptive aging><membrane structure><mitigating mitochondrial impairment><mitochondrial><mitochondrial dysfunction><mitochondrial rejuvenation><model of human><neural degeneration><neural dysfunction><neurodegeneration><neurodegenerative><neurodegenerative illness><neurodegenerative phenotype><neurological degeneration><neuronal><neuronal degeneration><neuronal survival><neuropathologic tau><neuropathological tau><pathological age related changes><pathological aging><perk gene product><pharmacologic><primary degenerative dementia><programs><protein homeostasis><proteostasis><reaction; crisis><reducing mitochondrial dysfunction><respiratory><response><restoration><senile dementia of the Alzheimer type><small molecule><social role><stress response><stress; reaction><suppress mitochondrial dysfunction><tau associated neurodegeneration><tau associated neurodegenerative process><tau driven neurodegeneration><tau induced degeneration><tau induced neurodegeneration><tau mediated neurodegeneration><tau neurodegenerative disease><tau neuropathology><tau pathology><tau pathophysiology><tau proteinopathy><tau related neurodegeneration><tau-induced pathology><tauopathic neurodegenerative disorder><tauopathy><transcriptional profiling><transcriptome sequencing><transcriptomic sequencing>
+---
+application_id: 11087481
+activity_code: T32
+title: Human Behavioral Pharmacology of Substance Abuse
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: Narrative
+This is a proposal to renew, for its 41st through 45th years, a postdoctoral research training grant that prepares
+young scientists to succeed as independent investigators conducting behavioral pharmacology research to
+understand and treat problems related to substance use and abuse.
+terms: <Human><Modern Man><Substance abuse problem><abuse of substances><behavioral pharmacology><pharmacobehavioral><substance abuse>
+---
+application_id: 11112420
+activity_code: T32
+title: RESEARCH IN DEVELOPMENTAL ENDOCRINOLOGY AND METABOLISM
+org_name: BOSTON CHILDREN'S HOSPITAL
+phr: There is a great shortage in the United States of qualified pediatrician-scientists, including
+pediatric endocrinologists, with a growing unmet need for better treatments of pediatric
+endocrine diseases like obesity and diabetes. These diseases pose a great threat to the future
+health of our nation's children (illustrated most recently by the increased risk conferred by
+obesity in the recent COVID-19 pandemic), and are a major source of health disparities. We
+hope that our training program, with strong mentors and educational opportunities, will address
+this need by guiding and supporting the early careers of a highly motivated and diverse group of
+pediatric endocrinology trainees, and inspiring them to become leaders in academic pediatric
+endocrinology and biomedical research.
+terms: <Developmental Endocrinology><Endocrinology><Metabolism and Endocrinology><Research>
+---
+application_id: 11042699
+activity_code: F30
+title: The Role of G Protein-Coupled Estrogen Receptor Signaling in the Maintenance of Beta Cell Identity
+org_name: PURDUE UNIVERSITY
+phr: PROJECT NARRATIVE Type 2 Diabetes (T2D) is a global health pandemic that results from impaired insulin secretion, peripheral insulin resistance, obesity, overnutrition, lack of physical activity, and aging. However, genetic and physiologic data suggest that inadequate insulin secretion from the pancreatic beta () cell is the chief determinant predicting progression from insulin resistance to overt T2D. The goal of this research is to understand the mechanistic interplay between the process of store operated calcium entry (SOCE) and estrogen signaling in the  cell and will test the hypothesis that decreased SOCE leads to reduced G Protein-Coupled Estrogen Receptor signaling and loss of β cell identity and function, thereby contributing to the pathophysiology of T2D.
+terms: Ablation;Affect;Aging;Agonist;Alpha Cell;American;Beta Cell;Biological Assay;Biology;Biomedical Engineering;blood glucose regulation;Body Composition;Body Weight;Calcium;career;cell dedifferentiation;Cell Differentiation process;Cell Line;Cell membrane;Cell Physiology;cell type;Cells;Clinical Skills;clinical translation;Communication;Data;Development;Diabetes Mellitus;Disease;Disease Progression;Economic Burden;Endocrine;Endoplasmic Reticulum;Estradiol;Estrogen Receptors;Estrogens;euglycemia;experience;experimental study;Extracellular Space;Faculty;Failure;Fellowship;Female;Fluorescence Resonance Energy Transfer;Foundations;Functional disorder;Gene Expression Profile;Genetic;global health;Glucose Intolerance;glucose metabolism;Glucose tolerance test;Goals;GPER gene;Health;High Fat Diet;Homeostasis;hormonal signals;Hyperglycemia;Image;Immunoprecipitation;Impairment;Indiana;Individual;innovation;Insulin;Insulin Resistance;insulin secretion;insulin sensitivity;insulin tolerance test;islet;Laboratories;Laboratory Finding;Ligation;Lineage Tracing;Link;Maintenance;male;Measures;medical schools;Metabolic Diseases;Methods;Modeling;Molecular;mRNA Expression;Mus;Nanoscopy;Non-Insulin-Dependent Diabetes Mellitus;novel;Obesity;Oral;Ovariectomy;Overnutrition;pancreatic juice;pandemic disease;Pathway interactions;Peripheral;Phenotype;physical inactivity;Physicians;Physiological;Play;pre-doctoral;Process;protein expression;Receptor Activation;receptor expression;receptor function;Receptor Signaling;Research;Role;Schools;Scientist;sensor;sham surgery;Signal Pathway;Signal Transduction;single-cell RNA sequencing;skills;STIM1 gene;Structure of beta Cell of islet;superresolution microscopy;surgical menopause;Technical Expertise;Techniques;Testing;Therapeutic;Tissues;Training;ultra high resolution;Universities;Woman;Work;Writing
+---
+application_id: 11112937
+activity_code: T32
+title: Biotechnology for Human Health
+org_name: UNIVERSITY OF VIRGINIA
+phr: PROJECT NARRATIVE
+Biotechnology has already transformed human health through improved patient outcomes of
+diseases. With this proposal, the Biotechnology for Human Health program aims to train the
+next generation of scientists to tackle these questions with creativity, curiosity, and rigor.
+terms: <Biotech><Biotechnology><Health><Human><Modern Man>
+---
+application_id: 11327895
+activity_code: F30
+title: Impact of Trauma on the Longitudinal Development of Cognitive Control Networks in Healthy Youth
+org_name: UNIVERSITY OF NEBRASKA MEDICAL CENTER
+phr: Project Narrative
+Childhood and adolescence are critical developmental periods during which traumatic experiences can lead to
+impaired executive function and increased likelihood of psychopathology. While stress related brain aberrations
+have been widely noted, far less is understood about their developmental trajectory and whether the specific
+timing of the emergence of stressors may impact long-term function of brain networks related to cognitive
+function. The proposed work aims to fill this gap by training a promising physician-scientist who will utilize cutting-
+edge brain mapping methods and longitudinal analytic tools to identify the impact of trauma exposure and HPA
+axis activation on developmental trajectories of cognitive control in typically developing children and adolescents.
+terms: <0-11 years old><12-20 years old><15 year old><15 years of age><21+ years old><AD/HD><ADHD><Acute><Adolescence><Adolescent><Adolescent Youth><Adult><Adult Human><Aeroseb-HC><Affect><Age><Anxiety><Attention deficit hyperactivity disorder><Behavioral><Brain><Brain Mapping><Brain Nervous System><Brain region><Cetacort><Child><Child Youth><Childhood><Children (0-21)><Chronic><Chronology><Clinical><Cognitive><Cognitive Disturbance><Cognitive Impairment><Cognitive decline><Cognitive function abnormal><Complex><Consensus><Cort-Dome><Cortef><Cortenema><Cortisol><Cortispray><Cortril><Data><Decision Making><Dermacort><Development><Disturbance in cognition><Dysfunction><Eldecort><Emotional><Encephalon><Epidemiologic Research><Epidemiologic Studies><Epidemiological Studies><Epidemiology Research><Evaluation><Executive Dysfunction><Executive Function Deficit><Executive Impairment><Exhibits><Exposure to><Fellowship><Frequencies><Functional disorder><Funding><Goals><HPA axis><Hair><Health><Hydrocortisone><Hydrocortone><Hytone><Image><Impaired cognition><Incidence><Intervention><Investigation><Knowledge><Literature><Longitudinal Studies><MEG imaging><Magnetoencephalography><Maps><Measures><Mental Depression><Mental Health><Mental Hygiene><Mental disorders><Mental health disorders><Mentors><Methods><Msec><NIH><National Institutes of Health><Nerve Cells><Nerve Unit><Neural Cell><Neural Development><Neurocyte><Neurologic Process><Neurons><Neuropsychologies><Neuropsychology><Nutracort><Output><Participant><Patient Self-Report><Performance><Physicians><Physiopathology><Predominantly Hyperactive-Impulsive Type Attention-Deficit Disorder><Predominantly Hyperactive-Impulsive Type Hyperactivity Disorder><Prefrontal Cortex><Proctocort><Psychiatric Disease><Psychiatric Disorder><Psychiatry><Psychological Health><Psychopathology><R-Series Research Projects><R01 Mechanism><R01 Program><RDoC><Regulation><Reporting><Research><Research Domain Criteria><Research Grants><Research Project Grants><Research Projects><Role><Sampling><Scientist><Self-Report><Severities><Source><Specificity><Statistical Data Analyses><Statistical Data Analysis><Statistical Data Interpretation><Stress><Stressful Event><Techniques><Time><Training><Trauma><United States><United States National Institutes of Health><Work><Youth><Youth 10-21><abnormal psychology><adolescence (12-20)><adulthood><age 15 years><ages><analytical tool><base><bases><career><childhood adversity><cognitive assessment><cognitive control><cognitive dysfunction><cognitive function><cognitive loss><cognitive neuroscience><cognitive testing><critical developmental period><density><depression><developmental><emotional functioning><epidemiologic investigation><epidemiology study><executive control><executive function><experience><exposure to trauma><fifteen year old><fifteen years of age><hypothalamic-pituitary-adrenal (HPA) axis><hypothalamic-pituitary-adrenal axis><hypothalmus-pituitary-adrenal axis><imaging><insight><juvenile><juvenile human><kids><life span><lifespan><long-term study><longitudinal design><longitudinal experimental design><longitudinal outcome studies><longitudinal research design><longitudinal study design><magnetoencephalogram><magnetoencephalographic imaging><mental illness><millisecond><neural><neural imaging><neuro-imaging><neurodevelopment><neuroimaging><neurological imaging><neuronal><neurophysiological><neurophysiology><neuropsychologic><pathophysiology><pediatric><pediatric adversity><psychiatric illness><psychological disorder><reconstruction><response><social role><spatial and temporal><spatial temporal><spatiotemporal><statistical analysis><stressful experience><stressful life event><stressful life experience><stressor><trauma exposure><traumatic event><youngster><youth age>
+---
+application_id: 11370775
+activity_code: F32
+title: Coordinated growth in microbial communities and implications for antibioticsensitivities
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: PROJECT NARRATIVE
+Antibiotic treatment decreases the burden of bacterial diseases, but efficacy is often diminished when bacteria
+are in mixed microbial communities such as the microbiome. Lactic acid bacteria are a component of the
+microbiome; however, little is known about how these bacteria impact community physiology and how their
+growth is affected by small molecules from the community. The proposed study will determine the molecular
+mechanisms of how the growth of the lactic acid bacteria Lactiplantbacillus plantarum is coordinated and how
+this influences antibiotic sensitivities and community stability.
+terms: <Acetates><Acetobacter><Address><Affect><Allelism Test><Antibiotic Agents><Antibiotic Drugs><Antibiotic Therapy><Antibiotic Treatment><Antibiotics><Bacteria><Bacterial Infections><Biologic Models><Biological Models><Cell Communication and Signaling><Cell Function><Cell Physiology><Cell Process><Cell Protection><Cell Signaling><Cellular Function><Cellular Physiology><Cellular Process><Cervical Cancer><Cervix Cancer><Cessation of life><Chemicals><Communities><Complementation Test><Complex><Cues><Cytoprotection><DNA mutation><Death><Defect><Drosophila><Drosophila genus><Drosophila melanogaster><Ecologic Monitoring><Ecological Monitoring><Environment><Environmental Monitoring><Foundations><GI cancers><GI malignancies><GI microbiome><GI tract cancers><Gastrointestinal Cancer><Gastrointestinal Tract Cancer><Generalized Growth><Genes><Genetic><Genetic Change><Genetic Complementation Test><Genetic Screening><Genetic defect><Genetic mutation><Goals><Growth><Health><Human><Incidence><Individual><Infection><Intermediary Metabolism><Intracellular Communication and Signaling><Knowledge><L plantarum><L. plantarum><Laboratories><Lactobacillus plantarum><Malignant Cervical Neoplasm><Malignant Cervical Tumor><Malignant Gastrointestinal Neoplasm><Malignant Neoplasm of the Cervix><Malignant Tumor of the Cervix><Malignant Tumor of the Cervix Uteri><Malignant Uterine Cervix Neoplasm><Malignant Uterine Cervix Tumor><Malignant neoplasm of cervix uteri><Malignant neoplasm of gastrointestinal tract><Membrane><Metabolic Processes><Metabolism><Microbe><Microscopic><Miscellaneous Antibiotic><Model System><Modeling><Modern Man><Molecular><Mucosa><Mucosal Tissue><Mucous Membrane><Mutation><Nucleic Acid Regulator Regions><Nucleic Acid Regulatory Sequences><Nutrient><Oxidation-Reduction><Pathway interactions><Phenotype><Physiologic><Physiological><Physiology><Plasmids><Point Mutation><Population><Probiotics><Production><Property><Public Health><RNA Seq><RNA sequencing><RNAseq><Redox><Regulation><Regulatory Regions><Reporter><Reproducibility><Research><Resistance to infection><Short-Chain Fatty Acids><Signal Transduction><Signal Transduction Systems><Signaling><Stimulus><Subcellular Process><System><Testing><Tissue Growth><Trans Test><Treatment Efficacy><Uterine Cervix Cancer><Volatile Fatty Acids><Work><airway microbiome><antibiotic tolerance><bacteria infection><bacterial disease><bacterial disease treatment><bacterial infectious disease treatment><beneficial flora><beneficial microbes><beneficial microflora><beneficial microorganism><biological adaptation to stress><biological signal transduction><career><community microbes><complementation analysis><complementation approach><cytoprotective><diarrheal disease><diarrheal illness><digestive tract microbiome><enteric microbiome><environmental testing><experiment><experimental research><experimental study><experiments><feeding><fitness><fruit fly><gastrointestinal malignancies><gastrointestinal microbiome><genetic approach><genetic regulatory element><genetic strategy><genome mutation><gut microbiome><gut-associated microbiome><human flora><human microbial communities><human microbiota><human microflora><human-associated microbial communities><human-associated microbiota><improved><infection resistance><intervention efficacy><intestinal biome><intestinal microbiome><lactic acid bacteria><membrane structure><metabolism measurement><metabolomics><metabonomics><microbe community><microbial><microbial community><microbiome><microbiome components><microbiome members><microorganism community><mutant><ontogeny><oxidation reduction reaction><pathway><polymicrobial community><promoter><promotor><reaction; crisis><respiratory microbiome><respiratory tract microbiome><response><side effect><small molecule><stress response><stress; reaction><therapeutic efficacy><therapy efficacy><tolerance to antibiotics><tolerate antibiotics><transcriptome sequencing><transcriptomic sequencing><vaginal biome><vaginal microbiome>
+---
+application_id: 11338278
+activity_code: F32
+title: Exploring the molecular mechanisms controlling CDK7i sensitivity in pancreas cancer.
+org_name: HENRY FORD HEALTH + MICHIGAN STATE UNIVERSITY HEALTH SCIENCES
+phr: PROJECT NARRATIVE
+Pancreatic ductal adenocarcinoma (PDA) is currently the third leading cause of death from cancer in men
+and women and is projected to be the second leading cause of cancer deaths by 2030. This proposal aims
+to provide critical insights into how SIRT6 regulates cellular response to transcriptional inhibitors in PDA.
+Ultimately, we hope that our research will inform the design of future clinical trials, providing new options
+and hope for patients with this devastating disease.
+terms: <ATF-4><ATF6><ATF6 gene><Acceleration><Activating Transcription Factor 6><Affect><Aging><Apoptosis><Apoptosis Pathway><Autoregulation><Basal Cell><Basal Transcription Factor><Basal transcription factor genes><Binding><Business-Friendly Atmosphere><CDK Inhibitor Protein><CDK4><CDK4 gene><CDKI Protein><Cancer Cause><Cancer Center><Cancer Etiology><Cancers><Cause of Death><Cell Body><Cell Division Kinase 4><Cells><Cellular Stress><Cellular Stress Response><Cessation of life><Classification><Clinic><Clinical Trials><Collaborations><Complex><Coupled><Cyclin Kinase Inhibitor><Cyclin-Dependent Kinase 4><Cyclin-Dependent Kinase Inhibitor><Cyclin-Dependent Kinases><Cyclin-Dependent Protein Kinases><DNA Damage><DNA Injury><Data><Death><Dephosphorylation><Difluorodeoxycytidine><Disease><Disorder><Dose><Drugs><E3 Ligase><E3 Ubiquitin Ligase><Epigenetic><Epigenetic Change><Epigenetic Mechanism><Epigenetic Process><Eukaryotic Initiation Factors><Eukaryotic Peptide Initiation Factors><Eukaryotic Translation Initiation Factors><Fellowship><Future><GEM model><GEMM model><Gene Transcription><General Prognostic Factor><General Transcription Factor Gene><General Transcription Factors><Generalized Growth><Genes><Genetic Engineering><Genetic Engineering Biotechnology><Genetic Engineering Molecular Biology><Genetic Transcription><Genetically Engineered Mouse><Genome Stability><Genomic Stability><Goals><Growth><HDAC><HDAC Proteins><Histone Deacetylase><Homeostasis><Immunocompetent><Induction of Apoptosis><KRAS driven oncogenesis><KRAS oncogenesis><KRAS-driven tumorigenesis><KRAS-mediated tumorigenesis><Kinases><Laboratories><Malignant Neoplasms><Malignant Pancreatic Neoplasm><Malignant Tumor><Malignant neoplasm of pancreas><Mediating><Medication><Mentors><Minor><Modeling><Molecular><Molecular Interaction><Newly Diagnosed><PDA model><PDAC Model><PDX model><PSK-J3><Pancreas><Pancreas Cancer><Pancreas Ductal Adenocarcinoma><Pancreas Neoplasms><Pancreas Tumor><Pancreatic><Pancreatic Cancer><Pancreatic Ductal Adenocarcinoma><Pancreatic Tumor><Pathway interactions><Patient derived xenograft><Patients><Pharmaceutical Preparations><Phosphoprotein Phosphatase><Phosphoprotein Phosphatase-2C><Phosphoprotein Phosphohydrolase><Phosphorylation><Phosphotransferase Gene><Phosphotransferases><Physiological Homeostasis><Population><Postdoc><Postdoctoral Fellow><Prevention Measures><Prognosis><Prognostic Factor><Prognostic/Survival Factor><Programmed Cell Death><Protein Dephosphorylation><Protein Phosphatase C><Protein Phosphatase Gene><Protein Phosphatase-1><Protein Phosphatase-2A><Protein Phosphorylation><Protein phosphatase><Proteins><RNA Expression><Recombinant DNA Technology><Regulation><Research><Research Associate><Resistance><Role><Silent Mating Type Information Regulator 2-like Proteins><Sir2-like Proteins><Sirtuins><Stress><Survival Rate><Systematics><Therapeutic><Tissue Growth><Training Support><Transcript><Transcription><Transcription Factor Proto-Oncogene><Transcription factor genes><Translating><Translational Regulation><Translations><Transphosphorylases><Tumor Biology><Tumor Cell><Tumor Suppressor Proteins><Ubiquitin Protein Ligase><Ubiquitin-Protein Ligase Complexes><Ubiquitin-Protein Ligase E3><Weather><Woman><Work><activating transcription factor 4><anti-cancer research><attenuation><beta-TrCP><beta-Transducin Repeat-Containing Proteins><betaTrCP><biological adaptation to stress><business-friendly environment><cancer microenvironment><cancer research><career><cdk Proteins><cell stress><chemotherapy><clinical relevance><clinical translation><clinically relevant><clinically translatable><collaborative atmosphere><collaborative environment><cost effective><dFdC><dFdCyd><design><designing><drug/agent><epigenetically><gemcitabine><genetically engineered><genetically engineered mouse model><genetically engineered murine model><high-throughput drug screening><immune competent><in vivo><inhibitor><insight><interactive atmosphere><interactive environment><interdisciplinary atmosphere><interdisciplinary environment><malignancy><men><mouse model><murine model><neoplasm/cancer><neoplastic cell><novel><oncogenic KRAS><ontogeny><overexpress><overexpression><pancreatic cancer patients><pancreatic ductal adenocarcinoma model><pancreatic malignancy><pancreatic neoplasia><pancreatic neoplasm><pathway><patient derived xenograft model><patients with pancreatic cancer><peer-group atmosphere><peer-group environment><post-doc><post-doctoral><post-doctoral trainee><programs><promoter><promotor><reaction; crisis><research associates><resistance mechanism><resistant><resistant mechanism><response><screening><screenings><sensor><social role><stress response><stress; reaction><targeted agent><targeted drug therapy><targeted drug treatments><targeted therapeutic><targeted therapeutic agents><targeted therapy><targeted treatment><transcription factor><translation><tumor><tumor microenvironment><tumor suppressor><ubiquitin-protein ligase><β-TrCP><β-Transducin Repeat-Containing Proteins><βTrCP>
+---
+application_id: 11113795
+activity_code: T32
+title: Integrated Membrane Program (IMP)
+org_name: UNIVERSITY OF TENNESSEE KNOXVILLE
+phr: Project Narrative
+Membranes are barriers of proteins, fats, and sugars that form the borders of all living cells on earth, and are
+essential to cellular viability; understanding how membranes function is crucial for many key areas of biomedicine
+including cancer, drug resistant infections, development, drug delivery, and energy production. However, future
+progress in membrane research requires that a new generation of scientists be trained who can combine
+approaches and concepts from many disparate fields such as physics, chemistry, biology, and computer science.
+The Integrated Membrane Program (IMP) training grant is especially designed to train scientists to integrate
+multiple approaches to address these next-generation challenges.
+terms: <Membrane><membrane structure><programs>
+---
+application_id: 11113823
+activity_code: T32
+title: CTSA Predoctoral T32 at the University of Alabama at Birmingham
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: The CTSA Predoctoral T32 at the University of Alabama at Birmingham will support the training and advancement of predoctoral PhD and/or MD students in clinical and translational science and communication across the translational spectrum from basic scientists to clinical scientists to population scientists from 11 institutions across Alabama, Louisiana, and Mississippi. The mission of the Deep South Predoc T32 program is to inspire and develop future clinical and translational scientists by immersing interdisciplinary trainees from multiple institutions in a novel scheme of team science training and peer mentoring to build communication and leadership skills across the translational spectrum. Our long-term aim is to generate well-equipped clinical and translational scientists who continue ...
+terms: <Alabama><Universities><pre-doc><pre-doctoral>
+---
+application_id: 10854758
+activity_code: F30
+title: Impact of Trauma on the Longitudinal Development of Cognitive Control Networks in Healthy Youth
+org_name: FATHER FLANAGAN'S BOYS' HOME
+phr: Project Narrative Childhood and adolescence are critical developmental periods during which traumatic experiences can lead to impaired executive function and increased likelihood of psychopathology. While stress related brain aberrations have been widely noted, far less is understood about their developmental trajectory and whether the specific timing of the emergence of stressors may impact long-term function of brain networks related to cognitive function. The proposed work aims to fill this gap by training a promising physician-scientist who will utilize cutting- edge brain mapping methods and longitudinal analytic tools to identify the impact of trauma exposure and HPA axis activation on developmental trajectories of cognitive control in typically developing children and adolescents.
+terms: 15 year old;Acute;Adolescence;Adolescent;Adult;Affect;Age;analytical tool;Anxiety;Attention deficit hyperactivity disorder;base;Behavioral;Brain;Brain Mapping;Brain region;career;Child;Childhood;childhood adversity;Chronic;Chronology;Clinical;Cognitive;cognitive control;cognitive function;cognitive neuroscience;cognitive testing;Complex;Consensus;critical developmental period;Data;Decision Making;density;Development;Emotional;emotional functioning;epidemiology study;Evaluation;Executive Dysfunction;executive function;Exhibits;experience;Exposure to;Fellowship;Frequencies;Functional disorder;Funding;Goals;Hair;Health;Hydrocortisone;hypothalamic-pituitary-adrenal axis;Image;Impaired cognition;Incidence;insight;Intervention;Investigation;Knowledge;life span;Literature;longitudinal design;Longitudinal Studies;Magnetoencephalography;Maps;Measures;Mental Depression;Mental disorders;Mental Health;Mentors;Methods;millisecond;neural;neurodevelopment;neuroimaging;Neurologic Process;Neurons;neurophysiology;Neuropsychology;Output;Participant;Patient Self-Report;Performance;Physicians;Prefrontal Cortex;Psychiatry;Psychopathology;reconstruction;Regulation;Reporting;Research;Research Domain Criteria;Research Project Grants;response;Role;Sampling;Scientist;Severities;Source;spatiotemporal;Specificity;Statistical Data Interpretation;Stress;Stressful Event;stressor;Techniques;Time;Training;Trauma;trauma exposure;traumatic event;United States;United States National Institutes of Health;Work;Youth
+---
+application_id: 11113845
+activity_code: T32
+title: Molecular Basis of Allergic and Immunologic Disease
+org_name: BOSTON CHILDREN'S HOSPITAL
+phr: Allergies and immune system diseases are becoming increasingly common, especially in children. Treatment
+options are limited so research to identify both the roots of these disorders and possible treatments is critical.
+This Training Program seeks to recruit talented young MD pediatricians and PhD scientists committed to
+translational research and to prepare them for careers as productive investigators in the area of pediatric
+immunology.
+terms: <Allergic Disease><Immune Diseases><Immune Disorders><Immune Dysfunction><Immune System Diseases><Immune System Disorder><Immune System Dysfunction><Immune System and Related Disorders><Immunologic Diseases><Immunological Diseases><Immunological Dysfunction><Immunological System Dysfunction><Molecular>
+---
+application_id: 11461468
+activity_code: F31
+title: Roles of vaccine perturbations on germinal center dynamics
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: PROJECT NARRATIVE
+Successful vaccines prime B cells to generate antibodies capable of neutralizing a pathogen. A successful HIV
+vaccine remains elusive. Characterizing the biology of immunization regimens will provide fundamental
+considerations for HIV vaccine design.
+terms: N/A
+---
+application_id: 11113874
+activity_code: T32
+title: Psychology Training in Alcohol Research (PTAR)
+org_name: UNIVERSITY OF WASHINGTON
+phr: NARRATIVE
+This highly successful alcohol research training program will allow trainees to gain the knowledge and
+skills needed to (1) research the etiology of alcohol misuse and alcohol use disorder, involving both
+animal and human research studies, and (2) develop effective assessment, prevention and intervention
+approaches for alcohol use disorders. Trainees are explicitly trained in integrating diverse research
+methodologies and perspectives to address the complex and costly public health problems posed by
+alcohol misuse and alcohol use disorder.
+terms: <Psychology><Training><alcohol related research><alcohol research><ethanol research>
+---
+application_id: 10831444
+activity_code: T32
+title: Human Behavioral Pharmacology of Substance Abuse
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: Narrative This is a proposal to renew, for its 41st through 45th years, a postdoctoral research training grant that prepares young scientists to succeed as independent investigators conducting behavioral pharmacology research to understand and treat problems related to substance use and abuse.
+terms: behavioral pharmacology;Human;Substance abuse problem
+---
+application_id: 11113910
+activity_code: T32
+title: Brain, Immunology and Glia Training Program
+org_name: UNIVERSITY OF VIRGINIA
+phr: PROJECT NARRATIVE
+For decades, the immune system and central nervous system were thought to operate independently one of
+another. Currently, it is clear that there is significant interaction between the immune system and brain, which is
+necessary to fight infections and support cognition, but is detrimental in numerous neuroinflammatory and
+neurodegenerative conditions. The Brain Immunology and Glia Training Program will provide a rich
+interdisciplinary training environment that leads to scientific breakthroughs and provides comprehensive training
+that will prepare trainees for careers in neuroimmunology and glia research.
+terms: <Brain><Brain Nervous System><Encephalon><Glia><Glial Cells><Immunology><Kolliker's reticulum><Neuroglia><Neuroglial Cells><Non-neuronal cell><Nonneuronal cell><Training Programs><nerve cement>
+---
+application_id: 11071688
+activity_code: F31
+title: Molecular and Cellular Determinants of Tolerance to Second Generation Antipsychotics
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: PROJECT NARRATIVE Second generation antipsychotics (SGAs) are widely used clinical tools, but they often take weeks to become effective, and the mechanism of this time course is not understood. Here, using in vivo optical methods, transgenic mice, and receptor radiolabeling, I will determine a mechanism of tolerance development to select SGAs at gross anatomy, cell-type, and protein levels. This will provide critical insight how these drugs alter the dopaminergic circuitry and explain the clinical time course of SGAs and, attribution of SGA tolerance to specific dopaminergic projections could inform the development of better antipsychotic treatments.
+terms: Agonist;Anatomy;antagonist;Antipsychotic Agents;arrestin3;Arrestins;behavior measurement;Behavioral;behavioral response;behavioral tolerance;Binding;Brain;Brain region;Calcium;Cell membrane;Cell Nucleus;cell type;Cells;Chronic;Clinical;Clozapine;conditional knockout;Corpus striatum structure;Data;Degradation Pathway;Development;Dopamine;Dopamine D2 Receptor;dopamine D3 receptor;Dorsal;druggable target;Effectiveness;Endocytosis;experimental study;Fiber;Generations;Goals;Impairment;In Vitro;in vivo;Injections;insight;Knockout Mice;Lead;Literature;Locomotion;Measures;Membrane;Molecular;Mus;neural correlate;Neurons;novel;Optical Methods;Panthera leo;Pathway interactions;Patients;Pharmaceutical Preparations;Photometry;Positron-Emission Tomography;pre-clinical;Prefrontal Cortex;Proteins;quetiapine;Radiolabeled;radioligand;receptor;recruit;response;sensor;severe mental illness;Signal Transduction;Site;Therapeutic;Time;Tin;tool;Transgenic Mice;Work
+---
+application_id: 11115557
+activity_code: T32
+title: Understanding Health and Disease at the Behavioral-Biomedical Interface
+org_name: UNIVERSITY OF IOWA
+phr: The interface of behavioral and biomedical sciences is one of the most cutting-edge frontiers of science today. The Behavioral-Biomedical Interface Program at the University of Iowa is training the next generation of behavioral researchers to utilize rigorous biomedical methodologies and conceptual frameworks to enable them to make transformative breakthroughs in understanding and addressing mechanisms that influence human health and disease. Training at the Behavioral-Biomedical interface will enable these researchers to innovatively address human health and disease, allowing for improvements in quality of life and public health across the lifespan.
+terms: <Behavioral><Disease><Disorder><Health>
+---
+application_id: 11113982
+activity_code: T32
+title: Biomedical Research Training for Veterinarians
+org_name: COLORADO STATE UNIVERSITY
+phr: Project Narrative
+This application requests funds to support post-DVM PhD training in translational biomedical research. Well-
+trained veterinary scientists bring unique knowledge about comparative biology that significantly contributes to
+the clinician scientist workforce and aids studies of human health and disease.
+terms: <Biomedical Research><Research Training><Veterinarians>
+---
+application_id: 10994896
+activity_code: F32
+title: Cellular and Molecular Mechanisms of Neurotoxicity and Cognitive Deficits Due to Hyperphosphorylated Tau
+org_name: UNIVERSITY OF VIRGINIA
+phr: PROJECT NARRATIVE Hyperphosphorylation of tau, a microtubule associated protein, is a hallmark of neurofibrillary tangles (NFT) that correlate with cognitive impairment in Alzheimer's disease (AD) patients. I propose to utilize unbiased single-cell transcriptomic profiling and electrophysiological measurements of brain slices to elucidate the cellular and molecular mechanisms underlying the neurotoxicity and cognitive effects of hyperphosphorylated tau. The proposed studies will provide greater insights into the pathogenic mechanisms of AD and tauopathies.
+terms: Academic skills;Alzheimer&apos;s Disease;Alzheimer&apos;s disease brain;Alzheimer&apos;s disease patient;Area;Bioinformatics;Biological Models;biophysical properties;Brain;career;cell type;Church;Cognition;Cognitive;Cognitive deficits;comparison control;Cryoelectron Microscopy;Data;Defect;Detergents;Development;Dose;Electrophysiology (science);Exhibits;Exposure to;Future;glial activation;Heparin;Hippocampus;Human;hyperphosphorylated tau;Impaired cognition;In Situ Nick-End Labeling;In Vitro;in vivo;Injections;insight;Knowledge;Learning;Long-Term Potentiation;Measurement;Memory;Mentors;Microtubule-Associated Proteins;Molecular;mouse model;multidisciplinary;Mus;Nerve Degeneration;Nervous System;Neurites;Neurodegenerative Disorders;Neurofibrillary Tangles;neuroimmunology;neuroinflammation;neuron loss;Neurons;neurophysiology;Neurosciences;neurotoxic;neurotoxicity;Pathogenicity;Pathologic;Pathology;Patients;Phosphorylation Site;Physicians;Physiological;Proteins;Recombinants;Research;Research Personnel;sarkosyl;Scientist;single-cell RNA sequencing;Slice;Structure;Synaptic plasticity;System;tau aggregation;tau Proteins;tau-1;Tauopathies;Techniques;Testing;Therapeutic;Tissues;Toxic effect;Training;transcriptomic profiling;treatment strategy;Wild Type Mouse;Work
+---
+application_id: 11070718
+activity_code: F32
+title: Characterization of metal cofactors involved in GDGT-MAS Csp3-Csp3 bond formation
+org_name: PENNSYLVANIA STATE UNIVERSITY, THE
+phr: Project Narrative The enzyme-mediated Csp3-Csp3 bond formation between two completely inert carbons was unprecedented until the crystallization and subsequent characterization of Radical S-Adenosyl methionine (RS) enzyme GDGT–macrocyclic archaeol synthase (MAS). The ability to selectively form a Csp3-Csp3 bond between inert carbons is highly sought after in organic chemistry; however, little is known about GDGT-MAS’s associated metal cofactors (three [Fe4S4] clusters and rubredoxin-like Fe) in facilitating this novel biological reaction. This project aims to investigate the role of the rubredoxin Fe and N-terminal domains [Fe4S4] in GDGT-MAS.
+terms: Active Sites;Affect;Archaea;Binding Sites;Biochemical;biocomputing;Bioinformatics;Biological;biological systems;C-terminal;Carbon;Chemistry;cofactor;Consumption;Coupled;crosslink;Crystallization;Data;Drug Delivery Systems;Electron Spin Resonance Spectroscopy;Electron Transport;Electronics;Environmental Risk Factor;Enzymes;Exhibits;Experimental Designs;Film;Generations;Glycerol;Goals;Hydrogen;Hydrogen Bonding;Hydrophobicity;Image;improved;in silico;In Vitro;Industrialization;Ions;isoprenoid;Knock-out;Lipids;Liposomes;Mediating;member;Membrane;Membrane Lipids;Metals;Methionine;Molecular;Molecular Conformation;molecular dynamics;Monitor;Mossbauer Spectroscopy;N-terminal;nano container;Nature;novel;Organic Chemistry;Osmosis;oxidation;Oxidation-Reduction;Pharmacologic Substance;Play;Property;Proteins;Publishing;Reaction;Research;Role;Route;Rubredoxins;S-Adenosylhomocysteine;S-Adenosylmethionine;simulation;Site;Structure;Sulfur;Techniques;Variant;Work
+---
+application_id: 11180364
+activity_code: F99
+title: Pneumonia-induced microglial activation causes blood-brain barrier breakdown, astrocyte activation, and tau pathology
+org_name: UNIVERSITY OF SOUTH ALABAMA
+phr: PROJECT NARRATIVE Neurovascular unit dysfunction is seen in many neurological disorders, including post-pneumonia delirium and migraine. In this project, I will determine how bacterial pneumonia infection, specifically, if pneumonia-induced microglia activation first causes neurovascular unit dysfunction in vivo in experimental models, and differences in neurovascular unit state in pneumonia vs. non-pneumonia post-mortem human brain. For my postdoctoral project, I will utilize the methods I master during my PhD training to investigate the mechanisms of neurovascular dysfunction at the capillary level in migraine mouse models.
+terms: 2019-nCoV;Affect;Age;Alzheimer&apos;s disease related dementia;Amaze;Astrocytes;Autopsy;Bacterial Pneumonia;Blood - brain barrier anatomy;Blood brain barrier dysfunction;Blood capillaries;Blood flow;Blood Vessels;blood-brain barrier permeabilization;Brain;brain tissue;Cephalic;Cerebrovascular Circulation;Chronic;Clinical;Cognition;cognitive function;COVID-19 pneumonia;cytotoxic;Data;Delirium;Dementia;Dendritic Spines;density;disability;disability-adjusted life years;Disease;Doctor of Philosophy;Dose;Drug Targeting;effective therapy;experience;Experimental Models;Functional disorder;glial activation;Gliosis;Goals;Headache;high risk;Hour;Human;imaging study;Impairment;in vivo;Infection;Injury;Intensive Care Units;Interview;intravital imaging;Label;learning strategy;Lung;Lung infections;Magnetic Resonance Imaging;Measures;Mentors;Methods;mice imaging;Microglia;Migraine;migraine treatment;Modeling;mouse model;multiphoton imaging;Mus;Nervous System Disorder;Neurodegenerative Disorders;Neuroglia;Neuroimmune;Neuroimmunomodulation;neuroinflammation;Neurons;neurovascular;neurovascular pathology;neurovascular unit;new therapeutic target;novel therapeutics;pathogen;Pathology;Pathway interactions;Patients;Persons;Phase;Pneumonia;Population;Positioning Attribute;Postdoctoral Fellow;Prevalence;Process;Pseudomonas aeruginosa;Quality of life;Regulation;Research;Research Personnel;Research Project Grants;Respiratory Tract Infections;serial imaging;skills;Structure of parenchyma of lung;Survivors;symposium;Synaptic plasticity;Syndrome;tau Proteins;tau-1;Tauopathies;Techniques;temporal measurement;Testing;therapeutic target;timeline;Tissues;Training;transcriptome sequencing;vascular contributions;Wild Type Mouse;Work
+---
+application_id: 10888241
+activity_code: R25
+title: Workshop on Techniques in Modeling Human Cancer in Mice
+org_name: JACKSON LABORATORY
+phr: PROJECT NARRATIVE
+The overall goal for our course is to deliver an intensive cutting edge hands-on training workshop on modeling
+human cancer in the laboratory mouse to a small group of select early career scientists/trainees (graduate
+students, postdoctoral fellows and new investigators). Participants completing the course will acquire a working
+knowledge of how to characterize and analyze mouse models of human cancer including brain, breast, lung,
+colon, prostate and blood. Additionally, the course will cover organoid culture, surgical techniques, imaging,
+immunology, ectopic and ortotopic xenografting including PDX, necropsy, pathology and histology.
+terms: <Alimentary Canal><Autopsy><Award><Basic Cancer Research><Biomedical Research><Bittner Virus><Blood><Blood Reticuloendothelial System><Body System><Body Tissues><Bone Marrow><Bone Marrow Reticuloendothelial System><Brain><Brain Nervous System><Breast><Breast Cancer><Cancer Model><CancerModel><Cancers><Center for Cancer Research><Characteristics><Collaborations><Collection><Colon><Colon Cancer><Colon Carcinoma><Communities><Development><Digestive Tract><Diné><Diné Nation><Dissection><Education><Educational aspects><Educational workshop><Encephalon><Endoscopy><Environment><Exhibits><Faculty><Faculty Seminar><Faculty Workshop><Fats><Fatty acid glycerol esters><Feedback><GI Tract><Gastrointestinal Tract><Gastrointestinal tract structure><Genetic><Genetic Engineering><Genetic Engineering Biotechnology><Genetic Engineering Molecular Biology><Genomics><Goals><Grant><Heterograft><Heterologous Transplantation><Histology><History><Home><Image><Imaging Procedures><Imaging Technics><Imaging Techniques><Immersion><Immunology><Individuals from minority><Individuals of minority><Infrastructure><Injections><Institution><Instruction><Intubation><Investigators><Knowledge><Laboratories><Laboratory mice><Learning><Lung><Lung Respiratory System><Lymph Node Reticuloendothelial System><Lymph node proper><Lymphatic nodes><MMTV><Maine><Malignant Breast Neoplasm><Malignant Neoplasms><Malignant Tumor><Malignant Tumor of the Prostate><Malignant neoplasm of prostate><Malignant prostatic tumor><Mammary Cancer Virus><Medical><Mice><Mice Mammals><Minority Groups><Minority People><Minority Population><Minority individual><Modernization><Mouse Mammary Tumor Virus><Murine><Mus><NCI Center for Cancer Research><ORCHX><Operative Procedures><Operative Surgical Procedures><Orchidectomy><Orchiectomy><Organ><Organ System><Organoids><Participant><Pathologist><Pathology><Perfusion><Phenotype><Position><Positioning Attribute><Postdoc><Postdoctoral Fellow><Preparation><Prostate><Prostate CA><Prostate Cancer><Prostate Gland><Prostate malignancy><Prostatic Cancer><Prostatic Gland><R-Series Research Projects><R01 Mechanism><R01 Program><Recombinant DNA Technology><Recording of previous events><Recruitment Activity><Research><Research Associate><Research Grants><Research Personnel><Research Project Grants><Research Projects><Research Resources><Researchers><Resources><Schedule><Scholarship><Scientist><Site><Slide><Spleen><Spleen Reticuloendothelial System><Splenocyte><Students><Surgical><Surgical Interventions><Surgical Procedure><Teacher Workshop><Techniques><The Jackson Laboratory><Tissues><Training><Underrepresented Ethnic Minority><Underrepresented Minority><Work><Workshop><Xenograft><Xenograft procedure><Xenotransplantation><active recruitment><alimentary tract><anti-cancer research><biomedical scientist><cancer in the colon><cancer research><career><conference><convention><developmental><digestive canal><endoscopic imaging><experience><faculty conference><faculty panel><faculty-student interactions><genetically engineered><graduate student><histories><homes><human cancer mouse model><human model><imaging><implantation><knowledge base><lab experience><lab training><laboratory experience><laboratory training><lectures><lymph gland><lymph nodes><lymphnodes><male gonadectomy><malignancy><malignant breast tumor><mammary><meeting><meetings><member><milk agent><model of human><mouse model><murine model><mutant mouse model><necropsy><neoplasm/cancer><peer><post-doc><post-doctoral><post-doctoral trainee><postmortem><preparations><programs><pulmonary><recruit><research associates><skills><summit><surgery><symposia><symposium><tissue fixing><tool><tumor><under-representation of minorities><under-represented minority><underrepresentation of minorities><ventilation><xeno-transplant><xeno-transplantation>
+---
+application_id: 10999298
+activity_code: F31
+title: Stress, Inflammation, and Neurocognitive Functioning in Adults with Huntington’s Disease
+org_name: VANDERBILT UNIVERSITY
+phr: PROJECT NARRATIVE Huntington’s disease (HD) is a chronic, fatal neurodegenerative disease associated with vast impairments in executive functioning; however, the presentation of executive dysfunction in HD is highly variable across disease progression and the underlying mechanisms driving these declines are poorly understood. Building on seminal findings of key contributors to executive dysfunction in other disease populations, the proposed study aims to extend these findings by examining the association of chronic stress, inflammatory cytokines, and a standardized marker of disease burden with executive functioning in a sample of adults with HD. This study will improve the field’s understanding of the specific processes driving one of the cardinal features of HD, executive dysfunction, an...
+terms: Acute;acute stress;Adenine;Adult;Affect;Age;Automobile Driving;Autopsy;autosome;Biological;Biological Assay;blind;burden of illness;cancer type;Central Nervous System;Cerebrospinal Fluid;Characteristics;Chromosome 4;Chronic;Chronic Kidney Failure;Chronic stress;Communities;comparison control;congenital heart abnormality;cytokine;Cytosine;Data Analyses;data management;Development;Disease;Disease Marker;Disease Progression;Executive Dysfunction;executive function;Exhibits;Family;Fellowship;follow-up;Functional disorder;Funding;Genes;Glass;Goals;Grant;Guanine;Health;Health behavior;human model;Huntington Disease;IL8 gene;Impairment;improved;Individual;Inflammation;Inflammatory;inflammatory marker;Interleukin-10;Interleukin-4;Interleukin-6;Intervention;Interview;Knowledge;Literature;Measurement;Measures;Methodology;Methods;mouse model;Nature;Neurocognitive;Neurodegenerative Disorders;Participant;Patient Self-Report;Patients;Peripheral;Phenotype;Plasma;Play;Population;Positron-Emission Tomography;Process;prospective;Research;response;Role;Sampling;Seminal;sex;Short-Term Memory;skills;social;Social support;Source;standard measure;Standardization;Stress;stress state;Stressful Event;stressor;Supportive care;Symptoms;Testing;TNF gene;Training;Training and Education;United States National Institutes of Health
+---
+application_id: 11019935
+activity_code: K01
+title: Testing a Biopsychosocial Model of Violence Exposure, Minority Stressors, and Hazardous Drinking among Sexual Minority Women
+org_name: SYRACUSE UNIVERSITY
+phr: Project Narrative Sexual minority women (SMW) are one of the highest-risk groups for posttraumatic stress disorder (PTSD), hazardous drinking (HD), and comorbid PTSD and HD (PTSD-HD) due to psychosocial stressors, including trauma, sexual identity-specific stigma, intersectional stigma, and persistent stress reactivity. Extant research is limited by a lack of studies on the temporal precedence of PTSD in HD development and maintenance, physiological stress reactivity to intersectional stigma and its role in elevating the risk of PTSD-HD, and the development of brief, tailored treatments for PTSD-HD among SMW. The proposed research aims to address these gaps by 1) examining prospective longitudinal associations between PTSD symptom severity and HD over 11 years; 2) assessing the acute effec...
+terms: Acute;addiction;Address;alcohol craving;Alcohols;Biological;biopsychosocial;brief intervention;Cognitive;cognitive reappraisal;Cognitive Therapy;community advisory board;comorbidity;cue reactivity;Cues;Development;Disparity;Distress;emotion regulation;Exposure to;Funding;Future;hazardous drinking;high risk population;improved;individualized medicine;Intervention;Interview;Link;Long-Term Effects;Maintenance;member;Minority;minority communities;minority stressor;Modeling;parent project;Phase;Physiological;pilot test;Post-Traumatic Stress Disorders;prospective;psychosocial stressors;Research;response;Risk;Role;Safety;Science;Self Medication;Severities;sexual identity;sexual minority women;social stigma;Stimulus;Stress;stress reactivity;stress reduction;Symptoms;Testing;Trauma;Variant;violence exposure
+---
+application_id: 11115638
+activity_code: T32
+title: NRSA Hepatology Training Grant
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: PROJECT NARRATIVE
+The UCSF Postdoctoral Training Program in Hepatology is designed to provide MD and PhD scientists the skills
+to conduct independent research relevant to the liver. The Program fills a need for basic and clinical investigators
+who will develop new knowledge to aid the prevention, diagnosis and treatment of liver-related ailments. The
+Training Program enables faculty to provide focused research instruction to 4 trainees per year. Importantly, it
+also enables trainees to enroll in didactic courses and obtain an advanced degree. The ultimate goal of the
+Training Program is for graduates to become independent investigators, meaningful contributors to the field of
+hepatology, and mentors themselves. The expectation is that the trainees’ research successes will translate into
+im...
+terms: <Grant><Hepatology><NRSA><National Research Service Awards><Training>
+---
+application_id: 11392853
+activity_code: K01
+title: The role of PDK4 in alcohol-associated liver disease
+org_name: NORTHEAST OHIO MEDICAL UNIVERSITY
+phr: PROJECT NARRATIVE
+Alcohol-associated liver disease (ALD) is a significant socioeconomic burden in the United States and
+worldwide, with few effective therapeutic interventions. Alcohol disrupts mitochondrial homeostasis and
+induces inflammation activation, underlying the progression of ALD. This proposal will not only uncover, for
+the first time, an important role of PDK4 in connecting the mitochondrial regulation of ethanol metabolism to
+inflammation activation, but also allow the applicant to acquire efficient knowledge and skills in the
+pathogenesis of ALD, which is highly relevant to NIAAA’s mission to provide support and protected time for
+a mentored career development experience in the biomedical science leading to research independence.
+terms: <(TNF)-α><Abscission><Absolute ethanol><Abstinence><Academia><Acetaldehyde><Acetyl CoA><Acetyl Coenzyme A><Acute Alcoholic Hepatitis><Address><Advisory Committees><Affect><Alcohol Chemical Class><Alcohol Drinking><Alcohol consumption><Alcohol toxicity><Alcoholic Liver Diseases><Alcohols><Animal Model><Animal Models and Related Studies><Apoptosis><Apoptosis Pathway><Apoptotic><Arsenic><Assay><Autoregulation><Beta Proprotein Interleukin 1><Bioassay><Biochemistry><Bioenergetics><Biological Assay><Biological Chemistry><Biology><Blood monocyte><Body Tissues><CUT&RUN><Cachectin><Cancers><Cell Body><Cell Death><Cell Survival><Cell Viability><Cells><Cellular Metabolic Process><Cessation of life><Chronic><Cirrhosis><Citric Acid Cycle><Cleavage Targets and Release Using Nuclease><Cleavage Under Targets and Release Using Nuclease><D-Glucose><DENA><Data><Death><Development><Dextrose><Diagnostic><Diethylnitrosamine><Disease><Disorder><Drug Metabolic Detoxication><Drug Metabolic Detoxification><ETOH><Economic Burden><Enzyme Gene><Enzymes><EtOH drinking><EtOH use><Ethanal><Ethanol><Ethanol Metabolism><Ethanol toxicity><Ethyl Alcohol><Event><Excision><Extirpation><Fatty Acid Metabolism Pathway><Fatty Liver><Fibrosis><Gene Action Regulation><Gene Expression><Gene Expression Regulation><Gene Regulation><Gene Regulation Process><Genes><Glucose><Goals><Grain Alcohol><HCV><Health><Health Care><Health Expenditures><Heavy Drinking><Hepatic><Hepatic Cancer><Hepatic Cells><Hepatic Cirrhosis><Hepatic Disorder><Hepatic Failure><Hepatic Parenchymal Cell><Hepatic Transplantation><Hepatitis C virus><Hepatocyte><Histologic><Histologically><Homeostasis><Human><IL-1 beta><IL-1 β><IL-1-b><IL-1β><IL1-Beta><IL1-β><IL1B Protein><IL1F2><IL1β><Immune><Immunes><Immunology><Impairment><Inflammasome><Inflammation><Inflammation Mediators><Inflammatory><Inflammatory Response><Injury to Liver><Interleukin 1beta><Interleukin-1 beta><Interleukin-1β><Intervention><Isoenzymes><Isozymes><Knowledge><Krebs Cycle><Link><Liver><Liver Cells><Liver Cirrhosis><Liver Failure><Liver Grafting><Liver Regeneration><Liver Steatosis><Liver Transplant><Liver diseases><Location><Macrophage><Macrophage-Derived TNF><Malignant Neoplasms><Malignant Tumor><Malignant neoplasm of liver><Marker Discovery><Marrow monocyte><Mediating><Mediator><Mentors><Metabolic Drug Detoxications><Metabolism of Toxic Agents><Methods><Methylcarbinol><Mice><Mice Mammals><Mission><Mitochondria><Mitochondrial DNA><Mitochondrial Matrix><Modern Man><Molecular><Monocyte-Derived TNF><Morbidity><Morbidity - disease rate><Morphology><Murine><Mus><Mφ><N,N-diethylnitrosamine><N-Nitrosodiethylamine><N-diethylnitrosamine><N-ethyl-N-nitroso-ethanamine><NAFLD><NDEA><NIAAA><National Institute on Alcohol Abuse and Alcoholism><Natural regeneration><Nitrosodiethylamine><Nuclear><Oxidative Stress><PBMC><PDH kinase><PDK4 enzyme><Pathogenesis><Pathologic><Pathology><Patients><Peripheral Blood Mononuclear Cell><Phenotype><Physiological Homeostasis><Position><Positioning Attribute><Preinterleukin 1 Beta><Programmed Cell Death><Proteins><Proteomics><Public Health><Publishing><Pyruvate><Pyruvate Dehydrogenase Complex><Regeneration><Regulation><Removal><Research><Research Resources><Resources><Role><S-acetate Coenzyme A><Science><Scientist><Steatohepatitis><Surgical Removal><TCA cycle><TNF><TNF A><TNF Alpha><TNF gene><TNF-α><TNFA><TNFα><Task Forces><Testing><Therapeutic><Therapeutic Intervention><Time><Tissues><Toxic effect><Toxicities><Training><Tricarboxylic Acid Cycle><Tumor Necrosis Factor><Tumor Necrosis Factor-alpha><United States><abstaining from alcohol><abstaining from ethanol><abstinence from alcohol><abstinence from ethanol><advisory team><alcohol abstinence><alcohol exposed><alcohol exposure><alcohol induced hepatic injury><alcohol induced liver disorder><alcohol induced liver injury><alcohol ingestion><alcohol intake><alcohol metabolism><alcohol product use><alcohol related liver disease><alcohol related research><alcohol research><alcohol response><alcohol use><alcohol-associated liver disease><alcohol-induced hepatic dysfunction><alcohol-induced liver disease><alcohol-induced liver dysfunction><alcohol-mediated liver dysfunction><alcohol-mediated liver injury><alcohol-related liver disease><alcoholic beverage consumption><alcoholic drink intake><alcoholic liver injury><arsenics><attributable death><attributable mortality><career development><cell metabolism><cellular metabaolism><cirrhotic><detoxification><developmental><drink heavily><effective therapy><effective treatment><ethanol abstinence><ethanol consumption><ethanol drinking><ethanol exposed><ethanol exposure><ethanol induced hepatic injury><ethanol induced liver disorder><ethanol induced liver injury><ethanol ingestion><ethanol intake><ethanol liver disease><ethanol product use><ethanol research><ethanol response><ethanol use><ethanol-induced hepatic dysfunction><ethanol-induced liver disease><ethanol-induced liver dysfunction><ethanol-mediated liver dysfunction><ethanol-mediated liver injury><excessive alcohol consumption><excessive alcohol ingestion><excessive alcohol intake><excessive drinking><excessive ethanol ingestion><experience><experiment><experimental research><experimental study><experiments><exposed to alcohol><exposed to ethanol><exposure to alcohol><exposure to ethanol><extreme drinking><fat metabolism><fatty acid metabolism><feeding><global health><health care expenditure><heavy alcohol use><hepatic body system><hepatic damage><hepatic disease><hepatic injury><hepatic organ system><hepatic steatosis><hepatopathy><hepatosteatosis><improved><inflammatory mediator><inhibitor><insulin sensitivity><interest><intervention therapy><knock-down><knockdown><lipid metabolism><liver cancer><liver damage><liver disorder><liver injury><liver malignancy><liver transplantation><malignancy><malignant liver tumor><medical expenditure><member><metabolism measurement><metabolomics><metabonomics><mitochondrial><mitochondrial dysfunction><model of animal><monocyte><mortality><mouse model><mtDNA><murine model><necrocytosis><neoplasm/cancer><new drug treatments><new drugs><new marker><new pharmacological therapeutic><new therapeutics><new therapy><next generation therapeutics><non-alcohol fatty liver disease><non-alcoholic fatty liver disease><non-alcoholic liver disease><nonalcoholic fatty liver disease><novel biomarker><novel drug treatments><novel drugs><novel marker><novel pharmaco-therapeutic><novel pharmacological therapeutic><novel therapeutics><novel therapy><overexpress><overexpression><pharmacologic><prevent><preventing><prognostic><pyruvate dehydrogenase kinase><pyruvate dehydrogenase kinase 4><regenerate><resection><response to alcohol><response to ethanol><skills><social role><socio-economic><socio-economically><socioeconomically><socioeconomics><therapeutic target><therapeutically effective><welfare>
+---
+application_id: 10998672
+activity_code: F32
+title: Probing chemical dynamics and catalytic mechanisms in metalloenzymes with advanced X-ray spectroscopy techniques
+org_name: UNIVERSITY OF CALIF-LAWRENC BERKELEY LAB
+phr: Project Narrative Metalloenzymes are involved in catalyzing many reactions that are of critical importance to health, using transition metals such as Fe or Mn in their active sites. The introduction of X-ray free-electron lasers has made it possible to follow these enzymatic reactions at room temperature in real time as the reaction proceeds. Development of X-ray absorption spectroscopy methods that make use of this novel transformative tool is important for understanding the dynamics of the metal sites and the mechanisms of these reactions.
+terms: absorption;Active Sites;Address;Biochemical;Biochemical Reaction;biological systems;Charge;Chemical Dynamics;Chemicals;cofactor;Collaborations;Complex;Coupled;Crystallography;Data;Data Collection;Deoxyribonucleotides;design;detector;Development;Diffusion;Dioxygen;DNA;electronic structure;Electronics;Electrons;Enzymes;experimental study;Fluorescence;Generations;Geometry;Goals;Health;Human;Hydroxyl Radical;improved;In Situ;instrument;interest;Knowledge;Ligands;Light;Lighting;Measurement;Metabolism;metal complex;metalloenzyme;Metalloproteins;Metals;Methodology;Methods;Modeling;Noise;novel;Nuclear;Oxidases;oxidation;Oxidation-Reduction;Oxidoreductase;Oxygen;Oxygenases;photon-counting detector;Photons;photosystem II;Physiologic pulse;Physiological;Positioning Attribute;prevent;Proteins;protocol development;Radiation induced damage;Reaction;Research;Resolution;Ribonucleotide Reductase;Ribonucleotides;Roentgen Rays;Role;Sampling;Scanning;Signal Transduction;Site;Solid;Spectrum Analysis;Structure;Synchrotrons;System;Techniques;Temperature;Testing;Time;tool;Transition Elements;Water;X ray diffraction analysis;X ray spectroscopy;X-Ray Crystallography;x-ray free-electron laser;Xray Emission Spectroscopy
+---
+application_id: 10914149
+activity_code: K01
+title: The role of PDK4 in alcohol-associated liver disease
+org_name: CLEVELAND CLINIC LERNER COM-CWRU
+phr: PROJECT NARRATIVE Alcohol-associated liver disease (ALD) is a significant socioeconomic burden in the United States and worldwide, with few effective therapeutic interventions. Alcohol disrupts mitochondrial homeostasis and induces inflammation activation, underlying the progression of ALD. This proposal will not only uncover, for the first time, an important role of PDK4 in connecting the mitochondrial regulation of ethanol metabolism to inflammation activation, but also allow the applicant to acquire efficient knowledge and skills in the pathogenesis of ALD, which is highly relevant to NIAAA’s mission to provide support and protected time for a mentored career development experience in the biomedical science leading to research independence.
+terms: Abstinence;Academia;Acetaldehyde;Acetyl Coenzyme A;Acute Alcoholic Hepatitis;Address;Advisory Committees;Affect;alcohol abstinence;Alcohol consumption;alcohol exposure;alcohol research;alcohol response;Alcoholic Liver Diseases;Alcohols;Animal Model;Apoptosis;Apoptotic;Arsenic;attributable mortality;Biochemistry;Bioenergetics;Biological Assay;Biology;career development;Cell Death;Cell Survival;Cells;Cellular Metabolic Process;Cessation of life;Chronic;Cirrhosis;Citric Acid Cycle;Cleavage Under Targets and Release Using Nuclease;Data;Development;Diagnostic;Diethylnitrosamine;Disease;Drug Metabolic Detoxication;Economic Burden;effective therapy;Enzymes;Ethanol;Ethanol Metabolism;Ethanol toxicity;Event;Excision;experience;experimental study;fatty acid metabolism;Fatty Liver;feeding;Fibrosis;Gene Expression;Gene Expression Regulation;Genes;global health;Glucose;Goals;Health;Health Expenditures;Healthcare;Heavy Drinking;Hepatic;Hepatitis C virus;Hepatocyte;Histologic;Homeostasis;Human;Immune;Immunology;Impairment;improved;Inflammasome;Inflammation;Inflammation Mediators;Inflammatory;Inflammatory Response;inhibitor;insulin sensitivity;interest;Interleukin-1 beta;Intervention;Isoenzymes;knock-down;Knowledge;Link;lipid metabolism;Liver;Liver Cirrhosis;Liver diseases;Liver Failure;liver injury;Liver Regeneration;liver transplantation;Location;Macrophage;Malignant neoplasm of liver;Malignant Neoplasms;Marker Discovery;Mediating;Mediator;member;Mentors;metabolomics;Methods;Mission;Mitochondria;Mitochondrial DNA;mitochondrial dysfunction;Mitochondrial Matrix;Molecular;monocyte;Morbidity - disease rate;Morphology;mortality;mouse model;Mus;National Institute on Alcohol Abuse and Alcoholism;Natural regeneration;non-alcoholic fatty liver disease;novel marker;novel therapeutics;Nuclear;overexpression;Oxidative Stress;Pathogenesis;Pathologic;Pathology;Patients;PDH kinase;Peripheral Blood Mononuclear Cell;pharmacologic;Phenotype;Positioning Attribute;prevent;prognostic;Proteins;Proteomics;Public Health;Publishing;Pyruvate;Pyruvate Dehydrogenase Complex;pyruvate dehydrogenase kinase 4;Regulation;Research;Resources;Role;Science;Scientist;skills;socioeconomics;Steatohepatitis;Testing;Therapeutic;Therapeutic Intervention;therapeutic target;therapeutically effective;Time;Tissues;TNF gene;Toxic effect;Training;United States;welfare
+---
+application_id: 10784707
+activity_code: K01
+title: Within-person dynamics of cognition and personality in healthy aging and Alzheimer's disease.
+org_name: WASHINGTON UNIVERSITY
+phr: Project Narrative The research and training in this application will provide additional training and experience applying advanced intensive longitudinal statistical techniques to the study of aging and dementia. Outcomes in aging and Alzheimer disease (AD) research rely critically on the measurement of cognitive change and the innovative approaches described herein will provide novel and more sensitive analyses of longitudinal change. Ultimately, we will provide new cognitive endpoints for use in AD studies which will help establish the efficacy of candidate treatments.
+terms: Achievement;Adult;advanced analytics;Aging;Alzheimer&apos;s Disease;Alzheimer&apos;s disease risk;Alzheimer’s disease biomarker;Amyloid;Attention;attentional control;Bayesian Modeling;behavior prediction;Biological;career development;Clinical;Clinical assessments;Clinical Trials;Cognition;Cognition Disorders;Cognitive;cognitive change;cognitive function;cognitive performance;cognitive process;cognitive testing;cohort;Data Set;Dementia;design;Disease;disease phenotype;Disease Progression;drug efficacy;Encapsulated;Equation;Evaluation;experience;Goals;healthy aging;Impaired cognition;Impairment;improved;in vivo;Individual;innovation;insight;International;Intervention;intervention effect;Intervention Studies;late life;longitudinal analysis;longitudinal design;magnetic resonance imaging biomarker;Measurement;Measures;Mentors;Minor;Modeling;Moods;Motivation;Nerve Degeneration;Noise;novel;older adult;Older Population;Outcome;Performance;Personality;Personality Assessment;Persons;Phenotype;Play;Positron-Emission Tomography;pre-clinical;predictive modeling;Prevention trial;Process;psychologic;Research;research clinical testing;Research Design;Research Technics;risk prediction;Secondary Prevention;Severities;Statistical Models;Stimulus;tau Proteins;Techniques;Testing;Time;Training;Validation;Variant;young adult
+---
+application_id: 11115642
+activity_code: T32
+title: Training Program in Pharmacology
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: TRAINING PROGRAM IN PHARMACOLOGY
+Project Narrative (Public Health Statement)
+The Training Program in Pharmacology at UC Davis provides unique training in drug discovery
+and development to educate future biomedical researchers, who will be involved in the creation
+of novel therapeutic treatments of diseases in various areas. It builds on the existing strengths in
+the interdisciplinary collaborative research and training environment at UC Davis, where training
+program faculty have developed and clinically test new drugs and other therapeutics and
+diagnostics. It will train predoctoral PhD students in pharmacology and foster interdisciplinary
+training and research collaborations in drug discovery and development for graduate students in
+Pharmacology, Neuroscience, Physiology, and Biomedical E...
+terms: <Pharmacology><Training Programs>
+---
+application_id: 11329016
+activity_code: K01
+title: Understanding recovery from alcohol use disorder: Longitudinal observation of two voluntary temporary abstinence periods
+org_name: UNIVERSITY OF GEORGIA
+phr: PROJECT NARRATIVE
+This early career development grant includes training in alcohol use disorder recovery research, advanced
+quantitative methods, and professional development by a strong mentoring team to help the principal
+investigator transition to an independent investigator in the alcohol field. The proposed research examines
+recovery from alcohol use disorder as defined by NIAAA from the perspectives of self-determination theory and
+behavioral economics by leveraging two periods of voluntary temporary abstinence. Training and research
+activities are carefully sequenced to maximize knowledge gains.
+terms: <21+ years old><Abstinence><Adult><Adult Human><Alcohol Chemical Class><Alcohol Drinking><Alcohol consumption><Alcohols><Area><Behavior><Behavioral Mechanisms><Costs and Benefits><DSM-5><DSM-V><DSM5><Decision Making><Development><Diagnostic and Statistical Manual of Mental Disorders, 5th edition><Diagnostic and Statistical Manual of Mental Disorders-V><Differences between sexes><Differs between sexes><Disease remission><Disparate><Dryness><EtOH drinking><EtOH use><Ethnic Origin><Ethnicity><Facebook><Goals><Grant><Heavy Drinking><Individual><Intervention><Investigators><Knowledge><Literature><Longitudinal observation study><Longitudinal, observational study><Mechanisms of Behavior and Behavior Change><Mentors><Methodology><Methods><Motivation><NIAAA><National Institute on Alcohol Abuse and Alcoholism><Participant><Patient Care><Patient Care Delivery><Personal Satisfaction><Persons><Population><Postdoc><Postdoctoral Fellow><Principal Investigator><Process><Prospective Studies><Public Health><Publishing><QOL><Quality of life><Recovery><Remission><Research><Research Activity><Research Associate><Research Design><Research Personnel><Researchers><Sampling><Self Determination><Self Direction><Self Efficacy><Sex Differences><Sexual differences><Study Type><Survey Instrument><Surveys><Symptoms><Testing><TikTok><Training><Training Activity><abstaining from alcohol><abstaining from ethanol><abstinence from alcohol><abstinence from ethanol><adulthood><alcohol abstinence><alcohol free><alcohol ingestion><alcohol intake><alcohol product use><alcohol use><alcohol use disorder><alcoholic beverage consumption><alcoholic drink intake><behavior change><behavior mechanism><behavioral economics><biopsychosocial><care for patients><care of patients><career development><caring for patients><clinical practice><cohort><craving><design><designing><developmental><differences due to race><differences in race><differs by race><differs in race><drink heavily><drinking><ethanol abstinence><ethanol consumption><ethanol drinking><ethanol ingestion><ethanol intake><ethanol product use><ethanol use><ethanol use disorder><ethnic difference><ethnic diversity><ethnically diverse><ethnicity difference><excessive alcohol consumption><excessive alcohol ingestion><excessive alcohol intake><excessive drinking><excessive ethanol ingestion><extreme drinking><follow up assessment><followup assessment><hazardous drinking><heavy alcohol use><improved><innovate><innovation><innovative><novel><post-doc><post-doctoral><post-doctoral trainee><precision medicine><precision-based medicine><preference><prospective><psychologic><psychological><race based differences><race differences><race related differences><racial difference><racial diversity><racially different><racially diverse><recruit><reinforcer><research associates><sex><sex based differences><sex-dependent differences><sex-related differences><sex-specific differences><skills><sober><sobriety><study design><sustained recovery><theories><training module><training opportunity><well-being><wellbeing>
+---
+application_id: 11329683
+activity_code: K01
+title: Risk and resilience mechanisms underlying race disparities in ADRD: An examination of neighborhood resources, social networks, brain integrity, and cognition
+org_name: UNIVERSITY OF MIAMI SCHOOL OF MEDICINE
+phr: PROJECT NARRATIVE
+Characterizing mechanisms that create and sustain racial disparities in Alzheimer's disease and
+related dementias (ADRD) is of critical importance to the diverse, aging population of the U.S. The
+proposed project will fill an important void in examining the extent to which neighborhood resources
+contribute to disparities in brain and cognitive aging, as well as whether social networks can buffer
+against neighborhood disadvantage. Results could have implications for interventions targeted at
+multiple levels to prevent or delay age-related cognitive decline and reduce racial disparities in
+ADRD.
+terms: <0-11 years old><AD related dementia><ADRD><Acceleration><Address><Advisory Committees><Affect><Age><Age associated cognitive deficit><Age associated cognitive dysfunction><Age related memory decline><Age related memory deficit><Age related memory impairment><Age-associated cognitive decline><Age-related cognitive decline><Aging><Alzheimer's and related dementias><Alzheimer's dementia and related dementia><Alzheimer's dementia or related dementia><Alzheimer's disease and related dementia><Alzheimer's disease and related disorders><Alzheimer's disease or a related dementia><Alzheimer's disease or a related disorder><Alzheimer's disease or related dementia><Alzheimer's disease related dementia><American><Area><Attenuated><Benign senescent forgetfulness><Biological><Black Populations><Black group><Black individual><Black people><Blacks><Brain><Brain Nervous System><Buffers><Characteristics><Child><Child Youth><Children (0-21)><Cognition><Cognitive><Cognitive aging><Cohort Studies><Concurrent Studies><County><Data><Data Collection><Data Pooling><Data Set><Development><Disparities><Disparity><Economic Income><Economical Income><Education><Educational aspects><Encephalon><Environment><Exposure to><Family><Friends><Goals><Grain><Grant><Health><Health Promotion><Income><Individual><Individual Differences><Intervention><K01 Award><K01 Mechanism><K01 Program><Knowledge><Libraries><MR Imaging><MR Tomography><MRI><MRIs><Magnetic Resonance Imaging><Married Persons><Measures><Mediating><Medical Imaging, Magnetic Resonance / Nuclear Magnetic Resonance><Mentored Research Scientist Development Award><Mentored Training Award><Mentors><Mentorship><Methodology><Michigan><Modeling><NMR Imaging><NMR Tomography><Neighborhoods><Neuranatomies><Neuranatomy><Neuroanatomies><Neuroanatomy><Non-Hispanic><Nonhispanic><Not Hispanic or Latino><Nuclear Magnetic Resonance Imaging><Physical activity><Psychology><Race><Races><Recreation><Research><Research Resources><Research Scientist Development Award><Resolution><Resources><Risk><Role><Salutogenesis><Sampling><Scientist><Siblings><Social Interaction><Social Network><Spouses><Task Forces><Time><Training><Universities><Writing><Zeugmatography><abnormal brain function><advisory team><age associated cognitive impairment><age associated memory decline><age associated memory deficit><age related cognitive deficit><age related cognitive dysfunction><age related cognitive impairment><age related memory dysfunction><age-associated memory impairment><age-induced cognitive decline><age-related decline in cognition><age-related decline in cognitive function><aged brain><aged group><aged groups><aged individual><aged individuals><aged people><aged person><aged persons><aged population><aged populations><ages><aging brain><aging delay><aging population><aging related cognitive decline><attenuate><attenuate aging><attenuates><biologic><black/white disparity><brain dysfunction><brain impairment><built environment><clinical care><cognitive function><cognitive reserve><community level disadvantage><data archive><data archives><decelerate aging><delay age related><dementia risk><density><developmental><disadvantaged community><disparities in race><disparity due to race><disparity in health><dysfunctional brain><ethnic minority group><ethnic minority individual><ethnic minority people><ethnic minority population><health disparity><high risk><improved><incomes><individual heterogeneity><individual variability><individual variation><inequality due to race><inequity due to race><kids><metropolitan><neighborhood barrier><neighborhood disadvantage><neighborhood-level barrier><neighborhood-level disadvantage><neural imaging><neuro-imaging><neuroimaging><neurological imaging><old age><older adult><older adulthood><pause aging><population aging><postpone age related><prevent><preventing><promoting health><protective effect><race based disparity><race based inequality><race based inequity><race disparity><race related disparity><race related inequality><race related inequity><racial><racial background><racial disparity><racial inequality><racial inequity><racial minority group><racial minority individual><racial minority people><racial minority population><racial origin><racially unequal><recruit><resilience><resilient><resolutions><retards aging><risk factor for dementia><risk for dementia><skills><slow aging><slow down aging><slow the rate of aging><social><social factors><social role><stress buffering><stress management><youngster>
+---
+application_id: 10837095
+activity_code: K01
+title: Risk and resilience mechanisms underlying race disparities in ADRD: An examination of neighborhood resources, social networks, brain integrity, and cognition
+org_name: UNIVERSITY OF MICHIGAN AT ANN ARBOR
+phr: PROJECT NARRATIVE Characterizing mechanisms that create and sustain racial disparities in Alzheimer's disease and related dementias (ADRD) is of critical importance to the diverse, aging population of the U.S. The proposed project will fill an important void in examining the extent to which neighborhood resources contribute to disparities in brain and cognitive aging, as well as whether social networks can buffer against neighborhood disadvantage. Results could have implications for interventions targeted at multiple levels to prevent or delay age-related cognitive decline and reduce racial disparities in ADRD.
+terms: Acceleration;Address;Advisory Committees;Affect;Age;Age-associated memory impairment;Aging;aging brain;aging population;Alzheimer&apos;s disease related dementia;American;Area;Attenuated;Biological;Black American;Black Populations;Black race;black/white disparity;Brain;brain dysfunction;Buffers;built environment;caucasian American;Characteristics;Child;clinical care;Cognition;Cognitive;Cognitive aging;cognitive function;cognitive reserve;Cohort Studies;County;Data;data archive;Data Collection;Data Pooling;Data Set;dementia risk;density;Development;Disparity;Education;Environment;ethnic minority;Exposure to;Family;Friends;Goals;Grain;Grant;Health;health disparity;Health Promotion;human old age (65+);improved;Income;Individual;Individual Differences;individual variation;Inequity;Intervention;Knowledge;Libraries;Magnetic Resonance Imaging;Measures;Mediating;Mentored Research Scientist Development Award;Mentors;Mentorship;Methodology;metropolitan;Michigan;Modeling;neighborhood disadvantage;Neighborhoods;Neuroanatomy;neuroimaging;Not Hispanic or Latino;older adult;Participant;Physical activity;prevent;protective effect;Psychology;Race;racial difference;racial disparity;racial minority;Recreation;recruit;Research;residential segregation;resilience;Resolution;Resources;Risk;Role;Sampling;Scientist;segregation;Siblings;skills;social;social factors;Social Interaction;Social Network;Sorting;Spouses;stress management;Time;Training;Universities;Writing

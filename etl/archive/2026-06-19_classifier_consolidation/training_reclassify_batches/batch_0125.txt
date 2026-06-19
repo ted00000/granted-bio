@@ -1,0 +1,472 @@
+Classify these NIH grants by SCIENTIFIC CONTENT (not administrative mechanism).
+
+These are F/K/T awards that were previously auto-classified as "training" based on activity code.
+Now classify them by what the research actually IS:
+
+Categories:
+- basic_research: Understanding mechanisms, pathways, disease processes (knowledge output)
+- biotools: Developing research tools, assays, methods, platforms (tool output)
+- therapeutics: Developing drugs, treatments, therapies (treatment output)
+- diagnostics: Developing clinical tests, biomarker panels (diagnostic test output)
+- medical_device: Developing physical devices for patients (device output)
+- digital_health: Patient-facing software, apps, clinical decision support
+- other: Health services, behavioral interventions, epidemiology
+
+Return a JSON array:
+[{"application_id": 123, "primary_category": "basic_research", "category_confidence": 85}]
+
+Batch 125 of 459 (50 projects):
+
+---
+application_id: 11198850
+activity_code: T32
+title: The UCLA Pulmonary and Critical Care Medicine Scientist Training Program (PCCM-STP)
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: PROJECT NARRATIVE
+Diseases related to pulmonary and critical care medicine (PCCM) remain among the leading causes of morbidity
+and mortality. The UCLA Pulmonary and Critical Care Medicine Scientist Training Program (PCCM-STP) is
+dedicated to mentored, interdisciplinary team-based training of a new generation of academic and industry
+leaders in basic, clinical translational and health services research. By deploying facilities and resources of
+renowned multidisciplinary mentor faculty, we will fulfill the program mission of training a cadre of investigators
+who will discover novel underlying basic principles of PCCM-related diseases and translate these discoveries to
+improve health.
+terms: <Critical Care><Medicine><Scientist><Training Programs><pulmonary>
+---
+application_id: 11016663
+activity_code: T32
+title: Noninvasive Cardiovascular Imaging Research Training Program
+org_name: BRIGHAM AND WOMEN'S HOSPITAL
+phr: The proposed competing application of our T32 training program is designed to train
+clinician-scientists in cardiovascular imaging to prepare them for successful and
+productive academic careers. The program offers mutli-disciplinary training in a broad
+and diverse spectrum of areas in cardiovascular medicine with relevance to imaging
+science. With this renewal, we continue our primary goals of providing leadership in
+academic cardiovascular imaging and training future leaders in imaging science to
+improve outcomes in cardiovascular disease.
+terms: <Research Training><Training Programs><cardiovascular imaging>
+---
+application_id: 11015537
+activity_code: T32
+title: Training Program in Cardiometabolic Diseases
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: PROJECT NARRATIVE
+Cardiovascular disease remains the major cause of death in the US. Through the renewal of this highly
+successful postdoctoral training program, we align ourselves with the stated goal of the NHLBI to “provide a
+sustained flow of qualified physician-scientists able to think critically and translate findings freely between the
+basic and clinical spheres.” We will accomplish this goal through strong mentorship by established experts in
+the field, specialized didactics, and intensive training through discovery, translational, clinical and data-science
+research projects relevant to the major manifestations of cardiovascular disease.
+terms: <Cardiometabolic Disease><Cardiometabolic Disorder><Training Programs>
+---
+application_id: 11016474
+activity_code: T32
+title: Hypertension and Cardiorenal Research Training Program
+org_name: UNIVERSITY OF MISSISSIPPI MED CTR
+phr: Hypertension has long been recognized as a major risk factor for cardiovascular diseases, including coronary artery disease, heart failure and stroke, and for ESRD. In the southeastern United States, and especially in Mississippi, cardiovascular and renal diseases occur much more frequently than in the rest of the country. The objective of the multidisciplinary Hypertension and Cardiorenal Diseases Research (HCDR) Training Program is to recruit, train, and mentor pre-doctoral and postdoctoral students in cardiovascular and renal research so that they become the next generation of researchers in this field.
+terms: <Hypertension><Research Training><Training Programs><Vascular Hypertensive Disease><Vascular Hypertensive Disorder><high blood pressure><hyperpiesia><hyperpiesis><hypertensive disease><hypertensive disorder>
+---
+application_id: 10899610
+activity_code: K99
+title: Identifying and evaluating prevention strategies for COVID-19 in correctional facilities
+org_name: YALE UNIVERSITY
+phr: PROJECT NARRATIVE Residents of correctional facilities are disproportionately at risk of developing and dying of COVID-19. To mitigate the spread of SARS-CoV-2, Departments of Correction have instituted prevention measures including vaccine campaigns, social distancing, and mass screening. Through this proposal, we seek to derive an evidence base for these prevention measures and develop an adaptive intervention simulation model to identify scenarios when prevention measure modification is justified.
+terms: 2019-nCoV;Active Learning;adaptive intervention;Advisory Committees;Affect;Award;burden of illness;Calibration;career;combat;Communicable Diseases;Communities;community burden;community-level factor;Complex;Connecticut;Contracts;Coupled;COVID-19;COVID-19 burden;COVID-19 mortality;COVID-19 prevention;COVID-19 risk;COVID-19 test;COVID-19 vaccination;Data;Development;discrete time;Disease;disease transmission;disorder control;Effectiveness;effectiveness evaluation;effectiveness testing;Epidemiologist;Epidemiology;Evaluation;evidence base;experience;feasibility testing;flexibility;Funding;Future;Goals;Government;Growth;hazard;Hazard Models;health disparity;Herd Immunity;high risk;Hospitalization;Household;improved;Individual;Infection;Infection Control;infection risk;Intervention;Jail;Knowledge;Left;marginalized population;Mass Screening;Measurable;Measures;Mentors;Methodology;Methods;microbial disease;model development;Modeling;models and simulation;Modification;Nature;novel;Output;Persons;Phase;Policies;Policy Maker;Population;Predisposition;prevent outbreaks;prevention effectiveness;Prevention Measures;Prevention strategy;Prisons;programs;Protocols documentation;Public Health Schools;Research;Respiratory Tract Infections;Risk;Risk Reduction;Role;SARS-CoV-2 infection;SARS-CoV-2 transmission;Scientist;simulation;skills;Social Distance;Social Network;Structure;symptomatic COVID-19;Testing;Time;Training;Training Programs;transmission process;treatment effect;United States;unvaccinated;Vaccinated;Vaccination;Vaccinee;Vaccines;Validation;Variant;Viral;Vulnerable Populations
+---
+application_id: 10881892
+activity_code: K99
+title: Identifying epigenetic factors in control of epidermal stem cell longevity in the adult skin
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: Project Narrative  Over an organism’s lifetime skin stem cells (SCs) lose their vigor or diminish in numbers which manifests into aging-related phenotypes that include epidermal atrophy, fragility, hair loss disorders, and delayed wound healing but the fundamental mechanisms driving SC aging in the adult skin remain largely unknown. In this project, I will investigate the functional role of age-dependent changes in transcriptional and chromatin landscape implicated in promoting SC aging. This work will pave the way for future line of research which will seek to address how epigenetic regulated processes impact epidermal aging, which in turn will provide new scientific avenues for translational research application in the treatment for aging-associated conditions and disorders.
+terms: Address;Adult;Age;age related;age related changes;age related decline;aged;Aging;aging process;aging related;Architecture;Atrophic;Automobile Driving;base;Biochemical;cell age;cell community;Cell Count;Cell model;cell type;Chromatin;Cleavage Under Targets and Release Using Nuclease;Code;Complex;Control Animal;Curiosities;Cutaneous;Disease;epidermal stem cell;Epidermis;Epigenetic Process;epigenetic regulation;Epithelium;Equilibrium;Failure;Foundations;Future;gene repression;Genetic Models;Genetic study;Genetic Transcription;genome-wide analysis;Goals;Growth;Hair;Hair follicle structure;histone methylation;histone modification;Homeostasis;Human;Immunofluorescence Immunologic;Impaired wound healing;In Vitro;in vivo;Injury;insight;Intrinsic factor;Invertebrates;Knowledge;Light;Longevity;loss of function;Malignant Neoplasms;Mediating;Methods;Methyltransferase;Molecular;multiple omics;novel;old mice;Organism;Phase;Phenotype;Polycomb;PRC1 Protein;premature;preservation;pro-aging;Process;programs;regeneration potential;Regenerative capacity;Regulation;Regulator Genes;Repression;Research;Research Personnel;Role;self-renewal;senescence;Skin;Skin Aging;stem cell aging;stem cell differentiation;stem cell exhaustion;stem cell self renewal;stem cells;Stratified Epithelium;Stratum Basale;Structure;Testing;Thinness;Tissues;Translational Research;Work;wound healing
+---
+application_id: 10917263
+activity_code: T32
+title: UAB Pre-Doctoral Training Program in Obesity-Related Research
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: Obesity is a highly prevalent condition that exacts a high price in suffering for afflicted individuals and economically for society. Causes are complex, manifold, and only partially understood and available treatments are only modest in efficacy. New scientific insights are badly needed and training a new generation of multidisciplinary obesity researchers is essential to meet that objective.
+terms: Obesity;pre-doctoral;Research;Training Programs
+---
+application_id: 10849711
+activity_code: T32
+title: Understanding Cardiovascular Disease Mechanisms
+org_name: CINCINNATI CHILDRENS HOSP MED CTR
+phr: PROJECT NARRATIVE Heart disease remains the leading cause of death and disability in the western world. This proposed renewal training grant application will again focus on this theme, and our collective 18 faculty members have made this their life’s work. The program will train the highest quality of young scientists in cardiovascular research, who will be the future leaders in developing better therapy and treatment for this devastating condition.
+terms: Cardiovascular Diseases
+---
+application_id: 11224614
+activity_code: K99
+title: Elucidating the neuroimmune mechanisms underlying pain and inflammation in autoimmune arthritis (Admin Supplement)
+org_name: BOSTON CHILDREN'S HOSPITAL
+phr: Narrative Rheumatoid arthritis is an autoimmune disease with relapsing episodes of joint pain that often leads to chronic opioid use. Pain-triggering sensory neurons and immune cells engage in reciprocal interactions in the joints. This project aims to dissect the neuroimmune crosstalk underlying pain and inflammation in arthritic joints and uncover novel therapeutic avenues for painful autoimmunity.
+terms: Afferent Neurons;Arthralgia;arthritic pain;Arthritis;autoimmune arthritis;Autoimmune Diseases;Autoimmunity;Biological;Boston;career development;Cell Physiology;Cells;Chronic;Communication;Communities;Complement;Development;Disease remission;effective therapy;Ensure;Environment;Ethics;Five-Year Plans;Flare;Immune;Immune response;Immunology;Inflammation;Inflammatory;innovation;insight;joint inflammation;Joints;Leadership;Ligands;Link;Machine Learning;Maps;medical schools;Mentors;Mentorship;Mus;nerve supply;Neurobiology;Neuroimmune;Neuroimmunomodulation;Neurons;Nociceptors;novel;novel therapeutics;opioid use;opioid user;Pain;pain behavior;Pain Measurement;pain patient;Pathway interactions;Patients;Pediatric Hospitals;Peripheral;Phase;Positioning Attribute;receptor;Relapse;Research;Research Personnel;Resolution;response;Rheumatoid Arthritis;Role;Sensory;sensory neuroscience;skills;spatiotemporal;Tissues;Training;vesicular release
+---
+application_id: 11015206
+activity_code: T32
+title: UAB Pre-Doctoral Training Program in Obesity-Related Research
+org_name: UNIVERSITY OF ALABAMA AT BIRMINGHAM
+phr: Project Narrative
+Obesity is a highly prevalent condition that exacts a high price in suffering for afflicted individuals and
+economically for society. Causes are complex, manifold, and only partially understood, and available
+treatments are only modestly effective, impractical, or unrealistically expensive. New scientific insights
+are badly needed, and training a new generation of multidisciplinary obesity researchers is essential to
+meet that objective.
+terms: <Obesity><Research><Training Programs><adiposity><corpulence><pre-doc><pre-doctoral>
+---
+application_id: 10906742
+activity_code: T32
+title: Stanford BSSR Pre-Doctoral Training Program at the Intersection of Data Sciences with Behavioral, Social, and Population Health Research
+org_name: STANFORD UNIVERSITY
+phr: Project Narrative The mission of the Stanford BSSR training grant is to develop a cadre of highly trained behavioral and social scientists with advanced quantitative skills for dealing with complex data, with a focus on applications to heart, lung, blood, and sleep (HLBS) disorders. The BSSR program addresses a critical need to train investigators with primary skills in behavioral and social sciences to have advanced quantitative skills to deal with the increasingly complex large-scale multidimensional data from digital devices, wearables, electronic health records, social media, administrative health claims databases, and other sources.
+terms: Behavioral;Data Science;population health;pre-doctoral;Research;social;Training Programs
+---
+application_id: 11198811
+activity_code: T32
+title: Multi-Disciplinary Training Program in Translational Cardiovascular Research
+org_name: VIRGINIA COMMONWEALTH UNIVERSITY
+phr: There is a shortage of MD and PhD scientific researchers trained to develop new treatments for cardiovascular
+disease, the most common cause of death worldwide. Over the last 15 years, Virginia Commonwealth University,
+through the Pauley Heart Center, has created a high-quality cardiovascular (CV) research environment with
+federally funded, multi-disciplinary (14 institutional departments), translational (involving pursuit of fundamental
+discoveries that impact meaningful health outcomes) research projects conducive to training and mentoring
+young investigators. In this first renewal of our T32, we propose to train pre- and post-doctoral professionals and
+clinician scientists who desire an academic career in translational CV research; and to train mentors, mentors-
+in-training, and leaders...
+terms: <Cardiovascular><Cardiovascular Body System><Cardiovascular Organ System><Cardiovascular system><Heart Vascular><Research><Training Programs><circulatory system><multidisciplinary>
+---
+application_id: 11094201
+activity_code: T32
+title: Research Training - Mental Health Behavior Genetics
+org_name: UNIVERSITY OF COLORADO
+phr: Revised Public Health Relevance Section
+This proposal requests funding to sustain a training program in mental health behavior genetics, led by distinguished faculty from the Institute for Behavioral Genetics. The program aims to enhance research skills through comprehensive education and hands-on training in advanced techniques, catering to the growing demand for translational research and “big data” studies. By incorporating new faculty and offering cutting-edge coursework, the program seeks to continue its legacy of training leaders in the field while staying at the forefront of research advances in behavioral genetics.
+terms: <Behavioral Genetics><Genetic Determinants of Behavior><Mental Health><Mental Hygiene><Psychological Health><Research Training><behavior genetics>
+---
+application_id: 11190176
+activity_code: T32
+title: Interdisciplinary And Translational Research Training In Neurohiv
+org_name: TEMPLE UNIV OF THE COMMONWEALTH
+phr: Narrative
+This application provides a plan for the training of graduate students (PhD and MD/PhD) to address current and future challenges in molecular mechanisms, diagnosis, treatment and prevention research related to the neurological complications of HIV infection and associated disorders. This program will also enhance the ability of future investigators to address issue related HIV/NeuroHIV and other neurological diseases.
+terms: <HIV associated neurological disease><HIV associated neurological disorder><Interdisciplinary Research><Interdisciplinary Study><Multidisciplinary Collaboration><Multidisciplinary Research><Research Training><Translational Research><Translational Science><neuro-AIDS><neuro-HIV><neuroAIDS><neuroHIV><translation research><translational investigation>
+---
+application_id: 10878005
+activity_code: T32
+title: Training Program in Childhood Neuropsychiatric Disorders
+org_name: YALE UNIVERSITY
+phr: Project Narrative Our program focuses on preparing scientists, in both clinical and basic sciences, for independent careers as field-leading principal investigators, conducting research on childhood onset neuropsychiatric disorders. This training program will facilitate the development of a diverse and highly trained workforce of individuals from a variety of disciplines, many of whom will ultimately assume leadership roles, rising to meet the nation’s need to develop treatment and prevention programs to improve the lives of the large number of children affected by or at risk to develop major mental illnesses.
+terms: Childhood;neuropsychiatric disorder;Training Programs
+---
+application_id: 11089133
+activity_code: T32
+title: Training Program in Neuroscience
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: The Neuroscience Training Program at Mount Sinai provides rigorous, broad-based, individualized and multidisciplinary training to Year 1 and 2 predoctoral students in basic and translational neuroscience research, including research with a disease-focus. The goal of the Program is to enhance the ability of our trainees to acquire critical skillsets necessary for high-quality doctoral dissertation research and a productive and impactful career in the science-related workforce.
+terms: <Neurosciences><Training Programs>
+---
+application_id: 11096681
+activity_code: T32
+title: A Biobehavioral Research Training Grant
+org_name: STANFORD UNIVERSITY
+phr: Project Narrative:
+Training mental health researchers to conduct basic and translational research is important for advancing our
+understanding and treatment of psychiatric disorders and for reducing the burden of these disorders on patients
+and their families. Increasing the ranks of outstanding mental health researchers can also aid in prevention of
+mental disorders. The goal of the Biobehavioral Research Training Program is to help trainees' becoming
+independent researchers by developing basic, clinical, and translational research skills that are needed for
+conducting research that can enhance the effectiveness treatment of mental health disorders as well as
+hopefully preventing their onset and progression.
+terms: <Grant><Research Training><biobehavior><biobehavioral>
+---
+application_id: 10786128
+activity_code: K99
+title: Complementary and Integrative Health Stepped Care for Co-occurring Chronic Pain and PTSD
+org_name: UNIVERSITY OF WASHINGTON
+phr: Project Narrative The current proposal is designed to position the candidate to be a leading independent investigator focused on the development and evaluation of systems-based approaches for effectively delivering complementary and integrative health (CIH) interventions (e.g., non-pharmacologic mind-body interventions such as mindfulness meditation) for common chronic conditions. The proposal focuses on chronic pain and co-occurring posttraumatic stress disorder (PTSD), a population of patients who often seek treatment in primary care, where effective CIH interventions may not be available due to limited resources or patient access (e.g., community care in rural settings). The current proposal utilizes user-centered design strategies to incorporate CIH interventions into proven stepped ca...
+terms: Adherence;Administrator;Affect;Alaska;Award;Back;career;career development;Caring;Characteristics;Chronic;chronic pain;chronic pain management;chronic pain patient;Chronic Post Traumatic Stress Disorder;Clinic;Clinical;Clinical Trials Design;Collaborations;Community Healthcare;Complementary Health;Complex;Data;Data Analyses;Dedications;design;Development;Diagnostic Factor;dissemination science;early phase trial;Ensure;Evaluation;evidence base;experience;Faculty;Feedback;Focus Groups;Foundations;Funding;Goals;Grant;Health system;Healthcare Systems;Human Subject Research;Idaho;implementation science;improved;Individual;Institution;Integrative Medicine;interest;Intervention;Interview;Learning;learning strategy;Measurement;Measures;member;Mental Health;Mentors;Mentorship;Mind-Body Intervention;mind/body;mindfulness meditation;Modeling;Montana;National Center for Complementary and Integrative Health;Nonpharmacologic Therapy;novel;novel strategies;opioid epidemic;Pain;Pain interference;Pain management;pain outcome;Participant;Pathway interactions;patient population;patient response;Patients;Personal Satisfaction;Phase;physical conditioning;pilot test;pilot trial;Positioning Attribute;Post-Traumatic Stress Disorders;Pragmatic clinical trial;pragmatic trial;Primary Care;primary care clinic;primary care setting;primary care team;Process;professor;programs;prototype;Provider;Randomized;randomized effectiveness trial;Readiness;Recording of previous events;Research;Research Personnel;Resources;rumination;Rural;rural setting;satisfaction;Site;Structure;Symptoms;System;Technology;Testing;Training;treatment as usual;treatment planning;Treatment Protocols;treatment response;treatment strategy;trial design;Use Effectiveness;user centered design;Visualization;Washington;Writing;Wyoming
+---
+application_id: 11095038
+activity_code: T32
+title: Postdoctoral Program in Functional Neurogenomics
+org_name: VANDERBILT UNIVERSITY
+phr: Neurobehavioral disorders, such as autism, obsessive-compulsive disorder, schizophrenia, bipolar disorder,
+eating disorders and depression, are almost always associated with inherited or de novo genetic changes or
+specific environmental exposures, reducing the quality of life and productivity for tens of millions of Americans
+each year. The goal of the Vanderbilt Postdoctoral Training Program in Functional Neurogenomics is to
+train fellows in state-of-the-art concepts and techniques that are needed to understand the impact of these
+factors on molecules that are involved in normal brain function and in specific behavioral abnormalities,
+providing a platform to develop novel therapeutic approaches to treat these devastating illnesses. Moreover,
+the program trains fellows in the responsible c...
+terms: <Postdoc><Postdoctoral Fellow><Research Associate><neurogenomics><post-doc><post-doctoral><post-doctoral trainee><programs><research associates>
+---
+application_id: 10843941
+activity_code: T32
+title: Training Program in Neuroscience
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: PROJECT NARRATIVE The Neuroscience Training Program at Mount Sinai provides rigorous, broad-based, individualized and multidisciplinary training to Year 1 and 2 predoctoral students in basic and translational neuroscience research, including research with a disease-focus. The goal of the Program is to enhance the ability of our trainees to acquire critical skillsets necessary for high-quality doctoral dissertation research and a productive and impactful career in the science-related workforce.
+terms: Neurosciences;Training Programs
+---
+application_id: 10876985
+activity_code: T32
+title: Training the next generation of clinical neuroscientists
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: Project Narrative The proposed T32 fellowship program is designed to train psychiatrists and clinical PhDs to formulate original research questions on etiology, pathogenesis, course, treatment and prevention of serious mental illness, with a focus on patients with schizophrenia and major mood disorders. Each trainee, paired with a mentor, will formulate a career development plan with targeted goals for acquisition of skills, presentations, publications, gathering pilot data, and preparation of proposals for independent research funding. We aim to help fill the dearth in clinical neuroscientists so that the recent advances in neuroscience can be translated into better care for the millions of patients with serious mental illness.
+terms: Clinical;next generation;Training
+---
+application_id: 11093609
+activity_code: T32
+title: Training the next generation of clinical neuroscientists
+org_name: ICAHN SCHOOL OF MEDICINE AT MOUNT SINAI
+phr: The proposed T32 program renewal is designed to train clinician-scientists, including physicians
+and psychologists, and clinical PhDs to formulate original research questions on etiology,
+pathogenesis, course, treatment and prevention of serious mental illness. Each trainee, paired
+with a mentor, will formulate an individual development plan (IDP) with targeted goals for
+acquisition of skills, presentations, publications, gathering pilot data, and grant writing for
+independent research funding. We aim to help fill the dearth in clinical neuroscientists so that
+the recent advances in neuroscience can be translated into better care for the millions of
+patients with serious mental illness.
+terms: <Clinical><Training><next generation>
+---
+application_id: 10879029
+activity_code: T32
+title: Experimental Therapeutics in Neurological Disease
+org_name: UNIVERSITY OF ROCHESTER
+phr: The neurology community has seen extraordinary successes and tremendous breakthroughs in the treatment of neurological disorders. Translating these advances into improved clinical care for patients requires a cadre of specialty-trained clinician neuroscientists who are to be responsive to the increasing pace of scientific discoveries, as well as to the emerging suite of approaches and techniques. This program will train the next generation of leaders in the experimental therapeutics of neurological disease, in order to accelerate therapeutic development and improve access to emerging breakthroughs for all patients and families who may benefit.
+terms: Investigational Therapies;Nervous System Disorder
+---
+application_id: 11122336
+activity_code: T32
+title: Host-Microbe Interactions
+org_name: DARTMOUTH COLLEGE
+phr: The HMI Training Program seeks to provide research training and professional development opportunities
+to talented and highly motivated students that have been recruited into our Trainers’ laboratories. Our
+Trainees gain clinical insights through attendance of Clinical Microbiology Rounds, learn programming and
+bioinformatics approaches, host a speaker and lead a journal club in an area of interest among other
+activities and opportunities. The Director and Associate Director are supported by a Professional
+Development Subcommittee and strong Internal and External Advisory Committees as they provide a
+program that will support Trainees as they launch the successful pursuit of biomedical careers that will
+positively impact the health of our citizens and those around the world.
+terms: <host microbe association><host microbe relationship><host-microbe interactions><host-microbial interactions><host-microorganism interactions>
+---
+application_id: 10878808
+activity_code: T32
+title: Integrative Approaches to Explore Cellular Interactions in Neural Circuits
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: The Training Program in Integrative Approaches to Explore Cellular Interactions in Neural Circuits prepares students to pursue research aimed at exploring the fundamental principles underlying the development and function of neural circuits using multidisciplinary approaches and rigorous methodologies. Basic research advances in deciphering the function of neural circuits will positively impact our understanding of a wide range of neurological disease that arise from either genetic or environmental perturbations, including neurodegenerative and neurodevelopmental disorders, epilepsy, peripheral neuropathies, and chronic pain.
+terms: neural circuit
+---
+application_id: 11094557
+activity_code: T32
+title: Predoctoral Training in Neurobiology
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: The goal of predoctoral training in Neuroscience at UCSF is to guide and educate future researchers who will make fundamental creative discoveries, develop innovative research strategies and apply their skills and knowledge as a basis for ultimately protecting and improving health whether in academics, industry or policy positions. This proposed training program will play an important role in educating students who will become our future biomedical researchers as well as leaders, and we promote the highest level of scientific integrity, public accountability, and social responsibility in the conduct of science. Having a well-trained cadre of researchers is the principal means that we, as a nation, have for understanding and treating illnesses and disabilities of our own and the world’s pop...
+terms: <Neurobiology><Training><neurobiological><pre-doc><pre-doctoral>
+---
+application_id: 11093612
+activity_code: T32
+title: Graduate Training Program in Comparative Medicine
+org_name: CORNELL UNIVERSITY
+phr: PROJECT NARRATIVE
+The Comparative Medicine Program at Cornell University is preparing accomplished and highly motivated
+veterinarians for discovery-based and public health careers in basic and translational science. With a broad
+knowledge of comparative disease and strong intellectual and lateral thinking abilities, veterinarians with
+advanced scientific training are expected to play an essential role in biomedical science and public health and
+to promote the NIH goal of developing, maintaining, and renewing scientific human resources that will ensure
+the Nation’s capability to prevent disease.
+terms: <Medicine><Training Programs><comparative>
+---
+application_id: 10925302
+activity_code: K99
+title: Democratizing CAR T cell therapy by in situ programming of virus-specific T cells
+org_name: GEORGIA INSTITUTE OF TECHNOLOGY
+phr: PROJECT NARRATIVE Broad patient access to the engineered T cell therapies is currently limited by the expensive and complicated ex vivo manufacturing process. This proposal aims to develop a new approach to reprogram circulating influenza virus-specific T cells in the body against cancer. This approach would lessen the manufacturing hurdle and allow for the use of influenza vaccination to boost the anti-cancer efficacy of engineered T cells, thereby paving the way for the improved patient access and treatment outcome of engineered T cell therapy for cancer patients.
+terms: Adoptive Transfer;Advisory Committees;anti-cancer;Antibodies;anticancer activity;Antigen Presentation;Antigen-Presenting Cells;antigen-specific T cells;Antigens;antiviral immunity;Autoimmune;B-Lymphocytes;Benchmarking;Biodistribution;Biological Assay;bioluminescence imaging;Biotinylation;Blood;Bypass;cancer cell;Cancer Model;Cancer Patient;cancer therapy;CAR T cell therapy;career;CD19 gene;cell killing;Cell Line;Cell Maturation;cell type;Cells;Cellular biology;chimeric antigen receptor;chimeric antigen receptor T cells;Clinical;Coculture Techniques;cohort;cost;cost efficient;CRISPR therapeutics;CRISPR/Cas technology;cytokine;cytotoxicity;Democracy;Development;Disease;DNA;Doctor of Medicine;Doctor of Philosophy;Dose;Effectiveness;Encapsulated;engineered T cells;Environment;Epitopes;exhaustion;experimental study;Face;Flow Cytometry;Frequencies;Future;Genes;Genome;Genome engineering;Goals;Hematologic Neoplasms;Hematology;Histocompatibility Antigens Class I;HLA-A gene;HLA-A2.1;Human;Immunity;Immunotherapy;improved;In Situ;in vivo;Influenza;Influenza A virus;influenza infection;Influenza vaccination;influenzavirus;Kinetics;Knowledge;Lead;Lentivirus;lipid nanoparticle;Liver;Major Histocompatibility Complex;Malignant Neoplasms;manufacture;manufacturing process;Memory;Mentors;Mentorship;Messenger RNA;mouse model;mRNA delivery;Multiple Myeloma;Mus;nanoparticle;new technology;novel strategies;Oncology;Patients;peptide I;Peptides;Peripheral Blood Mononuclear Cell;Phase;Phenotype;Polymers;Population;Production;programs;proliferation potential;receptor;receptor expression;recombinant virus;Recombinants;Regulatory T-Lymphocyte;Research;Resources;Safety;seasonal influenza;Self Tolerance;Specificity;Spleen;Stains;success;System;T cell differentiation;T cell therapy;T-Cell Proliferation;T-Cell Receptor;T-Lymphocyte;T-Lymphocyte Subsets;Testing;Therapeutic Studies;Time;Toxic effect;Transfection;Transgenes;Translations;Treatment Efficacy;Treatment outcome;Universities;unvaccinated;Vaccinated;Vaccination;vaccination strategy;Viral;Virion;Virus;Virus Diseases;Work
+---
+application_id: 11096794
+activity_code: T32
+title: Integrative Approaches to Explore Cellular Interactions in Neural Circuits
+org_name: NEW YORK UNIVERSITY SCHOOL OF MEDICINE
+phr: The training program Integrative Approaches to Explore Cellular Interactions in Neural Circuits provides advanced graduate students with the scientific and quantitative skills to interrogate neural circuits. Basic research in deciphering the function of neural circuits will positively impact our understanding of a wide range of neurological disease that arise from either genetic or environmental perturbations. The training program fosters a cross-disciplinary mindset that enables trainees to pursue careers in rigorous, collaborative scientific research that positively impacts our understanding of the fundamental principles underlying diseases from neurodegenerative and neurodevelopmental disorders to epilepsy and chronic pain.
+terms: <neural circuit><neural circuitry><neurocircuitry><synaptic circuit><synaptic circuitry>
+---
+application_id: 11011474
+activity_code: T32
+title: VCU Initiative for Maximizing Student Development Program (IMSD)
+org_name: VIRGINIA COMMONWEALTH UNIVERSITY
+phr: Project Narrative The future of medicine depends on biomedical research and the new discoveries that research brings to disease mechanisms. However, disparities exist, not only in healthcare and disease but also in researchers who push biomedicine forward. The VCU IMSD program is intended to address this disparity by increasing the number of underrepresented minorities who pursue PhD level training in biomedical research.
+terms: Program Development;Students
+---
+application_id: 10876243
+activity_code: T32
+title: Interdisciplinary Training in Cognitive, Computational and Systems Neuroscience (CCSN)
+org_name: WASHINGTON UNIVERSITY
+phr: Cutting-edge research in brain science is increasingly interdisciplinary, and traditional discipline-based graduate programs strain to accommodate this development. The Cognitive, Computational & Systems Neuroscience (CCSN) pathway at Washington University in St. Louis provides an integrative model for training 21st century brain scientists with a unique set of quantitative and professional skills that effectively position them to produce transformative breakthroughs related to mental illness, neurological disease, and neural engineering. This training grant will support five pre-doctoral trainees.
+terms: Cognitive;Neurosciences;System;Training
+---
+application_id: 10885003
+activity_code: T32
+title: Predoctoral Training in Neurobiology
+org_name: UNIVERSITY OF CALIFORNIA, SAN FRANCISCO
+phr: Project Narrative The goal of predoctoral training in Neuroscience at UCSF is to guide and educate future researchers who will make fundamental creative discoveries, develop innovative research strategies and apply their skills and knowledge as a basis for ultimately protecting and improving health. This proposed training program will play an important role in educating students who will become our future biomedical researchers, and we promote the highest level of scientific integrity, public accountability, and social responsibility in the conduct of science. Having a well-trained cadre of researchers is the principal means that we, as a nation, have for understanding and treating illnesses and disabilities of our own and the world’s population.
+terms: Neurobiology;pre-doctoral;Training
+---
+application_id: 11016188
+activity_code: T32
+title: Training Veterinarians for Careers in Biomedical Research
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: PROJECT NARRATIVE
+Veterinarian scientists play crucial roles in biomedical research by developing, characterizing,
+and applying animal models to study human and animal diseases, thereby enhancing scientific
+rigor and reproducibility. Our training program offers an outstanding career development
+opportunity for graduate veterinarians passionate about building careers and developing as
+leaders in biomedical research. This proposal seeks renewal of support for our highly productive
+NIH-funded T32 program led by Joseph L. Mankowski, DVM, PhD, to train veterinarians in
+biomedical research at the Johns Hopkins University School of Medicine.
+terms: <Biomedical Research><Training><Veterinarians><career>
+---
+application_id: 10853116
+activity_code: T34
+title: MARC at The University of Kansas
+org_name: UNIVERSITY OF KANSAS LAWRENCE
+phr: NARRATIVE The proposed project will increase the diversity of the scientific community by preparing students from underrepresented groups with a focus on American Indian students for graduate study and careers in biomedical research. The project will increase the size of the scientific workforce and increase interest in research regarding diseases with a high incidence in minority populations, improving both health care and disease prevention in this country.
+terms: American Indians;analytical method;Biomedical Research;bridge to the baccalaureate;career;CCL7 gene;Classification;Collaborations;Communities;design;Development;Development Plans;Doctor of Philosophy;Eligibility Determination;experience;experimental study;faculty mentor;Foundations;Geography;Goals;graduate school;Individual;Institution;K-Series Research Career Programs;Kansas;Leadership;member;Mentors;multidisciplinary;outreach;Participant;Positioning Attribute;programs;recruit;Reproducibility;Research;Research Activity;responsible research conduct;Role;rural area;Science;Scientist;Students;suburb;symposium;Training;Training Programs;transfer student;undergraduate student;Underrepresented Populations;Universities;Writing
+---
+application_id: 11097879
+activity_code: T34
+title: MARC at the University of California Santa Barbara
+org_name: UNIVERSITY OF CALIFORNIA SANTA BARBARA
+phr: PROJECT NARRATIVE (PUBLIC HEALTH RELEVANCE STATEMENT)
+Broadening the diversity and breadth of experience of the biomedical PhD workforce will enhance the creativity and rate
+of innovation in health and scientific discovery. The proposed program, MARC at University of California Santa Barbara
+(MARC-UCSB), will benefit public health by supporting the education and career development of a diverse group of
+undergraduate students who will pursue careers in biomedical fields that target improvements in human health. All
+program participants (undergraduate students, faculty, graduate student and postdoctoral scholar mentors, and
+university personnel) will be better prepared to either secure careers in the biomedical workforce and be leaders in such
+fields, or prepare our future biomedical workfor...
+terms: <Address><American><Awareness><Biomedical Research><CCL7><CCL7 gene><California><Communication><Communities><Doctor of Philosophy><EXTMR><Ecologic Systems><Ecological Systems><Ecosystem><Elements><Eligibility><Eligibility Determination><Enrollment><Ensure><Environment><Extramural><Extramural Activities><Faculty><Goals><Hispanic><Hispanic-serving Institution><Incubated><Infrastructure><Institution><Internships><Investigators><Leadership><MARC><MCP-3><MCP3><Mentors><NC28><Ph.D.><PhD><Postdoc><Postdoctoral Fellow><Protocol Screening><Research><Research Associate><Research Personnel><Research Resources><Researchers><Resources><SCYA7><STEM student><Scholars Program><Scholarship><Science><Series><Site><Students><Training><Underrepresented Students><Universities><career><community building><disadvantaged student><enroll><experience><graduate student><innovate><innovation><innovative><interest><intern><matriculation><outreach><peer><peer networks><post-doc><post-doctoral><post-doctoral trainee><programs><research associates><science, technology, engineering and math student><science, technology, engineering and mathematics student><skills><social><students who are disadvantaged><success><undergrad><undergraduate><undergraduate student>
+---
+application_id: 10843058
+activity_code: T32
+title: Training Veterinarians for Careers in Biomedical Research
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: PROJECT NARRATIVE Veterinarian scientists play crucial roles by performing biomedical research and by developing, characterizing, and using animal models to study human diseases, thereby enhancing rigor and reproducibility. Our training program offers an outstanding career development opportunity for veterinarians passionate about building careers in biomedical research and becoming innovators and leaders in their research fields. This proposal seeks renewal of support for our highly productive NIH-funded T32 program led by Joseph L. Mankowski, DVM, PhD, to train veterinarians in biomedical research at the Johns Hopkins University School of Medicine.
+terms: Biomedical Research;career;Training;Veterinarians
+---
+application_id: 11098204
+activity_code: T34
+title: MARC at The University of Kansas
+org_name: UNIVERSITY OF KANSAS LAWRENCE
+phr: PROJECT NARRATIVE
+The Maximizing Access to Research Careers program at the University of Kansas (KU MARC) will continue to
+provide research-intensive experiences and professional development training to prepare scholars from diverse
+backgrounds for biomedical PhD programs. We will utilize our long-standing collaboration with Haskell Indian
+Nations University to emphasize recruitment of American Indian and Alaska Native scholars, populations highly
+underrepresented in the biomedical workforce. Culturally-responsive mentor training will enable a safe, inclusive
+research environment for all MARC scholars, and carefully guided individualized training in research and
+professional development will enable scholars to develop the self-efficacy and confidence needed for success
+in graduate school.
+terms: <Address><Alaska Indian><Alaska Native><Alaskan American><Alaskan Indian><Alaskan Native><Alaskan Native American><American><American Indian><Biomedical Research><CCL7><CCL7 gene><Collaborations><Communication><Development><Development Plans><Doctor of Philosophy><Ensure><Evaluation><Faculty><Goals><History><Individual><Institution><Kansas><Knowledge><Laboratories><Leadership><MARC><MCP-3><MCP3><Mentors><NC28><Personal Satisfaction><Ph.D.><PhD><Position><Positioning Attribute><Program Evaluation><R-Series Research Projects><R01 Mechanism><R01 Program><Recording of previous events><Reproducibility><Research><Research Grants><Research Project Grants><Research Projects><Research Training><SCYA7><Science><Scientist><Self Efficacy><Series><Shapes><Students><Testing><Training><Training Programs><Underrepresented Groups><Underrepresented Populations><Universities><Work><build resilience><build resiliency><career><conference><convention><develop resilience><develop resiliency><developmental><enhance resilience><enhance resiliency><experience><facilitate resilience><faculty mentor><graduate school preparation><histories><improve resilience><improve resiliency><improved><increase resilience><increase resiliency><innovate><innovation><innovative><member><peer><programs><promote resilience><promote resiliency><recruit><resilience development><skills><student research><student-led research><success><summit><support network><symposia><symposium><under representation of groups><under represented groups><under represented people><under represented populations><underrepresentation of groups><underrepresented people><well-being><wellbeing>
+---
+application_id: 10818514
+activity_code: T34
+title: U-RISE at California State University San Marcos
+org_name: CALIFORNIA STATE UNIVERSITY SAN MARCOS
+phr: NARRATIVE The CSU San Marcos U-RISE Program will prepare students from underrepresented (UR) and disadvantaged groups for careers in biomedical and behavioral research and will serve to advance the goals of the National Institutes of Health to diversify the research workforce. A more diverse research workforce will better address the research needs of a diverse nation and thereby contribute to better health for all.
+terms: Academia;Address;Asian Americans;Behavioral Sciences;Biomedical Research;California;career;college;Communication;County;Doctor of Philosophy;Environment;Evidence based practice;experience;Exposure to;Family;Fellowship;Future;Goals;graduate school;Grant;Health;Hispanic;Hispanic-serving Institution;Home;Institution;Knowledge;Learning Skill;Length;Low income;Methodology;Native Americans;Not Hispanic or Latino;Pacific Islander;Pathway interactions;pedagogy;Performance;Population;Positioning Attribute;programs;recruit;Research;Science;Scientist;skills;student participation;Students;success;undergraduate student;Underrepresented Populations;Underrepresented Students;United States National Institutes of Health;Universities
+---
+application_id: 10814887
+activity_code: K99
+title: Nicotine promotes perineural brain metastasis by activating GABAergic neurons
+org_name: WAKE FOREST UNIVERSITY HEALTH SCIENCES
+phr: PROJECT NARRATIVE The proposed research seeks to develop a functional and mechanistic understanding of how GABAergic neuron modulation by nicotine contributes to the brain metastasis of lung cancer. Here, we aim to define the newly discovered functional role of GABAergic neuron in supporting brain metastasis and provides a scientific basis for pursuing the inhibition of nicotine-activated GABA shunt as a novel therapeutic strategy that could significantly improve the treatment and prevention of brain metastasis in cancer patients with past and current smoking history. Information gleaned from this work may be used in the generation of future clinical trials focusing on therapeutic interventions for preventing brain metastasis.
+terms: Address;Animal Model;Brain;Brain Neoplasms;Cancer Biology;Cancer Patient;career;cell growth;Cells;Clinical;Clinical Trials;clinically significant;Coculture Techniques;Communication;Communities;Data;Data Analyses;Death Rate;density;Development;efficacy testing;exosome;experience;Family;Future Generations;GABA Receptor;GABA transporter;gamma-Aminobutyric Acid;Genes;Glean;Goals;Immunologic Surveillance;improved;In Vitro;in vivo;Incidence;inhibitor;innovation;Intake;Laboratories;Leadership;lung lesion;Malignant neoplasm of lung;member;Mentors;Mentorship;Metabolic;Metabolism;Metastatic malignant neoplasm to brain;Microglia;MicroRNAs;Molecular;mouse model;neoplastic cell;neuronal growth;Neurons;Nicotine;non-smoker;novel;novel strategies;novel therapeutic intervention;Pathologic;Pathway interactions;Patients;perineural;Phase;prevent;Prevention;Prevention strategy;Production;Prognosis;Publishing;Recurrent tumor;Research;Resources;Risk Factors;Role;Shunt Device;skills;Smoker;Smoking;Smoking History;Synapses;synaptogenesis;System;Techniques;Therapeutic Intervention;therapeutically effective;Training;translational cancer research;treatment strategy;tumor growth;tumor progression;Universities;WNT Signaling Pathway;Work
+---
+application_id: 10860987
+activity_code: T34
+title: MARC at University of California, Davis
+org_name: UNIVERSITY OF CALIFORNIA AT DAVIS
+phr: Narrative The goal of our proposed MARC program is to increase the diversity of students pursuing a PhD in a STEM field and a research career in the biomedical sciences. To achieve this goal, we have developed a series of activities for underrepresented, socioeconomically disadvantaged, and disabled undergraduates. These activities are designed to facilitate the development of their talent and professional skills in preparation for excelling in their subsequent PhD (or MD/PhD) programs and careers in biomedical science.
+terms: Bachelor&apos;s Degree;Biomedical Research;California;career;CCL7 gene;collaborative environment;Communication;Communities;Data Analyses;Development;Discipline;Doctor of Philosophy;Ethics;experience;Experimental Designs;faculty research;Goals;graduate school;graduate student;Learning;Measurable;Mentors;Mentorship;Mission;Oral;outreach;Process;programs;recruit;Research;Research Design;Science;Self Efficacy;skills;social;Social support;Source;STEM field;student participation;student retention;Students;symposium;Time;Training Programs;Underrepresented Populations;Universities;Writing
+---
+application_id: 10819496
+activity_code: K99
+title: Mitochondrial transfer from astrocytes to glioblastoma cells drives tumor growth
+org_name: UNIVERSITY OF MIAMI SCHOOL OF MEDICINE
+phr: PROJECT NARRATIVE Complex interactions among neurons, glia, immune and endothelial cells in the microenvironment drive the progression, treatment resistance, and recurrence of glioblastoma (GBM), an incurable primary brain tumor. The short-term goal of this project is to elucidate how a poorly understood microenvironmental interaction—namely, mitochondrial transfer from neural cells to GBM—drives tumorigenicity, focusing on astrocytes as predominant organelle donors. The long-term goal and future studies will (a) investigate the differential mechanistic role of mitochondrial transfer from diverse brain cell lineages, (b) interrogate how mitochondrial transfer influences spatio-temporal heterogeneity in primary and recurrent patient GBM specimens, and (c) develop therapeutics targeting mole...
+terms: Acetylation;Address;Affect;Astrocytes;ATAC-seq;Automobile Driving;Biological Assay;Biology;Bone Marrow;Brain;brain cell;Brain Neoplasms;cancer cell;career;career development;cdc Genes;Cell Cycle;Cell Lineage;Cell model;Cell Proliferation;Cells;chemotherapy;Chemotherapy and/or radiation;Chromatin;Coculture Techniques;Complex;Cytoskeleton;Data;design;Development;Disease;Endogenous Retroviruses;Endothelial Cells;Endothelium;Enzymes;Epigenetic Process;Fellowship;fluorophore;Frequencies;Future;Gap Junctions;Gene Expression;Gene Expression Profile;genetic manipulation;Genus Hippocampus;Glioblastoma;Glioma;Goals;Heterogeneity;Histone Acetylation;Human;Hypoxia;Immune;Immunodeficient Mouse;Immunotherapy;In Vitro;in vivo;inhibitor;insight;knock-down;Knowledge;Leukocytes;Link;Macrophage;Malignant neoplasm of brain;Malignant Neoplasms;Mediating;Mediator;Mentorship;Metabolic;Metabolism;metabolomics;Microglia;Mitochondria;Mitochondrial DNA;Mitochondrial Proton-Translocating ATPases;mitochondrial therapeutics;Mitosis;Modality;Modeling;Molecular;molecular targeted therapies;Morphology;mouse model;Mus;neoplastic cell;neural;Neuroglia;Neurons;Non-Malignant;Operative Surgical Procedures;Organelles;overexpression;Pathway interactions;patient derived xenograft model;Patients;Phase;Phenotype;Physicians;Primary Brain Neoplasms;Process;progenitor;programs;Proliferating;Proteins;purine/pyrimidine metabolism;Radiation therapy;receptor;Recurrence;Reporter;Research;Resistance;Role;Scientist;self-renewal;Shapes;single-cell RNA sequencing;Sorting;spatiotemporal;Specimen;standard care;stem;stem cells;Stress;Supporting Cell;syncytin;Testing;Therapeutic;therapeutic development;therapeutic target;therapy resistant;Training;transcriptome sequencing;Transgenic Mice;tumor;tumor growth;tumor metabolism;tumor microenvironment;Tumorigenicity
+---
+application_id: 11093747
+activity_code: T34
+title: U-RISE at California State University San Marcos
+org_name: CALIFORNIA STATE UNIVERSITY SAN MARCOS
+phr: PROJECT NARRATIVE
+ The URISE Program at CSU San Marcos will prepare scholars for careers in
+biomedical and behavioral research and will serve to advance the goals of the National
+Institutes of Health to promote broad participation in the biomedical workforce. Our
+program will create inclusive and comprehensive programming and research experiences
+to support diverse students that will better address the research needs of a diverse
+nation and thereby contribute to better health for all.
+terms: <Academia><Behavioral Sciences><Biomedical Research><California><Communication><County><Doctor of Philosophy><Environment><Evidence based practice><Future><Goals><Knowledge><Length><Methodology><Pathway interactions><Performance><Ph.D.><PhD><Population><Position><Positioning Attribute><Research><Science><Scientist><Students><Universities><career><experience><graduate school><pathway><pedagogy><programs><recruit><resilience><resilient><skills><student engagement><student motivation><student participation><success><undergrad><undergraduate><undergraduate student>
+---
+application_id: 10804671
+activity_code: T34
+title: U-RISE at University of Maryland Baltimore County
+org_name: UNIVERSITY OF MARYLAND BALTIMORE COUNTY
+phr: Narrative The goal of U-RISE at UMBC is to develop a diverse pool of undergraduates, prioritizing underrepresented races and ethnicities, students with disabilities, and students from disadvantaged backgrounds, who complete their baccalaureate degree, and transition into and complete biomedical, research-focused, higher-degree programs (e.g., Ph.D. or M.D./Ph.D.), and pursue biomedical research careers. Increasing diverse perspectives within the biomedical research workforce will maximize potential for complex scientific problem-solving. The program will provide a combination of activities to ensure: (i) excellence in academic science, (ii) adapting to the intensity of contemporary scientific research, (iii) student interest in pursuing a Ph.D. degree and subsequent career in biomedical re...
+terms: Admission activity;Advisory Committees;Bachelor&apos;s Degree;Baltimore;Biomedical Research;career;college;community college;County;course development;Degree program;design;disabled students;Doctor of Medicine;Doctor of Philosophy;Eligibility Determination;Enrollment;ethnic minority;faculty mentor;Financial Support;Funding;graduate school;Hour;Institution;interest;Internships;low socioeconomic status;Maryland;Mental Health;Monitor;Participant;Performance;Policies;programs;racial minority;recruit;Research;Research Ethics;Research Personnel;Research Support;Research Training;Science;Science, Technology, Engineering and Mathematics;Students;summer research;Surveys;Training;undergraduate research;undergraduate student;Underrepresented Students;Universities;Well in self;Writing
+---
+application_id: 11094634
+activity_code: T34
+title: MARC PROGRAM AT THE UNIVERSITY OF CALIFORNIA, IRVINE
+org_name: UNIVERSITY OF CALIFORNIA-IRVINE
+phr: Project Narrative
+The broad participation of undergraduates in biomedical research is critical to ensure that a diverse and
+highly trained workforce is available to assume leadership roles in the Nation's biomedical research
+enterprise, to address the need of improving the health of the people of the United States. This project
+provides extraordinary opportunities for undergraduates from diverse groups to be trained as the next
+generation of leaders in biomedical research.
+terms: <Academic advising><Academic counseling><Academic guidance><Admissions Counseling><Biologic Sciences><Biological Sciences><Biomedical Research><Bioscience><CCL7><CCL7 gene><California><Communication><Complex thinking><Computational Biology><Critical Thinking><Curriculum><Doctor of Philosophy><Doctor's Degree><Doctorate Degree><EXTMR><Educational Curriculum><Educational counseling><Educational workshop><Elements><Environment><Ethics><Evaluative Thinking><Extramural><Extramural Activities><Faculty><Faculty Seminar><Faculty Workshop><Funding><Genomics><Individual><Institution><Journals><Knowledge><Life Sciences><Literature><MARC><MCP-3><MCP3><Magazine><Methods><Minority><NC28><Oral><Ph.D.><PhD><Preparation><Preparedness><Process><Readiness><Reading><Reproducibility><Research><Research Design><Research Training><SCYA7><Safety><Schools><Science><Scientist><Self Direction><Series><Site><Study Type><Teacher Workshop><Training><Underrepresented Groups><Underrepresented Populations><Universities><Workshop><career><computer biology><conference><convention><design><designing><doctoral degree><ethical><experience><faculty conference><faculty mentor><faculty panel><graduate school><improved><interest><lesson plans><outreach><posters><preparations><programs><research faculty><responsible research conduct><skills><statistics><study design><summit><symposia><symposium><under representation of groups><under represented groups><under represented people><under represented populations><undergrad><undergraduate><undergraduate student><underrepresentation of groups><underrepresented people>
+---
+application_id: 11094259
+activity_code: T34
+title: U-RISE at University of Maryland Baltimore County
+org_name: UNIVERSITY OF MARYLAND BALTIMORE COUNTY
+phr: PROJECT NARRATIVE
+The goal of U-RISE at UMBC is to develop a diverse pool of undergraduates who complete their B.S degree and
+Ph.D. or M.D./Ph.D. in biomedical science. Increasing diverse perspectives within the biomedical research
+workforce will maximize potential for scientific problem-solving.
+terms: <2 year college><Admission><Admission activity><Advisory Committees><Baccalaureate Degree><Bachelor's Degree><Baltimore><Behavioral Sciences><Biomedical Research><Control Groups><County><Degree program><Development><Doctor of Medicine><Doctor of Philosophy><Eligibility><Eligibility Determination><Emotional well being><Feels well><Financial Support><Funding><Grant><Hour><Institution><Internships><Investigators><Life Experience><M.D.><Maryland><Mental Health><Mental Hygiene><Normal mental condition><Normal mental state><Normal psyche><Participant><Ph.D.><PhD><Policies><Protocol Screening><Psychological Health><Psychological Well Being><Qualifying><Reproducibility><Research><Research Ethics><Research Personnel><Research Support><Research Training><Researchers><Science><Science, Technology, Engineering and Math><Science, Technology, Engineering and Mathematics><Sense of well-being><Students><Task Forces><Training><Undergraduate Degree><Underrepresented Groups><Underrepresented Populations><Universities><Well in self><Writing><advisory team><career><class development><college><collegiate><community college><course development><course material development><design><designing><developmental><disabled students><disparity in health><diversity, equity, and inclusiveness><emotional wellbeing><emotional wellness><equity, diversity, and inclusion><ethnic minority><faculty mentor><financial assistance><graduate school><health disparity><interest><intern><junior college><low SES><low socio-economic position><low socio-economic status><low socioeconomic position><low socioeconomic status><math sciences><mathematical sciences><matriculation><mental well-being><mental wellbeing><mental wellness><programs><psychological wellbeing><psychological wellness><racial minority><recruit><self wellness><sense of wellbeing><students with disabilities><summer research><two year college><under representation of groups><under represented groups><under represented people><under represented populations><undergrad><undergraduate><undergraduate research><undergraduate student><underrepresentation of groups><underrepresented people>
+---
+application_id: 10766761
+activity_code: K99
+title: Patient Administrative Burden in Cancer Care Delivery
+org_name: HARVARD MEDICAL SCHOOL
+phr: PROJECT NARRATIVE The US health care system leads the world in administrative complexity and its associated costs. Cancer is a complex and often high-acuity condition with persistent disparities in health outcomes, making cancer care delivery a priority setting for assessing patient administrative burdens and identifying solutions. The proposed research uses qualitative, survey, and claims data in a sequential mixed methods analysis that will enable the measurement and diagnosis of administrative burden across cancer care settings and produce evidence identifying and motivating actionable organizational or policy targets for clinical leaders and policymakers.
+terms: Adherence;Antineoplastic Agents;Architecture;cancer care;cancer recurrence;cancer therapy;care coordination;care delivery;care outcomes;career development;Caregivers;Caring;Characteristics;chemotherapy;Clinical;Communities;Complex;Comprehensive Cancer Center;cost;Data;data repository;Dedications;design;Development;Diagnosis;Doctor of Philosophy;Education;Emergency department visit;Equity;Failure;Financial cost;Focus Groups;Future;Goals;Guidelines;Health;health disparity;Health Policy;Health Services Accessibility;Health system;Healthcare Systems;high risk;Hospitalization;improved;Inequity;informal caregiving;innovation;insight;Knowledge;Link;Low income;Malignant Neoplasms;Managed Care;marginalization;marginalized population;Measurement;Measures;medication compliance;Mentors;Methods;Modality;novel;Oncology;Oral;Outcome;outreach;patient engagement;Patients;Persons;Pharmacy facility;Phase;Policies;Policy Maker;Prevalence;Process;programs;Property;Proxy;Psychometrics;Quality of Care;Recommendation;recruit;Reporting;repository;Research;Research Personnel;Respondent;response;Role;Services;Site;Stress;success;Supportive care;Survey Methodology;Surveys;theories;Time;Training;Validation;Work
+---
+application_id: 10844458
+activity_code: T34
+title: MARC at the University of California, Irvine
+org_name: UNIVERSITY OF CALIFORNIA-IRVINE
+phr: Project Narrative The research training and academic preparation of underrepresented undergraduates is critical to ensure that a diverse and highly trained workforce is available to assume leadership roles in the Nation’s biomedical research enterprise, to address the need of improving the health of the people of the United States. This project provides extraordinary opportunities for undergraduates from underrepresented groups to be trained as the next generation of leaders in biomedical research.
+terms: Academic advising;Biological Sciences;Biomedical Research;California;career;CCL7 gene;Communication;Computational Biology;Critical Thinking;design;Doctor of Philosophy;Doctor&apos;s Degree;Educational Curriculum;Educational workshop;Elements;Environment;experience;Extramural Activities;Faculty;faculty mentor;Faculty Workshop;Funding;Genomics;graduate school;improved;Individual;Institution;interest;Journals;Knowledge;Literature;Methods;Minority;Oral;Participant;posters;Preparation;Process;programs;Readiness;Reading;Reproducibility;Research;research faculty;Research Training;responsible research conduct;Schools;Science;Scientist;Series;Site;skills;statistics;Students;symposium;Training;undergraduate student;Universities
+---
+application_id: 10843202
+activity_code: T35
+title: UCLA Medical Student Training in Aging Research (MSTAR) Program
+org_name: UNIVERSITY OF CALIFORNIA LOS ANGELES
+phr: Regardless of whether they choose careers in research, medical education or clinical care, medical students who participate in aging research are more likely to pursue careers in aging. The David Geffen School of Medicine at the University of California Los Angeles (UCLA) is partnering with the University of California San Francisco School of Medicine (UCSF), and the University of Washington (UW) to seek continued support for a formal 8-12 week program of training in aging research as well as clinical exposure to aging for medical students.
+terms: Address;Aging;Area;California;career;Clinical;clinical care;Collaborations;Communities;dementia care;Educational process of instructing;Elderly;experience;Faculty;Fostering;Foundations;Funding;Geriatrics;innovation;Institution;interest;intergenerational;Los Angeles;medical schools;Medical Students;Mentors;Methods;Mission;Monitor;Nonprofit Organizations;Palliative Care;Patients;Physicians;programs;Research;Research Priority;Research Training;responsible research conduct;San Francisco;Scientist;Site;skills;student training;Students;Training;Training Programs;Universities;Washington
+---
+application_id: 11115032
+activity_code: T35
+title: Medical Student Training in Aging Research (MSTAR) Program
+org_name: JOHNS HOPKINS UNIVERSITY
+phr: While the U.S. population of adults aged 65 and over is predicted to increase from 55 million in 2022 to 82 million by 2050 (a 47% increase), the number of physicians with training in aging research is declining. In a parallel, between 2022 and 2050, the aging population will also increase while the proportion of physicians entering careers in aging research is insufficient to meet society's needs. A program that stimulates and excites the interest of a medical students to choose careers in aging research is critically needed.
+terms: <21+ years old><65 and older><65 or older><65 years of age and older><65 years of age or more><65 years of age or older><65+ years><65+ years old><> 65 years><Adult><Adult Human><Age><Aged 65 and Over><Aging><Articulation><Biometrics><Biometry><Biostatistics><Clinical><Collaborations><Development and Research><Elderly><Epidemiology><Faculty><Foundations><Funding><Generations><Geriatrics><Gerontology><Infrastructure><Institute of Medicine><Institute of Medicine (U.S.)><Institution><Interdisciplinary Research><Interdisciplinary Study><International><Knowledge><Leadership><Learning><MD students><Medical><Medical Students><Mentors><Multidisciplinary Collaboration><Multidisciplinary Research><NAS/IOM><Physicians><Population><Publications><R & D><R&D><R-Series Research Projects><R01 Mechanism><R01 Program><Reporting><Research><Research Grants><Research Project Grants><Research Projects><Research Resources><Resources><Scientific Publication><Series><Solid><Structure><Students><Syndrome><Talents><Testing><Training><Training Programs><Universities><above age 65><adulthood><advanced age><after age 65><age 65 and greater><age 65 and older><age 65 or older><age > 65><age of 65 years onward><aged 65 and greater><aged 65+><aged group><aged groups><aged individual><aged individuals><aged people><aged person><aged persons><aged population><aged populations><aged ≥65><ages><aging associated><aging population><aging related><career><career development><design><designing><epidemiologic><epidemiological><experience><geriatric><geriatric medicine><gerontologic><human old age (65+)><job environment><lectures><medical college><medical school students><medical schools><meeting><meeting abstracts><meetings><member><multidisciplinary><older adult><older adulthood><over 65 years><population aging><professional atmosphere><programs><research and development><responsible research conduct><school of medicine><senior citizen><skills><student training><tool><work atmosphere><work environment><workplace climate><workplace environment><≥65 years>
+---
+application_id: 10865011
+activity_code: T35
+title: U C San Diego Medical Student Summer Aging Research Training
+org_name: UNIVERSITY OF CALIFORNIA, SAN DIEGO
+phr: There is a dire need for physician scientists in geriatrics and aging research. This research training program is intended to increase the number and diversity of medical students who have interest and experience in research relevant to aging. The goal is to help develop the research workforce that is needed to meet the needs of our rapidly aging society.
+terms: age-related disease;Aging;aging related;Alzheimer&apos;s disease patient;Alzheimer&apos;s disease related dementia;American;California;Cardiovascular Diseases;career;Clinical;Clinical Research;clinical training;Communication;Country;design;Development;disability;disadvantaged background;Disease;Educational workshop;Eligibility Determination;epidemiology study;ethnic minority population;experience;Exposure to;Faculty;Funding;Geriatrics;Goals;hands on research;Impaired cognition;Institution;Learning Skill;Longterm Follow-up;Malignant Neoplasms;Manuscripts;Medical Students;meetings;Mental Depression;Mentors;Molecular;Molecular Biology;Oral;Peer Review;Physicians;posters;Prevention;Program Evaluation;programs;Publishing;racial minority;Records;recruit;Research;Research Personnel;Research Training;Residencies;response;Scientist;Societies;student training;Students;summer student;Supervision;Therapeutic Research;Training;Underrepresented Students;Universities;web site;Woman
