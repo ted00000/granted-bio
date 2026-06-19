@@ -1,4 +1,4 @@
-# Data Pipeline Maintenance Plan — 18JUN2026
+# Data Pipeline Maintenance Plan — 19JUN2026
 
 This is the plan for how we keep our data fresh after launch. It's
 written in plain language. Re-date the header when revising.
@@ -184,12 +184,19 @@ The good parts (we keep these):
 
 The bad parts (we will not repeat these):
 
-1. **Classification re-runs on every project, every time.**
-   `etl/classify_projects_batched.py` fetches *all* projects without
-   a WHERE clause ([line 38](etl/classify_projects_batched.py#L38))
-   and runs Claude on every one of them — even if nothing about the
-   project changed since last run. This is the single biggest
-   recurring cost in the current pipeline.
+1. **Bulk classification re-runs on every project, every time.**
+   `etl/classify_projects_batched.py` (the wrapper that
+   `load_fiscal_year.sh` step 6 invokes) still pages through *every*
+   project in the table and re-classifies, even when nothing about
+   the row changed since last run. This is the single biggest
+   recurring cost in the current pipeline. Mitigations already in
+   place as of 2026-06-19: ~40% of rows skip the LLM via Pass 1
+   deterministic activity-code routing, and Haiku 4.5 is the
+   model used (~$0.0001/proj). Mitigations *not* yet in place:
+   no `classify_content_hash` skip-guard (Phase 3.3/3.4). New awards
+   via `etl/sync_projects_via_api.py` classify inline at ingest
+   and avoid the blanket re-run pattern; only the bulk reclassifier
+   path still over-runs.
 
 2. **The clinical_studies upsert is using the wrong key.**
    `etl/load_to_supabase.py:329` upserts clinical studies on
@@ -395,11 +402,14 @@ nothing in API calls.
 
 **Phase 5: the RePORTER API cron.**
 
-- 5.1 New cron `/api/cron/sync-reporter-api` that queries the
-  API for `award_notice_date` in the last 7 days, runs the
-  results through the delta-aware loader.
-- 5.2 Wired into `vercel.json`. Weekly, Monday morning ET to
-  catch the Sun-night upstream refresh.
+- 5.1 ✓ `etl/sync_projects_via_api.py` shipped 2026-06-19. Pulls
+  via `date_added.from_date`, applies bio-boundary filter,
+  classifies inline via the canonical classifier, upserts
+  projects + abstracts.
+- 5.2 Wire it to run on a schedule. Options: a `/api/cron/sync-reporter-api`
+  endpoint hitting the deployed script, or a separate cron host.
+  Weekly, Monday morning ET to catch the Sun-night upstream refresh.
+  Off-peak per NIH guidance.
 
 **Phase 6: real ExPORTER bulk ingest path (only when ExPORTER updates).**
 
@@ -434,9 +444,10 @@ the relevant phase, not now.
 1. What hash algorithm and what fields go into the embed hash?
    Probably SHA-256 of `title + phr + terms + abstract`. We
    nail this down in Phase 3.
-2. Does the RePORTER API V2's `criteria` object support the
+2. ~~Does the RePORTER API V2's `criteria` object support the
    `date_added` filter we plan to use, with the exact semantics
-   we expect? Confirm in Phase 5 prep.
+   we expect?~~ Confirmed 2026-06-19: yes, used in
+   `etl/sync_projects_via_api.py` against `FISCAL_YEARS = [2024, 2025, 2026]`.
 3. How do we want to handle a row that disappears from the
    bulk file (orphan)? Phase 2 just reports them. Phase 6
    probably soft-flags. Hard delete is off the table.

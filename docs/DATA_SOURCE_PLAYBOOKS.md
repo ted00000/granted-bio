@@ -1,4 +1,4 @@
-# Data Source Playbooks — 17JUN2026
+# Data Source Playbooks — 19JUN2026
 
 For each upstream data source we depend on, this doc describes:
 
@@ -70,13 +70,14 @@ Full-file ingest via `load_to_supabase.py` is the anomaly, not the
 default. See `DATA_PIPELINE_PLAN.md` for the rules on when full
 upsert is appropriate.
 
-**Current per-entity tooling status (17JUN2026):**
+**Current per-entity tooling status (19JUN2026):**
 
 | Entity | Diff script | Delta loader | Status |
 |---|---|---|---|
 | Clinical studies | `scripts/diff-clinical-studies.ts` | `etl/load_clinical_studies_delta.py` | ✓ Both shipped |
 | Patents | `scripts/diff-patents.ts` | `etl/load_patents_delta.py` | ✓ Both shipped |
-| Projects | not built yet | not built yet | Pending |
+| Projects (new awards) | n/a — API is the delta | `etl/sync_projects_via_api.py` | ✓ Shipped (new awards only; modifications still need ExPORTER bulk) |
+| Projects (bulk) | not built yet | not built yet | Pending |
 | Abstracts | not built yet | not built yet | Pending |
 | Publications | not built yet | not built yet | Pending |
 | Project-Publication links | not built yet | not built yet | Pending |
@@ -99,9 +100,9 @@ not before. Same template, different natural keys + diff fields.
 | **Detection** | Daily `HEAD` request per FY file; act when `Last-Modified` advances |
 | **Natural key** | `application_id` (unique) |
 | **Delta computation** | Download file → parse → for each row compare CSV `application_id` against DB. Output: new (not in DB), changed (in both, embeddable/classifiable fields differ), orphan (in DB not in CSV — for record-keeping only, never deleted) |
-| **Delta application** | Feed delta-only rows through existing `etl/process_projects.py` + `load_to_supabase.py` chain. Idempotent upsert on `application_id`. |
-| **Downstream stages** | (a) Project embedding regen — only if `title + phr + terms + abstract` hash differs from stored `embed_content_hash`. (b) Classification — only if `title + phr + terms + abstract` hash differs from stored `classify_content_hash`. Both stages are Phase 3 work; today blanket regens. |
-| **Cost characteristics** | Per changed row: ~$0.00002 embedding (OpenAI) + Haiku classification (~$0.0001/proj). For a 1000-row delta that's roughly $0.12 total. Negligible. The cost-killer is blanket regen on unchanged content — what Phase 3 fixes. |
+| **Delta application** | Feed delta-only rows through existing `etl/process_projects.py` + `load_to_supabase.py` chain. Idempotent upsert on `application_id`. As of 2026-06-19 `load_to_supabase.py` no longer classifies inline — projects land with `primary_category = NULL` and are filled by the post-load classifier step. |
+| **Downstream stages** | (a) Project embedding regen — only if `title + phr + terms + abstract` hash differs from stored `embed_content_hash`. (b) Classification — runs against rows with NULL `primary_category` (default) via `etl/classify_projects_batched.py` (which wraps the canonical `etl/classifier.py`). Pass 1 (activity-code routing) is deterministic in Python; Pass 2 (content categories) goes through Claude Haiku. See "Classification SOP" section below. |
+| **Cost characteristics** | Per changed row: ~$0.00002 embedding (OpenAI) + Haiku classification (~$0.0001/proj). For a 1000-row delta that's roughly $0.12 total. Negligible. About 40% of projects skip the LLM entirely thanks to Pass 1 deterministic routing. The cost-killer is blanket regen on unchanged content — what Phase 3 fixes. |
 | **Production safety notes** | Upsert idempotency is ✓. No special concerns once Phase 3 guards are in. |
 
 ### Source 2 — Abstracts (ExPORTER, per fiscal year)
@@ -195,9 +196,9 @@ not before. Same template, different natural keys + diff fields.
 | **Detection** | Not "detection" — pulled on a schedule. Daily cron asks "any awards with `award_notice_date` in the last N days?" |
 | **Available date filters** | `award_notice_date`, `date_added`, `project_start_date`, `project_end_date`. **No `last_modified_date` filter exists**, so the API can capture new awards but NOT modifications to existing ones — that's why ExPORTER bulk remains mandatory. |
 | **Delta computation** | The API result IS the delta — we asked for "since X" and got just those rows. No separate diff step required. |
-| **Delta application** | Translate JSON responses into the dict-shape the existing `load_to_supabase.py` expects. Run through existing upsert path. |
+| **Delta application** | `etl/sync_projects_via_api.py`. Pulls API → maps to ExPORTER-shaped dicts → applies bio-boundary filter (`process_projects.is_bio_related`) → classifies via canonical `etl/classifier.py` → upserts projects + abstracts on `application_id`. Does NOT regen embeddings; run `etl/generate_embeddings_batched.py` (default NULL-only mode) after. |
 | **Rate limits** | "No more than one URL request per second"; large jobs to "weekends or weekdays between 9:00 PM and 5:00 AM EST." IP blocking risk. **Schedule daily cron for off-peak.** |
-| **Downstream stages** | Same as Source 1 (Projects) |
+| **Downstream stages** | Same as Source 1 (Projects) — embeddings + classification. Classification is inline (canonical classifier called from the sync script), unlike Source 1 which defers classification to the post-load step. |
 | **Cost** | Free (NIH API has no charge); the cost is in embeddings + classification on the new rows. |
 | **Production safety** | Rate-limit aware; daily small windows keep volume tiny |
 
@@ -224,6 +225,59 @@ not before. Same template, different natural keys + diff fields.
 | **Status** | **Deferred.** Patent content displayed today comes from ExPORTER's `Patents.csv` (patent_id, title, assignee from iEdison) + runtime deep-link to USPTO image-ppubs and patents.google.com. Quality is acceptable for the launch product. |
 | **When to revisit** | If patent display becomes a sales pain point or if we want pending-application coverage |
 | **Relationship to Source 5** | Same shape as Source 6 ↔ Source 8: ExPORTER carries the *NIH project ↔ patent linkage*; USPTO would carry richer *patent content* (titles, abstracts, classifications, assignees, pending applications). |
+
+---
+
+## Classification SOP
+
+Classification is part of the project ingest pipeline, not a separate
+source. It runs against whatever rows are in `projects` and writes
+back `primary_category`, `primary_category_confidence`, `org_type`.
+
+**One canonical classifier**, as of 2026-06-19: `etl/classifier.py`
+exposes `classify_projects(projects, abstracts_map)` — Pass 1 is
+deterministic activity-code routing in Python (training: T/F/K/D
+prefixes + R25/R36/R38/R90/UE5/ZIE; infrastructure: P/S/G center
+codes, U13/U24/U2C/U41/U42 cooperative agreements, ZIA/ZIC/ZIJ
+intramural, N01/N02/OT2/OT3 contracts); Pass 2 is Claude Haiku 4.5
+for content categories (basic_research, biotools, therapeutics,
+diagnostics, medical_device, digital_health, other). Pass 1 routes
+~40% of projects deterministically and skips the LLM entirely.
+
+| Scenario | Tool | Notes |
+|---|---|---|
+| Bulk reclassify every row | `python3 etl/classify_projects_batched.py` | Wraps the canonical classifier. Invoked by `load_fiscal_year.sh` step 6. Use `--limit N` and `--dry-run` to sanity-check. |
+| New awards from RePORTER API | `python3 etl/sync_projects_via_api.py` | Classifies inline as part of the catch-up; no extra step needed. |
+| Newly-loaded rows from ExPORTER bulk | `python3 etl/classify_projects_batched.py` (post step 6 of `load_fiscal_year.sh`) | `load_to_supabase.py` no longer classifies inline; rows land with `primary_category = NULL`. |
+| Fix NULL rows specifically | `python3 etl/reclassify_existing.py --where-null` | Targeted version of the bulk reclassifier. |
+| Audit a single category (e.g. "other") | `python3 etl/reclassify_existing.py --current-category other` | Useful when category quality regresses on one slice. |
+| Re-score low-confidence rows | `python3 etl/reclassify_existing.py --confidence-below 70` | Confidence ≤ 30 cases are the admin review queue. |
+| Audit a single activity-code prefix | `python3 etl/reclassify_existing.py --activity-prefix K` | Useful for Pass 1 spot-checks. |
+| Validate a prompt change | `python3 scripts/validate_classifier_prompt.py` | Replays a deterministic 500-project sample against `etl/category_disagreements_clean.json` and prints per-category accuracy + top mistakes. Use `--model <id>` to A/B different LLMs. |
+
+`etl/reclassify_existing.py` always prints the matching-row count
+and asks for confirmation before spending API budget; pass `--yes`
+to skip the prompt, `--dry-run` to skip the write.
+
+**What to never do.** The historical batch one-off scripts
+(`reclassify_*.py`, `classify_batches_*.py`, `classify_semantic_*.py`,
+etc.) have been archived to `etl/archive/2026-06-19_classifier_consolidation/`
+and the historical docs to `docs/archive/2026-06-19_classifier_consolidation/`.
+Don't resurrect them — re-running them would re-introduce the
+inconsistent classification states the consolidation cleaned up. If
+you need behavior that's not covered above, extend
+`reclassify_existing.py` (add a new filter) rather than spinning
+up a new script.
+
+**Validation data.** `etl/category_disagreements.json` and
+`etl/category_disagreements_clean.json` are gold-standard corrections
+preserved from the March 2026 review. They're the validation oracle
+for any future prompt change. Don't move or rename them.
+
+**Design rationale.** `docs/CLASSIFIER_PROMPT_REVIEW.md` is the
+itemized review that drove the prompt design (Pass 1 list,
+biotools-vs-therapeutics distinctions, SBIR/STTR nuance, etc.).
+Read it before changing the prompt.
 
 ---
 
