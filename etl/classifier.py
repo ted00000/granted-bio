@@ -84,8 +84,23 @@ For each project, return:
 
 **Always → training:** T32, T34, T35, T90, TL1, TL4, F30-F33, F99, K01-K99, D43, D71, R25, R90
 **Always → infrastructure:** P30, P50, P51, S10, G20, U13, R13, U24, U2C
+**Always → infrastructure (contract / intramural):** ZIA (NIH intramural research projects), N01, N02 (NIH research contracts), OT2, OT3 (other transactions / collaborative agreements), S07, S08, S09, S11 (institutional support)
 
-If activity code matches above → classify immediately, skip content analysis.
+If activity code matches above → classify immediately, skip content analysis. These codes denote funding mechanisms whose primary deliverable is training, institutional capacity, or services — not new science.
+
+## SBIR / STTR SPECIAL HANDLING
+
+Activity codes R41, R42, R43, R44 are SBIR/STTR — Small Business Innovation Research and Small Business Technology Transfer. By statute, these fund small business product development. They are almost never basic_research, training, or infrastructure.
+
+For SBIR/STTR awards, classify into one of:
+- biotools, therapeutics, diagnostics, medical_device, or digital_health
+depending on the PRODUCT being developed.
+
+Notes:
+- Phase I (R43, R41) is feasibility / proof-of-concept for the product.
+- Phase II (R44, R42) is development toward commercialization.
+- "Development of," "system," "platform," and "novel" language is normal for SBIR and does NOT by itself signal biotools — apply the standard primary-deliverable test.
+- If a SBIR/STTR genuinely doesn't fit any product category, use "other" with confidence ≤ 30 to flag for review.
 
 ## PASS 2: CONTENT ANALYSIS
 
@@ -98,23 +113,224 @@ Ask: "What is the PRIMARY DELIVERABLE?"
 - Patient-facing software → digital_health
 - None of above → other
 
-## 8 DISAMBIGUATION RULES
+## basic_research IS A PRIMARY CATEGORY, NOT A FALLBACK
 
-1. **Assays/probes/model systems → biotools** NOT basic_research (if DEVELOPING the tool)
+basic_research is the largest and most heterogeneous category. It covers any project whose primary deliverable is biological knowledge — understanding mechanism, characterizing a phenomenon, or discovering new biology.
+
+Characteristic patterns:
+- Mechanism studies (signaling, gene regulation, structure-function)
+- Discovery / characterization (new genes, pathways, cell types, phenomena)
+- Model system USE for studying biology (developing a model system FOR others to use is biotools — note the distinction)
+- Cohort or epidemiological studies of disease biology
+- Comparative biology / evolution
+- Single-cell / multi-omic profiling for biological understanding
+- Imaging studies focused on biological process visualization
+
+If a project mentions a disease, drug, or clinical application but the PRIMARY OUTPUT is biological understanding rather than a tangible deliverable (drug, test, device, software, tool), it is basic_research.
+
+Disease relevance ≠ therapeutic development.
+Tool use ≠ tool development.
+Diagnostic context ≠ diagnostic development.
+
+## DISAMBIGUATION RULES
+
+1. **Assays/probes/model systems → biotools** NOT basic_research (if DEVELOPING the tool for others to use)
+
 2. **USES vs DEVELOPS:** "Uses RNA-seq to study X" → basic_research. "Improves RNA-seq method" → biotools
+
 3. **Biomarker intent:** "Identify biomarkers" → basic_research. "Validate clinical panel" → diagnostics. "Build detection platform" → biotools
-4. **Drug studies:** "Understand how drug X works" → basic_research. "Optimize drug X for efficacy" → therapeutics
-5. **AI/ML by application:** ML for protein folding → basic_research. ML drug screening → therapeutics. ML tool for researchers → biotools. ML clinical decision support → digital_health
-6. **digital_health requires patient/clinician deployment:** Software for researchers → biotools
+
+4. **CRITICAL DISTINCTION — studying-a-drug vs developing-a-drug:**
+
+   A project that USES a drug to study biology → basic_research.
+   A project that DEVELOPS or OPTIMIZES a drug → therapeutics.
+
+   Three tests, applied in order:
+
+   TEST A — strip the drug name. Does the project still make sense as a basic biology study?
+     YES → basic_research (e.g., "We use rapamycin to investigate mTOR signaling in cancer")
+     NO → therapeutics (e.g., "Develop a rapamycin analog with improved selectivity")
+
+   TEST B — what is the project DELIVERING at the end?
+     Mechanism knowledge → basic_research
+     Validated target for future drug development → basic_research
+     Improved drug candidate / new dosing / new formulation → therapeutics
+     Efficacy data toward an IND or clinical trial → therapeutics
+
+   TEST C — what is the verb in the title or Aim 1?
+     "Studying," "investigating," "characterizing," "elucidating," "examining," "exploring" → basic_research
+     "Developing," "optimizing," "validating efficacy of," "advancing to clinic," "translating to" → therapeutics
+
+5. **AI/ML by application domain:** ML for protein folding → basic_research. ML drug screening → therapeutics. ML tool for researchers → biotools. ML clinical decision support → digital_health
+
+6. **digital_health requires patient or clinician deployment:** Software for researchers → biotools, not digital_health
+
 7. **Combination projects:** Classify by PRIMARY innovation (usually title focus or Aim 1)
+
 8. **other = genuinely residual:** Re-read abstract for hidden deliverables before using
 
-## Organization types:
-- company: Inc., LLC, Corp., Therapeutics, Biosciences, SBIR/STTR
-- university: Academic institutions
-- hospital: Medical centers, health systems
-- research_institute: Broad, Scripps, Fred Hutchinson, etc.
-- other: Government, non-profits
+9. **The "for [disease]" pattern is NOT determinative:**
+
+   Many basic research projects describe their work as "for cancer," "for Alzheimer's," "for autism" etc. without being therapeutic, diagnostic, or biotools work.
+
+   Examples of "for [disease]" that ARE basic_research:
+   - "Novel signaling pathway for cancer therapy" (mechanism work with therapeutic implications; not a therapy itself)
+   - "New mouse model for Alzheimer's" (model use; unless explicit "for use by other researchers")
+   - "Single-cell atlas for liver disease" (descriptive biology with disease context)
+
+   Examples of "for [disease]" that are NOT basic_research:
+   - "Developing a diagnostic test for early Alzheimer's" → diagnostics
+   - "Optimizing antibody for breast cancer immunotherapy" → therapeutics
+   - "Building an open-access cancer organoid biobank" → biotools
+
+   Test: strip the disease context. Is there still a deliverable beyond knowledge?
+
+## THERAPEUTICS KEYWORD EXPANSION
+
+Strong therapeutic signals include the following terms in the title or abstract, especially when paired with disease context or efficacy/safety language:
+
+- "treating [disease/condition]" / "treatment of [disease/condition]"
+- "therapeutic" / "therapy" / "therapies"
+- "biologic" / "biologics" / "biological agent"
+- "radiotherapeutic" / "radiotherapy" / "radio-conjugate"
+- "CAR-T" / "CAR-NK" / "CAR-M" / "CAR-microglia" or any "CAR-X" cell therapy
+- "ADC" / "antibody-drug conjugate" / "immunoconjugate"
+- "mRNA vaccine" / "mRNA therapeutic"
+- "nanoparticle" + therapeutic context (delivery, drug, formulation)
+- "gene therapy" / "gene editing" with explicit therapeutic intent
+- "small molecule" + ("inhibitor" OR "agonist" OR "antagonist") + disease
+- "monoclonal antibody" / "mAb" + disease context
+- "vaccine" + disease prevention or treatment context
+
+BUT: these terms alone do NOT make a project therapeutic. Apply Rule 4 (USES vs DEVELOPS). Many basic research projects mention these terms while studying biology, not developing a treatment.
+
+## WORKED EXAMPLES (real NIH grants, classifications are ground truth from manual review)
+
+EXAMPLE 1 — therapeutics → basic_research (most common misclassification)
+
+PROJECT:
+  title: "Investigating the molecular mechanism of P-gp/NHERF-1 network at feto-maternal interface and role of paracrine signaling of EVs containing drug transporter proteins"
+  org: University of Texas Med Br Galveston
+  activity: R01
+
+ANALYSIS:
+  "Investigating the molecular mechanism" is unambiguous basic_research vocabulary. The mention of "drug transporter proteins" makes this read therapeutically at first glance, but applying Rule 4 Test A: strip "drug transporter" and the project still makes sense as a study of P-gp/NHERF-1 signaling at the placental interface. The deliverable is mechanism knowledge, not a drug. Confidence: high.
+
+CLASSIFICATION: basic_research (confidence 90)
+
+EXAMPLE 2 — biotools → basic_research
+
+PROJECT:
+  title: "The role of RNA m6A modification in the regulation of HIV latency and reactivation"
+  org: Case Western Reserve University
+  activity: R61
+
+ANALYSIS:
+  "The role of X in the regulation of Y" is mechanism vocabulary. HIV is a disease context, but Rule 9 reminds us that disease relevance ≠ therapeutic development. The project studies how m6A modification regulates viral latency — knowledge work, not tool development, not therapeutic development. The R61 activity code is exploratory R-series, consistent with mechanism research. Confidence: high.
+
+CLASSIFICATION: basic_research (confidence 90)
+
+EXAMPLE 3 — basic_research → biotools (the developing-a-tool case)
+
+PROJECT:
+  title: "Functional MRI Method Development"
+  org: National Institute of Mental Health
+  activity: ZIA
+
+ANALYSIS:
+  Despite ZIA being a Pass 1 infrastructure code, the title explicitly says "Method Development." This is the developing-a-tool case Rule 2 highlights: the deliverable is a new MRI method for other researchers to use, not knowledge produced by USING fMRI. When activity code and content disagree this strongly, content wins. Confidence: moderate-high.
+
+CLASSIFICATION: biotools (confidence 80)
+
+EXAMPLE 4 — basic_research → therapeutics (Phase 2 trial, clear development)
+
+PROJECT:
+  title: "Phase 2 Clinical Trial of Ciliary Neurotrophic Factor (CNTF) for Macular Telangiectasia Type 2 (MacTel)"
+  org: National Eye Institute
+  activity: ZIA
+
+ANALYSIS:
+  "Phase 2 Clinical Trial" is unambiguous therapeutic development. The "for [disease]" pattern (Rule 9) usually doesn't determine therapeutics, but a Phase 2 trial is testing efficacy in patients — that's the developing-a-drug end of Rule 4. ZIA activity code would normally route to infrastructure under Pass 1, but a clinical trial is a deliverable, not institutional infrastructure. Confidence: very high.
+
+CLASSIFICATION: therapeutics (confidence 95)
+
+EXAMPLE 5 — SBIR R44 case: software for researchers, not patients
+
+PROJECT:
+  title: "Rapid structure-based software to enhance antibody affinity and developability for high-throughput screening: Aiming toward total in silico design of antibodies"
+  org: DNASTAR, Inc.
+  activity: R44
+
+ANALYSIS:
+  R44 is SBIR Phase II — by statute, product development. The product here is software for researchers doing antibody design (biotools per Rule 6: software for researchers → biotools, not digital_health). The "antibody" mention could read therapeutics, but the software is for OTHER scientists to use in their antibody work, not a therapeutic in itself. Confidence: high.
+
+CLASSIFICATION: biotools (confidence 85)
+  org_type: company (R44 SBIR + "Inc." suffix)
+
+EXAMPLE 6 — digital_health → biotools (software audience matters)
+
+PROJECT:
+  title: "Development of Computational Tools and Their Applications to Various Biological Systems"
+  org: Lehigh University
+  activity: R35
+
+ANALYSIS:
+  "Development of Computational Tools" is biotools (Rule 6: software for researchers → biotools). The phrase "Applications to Various Biological Systems" indicates the tools are used for biological research, not for patient-facing clinical decision support. Rule 6 is explicit: digital_health requires patient or clinician deployment. Confidence: high.
+
+CLASSIFICATION: biotools (confidence 85)
+
+## ORGANIZATION TYPES
+
+### company (private commercial entities)
+Signals:
+- Names ending in Inc., LLC, Corp., Corporation, Ltd., Co.
+- "Therapeutics," "Biosciences," "Pharma," "Diagnostics" in the org name
+- All SBIR/STTR awards (activity codes R41/R42/R43/R44) are companies
+- "Holdings," "Capital," "Ventures" suffixes (parent companies)
+
+### university (academic degree-granting institutions)
+Signals:
+- "University of," "University," "College" in name
+- "Institute of Technology" (MIT, Caltech, Georgia Tech) — academic
+- Includes university medical schools and affiliated medical centers (UCSF, UCLA Health, Johns Hopkins Medicine, etc.)
+- State universities and land-grant institutions
+
+### hospital (independent medical centers and health systems)
+Signals:
+- "Hospital," "Medical Center," "Health System," "Clinic" in name AND NOT university-affiliated
+- Independent hospitals: Mayo Clinic, Cleveland Clinic, Mass General Brigham, Memorial Sloan-Kettering, MD Anderson
+- VA Medical Centers (Department of Veterans Affairs)
+- Children's hospitals: Boston Children's, CHOP, Cincinnati Children's
+
+### research_institute (independent non-profit research orgs)
+Signals:
+- "Institute" without a university degree-granting parent: Broad, Salk, Scripps, Whitehead, Fred Hutchinson, Cold Spring Harbor, Allen Institute
+- Foundation labs: Howard Hughes Medical Institute (HHMI), Chan Zuckerberg (CZI), Wellcome
+- Federally Funded Research and Development Centers (FFRDCs)
+
+### other
+Signals:
+- Government agencies (NIH intramural divisions, FDA, CDC, VA Office)
+- Foundations and 501(c)(3) non-profits without dedicated research labs
+- Professional societies
+- International organizations
+- Anything ambiguous after the above rules
+
+Edge cases:
+- Hospital + university affiliation: classify by the org_name on the award itself, not by the affiliation
+- Industry-academic partnerships: classify by the org_name receiving the award
+- If genuinely ambiguous after applying all rules, default to "other". The admin review queue will catch it.
+
+## WHEN YOU ARE GENUINELY UNCERTAIN
+
+If after applying all rules and tests you cannot confidently classify a project into one of the nine categories, set:
+
+  primary_category: "other"
+  category_confidence: ≤ 30
+
+Low-confidence "other" classifications surface in the admin review queue for human inspection. It is BETTER to flag for review than to force a confident wrong answer.
+
+DO NOT over-use this escape. Most projects fit cleanly into one of the nine categories. Use the review path only when the abstract is genuinely unparseable, internally contradictory, or describes work that spans multiple categories with no clear primary.
 
 Return ONLY the JSON array, no other text."""
 
