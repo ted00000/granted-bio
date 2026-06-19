@@ -25,7 +25,10 @@ import sys
 import json
 import time
 from collections import Counter
-from urllib import request, error
+
+# requests handles SSL via certifi automatically — avoids the macOS Python
+# self-signed-certificate-in-chain error that urllib hits out of the box.
+import requests
 
 # Use the etl/ bio-boundary check on the sample
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'etl'))
@@ -43,15 +46,14 @@ DATE_FLOOR = '2026-03-09'
 
 
 def post(payload: dict) -> dict:
-    body = json.dumps(payload).encode('utf-8')
-    req = request.Request(
+    resp = requests.post(
         API_URL,
-        data=body,
-        headers={'Content-Type': 'application/json', 'Accept': 'application/json'},
-        method='POST',
+        json=payload,
+        headers={'Accept': 'application/json'},
+        timeout=60,
     )
-    with request.urlopen(req, timeout=60) as resp:
-        return json.loads(resp.read())
+    resp.raise_for_status()
+    return resp.json()
 
 
 def map_to_csv_shape(api_row: dict) -> dict:
@@ -99,8 +101,8 @@ def main() -> None:
     print('Request 1: fetching total count...')
     try:
         meta_only = post({**base_criteria, 'limit': 1, 'offset': 0})
-    except error.HTTPError as e:
-        print(f'  HTTP {e.code}: {e.read().decode("utf-8", errors="replace")[:500]}')
+    except requests.HTTPError as e:
+        print(f'  HTTP {e.response.status_code}: {e.response.text[:500]}')
         sys.exit(1)
     except Exception as e:
         print(f'  Error: {e}')
@@ -127,8 +129,8 @@ def main() -> None:
     time.sleep(1)
     try:
         sample_resp = post({**base_criteria, 'limit': sample_size, 'offset': 0})
-    except error.HTTPError as e:
-        print(f'  HTTP {e.code}: {e.read().decode("utf-8", errors="replace")[:500]}')
+    except requests.HTTPError as e:
+        print(f'  HTTP {e.response.status_code}: {e.response.text[:500]}')
         sys.exit(1)
     except Exception as e:
         print(f'  Error: {e}')
