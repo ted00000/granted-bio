@@ -81,7 +81,38 @@ NULL-embedding drift** from earlier pipeline runs. We won't know the
 true scope on projects/abstracts/publications until we run their
 delta-ingest cycles too.
 
-**What to do.**
+## Watch-for sub-condition: drift vs. structural NULL
+
+Some NULL embeddings are not drift — they're **structural**. A row whose
+embeddable input field (e.g. `pub_title` for publications) is itself
+NULL or empty has nothing to embed; its NULL embedding is the correct
+state, not a gap.
+
+This bit us 2026-06-18: the publication embedding script went into an
+infinite loop after closing the real drift (~3,961 publications), then
+re-fetching the same 108 title-less rows forever because they still
+matched `embedding IS NULL` after the per-row `if not text: continue`
+skipped them.
+
+**How we handle it now:**
+
+1. **Embedding scripts must filter structural NULLs at the SQL pagination
+   level**, not just `continue` past them in the inner loop. Otherwise
+   the script never terminates. The publication script was patched
+   2026-06-18 to add `pub_title not.is.null AND pub_title != ''` to its
+   pagination query.
+2. **The diagnostic (`scripts/check-embedding-coverage.ts`) classifies
+   NULLs into drift vs. structural** so we can see at a glance what's
+   actually fixable vs. expected.
+3. **The dashboard's NULL-embedding metric should surface both
+   numbers separately.** Drift is the alert-worthy signal; structural
+   is just a fact about the data.
+
+**Observed 2026-06-18:** publications has 4,069 NULL embeddings total →
+3,961 drift (fillable) + 108 structural (publications with no title in
+the source data).
+
+## What to do about drift
 
 - **Today** (informal): when the embedding-script row count exceeds
   the delta count by a meaningful margin (>5% or several hundred rows),

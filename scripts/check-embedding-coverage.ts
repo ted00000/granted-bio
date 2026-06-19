@@ -1,14 +1,14 @@
 // Embedding coverage health check.
 //
-// Counts NULL vs total per embedding column across every entity that has
-// one. Read-only, cheap (six SELECT COUNT queries), no paid APIs.
+// Counts NULL embeddings per entity and classifies them as:
+//   - DRIFT: row has embeddable content but no embedding (something we
+//            should fill — represents a pipeline gap)
+//   - STRUCTURAL: row has no embeddable content (NULL/empty input text),
+//            so there's nothing to embed and the NULL is correct.
 //
-// Use this to size NULL-embedding drift before deciding what to fill,
-// and to validate that recent backfills actually closed the gap.
-//
-// Output is the same shape we'll eventually surface on the dashboard as
-// the per-entity health metric (see DATA_PIPELINE_PLAN.md watch-for
-// section).
+// Read-only, cheap (a handful of SELECT COUNT queries), no paid APIs.
+// Same shape we'll surface on the dashboard as the per-entity health
+// metric (see DATA_PIPELINE_PLAN.md watch-for section).
 //
 // Usage:
 //   npx tsx scripts/check-embedding-coverage.ts
@@ -18,7 +18,11 @@ config({ path: '.env.local' })
 
 interface CheckTarget {
   table: string
-  column: string
+  embeddingColumn: string
+  // Field(s) that define "embeddable content." For composite inputs (e.g.,
+  // projects = title + phr + terms + abstract), include the most material
+  // field — a NULL on this means the row likely has no useful input at all.
+  inputField: string
   label: string
 }
 
@@ -26,12 +30,33 @@ interface CheckTarget {
 // 2026-06-18 (see migration 20260618_drop_unused_project_embeddings.sql).
 // abstract_embedding is a blended vector of title + phr + terms + abstract
 // per etl/generate_embeddings_batched.py:108 — the single source of
-// per-project semantic signal.
+// per-project semantic signal. We use `title` as the embeddability indicator
+// because in practice a project with no title has nothing else either.
 const TARGETS: CheckTarget[] = [
-  { table: 'projects', column: 'abstract_embedding', label: 'projects.abstract_embedding' },
-  { table: 'publications', column: 'publication_embedding', label: 'publications.publication_embedding' },
-  { table: 'patents', column: 'patent_embedding', label: 'patents.patent_embedding' },
-  { table: 'clinical_studies', column: 'study_embedding', label: 'clinical_studies.study_embedding' },
+  {
+    table: 'projects',
+    embeddingColumn: 'abstract_embedding',
+    inputField: 'title',
+    label: 'projects.abstract_embedding',
+  },
+  {
+    table: 'publications',
+    embeddingColumn: 'publication_embedding',
+    inputField: 'pub_title',
+    label: 'publications.publication_embedding',
+  },
+  {
+    table: 'patents',
+    embeddingColumn: 'patent_embedding',
+    inputField: 'patent_title',
+    label: 'patents.patent_embedding',
+  },
+  {
+    table: 'clinical_studies',
+    embeddingColumn: 'study_embedding',
+    inputField: 'study_title',
+    label: 'clinical_studies.study_embedding',
+  },
 ]
 
 async function countAll(table: string): Promise<number> {
@@ -53,20 +78,32 @@ async function countNull(table: string, column: string): Promise<number> {
   return count ?? 0
 }
 
+async function countStructuralNull(
+  table: string,
+  embeddingColumn: string,
+  inputField: string
+): Promise<number> {
+  // STRUCTURAL = no embedding AND no embeddable input. The PostgREST `or`
+  // filter expresses "input field is NULL or empty string."
+  const { supabaseAdmin } = await import('../src/lib/supabase')
+  const { count, error } = await supabaseAdmin
+    .from(table)
+    .select('*', { count: 'exact', head: true })
+    .is(embeddingColumn, null)
+    .or(`${inputField}.is.null,${inputField}.eq.`)
+  if (error) throw new Error(`count structural ${table}.${embeddingColumn}: ${error.message}`)
+  return count ?? 0
+}
+
 function pad(s: string, n: number): string {
   return s.length >= n ? s : s + ' '.repeat(n - s.length)
 }
 
-function padNum(n: number, width: number): string {
-  return n.toLocaleString().padStart(width)
-}
-
 async function main() {
-  console.log('='.repeat(72))
+  console.log('='.repeat(80))
   console.log('Embedding coverage check (read-only)')
-  console.log('='.repeat(72))
+  console.log('='.repeat(80))
 
-  // Cache total counts per table so we don't re-query (projects has 3 columns).
   const totals = new Map<string, number>()
   for (const t of new Set(TARGETS.map((t) => t.table))) {
     totals.set(t, await countAll(t))
@@ -74,45 +111,77 @@ async function main() {
 
   console.log()
   console.log(
-    pad('Column', 40) + padNum(0, 0).padStart(0) +
-      pad('Total', 14) +
-      pad('NULL', 14) +
-      pad('Coverage', 12)
+    pad('Column', 38) +
+      pad('Total', 12) +
+      pad('NULL', 10) +
+      pad('Drift', 10) +
+      pad('Structural', 13) +
+      'Coverage'
   )
-  console.log('-'.repeat(72))
+  console.log('-'.repeat(80))
 
-  const results: { label: string; total: number; nulls: number; pct: number }[] = []
+  const results: {
+    label: string
+    total: number
+    nulls: number
+    structural: number
+    drift: number
+    pct: number
+  }[] = []
 
   for (const target of TARGETS) {
     const total = totals.get(target.table) ?? 0
-    const nulls = await countNull(target.table, target.column)
+    const nulls = await countNull(target.table, target.embeddingColumn)
+    const structural = await countStructuralNull(
+      target.table,
+      target.embeddingColumn,
+      target.inputField
+    )
+    const drift = nulls - structural
     const filled = total - nulls
     const pct = total === 0 ? 0 : (filled / total) * 100
-    results.push({ label: target.label, total, nulls, pct })
+    results.push({ label: target.label, total, nulls, structural, drift, pct })
 
     const cov = `${pct.toFixed(1)}%`
     console.log(
-      pad(target.label, 40) +
-        pad(total.toLocaleString(), 14) +
-        pad(nulls.toLocaleString(), 14) +
-        pad(cov, 12)
+      pad(target.label, 38) +
+        pad(total.toLocaleString(), 12) +
+        pad(nulls.toLocaleString(), 10) +
+        pad(drift.toLocaleString(), 10) +
+        pad(structural.toLocaleString(), 13) +
+        cov
     )
   }
 
   console.log()
   console.log('Summary:')
-  const gaps = results.filter((r) => r.nulls > 0)
-  if (gaps.length === 0) {
-    console.log('  All embedding columns are fully covered. No NULL gaps.')
+
+  const drifty = results.filter((r) => r.drift > 0)
+  const structuralOnly = results.filter((r) => r.drift === 0 && r.structural > 0)
+
+  if (drifty.length === 0) {
+    console.log('  No drift NULLs. Every embeddable row has its embedding.')
   } else {
-    console.log('  Columns with NULL embeddings (drift):')
-    for (const g of gaps) {
-      console.log(`    - ${g.label}: ${g.nulls.toLocaleString()} NULL / ${g.total.toLocaleString()} total`)
+    console.log('  Columns with DRIFT (embeddable but not embedded — fillable):')
+    for (const r of drifty) {
+      console.log(
+        `    - ${r.label}: ${r.drift.toLocaleString()} drift / ${r.total.toLocaleString()} total`
+      )
+    }
+  }
+  if (structuralOnly.length > 0) {
+    console.log('  Columns with STRUCTURAL NULLs only (no embeddable input — expected):')
+    for (const r of structuralOnly) {
+      console.log(
+        `    - ${r.label}: ${r.structural.toLocaleString()} structural / ${r.total.toLocaleString()} total`
+      )
     }
   }
 
-  const totalNulls = results.reduce((sum, r) => sum + r.nulls, 0)
-  console.log(`  Total NULL embeddings across all entities: ${totalNulls.toLocaleString()}`)
+  const totalDrift = results.reduce((sum, r) => sum + r.drift, 0)
+  const totalStructural = results.reduce((sum, r) => sum + r.structural, 0)
+  console.log(`  Total drift across all entities:      ${totalDrift.toLocaleString()}`)
+  console.log(`  Total structural across all entities: ${totalStructural.toLocaleString()}`)
   console.log()
   console.log('No DB writes were made.')
 }

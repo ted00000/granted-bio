@@ -73,10 +73,19 @@ while True:
     print(f"BATCH {batch_num}")
     print(f"{'='*60}", flush=True)
 
+    # Filter at the SQL level to skip publications with NULL or empty
+    # pub_title — they have no embeddable content and we'd just `continue`
+    # past them in the inner loop, leaving their embedding NULL and
+    # re-fetching the same rows on the next iteration (infinite loop).
+    # These are STRUCTURAL NULL embeddings, not drift — see
+    # docs/DATA_PIPELINE_PLAN.md "Watch-for: NULL-embedding drift".
     try:
         response = supabase.table('publications').select(
             'pmid, pub_title'
-        ).is_('publication_embedding', 'null').limit(BATCH_SIZE).execute()
+        ).is_('publication_embedding', 'null') \
+         .filter('pub_title', 'not.is', 'null') \
+         .neq('pub_title', '') \
+         .limit(BATCH_SIZE).execute()
     except Exception as e:
         # If column doesn't exist, select all publications
         print(f"Note: Selecting all publications (column may not exist): {e}", flush=True)
