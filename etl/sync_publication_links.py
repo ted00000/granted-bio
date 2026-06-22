@@ -194,9 +194,34 @@ def _linked_project_numbers(supabase: Client) -> Set[str]:
     return out
 
 
+def upsert_publication_stubs(supabase: Client, pmids: List[str]) -> int:
+    """Insert minimal publications rows (pmid only) so the FK on
+    project_publications.pmid passes. Existing rows are left untouched
+    (ON CONFLICT DO NOTHING). The PubMed metadata fetcher (step 3 of
+    the SOP) then fills in title/journal/dates for these stubs."""
+    if not pmids:
+        return 0
+    stubs = [{'pmid': str(p)} for p in pmids]
+    try:
+        supabase.table('publications').upsert(
+            stubs,
+            on_conflict='pmid',
+            ignore_duplicates=True,
+        ).execute()
+        return len(stubs)
+    except Exception as e:
+        print(f'    Stub upsert error: {str(e)[:200]}')
+        return 0
+
+
 def upsert_links(supabase: Client, rows: List[Dict[str, Any]]) -> int:
     if not rows:
         return 0
+    # FK requirement: every pmid in project_publications must exist in
+    # publications first. Insert minimal stubs so the link write succeeds;
+    # metadata fills in later (step 3).
+    pmids = list({r['pmid'] for r in rows})
+    upsert_publication_stubs(supabase, pmids)
     try:
         supabase.table('project_publications').upsert(
             rows,
