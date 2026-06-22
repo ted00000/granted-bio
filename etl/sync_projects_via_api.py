@@ -308,6 +308,13 @@ def main() -> None:
         classified.append(row)
     print()
 
+    # Strip the ExPORTER-style raw uppercase fields that the bio filter
+    # consumed — they're not real columns on the projects table.
+    _SCRATCH_KEYS = ('FUNDING_ICs', 'ACTIVITY', 'PROJECT_TITLE', 'PHR', 'ORG_NAME')
+    for row in classified:
+        for k in _SCRATCH_KEYS:
+            row.pop(k, None)
+
     if args.dry_run:
         print('DRY RUN — skipping all DB writes.')
         print(f'  Would upsert {len(classified):,} projects')
