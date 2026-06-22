@@ -146,15 +146,18 @@ def api_row_to_process_dict(api: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def fetch_all_pages(from_date: str) -> List[Dict[str, Any]]:
+def fetch_all_pages(from_date: str, to_date: Optional[str] = None) -> List[Dict[str, Any]]:
     """
     Paginate through all matching projects, respecting the rate limit.
     Returns the raw API rows; mapping + filtering happens in the caller.
     """
+    date_added: Dict[str, str] = {'from_date': from_date}
+    if to_date:
+        date_added['to_date'] = to_date
     criteria = {
         'criteria': {
             'fiscal_years': FISCAL_YEARS,
-            'date_added': {'from_date': from_date},
+            'date_added': date_added,
         },
     }
 
@@ -223,6 +226,11 @@ def main() -> None:
         help=f'date_added.from_date filter (default: {DEFAULT_FROM_DATE})',
     )
     parser.add_argument(
+        '--to-date',
+        default=None,
+        help='Optional date_added.to_date filter (inclusive). Used for date-chunking when total exceeds the 15k API offset cap.',
+    )
+    parser.add_argument(
         '--dry-run',
         action='store_true',
         help='Skip all DB writes; print what would be written',
@@ -233,13 +241,14 @@ def main() -> None:
     print('RePORTER API → projects sync')
     print('=' * 72)
     print(f'  date_added.from_date = {args.from_date}')
+    print(f'  date_added.to_date   = {args.to_date or "(none)"}')
     print(f'  fiscal_years         = {FISCAL_YEARS}')
     print(f'  dry-run              = {args.dry_run}')
     print()
 
     # 1. Pull every matching project from the API
     print('Fetching from RePORTER API...')
-    api_rows = fetch_all_pages(args.from_date)
+    api_rows = fetch_all_pages(args.from_date, args.to_date)
     print(f'  Total fetched: {len(api_rows):,}')
     print()
 
