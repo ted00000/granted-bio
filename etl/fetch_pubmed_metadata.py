@@ -165,8 +165,23 @@ def fetch_esummary_batch(pmids: List[str], api_key: Optional[str]) -> List[Dict[
 
 
 def select_missing_pmids(supabase: Client) -> List[str]:
-    """All pmids in project_publications that don't yet exist in publications."""
-    # Step 1: pmids in project_publications
+    """Pmids that need PubMed metadata.
+
+    Two cases qualify:
+      1. Pmid is in project_publications but has no row in publications at all
+         (legacy — shouldn't happen anymore now that sync_publication_links.py
+         writes stubs before links, but kept for safety).
+      2. Pmid is in publications with pub_title IS NULL (a stub waiting for
+         metadata — this is the dominant case after sync_publication_links.py
+         runs).
+
+    We compute the union of both by:
+      - Pulling all pmids from project_publications (the universe we care about)
+      - Pulling all pmids from publications WHERE pub_title IS NOT NULL
+        (those already have metadata)
+      - Returning the difference.
+    """
+    # Step 1: pmids referenced by at least one project_publications row
     linked: set = set()
     offset = 0
     while True:
@@ -180,26 +195,26 @@ def select_missing_pmids(supabase: Client) -> List[str]:
         offset += DB_PAGE
         if len(rows) < DB_PAGE:
             break
-    print(f'  pmids in project_publications: {len(linked):,}')
+    print(f'  pmids in project_publications:        {len(linked):,}')
 
-    # Step 2: pmids already in publications
-    existing: set = set()
+    # Step 2: pmids in publications that ALREADY have a title (= already enriched)
+    has_metadata: set = set()
     offset = 0
     while True:
-        page = supabase.table('publications').select('pmid').range(offset, offset + DB_PAGE - 1).execute()
+        page = supabase.table('publications').select('pmid').not_.is_('pub_title', 'null').range(offset, offset + DB_PAGE - 1).execute()
         rows = page.data or []
         if not rows:
             break
         for r in rows:
             if r.get('pmid'):
-                existing.add(str(r['pmid']))
+                has_metadata.add(str(r['pmid']))
         offset += DB_PAGE
         if len(rows) < DB_PAGE:
             break
-    print(f'  pmids already in publications:  {len(existing):,}')
+    print(f'  pmids in publications with metadata:  {len(has_metadata):,}')
 
-    missing = sorted(linked - existing)
-    print(f'  pmids to fetch:                 {len(missing):,}')
+    missing = sorted(linked - has_metadata)
+    print(f'  pmids needing metadata:               {len(missing):,}')
     return missing
 
 
