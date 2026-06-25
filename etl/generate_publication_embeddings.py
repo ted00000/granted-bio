@@ -1,163 +1,147 @@
 """
-Generate embeddings for publications in Supabase.
-Processes publications in batches.
+Generate embeddings for publications in Supabase. Batched for throughput.
+
+For each batch:
+  1. Fetch up to BATCH_SIZE publications with NULL publication_embedding +
+     non-null pub_title.
+  2. Call OpenAI ONCE with all titles (text-embedding-3-small supports up
+     to 2048 inputs per request). Returns one embedding vector per title.
+  3. Upsert all rows in ONE Supabase call using on_conflict='pmid' — this
+     UPDATEs only the publication_embedding column (other fields untouched).
+
+Throughput vs. the previous per-row implementation: ~50-100x faster.
+The previous script made one OpenAI call + one Supabase UPDATE per row;
+each round-trip was ~0.3-0.5 sec dominated by network latency. Batching
+collapses that to ~2 round-trips per BATCH_SIZE rows.
 """
 
 import os
 import sys
+import time
 from dotenv import load_dotenv
 load_dotenv('.env.local')
 
 import openai
 from supabase import create_client
 
-# Flush output immediately
-sys.stdout.flush()
 
-# Initialize clients
-print("=" * 60)
-print("PUBLICATION EMBEDDING GENERATION FOR GRANTED.BIO")
-print("=" * 60)
-print("\nConnecting to Supabase...", flush=True)
-supabase = create_client(
-    os.environ['NEXT_PUBLIC_SUPABASE_URL'],
-    os.environ['SUPABASE_SERVICE_KEY']
-)
-print("✓ Connected to Supabase", flush=True)
+BATCH_SIZE = 500              # publications per OpenAI + Supabase round-trip
+TITLE_MAX_CHARS = 8000        # truncate before sending to OpenAI
+MODEL = "text-embedding-3-small"
+COST_PER_1K_TOKENS = 0.00002  # text-embedding-3-small pricing
 
-openai_client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
-model = "text-embedding-3-small"
-print(f"✓ OpenAI client ready (model: {model})", flush=True)
 
-# Check total count
-print("\nChecking total publications...", flush=True)
-total_result = supabase.table('publications').select('pmid', count='exact').execute()
-total_publications = total_result.count
-print(f"✓ Found {total_publications:,} total publications", flush=True)
+def main() -> None:
+    print("=" * 60)
+    print("PUBLICATION EMBEDDING GENERATION (batched)")
+    print("=" * 60)
 
-# Check how many need embeddings
-print("Checking publications without embeddings...", flush=True)
-try:
-    without_embed = supabase.table('publications').select('pmid', count='exact').is_('publication_embedding', 'null').execute()
-    total_remaining = without_embed.count
-except:
-    # Column might not exist yet, assume all need embeddings
-    total_remaining = total_publications
-print(f"✓ Found {total_remaining:,} publications needing embeddings\n", flush=True)
+    supabase = create_client(
+        os.environ['NEXT_PUBLIC_SUPABASE_URL'],
+        os.environ['SUPABASE_SERVICE_KEY'],
+    )
+    openai_client = openai.OpenAI(api_key=os.environ['OPENAI_API_KEY'])
+    print(f"  Model: {MODEL}")
+    print(f"  Batch size: {BATCH_SIZE}", flush=True)
 
-if total_remaining == 0:
-    print("All publications already have embeddings! Nothing to do.")
-    sys.exit(0)
+    # Count what's left
+    remaining = supabase.table('publications').select(
+        'pmid', count='estimated', head=True
+    ).is_('publication_embedding', 'null').filter('pub_title', 'not.is', 'null').neq('pub_title', '').execute()
+    total_remaining = remaining.count or 0
+    print(f"\n  Publications needing embedding: {total_remaining:,}")
+    print(f"  Estimated cost: ${total_remaining * 0.00002:.2f}\n", flush=True)
 
-# Statistics
-total_cost = 0.0
-total_tokens = 0
-total_generated = 0
-total_errors = 0
-batch_num = 0
-BATCH_SIZE = 500
+    if total_remaining == 0:
+        print("All publications already have embeddings. Done.")
+        return
 
-print("=" * 60)
-print("STARTING PUBLICATION EMBEDDING GENERATION")
-print("=" * 60)
-print(f"Total publications to process: {total_remaining:,}")
-print(f"Batch size: {BATCH_SIZE} publications")
-print(f"Estimated cost: ${total_remaining * 0.00002:.2f}")
-print(f"Estimated time: ~{total_remaining * 0.3 / 60:.1f} minutes\n", flush=True)
+    total_generated = 0
+    total_tokens = 0
+    total_cost = 0.0
+    total_errors = 0
+    batch_num = 0
+    start = time.time()
 
-while True:
-    batch_num += 1
+    while True:
+        batch_num += 1
 
-    # Fetch next batch of publications without embeddings
-    print(f"\n{'='*60}")
-    print(f"BATCH {batch_num}")
-    print(f"{'='*60}", flush=True)
-
-    # Filter at the SQL level to skip publications with NULL or empty
-    # pub_title — they have no embeddable content and we'd just `continue`
-    # past them in the inner loop, leaving their embedding NULL and
-    # re-fetching the same rows on the next iteration (infinite loop).
-    # These are STRUCTURAL NULL embeddings, not drift — see
-    # docs/DATA_PIPELINE_PLAN.md "Watch-for: NULL-embedding drift".
-    try:
-        response = supabase.table('publications').select(
-            'pmid, pub_title'
-        ).is_('publication_embedding', 'null') \
-         .filter('pub_title', 'not.is', 'null') \
-         .neq('pub_title', '') \
-         .limit(BATCH_SIZE).execute()
-    except Exception as e:
-        # If column doesn't exist, select all publications
-        print(f"Note: Selecting all publications (column may not exist): {e}", flush=True)
-        response = supabase.table('publications').select(
-            'pmid, pub_title'
+        # Fetch next batch. The filter at SQL level keeps us from looping
+        # on rows we can't embed (NULL or empty title).
+        page = supabase.table('publications').select('pmid, pub_title').is_(
+            'publication_embedding', 'null'
+        ).filter('pub_title', 'not.is', 'null').neq(
+            'pub_title', ''
         ).limit(BATCH_SIZE).execute()
 
-    publications = response.data
-    batch_size = len(publications)
+        rows = page.data or []
+        if not rows:
+            print("✓ No more publications to process.", flush=True)
+            break
 
-    if batch_size == 0:
-        print("✓ No more publications to process!", flush=True)
-        break
+        # Prepare titles for OpenAI; preserve pmid alignment
+        pmids = [r['pmid'] for r in rows]
+        titles = [(r.get('pub_title') or '')[:TITLE_MAX_CHARS] for r in rows]
 
-    print(f"Processing {batch_size} publications in this batch...", flush=True)
-
-    batch_cost = 0
-    batch_generated = 0
-    batch_errors = 0
-
-    for i, pub in enumerate(publications):
-        if i % 100 == 0:
-            print(f"  [{i}/{batch_size}] Batch cost: ${batch_cost:.4f}, Errors: {batch_errors}", flush=True)
-
+        # One OpenAI call for the whole batch
         try:
-            pmid = pub['pmid']
-            pub_title = pub.get('pub_title', '')
+            resp = openai_client.embeddings.create(model=MODEL, input=titles)
+        except Exception as e:
+            total_errors += len(rows)
+            print(f"  Batch {batch_num} OpenAI error ({len(rows)} rows lost this batch): {str(e)[:200]}", flush=True)
+            # Without embeddings we can't write; move on to the next batch.
+            # On rerun the NULL filter will pick these up again.
+            time.sleep(1)
+            continue
 
-            if not pub_title or not pub_title.strip():
+        # Build upsert payload — one row per publication, only the embedding column
+        updates = []
+        for i, pmid in enumerate(pmids):
+            try:
+                emb = resp.data[i].embedding
+            except (IndexError, AttributeError) as e:
+                total_errors += 1
+                print(f"  Missing embedding for pmid={pmid}: {e}", flush=True)
                 continue
+            updates.append({'pmid': pmid, 'publication_embedding': emb})
 
-            # Generate embedding
-            embedding_response = openai_client.embeddings.create(
-                model=model,
-                input=pub_title[:8000]
+        # One Supabase upsert for the whole batch
+        try:
+            supabase.table('publications').upsert(updates, on_conflict='pmid').execute()
+            total_generated += len(updates)
+        except Exception as e:
+            total_errors += len(updates)
+            print(f"  Batch {batch_num} Supabase upsert error: {str(e)[:200]}", flush=True)
+            continue
+
+        tokens = resp.usage.total_tokens if resp.usage else 0
+        cost = (tokens / 1000) * COST_PER_1K_TOKENS
+        total_tokens += tokens
+        total_cost += cost
+
+        # Cadence-controlled progress logging — every 5 batches or first/last
+        if batch_num % 5 == 1 or len(rows) < BATCH_SIZE:
+            elapsed = time.time() - start
+            rate = total_generated / elapsed if elapsed > 0 else 0
+            eta_sec = (total_remaining - total_generated) / rate if rate > 0 else 0
+            print(
+                f"  Batch {batch_num}: +{len(updates)} embeddings | "
+                f"running total {total_generated:,} | "
+                f"${total_cost:.4f} | "
+                f"rate {rate:.1f}/sec | "
+                f"ETA {eta_sec / 60:.1f} min",
+                flush=True,
             )
 
-            embedding = embedding_response.data[0].embedding
-            tokens_used = embedding_response.usage.total_tokens
-            cost = (tokens_used / 1000) * 0.00002
+    elapsed = time.time() - start
+    print()
+    print("=" * 60)
+    print(f"DONE — {total_generated:,} embeddings in {elapsed / 60:.1f} min")
+    print(f"  Tokens: {total_tokens:,}")
+    print(f"  Cost:   ${total_cost:.4f}")
+    print(f"  Errors: {total_errors}")
+    print("=" * 60)
 
-            batch_cost += cost
-            total_cost += cost
-            total_tokens += tokens_used
 
-            # Update publication with vector
-            supabase.table('publications').update({
-                'publication_embedding': embedding
-            }).eq('pmid', pmid).execute()
-
-            batch_generated += 1
-            total_generated += 1
-
-        except Exception as e:
-            batch_errors += 1
-            total_errors += 1
-            if total_errors <= 20:  # Only print first 20 errors
-                print(f"  ERROR on {pub.get('pmid')}: {str(e)[:80]}", flush=True)
-
-    print(f"\n✓ Batch {batch_num} complete:", flush=True)
-    print(f"  Generated: {batch_generated}/{batch_size}")
-    print(f"  Errors: {batch_errors}")
-    print(f"  Batch cost: ${batch_cost:.4f}")
-    print(f"  Running total: {total_generated:,} embeddings, ${total_cost:.4f}", flush=True)
-
-print(f"\n{'='*60}")
-print(f"PUBLICATION EMBEDDING GENERATION COMPLETE")
-print(f"{'='*60}")
-print(f"Total embeddings generated: {total_generated:,}")
-print(f"Total errors: {total_errors}")
-print(f"Success rate: {(total_generated/(total_generated+total_errors)*100) if (total_generated+total_errors) > 0 else 0:.1f}%")
-print(f"Total tokens: {total_tokens:,}")
-print(f"Total cost: ${total_cost:.4f}")
-print(f"Average cost per publication: ${total_cost/max(total_generated,1):.6f}")
-print(f"{'='*60}", flush=True)
+if __name__ == '__main__':
+    main()
