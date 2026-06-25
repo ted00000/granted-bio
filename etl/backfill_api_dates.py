@@ -48,13 +48,16 @@ def get_supabase() -> Client:
     return create_client(url, key)
 
 
-def fetch_target_appl_ids(supabase: Client, since: str = None, limit: int = None) -> List[int]:
-    """Pull application_ids for projects that need date backfill."""
-    out: List[int] = []
+def fetch_target_rows(supabase: Client, since: str = None, limit: int = None) -> Dict[str, str]:
+    """Pull (application_id → project_number) for projects that need date
+    backfill. Returns a dict so we can include project_number in the upsert
+    payload (PostgREST's INSERT clause requires it even when ON CONFLICT
+    routes to UPDATE)."""
+    out: Dict[str, str] = {}
     offset = 0
     page = 1000
     while True:
-        q = supabase.table('projects').select('application_id').is_('project_start', 'null')
+        q = supabase.table('projects').select('application_id, project_number').is_('project_start', 'null')
         if since:
             q = q.gte('created_at', since)
         rows = q.range(offset, offset + page - 1).execute().data or []
@@ -62,16 +65,17 @@ def fetch_target_appl_ids(supabase: Client, since: str = None, limit: int = None
             break
         for r in rows:
             aid = r.get('application_id')
-            if aid is not None:
-                try:
-                    out.append(int(aid))
-                except (TypeError, ValueError):
-                    continue
+            pn = r.get('project_number')
+            if aid is None or pn is None:
+                continue
+            out[str(aid)] = pn
         offset += page
         if len(rows) < page:
             break
         if limit and len(out) >= limit:
-            out = out[:limit]
+            # Trim down to the requested cap (sorted for determinism)
+            keys = sorted(out.keys())[:limit]
+            out = {k: out[k] for k in keys}
             break
     return out
 
@@ -109,7 +113,8 @@ def main() -> None:
     print('=' * 64)
 
     supabase = get_supabase()
-    appl_ids = fetch_target_appl_ids(supabase, since=args.since, limit=args.limit)
+    appl_to_pn = fetch_target_rows(supabase, since=args.since, limit=args.limit)
+    appl_ids = [int(a) for a in appl_to_pn.keys()]
     print(f'  Projects with NULL project_start: {len(appl_ids):,}')
     if args.since:
         print(f'  Filter: created_at >= {args.since}')
@@ -149,10 +154,16 @@ def main() -> None:
             continue
 
         total_fetched += len(results)
-        updates: List[Dict[str, Any]] = []
+        # Per-row UPDATE: PostgREST upsert builds an INSERT statement that
+        # would have to satisfy every NOT NULL constraint on projects
+        # (project_number, title, ...). UPDATE doesn't have that problem —
+        # it just changes the specified columns on the matched row.
         for r in results:
             aid = r.get('appl_id')
             if aid is None:
+                continue
+            aid_str = str(aid)
+            if aid_str not in appl_to_pn:
                 continue
             project_start = parse_date(r.get('project_start_date') or '')
             project_end = parse_date(r.get('project_end_date') or '')
@@ -160,22 +171,21 @@ def main() -> None:
             if not any([project_start, project_end, award_date]):
                 continue
             total_with_dates += 1
-            payload: Dict[str, Any] = {'application_id': str(aid)}
+            patch: Dict[str, Any] = {}
             if project_start:
-                payload['project_start'] = project_start
+                patch['project_start'] = project_start
             if project_end:
-                payload['project_end'] = project_end
+                patch['project_end'] = project_end
             if award_date:
-                payload['award_date'] = award_date
-            updates.append(payload)
-
-        if not args.dry_run and updates:
-            try:
-                supabase.table('projects').upsert(updates, on_conflict='application_id').execute()
-                total_updated += len(updates)
-            except Exception as e:
-                total_errors += 1
-                print(f'  [{i + 1}/{n_calls}] UPSERT ERROR — {str(e)[:150]}')
+                patch['award_date'] = award_date
+            if not args.dry_run:
+                try:
+                    supabase.table('projects').update(patch).eq('application_id', aid_str).execute()
+                    total_updated += 1
+                except Exception as e:
+                    total_errors += 1
+                    if total_errors <= 5:
+                        print(f'  Update error on appl_id={aid_str}: {str(e)[:120]}')
 
         if (i + 1) % 5 == 0 or i == n_calls - 1:
             print(f'  [{i + 1}/{n_calls}] fetched={total_fetched:,} updated={total_updated:,} errors={total_errors}')
