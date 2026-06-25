@@ -60,14 +60,24 @@ def is_bio_related(row: Dict[str, Any]) -> bool:
 
 
 def parse_date(date_str: Optional[str]) -> Optional[str]:
-    """Parse date string to ISO format."""
+    """Parse a date string to ISO date (YYYY-MM-DD).
+
+    Handles:
+      - 'YYYY-MM-DD'          (ExPORTER CSV)
+      - 'MM/DD/YYYY'          (legacy)
+      - 'YYYY/MM/DD'          (legacy)
+      - 'YYYY-MM-DDTHH:MM:SS' (RePORTER API V2 — caught 2026-06-25 after
+        the catch-up ingested 17K rows with NULL dates because the T-suffix
+        broke strptime against the date-only formats)
+    """
     if not date_str:
         return None
     try:
-        # Try common formats
+        # Strip an ISO datetime T-portion before trying date-only formats.
+        normalized = date_str.split('T', 1)[0] if 'T' in date_str else date_str
         for fmt in ['%Y-%m-%d', '%m/%d/%Y', '%Y/%m/%d']:
             try:
-                return datetime.strptime(date_str, fmt).strftime('%Y-%m-%d')
+                return datetime.strptime(normalized, fmt).strftime('%Y-%m-%d')
             except ValueError:
                 continue
         return None
