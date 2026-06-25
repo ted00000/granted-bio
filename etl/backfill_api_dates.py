@@ -53,14 +53,23 @@ def fetch_target_rows(supabase: Client, since: str = None, limit: int = None) ->
     backfill. Returns a dict so we can include project_number in the upsert
     payload (PostgREST's INSERT clause requires it even when ON CONFLICT
     routes to UPDATE)."""
+    # Use created_at-bucketed pagination instead of OFFSET so each query is
+    # cheap (no full-table sort). For each bucket we fetch up to 1000 rows
+    # ordered by created_at desc, then advance the cursor to the oldest
+    # created_at we just saw. The bucket boundary is a timestamp; ties are
+    # OK because the next iteration's `lt('created_at', cursor)` excludes
+    # rows we already pulled.
     out: Dict[str, str] = {}
-    offset = 0
+    cursor: str = None
     page = 1000
+    seen_aids: set = set()
     while True:
-        q = supabase.table('projects').select('application_id, project_number').is_('project_start', 'null')
+        q = supabase.table('projects').select('application_id, project_number, created_at').is_('project_start', 'null').order('created_at', desc=True).limit(page)
         if since:
             q = q.gte('created_at', since)
-        rows = q.range(offset, offset + page - 1).execute().data or []
+        if cursor:
+            q = q.lt('created_at', cursor)
+        rows = q.execute().data or []
         if not rows:
             break
         for r in rows:
@@ -68,12 +77,21 @@ def fetch_target_rows(supabase: Client, since: str = None, limit: int = None) ->
             pn = r.get('project_number')
             if aid is None or pn is None:
                 continue
-            out[str(aid)] = pn
-        offset += page
+            aid_str = str(aid)
+            if aid_str in seen_aids:
+                continue
+            seen_aids.add(aid_str)
+            out[aid_str] = pn
+        oldest = rows[-1].get('created_at')
+        # If the entire page shares one created_at, lt() would loop forever;
+        # advance to a strictly older value via inequality. Postgres allows
+        # microsecond precision so this is safe in practice.
+        if oldest == cursor:
+            break
+        cursor = oldest
         if len(rows) < page:
             break
         if limit and len(out) >= limit:
-            # Trim down to the requested cap (sorted for determinism)
             keys = sorted(out.keys())[:limit]
             out = {k: out[k] for k in keys}
             break
