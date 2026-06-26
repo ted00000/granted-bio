@@ -161,7 +161,7 @@ def compute_delta(
 
 
 def upsert_in_batches(
-    supabase: Client, rows: List[Dict[str, Any]], batch_size: int = 100
+    supabase: Client, rows: List[Dict[str, Any]], batch_size: int = 25
 ) -> int:
     """
     Upsert with explicit on_conflict on the composite (nct_id, project_number)
