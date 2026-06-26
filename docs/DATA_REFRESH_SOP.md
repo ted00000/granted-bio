@@ -1,4 +1,4 @@
-# Data Refresh SOP — 21JUN2026
+# Data Refresh SOP — 26JUN2026
 
 Standard operating procedure for refreshing platform data. Covers both
 the **catch-up** (one-time, bringing the DB current after the
@@ -239,8 +239,24 @@ These pick up any new (project_number, patent_id) and (nct_id,
 project_number) pairs that didn't exist before — including those
 tied to the newly-synced projects from step 1.
 
-**ExPORTER refresh cadence:** not documented; we poll. Re-download
-when the file's `Last-Modified` advances.
+**ExPORTER refresh cadence:** not documented by NIH, but observed to
+be **weekly** for both files. Confirmed observations:
+- `Patents.csv`: 2026-06-14 release, 2026-06-21 release (7 days apart)
+- `ClinicalStudies.csv`: same cadence — 2026-06-14, 2026-06-21
+
+Treat as weekly refreshes (probably Sunday-night → Monday). Download
+on Monday morning and run the diff + delta in the same Monday
+maintenance window as the rest of the SOP. The deltas are small —
+the 2026-06-21 release added 31 patents + 68 patent links + 23
+clinical studies, plus 144 patent metadata changes and 82 trial
+status updates. Quick to ingest.
+
+**Clinical-studies batch size note:** the delta loader defaults to
+upserting in 25-row batches, not 100. The composite-key ON CONFLICT
++ vector index update on `study_embedding` is heavy enough that
+100-row batches reliably hit the PostgREST statement timeout.
+25 works; if you ever see `code 57014` (`canceling statement due to
+statement timeout`), drop further.
 
 ### Step 7 — Trial content enrichment (existing)
 
@@ -307,12 +323,12 @@ schedule:
 
 - **Mon 06:00 ET:** projects + abstracts (RePORTER API refreshes
   Sun night per the FAQ)
+- **Mon 06:30 ET:** download fresh `Patents.csv` + `ClinicalStudies.csv`
+  from ExPORTER (also appears to release weekly — see Steps 5-6).
+  Run diff + delta loaders against the new files.
 - **Mon 07:00 ET:** publication links + metadata (depends on
   step 1 completion)
-- **Mon 08:00 ET:** embeddings (depends on steps 1-3)
-- **On-demand (when ExPORTER advances):** patents + clinical
-  studies. Driven by the freshness probe at
-  `/api/cron/refresh-data-source-state` (Phase 1).
+- **Mon 08:00 ET:** embeddings (depends on steps 1-3, 5, 6)
 
 Weekly volumes are tiny (~100-500 new awards/week historically;
 larger during shutdown push-throughs). The 1-hour staggering covers
