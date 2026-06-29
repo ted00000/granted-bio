@@ -27,17 +27,11 @@ const MAX_PROJECTS = 200  // Fetch more, filter to balanced subset
  * Example: "5R44MH136894-02" → "R44MH136894"
  * (Aligned with UI - tools.ts:11)
  */
-export function getCoreProjectNumber(projectNumber: string | null): string {
-  if (!projectNumber) return ''
-  let core = projectNumber.trim().toUpperCase()
-  // Remove leading digit (support type indicator)
-  core = core.replace(/^[0-9]/, '')
-  // Remove suffix after hyphen (-01, -02, etc.) - budget period indicator
-  core = core.replace(/-\d+$/, '')
-  // Also handle alternative suffix formats like -S1, -A1
-  core = core.replace(/-[A-Z]\d+$/, '')
-  return core
-}
+// Re-export from the shared utility so existing imports in this file
+// keep working. New code should import from '@/lib/project-number-utils'
+// directly.
+export { getCoreProjectNumber } from '@/lib/project-number-utils'
+import { getCoreProjectNumber } from '@/lib/project-number-utils'
 
 /**
  * Generate a deduplication key for a project

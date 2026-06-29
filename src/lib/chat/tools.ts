@@ -2,25 +2,7 @@
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { SearchMode } from './types'
-
-/**
- * Extract core project number for deduplication.
- * NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project.
- * This strips the leading digit (support type) and suffix (budget period).
- * Example: "5R44MH136894-02" → "R44MH136894"
- */
-function getCoreProjectNumber(projectNumber: string | null): string {
-  if (!projectNumber) return ''
-  // Normalize: trim whitespace and uppercase for consistent matching
-  let core = projectNumber.trim().toUpperCase()
-  // Remove leading digit (0-9) if present (support type indicator)
-  core = core.replace(/^[0-9]/, '')
-  // Remove suffix after hyphen (-01, -02, etc.) - budget period indicator
-  core = core.replace(/-\d+$/, '')
-  // Also handle alternative suffix formats like -S1, -A1
-  core = core.replace(/-[A-Z]\d+$/, '')
-  return core
-}
+import { getCoreProjectNumber, expandProjectNumberVariants } from '@/lib/project-number-utils'
 
 /**
  * Generate a deduplication key for a project.
@@ -582,7 +564,7 @@ export async function keywordSearch(
         const { data: pubLinks } = await supabaseAdmin
           .from('project_publications')
           .select('project_number, pmid')
-          .in('project_number', batch)
+          .in('project_number', expandProjectNumberVariants(batch))
 
         if (pubLinks?.length) {
           const pmids = pubLinks.map(pl => pl.pmid)
@@ -857,7 +839,7 @@ export async function searchProjectsKeyword(
         const { data: pubLinks } = await supabaseAdmin
           .from('project_publications')
           .select('project_number, pmid')
-          .in('project_number', batch)
+          .in('project_number', expandProjectNumberVariants(batch))
 
         if (pubLinks?.length) {
           const pmids = pubLinks.map(pl => pl.pmid)
@@ -1359,7 +1341,7 @@ export async function searchProjectsHybrid(
         const { data: pubLinks } = await supabaseAdmin
           .from('project_publications')
           .select('project_number, pmid')
-          .in('project_number', batch)
+          .in('project_number', expandProjectNumberVariants(batch))
 
         if (pubLinks?.length) {
           const pmids = pubLinks.map(pl => pl.pmid)
@@ -1559,7 +1541,7 @@ export async function searchProjectsSemantic(
         const { data: pubLinks } = await supabaseAdmin
           .from('project_publications')
           .select('project_number, pmid')
-          .in('project_number', batch)
+          .in('project_number', expandProjectNumberVariants(batch))
 
         if (pubLinks?.length) {
           const pmids = pubLinks.map(pl => pl.pmid)
@@ -1880,15 +1862,15 @@ export async function getCompanyProfile(
       supabaseAdmin
         .from('project_patents')
         .select('*', { count: 'exact', head: true })
-        .in('project_number', projectNumbers),
+        .in('project_number', expandProjectNumberVariants(projectNumbers)),
       supabaseAdmin
         .from('project_publications')
         .select('*', { count: 'exact', head: true })
-        .in('project_number', projectNumbers),
+        .in('project_number', expandProjectNumberVariants(projectNumbers)),
       supabaseAdmin
         .from('clinical_studies')
         .select('*', { count: 'exact', head: true })
-        .in('project_number', projectNumbers)
+        .in('project_number', expandProjectNumberVariants(projectNumbers))
     ])
 
     // Aggregate stats from deduplicated projects
@@ -2062,7 +2044,7 @@ export async function getPIProfile(
     const { count: pubCount } = await supabaseAdmin
       .from('project_publications')
       .select('*', { count: 'exact', head: true })
-      .in('project_number', projectNumbers)
+      .in('project_number', expandProjectNumberVariants(projectNumbers))
 
     const totalFunding = projects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
 
@@ -2413,7 +2395,7 @@ export async function searchTrials(
       const { data: projects } = await supabaseAdmin
         .from('projects')
         .select('project_number, title, org_name, total_cost')
-        .in('project_number', projectNumbers)
+        .in('project_number', expandProjectNumberVariants(projectNumbers))
 
       if (projects) {
         projects.forEach(p => {

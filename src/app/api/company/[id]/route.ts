@@ -1,26 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { getCoreProjectNumber, expandProjectNumberVariants } from '@/lib/project-number-utils'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
-
-/**
- * Extract core project number for finding related records.
- * NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project.
- * This strips the leading digit (support type) and suffix (budget period).
- * Example: "5R44MH136894-02" → "R44MH136894"
- */
-function getCoreProjectNumber(projectNumber: string): string {
-  if (!projectNumber) return ''
-  let core = projectNumber.trim().toUpperCase()
-  // Remove leading digit (0-9) if present (support type indicator)
-  core = core.replace(/^[0-9]/, '')
-  // Remove suffix after hyphen (-01, -02, etc.) - budget period indicator
-  core = core.replace(/-\d+$/, '')
-  // Also handle alternative suffix formats like -S1, -A1
-  core = core.replace(/-[A-Z]\d+$/, '')
-  return core
-}
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -108,7 +91,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const { data: pubLinks } = await supabaseAdmin
       .from('project_publications')
       .select('pmid')
-      .in('project_number', allProjectNumbers)
+      .in('project_number', expandProjectNumberVariants(allProjectNumbers))
 
     let publications: any[] = []
     if (pubLinks && pubLinks.length > 0) {
@@ -128,7 +111,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const { data: patentLinks } = await supabaseAdmin
       .from('project_patents')
       .select('patent_id')
-      .in('project_number', allProjectNumbers)
+      .in('project_number', expandProjectNumberVariants(allProjectNumbers))
 
     let patents: any[] = []
     if (patentLinks && patentLinks.length > 0) {
@@ -146,7 +129,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const { data: clinicalStudies } = await supabaseAdmin
       .from('clinical_studies')
       .select('*')
-      .in('project_number', allProjectNumbers)
+      .in('project_number', expandProjectNumberVariants(allProjectNumbers))
       .limit(50)
 
     // Parse biotools_signals if it's a string

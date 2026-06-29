@@ -1209,10 +1209,11 @@ SAMPLE-BASED LANGUAGE: CRITICAL - These are only patents linked to NIH projects,
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
-Return JSON only:
+Return JSON only. Do NOT include a list of patent holders — the system
+fills that in from the actual byAssignee counts. Only return the
+narrative fields below.
 {
   "concentration": "fragmented" | "moderately_concentrated" | "highly_concentrated",
-  "dominantAssignees": ["Top 3-5 patent holders among linked patents"],
   "freedomToOperate": "2-3 sentences assessing potential FTO concerns based on the NIH-linked sample",
   "recentActivityTrend": "One sentence on patent activity trend within the linked sample",
   "narrative": "2-3 sentences on what the linked patent pattern may suggest for commercial development"
@@ -1245,9 +1246,12 @@ Return JSON only:
     }
 
     const parsed = JSON.parse(jsonMatch[0])
+    // dominantAssignees is sourced from the actual patent assignee counts,
+    // NOT from the LLM. The LLM produces interpretation; the data is the
+    // source of truth for who holds the patents.
     return {
       concentration: parsed.concentration || 'fragmented',
-      dominantAssignees: Array.isArray(parsed.dominantAssignees) ? parsed.dominantAssignees : [],
+      dominantAssignees: topAssignees.slice(0, 5).map((a) => a.assignee),
       freedomToOperate: parsed.freedomToOperate || '',
       recentActivityTrend: parsed.recentActivityTrend || '',
       narrative: parsed.narrative || '',
@@ -1352,7 +1356,16 @@ Return JSON only (object mapping application_id to insight string):
     }
 
     const parsed = JSON.parse(jsonMatch[0])
-    return parsed
+    // Validate that every key in the LLM's response is an actual
+    // application_id from the input set. Hallucinated keys would silently
+    // never match a project on render, but filtering keeps the contract
+    // clean — only real application_ids survive.
+    const validIds = new Set(topProjects.map((p) => String(p.application_id)))
+    const out: Record<string, string> = {}
+    for (const [k, v] of Object.entries(parsed)) {
+      if (validIds.has(k) && typeof v === 'string') out[k] = v
+    }
+    return out
   } catch (error) {
     console.warn('[Synthesis Agent] Failed to generate project insights:', error)
     return {}

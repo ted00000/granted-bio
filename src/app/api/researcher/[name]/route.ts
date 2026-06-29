@@ -1,27 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { getCoreProjectNumber, expandProjectNumberVariants } from '@/lib/project-number-utils'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
-
-/**
- * Extract core project number for deduplication.
- * NIH project numbers like "5R44MH136894-02" and "1R44MH136894-01" are the same project.
- * This strips the leading digit (support type) and suffix (budget period).
- * Example: "5R44MH136894-02" → "R44MH136894"
- */
-function getCoreProjectNumber(projectNumber: string): string {
-  if (!projectNumber) return ''
-  // Normalize: trim whitespace and uppercase for consistent matching
-  let core = projectNumber.trim().toUpperCase()
-  // Remove leading digit (0-9) if present (support type indicator)
-  core = core.replace(/^[0-9]/, '')
-  // Remove suffix after hyphen (-01, -02, etc.) - budget period indicator
-  core = core.replace(/-\d+$/, '')
-  // Also handle alternative suffix formats like -S1, -A1
-  core = core.replace(/-[A-Z]\d+$/, '')
-  return core
-}
 
 interface RouteParams {
   params: Promise<{ name: string }>
@@ -112,57 +94,67 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       supabaseAdmin
         .from('project_patents')
         .select('project_number', { count: 'exact', head: true })
-        .in('project_number', allProjectNumbers),
+        .in('project_number', expandProjectNumberVariants(allProjectNumbers)),
       supabaseAdmin
         .from('project_publications')
         .select('project_number', { count: 'exact', head: true })
-        .in('project_number', allProjectNumbers),
+        .in('project_number', expandProjectNumberVariants(allProjectNumbers)),
       supabaseAdmin
         .from('clinical_studies')
         .select('project_number', { count: 'exact', head: true })
-        .in('project_number', allProjectNumbers),
+        .in('project_number', expandProjectNumberVariants(allProjectNumbers)),
       // Get project numbers that have patents
       supabaseAdmin
         .from('project_patents')
         .select('project_number')
-        .in('project_number', allProjectNumbers),
+        .in('project_number', expandProjectNumberVariants(allProjectNumbers)),
       // Get project numbers that have publications
       supabaseAdmin
         .from('project_publications')
         .select('project_number')
-        .in('project_number', allProjectNumbers),
+        .in('project_number', expandProjectNumberVariants(allProjectNumbers)),
       // Get project numbers that have trials
       supabaseAdmin
         .from('clinical_studies')
         .select('project_number')
-        .in('project_number', allProjectNumbers),
+        .in('project_number', expandProjectNumberVariants(allProjectNumbers)),
     ])
 
-    // Build sets of project numbers with patents/pubs/trials
-    const projectsWithPatents = new Set((patentProjects.data || []).map(p => p.project_number))
-    const projectsWithPubs = new Set((pubProjects.data || []).map(p => p.project_number))
-    const projectsWithTrials = new Set((trialProjects.data || []).map(p => p.project_number))
+    // Build sets of project numbers with patents/pubs/trials. Linkage
+    // tables store project_number in core form — normalize both sides
+    // of the membership check so a project stored as full form (e.g.
+    // "5R01CA214679-04") matches linkage rows in core ("R01CA214679").
+    const projectsWithPatents = new Set(
+      (patentProjects.data || []).map(p => getCoreProjectNumber(p.project_number))
+    )
+    const projectsWithPubs = new Set(
+      (pubProjects.data || []).map(p => getCoreProjectNumber(p.project_number))
+    )
+    const projectsWithTrials = new Set(
+      (trialProjects.data || []).map(p => getCoreProjectNumber(p.project_number))
+    )
 
-    // Count deduplicated projects with each type
+    // Count deduplicated projects with each type — match by core form
     let patentsCount = 0
     let pubsCount = 0
     let trialsCount = 0
     for (const p of allDedupedProjects) {
-      if (p.project_number && projectsWithPatents.has(p.project_number)) patentsCount++
-      if (p.project_number && projectsWithPubs.has(p.project_number)) pubsCount++
-      if (p.project_number && projectsWithTrials.has(p.project_number)) trialsCount++
+      const core = getCoreProjectNumber(p.project_number || '')
+      if (core && projectsWithPatents.has(core)) patentsCount++
+      if (core && projectsWithPubs.has(core)) pubsCount++
+      if (core && projectsWithTrials.has(core)) trialsCount++
     }
 
     // Build set of project numbers to filter by (if quick filters are active)
     let filteredProjectNumbers = allProjectNumbers
     if (hasPatents) {
-      filteredProjectNumbers = filteredProjectNumbers.filter(pn => projectsWithPatents.has(pn))
+      filteredProjectNumbers = filteredProjectNumbers.filter(pn => projectsWithPatents.has(getCoreProjectNumber(pn)))
     }
     if (hasPubs) {
-      filteredProjectNumbers = filteredProjectNumbers.filter(pn => projectsWithPubs.has(pn))
+      filteredProjectNumbers = filteredProjectNumbers.filter(pn => projectsWithPubs.has(getCoreProjectNumber(pn)))
     }
     if (hasTrials) {
-      filteredProjectNumbers = filteredProjectNumbers.filter(pn => projectsWithTrials.has(pn))
+      filteredProjectNumbers = filteredProjectNumbers.filter(pn => projectsWithTrials.has(getCoreProjectNumber(pn)))
     }
 
     // Build filtered query for display projects
@@ -209,7 +201,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     // Apply quick filters (hasPatents, hasPubs, hasTrials)
     if (hasPatents || hasPubs || hasTrials) {
-      query = query.in('project_number', filteredProjectNumbers)
+      query = query.in('project_number', expandProjectNumberVariants(filteredProjectNumbers))
     }
 
     // Get filtered projects with pagination
@@ -311,20 +303,20 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       })
     }
 
-    // Apply quick filters
+    // Apply quick filters — match by core form (linkage tables store core)
     if (hasPatents) {
       filteredDedupedProjects = filteredDedupedProjects.filter(p =>
-        p.project_number && projectsWithPatents.has(p.project_number)
+        p.project_number && projectsWithPatents.has(getCoreProjectNumber(p.project_number))
       )
     }
     if (hasPubs) {
       filteredDedupedProjects = filteredDedupedProjects.filter(p =>
-        p.project_number && projectsWithPubs.has(p.project_number)
+        p.project_number && projectsWithPubs.has(getCoreProjectNumber(p.project_number))
       )
     }
     if (hasTrials) {
       filteredDedupedProjects = filteredDedupedProjects.filter(p =>
-        p.project_number && projectsWithTrials.has(p.project_number)
+        p.project_number && projectsWithTrials.has(getCoreProjectNumber(p.project_number))
       )
     }
 

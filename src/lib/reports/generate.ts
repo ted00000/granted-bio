@@ -15,7 +15,8 @@ import type {
   TrialItem,
   ProjectsAgentOutput,
 } from './types'
-import { runProjectsAgent, getCoreProjectNumber } from './agents/projects'
+import { runProjectsAgent } from './agents/projects'
+import { getCoreProjectNumber } from '@/lib/project-number-utils'
 import { runTrialsAgent } from './agents/trials'
 import { runPatentsAgent } from './agents/patents'
 import { runPublicationsAgent } from './agents/publications'
@@ -752,26 +753,51 @@ async function aggregateOrganizations(
 function aggregateResearchers(
   projects: AllAgentOutputs['projects']
 ): ResearcherStats[] {
+  // Key by NORMALIZED PI name (lowercase trimmed) so case variants of the
+  // same researcher merge — pi_names strings can vary across grants for
+  // the same person ("ZHOU, XIANGHONG JASMINE" vs "Zhou, Xianghong Jasmine").
+  // Without normalization the rollup splits one researcher into two rows.
   const piMap = new Map<string, ResearcherStats>()
+  const normalize = (name: string) => name.toLowerCase().trim().replace(/\s+/g, ' ')
 
   projects.items.forEach((p) => {
     if (!p.pi_names) return
 
-    // Take first PI as primary
-    const primaryPi = p.pi_names.split(';')[0]?.trim()
-    if (!primaryPi) return
+    // Credit ALL PIs on the grant, not just the first. Multi-PI grants
+    // (R01 dual-PI plans, U-mechanism cooperative agreements) are common
+    // in NIH; only crediting the first PI undercounts later PIs and
+    // overstates the lead PI's solo footprint. To avoid double-counting
+    // funding on multi-PI grants, divide the funding evenly across PIs.
+    const pis = p.pi_names
+      .split(';')
+      .map((s) => s.trim())
+      .filter((s) => s.length > 0)
+    if (pis.length === 0) return
+    const fundingPerPi = (p.total_cost ?? 0) / pis.length
 
-    const existing = piMap.get(primaryPi) || {
-      pi_name: primaryPi,
-      projects: 0,
-      funding: 0,
-      org: p.org_name,
+    // Dedupe within this project so the same PI listed twice doesn't
+    // get double-counted.
+    const seenForThisProject = new Set<string>()
+    for (const piRaw of pis) {
+      const key = normalize(piRaw)
+      if (!key || seenForThisProject.has(key)) continue
+      seenForThisProject.add(key)
+
+      const existing = piMap.get(key) || {
+        pi_name: piRaw,
+        projects: 0,
+        funding: 0,
+        org: p.org_name,
+      }
+      existing.projects++
+      existing.funding += fundingPerPi
+      // Keep the longest-form PI name as the display string (proper case
+      // tends to be longer than ALL CAPS for the same name); falls back to
+      // current value if neither is clearly better.
+      if (piRaw.length > existing.pi_name.length) existing.pi_name = piRaw
+      if (p.org_name) existing.org = p.org_name
+      piMap.set(key, existing)
     }
-    existing.projects++
-    existing.funding += p.total_cost ?? 0
-    // Update org to most recent
-    if (p.org_name) existing.org = p.org_name
-    piMap.set(primaryPi, existing)
   })
 
   // Sort by funding
