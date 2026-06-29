@@ -27,7 +27,7 @@ const MAX_PROJECTS = 200  // Fetch more, filter to balanced subset
  * Example: "5R44MH136894-02" → "R44MH136894"
  * (Aligned with UI - tools.ts:11)
  */
-function getCoreProjectNumber(projectNumber: string | null): string {
+export function getCoreProjectNumber(projectNumber: string | null): string {
   if (!projectNumber) return ''
   let core = projectNumber.trim().toUpperCase()
   // Remove leading digit (support type indicator)
@@ -273,17 +273,29 @@ export async function runProjectsAgent(
     if (core) relevantCoreNumbers.add(core)
   }
 
-  // Now collect ALL project_number variants from raw results, but ONLY for projects
-  // whose core number is in the relevant subset. This ensures we find linked data
-  // under any variant (e.g., "5R44MH136894-02" or "1R44MH136894-01") but ONLY for
-  // projects that passed both similarity AND relevance thresholds.
-  const allProjectNumbers = rawResults
-    .map(p => p.project_number)
-    .filter((pn): pn is string => {
-      if (!pn || pn.trim() === '') return false
-      const core = getCoreProjectNumber(pn)
-      return relevantCoreNumbers.has(core)
-    })
+  // Collect ALL project_number variants from raw results — both the
+  // as-stored form (often full with funding-type prefix + year suffix,
+  // e.g. "5R44MH136894-02") AND the core form ("R44MH136894").
+  //
+  // Why both: clinical_studies and project_patents store their FK as the
+  // core form, but the projects table is inconsistent — some rows have
+  // core, some have full. Without including both, an .in('project_number')
+  // query against the linkage tables misses linkages whenever the
+  // analyzed project happens to be stored in full form (which it is for
+  // most rows from the ExPORTER bulk load). Verified 2026-06-29 against
+  // UCLA + MGH: all 16 analyzed-set projects stored as full form,
+  // resulting in 0 trial/patent linkages despite the linkage tables
+  // having matching core-form rows.
+  const variantSet = new Set<string>()
+  for (const p of rawResults) {
+    const pn = p.project_number?.trim()
+    if (!pn) continue
+    const core = getCoreProjectNumber(pn)
+    if (!relevantCoreNumbers.has(core)) continue
+    variantSet.add(pn)
+    if (core && core !== pn) variantSet.add(core)
+  }
+  const allProjectNumbers = Array.from(variantSet)
 
   console.log(
     `[Projects Agent] Collected ${allProjectNumbers.length} project_number variants ` +

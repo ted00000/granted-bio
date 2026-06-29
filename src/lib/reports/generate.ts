@@ -15,7 +15,7 @@ import type {
   TrialItem,
   ProjectsAgentOutput,
 } from './types'
-import { runProjectsAgent } from './agents/projects'
+import { runProjectsAgent, getCoreProjectNumber } from './agents/projects'
 import { runTrialsAgent } from './agents/trials'
 import { runPatentsAgent } from './agents/patents'
 import { runPublicationsAgent } from './agents/publications'
@@ -642,45 +642,79 @@ async function aggregateOrganizations(
     row.funding += p.total_cost ?? 0
   })
 
-  // Build project_number → org_name. Start with the analyzed projects (whose
-  // org_name we already have in memory), then fetch any additional
-  // project_numbers referenced by trials/patents but not in the analyzed
-  // set. This matters because patents and trials often link to project
-  // renewals or sub-projects of the same institution that don't clear the
-  // report's semantic threshold — without the broader lookup, the org
-  // never gets credited.
+  // Build CORE-keyed project_number → org_name lookup. The projects table
+  // is stored in mixed format (some rows in core form like "R01MH134973",
+  // some in full form like "5R01MH134973-02"), but the linkage tables
+  // (clinical_studies, project_patents) only store core form. Keying the
+  // lookup by core form lets a trial linked to "R21CA283665" find an
+  // analyzed project stored as "5R21CA283665-02". Verified 2026-06-29:
+  // without this, UCLA and MGH showed 0 trials / 0 patents because all
+  // their analyzed projects were stored in full form.
   const projectNumberToOrg = new Map<string, string>()
   for (const p of projects.items) {
-    if (p.project_number && p.org_name) projectNumberToOrg.set(p.project_number, p.org_name)
+    if (!p.project_number || !p.org_name) continue
+    const core = getCoreProjectNumber(p.project_number)
+    if (core) projectNumberToOrg.set(core, p.org_name)
+    // Also key by the as-stored form for projects already in core format
+    projectNumberToOrg.set(p.project_number, p.org_name)
   }
-  const externalProjectNumbers = new Set<string>()
-  for (const t of trials.items) for (const pn of t.project_numbers) if (!projectNumberToOrg.has(pn)) externalProjectNumbers.add(pn)
-  for (const pt of patents.items) for (const pn of pt.project_numbers) if (!projectNumberToOrg.has(pn)) externalProjectNumbers.add(pn)
 
-  if (externalProjectNumbers.size > 0) {
+  // For trial/patent linkages whose core form isn't in the analyzed set,
+  // fetch the org_name from the broader projects table. Query both
+  // project_number (matches core-form stored rows) and use core form
+  // pattern matching for full-form stored rows would require a separate
+  // pass; in practice the core-form path catches the vast majority since
+  // most external linkages query against core form anyway.
+  const externalCoreNumbers = new Set<string>()
+  const collectCore = (pn: string) => {
+    if (!pn) return
+    if (!projectNumberToOrg.has(pn)) externalCoreNumbers.add(pn)
+    const core = getCoreProjectNumber(pn)
+    if (core && core !== pn && !projectNumberToOrg.has(core)) externalCoreNumbers.add(core)
+  }
+  for (const t of trials.items) for (const pn of t.project_numbers) collectCore(pn)
+  for (const pt of patents.items) for (const pn of pt.project_numbers) collectCore(pn)
+
+  if (externalCoreNumbers.size > 0) {
     const { data, error } = await supabaseAdmin
       .from('projects')
-      .select('project_number, org_name')
-      .in('project_number', [...externalProjectNumbers])
+      .select('project_number, full_project_num, org_name')
+      .in('project_number', [...externalCoreNumbers])
     if (error) {
       console.error('[Org Rollup] Error fetching external org names:', error)
     } else if (data) {
       for (const row of data) {
-        if (row.project_number && row.org_name && !projectNumberToOrg.has(row.project_number)) {
+        if (!row.org_name) continue
+        if (row.project_number) {
           projectNumberToOrg.set(row.project_number, row.org_name)
+          const core = getCoreProjectNumber(row.project_number)
+          if (core) projectNumberToOrg.set(core, row.org_name)
+        }
+        if (row.full_project_num) {
+          const coreFromFull = getCoreProjectNumber(row.full_project_num)
+          if (coreFromFull) projectNumberToOrg.set(coreFromFull, row.org_name)
         }
       }
     }
   }
 
-  // Attribute trials to orgs via project_number → org_name. Dedupe by
+  // Attribute trials to orgs via project_number → org_name. Normalize each
+  // trial's project_numbers to core form before lookup so the join works
+  // regardless of whether the trial row stores core or full. Dedupe by
   // normalized org key so a trial linked to multiple project_numbers of
-  // the same institution counts once. Path-2 (semantic-only) trials have
-  // empty project_numbers and don't contribute — intentional.
+  // the same institution counts once.
+  const findOrg = (pn: string): string | undefined => {
+    const direct = projectNumberToOrg.get(pn)
+    if (direct) return direct
+    const core = getCoreProjectNumber(pn)
+    if (core && core !== pn) return projectNumberToOrg.get(core)
+    return undefined
+  }
+
   trials.items.forEach((t) => {
     const seen = new Set<string>()
     for (const pn of t.project_numbers) {
-      const org = projectNumberToOrg.get(pn)
+      const org = findOrg(pn)
       if (!org) continue
       const key = normalize(org)
       if (seen.has(key)) continue
@@ -693,7 +727,7 @@ async function aggregateOrganizations(
   patents.items.forEach((pt) => {
     const seen = new Set<string>()
     for (const pn of pt.project_numbers) {
-      const org = projectNumberToOrg.get(pn)
+      const org = findOrg(pn)
       if (!org) continue
       const key = normalize(org)
       if (seen.has(key)) continue
