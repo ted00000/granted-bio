@@ -15,10 +15,10 @@ import { AuthForm, AuthFormFallback } from '@/components/AuthForm'
 import { SignUpModal } from '@/components/SignUpModal'
 
 const stats = [
-  { label: 'NIH Projects', value: '154K' },
-  { label: 'Patents', value: '49K' },
-  { label: 'Publications', value: '207K' },
-  { label: 'Clinical Trials', value: '38K' },
+  { label: 'NIH Projects', value: '170K' },
+  { label: 'Patents', value: '50K' },
+  { label: 'Publications', value: '500K' },
+  { label: 'Clinical Trials', value: '39K' },
 ]
 
 export default function Home() {
