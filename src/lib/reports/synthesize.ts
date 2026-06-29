@@ -823,14 +823,23 @@ data, so omit them here. Only return the three fields above per item.`
         continue
       }
       seen.add(pmid)
-      const year = source.publication_date
-        ? new Date(source.publication_date).getFullYear()
-        : null
+      // Prefer pub_year (cleanly populated by the metadata fetcher's regex)
+      // over deriving from publication_date — many rows have NULL date but
+      // a valid year because PubMed's pubdate format ("Mar-Apr 2024",
+      // "Spring 2024") doesn't parse to a date but the year regex still
+      // succeeds. Falling back to publication_date and finally the LLM's
+      // year guess keeps the path graceful.
+      let year: number | null = source.pub_year ?? null
+      if (year === null && source.publication_date) {
+        const derived = new Date(source.publication_date).getFullYear()
+        if (!isNaN(derived)) year = derived
+      }
+      if (year === null && typeof raw.year === 'number') year = raw.year
       hydrated.push({
         pmid,
         title: source.publication_title || raw.title || 'Untitled',
         journal: source.journal || null,
-        year: year ?? raw.year ?? null,
+        year,
         significance: typeof raw.significance === 'string' ? raw.significance : '',
         keyFinding: typeof raw.keyFinding === 'string' ? raw.keyFinding : '',
       })
@@ -1940,7 +1949,7 @@ function renderCuratedPublications(
   if (allPubs.items.length > 0) {
     md += '### Publication Summary\n\n'
     md += `- Total linked publications: ${allPubs.items.length}\n`
-    md += `- Unique journals: ${allPubs.byJournal.length}\n\n`
+    md += `- Unique journals: ${allPubs.totalUniqueJournals}\n\n`
 
     // Only show "Top Journals" list if at least one journal has 2+ pubs (otherwise it's noise)
     const topJournalCount = allPubs.byJournal[0]?.count ?? 0

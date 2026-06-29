@@ -92,6 +92,14 @@ export interface PublicationItem {
   publication_title: string | null
   journal: string | null
   publication_date: string | null
+  /**
+   * Year from publications.pub_year. Frequently populated when
+   * publication_date is NULL — PubMed esummary's pubdate format
+   * ("2024 Spring" / "Mar-Apr" / etc.) sometimes fails our date
+   * parser but yields a clean year. Renderer should prefer this
+   * over deriving from publication_date.
+   */
+  pub_year: number | null
   authors: string | null
   abstract: string | null
 }
@@ -168,6 +176,13 @@ export interface PublicationsAgentOutput {
   items: PublicationItem[]
   byJournal: Array<{ journal: string; count: number }>
   byYear: Array<{ year: number; count: number }>
+  /**
+   * Total unique journals across all items, BEFORE byJournal's top-10 slice.
+   * Renderer should use this in the "Unique journals: N" summary line —
+   * otherwise byJournal.length surfaces (capped at 10) and makes the
+   * publication base look unrealistically narrow on large samples.
+   */
+  totalUniqueJournals: number
 }
 
 export interface MarketAgentOutput {

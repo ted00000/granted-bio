@@ -39,10 +39,15 @@ export async function runPublicationsAgent(projectNumbers: string[]): Promise<Pu
   const uniquePmids = [...new Set(links.map((l) => l.pmid))]
   console.log(`[Publications Agent] Found ${uniquePmids.length} unique PMIDs (from ${links.length} linked)`)
 
-  // Fetch full publication details
+  // Fetch full publication details. pub_year is selected alongside pub_date
+  // because PubMed esummary's pubdate format is inconsistent ("2024 Spring",
+  // "Mar-Apr", etc.) and our date parser falls back to NULL on those —
+  // but the year-extracted regex in pub_year still succeeds. Without
+  // pub_year the renderer would show "Year: N/A" on otherwise-complete
+  // records.
   const { data: publications, error: pubError } = await supabaseAdmin
     .from('publications')
-    .select('pmid, pub_title, journal_title, pub_date, author_list, abstract')
+    .select('pmid, pub_title, journal_title, pub_date, pub_year, author_list, abstract')
     .in('pmid', uniquePmids)
     .order('pub_date', { ascending: false })
 
@@ -62,6 +67,7 @@ export async function runPublicationsAgent(projectNumbers: string[]): Promise<Pu
     publication_title: pub.pub_title,
     journal: pub.journal_title,
     publication_date: pub.pub_date,
+    pub_year: pub.pub_year,
     authors: pub.author_list,
     abstract: pub.abstract,
   }))
@@ -95,6 +101,7 @@ function processResults(rawResults: RawPublicationResult[]): PublicationsAgentOu
     publication_title: p.publication_title || null,
     journal: p.journal || null,
     publication_date: p.publication_date || null,
+    pub_year: p.pub_year ?? null,
     authors: p.authors || null,
     abstract: p.abstract || null,
   }))
@@ -105,17 +112,24 @@ function processResults(rawResults: RawPublicationResult[]): PublicationsAgentOu
     if (!p.journal) return
     journalMap.set(p.journal, (journalMap.get(p.journal) || 0) + 1)
   })
+  const totalUniqueJournals = journalMap.size
   const byJournal = Array.from(journalMap.entries())
     .map(([journal, count]) => ({ journal, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 10)
 
-  // Group by year
+  // Group by year. Prefer pub_year (always cleanly populated by the
+  // PubMed metadata fetcher) and fall back to deriving from publication_date
+  // — keeps rows in the histogram where publication_date is NULL but
+  // pub_year is set.
   const yearMap = new Map<number, number>()
   items.forEach((p) => {
-    if (!p.publication_date) return
-    const year = new Date(p.publication_date).getFullYear()
-    if (isNaN(year)) return
+    let year: number | null = p.pub_year ?? null
+    if (year === null && p.publication_date) {
+      const derived = new Date(p.publication_date).getFullYear()
+      if (!isNaN(derived)) year = derived
+    }
+    if (year === null) return
     yearMap.set(year, (yearMap.get(year) || 0) + 1)
   })
   const byYear = Array.from(yearMap.entries())
@@ -128,6 +142,7 @@ function processResults(rawResults: RawPublicationResult[]): PublicationsAgentOu
     items,
     byJournal,
     byYear,
+    totalUniqueJournals,
   }
 }
 
@@ -204,6 +219,7 @@ function emptyOutput(): PublicationsAgentOutput {
     items: [],
     byJournal: [],
     byYear: [],
+    totalUniqueJournals: 0,
   }
 }
 
@@ -213,6 +229,7 @@ interface RawPublicationResult {
   publication_title?: string | null
   journal?: string | null
   publication_date?: string | null
+  pub_year?: number | null
   authors?: string | null
   abstract?: string | null
 }

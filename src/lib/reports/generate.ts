@@ -157,7 +157,7 @@ export async function generateTopicReport(
     // Phase 2: Aggregation
     await updateProgressStage(reportId, 'aggregating')
     const fundingStats = calculateFundingStats(projectsOutput)
-    const topOrgs = aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput)
+    const topOrgs = await aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput)
     const topResearchers = aggregateResearchers(projectsOutput)
 
     // Phase 3: Synthesis - generate executive summary and markdown report
@@ -327,7 +327,7 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
     // Aggregation
     await updateProgressStage(reportId, 'aggregating')
     const fundingStats = calculateFundingStats(projectsOutput)
-    const topOrgs = aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput)
+    const topOrgs = await aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput)
     const topResearchers = aggregateResearchers(projectsOutput)
 
     // Synthesis
@@ -604,31 +604,24 @@ function calculateFundingStats(
 /**
  * Aggregate organization stats across all data sources
  */
-function aggregateOrganizations(
+async function aggregateOrganizations(
   projects: AllAgentOutputs['projects'],
   trials: AllAgentOutputs['trials'],
   patents: AllAgentOutputs['patents']
-): OrgStats[] {
-  const orgMap = new Map<string, OrgStats>()
-
-  // Build project_number → org_name lookup so we can attribute trials and
-  // patents back to the NIH-funded org via the project linkage. The
-  // previous version of this function joined trials by lead_sponsor and
-  // patents by assignee, which produced almost-always-zero trials/patents
-  // columns because those strings come from ClinicalTrials.gov and USPTO
-  // with different casing/wording than NIH's org_name (e.g. "JOHNS HOPKINS
-  // UNIVERSITY" patent assignee vs. "Johns Hopkins University" project
-  // org_name vs. "Sidney Kimmel Comprehensive Cancer Center at Johns
-  // Hopkins" trial sponsor — three strings, never matched).
-  const orgByProjectNumber = new Map<string, string>()
-  projects.items.forEach((p) => {
-    if (p.project_number && p.org_name) {
-      orgByProjectNumber.set(p.project_number, p.org_name)
-    }
-  })
+): Promise<OrgStats[]> {
+  // Keyed by normalized (lowercase) org name so case variants of the same
+  // institution merge — projects table has "Johns Hopkins University"
+  // and "JOHNS HOPKINS UNIVERSITY" as separate rows for the same place,
+  // and patent_org / lead_sponsor add yet more casings. Without
+  // normalization the rollup splits one institution across multiple rows
+  // (the symptom that landed report-15 with 0/0 trials/patents on every
+  // org while patents were clearly visible elsewhere in the report).
+  const orgByKey = new Map<string, OrgStats>()
+  const normalize = (name: string) => name.toLowerCase().trim()
 
   const ensureOrg = (orgName: string): OrgStats => {
-    const existing = orgMap.get(orgName)
+    const key = normalize(orgName)
+    const existing = orgByKey.get(key)
     if (existing) return existing
     const created: OrgStats = {
       org_name: orgName,
@@ -637,7 +630,7 @@ function aggregateOrganizations(
       trials: 0,
       patents: 0,
     }
-    orgMap.set(orgName, created)
+    orgByKey.set(key, created)
     return created
   }
 
@@ -649,38 +642,71 @@ function aggregateOrganizations(
     row.funding += p.total_cost ?? 0
   })
 
-  // Attribute trials to funded orgs via project_number. A trial linked to
-  // multiple projects of different orgs counts once per distinct org. Path 2
-  // (semantic-only) trials have empty project_numbers and don't contribute
-  // here — that's intentional: they have no NIH grant linkage to attribute.
+  // Build project_number → org_name. Start with the analyzed projects (whose
+  // org_name we already have in memory), then fetch any additional
+  // project_numbers referenced by trials/patents but not in the analyzed
+  // set. This matters because patents and trials often link to project
+  // renewals or sub-projects of the same institution that don't clear the
+  // report's semantic threshold — without the broader lookup, the org
+  // never gets credited.
+  const projectNumberToOrg = new Map<string, string>()
+  for (const p of projects.items) {
+    if (p.project_number && p.org_name) projectNumberToOrg.set(p.project_number, p.org_name)
+  }
+  const externalProjectNumbers = new Set<string>()
+  for (const t of trials.items) for (const pn of t.project_numbers) if (!projectNumberToOrg.has(pn)) externalProjectNumbers.add(pn)
+  for (const pt of patents.items) for (const pn of pt.project_numbers) if (!projectNumberToOrg.has(pn)) externalProjectNumbers.add(pn)
+
+  if (externalProjectNumbers.size > 0) {
+    const { data, error } = await supabaseAdmin
+      .from('projects')
+      .select('project_number, org_name')
+      .in('project_number', [...externalProjectNumbers])
+    if (error) {
+      console.error('[Org Rollup] Error fetching external org names:', error)
+    } else if (data) {
+      for (const row of data) {
+        if (row.project_number && row.org_name && !projectNumberToOrg.has(row.project_number)) {
+          projectNumberToOrg.set(row.project_number, row.org_name)
+        }
+      }
+    }
+  }
+
+  // Attribute trials to orgs via project_number → org_name. Dedupe by
+  // normalized org key so a trial linked to multiple project_numbers of
+  // the same institution counts once. Path-2 (semantic-only) trials have
+  // empty project_numbers and don't contribute — intentional.
   trials.items.forEach((t) => {
-    const orgsCredited = new Set<string>()
+    const seen = new Set<string>()
     for (const pn of t.project_numbers) {
-      const org = orgByProjectNumber.get(pn)
-      if (!org || orgsCredited.has(org)) continue
-      orgsCredited.add(org)
+      const org = projectNumberToOrg.get(pn)
+      if (!org) continue
+      const key = normalize(org)
+      if (seen.has(key)) continue
+      seen.add(key)
       ensureOrg(org).trials++
     }
   })
 
-  // Attribute patents to funded orgs via project_number, same rules as trials.
+  // Attribute patents the same way.
   patents.items.forEach((pt) => {
-    const orgsCredited = new Set<string>()
+    const seen = new Set<string>()
     for (const pn of pt.project_numbers) {
-      const org = orgByProjectNumber.get(pn)
-      if (!org || orgsCredited.has(org)) continue
-      orgsCredited.add(org)
+      const org = projectNumberToOrg.get(pn)
+      if (!org) continue
+      const key = normalize(org)
+      if (seen.has(key)) continue
+      seen.add(key)
       ensureOrg(org).patents++
     }
   })
 
-  // Sort by funding (primary), with activity as tiebreaker
-  return Array.from(orgMap.values())
+  // Sort by funding (primary), activity as tiebreaker.
+  return Array.from(orgByKey.values())
     .sort((a, b) => {
-      // Primary sort: funding
       const fundingDiff = b.funding - a.funding
       if (fundingDiff !== 0) return fundingDiff
-      // Tiebreaker: total activity
       return (b.projects + b.trials + b.patents) - (a.projects + a.trials + a.patents)
     })
     .slice(0, 15)
