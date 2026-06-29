@@ -5,6 +5,7 @@
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { PublicationsAgentOutput, PublicationItem } from '../types'
+import { expandProjectNumberVariants } from '@/lib/project-number-utils'
 
 /**
  * Run the Publications Agent to gather publication data linked to specific projects
@@ -19,11 +20,16 @@ export async function runPublicationsAgent(projectNumbers: string[]): Promise<Pu
     return emptyOutput()
   }
 
-  // Get PMIDs from linking table for these specific projects
+  // Get PMIDs from linking table for these specific projects.
+  // expandProjectNumberVariants is defensive: today's callers
+  // (projectsOutput.allProjectNumbers) already include both forms,
+  // but the agent should be robust to any caller passing a single
+  // form. The linkage table stores core only, so without expansion
+  // a full-form-only list would silently miss matches.
   const { data: links, error: linkError } = await supabaseAdmin
     .from('project_publications')
     .select('pmid')
-    .in('project_number', projectNumbers)
+    .in('project_number', expandProjectNumberVariants(projectNumbers))
 
   if (linkError) {
     console.error('[Publications Agent] Error fetching publication links:', linkError)

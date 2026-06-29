@@ -21,6 +21,7 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { generateEmbedding } from '@/lib/openai'
 import type { TrialsAgentOutput, TrialItem } from '../types'
 import { TRIAL_INCLUSION_THRESHOLD } from '../thresholds'
+import { expandProjectNumberVariants } from '@/lib/project-number-utils'
 
 /**
  * Run the Trials Agent.
@@ -58,7 +59,7 @@ export async function runTrialsAgent(
     const { data, error } = await supabaseAdmin
       .from('clinical_studies')
       .select('nct_id, project_number, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
-      .in('project_number', projectNumbers)
+      .in('project_number', expandProjectNumberVariants(projectNumbers))
       .order('start_date', { ascending: false })
 
     if (error) {

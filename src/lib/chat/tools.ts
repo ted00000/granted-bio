@@ -579,9 +579,15 @@ export async function keywordSearch(
           pubs?.forEach(p => {
             if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
           })
+          // Key piEmails by CORE project_number on both write and read.
+          // Linkage stores core; the projects table is mixed format. Without
+          // normalization, a project stored as full form never finds its
+          // PI email even though the linkage was matched.
           pubLinks?.forEach(pl => {
-            if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
-              piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+            if (!pl.project_number) return
+            const core = getCoreProjectNumber(pl.project_number)
+            if (core && pmidToEmail[pl.pmid] && !piEmails[core]) {
+              piEmails[core] = pmidToEmail[pl.pmid]
             }
           })
         }
@@ -600,7 +606,7 @@ export async function keywordSearch(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
-      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[getCoreProjectNumber(p.project_number)] || null) : null,
       // Linked-record counts. The projects_enriched materialized view that
       // these comments used to reference was never actually queried — and
       // its current definition returned hardcoded 0s anyway. These fields
@@ -638,7 +644,7 @@ export async function keywordSearch(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
-      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[getCoreProjectNumber(p.project_number)] || null) : null,
       patent_count: p.patent_count || 0,
       publication_count: p.publication_count || 0,
       clinical_trial_count: p.clinical_trial_count || 0
@@ -854,9 +860,15 @@ export async function searchProjectsKeyword(
           pubs?.forEach(p => {
             if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
           })
+          // Key piEmails by CORE project_number on both write and read.
+          // Linkage stores core; the projects table is mixed format. Without
+          // normalization, a project stored as full form never finds its
+          // PI email even though the linkage was matched.
           pubLinks?.forEach(pl => {
-            if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
-              piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+            if (!pl.project_number) return
+            const core = getCoreProjectNumber(pl.project_number)
+            if (core && pmidToEmail[pl.pmid] && !piEmails[core]) {
+              piEmails[core] = pmidToEmail[pl.pmid]
             }
           })
         }
@@ -877,7 +889,7 @@ export async function searchProjectsKeyword(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
-      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[getCoreProjectNumber(p.project_number)] || null) : null,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       project_end: p.project_end || null,
@@ -900,7 +912,7 @@ export async function searchProjectsKeyword(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
-      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[getCoreProjectNumber(p.project_number)] || null) : null,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       project_end: p.project_end || null,
@@ -1356,9 +1368,15 @@ export async function searchProjectsHybrid(
           pubs?.forEach(p => {
             if (p.pi_email) pmidToEmail[p.pmid] = p.pi_email
           })
+          // Key piEmails by CORE project_number on both write and read.
+          // Linkage stores core; the projects table is mixed format. Without
+          // normalization, a project stored as full form never finds its
+          // PI email even though the linkage was matched.
           pubLinks?.forEach(pl => {
-            if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
-              piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+            if (!pl.project_number) return
+            const core = getCoreProjectNumber(pl.project_number)
+            if (core && pmidToEmail[pl.pmid] && !piEmails[core]) {
+              piEmails[core] = pmidToEmail[pl.pmid]
             }
           })
         }
@@ -1378,7 +1396,7 @@ export async function searchProjectsHybrid(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
-      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[getCoreProjectNumber(p.project_number)] || null) : null,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       project_end: p.project_end || null,
@@ -1400,7 +1418,7 @@ export async function searchProjectsHybrid(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
-      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[getCoreProjectNumber(p.project_number)] || null) : null,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       project_end: p.project_end || null,
@@ -1557,8 +1575,10 @@ export async function searchProjectsSemantic(
           })
 
           pubLinks.forEach(pl => {
-            if (pmidToEmail[pl.pmid] && !piEmails[pl.project_number]) {
-              piEmails[pl.project_number] = pmidToEmail[pl.pmid]
+            if (!pl.project_number) return
+            const core = getCoreProjectNumber(pl.project_number)
+            if (core && pmidToEmail[pl.pmid] && !piEmails[core]) {
+              piEmails[core] = pmidToEmail[pl.pmid]
             }
           })
         }
@@ -1577,7 +1597,7 @@ export async function searchProjectsSemantic(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
-      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[getCoreProjectNumber(p.project_number)] || null) : null,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       project_end: p.project_end || null,
@@ -1600,7 +1620,7 @@ export async function searchProjectsSemantic(
       total_cost: p.total_cost,
       fiscal_year: p.fiscal_year,
       pi_names: p.pi_names,
-      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[p.project_number] || null) : null,
+      pi_email: userAccess.canSeeEmails && p.project_number ? (piEmails[getCoreProjectNumber(p.project_number)] || null) : null,
       program_officer: p.program_officer || null,
       activity_code: p.activity_code || null,
       project_end: p.project_end || null,
@@ -2387,7 +2407,9 @@ export async function searchTrials(
       results = results.filter(t => t.is_diagnostic_trial)
     }
 
-    // Get linked project info for top results
+    // Get linked project info for top results. Key the lookup map by
+    // CORE form on both sides so trials (always core) match projects
+    // regardless of whether the project row is stored core or full.
     const projectNumbers = [...new Set(results.slice(0, 50).map(t => t.project_number).filter(Boolean))]
     let projectMap: Record<string, { title: string; org_name: string | null; total_cost: number | null }> = {}
 
@@ -2399,10 +2421,17 @@ export async function searchTrials(
 
       if (projects) {
         projects.forEach(p => {
-          projectMap[p.project_number] = {
-            title: p.title,
-            org_name: p.org_name,
-            total_cost: p.total_cost
+          if (!p.project_number) return
+          // Index by core so a trial's core-form project_number always finds
+          // the row, whether the project row stored project_number as core
+          // or full. If both forms exist, prefer the one we see first.
+          const core = getCoreProjectNumber(p.project_number)
+          if (core && !projectMap[core]) {
+            projectMap[core] = {
+              title: p.title,
+              org_name: p.org_name,
+              total_cost: p.total_cost
+            }
           }
         })
       }
@@ -2434,9 +2463,9 @@ export async function searchTrials(
       is_diagnostic_trial: t.is_diagnostic_trial,
       is_therapeutic_trial: t.is_therapeutic_trial,
       project_number: t.project_number,
-      project_title: t.project_number ? projectMap[t.project_number]?.title : null,
-      org_name: t.project_number ? projectMap[t.project_number]?.org_name : null,
-      total_cost: t.project_number ? projectMap[t.project_number]?.total_cost : null,
+      project_title: t.project_number ? projectMap[getCoreProjectNumber(t.project_number)]?.title : null,
+      org_name: t.project_number ? projectMap[getCoreProjectNumber(t.project_number)]?.org_name : null,
+      total_cost: t.project_number ? projectMap[getCoreProjectNumber(t.project_number)]?.total_cost : null,
       similarity: t.similarity
     }))
 

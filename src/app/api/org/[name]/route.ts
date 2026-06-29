@@ -295,20 +295,20 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       })
     }
 
-    // Apply quick filters
+    // Apply quick filters — match by core form (linkage tables store core)
     if (hasPatents) {
       filteredDedupedProjects = filteredDedupedProjects.filter(p =>
-        p.project_number && projectsWithPatents.has(p.project_number)
+        p.project_number && projectsWithPatents.has(getCoreProjectNumber(p.project_number))
       )
     }
     if (hasPubs) {
       filteredDedupedProjects = filteredDedupedProjects.filter(p =>
-        p.project_number && projectsWithPubs.has(p.project_number)
+        p.project_number && projectsWithPubs.has(getCoreProjectNumber(p.project_number))
       )
     }
     if (hasTrials) {
       filteredDedupedProjects = filteredDedupedProjects.filter(p =>
-        p.project_number && projectsWithTrials.has(p.project_number)
+        p.project_number && projectsWithTrials.has(getCoreProjectNumber(p.project_number))
       )
     }
 

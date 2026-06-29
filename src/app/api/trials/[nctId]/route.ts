@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { expandProjectNumberVariants } from '@/lib/project-number-utils'
 
 // GET - Fetch trial details by NCT ID
 export async function GET(
@@ -46,12 +47,15 @@ export async function GET(
     // Fetch linked project info if available
     let project = null
     if (trial.project_number) {
+      // The linkage stores core form; the projects table is mixed format.
+      // Use .in() with variant expansion so we match whether the project
+      // row is stored as core or full.
       const { data: projectData } = await supabase
         .from('projects')
         .select('application_id, title, org_name, total_cost, pi_names')
-        .eq('project_number', trial.project_number)
+        .in('project_number', expandProjectNumberVariants([trial.project_number]))
         .limit(1)
-        .single()
+        .maybeSingle()
       project = projectData
     }
 

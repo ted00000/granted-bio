@@ -5,6 +5,7 @@
 
 import { supabaseAdmin } from '@/lib/supabase'
 import type { PatentsAgentOutput, PatentItem } from '../types'
+import { expandProjectNumberVariants } from '@/lib/project-number-utils'
 
 /**
  * Run the Patents Agent to gather patent data linked to specific projects
@@ -27,7 +28,7 @@ export async function runPatentsAgent(projectNumbers: string[]): Promise<Patents
   const { data: links, error: linkError } = await supabaseAdmin
     .from('project_patents')
     .select('patent_id, project_number')
-    .in('project_number', projectNumbers)
+    .in('project_number', expandProjectNumberVariants(projectNumbers))
 
   if (linkError) {
     console.error('[Patents Agent] Error fetching patent links:', linkError)

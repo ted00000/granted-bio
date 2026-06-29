@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { expandProjectNumberVariants } from '@/lib/project-number-utils'
 
 interface PatentDetails {
   patent_id: string
@@ -72,10 +73,13 @@ export async function GET(
 
     // Get linked project if we have a project_number from junction table
     if (patentLink?.project_number) {
+      // Linkage stores core form; projects table is mixed. Use .in()
+      // with variant expansion so we match either form.
       const { data: project } = await supabase
         .from('projects')
         .select('project_number, application_id, title, org_name, total_cost')
-        .eq('project_number', patentLink.project_number)
+        .in('project_number', expandProjectNumberVariants([patentLink.project_number]))
+        .limit(1)
         .maybeSingle()
       result.linked_project = project
     }

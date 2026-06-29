@@ -31,11 +31,13 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 
     if (!project) {
-      // Try project_number
+      // Try project_number — use variant expansion so the URL param
+      // matches whether the project is stored as core or full form.
       const result = await supabaseAdmin
         .from('projects')
         .select('*')
-        .eq('project_number', id)
+        .in('project_number', expandProjectNumberVariants([id]))
+        .limit(1)
         .maybeSingle()
       project = result.data
       projectError = result.error
