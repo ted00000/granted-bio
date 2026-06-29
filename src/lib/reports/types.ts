@@ -61,6 +61,14 @@ export interface TrialItem {
   lead_sponsor: string | null
   conditions: string[] | null
   enrollment_count: number | null
+  /**
+   * NIH project_numbers this trial is linked to via clinical_studies.
+   * Empty for semantic-only matches (Path 2) where the trial has no
+   * NIH grant linkage. Used by Key Organizations rollup to attribute
+   * trials to the funded org rather than to the trial's listed sponsor
+   * (which is a different string and won't match across sources).
+   */
+  project_numbers: string[]
 }
 
 export interface PatentItem {
@@ -70,6 +78,13 @@ export interface PatentItem {
   assignee: string | null
   patent_date: string | null
   inventors: string | null
+  /**
+   * NIH project_numbers this patent is linked to via project_patents.
+   * One patent can link to multiple projects. Used by Key Organizations
+   * rollup to attribute patents to the funded org (assignee strings are
+   * USPTO-formatted and don't match NIH org_name).
+   */
+  project_numbers: string[]
 }
 
 export interface PublicationItem {

@@ -19,10 +19,14 @@ export async function runPatentsAgent(projectNumbers: string[]): Promise<Patents
     return emptyOutput()
   }
 
-  // Get patent IDs from junction table for these specific projects
+  // Get patent IDs from junction table for these specific projects.
+  // We KEEP the project_number → patent_id mapping (not just the patent_ids)
+  // so the org rollup downstream can attribute each patent back to its
+  // funded project's org, rather than relying on the USPTO assignee string
+  // which doesn't match NIH org_name.
   const { data: links, error: linkError } = await supabaseAdmin
     .from('project_patents')
-    .select('patent_id')
+    .select('patent_id, project_number')
     .in('project_number', projectNumbers)
 
   if (linkError) {
@@ -35,8 +39,20 @@ export async function runPatentsAgent(projectNumbers: string[]): Promise<Patents
     return emptyOutput()
   }
 
+  // Build patent_id → project_numbers[] map for later attribution
+  const projectNumbersByPatent = new Map<string, Set<string>>()
+  for (const link of links) {
+    if (!link.patent_id) continue
+    if (!projectNumbersByPatent.has(link.patent_id)) {
+      projectNumbersByPatent.set(link.patent_id, new Set())
+    }
+    if (link.project_number) {
+      projectNumbersByPatent.get(link.patent_id)!.add(link.project_number)
+    }
+  }
+
   // Deduplicate patent IDs (a patent may be linked to multiple projects)
-  const uniquePatentIds = [...new Set(links.map((l) => l.patent_id))]
+  const uniquePatentIds = [...projectNumbersByPatent.keys()]
   console.log(`[Patents Agent] Found ${uniquePatentIds.length} unique patent IDs (from ${links.length} linked)`)
 
   // Fetch full patent details
@@ -81,13 +97,16 @@ export async function runPatentsAgent(projectNumbers: string[]): Promise<Patents
     }
   }
 
-  return processResults(uniquePatents)
+  return processResults(uniquePatents, projectNumbersByPatent)
 }
 
 /**
  * Process raw results into agent output
  */
-function processResults(rawResults: RawPatentResult[]): PatentsAgentOutput {
+function processResults(
+  rawResults: RawPatentResult[],
+  projectNumbersByPatent: Map<string, Set<string>>,
+): PatentsAgentOutput {
   // Map to PatentItem format
   const items: PatentItem[] = rawResults.map((p) => ({
     patent_id: p.patent_id,
@@ -96,6 +115,7 @@ function processResults(rawResults: RawPatentResult[]): PatentsAgentOutput {
     assignee: p.patent_org || null,
     patent_date: p.issue_date || p.filing_date || null,
     inventors: null, // Not available in current schema
+    project_numbers: Array.from(projectNumbersByPatent.get(p.patent_id) ?? []),
   }))
 
   // Group by assignee

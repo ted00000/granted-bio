@@ -57,7 +57,7 @@ export async function runTrialsAgent(
   if (projectNumbers.length > 0) {
     const { data, error } = await supabaseAdmin
       .from('clinical_studies')
-      .select('nct_id, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
+      .select('nct_id, project_number, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
       .in('project_number', projectNumbers)
       .order('start_date', { ascending: false })
 
@@ -133,7 +133,7 @@ export async function runTrialsAgent(
         )
         const { data: fullRows, error: fetchError } = await supabaseAdmin
           .from('clinical_studies')
-          .select('nct_id, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
+          .select('nct_id, project_number, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
           .in('nct_id', nctIds)
 
         if (fetchError) {
@@ -199,7 +199,7 @@ export async function runTrialsAgent(
     const nctIds = uniqueTrials.map((t) => t.nct_id)
     const { data: refreshed } = await supabaseAdmin
       .from('clinical_studies')
-      .select('nct_id, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
+      .select('nct_id, project_number, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
       .in('nct_id', nctIds)
 
     if (refreshed) {
@@ -222,9 +222,18 @@ function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
   // so a multi-linked trial fetched via .in('nct_id', ...) returns duplicates.
   // Making this idempotent lets every caller (including the post-enrichment
   // refetch) share the same processing path safely.
+  // While deduping we also accumulate the project_numbers each trial was
+  // linked to — this is what powers the Key Organizations attribution
+  // downstream (a trial is credited to its funded project's org, not to the
+  // trial's listed sponsor, since those strings don't match across sources).
   const seen = new Map<string, RawTrialResult>()
+  const projectNumbersByNct = new Map<string, Set<string>>()
   for (const t of rawResults) {
     if (!seen.has(t.nct_id)) seen.set(t.nct_id, t)
+    if (t.project_number) {
+      if (!projectNumbersByNct.has(t.nct_id)) projectNumbersByNct.set(t.nct_id, new Set())
+      projectNumbersByNct.get(t.nct_id)!.add(t.project_number)
+    }
   }
   const deduped = Array.from(seen.values())
 
@@ -238,6 +247,7 @@ function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
     lead_sponsor: t.lead_sponsor || null,
     conditions: t.conditions || null,
     enrollment_count: t.enrollment_count || null,
+    project_numbers: Array.from(projectNumbersByNct.get(t.nct_id) ?? []),
   }))
 
   // Group by phase
@@ -357,6 +367,12 @@ function emptyOutput(): TrialsAgentOutput {
 
 interface RawTrialResult {
   nct_id: string
+  // project_number is one of the natural keys for clinical_studies — a single
+  // trial can be linked to multiple NIH projects, and the table has one row
+  // per (nct_id, project_number) pair. Capture it so the org rollup can
+  // attribute trials back to the funded org rather than to the trial's
+  // listed sponsor (which is a different string).
+  project_number?: string | null
   study_title: string
   study_status?: string | null
   phase?: string | null

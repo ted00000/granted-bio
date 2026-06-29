@@ -749,17 +749,19 @@ SAMPLE-BASED LANGUAGE: These are publications linked to NIH-funded projects in o
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
-Return JSON only (array of 3-5 items):
+Return JSON only (array of 3-5 items). Use the EXACT PMID strings from the
+input above — do NOT invent PMIDs and do NOT reuse the same PMID twice.
+
 [
   {
     "pmid": "12345678",
-    "title": "Paper title",
-    "journal": "Journal Name",
-    "year": 2024,
     "significance": "1-2 sentences on why this paper matters for the field",
     "keyFinding": "One sentence key takeaway"
   }
-]`
+]
+
+The title, journal, and year will be filled in by the system from the source
+data, so omit them here. Only return the three fields above per item.`
 
   try {
     const response = await client.messages.create({
@@ -792,8 +794,48 @@ Return JSON only (array of 3-5 items):
       return []
     }
 
-    const parsed = JSON.parse(arrayMatch[0])
-    return Array.isArray(parsed) ? parsed : []
+    const parsedRaw = JSON.parse(arrayMatch[0])
+    if (!Array.isArray(parsedRaw)) return []
+
+    // Hydrate title/journal/year from the source data — the model only
+    // returns pmid + significance + keyFinding now. This eliminates two
+    // historical failure modes:
+    //   1. Two entries returned with the same PMID but different titles
+    //      (LLM duplicating a pick under different framings).
+    //   2. PMIDs the model hallucinated that don't exist in our input.
+    // We also dedupe by pmid (first occurrence wins) so a same-PMID
+    // duplicate from the model collapses to one entry instead of rendering
+    // twice.
+    const sourceByPmid = new Map<string, PublicationItem>()
+    for (const p of agentOutputs.publications.items) {
+      if (p.pmid) sourceByPmid.set(String(p.pmid), p)
+    }
+
+    const seen = new Set<string>()
+    const hydrated: CuratedPublication[] = []
+    for (const raw of parsedRaw) {
+      if (!raw || typeof raw !== 'object') continue
+      const pmid = raw.pmid ? String(raw.pmid) : ''
+      if (!pmid || seen.has(pmid)) continue
+      const source = sourceByPmid.get(pmid)
+      if (!source) {
+        console.warn(`[Synthesis Agent] Curated PMID ${pmid} not in input set — skipping`)
+        continue
+      }
+      seen.add(pmid)
+      const year = source.publication_date
+        ? new Date(source.publication_date).getFullYear()
+        : null
+      hydrated.push({
+        pmid,
+        title: source.publication_title || raw.title || 'Untitled',
+        journal: source.journal || null,
+        year: year ?? raw.year ?? null,
+        significance: typeof raw.significance === 'string' ? raw.significance : '',
+        keyFinding: typeof raw.keyFinding === 'string' ? raw.keyFinding : '',
+      })
+    }
+    return hydrated
   } catch (error) {
     console.warn('[Synthesis Agent] Failed to generate curated publications:', error)
     return []

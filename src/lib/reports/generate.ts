@@ -520,6 +520,10 @@ function transformSavedTrialsToItems(
         lead_sponsor: t.lead_sponsor || null,
         conditions: t.conditions || null,
         enrollment_count: t.enrollment_count || null,
+        // Saved-trials shortcut path has no project_number context — these
+        // trials weren't surfaced via the linked-projects join, so they
+        // can't be attributed to a funded org. Empty is the correct value.
+        project_numbers: [],
       }
     })
 }
@@ -607,47 +611,67 @@ function aggregateOrganizations(
 ): OrgStats[] {
   const orgMap = new Map<string, OrgStats>()
 
-  // Count from projects
+  // Build project_number → org_name lookup so we can attribute trials and
+  // patents back to the NIH-funded org via the project linkage. The
+  // previous version of this function joined trials by lead_sponsor and
+  // patents by assignee, which produced almost-always-zero trials/patents
+  // columns because those strings come from ClinicalTrials.gov and USPTO
+  // with different casing/wording than NIH's org_name (e.g. "JOHNS HOPKINS
+  // UNIVERSITY" patent assignee vs. "Johns Hopkins University" project
+  // org_name vs. "Sidney Kimmel Comprehensive Cancer Center at Johns
+  // Hopkins" trial sponsor — three strings, never matched).
+  const orgByProjectNumber = new Map<string, string>()
+  projects.items.forEach((p) => {
+    if (p.project_number && p.org_name) {
+      orgByProjectNumber.set(p.project_number, p.org_name)
+    }
+  })
+
+  const ensureOrg = (orgName: string): OrgStats => {
+    const existing = orgMap.get(orgName)
+    if (existing) return existing
+    const created: OrgStats = {
+      org_name: orgName,
+      projects: 0,
+      funding: 0,
+      trials: 0,
+      patents: 0,
+    }
+    orgMap.set(orgName, created)
+    return created
+  }
+
+  // Count from projects (the funded org for each project)
   projects.items.forEach((p) => {
     if (!p.org_name) return
-    const existing = orgMap.get(p.org_name) || {
-      org_name: p.org_name,
-      projects: 0,
-      funding: 0,
-      trials: 0,
-      patents: 0,
-    }
-    existing.projects++
-    existing.funding += p.total_cost ?? 0
-    orgMap.set(p.org_name, existing)
+    const row = ensureOrg(p.org_name)
+    row.projects++
+    row.funding += p.total_cost ?? 0
   })
 
-  // Count trials by sponsor
+  // Attribute trials to funded orgs via project_number. A trial linked to
+  // multiple projects of different orgs counts once per distinct org. Path 2
+  // (semantic-only) trials have empty project_numbers and don't contribute
+  // here — that's intentional: they have no NIH grant linkage to attribute.
   trials.items.forEach((t) => {
-    if (!t.lead_sponsor) return
-    const existing = orgMap.get(t.lead_sponsor) || {
-      org_name: t.lead_sponsor,
-      projects: 0,
-      funding: 0,
-      trials: 0,
-      patents: 0,
+    const orgsCredited = new Set<string>()
+    for (const pn of t.project_numbers) {
+      const org = orgByProjectNumber.get(pn)
+      if (!org || orgsCredited.has(org)) continue
+      orgsCredited.add(org)
+      ensureOrg(org).trials++
     }
-    existing.trials++
-    orgMap.set(t.lead_sponsor, existing)
   })
 
-  // Count patents by assignee
-  patents.items.forEach((p) => {
-    if (!p.assignee) return
-    const existing = orgMap.get(p.assignee) || {
-      org_name: p.assignee,
-      projects: 0,
-      funding: 0,
-      trials: 0,
-      patents: 0,
+  // Attribute patents to funded orgs via project_number, same rules as trials.
+  patents.items.forEach((pt) => {
+    const orgsCredited = new Set<string>()
+    for (const pn of pt.project_numbers) {
+      const org = orgByProjectNumber.get(pn)
+      if (!org || orgsCredited.has(org)) continue
+      orgsCredited.add(org)
+      ensureOrg(org).patents++
     }
-    existing.patents++
-    orgMap.set(p.assignee, existing)
   })
 
   // Sort by funding (primary), with activity as tiebreaker
