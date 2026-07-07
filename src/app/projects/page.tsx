@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { FlaskConical, Trash2 } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { ListPageSkeleton } from '@/components/ui/Skeleton'
+import { normalizeOrgName } from '@/lib/format-names'
 
 interface SavedProject {
   id: string
@@ -124,7 +125,7 @@ export default function MyProjectsPage() {
                           }`}
                           title={active === null ? 'Unknown' : active ? 'Active' : 'Inactive'}
                         />
-                        <span className="truncate">{project.org_name}</span>
+                        <span className="truncate">{normalizeOrgName(project.org_name)}</span>
                         {project.primary_category && (
                           <>
                             <span>•</span>

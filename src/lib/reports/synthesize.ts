@@ -24,6 +24,7 @@ import type {
 import { logApiUsage } from '@/lib/billing/usage'
 import { generateWhiteSpaceAnalysis } from './white-space'
 import { filterTrialsAndPatentsByRelevance } from './relevance-filter'
+import { normalizeOrgName, normalizeJournalName } from '@/lib/format-names'
 
 interface SynthesisContext {
   userId: string
@@ -2527,133 +2528,9 @@ ${stats.partialFYNote}
 The FY${fy} figure shown is YTD only and reflects partial reporting. Do NOT interpret a drop from FY${priorFY} to FY${fy} as a real funding decline — it is incomplete data. When discussing recent funding trends, either exclude FY${fy} from year-over-year comparisons or explicitly label it as YTD. Never use language like "declined to" or "fell to" for FY${fy}.`
 }
 
-// Acronyms that should stay all-caps in org/journal names
-const ORG_ACRONYMS = new Set([
-  'NIH', 'NSF', 'MIT', 'UCLA', 'USC', 'UCSF', 'UCSD', 'UCSB', 'UCB', 'UNC',
-  'UCD', 'UCI', 'UCR', 'CSU', 'CMU', 'UC', 'IBM', 'HHMI', 'ASU', 'SUNY',
-  'CUNY', 'NYU', 'LLC', 'PC', 'CRO', 'CDMO', 'USA', 'UK', 'BIDMC', 'MGH',
-  'CHOP', 'CSHL', 'NIST', 'EPA', 'FDA', 'CDC', 'DOE', 'DARPA', 'OHSU',
-  'MD', 'PhD', 'DDS', 'DVM', 'III', 'IV', 'VI', 'VII', 'VIII', 'IX', 'XI',
-  'XII', 'PLOS', 'EMBO', 'JCI', 'NEJM', 'BMJ', 'JAMA', 'PNAS', 'EBO',
-])
-
-const ORG_SMALL_WORDS = new Set([
-  'of', 'the', 'and', 'in', 'for', 'on', 'at', 'to', 'a', 'an', 'or', 'as',
-  'by', 'with', 'from', 'de', 'la', 'le', 'du',
-])
-
-// Journals with intentional non-standard casing — substitute after title-casing
-const JOURNAL_CASE_FIXES: Array<[RegExp, string]> = [
-  [/\bBiorxiv\b/g, 'bioRxiv'],
-  [/\bMedrxiv\b/g, 'medRxiv'],
-  [/\bArxiv\b/g, 'arXiv'],
-  [/\bMbio\b/g, 'mBio'],
-  [/\bElife\b/g, 'eLife'],
-  [/\bPlos\b/g, 'PLOS'],
-  [/\bEmbo\b/g, 'EMBO'],
-  [/\bJci\b/g, 'JCI'],
-  [/\bNejm\b/g, 'NEJM'],
-  [/\bBmj\b/g, 'BMJ'],
-  [/\bJama\b/g, 'JAMA'],
-  [/\bPnas\b/g, 'PNAS'],
-  [/\bIscience\b/g, 'iScience'],
-]
-
-/**
- * Title-case a single token, preserving internal hyphens and acronyms
- */
-function titleCaseToken(token: string): string {
-  return token.split('-').map(part => {
-    const alpha = part.replace(/[^A-Za-z]/g, '')
-    if (ORG_ACRONYMS.has(alpha)) return part
-    let result = ''
-    let firstLetterDone = false
-    for (const c of part) {
-      if (/[A-Za-z]/.test(c)) {
-        if (!firstLetterDone) {
-          result += c.toUpperCase()
-          firstLetterDone = true
-        } else {
-          result += c.toLowerCase()
-        }
-      } else {
-        result += c
-        // Treat '/' and '.' as internal word boundaries so
-        // "INSTITUTE/CITY OF HOPE" → "Institute/City of Hope" rather
-        // than "Institute/city of Hope" (r18 audit finding).
-        if (c === '/' || c === '.') {
-          firstLetterDone = false
-        }
-      }
-    }
-    return result
-  }).join('-')
-}
-
-/**
- * Normalize an organization name from NIH RePORTER data:
- * - Strips trailing extra closing parens (data quirk: "X (Y))")
- * - Title-cases all-caps strings (e.g. "STANFORD UNIVERSITY" → "Stanford University")
- * - Preserves known acronyms (MIT, UCLA, NIH)
- * - Lowercases small connector words (of, the, and)
- * - Leaves already-mixed-case names alone
- */
-function normalizeOrgName(name: string | null | undefined): string {
-  if (!name) return ''
-  let cleaned = name.trim()
-  // Strip trailing extra closing parens
-  cleaned = cleaned.replace(/\){2,}$/, ')')
-  // Skip if already mixed case (likely an already-normalized commercial name)
-  if (/[a-z]/.test(cleaned)) return cleaned
-
-  const tokens = cleaned.split(/(\s+)/)
-  let firstNonSpaceFound = false
-
-  return tokens.map(token => {
-    if (/^\s+$/.test(token) || !token) return token
-    const isFirst = !firstNonSpaceFound
-    firstNonSpaceFound = true
-
-    const alpha = token.replace(/[^A-Za-z]/g, '')
-    if (ORG_ACRONYMS.has(alpha)) return token
-    if (!isFirst && ORG_SMALL_WORDS.has(alpha.toLowerCase())) {
-      return token.toLowerCase()
-    }
-    return titleCaseToken(token)
-  }).join('')
-}
-
-/**
- * Title-case a journal name and apply known special-case fixes (bioRxiv, PLOS, etc.)
- * Always normalizes regardless of input casing, since PubMed feeds inconsistently cased journals.
- */
-function normalizeJournalName(name: string | null | undefined): string {
-  if (!name) return ''
-  const trimmed = name.trim()
-  if (!trimmed) return ''
-
-  const tokens = trimmed.split(/(\s+)/)
-  let firstNonSpaceFound = false
-
-  let result = tokens.map(token => {
-    if (/^\s+$/.test(token) || !token) return token
-    const isFirst = !firstNonSpaceFound
-    firstNonSpaceFound = true
-
-    const alpha = token.replace(/[^A-Za-z]/g, '')
-    if (ORG_ACRONYMS.has(alpha.toUpperCase()) && alpha === alpha.toUpperCase()) return token
-    if (!isFirst && ORG_SMALL_WORDS.has(alpha.toLowerCase())) {
-      return token.toLowerCase()
-    }
-    return titleCaseToken(token)
-  }).join('')
-
-  // Apply special-case fixes for known mixed-case journals
-  for (const [pattern, replacement] of JOURNAL_CASE_FIXES) {
-    result = result.replace(pattern, replacement)
-  }
-  return result
-}
+// normalizeOrgName, normalizeJournalName, titleCaseToken, ORG_ACRONYMS,
+// and ORG_SMALL_WORDS have moved to src/lib/format-names.ts so UI code
+// can share the same normalization. Import at top of this file.
 
 /**
  * Clean project narrative/abstract text

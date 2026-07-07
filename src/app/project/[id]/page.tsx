@@ -9,6 +9,7 @@ import { BackButton } from '@/components/BackButton'
 import { CategoryEditModal } from '@/components/CategoryEditModal'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import { useAuth } from '@/contexts/AuthContext'
+import { normalizeOrgName, normalizeJournalName, normalizePIName } from '@/lib/format-names'
 
 interface Project {
   id: string
@@ -349,7 +350,7 @@ export default function ProjectPage() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 py-4 border-t border-gray-100">
                 <div>
                   <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Organization</div>
-                  <div className="font-medium text-gray-900">{project.org_name}</div>
+                  <div className="font-medium text-gray-900">{normalizeOrgName(project.org_name)}</div>
                   <div className="text-sm text-gray-500">
                     {project.org_city}, {project.org_state}
                   </div>
@@ -357,7 +358,7 @@ export default function ProjectPage() {
                 <div>
                   <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Principal Investigator</div>
                   <div className="font-medium text-gray-900">
-                    {project.pi_names?.split(';')[0]?.trim() || 'N/A'}
+                    {normalizePIName(project.pi_names?.split(';')[0]?.trim() || '') || 'N/A'}
                   </div>
                   {project.program_officer && (
                     <div className="text-sm text-gray-500">
@@ -453,7 +454,7 @@ export default function ProjectPage() {
                             {pub.pub_title || `PMID: ${pub.pmid}`}
                           </Link>
                           <div className="flex gap-3 mt-1 text-sm text-gray-500">
-                            <span>{pub.journal_abbr}</span>
+                            <span>{normalizeJournalName(pub.journal_abbr)}</span>
                             <span>{pub.pub_year}</span>
                             {pub.is_methods_journal && (
                               <span className="text-green-600">Methods</span>

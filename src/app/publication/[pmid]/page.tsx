@@ -7,6 +7,7 @@ import { BookOpen, Calendar, Users, Building2, ExternalLink, Bookmark } from 'lu
 import { DetailLayout } from '@/components/DetailLayout'
 import { BackButton } from '@/components/BackButton'
 import { useAuth } from '@/contexts/AuthContext'
+import { normalizeOrgName, normalizeJournalName } from '@/lib/format-names'
 
 interface PublicationData {
   pmid: string
@@ -211,7 +212,7 @@ export default function PublicationDetailPage() {
                   <span className="text-[#E07A5F] font-medium text-sm">PMID:{publication.pmid}</span>
                   {publication.journal_abbr && (
                     <span className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-xs font-medium">
-                      {publication.journal_abbr}
+                      {normalizeJournalName(publication.journal_abbr)}
                     </span>
                   )}
                   {publication.pub_year && (
@@ -254,7 +255,7 @@ export default function PublicationDetailPage() {
 
             {publication.journal_title && (
               <p className="text-gray-600 text-sm">
-                <span className="font-medium">Journal:</span> {publication.journal_title}
+                <span className="font-medium">Journal:</span> {normalizeJournalName(publication.journal_title)}
               </p>
             )}
           </div>
@@ -333,7 +334,7 @@ export default function PublicationDetailPage() {
                 >
                   {publication.linked_project.title}
                 </Link>
-                <p className="text-gray-600 mt-1">{publication.linked_project.org_name}</p>
+                <p className="text-gray-600 mt-1">{normalizeOrgName(publication.linked_project.org_name)}</p>
                 {publication.linked_project.total_cost && (
                   <p className="text-[#E07A5F] font-medium mt-2">
                     ${(publication.linked_project.total_cost / 1000000).toFixed(1)}M funding

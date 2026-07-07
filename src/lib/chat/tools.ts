@@ -388,8 +388,12 @@ export async function keywordSearch(
   const { keyword, filters } = params
 
   try {
-    // Split into individual words for AND logic
-    const words = keyword.toLowerCase().trim().split(/\s+/).filter(w => w.length > 0)
+    // Split into individual words for AND logic. Drop words below 3
+    // characters — short tokens like "AI" or "ev" match tens of thousands
+    // of unrelated words when passed to a substring ilike query, and
+    // there's no way to make them specific enough. Users typing a
+    // 2-char query would get useless results either way.
+    const words = keyword.toLowerCase().trim().split(/\s+/).filter(w => w.length >= 3)
 
     if (words.length === 0) {
       return {
@@ -688,9 +692,11 @@ export async function searchProjectsKeyword(
   const effectiveLimit = limit
 
   try {
-    // Split query into words for matching
+    // Split query into words for matching. Drop words below 3 characters
+    // for the same reason as searchKeywords — short tokens can't be made
+    // specific enough via substring matching to be useful.
     const queryLower = keyword_query.toLowerCase().trim()
-    const words = queryLower.split(/\s+/).filter(w => w.length > 0)
+    const words = queryLower.split(/\s+/).filter(w => w.length >= 3)
 
     if (words.length === 0) {
       return {

@@ -7,6 +7,7 @@ import { Building2, ChevronLeft, ChevronRight, FlaskConical, Search, X, Bookmark
 import { DetailLayout } from '@/components/DetailLayout'
 import { useAuth } from '@/contexts/AuthContext'
 import { BackButton } from '@/components/BackButton'
+import { normalizeOrgName, normalizePIName } from '@/lib/format-names'
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
@@ -292,7 +293,7 @@ export default function OrgPage() {
             {/* Org info */}
             <div>
               <h1 className="text-xl font-semibold text-gray-900">
-                {data.org_name}
+                {normalizeOrgName(data.org_name)}
               </h1>
               <p className="text-sm text-gray-500">
                 {data.org_city && `${data.org_city}, `}{data.org_state}
@@ -569,7 +570,7 @@ export default function OrgPage() {
                       <div className="flex items-center gap-2 text-xs text-gray-400">
                         <span className={`w-2 h-2 rounded-full ${statusColor}`} />
                         {project.pi_names && (
-                          <span className="truncate">PI: {project.pi_names.split(';')[0]?.trim()}</span>
+                          <span className="truncate">PI: {normalizePIName(project.pi_names.split(';')[0]?.trim() || '')}</span>
                         )}
                         {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
                       </div>

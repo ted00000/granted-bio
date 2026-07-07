@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
+import { normalizeOrgName, normalizeJournalName, normalizePIName } from '@/lib/format-names'
 
 interface Signal {
   tier: number
@@ -191,7 +192,7 @@ export default function CompanyPage() {
                 {project.title}
               </h1>
               <p className="text-lg text-blue-600 font-medium">
-                {project.org_name}
+                {normalizeOrgName(project.org_name)}
               </p>
             </div>
             <div className="text-right">
@@ -251,7 +252,13 @@ export default function CompanyPage() {
           {project.pi_names && (
             <div className="py-4 border-t border-gray-200">
               <div className="text-xs text-gray-500 uppercase mb-1">Principal Investigators</div>
-              <div className="text-gray-900">{project.pi_names}</div>
+              <div className="text-gray-900">
+                {project.pi_names
+                  .split(';')
+                  .map((n) => normalizePIName(n.trim()))
+                  .filter(Boolean)
+                  .join('; ')}
+              </div>
             </div>
           )}
         </div>
@@ -404,7 +411,7 @@ export default function CompanyPage() {
                         {pub.pub_title || `PMID: ${pub.pmid}`}
                       </a>
                       <div className="flex gap-4 mt-1 text-sm text-gray-500">
-                        <span>{pub.journal_abbr}</span>
+                        <span>{normalizeJournalName(pub.journal_abbr)}</span>
                         <span>{pub.pub_year}</span>
                         {pub.is_methods_journal && (
                           <span className="text-green-600 font-medium">Methods Journal</span>

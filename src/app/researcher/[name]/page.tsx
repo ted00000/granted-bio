@@ -7,6 +7,7 @@ import { User, ChevronLeft, ChevronRight, DollarSign, FileText, FlaskConical, Ac
 import { DetailLayout } from '@/components/DetailLayout'
 import { BackButton } from '@/components/BackButton'
 import { useAuth } from '@/contexts/AuthContext'
+import { normalizeOrgName, normalizePIName } from '@/lib/format-names'
 
 // Display names for categories
 const CATEGORY_LABELS: Record<string, string> = {
@@ -275,14 +276,14 @@ export default function ResearcherPage() {
             {/* Researcher info */}
             <div>
               <h1 className="text-xl font-semibold text-gray-900">
-                {data.pi_name}
+                {normalizePIName(data.pi_name)}
               </h1>
               {data.primary_org && (
                 <Link
                   href={`/org/${encodeURIComponent(data.primary_org)}`}
                   className="text-sm text-gray-500 hover:text-[#E07A5F] transition-colors"
                 >
-                  {data.primary_org}
+                  {normalizeOrgName(data.primary_org)}
                   {data.org_state && `, ${data.org_state}`}
                 </Link>
               )}
@@ -557,7 +558,7 @@ export default function ResearcherPage() {
                       <div className="flex items-center gap-2 text-xs text-gray-400">
                         <span className={`w-2 h-2 rounded-full ${statusColor}`} />
                         {project.org_name && (
-                          <span className="truncate">{project.org_name}</span>
+                          <span className="truncate">{normalizeOrgName(project.org_name)}</span>
                         )}
                         {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
                         {project.primary_category && (

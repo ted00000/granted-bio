@@ -7,6 +7,7 @@ import { FileText, Calendar, Users, Building2, Tag, ExternalLink, Quote, Bookmar
 import { DetailLayout } from '@/components/DetailLayout'
 import { BackButton } from '@/components/BackButton'
 import { useAuth } from '@/contexts/AuthContext'
+import { normalizeOrgName } from '@/lib/format-names'
 
 interface PatentData {
   patent_id: string
@@ -264,7 +265,7 @@ export default function PatentDetailPage() {
                   <div>
                     <dd className="text-gray-900">
                       {patent.assignees.map((assignee, idx) => (
-                        <div key={idx} className="font-medium">{assignee}</div>
+                        <div key={idx} className="font-medium">{normalizeOrgName(assignee)}</div>
                       ))}
                     </dd>
                   </div>
@@ -324,7 +325,7 @@ export default function PatentDetailPage() {
                 >
                   {patent.linked_project.title}
                 </Link>
-                <p className="text-gray-600 mt-1">{patent.linked_project.org_name}</p>
+                <p className="text-gray-600 mt-1">{normalizeOrgName(patent.linked_project.org_name)}</p>
                 {patent.linked_project.total_cost && (
                   <p className="text-[#E07A5F] font-medium mt-2">
                     ${(patent.linked_project.total_cost / 1000000).toFixed(1)}M funding

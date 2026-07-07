@@ -7,6 +7,7 @@ import { Activity, Calendar, Users, Building2, FlaskConical, ExternalLink, Bookm
 import { DetailLayout } from '@/components/DetailLayout'
 import { BackButton } from '@/components/BackButton'
 import { useAuth } from '@/contexts/AuthContext'
+import { normalizeOrgName, normalizePIName } from '@/lib/format-names'
 
 interface TrialData {
   nct_id: string
@@ -49,6 +50,18 @@ function formatDate(dateStr: string | null): string {
 function formatPhase(phase: string | null): string {
   if (!phase) return 'N/A'
   return phase.replace('PHASE', 'Phase ').replace('EARLY_PHASE1', 'Early Phase 1').replace('NA', 'N/A')
+}
+
+/**
+ * Whether a phase value carries meaningful info. Both null and the
+ * literal "NA" upstream mean "no phase assigned" — hide the badge in
+ * both cases so the UI doesn't look inconsistent (some cards showing a
+ * "N/A" badge, others showing nothing).
+ */
+function hasMeaningfulPhase(phase: string | null): boolean {
+  if (!phase) return false
+  const upper = phase.trim().toUpperCase()
+  return upper !== '' && upper !== 'NA' && upper !== 'N/A'
 }
 
 function formatStatus(status: string | null): { label: string; color: string } {
@@ -233,7 +246,7 @@ export default function TrialDetailPage() {
                 <span className={`px-2 py-0.5 rounded text-xs font-medium ${status.color}`}>
                   {status.label}
                 </span>
-                {trial.phase && (
+                {hasMeaningfulPhase(trial.phase) && (
                   <span className="px-2 py-0.5 bg-purple-50 text-purple-700 rounded text-xs font-medium">
                     {formatPhase(trial.phase)}
                   </span>
@@ -322,7 +335,7 @@ export default function TrialDetailPage() {
               {trial.lead_sponsor && (
                 <div>
                   <dt className="text-gray-500">Lead Sponsor</dt>
-                  <dd className="text-gray-900">{trial.lead_sponsor}</dd>
+                  <dd className="text-gray-900">{normalizeOrgName(trial.lead_sponsor)}</dd>
                 </div>
               )}
               <div className="flex gap-2">
@@ -383,9 +396,9 @@ export default function TrialDetailPage() {
               >
                 {project.title}
               </Link>
-              <p className="text-gray-600 mt-1">{project.org_name}</p>
+              <p className="text-gray-600 mt-1">{normalizeOrgName(project.org_name)}</p>
               {project.pi_names && (
-                <p className="text-gray-500 text-xs mt-1">PI: {project.pi_names}</p>
+                <p className="text-gray-500 text-xs mt-1">PI: {normalizePIName(project.pi_names.split(';')[0]?.trim() || project.pi_names)}</p>
               )}
               {project.total_cost && (
                 <p className="text-[#E07A5F] font-medium mt-2">

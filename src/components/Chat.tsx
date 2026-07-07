@@ -11,6 +11,7 @@ import { FilterChips } from './FilterChips'
 import { UpgradePrompt } from './billing/UpgradePrompt'
 import { useAuth } from '@/contexts/AuthContext'
 import { FREE_SEARCH_SOFT_PITCH_AT, getDisplayedSearchLimit } from '@/lib/stripe/config'
+import { normalizeOrgName, normalizePIName } from '@/lib/format-names'
 
 const ICONS = {
   search: Search,
@@ -192,9 +193,9 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
   const exportToCSV = (projects: SearchResultProject[]) => {
     const headers = ['Organization', 'State', 'PI Name', 'Project Title', 'Funding', 'Category', 'Patents', 'Publications', 'Trials']
     const rows = projects.map(p => [
-      p.org_name || '',
+      normalizeOrgName(p.org_name),
       p.org_state || '',
-      p.pi_names?.split(';')[0]?.trim() || '',
+      normalizePIName(p.pi_names?.split(';')[0]?.trim() || ''),
       p.title || '',
       p.total_cost ? `$${(p.total_cost / 1000000).toFixed(2)}M` : '',
       p.primary_category?.replace(/_/g, ' ') || '',
@@ -397,7 +398,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       <>
                         <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-1`}>
                           <span className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words group-hover:text-[#E07A5F] transition-colors">
-                            {project.pi_names?.split(';')[0]?.trim() || 'Unknown PI'}
+                            {normalizePIName(project.pi_names?.split(';')[0]?.trim() || '') || 'Unknown PI'}
                           </span>
                           {project.total_cost && (
                             <span className="text-xs text-gray-400 whitespace-nowrap">
@@ -406,7 +407,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                           )}
                         </div>
                         <div className="flex items-center gap-2 text-xs text-[#E07A5F] font-medium mb-1.5">
-                          <span className="truncate">{project.org_name}</span>
+                          <span className="truncate">{normalizeOrgName(project.org_name)}</span>
                           {project.org_state && <span className="text-gray-400">• {project.org_state}</span>}
                         </div>
                         <p className="text-xs text-gray-500 leading-snug line-clamp-2">
@@ -477,13 +478,13 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                               />
                             )
                           })()}
-                          <span className="truncate">{project.org_name}</span>
+                          <span className="truncate">{normalizeOrgName(project.org_name)}</span>
                           {project.org_state && <span className="flex-shrink-0">• {project.org_state}</span>}
                           {project.fiscal_year && <span className="flex-shrink-0">• FY{project.fiscal_year}</span>}
                         </div>
                         {(project.pi_names || project.program_officer) && (
                           <p className="text-xs text-gray-500 mt-1.5 truncate">
-                            {project.pi_names && <>PI: {project.pi_names.split(';')[0]?.trim()}</>}
+                            {project.pi_names && <>PI: {normalizePIName(project.pi_names.split(';')[0]?.trim() || '')}</>}
                             {project.pi_names && project.program_officer && <span className="mx-1">•</span>}
                             {project.program_officer && <>PO: {project.program_officer}</>}
                           </p>
@@ -701,7 +702,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                       <>
                         <div className={`flex items-start justify-between ${isMobile ? 'gap-2' : 'gap-3'} mb-1`}>
                           <span className="text-sm font-medium text-gray-900 leading-snug flex-1 break-words group-hover:text-[#E07A5F] transition-colors">
-                            {project.pi_names?.split(';')[0]?.trim() || 'Unknown PI'}
+                            {normalizePIName(project.pi_names?.split(';')[0]?.trim() || '') || 'Unknown PI'}
                           </span>
                           {project.total_cost && (
                             <span className="text-xs text-gray-400 whitespace-nowrap">
@@ -710,7 +711,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                           )}
                         </div>
                         <div className="flex items-center gap-2 text-xs text-[#E07A5F] font-medium mb-1.5">
-                          <span className="truncate">{project.org_name}</span>
+                          <span className="truncate">{normalizeOrgName(project.org_name)}</span>
                           {project.org_state && <span className="text-gray-400">• {project.org_state}</span>}
                         </div>
                         <p className="text-xs text-gray-500 leading-snug line-clamp-2">
@@ -781,13 +782,13 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                               />
                             )
                           })()}
-                          <span className="truncate">{project.org_name}</span>
+                          <span className="truncate">{normalizeOrgName(project.org_name)}</span>
                           {project.org_state && <span className="flex-shrink-0">• {project.org_state}</span>}
                           {project.fiscal_year && <span className="flex-shrink-0">• FY{project.fiscal_year}</span>}
                         </div>
                         {(project.pi_names || project.program_officer) && (
                           <p className="text-xs text-gray-500 mt-1.5 truncate">
-                            {project.pi_names && <>PI: {project.pi_names.split(';')[0]?.trim()}</>}
+                            {project.pi_names && <>PI: {normalizePIName(project.pi_names.split(';')[0]?.trim() || '')}</>}
                             {project.pi_names && project.program_officer && <span className="mx-1">•</span>}
                             {project.program_officer && <>PO: {project.program_officer}</>}
                           </p>
@@ -1100,7 +1101,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                         )}
                         {trial.org_name && (
                           <span className="text-xs text-gray-500">
-                            {trial.org_name}
+                            {normalizeOrgName(trial.org_name)}
                           </span>
                         )}
                       </div>
@@ -1155,7 +1156,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                 onClick={() => onOrgClick?.(data.org_name)}
                 className="text-lg font-semibold text-gray-900 hover:text-[#E07A5F] transition-colors text-left"
               >
-                {data.org_name}
+                {normalizeOrgName(data.org_name)}
               </button>
               <div className="text-3xl font-semibold tracking-tight text-[#E07A5F] mt-2">{formatCurrency(data.total_funding)}</div>
               <div className="text-sm text-gray-400 mt-1">total funding</div>
@@ -1297,9 +1298,9 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
     return (
       <div className="h-full overflow-y-auto">
         <div className="p-6 border-b border-gray-100">
-          <div className="text-lg font-semibold text-gray-900">{data.pi_name}</div>
+          <div className="text-lg font-semibold text-gray-900">{normalizePIName(data.pi_name)}</div>
           {data.organizations?.length > 0 && (
-            <div className="text-sm text-gray-500 mt-1">{data.organizations.join(' · ')}</div>
+            <div className="text-sm text-gray-500 mt-1">{data.organizations.map((o: string) => normalizeOrgName(o)).join(' · ')}</div>
           )}
           <div className="text-3xl font-semibold tracking-tight text-[#E07A5F] mt-3">{formatCurrency(data.total_funding)}</div>
           <div className="text-sm text-gray-400 mt-1">total funding</div>
@@ -1346,7 +1347,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                           />
                         )
                       })()}
-                      {project.org_name && <span>{project.org_name}</span>}
+                      {project.org_name && <span>{normalizeOrgName(project.org_name)}</span>}
                       {project.fiscal_year && <span>• FY{project.fiscal_year}</span>}
                     </div>
                     <div className="flex items-center flex-wrap gap-1.5 mt-2">
@@ -1443,7 +1444,7 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
         {data.assignees?.length > 0 && (
           <div className="p-6 border-b border-gray-100">
             <h3 className="text-xs font-medium text-gray-400 uppercase tracking-wide mb-3">Assignees</h3>
-            {data.assignees.map((a, i) => <p key={i} className="text-sm text-gray-600">{a}</p>)}
+            {data.assignees.map((a, i) => <p key={i} className="text-sm text-gray-600">{normalizeOrgName(a)}</p>)}
           </div>
         )}
 
