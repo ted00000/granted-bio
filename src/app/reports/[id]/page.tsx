@@ -811,9 +811,18 @@ export default function ReportDetailPage({
       }
 
       // Detect chart markers and dispatch to the right drawing helper.
-      const renderChartMarker = (markerName: string): boolean => {
+      // The optional `index` handles indexed markers like
+      // <!-- chart:white-space-dimension:2 --> where the same marker name
+      // renders a different chart per index.
+      const renderChartMarker = (markerName: string, index?: number): boolean => {
         const fundingStats = report.funding_stats
         const trials = report.agent_outputs?.trials
+        const whiteSpace = (report.agent_outputs as { whiteSpace?: {
+          dimensions?: Array<{
+            name: string
+            categories: Array<{ name: string; projectCount: number }>
+          }>
+        } } | null)?.whiteSpace
 
         if (markerName === 'funding-by-year' && fundingStats?.byYear?.length) {
           const data = [...fundingStats.byYear]
@@ -841,6 +850,25 @@ export default function ReportDetailPage({
           y = drawHorizontalBarChart(data, margin, y, maxWidth, chartHeight, {
             valueLabelFn: formatChartCurrency,
           })
+          y += 12
+          return true
+        }
+
+        if (
+          markerName === 'white-space-dimension' &&
+          typeof index === 'number' &&
+          whiteSpace?.dimensions?.[index]
+        ) {
+          const dim = whiteSpace.dimensions[index]
+          const sorted = [...dim.categories].sort((a, b) => b.projectCount - a.projectCount)
+          const data = sorted.map((cat, idx) => ({
+            label: cat.name,
+            value: cat.projectCount,
+            color: CHART_PALETTE[idx % CHART_PALETTE.length],
+          }))
+          const chartHeight = Math.max(80, data.length * 22 + 16)
+          addNewPageIfNeeded(chartHeight + 20)
+          y = drawHorizontalBarChart(data, margin, y, maxWidth, chartHeight)
           y += 12
           return true
         }
@@ -902,10 +930,13 @@ export default function ReportDetailPage({
           continue
         }
 
-        // Chart marker (e.g. <!-- chart:funding-by-year -->) — render vector chart
-        const chartMatch = trimmed.match(/^<!--\s*chart:([\w-]+)\s*-->$/)
+        // Chart marker (e.g. <!-- chart:funding-by-year --> or the
+        // indexed form <!-- chart:white-space-dimension:0 --> used for
+        // per-dimension white-space charts).
+        const chartMatch = trimmed.match(/^<!--\s*chart:([\w-]+)(?::(\d+))?\s*-->$/)
         if (chartMatch) {
-          renderChartMarker(chartMatch[1])
+          const idx = chartMatch[2] ? parseInt(chartMatch[2], 10) : undefined
+          renderChartMarker(chartMatch[1], idx)
           isFirstElement = false
           contentRendered = true
           i++
