@@ -2472,14 +2472,36 @@ function formatCurrency(amount: number): string {
  * trials. Original agent output includes ALL trials; the filtered list
  * excludes 'unrelated', and the phase chart / summary should agree with
  * what the reader sees in the Active Trials listing.
+ *
+ * Uses the same phase normalization as the trials agent so keys are
+ * consistent — "PHASE1" and "PHASE 1" collapse to "Phase 1", "NA" and
+ * "N/A" collapse to "N/A", etc. Without this the chart splits the same
+ * kind of study across multiple bars (r19 audit: "NA":10 vs "N/A":39
+ * as separate bars, plus "PHASE1"/"PHASE2" not matching the render
+ * sort order that expects "Phase 1"/"Phase 2").
  */
 function recomputeTrialsByPhase(trials: TrialItem[]): Record<string, number> {
   const counts: Record<string, number> = {}
   for (const t of trials) {
-    const key = t.phase || 'N/A'
+    const key = normalizeTrialPhase(t.phase, t.study_type)
     counts[key] = (counts[key] || 0) + 1
   }
   return counts
+}
+
+/** Duplicates agents/trials.ts::normalizePhase — see that comment. */
+function normalizeTrialPhase(phase: string | null, studyType: string | null): string {
+  if (!phase) {
+    return studyType?.toUpperCase() === 'OBSERVATIONAL' ? 'N/A' : 'Unknown'
+  }
+  const p = phase.toUpperCase().trim()
+  if (p.includes('PHASE1') || p === 'PHASE 1') return 'Phase 1'
+  if (p.includes('PHASE2') || p === 'PHASE 2') return 'Phase 2'
+  if (p.includes('PHASE3') || p === 'PHASE 3') return 'Phase 3'
+  if (p.includes('PHASE4') || p === 'PHASE 4') return 'Phase 4'
+  if (p.includes('EARLY')) return 'Early Phase 1'
+  if (p === 'NA' || p === 'N/A' || p === '') return 'N/A'
+  return phase
 }
 
 /**
