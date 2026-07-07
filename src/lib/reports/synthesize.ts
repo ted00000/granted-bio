@@ -469,12 +469,20 @@ ${yearTrend}
 ## IP CONCENTRATION
 ${patentAssignees || 'No patent assignee data'}
 
-## PROJECT ABSTRACTS (sample for technology assessment)
+## FULL PROJECT LIST (all ${agentOutputs.projects.items.length} projects in the analyzed sample — title + org + category, one per line)
+${formatAllProjectsCompact(agentOutputs.projects.items)}
+
+## PROJECT ABSTRACTS (sample for technology assessment — top ${Math.min(20, agentOutputs.projects.items.length)} by funding)
 ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 20))}
 
 ---
 
 Generate INVESTOR-FOCUSED signals analysis.${partialDirective}
+
+CRITICAL DATA-GROUNDING RULE:
+- The FULL PROJECT LIST above enumerates every project in the analyzed sample. Use it as the authoritative reference when making claims about what topics, cancer types, diseases, biofluids, or approaches ARE or ARE NOT present in the sample.
+- NEVER make a counting claim (e.g., "only one project on X", "no projects address Y") based on the ABSTRACTS section alone — that's only a fraction of the sample. Scan the FULL PROJECT LIST first.
+- If you make a numerical claim, it must be verifiable against the FULL PROJECT LIST. When uncertain, use qualitative framing ("relatively underrepresented", "appears sparse") rather than specific counts.
 
 SAMPLE-BASED LANGUAGE: This covers NIH-linked data only, not complete market IP/trials. Use confident but hedged language:
 - "Among the linked patents..." not "The IP landscape is..."
@@ -513,12 +521,20 @@ ${orgFundingList}
 ## FUNDING TREND
 ${yearTrend}
 
-## PROJECT ABSTRACTS (analyze for positioning)
+## FULL PROJECT LIST (all ${agentOutputs.projects.items.length} projects in the analyzed sample — title + org + category, one per line)
+${formatAllProjectsCompact(agentOutputs.projects.items)}
+
+## PROJECT ABSTRACTS (analyze for positioning — top ${Math.min(25, agentOutputs.projects.items.length)} by funding)
 ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 25))}
 
 ---
 
 Generate RESEARCHER-FOCUSED signals analysis.${partialDirective}
+
+CRITICAL DATA-GROUNDING RULE:
+- The FULL PROJECT LIST above enumerates every project in the analyzed sample. Use it as the authoritative reference when making claims about what topics, cancer types, diseases, biofluids, or approaches ARE or ARE NOT present in the sample.
+- NEVER make a counting claim (e.g., "only one project on X", "no projects address Y") based on the ABSTRACTS section alone — that's only a fraction of the sample. Scan the FULL PROJECT LIST first.
+- Gap Analysis in particular must be grounded in the FULL PROJECT LIST. If you say a cancer type / disease / methodology / biofluid is underrepresented, first verify by scanning the full list. Use qualitative framing ("relatively underrepresented in the analyzed sample", "appears sparse relative to X") when the count is nonzero. Reserve "only one" or "no projects" for cases where the FULL PROJECT LIST truly confirms it.
 
 SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this space. Use confident but hedged language:
 - "Among the funded projects..." not "The field is..."
@@ -534,7 +550,7 @@ Return JSON only:
   "positioningMap": "2-3 sentences: What distinct approaches exist in this space? How might a new entrant differentiate?",
   "collaborationSignals": "2-3 sentences: Are there patterns of collaboration (multi-PI grants, institutional partnerships)? Who might be good collaborators?",
   "methodologicalTrends": "2-3 sentences: What techniques are emerging vs. mature? What methodological gaps exist?",
-  "gapAnalysis": "2-3 sentences: What's NOT being funded or studied? Where are the white spaces?"
+  "gapAnalysis": "2-3 sentences: What's NOT being funded or studied? Where are the white spaces? IMPORTANT: verify any count-based claim against the FULL PROJECT LIST above. If pancreatic/lung/ovarian/etc. appears in even one project's title, do not claim 'no projects' or 'only one project' on that topic. Prefer qualitative framing ('relatively underrepresented', 'appears sparse in the analyzed sample')."
 }`
 
   try {
@@ -2282,6 +2298,21 @@ function formatProjectsWithTiers(projects: ProjectItem[]): string {
       return `[${i + 1}] ${tier}${sim} ${p.title}\nPI: ${p.pi_names?.split(';')[0] || 'N/A'} | Org: ${p.org_name || 'N/A'} | ${formatCurrency(p.total_cost || 0)}\n${p.abstract || 'No abstract available'}`
     })
     .join('\n\n---\n\n')
+}
+
+/**
+ * Compact one-line-per-project listing of the FULL analyzed set — used
+ * for prompts that need to reason about presence/absence across the
+ * whole sample (gap analysis, cancer-type or disease coverage,
+ * methodological gaps). Sending just the top-N with full abstracts
+ * caused counting hallucinations: the LLM said "only 1 pancreatic
+ * cancer project" when the analyzed set of 123 actually had 8+ with
+ * "pancreatic" in the title alone.
+ */
+function formatAllProjectsCompact(projects: ProjectItem[]): string {
+  return projects
+    .map((p, i) => `[${i + 1}] ${p.title || '(no title)'} | ${p.org_name || 'N/A'} | ${p.primary_category || 'N/A'}`)
+    .join('\n')
 }
 
 function formatCurrency(amount: number): string {
