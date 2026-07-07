@@ -1749,6 +1749,7 @@ export default function ReportDetailPage({
                 fundingByYear: report.funding_stats?.byYear,
                 categories: report.funding_stats?.byCategory,
                 trialsByPhase: report.agent_outputs?.trials?.byPhase,
+                whiteSpace: (report.agent_outputs as { whiteSpace?: unknown })?.whiteSpace as never,
               }}
             />
           </div>

@@ -212,7 +212,10 @@ export interface SignalsAnalysis {
   positioningMap: string        // Who's doing what approach
   collaborationSignals: string  // Co-PI patterns, institutional links
   methodologicalTrends: string  // Emerging techniques, declining approaches
-  gapAnalysis: string           // What's NOT being funded/studied
+  // gapAnalysis was removed once the dedicated White Space Analysis section
+  // shipped — that section replaces this field with a quantified,
+  // data-grounded multi-dimensional gap audit. Legacy reports may still
+  // have a value in this field on the JSONB blob; readers should ignore it.
 
   // Investor-focused signals
   trlAssessment: string         // Technology readiness breakdown
@@ -257,6 +260,49 @@ export interface CompetitiveTopology {
   narrative: string             // Brief synthesis
 }
 
+// White Space Analysis — quantified coverage-gap audit across topic-specific
+// dimensions. Grounded in the actual analyzed project sample (deterministic
+// keyword counting) with an LLM-authored narrative layer that MUST agree
+// with the counts. Cross-referenced against the broader NIH RePORTER
+// projects table so a "gap in the topic slice" can be distinguished from
+// "not relevant to NIH funding at all."
+export interface CoverageCategory {
+  name: string                    // e.g., "Lung", "Pancreatic", "cfDNA methylation"
+  keywords: string[]              // keywords used to identify matching projects
+  projectCount: number            // matched projects in the analyzed sample
+  fundingTotal: number            // sum of total_cost across matched projects
+  broaderNihCount: number         // matched projects across ALL NIH RePORTER (not just topic slice)
+  projectExamples: string[]       // up to 3 project_numbers for provenance
+}
+
+export interface CoverageDimension {
+  name: string                    // e.g., "Cancer Type"
+  description: string             // one-sentence explanation of this dimension for the topic
+  categories: CoverageCategory[]
+  totalMatched: number            // projects matching at least one category
+  totalUnclassified: number       // projects matching none
+  narrative: string               // LLM-authored 2-3 sentences on what stands out
+}
+
+export interface WhiteSpaceOpportunity {
+  dimensionName: string
+  categoryName: string
+  sampleCount: number             // count in analyzed sample
+  sampleShare: number             // % of sample projects (0-1)
+  broaderNihCount: number         // count in broader NIH data
+  gapSignal: 'sparse-in-topic' | 'absent-in-topic' | 'sample-under-broader' // categorization
+  rationale: string               // LLM narrative — why this white space might matter
+}
+
+export interface WhiteSpaceAnalysis {
+  overview: string                // 3-4 sentences framing the coverage picture
+  scopeNote: string               // Standing caveat about NIH RePORTER scope
+  dimensions: CoverageDimension[]
+  topOpportunities: WhiteSpaceOpportunity[]
+  totalProjects: number           // for chart/table denominators
+  totalFunding: number
+}
+
 // IP Landscape Assessment
 export interface IPLandscapeAssessment {
   concentration: 'fragmented' | 'moderately_concentrated' | 'highly_concentrated'
@@ -285,6 +331,7 @@ export interface ReportData {
   fieldMaturity?: FieldMaturityAssessment
   competitiveTopology?: CompetitiveTopology
   ipLandscape?: IPLandscapeAssessment
+  whiteSpace?: WhiteSpaceAnalysis
 }
 
 export interface GenerateReportOptions {

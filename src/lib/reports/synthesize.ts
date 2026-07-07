@@ -19,8 +19,10 @@ import type {
   FieldMaturityAssessment,
   CompetitiveTopology,
   IPLandscapeAssessment,
+  WhiteSpaceAnalysis,
 } from './types'
 import { logApiUsage } from '@/lib/billing/usage'
+import { generateWhiteSpaceAnalysis } from './white-space'
 
 interface SynthesisContext {
   userId: string
@@ -61,7 +63,7 @@ export async function synthesizeReport(
   const usageTracker: UsageTracker = { inputTokens: 0, outputTokens: 0 }
 
   // Generate all LLM content in parallel (first batch)
-  const [executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, enhancedMarketContext, fieldMaturity, competitiveTopology, ipLandscape] = await Promise.all([
+  const [executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, enhancedMarketContext, fieldMaturity, competitiveTopology, ipLandscape, whiteSpace] = await Promise.all([
     generateExecutiveSummary(topic, agentOutputs, context, usageTracker),
     generateSectionInsights(topic, agentOutputs, context, usageTracker),
     generateSignalsAnalysis(topic, agentOutputs, context, usageTracker),
@@ -70,6 +72,7 @@ export async function synthesizeReport(
     generateFieldMaturityAssessment(topic, agentOutputs, context, usageTracker),
     generateCompetitiveTopology(topic, agentOutputs, context, usageTracker),
     generateIPLandscapeAssessment(topic, agentOutputs, context, usageTracker),
+    generateWhiteSpaceAnalysis(topic, agentOutputs.projects.items, usageTracker),
   ])
 
   // Generate project insights (needs executive summary first for context).
@@ -89,7 +92,7 @@ export async function synthesizeReport(
   agentOutputs.market.context = enhancedMarketContext
 
   // Assemble markdown report with persona-aware structure
-  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights)
+  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights, whiteSpace)
 
   // Log cumulative API usage for billing
   console.log(`[Synthesis Agent] Total API usage: ${usageTracker.inputTokens} input, ${usageTracker.outputTokens} output tokens`)
@@ -118,6 +121,7 @@ export async function synthesizeReport(
     fieldMaturity,
     competitiveTopology,
     ipLandscape,
+    whiteSpace,
   }
 }
 
@@ -179,7 +183,10 @@ ${formatYearTrendForPrompt(context.fundingStats.byYear)}
 - ${agentOutputs.trials.items.length} clinical trials | ${agentOutputs.patents.items.length} patents
 - Dominant category: ${formatCategory(topCategory)}
 
-## RESEARCH ABSTRACTS (scan for patterns, don't describe individual projects)
+## FULL PROJECT LIST (all ${agentOutputs.projects.items.length} projects — title + org + category, one per line)
+${formatAllProjectsCompact(agentOutputs.projects.items)}
+
+## RESEARCH ABSTRACTS (top ${Math.min(30, agentOutputs.projects.items.length)} by funding — scan for patterns, don't describe individual projects)
 ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 30))}
 
 ## CLINICAL DEVELOPMENT
@@ -201,7 +208,7 @@ Instead, answer these questions in narrative form:
 
 1. **Opportunity Signal** (1-2 sentences): What does this research landscape reveal about ${persona === 'investor' ? 'commercial/translational opportunity' : 'scientific opportunity and positioning'}?
 
-2. **Competitive Positioning** (2-3 sentences): Who are the leaders and what differentiates their approaches? Where are the gaps or white spaces?
+2. **Competitive Positioning** (2-3 sentences): Who are the leaders and what differentiates their approaches? Where are the gaps or white spaces? When identifying gaps or white spaces, scan the FULL PROJECT LIST above — do NOT claim a topic (cancer type, disease, methodology, biofluid) is absent based on the ABSTRACTS section alone. If the topic appears in even one project's title, use qualitative framing ("relatively underrepresented", "appears sparse") rather than "no projects".
 
 3. **Momentum Indicators** (2-3 sentences): Is this field accelerating, maturing, or stalling? What evidence supports this from funding trends, trial progression, or publication patterns?
 
@@ -292,7 +299,10 @@ Projects are ranked by relevance. Give more emphasis to insights from [PRECISE] 
 
 ---
 
-## PROJECT ABSTRACTS (analyze for funding insight)
+## FULL PROJECT LIST (all ${agentOutputs.projects.items.length} projects — title + org + category, one per line)
+${formatAllProjectsCompact(agentOutputs.projects.items)}
+
+## PROJECT ABSTRACTS (top ${Math.min(25, agentOutputs.projects.items.length)} by funding — analyze for funding insight)
 
 ${formatProjectsWithTiers(agentOutputs.projects.items.slice(0, 25)) || 'No project abstracts available'}
 
@@ -356,6 +366,10 @@ LANGUAGE REQUIREMENTS:
 - "This concentration pattern suggests..." not "Stanford controls..."
 - Be SPECIFIC about observations but acknowledge this is a high-confidence sample, not complete census
 - Each insight should be 3-4 sentences with real substance
+
+CRITICAL DATA-GROUNDING RULE:
+- If you make any claim about presence/absence or counting of specific topics (cancer types, diseases, biofluids, methodologies, organizations), verify against the FULL PROJECT LIST above — NOT the ABSTRACTS section, which is only a subset.
+- Never say "no projects on X" or "only one project on Y" unless the FULL PROJECT LIST actually shows that. Prefer qualitative framing ("relatively underrepresented in the sample") when the count is nonzero but small.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
@@ -534,12 +548,12 @@ Generate RESEARCHER-FOCUSED signals analysis.${partialDirective}
 CRITICAL DATA-GROUNDING RULE:
 - The FULL PROJECT LIST above enumerates every project in the analyzed sample. Use it as the authoritative reference when making claims about what topics, cancer types, diseases, biofluids, or approaches ARE or ARE NOT present in the sample.
 - NEVER make a counting claim (e.g., "only one project on X", "no projects address Y") based on the ABSTRACTS section alone — that's only a fraction of the sample. Scan the FULL PROJECT LIST first.
-- Gap Analysis in particular must be grounded in the FULL PROJECT LIST. If you say a cancer type / disease / methodology / biofluid is underrepresented, first verify by scanning the full list. Use qualitative framing ("relatively underrepresented in the analyzed sample", "appears sparse relative to X") when the count is nonzero. Reserve "only one" or "no projects" for cases where the FULL PROJECT LIST truly confirms it.
+
+DO NOT WRITE GAP OR WHITE SPACE ANALYSIS HERE. The dedicated "White Space Analysis" section (rendered separately) covers coverage gaps with a quantified, multi-dimensional data audit. Focus this section on positioning, collaboration, and methodological trends within what IS funded — leave gaps to the dedicated section.
 
 SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this space. Use confident but hedged language:
 - "Among the funded projects..." not "The field is..."
 - "This pattern suggests..." or "The funding distribution indicates..."
-- "Based on this sample, gaps may exist in..." not definitive claims
 - Acknowledge this represents publicly-funded academic research primarily
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
@@ -549,8 +563,7 @@ Return JSON only:
 {
   "positioningMap": "2-3 sentences: What distinct approaches exist in this space? How might a new entrant differentiate?",
   "collaborationSignals": "2-3 sentences: Are there patterns of collaboration (multi-PI grants, institutional partnerships)? Who might be good collaborators?",
-  "methodologicalTrends": "2-3 sentences: What techniques are emerging vs. mature? What methodological gaps exist?",
-  "gapAnalysis": "2-3 sentences: What's NOT being funded or studied? Where are the white spaces? IMPORTANT: verify any count-based claim against the FULL PROJECT LIST above. If pancreatic/lung/ovarian/etc. appears in even one project's title, do not claim 'no projects' or 'only one project' on that topic. Prefer qualitative framing ('relatively underrepresented', 'appears sparse in the analyzed sample')."
+  "methodologicalTrends": "2-3 sentences: What techniques are emerging vs. mature? What methodological pattern stands out among the funded work?"
 }`
 
   try {
@@ -587,7 +600,6 @@ Return JSON only:
         positioningMap: '',
         collaborationSignals: '',
         methodologicalTrends: '',
-        gapAnalysis: '',
         trlAssessment: parsed.trlAssessment || '',
         commercialReadiness: parsed.commercialReadiness || '',
         ipConcentration: parsed.ipConcentration || '',
@@ -599,7 +611,6 @@ Return JSON only:
         positioningMap: parsed.positioningMap || '',
         collaborationSignals: parsed.collaborationSignals || '',
         methodologicalTrends: parsed.methodologicalTrends || '',
-        gapAnalysis: parsed.gapAnalysis || '',
         trlAssessment: '',
         commercialReadiness: '',
         ipConcentration: '',
@@ -618,7 +629,6 @@ function defaultSignals(): SignalsAnalysis {
     positioningMap: '',
     collaborationSignals: '',
     methodologicalTrends: '',
-    gapAnalysis: '',
     trlAssessment: '',
     commercialReadiness: '',
     ipConcentration: '',
@@ -1057,7 +1067,10 @@ async function generateCompetitiveTopology(
 
 Your task: Identify 3-5 DISTINCT METHODOLOGICAL APPROACHES or technology clusters, NOT organizational groupings.
 
-## PROJECT ABSTRACTS
+## FULL PROJECT LIST (all ${agentOutputs.projects.items.length} projects — title + org + category, one per line)
+${formatAllProjectsCompact(agentOutputs.projects.items)}
+
+## PROJECT ABSTRACTS (top ${Math.min(30, agentOutputs.projects.items.length)} by funding)
 ${projectSummaries}
 
 ## PATENT LANDSCAPE
@@ -1084,6 +1097,11 @@ For each cluster, list:
 2. Key players (mix of academic institutions AND companies if applicable)
 3. Maturity level (Nascent/Emerging/Maturing/Mature)
 4. Brief commercial readiness note
+
+CRITICAL DATA-GROUNDING RULE for keyPlayers:
+- Every organization named in keyPlayers MUST appear as an "Org" in the FULL PROJECT LIST above. Do not invent organizations or infer them from prior knowledge.
+- The FULL PROJECT LIST is the authoritative universe of institutions in the analyzed sample. Scan it (not just the top-30 ABSTRACTS) when deciding which organizations belong to a given approach cluster — an institution can have projects below the top-30 by funding but still be a meaningful player in a methodological area.
+- When you cite a company or non-NIH commercial player as a "key player", flag it explicitly (e.g., "(commercial, not in NIH sample)") so downstream rendering can distinguish sample-derived vs external claims.
 
 SAMPLE-BASED LANGUAGE: This analysis covers NIH-funded academic research. Use hedged language:
 - "Among the funded projects, distinct approaches include..."
@@ -1414,7 +1432,8 @@ function assembleMarkdown(
   fieldMaturity: FieldMaturityAssessment,
   competitiveTopology: CompetitiveTopology,
   ipLandscape: IPLandscapeAssessment,
-  projectInsights?: Record<string, string>
+  projectInsights?: Record<string, string>,
+  whiteSpace?: WhiteSpaceAnalysis
 ): string {
   const persona = context.persona || 'researcher'
   const now = new Date().toLocaleDateString('en-US', {
@@ -1474,7 +1493,13 @@ ${renderCompetitiveTopology(competitiveTopology)}
 
 ---
 
-`
+${whiteSpace && whiteSpace.dimensions.length > 0 ? `## White Space Analysis
+
+${renderWhiteSpace(whiteSpace)}
+
+---
+
+` : ''}`
 
   // PERSONA-SPECIFIC SECTIONS
   if (persona === 'investor') {
@@ -1787,6 +1812,63 @@ function renderCompetitiveTopology(topology: CompetitiveTopology): string {
   return md
 }
 
+function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
+  let md = ''
+
+  // Scope caveat first — the reader needs to know what "NIH-funded" means
+  // and doesn't mean before interpreting counts.
+  md += `*${ws.scopeNote}*\n\n`
+
+  // Overview narrative
+  if (ws.overview) {
+    md += `### Overview\n\n${ws.overview}\n\n`
+  }
+
+  // Per-dimension: heading, chart marker (the MarkdownRenderer swaps this
+  // for a WhiteSpaceCoverageChart component), table with counts, narrative.
+  for (let dIdx = 0; dIdx < ws.dimensions.length; dIdx++) {
+    const dim = ws.dimensions[dIdx]
+    md += `### Coverage by ${dim.name}\n\n`
+    if (dim.description) md += `*${dim.description}*\n\n`
+
+    // Chart marker with dimension index — the renderer looks up the
+    // dimension by index against whiteSpace.dimensions.
+    md += `<!-- chart:white-space-dimension:${dIdx} -->\n\n`
+
+    // Fallback table in case the chart doesn't render (PDF export path,
+    // markdown-only view, etc.). Uses the same numbers the chart shows.
+    md += `| Category | Projects | % of Sample | Funding | Broader NIH |\n`
+    md += `|----------|---------:|------------:|--------:|------------:|\n`
+    for (const cat of dim.categories) {
+      const share = ws.totalProjects > 0 ? (cat.projectCount / ws.totalProjects) * 100 : 0
+      const broaderCell = cat.broaderNihCount === -1 ? 'n/a' : cat.broaderNihCount.toLocaleString()
+      md += `| ${cat.name} | ${cat.projectCount} | ${share.toFixed(1)}% | $${(cat.fundingTotal / 1_000_000).toFixed(1)}M | ${broaderCell} |\n`
+    }
+    md += '\n'
+
+    if (dim.narrative) {
+      md += `${dim.narrative}\n\n`
+    }
+  }
+
+  // Ranked opportunities
+  if (ws.topOpportunities.length > 0) {
+    md += `### Top White Space Opportunities\n\n`
+    md += `*Ranked by the strength of the gap signal — categories that are absent or sparse in the topic-focused sample but active in the broader NIH RePORTER portfolio surface first.*\n\n`
+    ws.topOpportunities.forEach((op, i) => {
+      const share = (op.sampleShare * 100).toFixed(1)
+      const broader = op.broaderNihCount === -1 ? 'not queried' : op.broaderNihCount.toLocaleString()
+      md += `**${i + 1}. ${op.categoryName}** (${op.dimensionName})\n\n`
+      md += `- Analyzed sample: **${op.sampleCount}** projects (${share}% of sample)\n`
+      md += `- Broader NIH RePORTER: **${broader}** matching projects\n`
+      if (op.rationale) md += `\n${op.rationale}\n`
+      md += '\n'
+    })
+  }
+
+  return md
+}
+
 function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOutputs['patents'], insight: string): string {
   let md = ''
 
@@ -1934,10 +2016,9 @@ function renderResearcherSignals(signals: SignalsAnalysis): string {
     md += signals.methodologicalTrends + '\n\n'
   }
 
-  if (signals.gapAnalysis) {
-    md += '### Gap Analysis\n\n'
-    md += signals.gapAnalysis + '\n\n'
-  }
+  // Gap Analysis subsection was removed once the dedicated "White Space
+  // Analysis" section shipped — that section replaces this one with a
+  // quantified, multi-dimensional gap audit backed by real counts.
 
   return md || 'Research positioning analysis not available.\n'
 }

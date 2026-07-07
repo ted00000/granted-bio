@@ -160,6 +160,10 @@ export default async function SampleLiquidBiopsyPage() {
               fundingByYear: fundingStats.byYear,
               categories: fundingStats.byCategory,
               trialsByPhase: agentOutputs.trials?.byPhase,
+              // whiteSpace lives on agent_outputs.whiteSpace (added by the
+              // synthesis step); typed loosely here since agent_outputs is
+              // an opaque JSONB blob at fetch time.
+              whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
             }}
           />
         </div>

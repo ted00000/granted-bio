@@ -191,7 +191,10 @@ export async function generateTopicReport(
         top_organizations: topOrgs,
         top_researchers: topResearchers,
         markdown_content: reportData.markdownContent,
-        agent_outputs: agentOutputs,
+        // agent_outputs stores the raw agent outputs plus the whiteSpace
+        // synthesis result as a nested field (avoids a schema migration for
+        // shipping the new section — a dedicated column is a follow-up).
+        agent_outputs: { ...agentOutputs, whiteSpace: reportData.whiteSpace },
         project_count: projectsOutput.items.length,
         persona,
         signals_analysis: reportData.signalsAnalysis,
@@ -361,7 +364,10 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
         top_organizations: topOrgs,
         top_researchers: topResearchers,
         markdown_content: reportData.markdownContent,
-        agent_outputs: agentOutputs,
+        // agent_outputs stores the raw agent outputs plus the whiteSpace
+        // synthesis result as a nested field (avoids a schema migration for
+        // shipping the new section — a dedicated column is a follow-up).
+        agent_outputs: { ...agentOutputs, whiteSpace: reportData.whiteSpace },
         signals_analysis: reportData.signalsAnalysis,
         curated_publications: reportData.curatedPublications,
         updated_at: new Date().toISOString(),

@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { FundingByYearChart, CategoryDistributionChart, TrialsByPhaseChart } from './charts'
+import { FundingByYearChart, CategoryDistributionChart, TrialsByPhaseChart, WhiteSpaceCoverageChart } from './charts'
 
 interface FundingByYearItem {
   year: number
@@ -15,10 +15,38 @@ interface CategoryItem {
   projects: number
 }
 
+interface WhiteSpaceCategory {
+  name: string
+  keywords: string[]
+  projectCount: number
+  fundingTotal: number
+  broaderNihCount: number
+  projectExamples: string[]
+}
+
+interface WhiteSpaceDimension {
+  name: string
+  description: string
+  categories: WhiteSpaceCategory[]
+  totalMatched: number
+  totalUnclassified: number
+  narrative: string
+}
+
+interface WhiteSpaceData {
+  overview: string
+  scopeNote: string
+  dimensions: WhiteSpaceDimension[]
+  topOpportunities: unknown[]
+  totalProjects: number
+  totalFunding: number
+}
+
 interface ChartData {
   fundingByYear?: FundingByYearItem[]
   categories?: CategoryItem[]
   trialsByPhase?: Record<string, number>
+  whiteSpace?: WhiteSpaceData
 }
 
 interface MarkdownRendererProps {
@@ -41,9 +69,11 @@ export function MarkdownRenderer({ content, chartData }: MarkdownRendererProps) 
     }
 
     // Chart marker (e.g. <!-- chart:funding-by-year -->)
-    const chartMatch = line.trim().match(/^<!--\s*chart:([\w-]+)\s*-->$/)
+    // White space charts use an indexed form: <!-- chart:white-space-dimension:0 -->
+    const chartMatch = line.trim().match(/^<!--\s*chart:([\w-]+)(?::(\d+))?\s*-->$/)
     if (chartMatch) {
       const name = chartMatch[1]
+      const index = chartMatch[2] ? parseInt(chartMatch[2], 10) : undefined
       if (name === 'funding-by-year' && chartData?.fundingByYear?.length) {
         elements.push(
           <div key={i} className="my-4">
@@ -60,6 +90,22 @@ export function MarkdownRenderer({ content, chartData }: MarkdownRendererProps) 
         elements.push(
           <div key={i} className="my-4">
             <TrialsByPhaseChart data={chartData.trialsByPhase} />
+          </div>
+        )
+      } else if (
+        name === 'white-space-dimension' &&
+        typeof index === 'number' &&
+        chartData?.whiteSpace?.dimensions?.[index]
+      ) {
+        const dim = chartData.whiteSpace.dimensions[index]
+        elements.push(
+          <div key={i} className="my-4">
+            <WhiteSpaceCoverageChart
+              dimensionName={dim.name}
+              categories={dim.categories}
+              totalProjects={chartData.whiteSpace.totalProjects}
+              totalUnclassified={dim.totalUnclassified}
+            />
           </div>
         )
       }
