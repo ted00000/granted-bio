@@ -23,6 +23,7 @@ import type {
 } from './types'
 import { logApiUsage } from '@/lib/billing/usage'
 import { generateWhiteSpaceAnalysis } from './white-space'
+import { filterTrialsAndPatentsByRelevance } from './relevance-filter'
 
 interface SynthesisContext {
   userId: string
@@ -61,6 +62,28 @@ export async function synthesizeReport(
 
   // Initialize usage tracker for all API calls
   const usageTracker: UsageTracker = { inputTokens: 0, outputTokens: 0 }
+
+  // Trial + patent topical relevance filter — runs first so downstream
+  // synthesis steps (section insights, IP landscape, field maturity) see
+  // only the topic-relevant subset instead of items that were pulled in
+  // via NIH project linkage but are off-topic (e.g., a T-cell mediation
+  // patent linked to a cancer biomarker project). Fails open — on error
+  // all items are kept.
+  const relevanceResult = await filterTrialsAndPatentsByRelevance(
+    topic,
+    agentOutputs.trials.items,
+    agentOutputs.patents.items,
+    usageTracker,
+  )
+  // Replace items with the filtered/sorted list. Recompute byPhase from
+  // the kept trials so the phase breakdown reflects what the reader
+  // sees in the Active Trials listing.
+  agentOutputs.trials.items = relevanceResult.trials
+  agentOutputs.trials.byPhase = recomputeTrialsByPhase(relevanceResult.trials)
+  agentOutputs.patents.items = relevanceResult.patents
+  // Rebuild byAssignee from the kept patents so counts match what's
+  // shown in the Key Patents list and IP Concentration section.
+  agentOutputs.patents.byAssignee = recomputePatentsByAssignee(relevanceResult.patents)
 
   // Generate all LLM content in parallel (first batch)
   const [executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, enhancedMarketContext, fieldMaturity, competitiveTopology, ipLandscape, whiteSpace] = await Promise.all([
@@ -498,6 +521,9 @@ CRITICAL DATA-GROUNDING RULE:
 - NEVER make a counting claim (e.g., "only one project on X", "no projects address Y") based on the ABSTRACTS section alone — that's only a fraction of the sample. Scan the FULL PROJECT LIST first.
 - If you make a numerical claim, it must be verifiable against the FULL PROJECT LIST. When uncertain, use qualitative framing ("relatively underrepresented", "appears sparse") rather than specific counts.
 
+PROJECT CITATIONS:
+- When you reference a specific project, cite it by NIH project_number (the first field on each FULL PROJECT LIST line) or by a distinctive fragment of the title. DO NOT use bracket-index citations like "project [21]" — those numbers mean nothing to the reader and cannot be looked up.
+
 SAMPLE-BASED LANGUAGE: This covers NIH-linked data only, not complete market IP/trials. Use confident but hedged language:
 - "Among the linked patents..." not "The IP landscape is..."
 - "This pattern suggests..." or "The concentration may indicate..."
@@ -548,6 +574,10 @@ Generate RESEARCHER-FOCUSED signals analysis.${partialDirective}
 CRITICAL DATA-GROUNDING RULE:
 - The FULL PROJECT LIST above enumerates every project in the analyzed sample. Use it as the authoritative reference when making claims about what topics, cancer types, diseases, biofluids, or approaches ARE or ARE NOT present in the sample.
 - NEVER make a counting claim (e.g., "only one project on X", "no projects address Y") based on the ABSTRACTS section alone — that's only a fraction of the sample. Scan the FULL PROJECT LIST first.
+
+PROJECT CITATIONS:
+- When you reference a specific project, cite it by NIH project_number (e.g., "project R01CA123456") or by a distinctive fragment of the title (e.g., "the MAESTRO-Pool project"). The project_number is the first field on each FULL PROJECT LIST line.
+- DO NOT use bracket-index citations like "project [21]" or "[15], [72]" — those numbers mean nothing to the reader and cannot be looked up.
 
 DO NOT WRITE GAP OR WHITE SPACE ANALYSIS HERE. The dedicated "White Space Analysis" section (rendered separately) covers coverage gaps with a quantified, multi-dimensional data audit. Focus this section on positioning, collaboration, and methodological trends within what IS funded — leave gaps to the dedicated section.
 
@@ -1919,8 +1949,10 @@ function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOu
     patents.items.slice(0, 15).forEach((p) => {
       md += `#### ${p.patent_title || 'Untitled Patent'}\n`
       md += `- **Patent #:** [${p.patent_id}](/patent/${p.patent_id})\n`
-      if (p.assignee) md += `- **Assignee:** ${p.assignee}\n`
-      if (p.patent_date) md += `- **Date:** ${p.patent_date}\n`
+      // Always emit Assignee — surface "Not on record" when USPTO
+      // doesn't have one rather than silently omitting the field.
+      md += `- **Assignee:** ${p.assignee?.trim() || 'Not on record'}\n`
+      md += `- **Date:** ${p.patent_date || 'Not on record'}\n`
       if (p.patent_abstract) {
         const excerpt = p.patent_abstract.substring(0, 200) + (p.patent_abstract.length > 200 ? '...' : '')
         md += `\n> ${excerpt}\n`
@@ -2259,17 +2291,38 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
 
   md += '### Active Trials\n\n'
   trials.items.slice(0, 15).forEach((t) => {
-    md += `#### ${t.study_title}\n`
+    md += `#### ${t.study_title || '(Untitled trial)'}\n`
     md += `- **NCT ID:** [${t.nct_id}](/trial/${t.nct_id})\n`
-    if (t.phase) md += `- **Phase:** ${t.phase}\n`
-    if (t.study_status) md += `- **Status:** ${t.study_status}\n`
-    if (t.lead_sponsor) md += `- **Sponsor:** ${t.lead_sponsor}\n`
-    if (t.conditions?.length) md += `- **Conditions:** ${t.conditions.join(', ')}\n`
-    if (t.enrollment_count) md += `- **Enrollment:** ${t.enrollment_count.toLocaleString()} participants\n`
+    // Emit every field with a consistent label; use "Not specified" when
+    // the source data is missing so the reader can distinguish "no data"
+    // from a rendering oversight. Trial listings previously showed some
+    // trials with a "Phase: NA" line and others with no Phase line at
+    // all, which read as inconsistent data quality when the underlying
+    // issue was just null vs "NA" upstream.
+    md += `- **Phase:** ${normalizeTrialField(t.phase)}\n`
+    md += `- **Status:** ${normalizeTrialField(t.study_status)}\n`
+    md += `- **Sponsor:** ${normalizeTrialField(t.lead_sponsor)}\n`
+    md += `- **Conditions:** ${t.conditions?.length ? t.conditions.join(', ') : 'Not specified'}\n`
+    md += `- **Enrollment:** ${t.enrollment_count ? `${t.enrollment_count.toLocaleString()} participants` : 'Not specified'}\n`
     md += '\n'
   })
 
   return md
+}
+
+/**
+ * Normalize a nullable trial field. Treats null, empty string, and the
+ * literal strings "NA"/"N/A" as unspecified so the render is consistent.
+ * Some ClinicalTrials.gov entries store "NA" literally in the phase
+ * field, while others leave it null — both mean the same thing.
+ */
+function normalizeTrialField(value: string | null | undefined): string {
+  if (!value) return 'Not specified'
+  const trimmed = value.trim()
+  if (trimmed === '' || trimmed.toUpperCase() === 'NA' || trimmed.toUpperCase() === 'N/A') {
+    return 'Not specified'
+  }
+  return trimmed
 }
 
 
@@ -2390,9 +2443,19 @@ function formatProjectsWithTiers(projects: ProjectItem[]): string {
  * cancer project" when the analyzed set of 123 actually had 8+ with
  * "pancreatic" in the title alone.
  */
+/**
+ * Compact one-line-per-project listing used as the FULL PROJECT LIST
+ * grounding in LLM prompts. Leads with the NIH project_number so the
+ * LLM can cite projects by an identifier the reader can look up (a
+ * project_number is a clickable / grep-able reference; a bare [N] index
+ * is not).
+ */
 function formatAllProjectsCompact(projects: ProjectItem[]): string {
   return projects
-    .map((p, i) => `[${i + 1}] ${p.title || '(no title)'} | ${p.org_name || 'N/A'} | ${p.primary_category || 'N/A'}`)
+    .map((p) => {
+      const pn = p.project_number || p.application_id || '(no ID)'
+      return `${pn} | ${p.title || '(no title)'} | ${p.org_name || 'N/A'} | ${p.primary_category || 'N/A'}`
+    })
     .join('\n')
 }
 
@@ -2401,6 +2464,36 @@ function formatCurrency(amount: number): string {
   if (amount >= 1_000_000) return `$${(amount / 1_000_000).toFixed(1)}M`
   if (amount >= 1_000) return `$${(amount / 1_000).toFixed(0)}K`
   return `$${amount.toLocaleString()}`
+}
+
+/**
+ * Rebuild byPhase after the topical relevance filter drops off-topic
+ * trials. Original agent output includes ALL trials; the filtered list
+ * excludes 'unrelated', and the phase chart / summary should agree with
+ * what the reader sees in the Active Trials listing.
+ */
+function recomputeTrialsByPhase(trials: TrialItem[]): Record<string, number> {
+  const counts: Record<string, number> = {}
+  for (const t of trials) {
+    const key = t.phase || 'N/A'
+    counts[key] = (counts[key] || 0) + 1
+  }
+  return counts
+}
+
+/**
+ * Rebuild byAssignee after the topical relevance filter drops off-topic
+ * patents. Same rationale as recomputeTrialsByPhase.
+ */
+function recomputePatentsByAssignee(patents: PatentItem[]): Array<{ assignee: string; count: number }> {
+  const counts = new Map<string, number>()
+  for (const p of patents) {
+    if (!p.assignee) continue
+    counts.set(p.assignee, (counts.get(p.assignee) || 0) + 1)
+  }
+  return Array.from(counts.entries())
+    .map(([assignee, count]) => ({ assignee, count }))
+    .sort((a, b) => b.count - a.count)
 }
 
 function formatCategory(category: string): string {
@@ -2485,6 +2578,12 @@ function titleCaseToken(token: string): string {
         }
       } else {
         result += c
+        // Treat '/' and '.' as internal word boundaries so
+        // "INSTITUTE/CITY OF HOPE" → "Institute/City of Hope" rather
+        // than "Institute/city of Hope" (r18 audit finding).
+        if (c === '/' || c === '.') {
+          firstLetterDone = false
+        }
       }
     }
     return result

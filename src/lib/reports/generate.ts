@@ -191,10 +191,19 @@ export async function generateTopicReport(
         top_organizations: topOrgs,
         top_researchers: topResearchers,
         markdown_content: reportData.markdownContent,
-        // agent_outputs stores the raw agent outputs plus the whiteSpace
-        // synthesis result as a nested field (avoids a schema migration for
-        // shipping the new section — a dedicated column is a follow-up).
-        agent_outputs: { ...agentOutputs, whiteSpace: reportData.whiteSpace },
+        // agent_outputs stores the raw agent outputs plus the four synthesis
+        // outputs that don't yet have dedicated columns (whiteSpace,
+        // fieldMaturity, ipLandscape, competitiveTopology). Nesting them
+        // here avoids a schema migration; a dedicated column is a follow-up.
+        // Persisted so downstream renderers can hydrate structural chart /
+        // table data instead of re-parsing markdown.
+        agent_outputs: {
+          ...agentOutputs,
+          whiteSpace: reportData.whiteSpace,
+          fieldMaturity: reportData.fieldMaturity,
+          ipLandscape: reportData.ipLandscape,
+          competitiveTopology: reportData.competitiveTopology,
+        },
         project_count: projectsOutput.items.length,
         persona,
         signals_analysis: reportData.signalsAnalysis,
@@ -364,10 +373,19 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
         top_organizations: topOrgs,
         top_researchers: topResearchers,
         markdown_content: reportData.markdownContent,
-        // agent_outputs stores the raw agent outputs plus the whiteSpace
-        // synthesis result as a nested field (avoids a schema migration for
-        // shipping the new section — a dedicated column is a follow-up).
-        agent_outputs: { ...agentOutputs, whiteSpace: reportData.whiteSpace },
+        // agent_outputs stores the raw agent outputs plus the four synthesis
+        // outputs that don't yet have dedicated columns (whiteSpace,
+        // fieldMaturity, ipLandscape, competitiveTopology). Nesting them
+        // here avoids a schema migration; a dedicated column is a follow-up.
+        // Persisted so downstream renderers can hydrate structural chart /
+        // table data instead of re-parsing markdown.
+        agent_outputs: {
+          ...agentOutputs,
+          whiteSpace: reportData.whiteSpace,
+          fieldMaturity: reportData.fieldMaturity,
+          ipLandscape: reportData.ipLandscape,
+          competitiveTopology: reportData.competitiveTopology,
+        },
         signals_analysis: reportData.signalsAnalysis,
         curated_publications: reportData.curatedPublications,
         updated_at: new Date().toISOString(),
@@ -666,44 +684,16 @@ async function aggregateOrganizations(
     projectNumberToOrg.set(p.project_number, p.org_name)
   }
 
-  // For trial/patent linkages whose core form isn't in the analyzed set,
-  // fetch the org_name from the broader projects table. Query both
-  // project_number (matches core-form stored rows) and use core form
-  // pattern matching for full-form stored rows would require a separate
-  // pass; in practice the core-form path catches the vast majority since
-  // most external linkages query against core form anyway.
-  const externalCoreNumbers = new Set<string>()
-  const collectCore = (pn: string) => {
-    if (!pn) return
-    if (!projectNumberToOrg.has(pn)) externalCoreNumbers.add(pn)
-    const core = getCoreProjectNumber(pn)
-    if (core && core !== pn && !projectNumberToOrg.has(core)) externalCoreNumbers.add(core)
-  }
-  for (const t of trials.items) for (const pn of t.project_numbers) collectCore(pn)
-  for (const pt of patents.items) for (const pn of pt.project_numbers) collectCore(pn)
-
-  if (externalCoreNumbers.size > 0) {
-    const { data, error } = await supabaseAdmin
-      .from('projects')
-      .select('project_number, full_project_num, org_name')
-      .in('project_number', [...externalCoreNumbers])
-    if (error) {
-      console.error('[Org Rollup] Error fetching external org names:', error)
-    } else if (data) {
-      for (const row of data) {
-        if (!row.org_name) continue
-        if (row.project_number) {
-          projectNumberToOrg.set(row.project_number, row.org_name)
-          const core = getCoreProjectNumber(row.project_number)
-          if (core) projectNumberToOrg.set(core, row.org_name)
-        }
-        if (row.full_project_num) {
-          const coreFromFull = getCoreProjectNumber(row.full_project_num)
-          if (coreFromFull) projectNumberToOrg.set(coreFromFull, row.org_name)
-        }
-      }
-    }
-  }
+  // NOTE: an earlier version fetched external orgs (project_numbers not
+  // in the analyzed sample) to fill in the map — this was removed after
+  // r18 audit revealed it inflated top-org trial counts by attributing
+  // trials to orgs whose sample projects were UNRELATED to those trials
+  // (e.g., USC showed 8 trials but none linked to its 3 in-sample topic
+  // projects — the 8 were linked to USC's other, out-of-topic projects).
+  // Trials/patents now credit only orgs with an in-sample project
+  // linkage. Trials that came in via semantic Path 2 (no project_number
+  // at all) never credit any org here — they're semantic matches to the
+  // topic itself, not to a funded org's project.
 
   // Attribute trials to orgs via project_number → org_name. Normalize each
   // trial's project_numbers to core form before lookup so the join works
@@ -743,12 +733,19 @@ async function aggregateOrganizations(
     }
   })
 
-  // Sort by funding (primary), activity as tiebreaker.
+  // Sort by PROJECT COUNT primary, funding as tiebreaker, activity third.
+  // Rationale: the reader's mental model of "top orgs in this topic" is
+  // "who has the most projects in the topic sample" — MGH with 10 topic
+  // projects and $8.1M is a stronger topic player than UCLA with 6
+  // projects and $8.8M, even though UCLA has slightly more funding
+  // (r18 audit surfaced the funding-first sort as counterintuitive).
   return Array.from(orgByKey.values())
     .sort((a, b) => {
+      const projDiff = b.projects - a.projects
+      if (projDiff !== 0) return projDiff
       const fundingDiff = b.funding - a.funding
       if (fundingDiff !== 0) return fundingDiff
-      return (b.projects + b.trials + b.patents) - (a.projects + a.trials + a.patents)
+      return (b.trials + b.patents) - (a.trials + a.patents)
     })
     .slice(0, 15)
 }
