@@ -1,0 +1,322 @@
+/**
+ * "What Surprised Us" — algorithmic detection of non-obvious findings.
+ *
+ * Motivation: a strong intelligence report doesn't just describe what's
+ * there — it flags what's UNEXPECTED. Reviewers of prior reports called
+ * out that most conclusions felt like "logical extrapolations" rather
+ * than surprises. To fix that without asking the LLM to freeform-guess
+ * (which produces contrived surprises), we detect anomalies from the
+ * structured data FIRST, then ask the LLM only to narrate why each
+ * detected anomaly matters.
+ *
+ * Detectors implemented (each is a candidate anomaly type):
+ *
+ *   1. Translation-gap orgs: org has substantial NIH funding but zero
+ *      linked patents AND zero linked trials — foundational research
+ *      that hasn't produced downstream IP or clinical development.
+ *   2. Isolated top-funded PI: a PI with a single very large grant
+ *      (single-project bet, no follow-on, no linked outputs).
+ *   3. Publication-heavy but clinically thin: the field has substantial
+ *      publication volume but few or no clinical trials — pattern of
+ *      unrealized translational potential.
+ *   4. Big broader-NIH gap: a white-space category where broader NIH
+ *      activity vastly exceeds the topic slice — a whole adjacent
+ *      research community is doing this and the topic is missing it.
+ *   5. Recency mismatch: portfolio funding leans very recent OR very
+ *      old, indicating a hot new field or a maturing one that has
+ *      cooled.
+ *
+ * Each detector emits candidates with a strength score. The top N by
+ * score go to the LLM for narration.
+ */
+
+import Anthropic from '@anthropic-ai/sdk'
+import { normalizeOrgName, normalizePIName } from '@/lib/format-names'
+import type {
+  AllAgentOutputs,
+  FundingStats,
+  OrgStats,
+  ResearcherStats,
+  WhiteSpaceAnalysis,
+} from './types'
+
+const MODEL = 'claude-sonnet-4-6'
+
+interface UsageTracker {
+  inputTokens: number
+  outputTokens: number
+}
+
+export interface SurprisingFinding {
+  /** Short 1-line hook naming what was surprising. */
+  headline: string
+  /** 2-3 sentences of LLM-authored interpretation of why it matters. */
+  interpretation: string
+  /** Concrete evidence line — counts, orgs, dollars — the reader can verify. */
+  evidence: string
+  /** Which detector surfaced this — used for de-duplication + downstream ranking. */
+  category:
+    | 'translation-gap-org'
+    | 'isolated-top-funded-pi'
+    | 'publications-vs-trials'
+    | 'broader-nih-gap'
+    | 'recency-skew'
+}
+
+/** Input bundle for surprise detection. */
+export interface SurpriseDetectionContext {
+  topic: string
+  agentOutputs: AllAgentOutputs
+  fundingStats: FundingStats
+  topOrganizations: OrgStats[]
+  topResearchers: ResearcherStats[]
+  whiteSpace: WhiteSpaceAnalysis
+}
+
+interface DetectedCandidate {
+  category: SurprisingFinding['category']
+  headline: string
+  evidence: string
+  strength: number
+}
+
+const MAX_FINDINGS = 4
+const MIN_FUNDING_FOR_TRANSLATION_GAP = 3_000_000 // $3M
+const MIN_PUBS_FOR_TRANSLATION_GAP = 800 // large sample threshold
+const MIN_BROADER_NIH_RATIO_SURPRISE = 100 // 100x broader vs sample
+
+/**
+ * Public entry point. Detects candidate anomalies, ranks by strength,
+ * asks the LLM to narrate the top N. Returns a possibly-empty array —
+ * a well-behaved report might genuinely have no surprises.
+ */
+export async function detectSurprisingFindings(
+  ctx: SurpriseDetectionContext,
+  usageTracker: UsageTracker,
+): Promise<SurprisingFinding[]> {
+  const candidates = [
+    ...detectTranslationGapOrgs(ctx),
+    ...detectIsolatedTopFundedPIs(ctx),
+    ...detectPublicationsVsTrials(ctx),
+    ...detectBroaderNihGaps(ctx),
+    ...detectRecencySkew(ctx),
+  ]
+
+  if (candidates.length === 0) return []
+
+  candidates.sort((a, b) => b.strength - a.strength)
+
+  // Diversify by category — a single high-strength detector shouldn't
+  // crowd out the others. Cap MAX_PER_CATEGORY and fall back to plain
+  // top-N once each category has hit its cap.
+  const MAX_PER_CATEGORY = 2
+  const perCategoryCount = new Map<string, number>()
+  const diversified: DetectedCandidate[] = []
+  const overflow: DetectedCandidate[] = []
+  for (const c of candidates) {
+    const count = perCategoryCount.get(c.category) || 0
+    if (count < MAX_PER_CATEGORY && diversified.length < MAX_FINDINGS) {
+      diversified.push(c)
+      perCategoryCount.set(c.category, count + 1)
+    } else {
+      overflow.push(c)
+    }
+  }
+  // If we still have room, fill with the highest-strength leftovers.
+  while (diversified.length < MAX_FINDINGS && overflow.length > 0) {
+    diversified.push(overflow.shift()!)
+  }
+
+  return await narrateFindings(ctx.topic, diversified, usageTracker)
+}
+
+// -----------------------------------------------------------------------
+// Detectors
+// -----------------------------------------------------------------------
+
+function detectTranslationGapOrgs(ctx: SurpriseDetectionContext): DetectedCandidate[] {
+  const results: DetectedCandidate[] = []
+  for (const org of ctx.topOrganizations.slice(0, 10)) {
+    if (org.funding < MIN_FUNDING_FOR_TRANSLATION_GAP) continue
+    if (org.trials > 0 || org.patents > 0) continue
+    const orgDisplay = normalizeOrgName(org.org_name)
+    // High funding, no downstream outputs — a translation gap.
+    results.push({
+      category: 'translation-gap-org',
+      headline: `${orgDisplay} has substantial funding but no linked patents or trials`,
+      evidence: `${org.projects} projects, $${(org.funding / 1_000_000).toFixed(1)}M in NIH funding, 0 linked trials, 0 linked patents in the analyzed sample`,
+      strength: org.funding / 1_000_000,
+    })
+  }
+  return results
+}
+
+function detectIsolatedTopFundedPIs(ctx: SurpriseDetectionContext): DetectedCandidate[] {
+  const results: DetectedCandidate[] = []
+  const topPIs = ctx.topResearchers.slice(0, 5)
+  for (const pi of topPIs) {
+    if (pi.projects !== 1) continue
+    if (pi.funding < 2_000_000) continue // $2M+ threshold
+    const piDisplay = normalizePIName(pi.pi_name)
+    const orgDisplay = pi.org ? normalizeOrgName(pi.org) : 'unknown org'
+    results.push({
+      category: 'isolated-top-funded-pi',
+      headline: `${piDisplay} carries $${(pi.funding / 1_000_000).toFixed(1)}M on a single project, no adjacent follow-on`,
+      evidence: `1 project, $${(pi.funding / 1_000_000).toFixed(1)}M, at ${orgDisplay}`,
+      strength: pi.funding / 1_000_000,
+    })
+  }
+  return results
+}
+
+function detectPublicationsVsTrials(ctx: SurpriseDetectionContext): DetectedCandidate[] {
+  const pubs = ctx.agentOutputs.publications.items.length
+  const trials = ctx.agentOutputs.trials.items.length
+  if (pubs < MIN_PUBS_FOR_TRANSLATION_GAP) return []
+  const ratio = trials > 0 ? pubs / trials : pubs
+  if (ratio < 30) return [] // 30 pubs per trial threshold — arbitrary but meaningful
+
+  return [
+    {
+      category: 'publications-vs-trials',
+      headline: `Publication volume far exceeds clinical translation activity`,
+      evidence: `${pubs.toLocaleString()} linked publications vs ${trials} linked trials (${ratio.toFixed(0)}x)`,
+      strength: Math.min(50, ratio / 3),
+    },
+  ]
+}
+
+function detectBroaderNihGaps(ctx: SurpriseDetectionContext): DetectedCandidate[] {
+  const results: DetectedCandidate[] = []
+  for (const dim of ctx.whiteSpace.dimensions) {
+    for (const cat of dim.categories) {
+      if (cat.broaderNihCount === -1) continue
+      if (cat.broaderNihCount < 200) continue // meaningful broader activity floor
+      const ratio = cat.projectCount > 0 ? cat.broaderNihCount / cat.projectCount : cat.broaderNihCount
+      if (ratio < MIN_BROADER_NIH_RATIO_SURPRISE) continue
+      results.push({
+        category: 'broader-nih-gap',
+        headline: `Broader NIH activity in "${cat.name}" (${dim.name}) is ${Math.round(ratio)}x the topic slice`,
+        evidence: `${cat.projectCount} projects in the topic sample vs ${cat.broaderNihCount.toLocaleString()} matching projects across the broader NIH portfolio`,
+        // Cap strength so no single detector dominates.
+        strength: Math.min(60, ratio / 2),
+      })
+    }
+  }
+  return results
+}
+
+function detectRecencySkew(ctx: SurpriseDetectionContext): DetectedCandidate[] {
+  const byYear = ctx.fundingStats.byYear
+  if (byYear.length < 2) return []
+
+  const currentFY = ctx.fundingStats.currentFY
+  const priorYear = currentFY ? byYear.find((y) => y.year === currentFY - 1) : undefined
+  const priorPriorYear = currentFY ? byYear.find((y) => y.year === currentFY - 2) : undefined
+  if (!priorYear || !priorPriorYear) return []
+
+  const change = priorYear.funding - priorPriorYear.funding
+  const pctChange = priorPriorYear.funding > 0 ? change / priorPriorYear.funding : 0
+
+  if (Math.abs(pctChange) < 0.4) return [] // <40% change not surprising
+
+  const direction = pctChange > 0 ? 'jumped' : 'fell'
+  const magnitude = `${(Math.abs(pctChange) * 100).toFixed(0)}%`
+  return [
+    {
+      category: 'recency-skew',
+      headline: `NIH funding ${direction} ${magnitude} from FY${priorPriorYear.year} to FY${priorYear.year}`,
+      evidence: `FY${priorPriorYear.year}: $${(priorPriorYear.funding / 1_000_000).toFixed(1)}M across ${priorPriorYear.projects} projects; FY${priorYear.year}: $${(priorYear.funding / 1_000_000).toFixed(1)}M across ${priorYear.projects} projects`,
+      strength: Math.min(50, Math.abs(pctChange) * 100),
+    },
+  ]
+}
+
+// -----------------------------------------------------------------------
+// Narration
+// -----------------------------------------------------------------------
+
+async function narrateFindings(
+  topic: string,
+  candidates: DetectedCandidate[],
+  usageTracker: UsageTracker,
+): Promise<SurprisingFinding[]> {
+  const listing = candidates
+    .map(
+      (c, i) => `${i + 1}. ${c.headline}
+   Evidence: ${c.evidence}
+   Category: ${c.category}`,
+    )
+    .join('\n\n')
+
+  const prompt = `You are writing the "What Surprised Us" section of an intelligence report on "${topic}".
+
+The following anomalies were detected algorithmically from the underlying data. For EACH one, write a 2-3 sentence interpretation explaining WHY IT MATTERS to a reader (researcher, investor, or biotech founder scoping this space). Reference the specific numbers in the evidence line.
+
+Do NOT invent new anomalies or claim things that aren't in the evidence line. Only interpret what's given.
+
+## DETECTED ANOMALIES
+
+${listing}
+
+## OUTPUT FORMAT — JSON only
+
+Return exactly this shape:
+{
+  "findings": [
+    {
+      "headline": "<use the detector's headline verbatim OR minimally rephrase for readability>",
+      "interpretation": "2-3 sentences on why this matters and what a reader should take from it",
+      "evidence": "<use the detector's evidence line verbatim>",
+      "category": "<use the detector's category verbatim>"
+    }
+  ]
+}
+
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.`
+
+  try {
+    const client = new Anthropic()
+    const response = await client.messages.create({
+      model: MODEL,
+      max_tokens: 2500,
+      messages: [{ role: 'user', content: prompt }],
+    })
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+
+    const text = response.content.find((c) => c.type === 'text')
+    if (!text || text.type !== 'text') return []
+    let raw = text.text.trim()
+    if (raw.startsWith('```')) {
+      raw = raw.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
+    }
+    const jsonMatch = raw.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) return []
+    const parsed = JSON.parse(jsonMatch[0])
+    if (!parsed || !Array.isArray(parsed.findings)) return []
+
+    return parsed.findings
+      .map((f: unknown) => {
+        const finding = f as Partial<SurprisingFinding>
+        if (
+          !finding.headline ||
+          !finding.interpretation ||
+          !finding.evidence ||
+          !finding.category
+        ) {
+          return null
+        }
+        return {
+          headline: finding.headline,
+          interpretation: finding.interpretation,
+          evidence: finding.evidence,
+          category: finding.category,
+        } as SurprisingFinding
+      })
+      .filter((f: SurprisingFinding | null): f is SurprisingFinding => f !== null)
+  } catch (err) {
+    console.error('[Surprising Findings] Narration failed:', err)
+    return []
+  }
+}

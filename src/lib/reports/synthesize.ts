@@ -24,6 +24,7 @@ import type {
 import { logApiUsage } from '@/lib/billing/usage'
 import { generateWhiteSpaceAnalysis } from './white-space'
 import { filterTrialsAndPatentsByRelevance } from './relevance-filter'
+import { detectSurprisingFindings, type SurprisingFinding } from './surprising'
 import { normalizeOrgName, normalizeJournalName } from '@/lib/format-names'
 
 interface SynthesisContext {
@@ -96,7 +97,7 @@ export async function synthesizeReport(
     generateFieldMaturityAssessment(topic, agentOutputs, context, usageTracker),
     generateCompetitiveTopology(topic, agentOutputs, context, usageTracker),
     generateIPLandscapeAssessment(topic, agentOutputs, context, usageTracker),
-    generateWhiteSpaceAnalysis(topic, agentOutputs.projects.items, usageTracker),
+    generateWhiteSpaceAnalysis(topic, agentOutputs.projects.items, usageTracker, persona),
   ])
 
   // Generate project insights (needs executive summary first for context).
@@ -115,8 +116,27 @@ export async function synthesizeReport(
   // Replace raw market context with enhanced version
   agentOutputs.market.context = enhancedMarketContext
 
+  // Detect + narrate surprising findings + generate Next Steps checklist.
+  // These depend on the other synthesis outputs (white space, top orgs,
+  // top researchers) so they run after the parallel batch resolves.
+  // Independent of each other, so run in parallel.
+  const [surprisingFindings, nextSteps] = await Promise.all([
+    detectSurprisingFindings(
+      {
+        topic,
+        agentOutputs,
+        fundingStats: context.fundingStats,
+        topOrganizations: context.topOrganizations,
+        topResearchers: context.topResearchers,
+        whiteSpace,
+      },
+      usageTracker,
+    ),
+    generateNextSteps(topic, agentOutputs, context, whiteSpace, ipLandscape, usageTracker),
+  ])
+
   // Assemble markdown report with persona-aware structure
-  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights, whiteSpace)
+  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights, whiteSpace, surprisingFindings, nextSteps)
 
   // Log cumulative API usage for billing
   console.log(`[Synthesis Agent] Total API usage: ${usageTracker.inputTokens} input, ${usageTracker.outputTokens} output tokens`)
@@ -142,6 +162,8 @@ export async function synthesizeReport(
     persona,
     signalsAnalysis,
     curatedPublications,
+    surprisingFindings,
+    nextSteps,
     fieldMaturity,
     competitiveTopology,
     ipLandscape,
@@ -533,12 +555,24 @@ SAMPLE-BASED LANGUAGE: This covers NIH-linked data only, not complete market IP/
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
+CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
+After each substantive claim (an assertion about TRL, commercial readiness, IP concentration, risk, or comparables), append a formatted confidence/evidence block. Use this exact markdown pattern INLINE within the narrative field, at the end of the relevant sentence or paragraph:
+
+  **Confidence: High/Medium/Low** — Evidence: [concrete counts and references, e.g. "10 patents from 4 assignees, 0 in the last 2 years, indicating an aging IP position"]
+
+Confidence scale:
+- **High**: claim rests on ≥10 items or clear pattern with multiple corroborators.
+- **Medium**: claim rests on 3-9 items OR a plausible pattern with one confounder.
+- **Low**: claim rests on ≤2 items OR is a forward-looking inference not directly demonstrated.
+
+Every claim MUST have a confidence tag + evidence line. Do not include claims you can't support with a count or specific reference.
+
 Return JSON only:
 
 {
-  "trlAssessment": "2-3 sentences: Assess technology readiness. What percentage appears early-stage vs. clinical-ready? Are there clear paths to product?",
-  "commercialReadiness": "2-3 sentences: How close to market? What's missing for commercialization? Any existing products?",
-  "ipConcentration": "2-3 sentences: Who owns the IP landscape? Is it fragmented or concentrated? Freedom to operate concerns?",
+  "trlAssessment": "2-3 sentences with confidence+evidence tags: Assess technology readiness. What percentage appears early-stage vs. clinical-ready? Are there clear paths to product?",
+  "commercialReadiness": "2-3 sentences with confidence+evidence tags: How close to market? What's missing for commercialization? Any existing products?",
+  "ipConcentration": "2-3 sentences with confidence+evidence tags: Who owns the IP landscape? Is it fragmented or concentrated? Freedom to operate concerns?",
   "riskFactors": {
     "scientific": "One sentence describing key scientific/technical risk (or null if none)",
     "regulatory": "One sentence describing regulatory pathway risk (or null if none)",
@@ -546,7 +580,7 @@ Return JSON only:
     "execution": "One sentence describing execution/team/capability risk (or null if none)",
     "overall": "One sentence summary of the most critical risk for investors"
   },
-  "comparables": "2-3 sentences: What comparable technologies or companies exist? How have similar investments performed?"
+  "comparables": "2-3 sentences with confidence+evidence tags: What comparable technologies or companies exist? How have similar investments performed?"
 }`
     : `Analyze this research landscape for "${topic}" from a RESEARCHER perspective.
 
@@ -589,18 +623,33 @@ SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
+CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
+After each substantive claim (an assertion about position, collaboration pattern, or methodological trend), append a formatted confidence/evidence block. Use this exact markdown pattern INLINE within the narrative field, at the end of the relevant sentence or paragraph:
+
+  **Confidence: High/Medium/Low** — Evidence: [concrete counts and references, e.g. "17 projects, $14.2M funding, methylation appears across UCLA, Johns Hopkins, and Stanford"]
+
+Confidence scale:
+- **High**: claim rests on ≥10 projects, clear pattern, corroborated by multiple orgs.
+- **Medium**: claim rests on 3-9 projects OR a plausible pattern that has one meaningful confounder (e.g. small sample, single-org concentration).
+- **Low**: claim rests on ≤2 projects OR is a forward-looking inference not directly demonstrated by the data.
+
+Every claim MUST have a confidence tag + evidence line. Do not include claims you can't support with a count or specific project reference from the FULL PROJECT LIST.
+
 Return JSON only:
 
 {
-  "positioningMap": "2-3 sentences: What distinct approaches exist in this space? How might a new entrant differentiate?",
-  "collaborationSignals": "2-3 sentences: Are there patterns of collaboration (multi-PI grants, institutional partnerships)? Who might be good collaborators?",
-  "methodologicalTrends": "2-3 sentences: What techniques are emerging vs. mature? What methodological pattern stands out among the funded work?"
+  "positioningMap": "2-3 sentences with confidence+evidence tags: What distinct approaches exist in this space? How might a new entrant differentiate?",
+  "collaborationSignals": "2-3 sentences with confidence+evidence tags: Are there patterns of collaboration (multi-PI grants, institutional partnerships)? Who might be good collaborators?",
+  "methodologicalTrends": "2-3 sentences with confidence+evidence tags: What techniques are emerging vs. mature? What methodological pattern stands out among the funded work?"
 }`
 
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 1500,
+      // Bumped from 1500 to accommodate the confidence + evidence tags
+      // appended to every substantive claim (roughly 40-60 tokens per
+      // tag; 3-5 tags per field; 3-8 fields depending on persona).
+      max_tokens: 2500,
       messages: [{ role: 'user', content: prompt }],
     })
 
@@ -942,7 +991,11 @@ async function generateFieldMaturityAssessment(
   const totalPatents = agentOutputs.patents.items.length
   const patentRecencyRatio = totalPatents > 0 ? recentPatents / totalPatents : 0
 
-  const prompt = `Assess the FIELD MATURITY / TECHNOLOGY READINESS for "${topic}" based on these quantitative signals:
+  const persona = context.persona || 'researcher'
+  const prompt = `Assess the FIELD MATURITY / TECHNOLOGY READINESS for "${topic}" based on these quantitative signals.
+
+READER PERSONA: **${persona}** — tailor the strategicImplications field accordingly.
+
 
 ## PUBLICATION SIGNALS
 - Total linked publications: ${totalPubs}
@@ -992,22 +1045,44 @@ CRITICAL — STATISTICAL HONESTY: When a denominator is small, the percentage is
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
+CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
+Append this exact markdown pattern inline at the end of each substantive claim in maturityNarrative and evidenceSummary fields:
+
+  **Confidence: High/Medium/Low** — Evidence: [concrete counts, e.g. "8 Phase 2 trials, 3 Phase 1, no Phase 3/4 across ${totalTrials} total linked trials"]
+
+Confidence scale — apply these thresholds strictly:
+- **High**: signal rests on ≥15 total items (pubs/trials/patents combined) AND is corroborated by at least two independent evidence streams (e.g., trial progression AND publication growth AND patent activity all agree).
+- **Medium**: ≥5 items in one evidence stream, or moderate signals across two streams.
+- **Low**: <5 items in the deciding stream. Explicitly state the sample size limitation.
+
+For the trlEstimate itself: assign confidence based on whether ALL three signals (pubs, trials, patents) align on the same maturity band. Alignment = High. Disagreement or thin data = Medium/Low.
+
+BENCHMARK COMPARISON (REQUIRED):
+Provide a concrete historical reference point for the estimated TRL. Format: one sentence naming a comparable technology at a similar development stage in the past, and roughly when. Examples of the shape (do not copy verbatim — pick a reference relevant to THIS topic):
+- "TRL 5-6 is comparable to where CRISPR-based gene editing was in 2015-2017, before broad clinical adoption but with mounting Phase 1/2 activity."
+- "TRL 3-4 is roughly where mRNA vaccines sat in 2010, with strong lab validation but limited clinical demonstration."
+The benchmark should be specific and defensible — a real historical parallel, not a vague comparison.
+
 Return JSON only:
 {
   "trlEstimate": "TRL X-Y" or narrative like "Early Research (TRL 1-3)",
-  "maturityNarrative": "2-3 sentences explaining the overall maturity assessment and what it means for someone entering this space",
+  "maturityNarrative": "2-3 sentences with confidence+evidence tags explaining the overall maturity assessment and what it means for someone entering this space",
+  "benchmarkComparison": "One sentence comparing this TRL to a specific historical technology at the same stage",
   "evidenceSummary": {
-    "preprintRatio": "One sentence interpreting the preprint ratio — apply small-N rule above when totalPubs < 10",
-    "trialProgression": "One sentence interpreting the trial phase distribution — apply small-N rule above when totalTrials < 3",
-    "patentActivity": "One sentence interpreting the patent recency — apply small-N rule above when totalPatents < 5"
+    "preprintRatio": "One sentence with confidence+evidence tag interpreting the preprint ratio — apply small-N rule above when totalPubs < 10",
+    "trialProgression": "One sentence with confidence+evidence tag interpreting the trial phase distribution — apply small-N rule above when totalTrials < 3",
+    "patentActivity": "One sentence with confidence+evidence tag interpreting the patent recency — apply small-N rule above when totalPatents < 5"
   },
+  "strategicImplications": "2-3 sentences of persona-appropriate 'so what' advice. For a researcher persona, frame around proposal strategy (what grant mechanisms make sense, what collaborators to pursue, what analytical gaps to fill). For an investor persona, frame around investment thesis (what stage of company to look for, what technical milestones matter, what to diligence). Reference specific numbers from the data.",
   "overallAssessment": "nascent" | "emerging" | "maturing" | "established"
 }`
 
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 1000,
+      // Bumped from 1000 to cover confidence/evidence tags + the new
+      // benchmarkComparison and strategicImplications fields.
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
     })
 
@@ -1034,11 +1109,13 @@ Return JSON only:
     return {
       trlEstimate: parsed.trlEstimate || 'Unknown',
       maturityNarrative: parsed.maturityNarrative || '',
+      benchmarkComparison: typeof parsed.benchmarkComparison === 'string' ? parsed.benchmarkComparison : undefined,
       evidenceSummary: {
         preprintRatio: parsed.evidenceSummary?.preprintRatio || '',
         trialProgression: parsed.evidenceSummary?.trialProgression || '',
         patentActivity: parsed.evidenceSummary?.patentActivity || '',
       },
+      strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
       overallAssessment: parsed.overallAssessment || 'emerging',
     }
   } catch (error) {
@@ -1141,6 +1218,16 @@ SAMPLE-BASED LANGUAGE: This analysis covers NIH-funded academic research. Use he
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
+CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
+For each cluster's commercialReadiness AND for the top-level narrative, append this exact markdown pattern inline at the end of each substantive claim:
+
+  **Confidence: High/Medium/Low** — Evidence: [concrete counts, e.g. "18 projects across UCLA, Johns Hopkins, Stanford, with 4 companion patents"]
+
+Confidence scale:
+- **High**: cluster rests on ≥10 projects with multiple orgs and cross-source corroboration (linked patents or trials).
+- **Medium**: 4-9 projects OR ≥10 projects concentrated at one org.
+- **Low**: ≤3 projects OR forward-looking speculation.
+
 Return JSON only:
 {
   "clusters": [
@@ -1148,16 +1235,18 @@ Return JSON only:
       "approach": "Name of the methodological approach",
       "keyPlayers": ["Stanford", "MIT", "Company X"],
       "maturityLevel": "Emerging",
-      "commercialReadiness": "One sentence on commercialization status"
+      "commercialReadiness": "One sentence with confidence+evidence tag on commercialization status"
     }
   ],
-  "narrative": "2-3 sentences synthesizing the competitive topology - what are the main competing approaches and how do they relate?"
+  "narrative": "2-3 sentences with confidence+evidence tags synthesizing the competitive topology - what are the main competing approaches and how do they relate?"
 }`
 
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 1500,
+      // Bumped from 1500 to cover confidence+evidence tags on each
+      // cluster's commercialReadiness + the top-level narrative.
+      max_tokens: 2500,
       messages: [{ role: 'user', content: prompt }],
     })
 
@@ -1205,11 +1294,12 @@ function defaultCompetitiveTopology(): CompetitiveTopology {
 async function generateIPLandscapeAssessment(
   topic: string,
   agentOutputs: AllAgentOutputs,
-  _context: SynthesisContext,
+  context: SynthesisContext,
   usageTracker: UsageTracker
 ): Promise<IPLandscapeAssessment> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
+  const persona = context.persona || 'researcher'
 
   const totalPatents = agentOutputs.patents.items.length
   const recentPatents = agentOutputs.patents.recentCount
@@ -1245,6 +1335,8 @@ async function generateIPLandscapeAssessment(
 
   const prompt = `Analyze the IP landscape for "${topic}" based on patent data.
 
+READER PERSONA: **${persona}** — tailor the strategicImplications field accordingly.
+
 ## PATENT STATISTICS
 - Total patents: ${totalPatents}
 - Recent (last 2 years): ${recentPatents}
@@ -1274,20 +1366,35 @@ SAMPLE-BASED LANGUAGE: CRITICAL - These are only patents linked to NIH projects,
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
+CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
+Append this exact markdown pattern inline at the end of each substantive claim in freedomToOperate, recentActivityTrend, and narrative:
+
+  **Confidence: High/Medium/Low** — Evidence: [concrete counts, e.g. "10 patents from 4 assignees, 0 in the last 2 years"]
+
+Confidence scale:
+- **High**: pattern rests on ≥15 linked patents across multiple assignees.
+- **Medium**: 5-14 linked patents OR clear concentration among 2-3 assignees.
+- **Low**: <5 linked patents. Explicitly state that with a small linked sample, the true commercial IP landscape is likely much larger.
+
+STRATEGIC IMPLICATIONS (REQUIRED):
+Add a persona-appropriate "so what" paragraph tied to the IP finding. Reader persona is provided at top of prompt. Reference specific counts.
+
 Return JSON only. Do NOT include a list of patent holders — the system
 fills that in from the actual byAssignee counts. Only return the
 narrative fields below.
 {
   "concentration": "fragmented" | "moderately_concentrated" | "highly_concentrated",
-  "freedomToOperate": "2-3 sentences assessing potential FTO concerns based on the NIH-linked sample",
-  "recentActivityTrend": "One sentence on patent activity trend within the linked sample",
-  "narrative": "2-3 sentences on what the linked patent pattern may suggest for commercial development"
+  "freedomToOperate": "2-3 sentences with confidence+evidence tags assessing potential FTO concerns based on the NIH-linked sample",
+  "recentActivityTrend": "One sentence with confidence+evidence tag on patent activity trend within the linked sample",
+  "narrative": "2-3 sentences with confidence+evidence tags on what the linked patent pattern may suggest for commercial development",
+  "strategicImplications": "2-3 sentences of persona-appropriate 'so what' advice tied to the IP concentration and activity pattern"
 }`
 
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 1000,
+      // Bumped from 1000 to cover confidence tags + strategicImplications.
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
     })
 
@@ -1320,6 +1427,7 @@ narrative fields below.
       freedomToOperate: parsed.freedomToOperate || '',
       recentActivityTrend: parsed.recentActivityTrend || '',
       narrative: parsed.narrative || '',
+      strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
     }
   } catch (error) {
     console.warn('[Synthesis Agent] Failed to generate IP landscape assessment:', error)
@@ -1438,6 +1546,83 @@ Return JSON only (object mapping application_id to insight string):
 }
 
 /**
+ * Generate a persona-specific "Next Steps" checklist. Concrete, actionable
+ * items tied to the specific data in this report — not generic advice.
+ * Runs late in the synthesis so it can reference the full picture
+ * (white space top opportunities, IP concentration, funding trend).
+ */
+async function generateNextSteps(
+  topic: string,
+  agentOutputs: AllAgentOutputs,
+  context: SynthesisContext,
+  whiteSpace: WhiteSpaceAnalysis,
+  ipLandscape: IPLandscapeAssessment,
+  usageTracker: UsageTracker,
+): Promise<string> {
+  const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const client = new Anthropic()
+  const persona = context.persona || 'researcher'
+
+  const topOrgLine = context.topOrganizations.slice(0, 5).map((o) => `${o.org_name} (${o.projects} projects, ${formatCurrency(o.funding)})`).join('; ')
+  const topPILine = context.topResearchers.slice(0, 5).map((r) => `${r.pi_name} (${r.projects} projects, ${formatCurrency(r.funding)})`).join('; ')
+  const topOpps = whiteSpace.topOpportunities.slice(0, 4).map((o) => `${o.categoryName} (${o.dimensionName}, sample=${o.sampleCount}, broader NIH=${o.broaderNihCount})`).join('; ')
+
+  const prompt = `Write a persona-specific "Next Steps" checklist for a report on "${topic}".
+
+READER PERSONA: **${persona}**
+
+Reference the report's ACTUAL findings (don't produce generic advice):
+- Top orgs by projects: ${topOrgLine || 'none'}
+- Top PIs by funding: ${topPILine || 'none'}
+- Top white-space opportunities: ${topOpps || 'none'}
+- Total projects in analyzed sample: ${agentOutputs.projects.items.length}
+- Total NIH funding: ${formatCurrency(context.fundingStats.total)}
+- Total trials in sample (post relevance filter): ${agentOutputs.trials.items.length}
+- Total patents in sample (post relevance filter): ${agentOutputs.patents.items.length}
+- IP concentration: ${ipLandscape.concentration}
+
+Produce a checklist of 6-8 concrete NEXT ACTIONS the reader should take AFTER reading this report. Each item should:
+- Be specific to a named org, PI, technology category, or funding pattern from the data
+- Point to a concrete action (search, read, contact, apply for)
+- Reference where the reader should look (which NIH program, which paper, which company)
+
+Persona guidance:
+- **researcher**: proposal strategy, collaborator scouting, methodology gaps to close, grant mechanisms to target (R01, R21, U01, SBIR)
+- **investor**: diligence questions, companies to research, technical milestones to watch, market signals to monitor
+
+FORMATTING: Return raw markdown (NOT wrapped in JSON). Each item as a checkbox line: "- [ ] Item text here"
+Do NOT use em dashes (—). Use regular hyphens (-) or rewrite.
+Start directly with the first "- [ ]" — no preamble, no section heading.`
+
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1500,
+      messages: [{ role: 'user', content: prompt }],
+    })
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+
+    const text = response.content.find((c) => c.type === 'text')
+    if (!text || text.type !== 'text') return ''
+    let raw = text.text.trim()
+    if (raw.startsWith('```')) {
+      raw = raw.replace(/```(?:markdown)?\n?/g, '').replace(/```$/g, '').trim()
+    }
+    // Only keep checkbox lines and empty lines — LLM sometimes prepends a heading
+    // despite the instruction. Filter to safe output.
+    const lines = raw.split('\n').filter((l) => {
+      const t = l.trim()
+      return t.startsWith('- [ ]') || t.startsWith('- [x]') || t === ''
+    })
+    return lines.join('\n').trim()
+  } catch (err) {
+    console.warn('[Synthesis Agent] Failed to generate Next Steps:', err)
+    return ''
+  }
+}
+
+/**
  * Determine contextual section title based on topic category
  */
 function getClinicalSectionTitle(topCategory: string, trialCount: number): string | null {
@@ -1464,7 +1649,9 @@ function assembleMarkdown(
   competitiveTopology: CompetitiveTopology,
   ipLandscape: IPLandscapeAssessment,
   projectInsights?: Record<string, string>,
-  whiteSpace?: WhiteSpaceAnalysis
+  whiteSpace?: WhiteSpaceAnalysis,
+  surprisingFindings?: SurprisingFinding[],
+  nextSteps?: string
 ): string {
   const persona = context.persona || 'researcher'
   const now = new Date().toLocaleDateString('en-US', {
@@ -1512,7 +1699,15 @@ ${executiveSummary}
 
 ---
 
-## Field Maturity Assessment
+${surprisingFindings && surprisingFindings.length > 0 ? `## What Surprised Us
+
+*Non-obvious findings detected algorithmically from the data, then interpreted. These are patterns you likely wouldn't catch by scanning individual records.*
+
+${renderSurprisingFindings(surprisingFindings)}
+
+---
+
+` : ''}## Field Maturity Assessment
 
 ${renderFieldMaturity(fieldMaturity)}
 
@@ -1663,6 +1858,21 @@ ${renderResearchers(context.topResearchers)}
 `
   }
 
+  // Next Steps checklist — persona-specific, concrete actions the reader
+  // should take after the report. Placed here (after key orgs/researchers,
+  // before methodology) so it's the last substantive section.
+  if (nextSteps && nextSteps.trim()) {
+    md += `## Next Steps
+
+*Concrete actions the report suggests based on what's above. Not exhaustive - use these as a starting checklist you can extend.*
+
+${nextSteps}
+
+---
+
+`
+  }
+
   // METHODOLOGY (same for both personas)
   md += `## About This Report
 
@@ -1790,6 +2000,10 @@ function renderFieldMaturity(maturity: FieldMaturityAssessment): string {
   md += `**Technology Readiness:** ${maturity.trlEstimate}\n\n`
   md += `**Overall Assessment:** ${assessmentLabels[maturity.overallAssessment] || maturity.overallAssessment}\n\n`
 
+  if (maturity.benchmarkComparison) {
+    md += `**Historical Reference Point:** ${maturity.benchmarkComparison}\n\n`
+  }
+
   if (maturity.maturityNarrative) {
     md += maturity.maturityNarrative + '\n\n'
   }
@@ -1808,6 +2022,11 @@ function renderFieldMaturity(maturity: FieldMaturityAssessment): string {
       md += `- **IP Activity:** ${maturity.evidenceSummary.patentActivity}\n`
     }
     md += '\n'
+  }
+
+  if (maturity.strategicImplications) {
+    md += '### Strategic Implications\n\n'
+    md += maturity.strategicImplications + '\n\n'
   }
 
   return md || 'Field maturity assessment not available.\n'
@@ -1840,6 +2059,23 @@ function renderCompetitiveTopology(topology: CompetitiveTopology): string {
 
   md += '\n'
 
+  return md
+}
+
+/**
+ * Render the "What Surprised Us" section. Each finding is a bold hook
+ * followed by 2-3 sentences of interpretation and the concrete evidence
+ * line. Category is not shown to the reader — it's a downstream tag for
+ * deduplication + future filtering.
+ */
+function renderSurprisingFindings(findings: SurprisingFinding[]): string {
+  if (findings.length === 0) return ''
+  let md = ''
+  findings.forEach((f, i) => {
+    md += `**${i + 1}. ${f.headline}**\n\n`
+    md += `${f.interpretation}\n\n`
+    md += `*Evidence: ${f.evidence}*\n\n`
+  })
   return md
 }
 
@@ -1897,14 +2133,22 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
     })
   }
 
+  if (ws.strategicImplications) {
+    md += `### Strategic Implications\n\n`
+    md += ws.strategicImplications + '\n\n'
+  }
+
   return md
 }
 
 function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOutputs['patents'], insight: string): string {
   let md = ''
 
-  // Disclaimer about NIH-linked sample
-  md += '*Note: This analysis includes only patents linked to NIH-funded projects. Commercial patents and international filings may exist outside this sample.*\n\n'
+  // Disclaimer about NIH-linked sample + patent data lag callout (r19+
+  // audit feedback: readers should know that USPTO filings can lag
+  // commercial activity by 18-24 months, so recent private R&D may not
+  // show here even when it exists).
+  md += '*Note: This analysis includes only patents linked to NIH-funded projects. Commercial patents and international filings may exist outside this sample. USPTO filing timelines also lag commercial activity by roughly 18-24 months, so very recent private R&D may not yet appear in patent data.*\n\n'
 
   // Add the strategic IP assessment first
   const concentrationLabels: Record<string, string> = {
@@ -1930,6 +2174,11 @@ function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOu
 
   if (landscape.narrative) {
     md += landscape.narrative + '\n\n'
+  }
+
+  if (landscape.strategicImplications) {
+    md += '### Strategic Implications\n\n'
+    md += landscape.strategicImplications + '\n\n'
   }
 
   // Then add the standard patent section with insight and details
@@ -2068,7 +2317,7 @@ function renderCuratedPublications(
   let md = ''
 
   // Disclaimer about NIH-linked sample
-  md += '*Note: This analysis includes only publications linked to NIH-funded projects and may not represent the complete body of literature in this field.*\n\n'
+  md += '*Note: This analysis includes only publications linked to NIH-funded projects and may not represent the complete body of literature in this field. PubMed indexing typically lags publication date by 1-3 months for peer-reviewed articles; preprints appear faster but are not peer-reviewed.*\n\n'
 
   // Lead-in narrative from generateSectionInsights — what scientific questions
   // are being addressed and which methodological advances are visible.

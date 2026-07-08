@@ -238,12 +238,16 @@ export interface CuratedPublication {
 // Field Maturity Assessment - synthesizes preprint ratio, trial phases, patent activity
 export interface FieldMaturityAssessment {
   trlEstimate: string           // e.g., "TRL 3-4" or "Early Research (TRL 1-3)"
-  maturityNarrative: string     // 2-3 sentence explanation
+  maturityNarrative: string     // 2-3 sentence explanation (embeds confidence+evidence tags inline)
+  /** Concrete historical reference point for this TRL — e.g. "roughly where CRISPR was in 2015-2017". */
+  benchmarkComparison?: string
   evidenceSummary: {
     preprintRatio: string       // e.g., "35% preprints signals emerging field"
     trialProgression: string    // e.g., "No late-stage trials observed"
     patentActivity: string      // e.g., "0 patents in last 2 years"
   }
+  /** Persona-appropriate "so what" advice tied to this maturity assessment. */
+  strategicImplications?: string
   overallAssessment: 'nascent' | 'emerging' | 'maturing' | 'established'
 }
 
@@ -301,6 +305,9 @@ export interface WhiteSpaceAnalysis {
   topOpportunities: WhiteSpaceOpportunity[]
   totalProjects: number           // for chart/table denominators
   totalFunding: number
+  /** Persona-appropriate "so what" — grant strategy for researchers,
+   *  investment thesis framing for investors. Tied to the top opportunities. */
+  strategicImplications?: string
 }
 
 // IP Landscape Assessment
@@ -310,6 +317,21 @@ export interface IPLandscapeAssessment {
   freedomToOperate: string      // Assessment of FTO concerns
   recentActivityTrend: string   // e.g., "Declining - 0 patents in 2 years"
   narrative: string             // 2-3 sentences
+  /** Persona-appropriate "so what" advice tied to the IP finding. */
+  strategicImplications?: string
+}
+
+/**
+ * Surprising Findings — flags what's UNEXPECTED in the data, not just
+ * what's present. Detected algorithmically first (translation-gap orgs,
+ * publication-vs-trial imbalances, broader-NIH gaps, etc.) then narrated
+ * by an LLM. See src/lib/reports/surprising.ts for detector definitions.
+ */
+export interface SurprisingFindingItem {
+  headline: string
+  interpretation: string
+  evidence: string
+  category: string
 }
 
 export interface ReportData {
@@ -332,6 +354,9 @@ export interface ReportData {
   competitiveTopology?: CompetitiveTopology
   ipLandscape?: IPLandscapeAssessment
   whiteSpace?: WhiteSpaceAnalysis
+  surprisingFindings?: SurprisingFindingItem[]
+  /** Persona-specific actionable next-steps checklist, generated at the end of synthesis. */
+  nextSteps?: string
 }
 
 export interface GenerateReportOptions {

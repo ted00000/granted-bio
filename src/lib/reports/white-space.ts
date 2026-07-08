@@ -111,6 +111,7 @@ export async function generateWhiteSpaceAnalysis(
   topic: string,
   projects: ProjectItem[],
   usageTracker: UsageTracker,
+  persona: 'researcher' | 'investor' = 'researcher',
 ): Promise<WhiteSpaceAnalysis> {
   const totalProjects = projects.length
   const totalFunding = projects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
@@ -167,6 +168,7 @@ export async function generateWhiteSpaceAnalysis(
     totalFunding,
     client,
     usageTracker,
+    persona,
   )
 
   return {
@@ -176,6 +178,7 @@ export async function generateWhiteSpaceAnalysis(
     topOpportunities: withNarrative.opportunities,
     totalProjects,
     totalFunding,
+    strategicImplications: withNarrative.strategicImplications,
   }
 }
 
@@ -702,10 +705,12 @@ async function narrateCoverage(
   totalFunding: number,
   client: Anthropic,
   usageTracker: UsageTracker,
+  persona: 'researcher' | 'investor',
 ): Promise<{
   overview: string
   dimensions: CoverageDimension[]
   opportunities: WhiteSpaceOpportunity[]
+  strategicImplications?: string
 }> {
   const dimensionSummaries = dimensions
     .map((dim) => {
@@ -764,6 +769,14 @@ For each OPPORTUNITY's rationale field: 2-3 sentences answering "why might this 
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens or rewrite sentences.
 
+STRATEGIC IMPLICATIONS (REQUIRED):
+Produce a persona-appropriate strategicImplications paragraph tied to the top opportunities. Reader persona is: **${persona}**.
+
+- Researcher persona: frame around grant strategy. "For a researcher writing an R01 or SBIR in this space, the strongest differentiation opportunities are..." Reference specific opportunity names and counts. Mention concrete grant mechanisms where relevant (R01, R21, U01, SBIR/STTR).
+- Investor persona: frame around investment thesis. "For a seed-stage or Series A investor evaluating this space, the highest-signal bets among under-served categories are..." Reference specific opportunity names and counts. Mention what technical or clinical milestones would validate a bet.
+
+3-4 sentences. Concrete and actionable, not hand-wavy.
+
 Return JSON only, exactly this shape:
 {
   "overview": "...",
@@ -773,13 +786,17 @@ Return JSON only, exactly this shape:
   ],
   "opportunityRationales": [
     { "categoryName": "Pancreatic", "dimensionName": "Cancer Type", "rationale": "..." }
-  ]
+  ],
+  "strategicImplications": "3-4 sentences of persona-specific 'so what' advice tied to the top opportunities"
 }`
 
   try {
     const response = await client.messages.create({
       model: MODEL,
-      max_tokens: 3000,
+      // Bumped from 3000 to accommodate the new strategicImplications
+      // field on top of the existing overview + dimension narratives +
+      // opportunity rationales.
+      max_tokens: 4000,
       messages: [{ role: 'user', content: prompt }],
     })
     usageTracker.inputTokens += response.usage.input_tokens
@@ -833,6 +850,8 @@ Return JSON only, exactly this shape:
       overview: typeof parsed.overview === 'string' ? parsed.overview : '',
       dimensions: dimensionsOut,
       opportunities: opportunitiesOut,
+      strategicImplications:
+        typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
     }
   } catch (err) {
     console.error('[White Space] Narrate step failed:', err)
@@ -857,5 +876,6 @@ function emptyAnalysis(totalProjects: number = 0, totalFunding: number = 0): Whi
     topOpportunities: [],
     totalProjects,
     totalFunding,
+    strategicImplications: undefined,
   }
 }

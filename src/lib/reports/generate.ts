@@ -191,18 +191,20 @@ export async function generateTopicReport(
         top_organizations: topOrgs,
         top_researchers: topResearchers,
         markdown_content: reportData.markdownContent,
-        // agent_outputs stores the raw agent outputs plus the four synthesis
+        // agent_outputs stores the raw agent outputs plus the synthesis
         // outputs that don't yet have dedicated columns (whiteSpace,
-        // fieldMaturity, ipLandscape, competitiveTopology). Nesting them
-        // here avoids a schema migration; a dedicated column is a follow-up.
-        // Persisted so downstream renderers can hydrate structural chart /
-        // table data instead of re-parsing markdown.
+        // fieldMaturity, ipLandscape, competitiveTopology, surprisingFindings,
+        // nextSteps). Nesting them here avoids a schema migration; a
+        // dedicated column is a follow-up. Persisted so downstream
+        // renderers can hydrate structural data instead of re-parsing markdown.
         agent_outputs: {
           ...agentOutputs,
           whiteSpace: reportData.whiteSpace,
           fieldMaturity: reportData.fieldMaturity,
           ipLandscape: reportData.ipLandscape,
           competitiveTopology: reportData.competitiveTopology,
+          surprisingFindings: reportData.surprisingFindings,
+          nextSteps: reportData.nextSteps,
         },
         project_count: projectsOutput.items.length,
         persona,
@@ -373,18 +375,20 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
         top_organizations: topOrgs,
         top_researchers: topResearchers,
         markdown_content: reportData.markdownContent,
-        // agent_outputs stores the raw agent outputs plus the four synthesis
+        // agent_outputs stores the raw agent outputs plus the synthesis
         // outputs that don't yet have dedicated columns (whiteSpace,
-        // fieldMaturity, ipLandscape, competitiveTopology). Nesting them
-        // here avoids a schema migration; a dedicated column is a follow-up.
-        // Persisted so downstream renderers can hydrate structural chart /
-        // table data instead of re-parsing markdown.
+        // fieldMaturity, ipLandscape, competitiveTopology, surprisingFindings,
+        // nextSteps). Nesting them here avoids a schema migration; a
+        // dedicated column is a follow-up. Persisted so downstream
+        // renderers can hydrate structural data instead of re-parsing markdown.
         agent_outputs: {
           ...agentOutputs,
           whiteSpace: reportData.whiteSpace,
           fieldMaturity: reportData.fieldMaturity,
           ipLandscape: reportData.ipLandscape,
           competitiveTopology: reportData.competitiveTopology,
+          surprisingFindings: reportData.surprisingFindings,
+          nextSteps: reportData.nextSteps,
         },
         signals_analysis: reportData.signalsAnalysis,
         curated_publications: reportData.curatedPublications,
