@@ -262,6 +262,8 @@ export interface CompetitiveTopologyCluster {
 export interface CompetitiveTopology {
   clusters: CompetitiveTopologyCluster[]
   narrative: string             // Brief synthesis
+  /** Persona-appropriate "so what" advice tied to the cluster landscape. */
+  strategicImplications?: string
 }
 
 // White Space Analysis — quantified coverage-gap audit across topic-specific

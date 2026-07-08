@@ -1176,6 +1176,7 @@ async function generateCompetitiveTopology(
 ): Promise<CompetitiveTopology> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
   const client = new Anthropic()
+  const persona = context.persona || 'researcher'
 
   // Prepare project abstracts for analysis
   const projectSummaries = agentOutputs.projects.items
@@ -1199,6 +1200,8 @@ async function generateCompetitiveTopology(
     .join('\n')
 
   const prompt = `Analyze the competitive topology for "${topic}" research.
+
+READER PERSONA: **${persona}** — tailor the strategicImplications field accordingly.
 
 Your task: Identify 3-5 DISTINCT METHODOLOGICAL APPROACHES or technology clusters, NOT organizational groupings.
 
@@ -1255,6 +1258,13 @@ Confidence scale:
 - **Medium**: 4-9 projects OR ≥10 projects concentrated at one org.
 - **Low**: ≤3 projects OR forward-looking speculation.
 
+STRATEGIC IMPLICATIONS (REQUIRED):
+Produce a persona-appropriate strategicImplications paragraph tied to the cluster landscape.
+- Researcher persona: which cluster is most competitive to enter vs. most differentiated? Which methodology should a new lab prioritize given the funded field, and what grant mechanisms (R01, R21, U01, SBIR) fit that positioning?
+- Investor persona: which cluster is closest to commercial deployment vs. earliest-stage? Which cluster's IP/trial signals suggest first-mover risk vs. exit optionality? What technical or clinical milestones would validate a bet in each cluster?
+
+Reference specific cluster names and their counts from the data. 3-4 sentences, concrete and actionable.
+
 Return JSON only:
 {
   "clusters": [
@@ -1265,16 +1275,16 @@ Return JSON only:
       "commercialReadiness": "One sentence with confidence+evidence tag on commercialization status"
     }
   ],
-  "narrative": "2-3 sentences with confidence+evidence tags synthesizing the competitive topology - what are the main competing approaches and how do they relate?"
+  "narrative": "2-3 sentences with confidence+evidence tags synthesizing the competitive topology - what are the main competing approaches and how do they relate?",
+  "strategicImplications": "3-4 sentences of persona-appropriate 'so what' advice tied to the cluster landscape"
 }`
 
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // 2200 covers 3-5 clusters with commercialReadiness confidence
-      // tags + narrative confidence tag. Was 2000 which could truncate
-      // on a 5-cluster response.
-      max_tokens: 2200,
+      // 2500 covers 3-5 clusters with commercialReadiness confidence
+      // tags + narrative confidence tag + strategicImplications block.
+      max_tokens: 2500,
       messages: [{ role: 'user', content: prompt }],
     }, {
       timeout: 90_000,
@@ -1303,6 +1313,7 @@ Return JSON only:
     return {
       clusters: Array.isArray(parsed.clusters) ? parsed.clusters : [],
       narrative: parsed.narrative || '',
+      strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
     }
   } catch (error) {
     console.warn('[Synthesis Agent] Failed to generate competitive topology:', error)
@@ -2098,6 +2109,11 @@ function renderCompetitiveTopology(topology: CompetitiveTopology): string {
   })
 
   md += '\n'
+
+  if (topology.strategicImplications) {
+    md += '### Strategic Implications\n\n'
+    md += topology.strategicImplications + '\n\n'
+  }
 
   return md
 }
