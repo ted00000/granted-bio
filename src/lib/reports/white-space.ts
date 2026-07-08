@@ -398,34 +398,41 @@ async function expandUnclassifiedCategories(
   client: Anthropic,
   usageTracker: UsageTracker,
 ): Promise<CoverageDimension[]> {
-  const refined: CoverageDimension[] = []
-
-  for (const dim of dimensions) {
+  // Kick off ALL second-pass LLM calls in parallel. The prior version
+  // ran them sequentially in a for-loop — with 3-5 dimensions each
+  // hitting a 30-60s LLM call, that alone could exceed the Vercel
+  // 300s function budget and cause the report to hang silently.
+  const secondPassPromises = dimensions.map(async (dim) => {
     const total = dim.totalMatched + dim.totalUnclassified
     const unclassifiedRate = total > 0 ? dim.totalUnclassified / total : 0
-    if (unclassifiedRate < SECOND_PASS_UNCLASSIFIED_THRESHOLD || dim.categories.length >= MAX_CATEGORIES_PER_DIMENSION) {
-      refined.push(dim)
-      continue
+    if (
+      unclassifiedRate < SECOND_PASS_UNCLASSIFIED_THRESHOLD ||
+      dim.categories.length >= MAX_CATEGORIES_PER_DIMENSION
+    ) {
+      return { dim, proposals: [] as Array<{ name: string; keywords: string[] }> }
     }
-
-    // Find the actual unclassified projects using the same matcher.
     const unclassifiedProjects = projects.filter((p) => {
       const text = `${p.title || ''} ${p.abstract || ''}`.toLowerCase()
       return !dim.categories.some((c) => c.keywords.some((kw) => matchesKeyword(text, kw)))
     })
     if (unclassifiedProjects.length === 0) {
-      refined.push(dim)
-      continue
+      return { dim, proposals: [] as Array<{ name: string; keywords: string[] }> }
     }
-
-    const newCategoryProposals = await proposeAdditionalCategories(
+    const proposals = await proposeAdditionalCategories(
       topic,
       dim,
       unclassifiedProjects,
       client,
       usageTracker,
     )
-    if (newCategoryProposals.length === 0) {
+    return { dim, proposals }
+  })
+
+  const secondPassResults = await Promise.all(secondPassPromises)
+
+  const refined: CoverageDimension[] = []
+  for (const { dim, proposals } of secondPassResults) {
+    if (proposals.length === 0) {
       refined.push(dim)
       continue
     }
@@ -438,7 +445,7 @@ async function expandUnclassifiedCategories(
       ...dim,
       categories: [...dim.categories],
     }
-    for (const newCat of newCategoryProposals) {
+    for (const newCat of proposals) {
       if (merged.categories.length >= MAX_CATEGORIES_PER_DIMENSION) break
       const matched = projects.filter((p) => {
         const text = `${p.title || ''} ${p.abstract || ''}`.toLowerCase()

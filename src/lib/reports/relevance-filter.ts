@@ -102,6 +102,8 @@ Include ALL item IDs in your response, categorized as either relevant or not_rel
       model: 'claude-sonnet-4-6',
       max_tokens: 1024,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 60_000,
     })
 
     const text = response.content[0].type === 'text' ? response.content[0].text : ''
@@ -223,6 +225,8 @@ Return JSON only. One verdict per item; use the exact ID (NCT_ID for trials, pat
       model: 'claude-sonnet-4-6',
       max_tokens: 4000,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 90_000,
     })
     usageTracker.inputTokens += response.usage.input_tokens
     usageTracker.outputTokens += response.usage.output_tokens
