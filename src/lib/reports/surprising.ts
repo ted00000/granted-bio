@@ -279,8 +279,13 @@ FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sente
     const client = new Anthropic()
     const response = await client.messages.create({
       model: MODEL,
-      max_tokens: 2500,
+      // 4 findings × ~500 chars of interpretation = ~2000 tokens output.
+      // 2000 is comfortable; keep timeout tight so this can't drag out
+      // the full report generation.
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 60_000,
     })
     usageTracker.inputTokens += response.usage.input_tokens
     usageTracker.outputTokens += response.usage.output_tokens

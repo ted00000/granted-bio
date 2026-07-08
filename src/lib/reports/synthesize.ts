@@ -646,11 +646,16 @@ Return JSON only:
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // Bumped from 1500 to accommodate the confidence + evidence tags
-      // appended to every substantive claim (roughly 40-60 tokens per
-      // tag; 3-5 tags per field; 3-8 fields depending on persona).
-      max_tokens: 2500,
+      // 2000 max_tokens is enough for 3 (researcher) or 5 (investor)
+      // fields with brief confidence+evidence tags. Bumped from the
+      // original 1500 but capped to keep call latency predictable.
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      // Hard per-call timeout so a slow LLM response can't consume the
+      // entire serverless-function budget. Reports were timing out at
+      // 300s (Vercel limit) with multiple LLM calls running long.
+      timeout: 90_000,
     })
 
     // Track usage
@@ -1080,10 +1085,13 @@ Return JSON only:
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // Bumped from 1000 to cover confidence/evidence tags + the new
-      // benchmarkComparison and strategicImplications fields.
-      max_tokens: 2000,
+      // Trimmed from 2000 — Field Maturity has ~5 short fields plus a
+      // 1-sentence benchmarkComparison and 2-3 sentence strategicImplications.
+      // 1500 leaves room without inviting the LLM to overproduce.
+      max_tokens: 1500,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 90_000,
     })
 
     // Track usage
@@ -1244,10 +1252,12 @@ Return JSON only:
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // Bumped from 1500 to cover confidence+evidence tags on each
-      // cluster's commercialReadiness + the top-level narrative.
-      max_tokens: 2500,
+      // 2000 max_tokens covers 3-5 clusters with confidence+evidence
+      // tags. Was 2500; trimmed to keep latency predictable.
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 90_000,
     })
 
     // Track usage
@@ -1393,9 +1403,13 @@ narrative fields below.
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // Bumped from 1000 to cover confidence tags + strategicImplications.
-      max_tokens: 2000,
+      // 1500 for IP Landscape's four short narrative fields + a
+      // strategicImplications block. Was 2000; trimmed to keep latency
+      // predictable.
+      max_tokens: 1500,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 90_000,
     })
 
     // Track usage
@@ -1507,6 +1521,8 @@ Return JSON only (object mapping application_id to insight string):
       model: 'claude-sonnet-4-6',
       max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 90_000,
     })
 
     // Track usage
@@ -1597,8 +1613,12 @@ Start directly with the first "- [ ]" — no preamble, no section heading.`
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 1500,
+      // 6-8 checkbox items × ~50 tokens each = ~500 tokens. 1200 is
+      // plenty with headroom.
+      max_tokens: 1200,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 60_000,
     })
     usageTracker.inputTokens += response.usage.input_tokens
     usageTracker.outputTokens += response.usage.output_tokens

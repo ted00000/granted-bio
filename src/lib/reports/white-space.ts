@@ -251,6 +251,8 @@ ${titleSample}
       // mid-array and JSON.parse throws.
       max_tokens: 8000,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 120_000,
     })
     usageTracker.inputTokens += response.usage.input_tokens
     usageTracker.outputTokens += response.usage.output_tokens
@@ -520,6 +522,8 @@ Return JSON only:
       model: MODEL,
       max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 90_000,
     })
     usageTracker.inputTokens += response.usage.input_tokens
     usageTracker.outputTokens += response.usage.output_tokens
@@ -793,11 +797,13 @@ Return JSON only, exactly this shape:
   try {
     const response = await client.messages.create({
       model: MODEL,
-      // Bumped from 3000 to accommodate the new strategicImplications
-      // field on top of the existing overview + dimension narratives +
-      // opportunity rationales.
-      max_tokens: 4000,
+      // 3500 for overview + 5 dimension narratives + up to 5 opportunity
+      // rationales + strategicImplications. Was 4000; trimmed to keep
+      // per-call latency predictable.
+      max_tokens: 3500,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 120_000,
     })
     usageTracker.inputTokens += response.usage.input_tokens
     usageTracker.outputTokens += response.usage.output_tokens
