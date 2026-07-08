@@ -1282,9 +1282,11 @@ Return JSON only:
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // 2500 covers 3-5 clusters with commercialReadiness confidence
-      // tags + narrative confidence tag + strategicImplications block.
-      max_tokens: 2500,
+      // 3500 for 5 clusters with confidence+evidence tags + narrative
+      // + strategicImplications. r21 tried 2500 and the JSON truncated
+      // mid-array, throwing JSON.parse and dropping the entire section
+      // to the empty-fallback default. Extra headroom prevents that.
+      max_tokens: 3500,
       messages: [{ role: 'user', content: prompt }],
     }, {
       timeout: 90_000,
@@ -1309,10 +1311,35 @@ Return JSON only:
       return defaultCompetitiveTopology()
     }
 
-    const parsed = JSON.parse(jsonMatch[0])
+    // Best-effort parse with graceful degradation. If the JSON is
+    // truncated mid-array (LLM hit max_tokens), pull out whatever
+    // clusters we can salvage rather than dropping the entire section.
+    let parsed: {
+      clusters?: unknown
+      narrative?: unknown
+      strategicImplications?: unknown
+    } = {}
+    try {
+      parsed = JSON.parse(jsonMatch[0])
+    } catch (parseErr) {
+      console.warn('[Synthesis Agent] Competitive topology JSON parse failed, attempting salvage:', parseErr)
+      // Try to salvage: extract clusters array manually
+      const clustersMatch = jsonText.match(/"clusters"\s*:\s*(\[[\s\S]*?\])(?=\s*,\s*"|\s*})/)
+      if (clustersMatch) {
+        try {
+          parsed.clusters = JSON.parse(clustersMatch[1])
+        } catch {
+          /* clusters unsalvageable */
+        }
+      }
+      const narrativeMatch = jsonText.match(/"narrative"\s*:\s*"((?:[^"\\]|\\.)*)"/)
+      if (narrativeMatch) parsed.narrative = narrativeMatch[1]
+      const stratMatch = jsonText.match(/"strategicImplications"\s*:\s*"((?:[^"\\]|\\.)*)"/)
+      if (stratMatch) parsed.strategicImplications = stratMatch[1]
+    }
     return {
-      clusters: Array.isArray(parsed.clusters) ? parsed.clusters : [],
-      narrative: parsed.narrative || '',
+      clusters: Array.isArray(parsed.clusters) ? (parsed.clusters as never[]) : [],
+      narrative: typeof parsed.narrative === 'string' ? parsed.narrative : '',
       strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
     }
   } catch (error) {
