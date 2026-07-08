@@ -646,15 +646,16 @@ Return JSON only:
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // 2000 max_tokens is enough for 3 (researcher) or 5 (investor)
-      // fields with brief confidence+evidence tags. Bumped from the
-      // original 1500 but capped to keep call latency predictable.
-      max_tokens: 2000,
+      // 2500 to leave real headroom for confidence+evidence tags —
+      // investor persona has 5 fields × ~1000 tokens of added tag text,
+      // and 2000 was landing tight enough that a chatty response would
+      // truncate mid-JSON. Now that the sequential white-space bottleneck
+      // is fixed, latency headroom exists; this only adds ~5s per call.
+      max_tokens: 2500,
       messages: [{ role: 'user', content: prompt }],
     }, {
       // Hard per-call timeout so a slow LLM response can't consume the
-      // entire serverless-function budget. Reports were timing out at
-      // 300s (Vercel limit) with multiple LLM calls running long.
+      // entire serverless-function budget.
       timeout: 90_000,
     })
 
@@ -1085,10 +1086,11 @@ Return JSON only:
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // Trimmed from 2000 — Field Maturity has ~5 short fields plus a
-      // 1-sentence benchmarkComparison and 2-3 sentence strategicImplications.
-      // 1500 leaves room without inviting the LLM to overproduce.
-      max_tokens: 1500,
+      // 1800 gives Field Maturity real room for confidence+evidence tags
+      // on each of the 4 short fields, plus benchmarkComparison and
+      // strategicImplications. Was 1500 which risked mid-JSON truncation
+      // on a chatty response.
+      max_tokens: 1800,
       messages: [{ role: 'user', content: prompt }],
     }, {
       timeout: 90_000,
@@ -1252,9 +1254,10 @@ Return JSON only:
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // 2000 max_tokens covers 3-5 clusters with confidence+evidence
-      // tags. Was 2500; trimmed to keep latency predictable.
-      max_tokens: 2000,
+      // 2200 covers 3-5 clusters with commercialReadiness confidence
+      // tags + narrative confidence tag. Was 2000 which could truncate
+      // on a 5-cluster response.
+      max_tokens: 2200,
       messages: [{ role: 'user', content: prompt }],
     }, {
       timeout: 90_000,
@@ -1403,10 +1406,10 @@ narrative fields below.
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      // 1500 for IP Landscape's four short narrative fields + a
-      // strategicImplications block. Was 2000; trimmed to keep latency
-      // predictable.
-      max_tokens: 1500,
+      // 1800 gives IP Landscape's four narrative fields + strategic
+      // implications real headroom for confidence+evidence tags.
+      // Was 1500 which risked mid-JSON truncation.
+      max_tokens: 1800,
       messages: [{ role: 'user', content: prompt }],
     }, {
       timeout: 90_000,

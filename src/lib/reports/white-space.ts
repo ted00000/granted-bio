@@ -804,10 +804,10 @@ Return JSON only, exactly this shape:
   try {
     const response = await client.messages.create({
       model: MODEL,
-      // 3500 for overview + 5 dimension narratives + up to 5 opportunity
-      // rationales + strategicImplications. Was 4000; trimmed to keep
-      // per-call latency predictable.
-      max_tokens: 3500,
+      // 3800 for overview + 5 dimension narratives + up to 5 opportunity
+      // rationales + strategicImplications. 3500 was landing tight on
+      // longer topics; 3800 restores headroom against truncation.
+      max_tokens: 3800,
       messages: [{ role: 'user', content: prompt }],
     }, {
       timeout: 120_000,
