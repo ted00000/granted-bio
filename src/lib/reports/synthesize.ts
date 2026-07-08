@@ -2664,13 +2664,17 @@ function renderOrganizations(orgs: OrgStats[]): string {
     return 'No organization data available.\n'
   }
 
-  let md = '| Organization | Projects | Funding | Trials | Patents |\n'
-  md += '|--------------|----------|---------|--------|--------|\n'
+  // Publications column added alongside trials/patents so a reader can see
+  // the full downstream picture per org — an institution with high pubs
+  // but zero trials/patents is a "publishing but not translating" pattern
+  // that would look like a silent lab under the old 4-column view.
+  let md = '| Organization | Projects | Funding | Pubs | Trials | Patents |\n'
+  md += '|--------------|----------|---------|------|--------|---------|\n'
 
   orgs.forEach((o) => {
     const displayName = normalizeOrgName(o.org_name)
     const orgLink = `[${displayName}](/org/${encodeURIComponent(o.org_name)})`
-    md += `| ${orgLink} | ${o.projects} | ${formatCurrency(o.funding)} | ${o.trials} | ${o.patents} |\n`
+    md += `| ${orgLink} | ${o.projects} | ${formatCurrency(o.funding)} | ${o.publications ?? 0} | ${o.trials} | ${o.patents} |\n`
   })
 
   return md

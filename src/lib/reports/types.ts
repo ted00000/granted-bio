@@ -110,6 +110,20 @@ export interface OrgStats {
   funding: number
   trials: number
   patents: number
+  /**
+   * Distinct linked publications for this org's in-sample project_numbers.
+   * Counted from project_publications join, deduped by pmid across the org's
+   * projects. Included so the "translation gap" heuristic in the Surprising
+   * Findings section can distinguish "publishing but not patenting/trialing"
+   * (real research happening, hasn't crossed into IP or clinical validation)
+   * from "no visible research output at all" — very different signals for
+   * a reader.
+   *
+   * Optional to preserve backward compat with legacy reports in the DB that
+   * were generated before this field was tracked. New reports always
+   * populate it (default 0 if the linkage query fails).
+   */
+  publications?: number
 }
 
 export interface ResearcherStats {

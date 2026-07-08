@@ -140,11 +140,23 @@ function detectTranslationGapOrgs(ctx: SurpriseDetectionContext): DetectedCandid
     if (org.funding < MIN_FUNDING_FOR_TRANSLATION_GAP) continue
     if (org.trials > 0 || org.patents > 0) continue
     const orgDisplay = normalizeOrgName(org.org_name)
-    // High funding, no downstream outputs — a translation gap.
+    // Substantial funding + active publishing + no patents + no trials.
+    // The publication count matters for the reader: without it the finding
+    // reads as "org has funding but no output," which is misleading —
+    // these orgs typically ARE producing research (papers), just not IP
+    // or clinical validation. Including publications reframes correctly
+    // as "publishing but hasn't crossed into commercialization" (real
+    // translation-gap pattern) rather than "silent lab" (which would be
+    // untrue and unfair to the institution).
+    const pubs = org.publications ?? 0
+    const pubsPart = pubs > 0 ? `${pubs} linked publications, ` : ''
+    const headline = pubs > 0
+      ? `${orgDisplay} publishes actively (${pubs} linked pubs) but has no linked patents or trials`
+      : `${orgDisplay} has substantial funding but no linked patents or trials`
     results.push({
       category: 'translation-gap-org',
-      headline: `${orgDisplay} has substantial funding but no linked patents or trials`,
-      evidence: `${org.projects} projects, $${(org.funding / 1_000_000).toFixed(1)}M in NIH funding, 0 linked trials, 0 linked patents in the analyzed sample`,
+      headline,
+      evidence: `${org.projects} projects, $${(org.funding / 1_000_000).toFixed(1)}M in NIH funding, ${pubsPart}0 linked trials, 0 linked patents in the analyzed sample`,
       strength: org.funding / 1_000_000,
     })
   }
@@ -254,6 +266,10 @@ async function narrateFindings(
 The following anomalies were detected algorithmically from the underlying data. For EACH one, write a 2-3 sentence interpretation explaining WHY IT MATTERS to a reader (researcher, investor, or biotech founder scoping this space). Reference the specific numbers in the evidence line.
 
 Do NOT invent new anomalies or claim things that aren't in the evidence line. Only interpret what's given.
+
+FRAMING NOTES:
+- For **translation-gap-org** findings: if the evidence line includes "linked publications", the org IS publishing actively. Frame the finding as "publishing but not commercializing/trialing" (a real translation gap between discovery and downstream milestones), NOT as "silent" or "no output." The publication count is your evidence the research is happening; the missing patents/trials are your evidence it hasn't crossed into IP or clinical validation.
+- For **broader-nih-gap** findings: acknowledge the ratio as a signal that adjacent research exists but hasn't converged with the topic frame — an opportunity, not proof the topic will succeed there.
 
 ## DETECTED ANOMALIES
 

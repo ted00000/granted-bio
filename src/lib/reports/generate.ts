@@ -158,7 +158,7 @@ export async function generateTopicReport(
     // Phase 2: Aggregation
     await updateProgressStage(reportId, 'aggregating')
     const fundingStats = calculateFundingStats(projectsOutput)
-    const topOrgs = await aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput)
+    const topOrgs = await aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput, publicationsOutput)
     const topResearchers = aggregateResearchers(projectsOutput)
 
     // Phase 3: Synthesis - generate executive summary and markdown report
@@ -342,7 +342,7 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
     // Aggregation
     await updateProgressStage(reportId, 'aggregating')
     const fundingStats = calculateFundingStats(projectsOutput)
-    const topOrgs = await aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput)
+    const topOrgs = await aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput, publicationsOutput)
     const topResearchers = aggregateResearchers(projectsOutput)
 
     // Synthesis
@@ -636,7 +636,8 @@ function calculateFundingStats(
 async function aggregateOrganizations(
   projects: AllAgentOutputs['projects'],
   trials: AllAgentOutputs['trials'],
-  patents: AllAgentOutputs['patents']
+  patents: AllAgentOutputs['patents'],
+  publications: AllAgentOutputs['publications']
 ): Promise<OrgStats[]> {
   // Keyed by normalized (lowercase) org name so case variants of the same
   // institution merge — projects table has "Johns Hopkins University"
@@ -658,6 +659,7 @@ async function aggregateOrganizations(
       funding: 0,
       trials: 0,
       patents: 0,
+      publications: 0,
     }
     orgByKey.set(key, created)
     return created
@@ -736,6 +738,59 @@ async function aggregateOrganizations(
       ensureOrg(org).patents++
     }
   })
+
+  // Attribute publications per org. Unlike trials/patents, PublicationItem
+  // doesn't carry project_numbers on the item, so we query the
+  // project_publications join table for the in-sample project numbers and
+  // group by pmid. Each distinct pmid per org counts once (so a paper
+  // acknowledging two of an org's grants doesn't double-count).
+  const inSampleProjectNumbers = Array.from(
+    new Set(
+      projects.items
+        .flatMap((p) => {
+          if (!p.project_number) return []
+          const core = getCoreProjectNumber(p.project_number)
+          return core && core !== p.project_number ? [p.project_number, core] : [p.project_number]
+        })
+        .filter(Boolean),
+    ),
+  )
+  const inSamplePmids = new Set(publications.items.map((p) => p.pmid).filter(Boolean))
+  if (inSampleProjectNumbers.length > 0 && inSamplePmids.size > 0) {
+    // Chunk the IN clause — PostgREST rejects extremely large IN lists.
+    // 500 is a comfortable batch size for our usage; project counts are
+    // bounded to ~150 anyway.
+    const CHUNK = 500
+    const orgPmids = new Map<string, Set<string>>() // normalized orgKey -> set of pmids
+    for (let i = 0; i < inSampleProjectNumbers.length; i += CHUNK) {
+      const slice = inSampleProjectNumbers.slice(i, i + CHUNK)
+      const { data, error } = await supabaseAdmin
+        .from('project_publications')
+        .select('pmid, project_number')
+        .in('project_number', slice)
+      if (error) {
+        console.warn('[Org Rollup] Publications linkage query failed:', error.message)
+        continue
+      }
+      for (const row of data || []) {
+        if (!row.pmid || !inSamplePmids.has(String(row.pmid))) continue
+        const org = findOrg(row.project_number)
+        if (!org) continue
+        const key = normalize(org)
+        let set = orgPmids.get(key)
+        if (!set) {
+          set = new Set<string>()
+          orgPmids.set(key, set)
+        }
+        set.add(String(row.pmid))
+      }
+    }
+    // Assign the deduped count to each org
+    for (const org of orgByKey.values()) {
+      const set = orgPmids.get(normalize(org.org_name))
+      org.publications = set ? set.size : 0
+    }
+  }
 
   // Sort by PROJECT COUNT primary, funding as tiebreaker, activity third.
   // Rationale: the reader's mental model of "top orgs in this topic" is
