@@ -110,64 +110,47 @@ export async function synthesizeReport(
   ])
   stageTiming('main synthesis batch done')
 
-  // Generate project insights (needs executive summary first for context).
-  // Use the same funding-sorted top 10 the "Top Funded Projects" section
-  // will render — otherwise insights end up generated for similarity-top
-  // projects that may not appear in the rendered list, and shown projects
-  // end up with no insight.
-  const projectInsights = await generateProjectInsights(
-    topic,
-    topFundedProjects(agentOutputs.projects.items, 10),
-    executiveSummary,
-    context,
-    usageTracker
-  )
-
   // Replace raw market context with enhanced version
   agentOutputs.market.context = enhancedMarketContext
 
-  // Detect + narrate surprising findings + generate Next Steps checklist.
-  // These are Tier 2 "value-add" sections — the report is fully useful
-  // without them, so wrap the whole batch in a hard 50s time budget and
-  // fall back to empty on timeout / error. Ensures a slow-Anthropic
-  // day doesn't blow the Vercel 300s function budget on OPTIONAL work.
-  stageTiming('start value-add batch (surprising + next steps)')
-  const valueAddBudgetMs = 50_000
-  const surprisingPromise = detectSurprisingFindings(
-    {
+  // Second batch — three post-batch synthesis steps in parallel. They
+  // all depend on the first batch's outputs (executiveSummary for
+  // project insights; whiteSpace + ipLandscape for surprising + next
+  // steps) but not on each other, so we fire them concurrently.
+  // Previously project insights ran sequentially, adding ~30s to the
+  // critical path unnecessarily.
+  stageTiming('start post-batch synthesis (project insights + surprising + next steps)')
+  const [projectInsights, surprisingFindings, nextSteps] = await Promise.all([
+    generateProjectInsights(
       topic,
-      agentOutputs,
-      fundingStats: context.fundingStats,
-      topOrganizations: context.topOrganizations,
-      topResearchers: context.topResearchers,
-      whiteSpace,
-    },
-    usageTracker,
-  ).catch((err) => {
-    console.warn('[Synthesis Agent] surprising findings failed, returning empty:', err)
-    return [] as SurprisingFinding[]
-  })
-  const nextStepsPromise = generateNextSteps(topic, agentOutputs, context, whiteSpace, ipLandscape, usageTracker).catch((err) => {
-    console.warn('[Synthesis Agent] next steps failed, returning empty:', err)
-    return ''
-  })
-  const valueAddTimeout = new Promise<{ timedOut: true }>((resolve) =>
-    setTimeout(() => resolve({ timedOut: true }), valueAddBudgetMs),
-  )
-  const valueAddResult = await Promise.race([
-    Promise.all([surprisingPromise, nextStepsPromise]).then((r) => ({ timedOut: false as const, r })),
-    valueAddTimeout,
+      topFundedProjects(agentOutputs.projects.items, 10),
+      executiveSummary,
+      context,
+      usageTracker,
+    ).catch((err) => {
+      console.warn('[Synthesis Agent] project insights failed, returning empty:', err)
+      return {} as Record<string, string>
+    }),
+    detectSurprisingFindings(
+      {
+        topic,
+        agentOutputs,
+        fundingStats: context.fundingStats,
+        topOrganizations: context.topOrganizations,
+        topResearchers: context.topResearchers,
+        whiteSpace,
+      },
+      usageTracker,
+    ).catch((err) => {
+      console.warn('[Synthesis Agent] surprising findings failed, returning empty:', err)
+      return [] as SurprisingFinding[]
+    }),
+    generateNextSteps(topic, agentOutputs, context, whiteSpace, ipLandscape, usageTracker).catch((err) => {
+      console.warn('[Synthesis Agent] next steps failed, returning empty:', err)
+      return ''
+    }),
   ])
-  let surprisingFindings: SurprisingFinding[] = []
-  let nextSteps: string = ''
-  if ('r' in valueAddResult) {
-    surprisingFindings = valueAddResult.r[0]
-    nextSteps = valueAddResult.r[1]
-    stageTiming('value-add batch done')
-  } else {
-    console.warn(`[Synthesis Agent] value-add batch exceeded ${valueAddBudgetMs}ms budget — shipping report without surprising findings + next steps`)
-    stageTiming('value-add batch TIMED OUT (shipping without)')
-  }
+  stageTiming('post-batch synthesis done')
 
   // Assemble markdown report with persona-aware structure
   const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights, whiteSpace, surprisingFindings, nextSteps)

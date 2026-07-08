@@ -588,12 +588,22 @@ Return JSON only:
  * them as a floor rather than exact counts.
  */
 async function addBroaderNihCounts(dimensions: CoverageDimension[]): Promise<CoverageDimension[]> {
-  let queryCount = 0
-
+  // Build the full flat list of (category, ilike-patterns) work items up
+  // front, respecting MAX_BROADER_QUERIES as a hard cap on total queries.
+  // Categories past the cap get the -1 sentinel ("not queried") so the
+  // render can distinguish them from a legitimate zero.
+  //
+  // Historical bug: this used to be a nested for-loop with a sequential
+  // await inside — 65 sequential Postgres count queries at ~2s each
+  // added 130 seconds of pure serialization to synthesis, which pushed
+  // whole-report generation past the Vercel 300s function budget. Now
+  // every count fires in parallel via Promise.all.
+  const workItems: Array<{ cat: CoverageCategory; patterns: string[] }> = []
+  const overflow: CoverageCategory[] = []
   for (const dim of dimensions) {
     for (const cat of dim.categories) {
-      if (queryCount >= MAX_BROADER_QUERIES) {
-        cat.broaderNihCount = -1 // sentinel for "not queried"
+      if (workItems.length >= MAX_BROADER_QUERIES) {
+        overflow.push(cat)
         continue
       }
       const patterns: string[] = []
@@ -601,10 +611,6 @@ async function addBroaderNihCounts(dimensions: CoverageDimension[]): Promise<Cov
         const kw = kwRaw.replace(/,/g, ' ').trim()
         if (kw.length < MIN_KEYWORD_LENGTH) continue
         const escaped = escapeForPgRegex(kw)
-        // PostgREST .or() operator alias for ~* is `imatch`. Wrap
-        // single-token keywords in \m...\M for word-boundary matching.
-        // Multi-word phrases already contain spaces that act as
-        // boundaries, so plain (regex-escaped) form is enough.
         const hasSeparator = /[\s\-/]/.test(kw)
         const regex = hasSeparator ? escaped : `\\m${escaped}\\M`
         patterns.push(`title.imatch.${regex}`)
@@ -613,6 +619,17 @@ async function addBroaderNihCounts(dimensions: CoverageDimension[]): Promise<Cov
         cat.broaderNihCount = 0
         continue
       }
+      workItems.push({ cat, patterns })
+    }
+  }
+  for (const cat of overflow) cat.broaderNihCount = -1
+
+  // Fire all count queries in parallel. Supabase's connection pool
+  // handles the concurrency; PostgREST count queries are cheap when the
+  // filter is indexed. Wall-clock = slowest single query (~3-5s)
+  // instead of sum of all query times (>130s at 65 categories).
+  await Promise.all(
+    workItems.map(async ({ cat, patterns }) => {
       try {
         const { count, error } = await supabaseAdmin
           .from('projects')
@@ -627,13 +644,12 @@ async function addBroaderNihCounts(dimensions: CoverageDimension[]): Promise<Cov
         } else {
           cat.broaderNihCount = count ?? 0
         }
-        queryCount++
       } catch (err) {
         console.warn(`[White Space] Broader count exception for ${cat.name}:`, err)
         cat.broaderNihCount = 0
       }
-    }
-  }
+    }),
+  )
 
   return dimensions
 }
