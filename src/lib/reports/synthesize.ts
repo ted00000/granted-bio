@@ -65,18 +65,26 @@ export async function synthesizeReport(
   // Initialize usage tracker for all API calls
   const usageTracker: UsageTracker = { inputTokens: 0, outputTokens: 0 }
 
+  const synthStart = Date.now()
+  const stageTiming = (label: string) => {
+    const elapsed = ((Date.now() - synthStart) / 1000).toFixed(1)
+    console.log(`[Synthesis Agent] +${elapsed}s: ${label}`)
+  }
+
   // Trial + patent topical relevance filter — runs first so downstream
   // synthesis steps (section insights, IP landscape, field maturity) see
   // only the topic-relevant subset instead of items that were pulled in
   // via NIH project linkage but are off-topic (e.g., a T-cell mediation
   // patent linked to a cancer biomarker project). Fails open — on error
   // all items are kept.
+  stageTiming('start relevance filter')
   const relevanceResult = await filterTrialsAndPatentsByRelevance(
     topic,
     agentOutputs.trials.items,
     agentOutputs.patents.items,
     usageTracker,
   )
+  stageTiming('relevance filter done')
   // Replace items with the filtered/sorted list. Recompute byPhase from
   // the kept trials so the phase breakdown reflects what the reader
   // sees in the Active Trials listing.
@@ -88,6 +96,7 @@ export async function synthesizeReport(
   agentOutputs.patents.byAssignee = recomputePatentsByAssignee(relevanceResult.patents)
 
   // Generate all LLM content in parallel (first batch)
+  stageTiming('start main synthesis batch')
   const [executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, enhancedMarketContext, fieldMaturity, competitiveTopology, ipLandscape, whiteSpace] = await Promise.all([
     generateExecutiveSummary(topic, agentOutputs, context, usageTracker),
     generateSectionInsights(topic, agentOutputs, context, usageTracker),
@@ -99,6 +108,7 @@ export async function synthesizeReport(
     generateIPLandscapeAssessment(topic, agentOutputs, context, usageTracker),
     generateWhiteSpaceAnalysis(topic, agentOutputs.projects.items, usageTracker, persona),
   ])
+  stageTiming('main synthesis batch done')
 
   // Generate project insights (needs executive summary first for context).
   // Use the same funding-sorted top 10 the "Top Funded Projects" section
@@ -117,23 +127,47 @@ export async function synthesizeReport(
   agentOutputs.market.context = enhancedMarketContext
 
   // Detect + narrate surprising findings + generate Next Steps checklist.
-  // These depend on the other synthesis outputs (white space, top orgs,
-  // top researchers) so they run after the parallel batch resolves.
-  // Independent of each other, so run in parallel.
-  const [surprisingFindings, nextSteps] = await Promise.all([
-    detectSurprisingFindings(
-      {
-        topic,
-        agentOutputs,
-        fundingStats: context.fundingStats,
-        topOrganizations: context.topOrganizations,
-        topResearchers: context.topResearchers,
-        whiteSpace,
-      },
-      usageTracker,
-    ),
-    generateNextSteps(topic, agentOutputs, context, whiteSpace, ipLandscape, usageTracker),
+  // These are Tier 2 "value-add" sections — the report is fully useful
+  // without them, so wrap the whole batch in a hard 50s time budget and
+  // fall back to empty on timeout / error. Ensures a slow-Anthropic
+  // day doesn't blow the Vercel 300s function budget on OPTIONAL work.
+  stageTiming('start value-add batch (surprising + next steps)')
+  const valueAddBudgetMs = 50_000
+  const surprisingPromise = detectSurprisingFindings(
+    {
+      topic,
+      agentOutputs,
+      fundingStats: context.fundingStats,
+      topOrganizations: context.topOrganizations,
+      topResearchers: context.topResearchers,
+      whiteSpace,
+    },
+    usageTracker,
+  ).catch((err) => {
+    console.warn('[Synthesis Agent] surprising findings failed, returning empty:', err)
+    return [] as SurprisingFinding[]
+  })
+  const nextStepsPromise = generateNextSteps(topic, agentOutputs, context, whiteSpace, ipLandscape, usageTracker).catch((err) => {
+    console.warn('[Synthesis Agent] next steps failed, returning empty:', err)
+    return ''
+  })
+  const valueAddTimeout = new Promise<{ timedOut: true }>((resolve) =>
+    setTimeout(() => resolve({ timedOut: true }), valueAddBudgetMs),
+  )
+  const valueAddResult = await Promise.race([
+    Promise.all([surprisingPromise, nextStepsPromise]).then((r) => ({ timedOut: false as const, r })),
+    valueAddTimeout,
   ])
+  let surprisingFindings: SurprisingFinding[] = []
+  let nextSteps: string = ''
+  if ('r' in valueAddResult) {
+    surprisingFindings = valueAddResult.r[0]
+    nextSteps = valueAddResult.r[1]
+    stageTiming('value-add batch done')
+  } else {
+    console.warn(`[Synthesis Agent] value-add batch exceeded ${valueAddBudgetMs}ms budget — shipping report without surprising findings + next steps`)
+    stageTiming('value-add batch TIMED OUT (shipping without)')
+  }
 
   // Assemble markdown report with persona-aware structure
   const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights, whiteSpace, surprisingFindings, nextSteps)

@@ -246,13 +246,16 @@ ${titleSample}
   try {
     const response = await client.messages.create({
       model: MODEL,
-      // 5 dimensions × 12 categories × 5-10 keywords ~= 4-6k tokens of
-      // JSON payload. Give plenty of headroom or the JSON gets truncated
-      // mid-array and JSON.parse throws.
-      max_tokens: 8000,
+      // 6000: 5 dimensions × 12 categories × 5-10 keywords fits in ~5k
+      // tokens of dense JSON. Reduced from 8000 to shave real
+      // wall-clock time (Sonnet still generates only what's needed but
+      // request scheduling improves with lower ceilings). If truncation
+      // happens the JSON.parse falls back to empty analysis, which is
+      // acceptable — better than blowing the function budget.
+      max_tokens: 6000,
       messages: [{ role: 'user', content: prompt }],
     }, {
-      timeout: 120_000,
+      timeout: 90_000,
     })
     usageTracker.inputTokens += response.usage.input_tokens
     usageTracker.outputTokens += response.usage.output_tokens
