@@ -1779,7 +1779,7 @@ ${executiveSummary}
 
 ${surprisingFindings && surprisingFindings.length > 0 ? `## What Surprised Us
 
-*Non-obvious findings detected algorithmically from the data, then interpreted. These are patterns you likely wouldn't catch by scanning individual records.*
+*Non-obvious findings detected algorithmically from the data, then interpreted. These are **flagged hypotheses**, not verified conclusions - patterns worth investigating rather than facts to act on directly. Broader NIH ratios are directional at low topic-sample counts and could reflect real gaps OR taxonomy artifacts; treat individual findings as starting points for deeper diligence.*
 
 ${renderSurprisingFindings(surprisingFindings)}
 

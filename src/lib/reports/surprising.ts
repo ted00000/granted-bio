@@ -206,12 +206,34 @@ function detectBroaderNihGaps(ctx: SurpriseDetectionContext): DetectedCandidate[
       if (cat.broaderNihCount < 200) continue // meaningful broader activity floor
       const ratio = cat.projectCount > 0 ? cat.broaderNihCount / cat.projectCount : cat.broaderNihCount
       if (ratio < MIN_BROADER_NIH_RATIO_SURPRISE) continue
+
+      // Avoid false-precision framing that invites reviewer discredit.
+      // A "1,498x" ratio built on a denominator of one project isn't a
+      // robust measure — small changes to the topic classifier could
+      // swing it to 500x or 5000x. Prefer raw counts in the headline,
+      // and round the ratio to at most 2 significant figures. See Opus
+      // review 2026-07-09 for the full framing critique.
+      const roundedRatio = ratio >= 100 ? Math.round(ratio / 100) * 100 : Math.round(ratio / 10) * 10
+      const magnitudeHint = ratio >= 500
+        ? `over ${roundedRatio.toLocaleString()}x`
+        : `~${roundedRatio}x`
+      const headline =
+        cat.projectCount <= 1
+          ? `Only ${cat.projectCount} topic project vs ~${cat.broaderNihCount.toLocaleString()} broader NIH matches in "${cat.name}" (${dim.name})`
+          : `${cat.projectCount} topic projects vs ~${cat.broaderNihCount.toLocaleString()} broader NIH matches (${magnitudeHint}) in "${cat.name}" (${dim.name})`
+
+      // Penalize thin denominators in strength ranking. A category with
+      // sample=1 scores lower than sample=5 at the same ratio because
+      // the singleton case is more likely to be a classification artifact
+      // than a meaningful gap. sqrt() keeps the effect proportional.
+      const denominatorStability = Math.sqrt(cat.projectCount + 1)
+      const rawStrength = Math.min(60, ratio / 2)
       results.push({
         category: 'broader-nih-gap',
-        headline: `Broader NIH activity in "${cat.name}" (${dim.name}) is ${Math.round(ratio)}x the topic slice`,
-        evidence: `${cat.projectCount} projects in the topic sample vs ${cat.broaderNihCount.toLocaleString()} matching projects across the broader NIH portfolio`,
+        headline,
+        evidence: `${cat.projectCount} projects in the topic sample vs ~${cat.broaderNihCount.toLocaleString()} matching projects across the broader NIH portfolio (title-only broader search — actual broader activity may be higher)`,
         // Cap strength so no single detector dominates.
-        strength: Math.min(60, ratio / 2),
+        strength: Math.min(60, (rawStrength * denominatorStability) / 3),
       })
     }
   }
@@ -269,7 +291,12 @@ Do NOT invent new anomalies or claim things that aren't in the evidence line. On
 
 FRAMING NOTES:
 - For **translation-gap-org** findings: if the evidence line includes "linked publications", the org IS publishing actively. Frame the finding as "publishing but not commercializing/trialing" (a real translation gap between discovery and downstream milestones), NOT as "silent" or "no output." The publication count is your evidence the research is happening; the missing patents/trials are your evidence it hasn't crossed into IP or clinical validation.
-- For **broader-nih-gap** findings: acknowledge the ratio as a signal that adjacent research exists but hasn't converged with the topic frame — an opportunity, not proof the topic will succeed there.
+
+- For **broader-nih-gap** findings: frame as a **flagged hypothesis**, not a certain opportunity.
+  - When the topic-sample count is 0-2 projects, the ratio is directional not precise: a small change to how projects are classified in the topic sample could shift the count meaningfully. Say so explicitly. Use phrases like "these ratios are directional not precise at low denominators" or "the topic-slice count could shift with different classification choices."
+  - Consider and briefly acknowledge alternate explanations: the gap could be a real underexplored intersection, OR it could be a taxonomy artifact (the topic classifier missing work filed under adjacent terminology like cfDNA, cell-free, metagenomics), OR it could be a domain where the biology is genuinely hard (e.g., microbial contamination in low-biomass blood samples is a known challenge for microbiome-in-blood work).
+  - Do NOT call an opportunity "unexplored" unless you also note the alternate explanations. Prefer phrases like "flagged as a candidate whitespace pending taxonomy verification" or "worth investigating whether the low count reflects a real gap or a classification miss."
+  - When broaderNihCount is preceded by a tilde (~) it's a rounded figure. Use approximate language ("roughly", "on the order of") to match.
 
 ## DETECTED ANOMALIES
 
