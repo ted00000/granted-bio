@@ -17,7 +17,7 @@ import { MarketingNav } from '@/components/MarketingNav'
 import { GenerateReportCTA } from '@/components/GenerateReportCTA'
 import { MarkdownRenderer } from '../../reports/[id]/MarkdownRenderer'
 
-const SAMPLE_REPORT_ID = '74875a7e-28cf-4ba2-bf99-6e7e6a6f6a37'
+const SAMPLE_REPORT_ID = '10d8b6ea-4806-448e-95ba-ca1b0e429101'
 
 // Revalidate every 60 seconds. The sample report's content is stable
 // in the happy case (one row read), but if the underlying row is ever
