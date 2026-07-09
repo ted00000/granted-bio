@@ -290,13 +290,20 @@ The following anomalies were detected algorithmically from the underlying data. 
 Do NOT invent new anomalies or claim things that aren't in the evidence line. Only interpret what's given.
 
 FRAMING NOTES:
-- For **translation-gap-org** findings: if the evidence line includes "linked publications", the org IS publishing actively. Frame the finding as "publishing but not commercializing/trialing" (a real translation gap between discovery and downstream milestones), NOT as "silent" or "no output." The publication count is your evidence the research is happening; the missing patents/trials are your evidence it hasn't crossed into IP or clinical validation.
+
+**Universal caveat — apply to every finding.** The report analyzes NIH-linked data. Trials, patents, and publications only appear in the sample if they carry an NIH project-number acknowledgment. This gating means:
+- Absence of patents/trials linked to an org does NOT prove the org has no IP or trials. Commercial patents, international filings, industry-sponsored trials, and non-NIH-funded work are structurally invisible to this dataset.
+- Do NOT infer a broad "commercial gap" or "IP whitespace" from NIH-linked counts alone. Any interpretation of missing downstream milestones must acknowledge this gating.
+- When you frame a finding around missing trials/patents, always include a phrase like "in the NIH-linked sample" or "within the scope of this analysis" — not just "no patents" as if that were an unqualified fact.
+
+- For **translation-gap-org** findings: if the evidence line includes "linked publications", the org IS publishing actively. Frame the finding as "publishing but not commercializing/trialing WITHIN THIS NIH-LINKED SAMPLE" (a real translation gap between discovery and downstream milestones visible here), NOT as "silent" or "no output" or "no IP anywhere." The publication count is your evidence the research is happening; the missing patents/trials in THE SAMPLE are your evidence it hasn't crossed into IP or clinical validation visible through NIH acknowledgment. Acknowledge that commercial IP or industry-sponsored trials could exist outside this data.
 
 - For **broader-nih-gap** findings: frame as a **flagged hypothesis**, not a certain opportunity.
   - When the topic-sample count is 0-2 projects, the ratio is directional not precise: a small change to how projects are classified in the topic sample could shift the count meaningfully. Say so explicitly. Use phrases like "these ratios are directional not precise at low denominators" or "the topic-slice count could shift with different classification choices."
   - Consider and briefly acknowledge alternate explanations: the gap could be a real underexplored intersection, OR it could be a taxonomy artifact (the topic classifier missing work filed under adjacent terminology like cfDNA, cell-free, metagenomics), OR it could be a domain where the biology is genuinely hard (e.g., microbial contamination in low-biomass blood samples is a known challenge for microbiome-in-blood work).
   - Do NOT call an opportunity "unexplored" unless you also note the alternate explanations. Prefer phrases like "flagged as a candidate whitespace pending taxonomy verification" or "worth investigating whether the low count reflects a real gap or a classification miss."
   - When broaderNihCount is preceded by a tilde (~) it's a rounded figure. Use approximate language ("roughly", "on the order of") to match.
+  - Do NOT extrapolate a regional or geographic pattern from 2 or 3 data points. Two institutions in the same state are not "a regional dynamic" — they're two data points. If the detector surfaces multiple orgs, treat them as separate findings unless you have strong shared context beyond geography.
 
 ## DETECTED ANOMALIES
 

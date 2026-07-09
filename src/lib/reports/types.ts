@@ -324,6 +324,13 @@ export interface WhiteSpaceAnalysis {
   /** Persona-appropriate "so what" — grant strategy for researchers,
    *  investment thesis framing for investors. Tied to the top opportunities. */
   strategicImplications?: string
+  /**
+   * Label describing the broader-NIH scope filter applied to
+   * cross-reference counts (e.g., "cancer research"). Rendered in
+   * table headers + scope note so the reader knows the ratio is
+   * scope-filtered, not raw NIH-wide keyword prevalence.
+   */
+  broaderNihScopeLabel?: string
 }
 
 // IP Landscape Assessment

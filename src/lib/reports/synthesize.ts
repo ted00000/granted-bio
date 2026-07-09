@@ -263,31 +263,39 @@ ${agentOutputs.market.context.overview}
 
 ---
 
-## YOUR TASK: Write a 3-4 paragraph STRATEGIC executive summary
+## YOUR TASK: Write a TIGHT, 3-paragraph strategic executive summary
 
-DO NOT repeat statistics from the body - those appear later in the report.
+Rules of thumb (from a critical reviewer):
+- **Lead with 2-3 hard quantitative findings**, not with narrative abstraction. Numbers first, interpretation second. The reader has a data-rich report below — the summary should previews the hardest findings, not float above them.
+- **Concise. ~250 words total across all three paragraphs.**
+- **NO AI tell-tale phrases.** Banned list — do not use, ever:
+  - "at a strategic inflection point" / "inflection point"
+  - "step-change" / "methodological step-change"
+  - "genuine scientific opportunity"
+  - "perhaps most critically"
+  - "underscores"
+  - "poised to"
+  - "landscape reveals"
+  These phrases mark AI-generated prose immediately and destroy credibility.
+- **Ban vague qualifiers.** Replace "significantly", "substantially", "meaningfully" with actual numbers or drop the sentence.
+- **Frame observations as observations, not verdicts.** "5 of the top 10 orgs are academic" — good. "The field is accelerating" from a two-point FY trend — hedge: "FY2025 funding was higher than FY2024, but a two-point trend is not by itself proof of acceleration."
 
-Instead, answer these questions in narrative form:
+Three paragraphs, in this order:
 
-1. **Opportunity Signal** (1-2 sentences): What does this research landscape reveal about ${persona === 'investor' ? 'commercial/translational opportunity' : 'scientific opportunity and positioning'}?
+**Paragraph 1 - What the data actually shows.** Two or three hardest quantitative facts (funding total + project count + phase distribution + top org concentration). Structure: "Of X projects totaling $YM, Z% cluster around approach A, W trials are in Phase B or later, top P orgs hold Q% of total funding." Concrete.
 
-2. **Competitive Positioning** (2-3 sentences): Who are the leaders and what differentiates their approaches? Where are the gaps or white spaces? When identifying gaps or white spaces, scan the FULL PROJECT LIST above — do NOT claim a topic (cancer type, disease, methodology, biofluid) is absent based on the ABSTRACTS section alone. If the topic appears in even one project's title, use qualitative framing ("relatively underrepresented", "appears sparse") rather than "no projects".
+**Paragraph 2 - Where the interesting cleavages are.** Point at 2-3 concrete positioning observations from the data (specific approaches, specific institutional strategies, specific gaps). Reference actual project numbers or org names. Do NOT abstract to "the field is..." — say "Of the 5 methodological clusters identified, X and Y dominate; Z is present but thin."
 
-3. **Momentum Indicators** (2-3 sentences): Is this field accelerating, maturing, or stalling? What evidence supports this from funding trends, trial progression, or publication patterns?
+**Paragraph 3 - What a ${persona} should take away.** 2-3 concrete watchpoints, not generic advice. Tie each to something specific in the data. For researcher: which grant mechanisms and collaborators to consider given the funded landscape. For investor: what technical/clinical milestones matter and what commercial signals to watch.
 
-4. **Key ${persona === 'investor' ? 'Risks/Opportunities' : 'Strategic Considerations'}** (2-3 sentences): What should a ${persona} watch for or prioritize?
+OUTPUT FORMAT: Three paragraphs, no headings, no bullet points. Do NOT start with a heading.
 
-Write in confident, analytical prose. Be specific about what you observed but don't repeat raw numbers.
-
-OUTPUT FORMAT: Write paragraphs only. Do NOT include any heading at the start of your output (no "## Strategic Executive Summary" or similar) — the section header is added separately.
-
-SAMPLE-BASED LANGUAGE: This analysis covers NIH-linked research, not the complete market. Use confident but appropriately hedged language:
+SAMPLE-BASED LANGUAGE (still required):
 - "Among the projects analyzed..." not "The field has..."
-- "This pattern suggests..." or "These findings indicate..."
-- "The data shows strong correlation with..." or "appears likely based on..."
-- Avoid definitive claims; prefer "may indicate", "suggests", "the sample reveals"
+- Prefer "the sample shows" over "the field is"
+- Acknowledge NIH-linked scope where it materially affects the reading
 
-FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.`
+FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences.`
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',
@@ -359,6 +367,7 @@ MATCH QUALITY TIERS:
 - [PRECISE] (similarity ≥50%): Highly relevant to "${topic}" - weight these most heavily
 - [BALANCED] (similarity ≥35%): Relevant - standard weight
 Projects are ranked by relevance. Give more emphasis to insights from [PRECISE] and early-numbered projects.
+When referring to tiers in your narrative output, use title case ("Precise", "Balanced") — the ALL-CAPS bracket form ([PRECISE] / [BALANCED]) is an internal tag only, do not echo it in prose.
 
 ---
 
@@ -436,10 +445,13 @@ CRITICAL DATA-GROUNDING RULE:
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 
+CLINICAL PIPELINE — DO NOT CHERRY-PICK STATUSES:
+When writing the clinicalPipeline insight, do NOT selectively narrate encouraging statuses (Recruiting, Active) while ignoring negative ones. If the trial list contains any Terminated, Withdrawn, or Suspended trials, mention that too — either explicitly ("N terminated trials also in the sample, suggesting the field has seen setbacks") or by using neutral framing ("mixed status distribution including several terminated trials"). Cherry-picking is exactly the failure a reader spots by scanning the list below the narrative.
+
 Return JSON only, no markdown:
 {
   "funding": "3-4 sentences analyzing what researchers are actually working on and what the funding patterns reveal about scientific priorities",
-  "clinicalPipeline": "3-4 sentences on what conditions are being targeted, intervention types, and progression through clinical development",
+  "clinicalPipeline": "3-4 sentences on what conditions are being targeted, intervention types, and progression through clinical development — INCLUDING any Terminated/Withdrawn/Suspended trials if present in the sample",
   "patents": "3-4 sentences on what innovations are being protected and what this indicates about translational potential",
   "publications": "3-4 sentences on what scientific questions are being addressed and methodological advances observed"
 }`
@@ -881,22 +893,35 @@ FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sente
 Return JSON only (array of 3-5 items). Use the EXACT PMID strings from the
 input above — do NOT invent PMIDs and do NOT reuse the same PMID twice.
 
+CRITICAL ANTI-HALLUCINATION CHECK — include an "abstractQuote" field per
+item. This must be a 6-15 word DIRECT VERBATIM QUOTE copied exactly from
+THAT specific pmid's abstract above. The system will programmatically
+verify the quote appears in the source abstract for the pmid you chose.
+If your significance/keyFinding is describing a DIFFERENT paper than the
+pmid you cited (a common failure mode), your abstractQuote will not
+match the pmid's actual abstract and the entry will be dropped. Copy
+the quote character-for-character from the abstract text shown above.
+
 [
   {
     "pmid": "12345678",
     "significance": "1-2 sentences on why this paper matters for the field",
-    "keyFinding": "One sentence key takeaway"
+    "keyFinding": "One sentence key takeaway",
+    "abstractQuote": "6-15 words copied verbatim from the abstract of this pmid"
   }
 ]
 
 The title, journal, and year will be filled in by the system from the source
-data, so omit them here. Only return the three fields above per item.`
+data, so omit them here.`
 
   try {
     const response = await client.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 1500,
+      // Bumped from 1500 to cover the added abstractQuote validation field.
+      max_tokens: 2000,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      timeout: 90_000,
     })
 
     // Track usage
@@ -949,6 +974,32 @@ data, so omit them here. Only return the three fields above per item.`
       const source = sourceByPmid.get(pmid)
       if (!source) {
         console.warn(`[Synthesis Agent] Curated PMID ${pmid} not in input set — skipping`)
+        continue
+      }
+      // Verify the LLM's description actually matches THIS pmid's paper.
+      // Failure mode from Fable 5 audit: LLM cites pmid X (meningioma
+      // review) but writes significance/keyFinding about paper Y (lung
+      // cfDNA methylation). The abstractQuote is our verification —
+      // it must appear verbatim in the source abstract. If it doesn't,
+      // the LLM's description is describing a different paper and
+      // shipping it would render a title/interpretation mismatch that
+      // discredits the whole publications section. Prefer to drop the
+      // entry silently than to ship a hallucinated match.
+      const quote = typeof raw.abstractQuote === 'string' ? raw.abstractQuote.trim() : ''
+      const abstract = (source.abstract || '').trim()
+      if (!quote || !abstract) {
+        console.warn(`[Synthesis Agent] Curated PMID ${pmid} missing quote or abstract — skipping`)
+        continue
+      }
+      // Case-insensitive, whitespace-tolerant containment check. The
+      // LLM sometimes normalizes spacing so we normalize both sides.
+      const normalizeForMatch = (s: string) => s.toLowerCase().replace(/\s+/g, ' ').trim()
+      if (!normalizeForMatch(abstract).includes(normalizeForMatch(quote))) {
+        console.warn(
+          `[Synthesis Agent] Curated PMID ${pmid} abstractQuote NOT FOUND in source abstract — LLM likely described a different paper. Dropping.`,
+        )
+        console.warn(`  Quote: "${quote}"`)
+        console.warn(`  Abstract prefix: "${abstract.slice(0, 200)}..."`)
         continue
       }
       seen.add(pmid)
@@ -1664,6 +1715,11 @@ Persona guidance:
 - **researcher**: proposal strategy, collaborator scouting, methodology gaps to close, grant mechanisms to target (R01, R21, U01, SBIR)
 - **investor**: diligence questions, companies to research, technical milestones to watch, market signals to monitor
 
+DATA-INTEGRITY CAVEATS — bake these into item wording, not as a footer:
+- **White-space "gaps" are candidate hypotheses, not verified opportunities.** Broader-NIH ratios are directional at low topic-sample counts. Before an item recommends "target the X gap for an SBIR", frame it as "investigate whether X is a real gap or a taxonomy artifact — check whether adjacent NIH portfolios (metabolomics, systems biology, etc.) already cover this work under different terminology, then draft a proposal only if the gap holds up."
+- **NIH-ack-gating.** Trial/patent counts in this report only reflect items acknowledging an NIH grant. Do NOT recommend "in-license from Org X because they have no filed IP" — commercial patents and international filings are structurally invisible. Frame IP-related actions as "search USPTO + Google Patents + PATENTSCOPE for full assignee landscape, don't rely on the NIH-linked patent count alone."
+- **Do NOT recommend actions that assume the broader-NIH counts are precise.** Use phrases like "explore whether the underrepresentation of X reflects real whitespace" rather than "capitalize on the X gap."
+
 FORMATTING: Return raw markdown (NOT wrapped in JSON). Each item as a checkbox line: "- [ ] Item text here"
 Do NOT use em dashes (—). Use regular hyphens (-) or rewrite.
 Start directly with the first "- [ ]" — no preamble, no section heading.`
@@ -2187,7 +2243,13 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
 
     // Fallback table in case the chart doesn't render (PDF export path,
     // markdown-only view, etc.). Uses the same numbers the chart shows.
-    md += `| Category | Projects | % of Sample | Funding | Broader NIH |\n`
+    // Column label reflects the scope-filtered comparator when scope is
+    // active — makes clear the broader count is topically scoped, not
+    // raw keyword prevalence.
+    const broaderHeader = ws.broaderNihScopeLabel
+      ? `Broader NIH (${ws.broaderNihScopeLabel})`
+      : 'Broader NIH'
+    md += `| Category | Projects | % of Sample | Funding | ${broaderHeader} |\n`
     md += `|----------|---------:|------------:|--------:|------------:|\n`
     for (const cat of dim.categories) {
       const share = ws.totalProjects > 0 ? (cat.projectCount / ws.totalProjects) * 100 : 0
@@ -2204,13 +2266,13 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
   // Ranked opportunities
   if (ws.topOpportunities.length > 0) {
     md += `### Top White Space Opportunities\n\n`
-    md += `*Ranked by the strength of the gap signal — categories that are absent or sparse in the topic-focused sample but active in the broader NIH RePORTER portfolio surface first.*\n\n`
+    md += `*Ranked by the strength of the gap signal — categories that are absent or sparse in the topic-focused sample but active in the broader ${ws.broaderNihScopeLabel || 'NIH RePORTER'} portfolio surface first. Ratios are directional at low sample counts.*\n\n`
     ws.topOpportunities.forEach((op, i) => {
       const share = (op.sampleShare * 100).toFixed(1)
       const broader = op.broaderNihCount === -1 ? 'not queried' : op.broaderNihCount.toLocaleString()
       md += `**${i + 1}. ${op.categoryName}** (${op.dimensionName})\n\n`
       md += `- Analyzed sample: **${op.sampleCount}** projects (${share}% of sample)\n`
-      md += `- Broader NIH RePORTER: **${broader}** matching projects\n`
+      md += `- Broader ${ws.broaderNihScopeLabel || 'NIH RePORTER'}: **${broader}** matching projects\n`
       if (op.rationale) md += `\n${op.rationale}\n`
       md += '\n'
     })
@@ -2561,7 +2623,7 @@ function renderProjects(projects: ProjectItem[], projectInsights?: Record<string
   }
 
   let md = '### Top Funded Projects\n\n'
-  md += '*Funding is the sum of award totals across all budget periods for each project. Latest activity is the most recent fiscal year the project received an award.*\n\n'
+  md += '*Funding is the sum of award totals across all budget periods for each project. Latest activity is the most recent fiscal year the project received an award. Category is auto-assigned by AI classification and may occasionally misassign monitoring-oriented diagnostic projects as therapeutics — the abstract is the ground truth for what the project actually does.*\n\n'
 
   projects.forEach((p, i) => {
     md += `#### ${i + 1}. ${p.title}\n`
@@ -2664,18 +2726,24 @@ function renderOrganizations(orgs: OrgStats[]): string {
     return 'No organization data available.\n'
   }
 
-  // Publications column added alongside trials/patents so a reader can see
-  // the full downstream picture per org — an institution with high pubs
-  // but zero trials/patents is a "publishing but not translating" pattern
-  // that would look like a silent lab under the old 4-column view.
-  let md = '| Organization | Projects | Funding | Pubs | Trials | Patents |\n'
-  md += '|--------------|----------|---------|------|--------|---------|\n'
+  // Column headers explicitly say "grant-linked" to distinguish attribution
+  // path from raw assignee/sponsor lookup. r23 audit exposed the
+  // reconciliation issue: an org can be credited with a patent here (because
+  // one of its NIH grants was acknowledged on the patent) while the Patent
+  // Activity section shows a different assignee (because assignee reflects
+  // whoever owns the patent — often the inventor, a partner institution, or
+  // a licensee — which is a different question). Both numbers are correct
+  // under different definitions; the label makes that visible.
+  let md = '| Organization | Projects | Funding | Pubs (grant-linked) | Trials (grant-linked) | Patents (grant-linked) |\n'
+  md += '|--------------|----------|---------|--------------------|-----------------------|------------------------|\n'
 
   orgs.forEach((o) => {
     const displayName = normalizeOrgName(o.org_name)
     const orgLink = `[${displayName}](/org/${encodeURIComponent(o.org_name)})`
     md += `| ${orgLink} | ${o.projects} | ${formatCurrency(o.funding)} | ${o.publications ?? 0} | ${o.trials} | ${o.patents} |\n`
   })
+
+  md += '\n*Trials, patents, and publications counted here are those where an NIH grant belonging to this org was acknowledged. Patent assignee, trial sponsor, and publication first-author affiliation may differ from the org named on the underlying NIH grant. See the Patent Activity section for a separate view by assignee.*\n'
 
   return md
 }
@@ -2700,7 +2768,7 @@ function renderSampleInterpretation(
   // Skew interpretation
   if (precise === total && total >= 5) {
     notes.push(
-      `**All ${total} matches are Precise** (similarity ≥50%). This indicates strong topical convergence — the search query maps cleanly to a well-defined research area, and confidence in sample relevance is high.`
+      `**All ${total} matches are Precise** (similarity ≥50%). This is not a tuned threshold — it reflects the topic mapping to a tightly-bounded research area where nearly every relevant NIH grant lands well above the 50% similarity cutoff. Broader topics with less coherent literature produce mixed Precise + Balanced splits (typically 60/40 to 80/20). All-Precise is a signal that the search terminology cleanly maps to how researchers in this field describe their work.`
     )
   } else if (preciseRatio >= 0.7 && total >= 5) {
     notes.push(

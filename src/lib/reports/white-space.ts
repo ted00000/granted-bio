@@ -71,6 +71,26 @@ interface DimensionSchema {
 }
 
 /**
+ * Topic scope for broader-NIH cross-reference. Broader-NIH counts used
+ * to be raw keyword prevalence across the whole projects table — for
+ * "machine learning" this yielded 1,700+ matches spanning ALL of NIH
+ * biomedical research, and comparing that against 6 liquid-biopsy
+ * projects was an apples-to-oranges category error (Fable 5 audit,
+ * 2026-07-09). To make the comparison meaningful, we AND the keyword
+ * search with a topic-scope filter: the broader-NIH search now only
+ * counts projects that also match at least one topic-scope term.
+ *
+ * The LLM produces the scope terms during dimension inference — they
+ * define the topic frame ("cancer", "tumor", "oncology" for a cancer
+ * topic; "drug discovery", "small molecule", "screening" for a drug
+ * discovery topic, etc.).
+ */
+interface TopicScope {
+  scopeKeywords: string[]
+  scopeLabel: string // e.g., "cancer research" for a cancer topic
+}
+
+/**
  * Word-boundary keyword match against pre-lowercased text.
  *
  * Multi-word phrases and hyphenated tokens use substring match (they're
@@ -122,8 +142,8 @@ export async function generateWhiteSpaceAnalysis(
 
   const client = new Anthropic()
 
-  // Step 1: topic-adaptive dimensions
-  const schema = await inferCoverageDimensions(topic, projects, client, usageTracker)
+  // Step 1: topic-adaptive dimensions + topic scope for broader-NIH filtering
+  const { dimensions: schema, scope } = await inferCoverageDimensions(topic, projects, client, usageTracker)
   if (schema.length === 0) {
     return emptyAnalysis(totalProjects, totalFunding)
   }
@@ -149,8 +169,10 @@ export async function generateWhiteSpaceAnalysis(
   )
 
   // Step 3: broader NIH cross-reference (deterministic keyword count
-  // against the full projects table)
-  const dimensionsWithBroader = await addBroaderNihCounts(dimensionsRefined)
+  // against the full projects table), scope-filtered to the topic frame
+  // so we're comparing apples-to-apples (e.g., "metabolomics IN cancer
+  // research" not "metabolomics anywhere in biomedicine").
+  const dimensionsWithBroader = await addBroaderNihCounts(dimensionsRefined, scope)
 
   // Step 4: algorithmic ranking of top opportunities before we ask the
   // LLM to interpret. Ranking is deterministic — the LLM cannot invent
@@ -173,12 +195,13 @@ export async function generateWhiteSpaceAnalysis(
 
   return {
     overview: withNarrative.overview,
-    scopeNote: buildScopeNote(),
+    scopeNote: buildScopeNote(scope.scopeLabel),
     dimensions: withNarrative.dimensions,
     topOpportunities: withNarrative.opportunities,
     totalProjects,
     totalFunding,
     strategicImplications: withNarrative.strategicImplications,
+    broaderNihScopeLabel: scope.scopeLabel || undefined,
   }
 }
 
@@ -193,7 +216,7 @@ async function inferCoverageDimensions(
   projects: ProjectItem[],
   client: Anthropic,
   usageTracker: UsageTracker,
-): Promise<DimensionSchema[]> {
+): Promise<{ dimensions: DimensionSchema[]; scope: TopicScope }> {
   // Send a sample of project titles for topic-flavor context.
   const titleSample = projects
     .slice(0, 25)
@@ -228,9 +251,26 @@ ${titleSample}
 - AVOID overly-common words. "cancer" alone in a cancer-detection topic matches everything and reveals nothing.
 - DO NOT rely on partial matches. If a category needs to catch "hepatocellular carcinoma" write out "hepatocellular", "hcc", "liver cancer", "hepatoma" as separate keywords — don't rely on "hep" matching all of them.
 
+## TOPIC SCOPE (REQUIRED) — define the field boundary
+
+Also return a "topicScope" object with:
+- scopeKeywords: 4-8 keywords that define the OVERALL topic frame (not category-specific — topic-wide). These will be used to filter broader-NIH cross-reference queries so we compare "metabolomics IN cancer" against "metabolomics in liquid biopsy for cancer detection," not "metabolomics anywhere in NIH."
+- scopeLabel: 2-4 word human-readable label for the scope, used in report copy (e.g., "cancer research" for a cancer topic, "drug discovery" for a drug-discovery topic).
+
+Scope keywords should be broad enough to include work in the general area but narrow enough to exclude clearly-unrelated research. For:
+- "liquid biopsy for early cancer detection" → scopeKeywords: ["cancer", "tumor", "oncology", "neoplasm", "carcinoma"], scopeLabel: "cancer research"
+- "brain organoid electrophysiology" → scopeKeywords: ["organoid", "brain", "neural", "neuron", "cerebral"], scopeLabel: "neural/organoid research"
+- "monoclonal antibody production" → scopeKeywords: ["antibody", "immunoglobulin", "mab", "monoclonal"], scopeLabel: "antibody research"
+
+Use word-boundary-safe terms (≥${MIN_KEYWORD_LENGTH} chars).
+
 ## RESPONSE FORMAT — JSON only, no markdown code fences:
 
 {
+  "topicScope": {
+    "scopeKeywords": ["cancer", "tumor", "oncology", "neoplasm"],
+    "scopeLabel": "cancer research"
+  },
   "dimensions": [
     {
       "name": "Cancer Type",
@@ -261,15 +301,26 @@ ${titleSample}
     usageTracker.outputTokens += response.usage.output_tokens
 
     const text = response.content.find((c) => c.type === 'text')
-    if (!text || text.type !== 'text') return []
+    if (!text || text.type !== 'text') return { dimensions: [], scope: { scopeKeywords: [], scopeLabel: '' } }
     let raw = text.text.trim()
     if (raw.startsWith('```')) {
       raw = raw.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
     }
     const jsonMatch = raw.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) return []
+    if (!jsonMatch) return { dimensions: [], scope: { scopeKeywords: [], scopeLabel: '' } }
     const parsed = JSON.parse(jsonMatch[0])
-    if (!parsed || !Array.isArray(parsed.dimensions)) return []
+    if (!parsed || !Array.isArray(parsed.dimensions)) return { dimensions: [], scope: { scopeKeywords: [], scopeLabel: '' } }
+
+    // Extract topic scope from LLM response, sanitize to min-length keywords
+    const rawScope = parsed.topicScope as { scopeKeywords?: unknown; scopeLabel?: unknown } | undefined
+    const scope: TopicScope = {
+      scopeKeywords: Array.isArray(rawScope?.scopeKeywords)
+        ? (rawScope.scopeKeywords as unknown[])
+            .map((k) => (typeof k === 'string' ? k.trim().toLowerCase() : ''))
+            .filter((k) => k.length >= MIN_KEYWORD_LENGTH)
+        : [],
+      scopeLabel: typeof rawScope?.scopeLabel === 'string' ? rawScope.scopeLabel.trim() : '',
+    }
 
     // Sanitize — enforce keyword min-length here as a defensive filter
     // in case the LLM ignores the prompt instruction. Anything <3 chars
@@ -317,10 +368,10 @@ ${titleSample}
         droppedKeywords.slice(0, 10).join(', '),
       )
     }
-    return dimensions
+    return { dimensions, scope }
   } catch (err) {
     console.error('[White Space] Failed to infer dimensions:', err)
-    return []
+    return { dimensions: [], scope: { scopeKeywords: [], scopeLabel: '' } }
   }
 }
 
@@ -587,17 +638,31 @@ Return JSON only:
  * mention a concept the title omits). That's why the scope note frames
  * them as a floor rather than exact counts.
  */
-async function addBroaderNihCounts(dimensions: CoverageDimension[]): Promise<CoverageDimension[]> {
-  // Build the full flat list of (category, ilike-patterns) work items up
-  // front, respecting MAX_BROADER_QUERIES as a hard cap on total queries.
-  // Categories past the cap get the -1 sentinel ("not queried") so the
-  // render can distinguish them from a legitimate zero.
+async function addBroaderNihCounts(
+  dimensions: CoverageDimension[],
+  scope: TopicScope,
+): Promise<CoverageDimension[]> {
+  // Build the topic-scope OR filter once. The broader-NIH count for
+  // each category will be constrained to projects whose title ALSO
+  // matches at least one scope keyword. This fixes the audit finding
+  // that "1,768 broader machine-learning projects" was raw keyword
+  // prevalence across all of NIH — meaningless when comparing to a
+  // narrow topical slice. Now the comparator is topically-filtered.
   //
-  // Historical bug: this used to be a nested for-loop with a sequential
-  // await inside — 65 sequential Postgres count queries at ~2s each
-  // added 130 seconds of pure serialization to synthesis, which pushed
-  // whole-report generation past the Vercel 300s function budget. Now
-  // every count fires in parallel via Promise.all.
+  // If no scope keywords were produced (edge case), fall back to
+  // unfiltered search and mark counts as unscoped so the render
+  // can label them differently.
+  const scopePatterns: string[] = []
+  for (const kwRaw of scope.scopeKeywords) {
+    const kw = kwRaw.replace(/,/g, ' ').trim()
+    if (kw.length < MIN_KEYWORD_LENGTH) continue
+    const escaped = escapeForPgRegex(kw)
+    const hasSeparator = /[\s\-/]/.test(kw)
+    const regex = hasSeparator ? escaped : `\\m${escaped}\\M`
+    scopePatterns.push(`title.imatch.${regex}`)
+  }
+  const scopeIsActive = scopePatterns.length > 0
+
   const workItems: Array<{ cat: CoverageCategory; patterns: string[] }> = []
   const overflow: CoverageCategory[] = []
   for (const dim of dimensions) {
@@ -624,17 +689,20 @@ async function addBroaderNihCounts(dimensions: CoverageDimension[]): Promise<Cov
   }
   for (const cat of overflow) cat.broaderNihCount = -1
 
-  // Fire all count queries in parallel. Supabase's connection pool
-  // handles the concurrency; PostgREST count queries are cheap when the
-  // filter is indexed. Wall-clock = slowest single query (~3-5s)
-  // instead of sum of all query times (>130s at 65 categories).
+  // Fire all count queries in parallel. Each query ANDs the category's
+  // keyword OR-filter with the topic-scope OR-filter — PostgREST chains
+  // multiple .or() calls with AND semantics.
   await Promise.all(
     workItems.map(async ({ cat, patterns }) => {
       try {
-        const { count, error } = await supabaseAdmin
+        let query = supabaseAdmin
           .from('projects')
           .select('*', { count: 'exact', head: true })
           .or(patterns.join(','))
+        if (scopeIsActive) {
+          query = query.or(scopePatterns.join(','))
+        }
+        const { count, error } = await query
         if (error) {
           console.warn(
             `[White Space] Broader count error for ${cat.name}:`,
@@ -891,12 +959,17 @@ Return JSON only, exactly this shape:
   }
 }
 
-function buildScopeNote(): string {
+function buildScopeNote(scopeLabel?: string): string {
+  const broaderComparator = scopeLabel
+    ? `Broader-NIH counts are constrained to ${scopeLabel} (title-match) so the comparison is topically apples-to-apples, not raw keyword prevalence across all of NIH. `
+    : 'Broader-NIH counts are keyword title-match across NIH RePORTER without additional topical constraint. '
   return (
     'This analysis maps what NIH-funded research covers vs. gaps within the topic scope. ' +
     'NIH RePORTER represents the largest publicly-searchable portion of non-dilutive US biomedical grants — a strong signal for federal research investment priorities. ' +
     'Private R&D, international research, and non-NIH federal funding (DoD, DARPA, industry-sponsored) are not captured here. ' +
-    'Counts are derived by keyword matching against project titles and abstracts; a project can appear in multiple categories.'
+    broaderComparator +
+    'Counts are derived by keyword matching against project titles and abstracts; a project can appear in multiple categories. ' +
+    'Broader-NIH ratios at low denominators (≤2 topic projects) are directional not precise — small changes to the topic classifier could shift them meaningfully.'
   )
 }
 
