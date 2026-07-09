@@ -19,12 +19,19 @@ import { MarkdownRenderer } from '../../reports/[id]/MarkdownRenderer'
 
 const SAMPLE_REPORT_ID = '10d8b6ea-4806-448e-95ba-ca1b0e429101'
 
-// Revalidate every 60 seconds. The sample report's content is stable
-// in the happy case (one row read), but if the underlying row is ever
-// deleted or replaced, ISR was caching the "temporarily unavailable"
-// fallback for up to an hour. 60s keeps the per-visitor DB cost
-// negligible while limiting the bad-state cache window to a minute.
-export const revalidate = 60
+// Force dynamic rendering — every request pulls the current row from the
+// DB. Was ISR (revalidate = 60), but that caused a real problem: when
+// SAMPLE_REPORT_ID gets swapped to a fresh report, the CDN edge cache
+// can serve the previous render for up to a minute per edge region,
+// which is confusing when we're validating changes with a reviewer.
+// The sample page is low-traffic marketing — one DB read per visit is
+// negligible, and eliminating the "which build am I looking at?" class
+// of question is worth more than the caching savings.
+//
+// r25 audit exposed this pattern: reviewer's anonymous fetches kept
+// hitting a pre-swap edge cache while our authenticated view + Vercel
+// deploy ID reported the new build was live.
+export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title:

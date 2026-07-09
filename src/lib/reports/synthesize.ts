@@ -85,11 +85,12 @@ export async function synthesizeReport(
     usageTracker,
   )
   stageTiming('relevance filter done')
-  // Replace items with the filtered/sorted list. Recompute byPhase from
-  // the kept trials so the phase breakdown reflects what the reader
-  // sees in the Active Trials listing.
+  // Replace items with the filtered/sorted list. Recompute byPhase +
+  // byStatus from the kept trials so the summary tables reflect what
+  // the reader sees in the Active Trials listing.
   agentOutputs.trials.items = relevanceResult.trials
   agentOutputs.trials.byPhase = recomputeTrialsByPhase(relevanceResult.trials)
+  agentOutputs.trials.byStatus = recomputeTrialsByStatus(relevanceResult.trials)
   agentOutputs.patents.items = relevanceResult.patents
   // Rebuild byAssignee from the kept patents so counts match what's
   // shown in the Key Patents list and IP Concentration section.
@@ -279,6 +280,7 @@ Rules of thumb (from a critical reviewer):
   These phrases mark AI-generated prose immediately and destroy credibility.
 - **Ban vague qualifiers.** Replace "significantly", "substantially", "meaningfully" with actual numbers or drop the sentence.
 - **Frame observations as observations, not verdicts.** "5 of the top 10 orgs are academic" — good. "The field is accelerating" from a two-point FY trend — hedge: "FY2025 funding was higher than FY2024, but a two-point trend is not by itself proof of acceleration."
+- **NUMERIC RIGOR — CRITICAL.** Any percentage or share claim you write MUST reconcile to numbers a reader can verify against the tables below. Do NOT say "cfDNA appears in ~70% of projects" when the analyte table shows cfDNA general at 27.6%. If you want to speak to a combined analyte class, sum the specific rows explicitly ("Cell-free DNA analytes broadly — general cfDNA (28%), ctDNA (20%), DNA methylation (12%), fragmentomics (3%) — together represent ~63% of classified projects"). Loose "~70%" claims that don't tie to a specific number in the tables below invite the exact discrediting we've been trying to close.
 
 Three paragraphs, in this order:
 
@@ -715,17 +717,17 @@ Return JSON only:
         positioningMap: '',
         collaborationSignals: '',
         methodologicalTrends: '',
-        trlAssessment: parsed.trlAssessment || '',
-        commercialReadiness: parsed.commercialReadiness || '',
-        ipConcentration: parsed.ipConcentration || '',
+        trlAssessment: normalizeConfidenceTagSpacing(parsed.trlAssessment || ''),
+        commercialReadiness: normalizeConfidenceTagSpacing(parsed.commercialReadiness || ''),
+        ipConcentration: normalizeConfidenceTagSpacing(parsed.ipConcentration || ''),
         riskFactors: parsed.riskFactors || '',
-        comparables: parsed.comparables || '',
+        comparables: normalizeConfidenceTagSpacing(parsed.comparables || ''),
       }
     } else {
       return {
-        positioningMap: parsed.positioningMap || '',
-        collaborationSignals: parsed.collaborationSignals || '',
-        methodologicalTrends: parsed.methodologicalTrends || '',
+        positioningMap: normalizeConfidenceTagSpacing(parsed.positioningMap || ''),
+        collaborationSignals: normalizeConfidenceTagSpacing(parsed.collaborationSignals || ''),
+        methodologicalTrends: normalizeConfidenceTagSpacing(parsed.methodologicalTrends || ''),
         trlAssessment: '',
         commercialReadiness: '',
         ipConcentration: '',
@@ -1186,12 +1188,12 @@ Return JSON only:
     const parsed = JSON.parse(jsonMatch[0])
     return {
       trlEstimate: parsed.trlEstimate || 'Unknown',
-      maturityNarrative: parsed.maturityNarrative || '',
+      maturityNarrative: normalizeConfidenceTagSpacing(parsed.maturityNarrative || ''),
       benchmarkComparison: typeof parsed.benchmarkComparison === 'string' ? parsed.benchmarkComparison : undefined,
       evidenceSummary: {
-        preprintRatio: parsed.evidenceSummary?.preprintRatio || '',
-        trialProgression: parsed.evidenceSummary?.trialProgression || '',
-        patentActivity: parsed.evidenceSummary?.patentActivity || '',
+        preprintRatio: normalizeConfidenceTagSpacing(parsed.evidenceSummary?.preprintRatio || ''),
+        trialProgression: normalizeConfidenceTagSpacing(parsed.evidenceSummary?.trialProgression || ''),
+        patentActivity: normalizeConfidenceTagSpacing(parsed.evidenceSummary?.patentActivity || ''),
       },
       strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
       overallAssessment: parsed.overallAssessment || 'emerging',
@@ -1388,9 +1390,24 @@ Return JSON only:
       const stratMatch = jsonText.match(/"strategicImplications"\s*:\s*"((?:[^"\\]|\\.)*)"/)
       if (stratMatch) parsed.strategicImplications = stratMatch[1]
     }
+    // Normalize confidence-tag spacing on both cluster.commercialReadiness
+    // (each cluster carries its own confidence tag) and the top-level
+    // narrative. r25 audit caught a "viableConfidence:" concatenation
+    // bug in the Competitive Positioning cluster row.
+    type Cluster = { commercialReadiness?: string; [k: string]: unknown }
+    const rawClusters: Cluster[] = Array.isArray(parsed.clusters)
+      ? (parsed.clusters as Cluster[])
+      : []
+    const clusters = rawClusters.map((c) => ({
+      ...c,
+      commercialReadiness:
+        typeof c.commercialReadiness === 'string'
+          ? normalizeConfidenceTagSpacing(c.commercialReadiness)
+          : '',
+    }))
     return {
-      clusters: Array.isArray(parsed.clusters) ? (parsed.clusters as never[]) : [],
-      narrative: typeof parsed.narrative === 'string' ? parsed.narrative : '',
+      clusters: clusters as never[],
+      narrative: typeof parsed.narrative === 'string' ? normalizeConfidenceTagSpacing(parsed.narrative) : '',
       strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
     }
   } catch (error) {
@@ -1547,9 +1564,9 @@ narrative fields below.
     return {
       concentration: parsed.concentration || 'fragmented',
       dominantAssignees: topAssignees.slice(0, 5).map((a) => a.assignee),
-      freedomToOperate: parsed.freedomToOperate || '',
-      recentActivityTrend: parsed.recentActivityTrend || '',
-      narrative: parsed.narrative || '',
+      freedomToOperate: normalizeConfidenceTagSpacing(parsed.freedomToOperate || ''),
+      recentActivityTrend: normalizeConfidenceTagSpacing(parsed.recentActivityTrend || ''),
+      narrative: normalizeConfidenceTagSpacing(parsed.narrative || ''),
       strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
     }
   } catch (error) {
@@ -2332,12 +2349,29 @@ function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOu
     md += insight + '\n\n'
   }
 
+  // Distinguish attributed vs. unattributed patents in the summary. r25
+  // audit flagged that two patents with null assignees (both HCC microRNA,
+  // 2012-2013) were counted in the headline "8 patents / 4 assignees"
+  // figure, reintroducing a small data-integrity concern. Now we surface
+  // both counts so a reviewer can see attribution coverage explicitly.
+  const attributedPatents = patents.items.filter(
+    (p) => p.assignee && p.assignee.trim().length > 0,
+  )
+  const unattributedCount = patents.items.length - attributedPatents.length
+
   md += '### Patent Summary\n\n'
   md += '| Metric | Value |\n'
   md += '|--------|-------|\n'
-  md += `| Total Patents | ${patents.items.length} |\n`
+  md += `| Total Patents (grant-linked) | ${patents.items.length} |\n`
+  if (unattributedCount > 0) {
+    md += `| With Assignee on Record | ${attributedPatents.length} |\n`
+    md += `| Assignee Missing | ${unattributedCount} |\n`
+  }
   md += `| Unique Assignees | ${patents.byAssignee.length} |\n`
   md += `| Recent (2 years) | ${patents.recentCount} |\n\n`
+  if (unattributedCount > 0) {
+    md += `*${unattributedCount} of ${patents.items.length} linked patent${patents.items.length === 1 ? '' : 's'} ${unattributedCount === 1 ? 'has' : 'have'} no assignee on record and ${unattributedCount === 1 ? 'is' : 'are'} listed below with an "assignee not on record" tag. These are still grant-linked (an NIH project number appears in the patent record) but should be treated separately from assignee-based aggregates.*\n\n`
+  }
 
   if (patents.items.length > 0) {
     md += '### Key Patents\n\n'
@@ -2672,6 +2706,7 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
   if (Object.keys(trials.byPhase).length >= 2) {
     md += '<!-- chart:trials-by-phase -->\n\n'
   }
+  md += '**By Phase**\n\n'
   md += '| Phase | Count |\n'
   md += '|-------|-------|\n'
   Object.entries(trials.byPhase)
@@ -2683,6 +2718,40 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
       md += `| ${phase} | ${count} |\n`
     })
   md += '\n'
+
+  // Status distribution — surfaces Terminated / Suspended / Withdrawn
+  // counts alongside phase so readers can reconcile the narrative's
+  // status claims against a visible table. Prior versions surfaced
+  // status counts only in prose, leaving a reader with "10 Terminated"
+  // and no way to check it.
+  if (trials.byStatus && Object.keys(trials.byStatus).length > 0) {
+    md += '**By Status**\n\n'
+    md += '| Status | Count |\n'
+    md += '|--------|-------|\n'
+    const statusOrder = [
+      'Recruiting',
+      'Active Not Recruiting',
+      'Enrolling By Invitation',
+      'Not Yet Recruiting',
+      'Completed',
+      'Terminated',
+      'Suspended',
+      'Withdrawn',
+      'Unknown Status',
+      'Unknown',
+    ]
+    Object.entries(trials.byStatus)
+      .sort((a, b) => {
+        const ai = statusOrder.indexOf(a[0])
+        const bi = statusOrder.indexOf(b[0])
+        // Unknown positions fall to the end of the sort
+        return (ai === -1 ? 100 : ai) - (bi === -1 ? 100 : bi)
+      })
+      .forEach(([status, count]) => {
+        md += `| ${status} | ${count} |\n`
+      })
+    md += '\n'
+  }
 
   md += '### Active Trials\n\n'
   trials.items.slice(0, 15).forEach((t) => {
@@ -2872,6 +2941,38 @@ function formatCurrency(amount: number): string {
 }
 
 /**
+ * Normalize spacing around inline **Confidence:** tags in LLM-produced
+ * narrative. The prompt asks the LLM to append the tag inline after each
+ * substantive claim, but occasionally the model concatenates it directly
+ * to the previous word ("viableConfidence:") or omits the bold markers
+ * entirely ("viable Confidence:"). Both surface as visible formatting
+ * breaks on page. r25 audit called out one instance ("remains
+ * viableConfidence: High Evidence:") on page 26.
+ *
+ * This normalizer:
+ *   - Ensures a period+space separator before **Confidence:** when it's
+ *     glued to a word char.
+ *   - Wraps bare "Confidence: High/Medium/Low" occurrences in ** so the
+ *     visual weight is consistent across sections even when the LLM
+ *     forgot the markers.
+ *   - Ensures a newline before the tag so it renders as its own sentence
+ *     in dense-prose sections.
+ */
+function normalizeConfidenceTagSpacing(text: string): string {
+  if (!text) return text
+  let out = text
+  // Wrap bare "Confidence: High/Medium/Low" (missing ** markers) — check
+  // that it's not already wrapped.
+  out = out.replace(/(?<!\*\*)\bConfidence:\s*(High|Medium|Low)(?!\*\*)/g, '**Confidence: $1**')
+  // Insert punctuation + newline before the tag if glued to a word char.
+  // "viable**Confidence: High**" -> "viable. **Confidence: High**"
+  out = out.replace(/(\w)(\*\*Confidence:\s*(High|Medium|Low)\*\*)/g, '$1. $2')
+  // Also handle punctuation-adjacent (period+immediate tag with no space).
+  out = out.replace(/([.!?])(\*\*Confidence:)/g, '$1 $2')
+  return out
+}
+
+/**
  * Rebuild byPhase after the topical relevance filter drops off-topic
  * trials. Original agent output includes ALL trials; the filtered list
  * excludes 'unrelated', and the phase chart / summary should agree with
@@ -2906,6 +3007,28 @@ function normalizeTrialPhase(phase: string | null, studyType: string | null): st
   if (p.includes('EARLY')) return 'Early Phase 1'
   if (p === 'NA' || p === 'N/A' || p === '') return 'N/A'
   return phase
+}
+
+/**
+ * Recompute byStatus from the kept trials — mirrors recomputeTrialsByPhase.
+ * Needed because the narrative surfaces status counts ("10 Terminated,
+ * 2 Suspended") and the Trial Summary table shows only phase counts,
+ * leaving the reader with claims they can't reconcile against what's
+ * visible.
+ */
+function recomputeTrialsByStatus(trials: TrialItem[]): Record<string, number> {
+  const counts: Record<string, number> = {}
+  for (const t of trials) {
+    const raw = (t.study_status || 'Unknown').trim()
+    // Normalize ClinicalTrials.gov's UPPER_SNAKE_CASE to human-readable
+    // form so table + chart labels stay clean.
+    const label = raw
+      .replace(/_/g, ' ')
+      .toLowerCase()
+      .replace(/\b\w/g, (c) => c.toUpperCase())
+    counts[label] = (counts[label] || 0) + 1
+  }
+  return counts
 }
 
 /**
