@@ -2995,21 +2995,28 @@ function formatCurrency(amount: number): string {
 
 /**
  * Normalize spacing around inline **Confidence:** tags in LLM-produced
- * narrative. The prompt asks the LLM to append the tag inline after each
- * substantive claim, but occasionally the model concatenates it directly
- * to the previous word ("viableConfidence:") or omits the bold markers
- * entirely ("viable Confidence:"). Both surface as visible formatting
- * breaks on page. r25 audit called out one instance ("remains
- * viableConfidence: High Evidence:") on page 26.
+ * narrative and reflow each claim + confidence-block into its own
+ * paragraph so long narrative sections are scannable.
  *
- * This normalizer:
- *   - Ensures a period+space separator before **Confidence:** when it's
- *     glued to a word char.
- *   - Wraps bare "Confidence: High/Medium/Low" occurrences in ** so the
- *     visual weight is consistent across sections even when the LLM
- *     forgot the markers.
- *   - Ensures a newline before the tag so it renders as its own sentence
- *     in dense-prose sections.
+ * Prior state: the LLM appends "**Confidence: X** — Evidence: Y." inline
+ * after each substantive claim, producing multi-claim paragraphs like:
+ *
+ *   Claim1. **Confidence: High** — Evidence: E1. Claim2. **Confidence: Medium** — Evidence: E2. Claim3...
+ *
+ * With three or more claims that becomes an unbroken wall of text.
+ * r25 audit called this out. The fix inserts paragraph breaks so each
+ * claim/evidence pair renders as its own visual block:
+ *
+ *   Claim1.
+ *
+ *   **Confidence: High** — Evidence: E1.
+ *
+ *   Claim2.
+ *
+ *   **Confidence: Medium** — Evidence: E2.
+ *
+ * Also handles the historical concatenation bugs (missing bold markers,
+ * glued-to-word-char, punctuation-adjacent).
  */
 function normalizeConfidenceTagSpacing(text: string): string {
   if (!text) return text
@@ -3017,11 +3024,30 @@ function normalizeConfidenceTagSpacing(text: string): string {
   // Wrap bare "Confidence: High/Medium/Low" (missing ** markers) — check
   // that it's not already wrapped.
   out = out.replace(/(?<!\*\*)\bConfidence:\s*(High|Medium|Low)(?!\*\*)/g, '**Confidence: $1**')
-  // Insert punctuation + newline before the tag if glued to a word char.
+  // Insert punctuation + separator before the tag if glued to a word char.
   // "viable**Confidence: High**" -> "viable. **Confidence: High**"
   out = out.replace(/(\w)(\*\*Confidence:\s*(High|Medium|Low)\*\*)/g, '$1. $2')
   // Also handle punctuation-adjacent (period+immediate tag with no space).
   out = out.replace(/([.!?])(\*\*Confidence:)/g, '$1 $2')
+
+  // Reflow into paragraphs. Insert a blank line BEFORE each Confidence
+  // tag so the claim ends and the tag begins in a new paragraph.
+  out = out.replace(/\s+(\*\*Confidence:\s*(?:High|Medium|Low)\*\*)/g, '\n\n$1')
+
+  // Insert a blank line AFTER the Evidence content of each block, before
+  // the next claim starts. Match from the Confidence marker through the
+  // Evidence line up to a period followed by space + capital letter,
+  // which signals a new sentence starting a fresh claim. Uses [A-Z]
+  // alone (not [A-Z][a-z]) so single-letter words like "A" or "I" that
+  // often start a new claim ("A second distinct cluster...") aren't
+  // missed.
+  out = out.replace(
+    /(\*\*Confidence:\s*(?:High|Medium|Low)\*\*[^\n]*?Evidence:[^\n]*?\.)\s+([A-Z])/g,
+    '$1\n\n$2',
+  )
+
+  // Collapse any resulting triple-newlines and trim leading blanks.
+  out = out.replace(/\n{3,}/g, '\n\n').replace(/^\s+/, '')
   return out
 }
 
