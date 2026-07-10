@@ -2302,6 +2302,23 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
     }
     md += '\n'
 
+    // Show the exact keyword set behind each category so readers can see
+    // what was counted. Prevents the credibility gap where a category
+    // name reads as a broad superset (e.g. "Non-plasma Biofluids") but
+    // its keywords only catch meta-framed studies — a reader searching
+    // the chat interface for the broader concept sees a much larger
+    // count and thinks the report is wrong. Exposing the keywords makes
+    // the framing verifiable rather than opaque.
+    const hasAnyKeywords = dim.categories.some((c) => c.keywords && c.keywords.length > 0)
+    if (hasAnyKeywords) {
+      md += `*Keywords per category (what was counted):*\n\n`
+      for (const cat of dim.categories) {
+        if (!cat.keywords || cat.keywords.length === 0) continue
+        md += `- **${cat.name}**: ${cat.keywords.map((k) => `\`${k}\``).join(', ')}\n`
+      }
+      md += '\n'
+    }
+
     if (dim.narrative) {
       md += `${dim.narrative}\n\n`
     }

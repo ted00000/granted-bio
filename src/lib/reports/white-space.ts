@@ -326,6 +326,7 @@ ${titleSample}
 - Categories within a dimension should be MUTUALLY EXCLUSIVE-ISH (a project might match 2, but not 6).
 - BE EXHAUSTIVE within each dimension. Aim for 10-12 categories, not 5-6. If a dimension is "Cancer Type" for an oncology topic, include the full common set: Lung, Breast, Prostate, Colorectal, Pancreatic, Ovarian, Bladder, Head and Neck, Liver/Hepatocellular, Glioma/Brain, Lymphoma, Leukemia/Myeloma, Melanoma, Cervical, Endometrial, Kidney/Renal, Gastric — not just the top 5-8. Missing categories create false "unclassified" bins that hide real coverage.
 - Categories should be SPECIFIC ENOUGH to reveal gaps. "Solid tumors" is too broad; "colorectal cancer", "pancreatic cancer", "gastric cancer" are useful.
+- **CATEGORY NAMING — NO AMBIGUOUS "GENERAL" / "MULTI-X" / "OTHER" LABELS.** A category name must clearly describe what its keyword set actually catches, not sound like a superset. Bad name: "Non-plasma Biofluids (general / multi-fluid)" — reads to a reader as "all non-plasma work" (superset) when the keyword set only catches meta-framed cross-fluid studies. Good name: "Multi-Fluid Panel Studies" or "Cross-Fluid Meta-Framing." Similarly avoid "Cancer Type (general)," "Methodology (other)," or any name using the words "general," "generic," "misc," or "other" as the primary descriptor. If the category catches meta-framed work, name it after the meta-framing directly. If it truly is a "leftover" bucket you can't name specifically, DROP IT — leftover buckets don't produce actionable opportunities.
 
 ## KEYWORD RULES (critical for accurate counting)
 
@@ -682,6 +683,7 @@ ${titleSample}
 - Some projects may genuinely be platform/methods work with no specific ${dim.name} — that's OK; don't force categories on them.
 - Each new category needs 4-8 keyword variants (synonyms, common abbreviations, disease subtypes).
 - Every keyword MUST be at least ${MIN_KEYWORD_LENGTH} characters. Never propose "ev", "ai", or similar 2-char tokens — they match unrelated words and inflate counts.
+- **NO SUPERSET-SOUNDING NAMES.** Do not use "general", "other", "misc", "generic", or "multi-X" as the primary descriptor in the category name. If the projects share a meta-framing (cross-fluid, multi-modality), name it directly: "Multi-Fluid Panel Studies" not "Non-plasma Biofluids (general)". If a leftover bucket has no coherent specific name, return no category for it.
 - If the unclassified projects are genuinely dimension-agnostic (e.g., cfDNA biogenesis work for a Cancer Type dimension), return an empty categories array.
 
 Return JSON only:
