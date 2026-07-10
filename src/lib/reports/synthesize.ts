@@ -165,6 +165,34 @@ export async function synthesizeReport(
   // Assemble markdown report with persona-aware structure
   const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights, whiteSpace, surprisingFindings, nextSteps)
 
+  // Run the deterministic report linter against the assembled markdown.
+  // Log-and-ship mode: violations logged to console for review, but
+  // report ships anyway. Once the false-positive rate settles near
+  // zero, we can escalate specific rules to block-and-retry. See
+  // src/lib/reports/lint-report.ts for the rule set.
+  try {
+    const { lintReport, formatViolations, partitionViolations } = await import('./lint-report')
+    const violations = lintReport({
+      markdown: markdownContent,
+      agentOutputs,
+      fundingStats: context.fundingStats,
+      topResearchers: context.topResearchers,
+      whiteSpace,
+    })
+    if (violations.length > 0) {
+      const { critical, warnings } = partitionViolations(violations)
+      console.warn(formatViolations(violations))
+      console.warn(
+        `[Report Linter] Summary: ${critical.length} critical, ${warnings.length} warning(s). Report shipping (log-and-ship mode).`,
+      )
+    } else {
+      console.log('[Report Linter] All rules passed.')
+    }
+  } catch (err) {
+    // Linter should never break report generation. Log and continue.
+    console.warn('[Report Linter] Failed to run:', err)
+  }
+
   // Log cumulative API usage for billing
   console.log(`[Synthesis Agent] Total API usage: ${usageTracker.inputTokens} input, ${usageTracker.outputTokens} output tokens`)
   await logApiUsage({
@@ -298,6 +326,7 @@ Rules of thumb (from a critical reviewer):
 - **Ban vague qualifiers.** Replace "significantly", "substantially", "meaningfully" with actual numbers or drop the sentence.
 - **Frame observations as observations, not verdicts.** "5 of the top 10 orgs are academic" — good. "The field is accelerating" from a two-point FY trend — hedge: "FY2025 funding was higher than FY2024, but a two-point trend is not by itself proof of acceleration."
 - **NUMERIC RIGOR — CRITICAL.** Any percentage or share claim you write MUST come from the "Category shares" list in the DATA SUMMARY above (VERBATIM), or from a table shown below in the report. NEVER approximate. If you want to say "diagnostics-heavy," write "diagnostics account for 60.2% of projects (74 of 123)" not "roughly 70%." If the exact figure isn't in the DATA SUMMARY or a body table, do not write the percentage — describe the pattern qualitatively instead ("diagnostics-dominant"). Loose approximations get spotted in ten seconds by a reader who checks the byCategory table.
+- **TAXONOMY SOURCE — name it every time.** The "Category shares" numbers above come from ONE specific taxonomy (the project **funding category** classifier — e.g. "Diagnostics", "Basic Research", "Biotools", "Medical Device"). The White Space section (rendered later in the report) uses a DIFFERENT taxonomy — dimension-based coverage classes like "Biomarker Discovery / Mechanistic Biology". A reader cross-referencing sections will see similar-sounding categories with DIFFERENT counts and reasonably ask "which is which." When you cite a category count in the Executive Summary, you MUST name the taxonomy source in the same sentence. Concrete examples: "5 projects (4.1%) fall in the Basic Research funding category" — GOOD. "5 projects on basic research into cfDNA biogenesis mechanisms" — BAD (invites the reader to compare against the White Space "Biomarker Discovery" count of 4 projects and find a contradiction that isn't one — they're different taxonomies). Rules: (a) use the phrase "funding category" whenever citing byCategory counts; (b) do NOT describe a byCategory count as "the mechanistic gap", "the discovery gap", or any concept-based framing that overlaps with a White Space dimension; (c) if you want to describe a mechanistic/discovery gap, either cite the White Space count directly (once White Space is rendered below) OR use language that doesn't collide with the byCategory names.
 
 Three paragraphs, in this order:
 
