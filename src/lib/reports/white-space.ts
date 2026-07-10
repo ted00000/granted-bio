@@ -118,6 +118,91 @@ function escapeForPgRegex(kw: string): string {
   return kw.replace(/[.^$*+?()[\]{}|\\]/g, '\\$&')
 }
 
+/**
+ * Attempt to fix a JSON string that was truncated by the LLM hitting
+ * max_tokens mid-generation. Common truncation patterns:
+ *   - Cut inside a string literal: '"lung can|<cut>'
+ *   - Cut inside an array of keywords: '["a", "b", |<cut>'
+ *   - Cut inside a category object: '{"name": "X", |<cut>'
+ *   - Cut inside the dimensions array: '{"dimensions": [ {...}, {..|<cut>'
+ *
+ * Strategy: walk backwards from the end, trimming until we're at a
+ * clean boundary (closing brace/bracket followed by comma or another
+ * closer), then append whatever closing brackets we need to balance
+ * the structure. Never perfect — we may lose the last dimension or
+ * category — but produces valid JSON we can parse instead of nothing.
+ */
+function trySalvageTruncatedJson(str: string): string | null {
+  if (!str || str.length < 100) return null
+  // Trim any trailing garbage after the last comma-terminated element
+  // in the outermost array/object we can find.
+  const stack: string[] = []
+  let inString = false
+  let escaped = false
+  let lastCleanCut = -1
+  for (let i = 0; i < str.length; i++) {
+    const c = str[i]
+    if (escaped) {
+      escaped = false
+      continue
+    }
+    if (c === '\\') {
+      escaped = true
+      continue
+    }
+    if (c === '"') {
+      inString = !inString
+      continue
+    }
+    if (inString) continue
+    if (c === '{' || c === '[') stack.push(c)
+    else if (c === '}') {
+      if (stack[stack.length - 1] === '{') stack.pop()
+      if (stack.length === 1) lastCleanCut = i
+    } else if (c === ']') {
+      if (stack[stack.length - 1] === '[') stack.pop()
+      if (stack.length === 1) lastCleanCut = i
+    } else if (c === ',' && stack.length === 2) {
+      // comma at depth 2 means "we just closed an item in the outer array"
+      lastCleanCut = i
+    }
+  }
+  if (lastCleanCut < 0) return null
+  // Truncate to the last clean cut point.
+  let candidate = str.slice(0, lastCleanCut + 1)
+  // Remove trailing comma if present (invalid JSON before closing bracket).
+  candidate = candidate.replace(/,\s*$/, '')
+  // Rebuild the closing brackets from the stack we tracked.
+  stack.length = 0
+  inString = false
+  escaped = false
+  for (let i = 0; i < candidate.length; i++) {
+    const c = candidate[i]
+    if (escaped) {
+      escaped = false
+      continue
+    }
+    if (c === '\\') {
+      escaped = true
+      continue
+    }
+    if (c === '"') {
+      inString = !inString
+      continue
+    }
+    if (inString) continue
+    if (c === '{' || c === '[') stack.push(c)
+    else if (c === '}' && stack[stack.length - 1] === '{') stack.pop()
+    else if (c === ']' && stack[stack.length - 1] === '[') stack.pop()
+  }
+  // Close remaining open brackets in reverse order.
+  while (stack.length > 0) {
+    const open = stack.pop()
+    candidate += open === '{' ? '}' : ']'
+  }
+  return candidate
+}
+
 interface UsageTracker {
   inputTokens: number
   outputTokens: number
@@ -288,12 +373,13 @@ Use word-boundary-safe terms (≥${MIN_KEYWORD_LENGTH} chars).
   try {
     const response = await client.messages.create({
       model: MODEL,
-      // 6500: 5 dimensions × 12 categories × 5-10 keywords + 10-16
-      // scope keywords + scope label. Sonnet still generates only what's
-      // needed; the ceiling protects against truncation. If truncation
-      // happens the JSON.parse falls back to empty analysis, which is
-      // acceptable — better than blowing the function budget.
-      max_tokens: 6500,
+      // 10000: r26 hit exactly the 6500 ceiling and truncated mid-array,
+      // dropping the entire White Space section to empty. Once the LLM
+      // is producing 6500 tokens the response is likely to be even
+      // higher next time (Sonnet's outputs are variance-prone at scale).
+      // Real headroom of 10K keeps the ceiling from being the limiting
+      // factor. Sonnet still only generates what's needed.
+      max_tokens: 10000,
       messages: [{ role: 'user', content: prompt }],
     }, {
       timeout: 90_000,
@@ -309,7 +395,33 @@ Use word-boundary-safe terms (≥${MIN_KEYWORD_LENGTH} chars).
     }
     const jsonMatch = raw.match(/\{[\s\S]*\}/)
     if (!jsonMatch) return { dimensions: [], scope: { scopeKeywords: [], scopeLabel: '' } }
-    const parsed = JSON.parse(jsonMatch[0])
+
+    // Salvage parse — if the JSON is truncated (r26 hit exactly the
+    // 6500 max_tokens cap and lost the entire section), extract what
+    // we can via regex rather than dropping the whole result. Better
+    // to render a partial White Space section than none at all.
+    let parsed: {
+      topicScope?: { scopeKeywords?: unknown; scopeLabel?: unknown }
+      dimensions?: unknown[]
+    } = {}
+    try {
+      parsed = JSON.parse(jsonMatch[0])
+    } catch (parseErr) {
+      console.warn('[White Space] Dimension JSON parse failed, attempting salvage:', parseErr)
+      // Attempt to close the JSON by trimming trailing incomplete tokens
+      // and appending closing brackets. Common truncation pattern: cut
+      // inside a keyword string, inside a category object, or inside
+      // the dimensions array.
+      const salvaged = trySalvageTruncatedJson(jsonMatch[0])
+      if (salvaged) {
+        try {
+          parsed = JSON.parse(salvaged)
+          console.warn('[White Space] Salvage parse succeeded — some dimensions may be missing')
+        } catch {
+          console.warn('[White Space] Salvage attempt also failed')
+        }
+      }
+    }
     if (!parsed || !Array.isArray(parsed.dimensions)) return { dimensions: [], scope: { scopeKeywords: [], scopeLabel: '' } }
 
     // Extract topic scope from LLM response, sanitize to min-length keywords

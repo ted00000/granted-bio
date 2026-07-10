@@ -22,7 +22,7 @@ async function main() {
   const { data: rep } = await sb
     .from('user_reports')
     .select('id, topic, agent_outputs')
-    .eq('id', '1fe4d56a-a921-48c2-aa3c-c4168696bf83')
+    .eq('id', '12eedc63-75a7-46fa-b3df-8efd25f2e1be')
     .single()
   if (!rep) {
     console.error('report not found')

@@ -241,10 +241,18 @@ ${partialFYPromptDirective(context.fundingStats)}
 ## FUNDING BY YEAR (most recent first)
 ${formatYearTrendForPrompt(context.fundingStats.byYear)}
 
-## DATA SUMMARY (do NOT repeat these numbers - interpret what they MEAN)
-- ${context.fundingStats.projectCount} projects analyzed (${preciseCount} highly relevant, ${balancedCount} relevant)
-- ${formatCurrency(context.fundingStats.total)} in funding across ${context.fundingStats.orgCount} organizations
-- ${agentOutputs.trials.items.length} clinical trials | ${agentOutputs.patents.items.length} patents
+## DATA SUMMARY — VERBATIM NUMBERS (use these EXACT figures when writing percentages; do NOT approximate)
+- Total projects: ${context.fundingStats.projectCount} (${preciseCount} Precise-tier, ${balancedCount} Balanced-tier)
+- Total funding: ${formatCurrency(context.fundingStats.total)} across ${context.fundingStats.orgCount} organizations
+- Clinical trials: ${agentOutputs.trials.items.length} | Patents: ${agentOutputs.patents.items.length}
+- **Category shares** (project count share of ${context.fundingStats.projectCount} total — use these EXACT percentages if you cite a category share):
+${context.fundingStats.byCategory
+  .slice(0, 6)
+  .map(
+    (c) =>
+      `  - ${formatCategory(c.category)}: ${c.projects} projects (${((c.projects / Math.max(context.fundingStats.projectCount, 1)) * 100).toFixed(1)}%), ${formatCurrency(c.funding)}`,
+  )
+  .join('\n')}
 - Dominant category: ${formatCategory(topCategory)}
 
 ## FULL PROJECT LIST (all ${agentOutputs.projects.items.length} projects — title + org + category, one per line)
@@ -280,7 +288,7 @@ Rules of thumb (from a critical reviewer):
   These phrases mark AI-generated prose immediately and destroy credibility.
 - **Ban vague qualifiers.** Replace "significantly", "substantially", "meaningfully" with actual numbers or drop the sentence.
 - **Frame observations as observations, not verdicts.** "5 of the top 10 orgs are academic" — good. "The field is accelerating" from a two-point FY trend — hedge: "FY2025 funding was higher than FY2024, but a two-point trend is not by itself proof of acceleration."
-- **NUMERIC RIGOR — CRITICAL.** Any percentage or share claim you write MUST reconcile to numbers a reader can verify against the tables below. Do NOT say "cfDNA appears in ~70% of projects" when the analyte table shows cfDNA general at 27.6%. If you want to speak to a combined analyte class, sum the specific rows explicitly ("Cell-free DNA analytes broadly — general cfDNA (28%), ctDNA (20%), DNA methylation (12%), fragmentomics (3%) — together represent ~63% of classified projects"). Loose "~70%" claims that don't tie to a specific number in the tables below invite the exact discrediting we've been trying to close.
+- **NUMERIC RIGOR — CRITICAL.** Any percentage or share claim you write MUST come from the "Category shares" list in the DATA SUMMARY above (VERBATIM), or from a table shown below in the report. NEVER approximate. If you want to say "diagnostics-heavy," write "diagnostics account for 60.2% of projects (74 of 123)" not "roughly 70%." If the exact figure isn't in the DATA SUMMARY or a body table, do not write the percentage — describe the pattern qualitatively instead ("diagnostics-dominant"). Loose approximations get spotted in ten seconds by a reader who checks the byCategory table.
 
 Three paragraphs, in this order:
 
