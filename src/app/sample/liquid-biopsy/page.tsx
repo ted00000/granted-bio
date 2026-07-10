@@ -77,10 +77,13 @@ async function fetchSampleReport() {
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
+  // UTC format to match the markdown "Generated:" line — see
+  // src/app/reports/[id]/page.tsx for the fuller explanation.
   return date.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   })
 }
 

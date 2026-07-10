@@ -85,6 +85,13 @@ OTHER RULES:
 - If search returned no useful information for a field, use null or [].
 - FORMATTING: Do NOT use em dashes. Use regular hyphens.
 
+CLINICAL-RESULT HONESTY (critical — do not skip):
+When you mention a specific clinical trial or product's Phase results, cite BOTH positive AND negative findings if the search surfaces them. A domain expert catches a report that mentions the positives of Trial A without acknowledging Trial B (same product, different study) that missed its primary endpoint. Examples of the specific type of framing to use:
+- If a search reveals both positive and negative Phase 3 readouts for a product, write "Product X's PATHFINDER 2 trial reported positive results while its parallel NHS-Galleri UK RCT missed its primary endpoint" — NOT "positive Phase 3 trial results" as if there were only one.
+- If a submission was filed after mixed results, say "filed after mixed Phase 3 readouts" not "after positive Phase 3."
+- Do NOT infer that a submission "based on positive results" means all Phase 3 studies were positive — search for negative readouts before writing single-sided framing.
+Explicitly search for any high-profile trial failures, primary-endpoint misses, or negative readouts for the major companies you cite. If you find one and don't mention it, a reviewer catches the omission and it costs credibility.
+
 Return ONLY the JSON object — no preamble, no markdown code fence, no explanation outside the JSON.`
 
   const response = await anthropic.messages.create({

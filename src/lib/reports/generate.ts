@@ -104,7 +104,12 @@ export async function generateTopicReport(
       persona,
       interpretation: injectedInterpretation ?? null,
     })
-    .select('id')
+    // Select created_at too so we can pass it through to the synthesizer
+    // and stamp the same date on the markdown "Generated:" line that the
+    // UI/PDF header uses (both must reference report.created_at, otherwise
+    // one crosses midnight UTC and the two dates disagree on a paid
+    // product — r26 audit finding).
+    .select('id, created_at')
     .single()
 
   if (insertError || !report) {
@@ -173,6 +178,7 @@ export async function generateTopicReport(
       dataLimited,
       persona,
       interpretation: injectedInterpretation,
+      generatedAt: report.created_at,
     })
 
     // Save completed report

@@ -68,10 +68,16 @@ interface Report {
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString)
+  // Format in UTC so the header date matches the markdown "Generated:"
+  // line, which is also produced in UTC. Without timeZone:'UTC' the
+  // header renders in the viewer's local timezone and can disagree
+  // with the markdown by a day for viewers whose local offset places
+  // the created_at moment on the other side of midnight from UTC.
   return date.toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
     year: 'numeric',
+    timeZone: 'UTC',
   })
 }
 

@@ -36,6 +36,14 @@ interface SynthesisContext {
   persona?: ReportPersona
   /** Human-chosen search interpretation, if the report was generated through the picker UI. */
   interpretation?: { semanticQuery: string; keywordQuery: string; label: string }
+  /**
+   * ISO timestamp when the report row was created (report.created_at).
+   * Used as the "Generated:" date in markdown so it matches whatever the
+   * UI / PDF header renders from the DB row — otherwise the synthesis-end
+   * timestamp can cross midnight UTC and the two surfaces show different
+   * dates on a paid product (r26 audit finding).
+   */
+  generatedAt?: string
 }
 
 // Track cumulative token usage across all synthesis API calls
@@ -1813,10 +1821,15 @@ function assembleMarkdown(
   nextSteps?: string
 ): string {
   const persona = context.persona || 'researcher'
-  const now = new Date().toLocaleDateString('en-US', {
+  // Use the report's created_at date (passed in via context) so this
+  // "Generated:" line matches the UI/PDF header. Falls back to now if
+  // not provided (portfolio reports don't yet plumb it through).
+  const generatedDate = context.generatedAt ? new Date(context.generatedAt) : new Date()
+  const now = generatedDate.toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   })
 
   const topCategory = context.fundingStats.byCategory[0]?.category || 'research'
