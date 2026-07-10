@@ -31,7 +31,6 @@
  */
 
 import Anthropic from '@anthropic-ai/sdk'
-import { normalizeOrgName, normalizePIName } from '@/lib/format-names'
 import type {
   AllAgentOutputs,
   FundingStats,
@@ -135,50 +134,62 @@ export async function detectSurprisingFindings(
 // -----------------------------------------------------------------------
 
 function detectTranslationGapOrgs(ctx: SurpriseDetectionContext): DetectedCandidate[] {
-  const results: DetectedCandidate[] = []
-  for (const org of ctx.topOrganizations.slice(0, 10)) {
-    if (org.funding < MIN_FUNDING_FOR_TRANSLATION_GAP) continue
-    if (org.trials > 0 || org.patents > 0) continue
-    const orgDisplay = normalizeOrgName(org.org_name)
-    // Substantial funding + active publishing + no patents + no trials.
-    // The publication count matters for the reader: without it the finding
-    // reads as "org has funding but no output," which is misleading —
-    // these orgs typically ARE producing research (papers), just not IP
-    // or clinical validation. Including publications reframes correctly
-    // as "publishing but hasn't crossed into commercialization" (real
-    // translation-gap pattern) rather than "silent lab" (which would be
-    // untrue and unfair to the institution).
-    const pubs = org.publications ?? 0
-    const pubsPart = pubs > 0 ? `${pubs} linked publications, ` : ''
-    const headline = pubs > 0
-      ? `${orgDisplay} publishes actively (${pubs} linked pubs) but has no linked patents or trials`
-      : `${orgDisplay} has substantial funding but no linked patents or trials`
-    results.push({
+  // Aggregate to a pattern-level finding so we don't single out named
+  // institutions. Naming orgs here reads as calling them out for a "gap"
+  // when the true pattern is a class of NIH-linked activity that hasn't
+  // crossed into IP or trial visibility within this dataset. Readers who
+  // want the specific institutions can consult the Organizations table.
+  const qualifying = ctx.topOrganizations.slice(0, 10).filter(
+    (org) =>
+      org.funding >= MIN_FUNDING_FOR_TRANSLATION_GAP &&
+      org.trials === 0 &&
+      org.patents === 0,
+  )
+  if (qualifying.length === 0) return []
+
+  const publishing = qualifying.filter((o) => (o.publications ?? 0) > 0)
+  const totalFunding = qualifying.reduce((sum, o) => sum + o.funding, 0)
+  const totalPubs = qualifying.reduce((sum, o) => sum + (o.publications ?? 0), 0)
+  const totalProjects = qualifying.reduce((sum, o) => sum + o.projects, 0)
+
+  const headline =
+    publishing.length > 0
+      ? `${qualifying.length} highly-funded organizations show active publishing but no linked patents or trials in the sample`
+      : `${qualifying.length} highly-funded organizations show no linked patents or trials in the sample`
+
+  const pubsPart = totalPubs > 0 ? `, ${totalPubs.toLocaleString()} linked publications` : ''
+  return [
+    {
       category: 'translation-gap-org',
       headline,
-      evidence: `${org.projects} projects, $${(org.funding / 1_000_000).toFixed(1)}M in NIH funding, ${pubsPart}0 linked trials, 0 linked patents in the analyzed sample`,
-      strength: org.funding / 1_000_000,
-    })
-  }
-  return results
+      evidence: `${qualifying.length} organizations affected, ${totalProjects} combined projects, $${(totalFunding / 1_000_000).toFixed(1)}M combined NIH funding${pubsPart}, 0 linked trials and 0 linked patents across this subgroup in the analyzed sample`,
+      strength: totalFunding / 1_000_000,
+    },
+  ]
 }
 
 function detectIsolatedTopFundedPIs(ctx: SurpriseDetectionContext): DetectedCandidate[] {
-  const results: DetectedCandidate[] = []
-  const topPIs = ctx.topResearchers.slice(0, 5)
-  for (const pi of topPIs) {
-    if (pi.projects !== 1) continue
-    if (pi.funding < 2_000_000) continue // $2M+ threshold
-    const piDisplay = normalizePIName(pi.pi_name)
-    const orgDisplay = pi.org ? normalizeOrgName(pi.org) : 'unknown org'
-    results.push({
+  // Aggregate to a pattern-level finding — flagging individual PIs by
+  // name as anomalies reads poorly to the research community even when
+  // the underlying data is factual. The pattern (a subset of top-funded
+  // work is concentrated on single-project bets with no follow-on) is
+  // the real intelligence; specific PIs are in the Key Researchers
+  // table for anyone who wants to drill in.
+  const qualifying = ctx.topResearchers.slice(0, 10).filter(
+    (pi) => pi.projects === 1 && pi.funding >= 2_000_000,
+  )
+  if (qualifying.length === 0) return []
+
+  const totalFunding = qualifying.reduce((sum, pi) => sum + pi.funding, 0)
+  const headline = `${qualifying.length} of the top-funded PIs hold their entire NIH-linked funding on a single project with no adjacent follow-on`
+  return [
+    {
       category: 'isolated-top-funded-pi',
-      headline: `${piDisplay} carries $${(pi.funding / 1_000_000).toFixed(1)}M on a single project, no adjacent follow-on`,
-      evidence: `1 project, $${(pi.funding / 1_000_000).toFixed(1)}M, at ${orgDisplay}`,
-      strength: pi.funding / 1_000_000,
-    })
-  }
-  return results
+      headline,
+      evidence: `${qualifying.length} PIs among the top-funded slice, $${(totalFunding / 1_000_000).toFixed(1)}M combined on single-project awards with no adjacent NIH-linked follow-on visible in the sample`,
+      strength: totalFunding / 1_000_000,
+    },
+  ]
 }
 
 function detectPublicationsVsTrials(ctx: SurpriseDetectionContext): DetectedCandidate[] {
@@ -288,6 +299,12 @@ async function narrateFindings(
 The following anomalies were detected algorithmically from the underlying data. For EACH one, write a 2-3 sentence interpretation explaining WHY IT MATTERS to a reader (researcher, investor, or biotech founder scoping this space). Reference the specific numbers in the evidence line.
 
 Do NOT invent new anomalies or claim things that aren't in the evidence line. Only interpret what's given.
+
+**CRITICAL — NO NAMED CALLOUTS.** This section describes patterns in the aggregate NIH-linked data. It must NOT name any organization, principal investigator, PI, university, hospital, research institute, company, or product by name. The intelligence value is the pattern, not the person or institution. Specifically:
+- Do NOT write "at UCLA", "at Johns Hopkins", "Dr. Chen", "PI Zhou", "MGH", or any institution/PI name in the interpretation OR the headline.
+- If the headline as given contains a specific name, REPHRASE it to remove the name while keeping the pattern. E.g. "UCLA publishes actively but has no linked patents" → "A subset of highly-funded orgs publishes actively but has no linked patents in the sample."
+- If you cannot describe the finding without naming a specific actor, return NO finding for that item rather than a named one.
+- Named specifics live in the Organizations, Researchers, and Projects tables — readers can drill in there. This section stays at the pattern level.
 
 FRAMING NOTES:
 

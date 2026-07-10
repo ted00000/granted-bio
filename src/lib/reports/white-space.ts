@@ -259,6 +259,14 @@ export async function generateWhiteSpaceAnalysis(
   // research" not "metabolomics anywhere in biomedicine").
   const dimensionsWithBroader = await addBroaderNihCounts(dimensionsRefined, scope)
 
+  // Step 3b: compute the scope-universe count — the total number of
+  // NIH projects matching the topic-scope filter, independent of any
+  // category. Surfaces the base rate: a category count of 82 out of
+  // ~4,000 scope-matching projects means something different than 82
+  // out of 154K raw NIH projects, and readers should see the
+  // denominator up front. See user feedback 2026-07-10 for the concern.
+  const scopeUniverseCount = await countScopeUniverse(scope)
+
   // Step 4: algorithmic ranking of top opportunities before we ask the
   // LLM to interpret. Ranking is deterministic — the LLM cannot invent
   // an opportunity that wasn't identified from the data.
@@ -287,6 +295,40 @@ export async function generateWhiteSpaceAnalysis(
     totalFunding,
     strategicImplications: withNarrative.strategicImplications,
     broaderNihScopeLabel: scope.scopeLabel || undefined,
+    scopeUniverseCount,
+  }
+}
+
+/**
+ * Count the NIH projects matching just the topic-scope filter. This is
+ * the denominator for every "Broader NIH" cell in the coverage tables.
+ * Returns null when the scope filter is inactive or the query fails —
+ * callers should render the number only when it's non-null.
+ */
+async function countScopeUniverse(scope: TopicScope): Promise<number | null> {
+  const scopePatterns: string[] = []
+  for (const kwRaw of scope.scopeKeywords) {
+    const kw = kwRaw.replace(/,/g, ' ').trim()
+    if (kw.length < MIN_KEYWORD_LENGTH) continue
+    const escaped = escapeForPgRegex(kw)
+    const hasSeparator = /[\s\-/]/.test(kw)
+    const regex = hasSeparator ? escaped : `\\m${escaped}\\M`
+    scopePatterns.push(`title.imatch.${regex}`)
+  }
+  if (scopePatterns.length === 0) return null
+  try {
+    const { count, error } = await supabaseAdmin
+      .from('projects')
+      .select('*', { count: 'exact', head: true })
+      .or(scopePatterns.join(','))
+    if (error) {
+      console.warn('[White Space] Scope-universe count error:', JSON.stringify(error))
+      return null
+    }
+    return count ?? null
+  } catch (err) {
+    console.warn('[White Space] Scope-universe count exception:', err)
+    return null
   }
 }
 
@@ -857,12 +899,21 @@ function rankOpportunities(
 
       let signal: WhiteSpaceOpportunity['gapSignal'] | null = null
 
-      if (cat.projectCount === 0 && broaderCount > 20) {
+      // Small-N floor: require meaningful broader-NIH activity before
+      // calling a category a coverage-gap signal. Without this, a
+      // "0 sample vs 5 broader" case surfaces as a gap when the true
+      // signal is noise — 5 is too few to distinguish an underexplored
+      // intersection from a keyword-match artifact. Raised from 20
+      // (2026-07-10) after reviewer flagged low-N gaps looking dubious.
+      const BROADER_FLOOR_ABSENT = 30
+      const BROADER_FLOOR_SPARSE = 30
+
+      if (cat.projectCount === 0 && broaderCount >= BROADER_FLOOR_ABSENT) {
         // Not in the topic slice at all, but present in broader NIH portfolio
         signal = 'absent-in-topic'
       } else if (
         sampleShare < SPARSE_SHARE_THRESHOLD &&
-        broaderCount > 0 &&
+        broaderCount >= BROADER_FLOOR_SPARSE &&
         broaderCount / Math.max(cat.projectCount, 1) >= BROADER_TO_SAMPLE_RATIO_THRESHOLD
       ) {
         // Sparse in the topic slice compared to broader NIH activity —
@@ -982,11 +1033,16 @@ For each OPPORTUNITY's rationale field: 2-3 sentences answering "why might this 
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens or rewrite sentences.
 
+DESCRIPTIVE vs PRESCRIPTIVE — critical rule for narrative + strategicImplications fields:
+- Naming institutions is FINE when describing factual concentration ("methylation work concentrates at UCLA, Johns Hopkins, Stanford").
+- Naming institutions is NOT FINE when prescribing action toward them ("engage with UCLA researchers", "the Johns Hopkins cluster is an obvious collaboration target"). Rewrite as pattern-level observations.
+- Do NOT name individual PIs by name in any narrative or rationale field. PI-level detail belongs in the Key Researchers table, not the narrative.
+
 STRATEGIC IMPLICATIONS (REQUIRED):
 Produce a persona-appropriate strategicImplications paragraph tied to the top opportunities. Reader persona is: **${persona}**.
 
-- Researcher persona: frame around grant strategy. "For a researcher writing an R01 or SBIR in this space, the strongest differentiation opportunities are..." Reference specific opportunity names and counts. Mention concrete grant mechanisms where relevant (R01, R21, U01, SBIR/STTR).
-- Investor persona: frame around investment thesis. "For a seed-stage or Series A investor evaluating this space, the highest-signal bets among under-served categories are..." Reference specific opportunity names and counts. Mention what technical or clinical milestones would validate a bet.
+- Researcher persona: frame around grant strategy. "For a researcher writing an R01 or SBIR in this space, the strongest differentiation opportunities are..." Reference specific opportunity names and counts. Mention concrete grant mechanisms where relevant (R01, R21, U01, SBIR/STTR). Speak to patterns and mechanisms, not "approach X institution."
+- Investor persona: frame around investment thesis. "For a seed-stage or Series A investor evaluating this space, the highest-signal bets among under-served categories are..." Reference specific opportunity names and counts. Mention what technical or clinical milestones would validate a bet. Do not name specific companies or PIs as targets.
 
 3-4 sentences. Concrete and actionable, not hand-wavy.
 

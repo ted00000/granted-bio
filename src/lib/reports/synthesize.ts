@@ -302,9 +302,11 @@ Three paragraphs, in this order:
 
 **Paragraph 1 - What the data actually shows.** Two or three hardest quantitative facts (funding total + project count + phase distribution + top org concentration). Structure: "Of X projects totaling $YM, Z% cluster around approach A, W trials are in Phase B or later, top P orgs hold Q% of total funding." Concrete.
 
-**Paragraph 2 - Where the interesting cleavages are.** Point at 2-3 concrete positioning observations from the data (specific approaches, specific institutional strategies, specific gaps). Reference actual project numbers or org names. Do NOT abstract to "the field is..." — say "Of the 5 methodological clusters identified, X and Y dominate; Z is present but thin."
+**Paragraph 2 - Where the interesting cleavages are.** Point at 2-3 concrete positioning observations from the data (specific approaches, specific institutional strategies, specific gaps). Reference actual project numbers or org names where the observation IS about institutional concentration (that's factual signal). Do NOT abstract to "the field is..." — say "Of the 5 methodological clusters identified, X and Y dominate; Z is present but thin."
 
 **Paragraph 3 - What a ${persona} should take away.** 2-3 concrete watchpoints, not generic advice. Tie each to something specific in the data. For researcher: which grant mechanisms and collaborators to consider given the funded landscape. For investor: what technical/clinical milestones matter and what commercial signals to watch.
+
+**DESCRIPTIVE vs PRESCRIPTIVE — critical rule for how you use organization names.** Named orgs are FINE when you're describing factual concentration ("Johns Hopkins, UCLA, Stanford together hold 40% of large awards"). Named orgs are NOT fine when you're prescribing action toward them ("Johns Hopkins is an obvious collaboration target", "UCLA would be receptive to outreach", "engage with the MGH cluster"). The report is read by the same community it describes — telling readers who to approach reads as calling those orgs out. Rewrite prescriptive framing as pattern-level observations: "the concentration of MCED work in a small set of nodes means differentiation requires a genuinely novel angle" (pattern), not "researchers should approach the JH/UCLA/Mayo cluster" (targeting). Never name individual PIs in the summary at all — PI names belong in the Key Researchers table, not the executive narrative.
 
 OUTPUT FORMAT: Three paragraphs, no headings, no bullet points. Do NOT start with a heading.
 
@@ -669,6 +671,12 @@ SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this
 - Acknowledge this represents publicly-funded academic research primarily
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+
+DESCRIPTIVE vs PRESCRIPTIVE — read carefully.
+- Naming organizations is FINE when you are describing factual concentration or activity ("methylation appears across UCLA, Johns Hopkins, Stanford").
+- Naming organizations is NOT FINE when you are prescribing action toward them ("MGH is a productive collaboration partner", "align with the Johns Hopkins cluster", "engage with UCLA researchers"). Rewrite as pattern-level observations: "the concentration of methylation work in a small set of nodes suggests differentiation requires a genuinely novel angle" — not a directive to approach any specific institution.
+- NEVER name individual principal investigators (PIs) by name in the collaborationSignals, positioningMap, or methodologicalTrends fields. No "PI Zhou at UCLA", no "Dr. Chen's group." The Key Researchers table already carries specifics; narrative sections stay at pattern level so no individual is singled out.
+- Project numbers (5U01CA...) are fine to cite as provenance. Institution names are fine to cite as descriptors. PI names are OFF LIMITS in these narratives. Prescriptive framing toward named orgs is OFF LIMITS.
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 After each substantive claim (an assertion about position, collaboration pattern, or methodological trend), append a formatted confidence/evidence block. Use this exact markdown pattern INLINE within the narrative field, at the end of the relevant sentence or paragraph:
@@ -1531,6 +1539,11 @@ Confidence scale:
 STRATEGIC IMPLICATIONS (REQUIRED):
 Add a persona-appropriate "so what" paragraph tied to the IP finding. Reader persona is provided at top of prompt. Reference specific counts.
 
+DESCRIPTIVE vs PRESCRIPTIVE (critical rule):
+- Naming assignee institutions when describing IP concentration is FINE ("2 patents at Johns Hopkins, 2 at UConn — no single institution dominates").
+- Naming assignee institutions when prescribing action toward them is NOT FINE ("align with the Johns Hopkins node for licensing", "engage with UConn for sponsored research", "collaborators at Cornell would be receptive"). Rewrite as pattern-level observations: "the presence of distinct technical clusters at a handful of academic assignees suggests foundational IP is accessible through standard academic licensing channels" — not a directive to approach any specific assignee.
+- Never name individual PIs in the IP narrative fields. Patent inventors as a list are fine only when the reader is looking at the Key Patents table; in the strategicImplications field, keep it at the pattern level.
+
 Return JSON only. Do NOT include a list of patent holders — the system
 fills that in from the actual byAssignee counts. Only return the
 narrative fields below.
@@ -2269,6 +2282,17 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
   // and doesn't mean before interpreting counts.
   md += `*${ws.scopeNote}*\n\n`
 
+  // Surface the scope-universe count immediately after the scope caveat.
+  // A "Broader NIH" cell showing 82 reads very differently against a
+  // ~4,000-project scope universe than against the 154K raw NIH
+  // universe. Making the base rate visible closes that credibility gap
+  // — reader can compute the share themselves. Only render when we
+  // successfully counted (scope filter active + query succeeded).
+  if (typeof ws.scopeUniverseCount === 'number' && ws.scopeUniverseCount > 0) {
+    const scopeLabel = ws.broaderNihScopeLabel || 'the topic scope'
+    md += `> **Base rate for "Broader NIH" columns:** every broader-NIH cell below is drawn from **${ws.scopeUniverseCount.toLocaleString()} NIH projects** matching the ${scopeLabel} scope filter — not the full ~154K RePORTER universe. Read broader-NIH counts as shares of that ${ws.scopeUniverseCount.toLocaleString()}-project scope, not of all NIH funding.\n\n`
+  }
+
   // Overview narrative
   if (ws.overview) {
     md += `### Overview\n\n${ws.overview}\n\n`
@@ -2324,10 +2348,17 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
     }
   }
 
-  // Ranked opportunities
+  // Ranked opportunities — framed as candidate signals rather than
+  // confirmed opportunities. The sample is a tight semantic match to
+  // the topic; the "broader NIH" comparator is a looser keyword-based
+  // match against the scope. A gap between the two could be a real
+  // underexplored intersection, a vocabulary mismatch, or a broader
+  // count that includes topic-adjacent-but-not-in-scope work our
+  // semantic filter correctly excluded. Naming this "Signals" and
+  // hedging in the header keeps the ranking useful without overclaiming.
   if (ws.topOpportunities.length > 0) {
-    md += `### Top White Space Opportunities\n\n`
-    md += `*Ranked by the strength of the gap signal — categories that are absent or sparse in the topic-focused sample but active in the broader ${ws.broaderNihScopeLabel || 'NIH RePORTER'} portfolio surface first. Ratios are directional at low sample counts.*\n\n`
+    md += `### Coverage Gap Signals\n\n`
+    md += `*Candidate gaps — categories sparse in the topic sample but active in the scope-matched broader NIH portfolio. These are **signals to investigate**, not confirmed opportunities: the sample uses semantic matching against the topic while broader-NIH uses keyword matching against the scope, so a delta may reflect true absence, vocabulary drift, or topic-adjacent work our semantic filter excluded. Ratios are directional at low sample counts.*\n\n`
     ws.topOpportunities.forEach((op, i) => {
       const share = (op.sampleShare * 100).toFixed(1)
       const broader = op.broaderNihCount === -1 ? 'not queried' : op.broaderNihCount.toLocaleString()

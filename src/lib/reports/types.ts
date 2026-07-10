@@ -331,6 +331,16 @@ export interface WhiteSpaceAnalysis {
    * scope-filtered, not raw NIH-wide keyword prevalence.
    */
   broaderNihScopeLabel?: string
+  /**
+   * Total number of NIH RePORTER projects matching the topic-scope
+   * filter (independent of any category keywords). This is the effective
+   * "universe" that broader-NIH counts are drawn from — surfacing it
+   * gives readers a base rate so a category count of, say, 82 reads as
+   * "82 out of ~4,000 scope-matching projects" rather than "82 out of
+   * 154K NIH projects," which is the concern the raw number implies.
+   * Null when the scope filter is inactive or the count failed.
+   */
+  scopeUniverseCount?: number | null
 }
 
 // IP Landscape Assessment
