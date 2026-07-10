@@ -345,7 +345,16 @@ export interface WhiteSpaceAnalysis {
 
 // IP Landscape Assessment
 export interface IPLandscapeAssessment {
-  concentration: 'fragmented' | 'moderately_concentrated' | 'highly_concentrated'
+  // 'insufficient_sample' when patent count < 10 — the Patent section refuses
+  // to label concentration below that threshold on principled grounds
+  // (a "concentrated" or "fragmented" label needs a real distribution to
+  // count against). Downstream consumers (Next Steps, dashboards) must
+  // respect this state and not backfill a label.
+  concentration:
+    | 'fragmented'
+    | 'moderately_concentrated'
+    | 'highly_concentrated'
+    | 'insufficient_sample'
   dominantAssignees: string[]
   freedomToOperate: string      // Assessment of FTO concerns
   recentActivityTrend: string   // e.g., "Declining - 0 patents in 2 years"

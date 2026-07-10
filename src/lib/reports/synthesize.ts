@@ -25,6 +25,7 @@ import { logApiUsage } from '@/lib/billing/usage'
 import { generateWhiteSpaceAnalysis } from './white-space'
 import { filterTrialsAndPatentsByRelevance } from './relevance-filter'
 import { detectSurprisingFindings, type SurprisingFinding } from './surprising'
+import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import { normalizeOrgName, normalizeJournalName } from '@/lib/format-names'
 
 interface SynthesisContext {
@@ -314,6 +315,17 @@ SAMPLE-BASED LANGUAGE (still required):
 - "Among the projects analyzed..." not "The field has..."
 - Prefer "the sample shows" over "the field is"
 - Acknowledge NIH-linked scope where it materially affects the reading
+
+**BANNED FIELD-LEVEL ABSOLUTES.** These phrases assert facts about the whole field that the NIH-linked sample cannot support (private industry cfDNA work, ex-US research, and non-NIH federal funding are structurally invisible). Do NOT use:
+- "a clear gap exists" / "clear gap in X"
+- "structural underfunding" / "structurally underfunded"
+- "the field has abandoned X" / "X is neglected in the field"
+- "unmet need" as a field-level claim (fine inside a quoted clinical unmet-need reference)
+- Any construction where the sample share (e.g. "4.1% of project share") is used to argue a "structural" or "field-wide" fact.
+
+Rewrite as observation-in-sample language: "Within the analyzed sample, non-plasma biofluids are sparse relative to their biological rationale" or "represents a low share of sample projects (X of Y); whether this reflects true underfunding or NIH-linked scope is not resolvable from this dataset." The observation is fine; the field-level verdict is not.
+
+**BANNED FORWARD-LOOKING ABSOLUTES on market/regulatory dynamics.** Do NOT write "will pressure", "will force", "will drive" for future outcomes derived from current events. Use "is likely to", "may pressure", "creates pressure for" — matching the same hedge convention the report applies to funding trends and clinical readouts.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences.`
 
@@ -1090,6 +1102,30 @@ async function generateFieldMaturityAssessment(
   const hasMidPhase = (trialPhases['Phase 2'] || 0) > 0
   const hasEarlyPhase = (trialPhases['Phase 1'] || 0) > 0 || (trialPhases['Early Phase 1'] || 0) > 0
   const totalTrials = agentOutputs.trials.items.length
+  // Pre-computed counts the LLM must use verbatim — prevents the r28
+  // pattern where the model said "59 trials categorized as N/A or
+  // unknown phase" and only counted N/A (missing Unknown=1), so the
+  // narrative arithmetic contradicted the phase table.
+  const naCount = trialPhases['N/A'] || 0
+  const unknownCount = trialPhases['Unknown'] || 0
+  const naOrUnknownCount = naCount + unknownCount
+  const phaseLabeledCount = totalTrials - naOrUnknownCount
+  const observationalCount = agentOutputs.trials.items.filter(
+    (t) => (t.study_type || '').toUpperCase() === 'OBSERVATIONAL',
+  ).length
+  const interventionalCount = agentOutputs.trials.items.filter(
+    (t) => (t.study_type || '').toUpperCase() === 'INTERVENTIONAL',
+  ).length
+  // Interventional trials with an actual phase label. The pattern the
+  // r28 audit flagged: byPhase count of Phase 1+2+3+4 doesn't equal the
+  // interventional count, because some interventional trials are
+  // unphased. Narrative that says "phase-labeled = interventional" is
+  // wrong; we want "phase-labeled = the phased subset of interventional."
+  const interventionalWithPhase = agentOutputs.trials.items.filter((t) => {
+    if ((t.study_type || '').toUpperCase() !== 'INTERVENTIONAL') return false
+    const p = (t.phase || '').toLowerCase()
+    return p.includes('phase') && !p.includes('n/a') && !p.includes('unknown')
+  }).length
 
   // Analyze patent recency
   const recentPatents = agentOutputs.patents.recentCount
@@ -1110,6 +1146,11 @@ READER PERSONA: **${persona}** — tailor the strategicImplications field accord
 ## CLINICAL TRIAL SIGNALS
 - Total trials: ${totalTrials}
 - Phase distribution: ${JSON.stringify(trialPhases)}
+- N/A phase (observational + others by design): ${naCount}
+- Unknown phase (data missing): ${unknownCount}
+- **Use verbatim if you cite it:** N/A + Unknown combined = ${naOrUnknownCount} trials.
+- Phase-labeled trials (Phase 1-4 combined): ${phaseLabeledCount}
+- Observational trials: ${observationalCount}. Interventional trials: ${interventionalCount}. Of the ${interventionalCount} interventional, only ${interventionalWithPhase} carry an actual phase label — the remaining ${Math.max(0, interventionalCount - interventionalWithPhase)} interventional trials are unphased. If you reference this, phrase it exactly as "the phase-labeled trials are the phased subset of the ${interventionalCount} interventional trials," NOT as "the phase-labeled trials are the interventional subset" (that implies all ${interventionalCount} interventional trials have phases, which is false).
 - Has late-stage (Phase 3/4): ${hasLatePhase ? 'Yes' : 'No'}
 - Has mid-stage (Phase 2): ${hasMidPhase ? 'Yes' : 'No'}
 - Has early-stage (Phase 1): ${hasEarlyPhase ? 'Yes' : 'No'}
@@ -1147,6 +1188,7 @@ CRITICAL — STATISTICAL HONESTY: When a denominator is small, the percentage is
 - If totalPatents (${totalPatents}) is below 5, do NOT treat the recency ratio as a trend. Say "with only ${totalPatents} linked patents, recency ratios are not interpretable as trend signals" or similar.
 - If totalTrials (${totalTrials}) is below 3, treat phase distribution as descriptive, not statistical.
 - Never imply "the field has X" or "the field is doing Y" based on a small absolute count. Frame as "the linked sample contains X" or "no Y was observed in the sample."
+- **TWO-POINT FUNDING TREND HEDGE — applies to strategicImplications especially.** If you cite two years of funding side-by-side (e.g. FY2024 vs FY2025), you MUST NOT describe the change as "a clear upward trajectory", "accelerating funding", "sustained growth", or any other trend language. Two data points do not establish a trend. Say "FY2024 to FY2025 rose from $Xm to $Ym in the sample, though two data points do not establish a trend" or similar. This rule holds for every field in this response, INCLUDING strategicImplications — a single hedge in the narrative doesn't license a dropped hedge in the strategic take.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
@@ -1230,7 +1272,10 @@ Return JSON only:
         trialProgression: normalizeConfidenceTagSpacing(parsed.evidenceSummary?.trialProgression || ''),
         patentActivity: normalizeConfidenceTagSpacing(parsed.evidenceSummary?.patentActivity || ''),
       },
-      strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
+      strategicImplications:
+        typeof parsed.strategicImplications === 'string'
+          ? normalizeConfidenceTagSpacing(parsed.strategicImplications)
+          : undefined,
       overallAssessment: parsed.overallAssessment || 'emerging',
     }
   } catch (error) {
@@ -1444,7 +1489,10 @@ Return JSON only:
     return {
       clusters: clusters as never[],
       narrative: typeof parsed.narrative === 'string' ? normalizeConfidenceTagSpacing(parsed.narrative) : '',
-      strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
+      strategicImplications:
+        typeof parsed.strategicImplications === 'string'
+          ? normalizeConfidenceTagSpacing(parsed.strategicImplications)
+          : undefined,
     }
   } catch (error) {
     console.warn('[Synthesis Agent] Failed to generate competitive topology:', error)
@@ -1603,13 +1651,28 @@ narrative fields below.
     // dominantAssignees is sourced from the actual patent assignee counts,
     // NOT from the LLM. The LLM produces interpretation; the data is the
     // source of truth for who holds the patents.
+    //
+    // Force concentration to 'insufficient_sample' when the linked patent
+    // count is below the label-eligibility threshold (renderIPLandscape
+    // uses the same threshold). Without this, the Patent section refuses
+    // to characterize concentration but downstream consumers (Next Steps
+    // prompt) still see 'moderately_concentrated' from the LLM and echo
+    // it back — a direct self-contradiction Fable's r28 audit caught.
+    const IP_LABEL_MIN_N = 10
+    const concentrationLabel =
+      totalPatents < IP_LABEL_MIN_N
+        ? ('insufficient_sample' as const)
+        : parsed.concentration || 'fragmented'
     return {
-      concentration: parsed.concentration || 'fragmented',
+      concentration: concentrationLabel,
       dominantAssignees: topAssignees.slice(0, 5).map((a) => a.assignee),
       freedomToOperate: normalizeConfidenceTagSpacing(parsed.freedomToOperate || ''),
       recentActivityTrend: normalizeConfidenceTagSpacing(parsed.recentActivityTrend || ''),
       narrative: normalizeConfidenceTagSpacing(parsed.narrative || ''),
-      strategicImplications: typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
+      strategicImplications:
+        typeof parsed.strategicImplications === 'string'
+          ? normalizeConfidenceTagSpacing(parsed.strategicImplications)
+          : undefined,
     }
   } catch (error) {
     console.warn('[Synthesis Agent] Failed to generate IP landscape assessment:', error)
@@ -1753,8 +1816,13 @@ async function generateNextSteps(
   // "reach out to Dr. X" or "target Org Y." Names live in the Key
   // Organizations and Key Researchers tables where readers can look up
   // specifics themselves. See callout audit 2026-07-10.
-  const topOrgCount = context.topOrganizations.length
-  const topPICount = context.topResearchers.length
+  //
+  // IMPORTANT: use fundingStats.orgCount (total funded orgs in sample),
+  // NOT topOrganizations.length (a top-N slice for the table). Passing
+  // the top-N as if it were the total produced "$100.9M distributed
+  // across 15 organizations" in r28 when the real total was 65 — Fable
+  // audit flagged the wrong denominator.
+  const totalOrgCount = context.fundingStats.orgCount
   const topFundedPIProjectCount = context.topResearchers
     .slice(0, 5)
     .reduce((sum, r) => sum + r.projects, 0)
@@ -1763,18 +1831,27 @@ async function generateNextSteps(
     .map((o) => `${o.categoryName} (${o.dimensionName}, sample=${o.sampleCount}, broader NIH=${o.broaderNihCount})`)
     .join('; ')
 
+  // IP concentration guidance — differs when the sample can support a
+  // label vs. when it can't. Keeping the prompt honest about which
+  // regime we're in prevents Next Steps from asserting a concentration
+  // read that the Patent section explicitly declined to make.
+  const ipConcentrationGuidance =
+    ipLandscape.concentration === 'insufficient_sample'
+      ? `IP concentration: CANNOT BE CHARACTERIZED — only ${agentOutputs.patents.items.length} linked patents in sample (label requires >=10). Do NOT assert a concentration read in the checklist; frame any IP action as "run a full USPTO/Google Patents/PATENTSCOPE search — the linked-patent sample is too small to characterize the landscape."`
+      : `IP concentration: ${ipLandscape.concentration}`
+
   const prompt = `Write a persona-specific "Next Steps" checklist for a report on "${topic}".
 
 READER PERSONA: **${persona}**
 
 Reference the report's ACTUAL findings (don't produce generic advice):
-- Analyzed sample: ${agentOutputs.projects.items.length} projects across ${topOrgCount} organizations and ${topPICount} unique PIs
+- Analyzed sample: ${agentOutputs.projects.items.length} projects across ${totalOrgCount} funded organizations
 - Top 5 PIs combined hold ${topFundedPIProjectCount} projects (see Key Researchers table for specific names)
 - Top white-space signals: ${topOpps || 'none'}
 - Total NIH funding: ${formatCurrency(context.fundingStats.total)}
 - Total trials in sample (post relevance filter): ${agentOutputs.trials.items.length}
 - Total patents in sample (post relevance filter): ${agentOutputs.patents.items.length}
-- IP concentration: ${ipLandscape.concentration}
+- ${ipConcentrationGuidance}
 
 Produce a checklist of 6-8 concrete NEXT ACTIONS the reader should take AFTER reading this report. Each item should:
 - Be specific to a technology category, methodology, funding pattern, grant mechanism, gap signal, or research question surfaced in the data
@@ -2427,6 +2504,13 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
       md += `**${i + 1}. ${op.categoryName}** (${op.dimensionName})\n\n`
       md += `- Analyzed sample: **${op.sampleCount}** projects (${share}% of sample)\n`
       md += `- Broader ${ws.broaderNihScopeLabel || 'NIH RePORTER'}: **${broader}** matching projects\n`
+      // Small-sample caveat rendered at the signal level (not just the
+      // narrative-prompt level) so the hedge is guaranteed to appear even
+      // if the LLM rationale doesn't state it plainly. Anything anchored
+      // on <=1 topic sample is directional at best.
+      if (op.sampleCount <= 1) {
+        md += `- **Small-sample caveat:** the ratio here rests on ${op.sampleCount === 0 ? 'zero' : 'one'} topic project. A single classification change to the topic sample could shift the signal substantially. Treat as directional only.\n`
+      }
       if (op.rationale) md += `\n${op.rationale}\n`
       md += '\n'
     })
@@ -2454,6 +2538,7 @@ function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOu
     fragmented: 'Fragmented - Many players, no dominant owner',
     moderately_concentrated: 'Moderately Concentrated - Several key players',
     highly_concentrated: 'Highly Concentrated - Few dominant owners',
+    insufficient_sample: 'Insufficient sample to characterize',
   }
 
   // Below this threshold, "Moderately Concentrated" is a label the sample
@@ -3136,64 +3221,6 @@ function formatCurrency(amount: number): string {
   if (amount >= 1_000_000) return `$${(amount / 1_000_000).toFixed(1)}M`
   if (amount >= 1_000) return `$${(amount / 1_000).toFixed(0)}K`
   return `$${amount.toLocaleString()}`
-}
-
-/**
- * Normalize spacing around inline **Confidence:** tags in LLM-produced
- * narrative and reflow each claim + confidence-block into its own
- * paragraph so long narrative sections are scannable.
- *
- * Prior state: the LLM appends "**Confidence: X** — Evidence: Y." inline
- * after each substantive claim, producing multi-claim paragraphs like:
- *
- *   Claim1. **Confidence: High** — Evidence: E1. Claim2. **Confidence: Medium** — Evidence: E2. Claim3...
- *
- * With three or more claims that becomes an unbroken wall of text.
- * r25 audit called this out. The fix inserts paragraph breaks so each
- * claim/evidence pair renders as its own visual block:
- *
- *   Claim1.
- *
- *   **Confidence: High** — Evidence: E1.
- *
- *   Claim2.
- *
- *   **Confidence: Medium** — Evidence: E2.
- *
- * Also handles the historical concatenation bugs (missing bold markers,
- * glued-to-word-char, punctuation-adjacent).
- */
-function normalizeConfidenceTagSpacing(text: string): string {
-  if (!text) return text
-  let out = text
-  // Wrap bare "Confidence: High/Medium/Low" (missing ** markers) — check
-  // that it's not already wrapped.
-  out = out.replace(/(?<!\*\*)\bConfidence:\s*(High|Medium|Low)(?!\*\*)/g, '**Confidence: $1**')
-  // Insert punctuation + separator before the tag if glued to a word char.
-  // "viable**Confidence: High**" -> "viable. **Confidence: High**"
-  out = out.replace(/(\w)(\*\*Confidence:\s*(High|Medium|Low)\*\*)/g, '$1. $2')
-  // Also handle punctuation-adjacent (period+immediate tag with no space).
-  out = out.replace(/([.!?])(\*\*Confidence:)/g, '$1 $2')
-
-  // Reflow into paragraphs. Insert a blank line BEFORE each Confidence
-  // tag so the claim ends and the tag begins in a new paragraph.
-  out = out.replace(/\s+(\*\*Confidence:\s*(?:High|Medium|Low)\*\*)/g, '\n\n$1')
-
-  // Insert a blank line AFTER the Evidence content of each block, before
-  // the next claim starts. Match from the Confidence marker through the
-  // Evidence line up to a period followed by space + capital letter,
-  // which signals a new sentence starting a fresh claim. Uses [A-Z]
-  // alone (not [A-Z][a-z]) so single-letter words like "A" or "I" that
-  // often start a new claim ("A second distinct cluster...") aren't
-  // missed.
-  out = out.replace(
-    /(\*\*Confidence:\s*(?:High|Medium|Low)\*\*[^\n]*?Evidence:[^\n]*?\.)\s+([A-Z])/g,
-    '$1\n\n$2',
-  )
-
-  // Collapse any resulting triple-newlines and trim leading blanks.
-  out = out.replace(/\n{3,}/g, '\n\n').replace(/^\s+/, '')
-  return out
 }
 
 /**

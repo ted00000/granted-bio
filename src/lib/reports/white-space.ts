@@ -28,6 +28,7 @@
 
 import Anthropic from '@anthropic-ai/sdk'
 import { supabaseAdmin } from '@/lib/supabase'
+import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import type {
   CoverageCategory,
   CoverageDimension,
@@ -1095,12 +1096,15 @@ Return JSON only, exactly this shape:
     const parsed = JSON.parse(jsonMatch[0])
 
     // Merge narrative back into the fixed data structure. The LLM cannot
-    // change the numbers; it only fills in narrative fields.
+    // change the numbers; it only fills in narrative fields. Every
+    // narrative field runs through normalizeConfidenceTagSpacing so the
+    // inline "**Confidence:**" tags land on their own paragraph — Fable
+    // r28 audit flagged pervasive inline tags across White Space fields.
     const dimNarrativeMap = new Map<string, string>()
     if (Array.isArray(parsed.dimensionNarratives)) {
       for (const dn of parsed.dimensionNarratives) {
         if (dn?.name && typeof dn.narrative === 'string') {
-          dimNarrativeMap.set(dn.name.toLowerCase(), dn.narrative)
+          dimNarrativeMap.set(dn.name.toLowerCase(), normalizeConfidenceTagSpacing(dn.narrative))
         }
       }
     }
@@ -1114,7 +1118,7 @@ Return JSON only, exactly this shape:
       for (const or of parsed.opportunityRationales) {
         if (or?.categoryName && or?.dimensionName && typeof or.rationale === 'string') {
           const key = `${or.dimensionName.toLowerCase()}|${or.categoryName.toLowerCase()}`
-          rationaleMap.set(key, or.rationale)
+          rationaleMap.set(key, normalizeConfidenceTagSpacing(or.rationale))
         }
       }
     }
@@ -1125,11 +1129,14 @@ Return JSON only, exactly this shape:
     }))
 
     return {
-      overview: typeof parsed.overview === 'string' ? parsed.overview : '',
+      overview:
+        typeof parsed.overview === 'string' ? normalizeConfidenceTagSpacing(parsed.overview) : '',
       dimensions: dimensionsOut,
       opportunities: opportunitiesOut,
       strategicImplications:
-        typeof parsed.strategicImplications === 'string' ? parsed.strategicImplications : undefined,
+        typeof parsed.strategicImplications === 'string'
+          ? normalizeConfidenceTagSpacing(parsed.strategicImplications)
+          : undefined,
     }
   } catch (err) {
     console.error('[White Space] Narrate step failed:', err)
