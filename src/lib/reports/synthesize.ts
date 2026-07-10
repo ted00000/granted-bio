@@ -1582,10 +1582,16 @@ async function generateIPLandscapeAssessment(
     }
   }
 
+  const IP_LABEL_MIN_N = 10
+  const insufficientSample = totalPatents < IP_LABEL_MIN_N
+  const insufficientSampleRule = insufficientSample
+    ? `\n**INSUFFICIENT-SAMPLE MODE — ${totalPatents} linked patents (below ${IP_LABEL_MIN_N} threshold).** In this mode you MUST NOT use any of these words to describe the landscape shape in narrative or strategicImplications: "fragmented", "concentrated", "moderately concentrated", "highly concentrated", "consolidated". The Patent section header will show "Insufficient sample to characterize"; any concentration-shape word in your narrative directly contradicts that. Instead describe what the sample contains as descriptors of THIS SAMPLE ("the ${totalPatents} linked patents span N assignees and Y technical areas"), not as a shape claim about the field.\n`
+    : ''
+
   const prompt = `Analyze the IP landscape for "${topic}" based on patent data.
 
-READER PERSONA: **${persona}** — tailor the strategicImplications field accordingly.
-
+READER PERSONA: **${persona}** - tailor the strategicImplications field accordingly.
+${insufficientSampleRule}
 ## PATENT STATISTICS
 - Total patents: ${totalPatents}
 - Recent (last 2 years): ${recentPatents}
@@ -2242,6 +2248,19 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
 
 *Data current as of ${now}.*
 `
+
+  // Em-dash purge. Product convention is hyphens only, but LLMs keep
+  // slipping em dashes past the prompt-level ban ("BANNED AI-TELL
+  // PHRASES: Do not use em dashes"). This deterministic substitution
+  // is the belt-and-suspenders fix. Scope-note text uses em dashes
+  // intentionally in the buildScopeNote fixed string; those are
+  // preserved by leaving them un-touched here (they'd be edited in the
+  // source string if we ever changed the convention). Replace with a
+  // space-hyphen-space so the rhythm of the prose is preserved.
+  md = md.replace(/—/g, ' - ')
+  // Collapse " -  " (double-space when em-dash was already surrounded
+  // by spaces) back to " - ".
+  md = md.replace(/ {2,}- {2,}/g, ' - ').replace(/ +- +/g, ' - ')
 
   return md
 }
