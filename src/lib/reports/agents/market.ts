@@ -82,6 +82,7 @@ PROHIBITED PATTERNS (do NOT do these):
 OTHER RULES:
 - Only include information you actually found via search.
 - Each entry in recentDevelopments must be prefixed with YYYY-MM for transparency about recency.
+- **DATE PREFIX INTEGRITY.** The YYYY-MM prefix MUST match the actual event date described in the entry. If the entry describes an event at ASCO 2026 in May, the prefix is 2026-05, not 2025-05. Before returning a recentDevelopments item, verify the year/month in the prefix matches the year/month in the description text. A mismatched prefix (e.g. "2025-05: filed at ASCO 2026") reads as an error and destroys credibility. Today is ${today} — no valid entry can be prefixed with a date later than today.
 - If search returned no useful information for a field, use null or [].
 - FORMATTING: Do NOT use em dashes. Use regular hyphens.
 

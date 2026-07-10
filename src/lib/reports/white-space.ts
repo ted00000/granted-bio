@@ -1023,15 +1023,22 @@ For the OVERVIEW field: 3-4 sentences that:
 - Frame the coverage picture across the ${dimensions.length} dimensions (what's densely funded, what's thin).
 - Reference specific numbers (e.g., "45 of ${totalProjects} projects target lung cancer while pancreatic appears in 10").
 - Acknowledge the NIH RePORTER scope — this is publicly-searchable federal funding, the largest portion of non-dilutive US biomedical grants, but not the full R&D universe (private industry, international, non-NIH federal are excluded).
+- MUST END WITH a Confidence+Evidence tag: '**Confidence: High/Medium/Low** - Evidence: [total projects, dimension count, any notable data-quality caveats]'.
 
-For each DIMENSION's narrative field: 2-3 sentences interpreting THAT dimension's distribution. Call out concentration (top category share), meaningful clusters, and any striking absences. Reference actual category counts from the data.
+For each DIMENSION's narrative field: 2-3 sentences interpreting THAT dimension's distribution. Call out concentration (top category share), meaningful clusters, and any striking absences. Reference actual category counts from the data. MUST END WITH a Confidence+Evidence tag ('**Confidence: High/Medium/Low** - Evidence: [category counts, top concentration ratio]').
+
+**CRITICAL — Do NOT draw underrepresentation or "gap" conclusions from broader-NIH counts below 30.** A category with (sample=0, broaderNIH=7) is too sparse to distinguish a real gap from vocabulary drift or keyword-matching noise. If you MUST mention such a category in the dimension narrative, describe the raw counts only ("population disparities appears in 0 projects with 7 broader NIH matches, too sparse to draw a coverage conclusion") — do NOT write "underrepresented", "gap", or "opportunity" for those rows. The Coverage Gap Signals list is where opportunity-language belongs, and it applies its own >=30 floor.
+
+**KEYWORD-ARTIFACT WATCH.** If any single category in a dimension has a broader-NIH count that is more than 10x the median broader-NIH count of other categories in the SAME dimension, flag it in your narrative as a likely keyword-matching artifact (e.g., generic terms like "methylation" or "exosome" match across all of cancer biology). Write something like "the broader NIH count of X for this category is anomalous relative to peer categories in this dimension and likely reflects generic keyword prevalence rather than topic-specific activity — treat as directional only." Do NOT anchor coverage conclusions on these outlier counts.
 
 For each OPPORTUNITY's rationale field: 2-3 sentences answering "why might this white space matter." Consider:
 - If sample count is zero or near-zero but broader NIH count is substantial: the topic slice has a gap that the broader research community is exploring — potential opportunity to bring adjacent methodology.
 - If sample count is nonzero but small: underserved within the topic focus specifically.
 - Reference actual counts. Do not overstate — say "underrepresented" not "abandoned."
+- MUST END WITH a Confidence+Evidence tag ('**Confidence: High/Medium/Low** - Evidence: [sample count vs broader count, ratio]'). At low sample counts (<=2), confidence must be Low.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens or rewrite sentences.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 DESCRIPTIVE vs PRESCRIPTIVE — critical rule for narrative + strategicImplications fields:
 - Naming institutions is FINE when describing factual concentration ("methylation work concentrates at UCLA, Johns Hopkins, Stanford").
@@ -1044,7 +1051,7 @@ Produce a persona-appropriate strategicImplications paragraph tied to the top op
 - Researcher persona: frame around grant strategy. "For a researcher writing an R01 or SBIR in this space, the strongest differentiation opportunities are..." Reference specific opportunity names and counts. Mention concrete grant mechanisms where relevant (R01, R21, U01, SBIR/STTR). Speak to patterns and mechanisms, not "approach X institution."
 - Investor persona: frame around investment thesis. "For a seed-stage or Series A investor evaluating this space, the highest-signal bets among under-served categories are..." Reference specific opportunity names and counts. Mention what technical or clinical milestones would validate a bet. Do not name specific companies or PIs as targets.
 
-3-4 sentences. Concrete and actionable, not hand-wavy.
+3-4 sentences. Concrete and actionable, not hand-wavy. MUST END WITH a Confidence+Evidence tag ('**Confidence: High/Medium/Low** - Evidence: [top opportunity counts + ratios that anchor the implications]'). At low sample counts across the top opportunities, confidence should be Medium or Low.
 
 Return JSON only, exactly this shape:
 {
@@ -1139,7 +1146,7 @@ function buildScopeNote(scopeLabel?: string): string {
     'NIH RePORTER represents the largest publicly-searchable portion of non-dilutive US biomedical grants — a strong signal for federal research investment priorities. ' +
     'Private R&D, international research, and non-NIH federal funding (DoD, DARPA, industry-sponsored) are not captured here. ' +
     broaderComparator +
-    'Because both filters (category keyword AND scope keyword) are TITLE-only matches, broader-NIH counts should be read as **directional lower bounds** — an NIH-funded cancer project titled "Circulating Cell-Free DNA in Glioblastoma" won\'t match the "cancer" scope keyword but is clearly cancer-relevant, so the true broader activity is higher than what we count. Counts are derived by keyword matching against project titles and abstracts; a project can appear in multiple categories. ' +
+    'Two match methods are used and they intentionally differ. **Sample counts** (the analyzed topic-focused projects) are computed against project titles AND abstracts — full-text matching gives higher recall on the ~100-200 project sample. **Broader-NIH counts** are computed against project titles ONLY, because the broader RePORTER projects table is not full-text-indexed on abstracts at query time. Because broader-NIH matching is title-only, broader counts should be read as **directional lower bounds** — an NIH-funded cancer project titled "Circulating Cell-Free DNA in Glioblastoma" won\'t match a "cancer" scope keyword but is clearly cancer-relevant, so the true broader activity is higher than what we count. A project can appear in multiple categories. ' +
     'Broader-NIH ratios at low denominators (≤2 topic projects) are directional not precise — small changes to the topic classifier could shift them meaningfully.'
   )
 }

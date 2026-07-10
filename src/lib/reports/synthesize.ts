@@ -288,12 +288,12 @@ Rules of thumb (from a critical reviewer):
 - **NO AI tell-tale phrases.** Banned list — do not use, ever:
   - "at a strategic inflection point" / "inflection point"
   - "step-change" / "methodological step-change"
-  - "genuine scientific opportunity"
+  - "genuine scientific opportunity" / "genuine opportunity" / "genuine methodological opportunity" / "genuine biological differentiation" / any "genuine [noun]" pattern where "genuine" is a modifier on a claim about the field
   - "perhaps most critically"
   - "underscores"
   - "poised to"
   - "landscape reveals"
-  These phrases mark AI-generated prose immediately and destroy credibility.
+  These phrases mark AI-generated prose immediately and destroy credibility. "Genuine X" in particular reads as puffery — say what X actually is instead.
 - **Ban vague qualifiers.** Replace "significantly", "substantially", "meaningfully" with actual numbers or drop the sentence.
 - **Frame observations as observations, not verdicts.** "5 of the top 10 orgs are academic" — good. "The field is accelerating" from a two-point FY trend — hedge: "FY2025 funding was higher than FY2024, but a two-point trend is not by itself proof of acceleration."
 - **NUMERIC RIGOR — CRITICAL.** Any percentage or share claim you write MUST come from the "Category shares" list in the DATA SUMMARY above (VERBATIM), or from a table shown below in the report. NEVER approximate. If you want to say "diagnostics-heavy," write "diagnostics account for 60.2% of projects (74 of 123)" not "roughly 70%." If the exact figure isn't in the DATA SUMMARY or a body table, do not write the percentage — describe the pattern qualitatively instead ("diagnostics-dominant"). Loose approximations get spotted in ten seconds by a reader who checks the byCategory table.
@@ -464,6 +464,7 @@ CRITICAL DATA-GROUNDING RULE:
 - Never say "no projects on X" or "only one project on Y" unless the FULL PROJECT LIST actually shows that. Prefer qualitative framing ("relatively underrepresented in the sample") when the count is nonzero but small.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 CLINICAL PIPELINE — DO NOT CHERRY-PICK STATUSES:
 When writing the clinicalPipeline insight, do NOT selectively narrate encouraging statuses (Recruiting, Active) while ignoring negative ones. If the trial list contains any Terminated, Withdrawn, or Suspended trials, mention that too — either explicitly ("N terminated trials also in the sample, suggesting the field has seen setbacks") or by using neutral framing ("mixed status distribution including several terminated trials"). Cherry-picking is exactly the failure a reader spots by scanning the list below the narrative.
@@ -603,6 +604,7 @@ SAMPLE-BASED LANGUAGE: This covers NIH-linked data only, not complete market IP/
 - Acknowledge limitations while providing actionable insight
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 After each substantive claim (an assertion about TRL, commercial readiness, IP concentration, risk, or comparables), append a formatted confidence/evidence block. Use this exact markdown pattern INLINE within the narrative field, at the end of the relevant sentence or paragraph:
@@ -671,6 +673,7 @@ SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this
 - Acknowledge this represents publicly-funded academic research primarily
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 DESCRIPTIVE vs PRESCRIPTIVE — read carefully.
 - Naming organizations is FINE when you are describing factual concentration or activity ("methylation appears across UCLA, Johns Hopkins, Stanford").
@@ -821,6 +824,7 @@ SAMPLE-BASED LANGUAGE: NIH data represents publicly-funded academic research. Us
 - Acknowledge NIH sample doesn't capture private/industry R&D
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 Return JSON only:
 {
@@ -915,6 +919,7 @@ For each, explain WHY it matters. Consider:
 SAMPLE-BASED LANGUAGE: These are publications linked to NIH-funded projects in our sample. Use language like "among the linked publications" rather than claiming these are the definitive papers in the field.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 Return JSON only (array of 3-5 items). Use the EXACT PMID strings from the
 input above — do NOT invent PMIDs and do NOT reuse the same PMID twice.
@@ -1144,9 +1149,15 @@ CRITICAL — STATISTICAL HONESTY: When a denominator is small, the percentage is
 - Never imply "the field has X" or "the field is doing Y" based on a small absolute count. Frame as "the linked sample contains X" or "no Y was observed in the sample."
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
-Append this exact markdown pattern inline at the end of each substantive claim in maturityNarrative and evidenceSummary fields:
+Append this exact markdown pattern inline at the end of each field's content. Tagging rules:
+- **maturityNarrative**: ONE tag at the very end of the entire field, not one per paragraph. The narrative describes a single TRL judgment — one tag suffices. Do NOT add a second tag mid-narrative just because you introduce a supporting fact; a supporting fact is not a separate claim.
+- **evidenceSummary**: one tag per bulleted item (preprintRatio, trialProgression, patentActivity) — these are three distinct claims about three independent evidence streams.
+- **strategicImplications**: ONE tag at the very end of the field.
+
+Pattern:
 
   **Confidence: High/Medium/Low** — Evidence: [concrete counts, e.g. "8 Phase 2 trials, 3 Phase 1, no Phase 3/4 across ${totalTrials} total linked trials"]
 
@@ -1173,7 +1184,7 @@ Return JSON only:
     "trialProgression": "One sentence with confidence+evidence tag interpreting the trial phase distribution — apply small-N rule above when totalTrials < 3",
     "patentActivity": "One sentence with confidence+evidence tag interpreting the patent recency — apply small-N rule above when totalPatents < 5"
   },
-  "strategicImplications": "2-3 sentences of persona-appropriate 'so what' advice. For a researcher persona, frame around proposal strategy (what grant mechanisms make sense, what collaborators to pursue, what analytical gaps to fill). For an investor persona, frame around investment thesis (what stage of company to look for, what technical milestones matter, what to diligence). Reference specific numbers from the data.",
+  "strategicImplications": "2-3 sentences of persona-appropriate 'so what' advice. For a researcher persona, frame around proposal strategy (what grant mechanisms make sense, what collaborators to pursue, what analytical gaps to fill). For an investor persona, frame around investment thesis (what stage of company to look for, what technical milestones matter, what to diligence). Reference specific numbers from the data. MUST END WITH a Confidence+Evidence tag using the same '**Confidence: High/Medium/Low** - Evidence: [counts]' format required elsewhere — this is an interpretive claim about what the reader should do, so it must be tagged.",
   "overallAssessment": "nascent" | "emerging" | "maturing" | "established"
 }`
 
@@ -1324,6 +1335,7 @@ SAMPLE-BASED LANGUAGE: This analysis covers NIH-funded academic research. Use he
 - Commercial players may exist outside NIH-linked data; acknowledge this limitation
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 For each cluster's commercialReadiness AND for the top-level narrative, append this exact markdown pattern inline at the end of each substantive claim:
@@ -1353,7 +1365,7 @@ Return JSON only:
     }
   ],
   "narrative": "2-3 sentences with confidence+evidence tags synthesizing the competitive topology - what are the main competing approaches and how do they relate?",
-  "strategicImplications": "3-4 sentences of persona-appropriate 'so what' advice tied to the cluster landscape"
+  "strategicImplications": "3-4 sentences of persona-appropriate 'so what' advice tied to the cluster landscape. MUST END WITH a Confidence+Evidence tag using the same '**Confidence: High/Medium/Low** - Evidence: [counts]' format required elsewhere in the report."
 }`
 
   try {
@@ -1525,6 +1537,7 @@ SAMPLE-BASED LANGUAGE: CRITICAL - These are only patents linked to NIH projects,
 - Explicitly note that commercial/international patents may exist outside this sample
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 Append this exact markdown pattern inline at the end of each substantive claim in freedomToOperate, recentActivityTrend, and narrative:
@@ -1552,7 +1565,7 @@ narrative fields below.
   "freedomToOperate": "2-3 sentences with confidence+evidence tags assessing potential FTO concerns based on the NIH-linked sample",
   "recentActivityTrend": "One sentence with confidence+evidence tag on patent activity trend within the linked sample",
   "narrative": "2-3 sentences with confidence+evidence tags on what the linked patent pattern may suggest for commercial development",
-  "strategicImplications": "2-3 sentences of persona-appropriate 'so what' advice tied to the IP concentration and activity pattern"
+  "strategicImplications": "2-3 sentences of persona-appropriate 'so what' advice tied to the IP concentration and activity pattern. MUST END WITH a Confidence+Evidence tag using the same '**Confidence: High/Medium/Low** - Evidence: [counts]' format required elsewhere. Given IP samples are typically small (NIH-linked patents only), confidence will usually be Medium or Low — say so explicitly."
 }`
 
   try {
@@ -1663,6 +1676,7 @@ For each project, generate a 2-3 sentence insight explaining:
 Be specific and analytical. Reference the project's actual methods or focus when possible.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
 
 Return JSON only (object mapping application_id to insight string):
 {
@@ -1734,32 +1748,47 @@ async function generateNextSteps(
   const client = new Anthropic()
   const persona = context.persona || 'researcher'
 
-  const topOrgLine = context.topOrganizations.slice(0, 5).map((o) => `${o.org_name} (${o.projects} projects, ${formatCurrency(o.funding)})`).join('; ')
-  const topPILine = context.topResearchers.slice(0, 5).map((r) => `${r.pi_name} (${r.projects} projects, ${formatCurrency(r.funding)})`).join('; ')
-  const topOpps = whiteSpace.topOpportunities.slice(0, 4).map((o) => `${o.categoryName} (${o.dimensionName}, sample=${o.sampleCount}, broader NIH=${o.broaderNihCount})`).join('; ')
+  // Aggregate patterns from top orgs/PIs — no names passed to the LLM.
+  // The Next Steps checklist should point to patterns and mechanisms, not
+  // "reach out to Dr. X" or "target Org Y." Names live in the Key
+  // Organizations and Key Researchers tables where readers can look up
+  // specifics themselves. See callout audit 2026-07-10.
+  const topOrgCount = context.topOrganizations.length
+  const topPICount = context.topResearchers.length
+  const topFundedPIProjectCount = context.topResearchers
+    .slice(0, 5)
+    .reduce((sum, r) => sum + r.projects, 0)
+  const topOpps = whiteSpace.topOpportunities
+    .slice(0, 4)
+    .map((o) => `${o.categoryName} (${o.dimensionName}, sample=${o.sampleCount}, broader NIH=${o.broaderNihCount})`)
+    .join('; ')
 
   const prompt = `Write a persona-specific "Next Steps" checklist for a report on "${topic}".
 
 READER PERSONA: **${persona}**
 
 Reference the report's ACTUAL findings (don't produce generic advice):
-- Top orgs by projects: ${topOrgLine || 'none'}
-- Top PIs by funding: ${topPILine || 'none'}
-- Top white-space opportunities: ${topOpps || 'none'}
-- Total projects in analyzed sample: ${agentOutputs.projects.items.length}
+- Analyzed sample: ${agentOutputs.projects.items.length} projects across ${topOrgCount} organizations and ${topPICount} unique PIs
+- Top 5 PIs combined hold ${topFundedPIProjectCount} projects (see Key Researchers table for specific names)
+- Top white-space signals: ${topOpps || 'none'}
 - Total NIH funding: ${formatCurrency(context.fundingStats.total)}
 - Total trials in sample (post relevance filter): ${agentOutputs.trials.items.length}
 - Total patents in sample (post relevance filter): ${agentOutputs.patents.items.length}
 - IP concentration: ${ipLandscape.concentration}
 
 Produce a checklist of 6-8 concrete NEXT ACTIONS the reader should take AFTER reading this report. Each item should:
-- Be specific to a named org, PI, technology category, or funding pattern from the data
-- Point to a concrete action (search, read, contact, apply for)
-- Reference where the reader should look (which NIH program, which paper, which company)
+- Be specific to a technology category, methodology, funding pattern, grant mechanism, gap signal, or research question surfaced in the data
+- Point to a concrete action (search, read, review, apply for, verify, benchmark against)
+- Reference where the reader should look (which NIH program, which section of THIS report — e.g. "see the Key Organizations table", "see the Coverage Gap Signals section")
+
+**CRITICAL — NO NAMED ACTORS AS TARGETS.** This checklist is read by the same community it describes. Do NOT:
+- Name any principal investigator (PI) by name. Individual PIs are in the Key Researchers table; do not tell the reader to "examine Zhou's portfolio" or "assess Wong's work" — say "review the top-funded PIs (see Key Researchers table)" instead.
+- Name any institution as a target for outreach, collaboration, licensing, or benchmarking. Do NOT write "use Johns Hopkins as a target for methodology-focused collaborations", "scout collaborators at MGH", "engage with UCLA researchers". If institutional concentration is relevant to the action, say "institutions with concentrated activity in [category] (see Key Organizations table) are natural [collaboration/licensing/benchmark] candidates."
+- Name specific companies as targets. Companies in the Market Context section are for market awareness; they are not action targets in this checklist.
 
 Persona guidance:
-- **researcher**: proposal strategy, collaborator scouting, methodology gaps to close, grant mechanisms to target (R01, R21, U01, SBIR)
-- **investor**: diligence questions, companies to research, technical milestones to watch, market signals to monitor
+- **researcher**: proposal strategy, collaborator scouting patterns, methodology gaps to close, grant mechanisms to target (R01, R21, U01, SBIR). Frame collaborator scouting as "search the Key Organizations table for institutions active in [approach]", not "reach out to Institution X."
+- **investor**: diligence questions, categories of companies to research, technical milestones to watch, market signals to monitor. Frame diligence as "map the commercial landscape for [approach]", not "look at Company X."
 
 DATA-INTEGRITY CAVEATS — bake these into item wording, not as a footer:
 - **White-space "gaps" are candidate hypotheses, not verified opportunities.** Broader-NIH ratios are directional at low topic-sample counts. Before an item recommends "target the X gap for an SBIR", frame it as "investigate whether X is a real gap or a taxonomy artifact — check whether adjacent NIH portfolios (metabolomics, systems biology, etc.) already cover this work under different terminology, then draft a proposal only if the gap holds up."
@@ -2317,14 +2346,47 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
     const broaderHeader = ws.broaderNihScopeLabel
       ? `Broader NIH (${ws.broaderNihScopeLabel})`
       : 'Broader NIH'
+    // Keyword-artifact detection: if a category's broader-NIH count is
+    // dramatically higher than the median of other categories in the
+    // same dimension, that outlier is very likely picking up generic
+    // keyword prevalence (e.g., "methylation" matches thousands of
+    // NIH projects across all of cancer biology) rather than topic-
+    // specific activity. Mark it with a footnote-style flag so the
+    // reader knows not to anchor coverage inferences on it. Threshold
+    // chosen from the r28 audit case where "methylation" (389) and
+    // "exosome" (416) were 10-40x every other analyte's broader count.
+    const validBroader = dim.categories
+      .map((c) => c.broaderNihCount)
+      .filter((n) => n > 0 && n !== -1)
+      .sort((a, b) => a - b)
+    const medianBroader = validBroader.length > 0
+      ? validBroader[Math.floor(validBroader.length / 2)]
+      : 0
+    const OUTLIER_MULTIPLE = 10
+    const isKeywordArtifact = (n: number) =>
+      medianBroader > 0 && n > 0 && n !== -1 && n / medianBroader >= OUTLIER_MULTIPLE
+
     md += `| Category | Projects | % of Sample | Funding | ${broaderHeader} |\n`
     md += `|----------|---------:|------------:|--------:|------------:|\n`
+    let anyArtifact = false
     for (const cat of dim.categories) {
       const share = ws.totalProjects > 0 ? (cat.projectCount / ws.totalProjects) * 100 : 0
-      const broaderCell = cat.broaderNihCount === -1 ? 'n/a' : cat.broaderNihCount.toLocaleString()
+      let broaderCell: string
+      if (cat.broaderNihCount === -1) {
+        broaderCell = 'n/a'
+      } else if (isKeywordArtifact(cat.broaderNihCount)) {
+        broaderCell = `${cat.broaderNihCount.toLocaleString()} [†]`
+        anyArtifact = true
+      } else {
+        broaderCell = cat.broaderNihCount.toLocaleString()
+      }
       md += `| ${cat.name} | ${cat.projectCount} | ${share.toFixed(1)}% | $${(cat.fundingTotal / 1_000_000).toFixed(1)}M | ${broaderCell} |\n`
     }
     md += '\n'
+
+    if (anyArtifact) {
+      md += `> [†] Rows marked with a dagger are broader-NIH outliers (${OUTLIER_MULTIPLE}x or more above the dimension median). These very likely reflect generic keyword prevalence (e.g. "methylation" or "exosome" match thousands of NIH projects across all of cancer biology) rather than topic-specific activity. Treat these counts as directional only and do not anchor coverage inferences on them.\n\n`
+    }
 
     // Show the exact keyword set behind each category so readers can see
     // what was counted. Prevents the credibility gap where a category
@@ -2732,7 +2794,11 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
     }
     md += '| Category | Projects | Funding |\n'
     md += '|----------|----------|--------|\n'
-    stats.byCategory.slice(0, 5).forEach((row) => {
+    // Render all categories, not just top 5 — the chart above shows the
+    // full distribution, and truncating the table at 5 while the chart
+    // shows 6+ produces a "why is Medical Device in the chart but not
+    // the table?" credibility gap (r28 audit).
+    stats.byCategory.forEach((row) => {
       md += `| ${formatCategory(row.category)} | ${row.projects} | ${formatCurrency(row.funding)} |\n`
     })
     md += '\n'
@@ -2834,10 +2900,20 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
   const interventionalCount = trials.items.filter(
     (t) => (t.study_type || '').toUpperCase() === 'INTERVENTIONAL',
   ).length
+  const otherStudyTypeCount = totalTrials - observationalCount - interventionalCount
   const naCount = trials.byPhase['N/A'] || 0
   if (totalTrials > 0 && naCount / totalTrials >= 0.4 && observationalCount > 0) {
     const pctObs = Math.round((observationalCount / totalTrials) * 100)
-    md += `\n*Of the ${totalTrials} linked trials, ${observationalCount} are observational studies (${pctObs}% - biomarker validation, cohort studies, biobank studies) and ${interventionalCount} are interventional. Observational trials don't carry Phase 1-4 by design - ClinicalTrials.gov marks them N/A. The phase-labeled trials above are the interventional subset. This shape is expected for topics centered on diagnostics or biomarker discovery; a therapeutics-focused topic would typically show a phase-dominant distribution.*\n`
+    // Reconcile the arithmetic: obs + interv may not equal total when
+    // some trials have study_type Expanded Access, Other, or null. Add
+    // a residual clause when there's a non-zero remainder so the numbers
+    // add up on the reader's ledger (r28 audit: 46 obs + 21 interv = 67
+    // but stated 68 total, and the missing 1 was study_type=Other).
+    const residualClause =
+      otherStudyTypeCount > 0
+        ? `, and ${otherStudyTypeCount} carry another study_type designation (Expanded Access, Other, or unlabeled)`
+        : ''
+    md += `\n*Of the ${totalTrials} linked trials, ${observationalCount} are observational studies (${pctObs}% - biomarker validation, cohort studies, biobank studies), ${interventionalCount} are interventional${residualClause}. Observational trials don't carry Phase 1-4 by design - ClinicalTrials.gov marks them N/A. The phase-labeled trials above are the interventional subset. This shape is expected for topics centered on diagnostics or biomarker discovery; a therapeutics-focused topic would typically show a phase-dominant distribution.*\n`
   }
   md += '\n'
 
