@@ -2188,10 +2188,16 @@ function renderCompetitiveTopology(topology: CompetitiveTopology): string {
     return 'Competitive topology analysis not available.\n'
   }
 
+  const n = topology.clusters.length
+
   let md = ''
 
-  // Disclaimer about NIH-linked sample
-  md += '*Note: Key players listed below are derived from NIH-funded project data and represent academic/research institutions. Commercial entities may not appear.*\n\n'
+  // Disclaimer about NIH-linked sample + methodological transparency
+  // on where the cluster count comes from. Without this, "5 clusters"
+  // reads as if 5 were inherent to the field; in reality it's whatever
+  // the topology synthesizer resolves from the project abstracts, and
+  // the number varies by topic (typically 3-5).
+  md += `*Note: Key players listed below are derived from NIH-funded project data and represent academic/research institutions. Commercial entities may not appear. The ${n} clusters below are the methodological groupings the synthesis identified as most distinct in the analyzed abstracts - clusters are cross-cutting (a single project can belong to more than one), and a different cut of the data could resolve at 3 or 6 clusters rather than ${n}.*\n\n`
 
   if (topology.narrative) {
     md += topology.narrative + '\n\n'
@@ -2319,10 +2325,24 @@ function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOu
     highly_concentrated: 'Highly Concentrated - Few dominant owners',
   }
 
-  md += `**IP Concentration:** ${concentrationLabels[landscape.concentration] || landscape.concentration}\n\n`
+  // Below this threshold, "Moderately Concentrated" is a label the sample
+  // can't actually support. Fable's r22 audit called this out: a 4-patent
+  // sample tagged "Moderately Concentrated" implies a landscape read the
+  // data doesn't earn. When N is small, replace the confident label with
+  // an explicit "insufficient sample" framing so the label doesn't fight
+  // the confidence tags in the section below.
+  const IP_LABEL_MIN_N = 10
+  const totalLinkedPatents = patents.items.length
+  const concentrationDisplay =
+    totalLinkedPatents < IP_LABEL_MIN_N
+      ? `Insufficient sample to characterize (${totalLinkedPatents} grant-linked patent${totalLinkedPatents === 1 ? '' : 's'} - a landscape label like "concentrated" or "fragmented" requires at least ${IP_LABEL_MIN_N} patents to be meaningful; the shape below is descriptive of this specific sample, not the broader IP landscape)`
+      : concentrationLabels[landscape.concentration] || landscape.concentration
+
+  md += `**IP Concentration:** ${concentrationDisplay}\n\n`
 
   if (landscape.dominantAssignees.length > 0) {
-    md += `**Dominant Patent Holders:** ${landscape.dominantAssignees.join(', ')}\n\n`
+    const label = totalLinkedPatents < IP_LABEL_MIN_N ? 'Patent Holders in Sample' : 'Dominant Patent Holders'
+    md += `**${label}:** ${landscape.dominantAssignees.join(', ')}\n\n`
   }
 
   if (landscape.recentActivityTrend) {
@@ -2520,7 +2540,19 @@ function renderCuratedPublications(
   if (allPubs.items.length > 0) {
     md += '### Publication Summary\n\n'
     md += `- Total linked publications: ${allPubs.items.length}\n`
-    md += `- Unique journals: ${allPubs.totalUniqueJournals}\n\n`
+    md += `- Unique journals: ${allPubs.totalUniqueJournals}\n`
+
+    // Reconcile total vs. sum-of-byYear so a reader who adds the year
+    // column doesn't hit a gap they can't explain. Some PubMed rows
+    // lack pub_year metadata (typically older records or non-standard
+    // pubdate formats that our year regex couldn't parse); those are
+    // in the total but not in the year distribution.
+    const yearSum = (allPubs.byYear || []).reduce((s, y) => s + (y.count || 0), 0)
+    const yearlessCount = allPubs.items.length - yearSum
+    if (yearlessCount > 0) {
+      md += `- Publications with year metadata: ${yearSum} (the remaining ${yearlessCount} have no parsable year on the PubMed record and are not shown in the year distribution below)\n`
+    }
+    md += '\n'
 
     // Only show "Top Journals" list if at least one journal has 2+ pubs (otherwise it's noise)
     const topJournalCount = allPubs.byJournal[0]?.count ?? 0
@@ -2717,6 +2749,27 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
     .forEach(([phase, count]) => {
       md += `| ${phase} | ${count} |\n`
     })
+
+  // Data-driven explanation for phase-distribution shape. Diagnostic /
+  // biomarker-validation trials are structurally observational — they
+  // collect samples and analyze, they don't randomize patients to
+  // treatments — so ClinicalTrials.gov marks them with no phase
+  // (routed to N/A here). Without this explainer, a reader seeing 87%
+  // N/A on a diagnostics-topic report reasonably wonders if we lost
+  // phase data. Compute observational/interventional counts from the
+  // actual items and explain the split when N/A dominates.
+  const totalTrials = trials.items.length
+  const observationalCount = trials.items.filter(
+    (t) => (t.study_type || '').toUpperCase() === 'OBSERVATIONAL',
+  ).length
+  const interventionalCount = trials.items.filter(
+    (t) => (t.study_type || '').toUpperCase() === 'INTERVENTIONAL',
+  ).length
+  const naCount = trials.byPhase['N/A'] || 0
+  if (totalTrials > 0 && naCount / totalTrials >= 0.4 && observationalCount > 0) {
+    const pctObs = Math.round((observationalCount / totalTrials) * 100)
+    md += `\n*Of the ${totalTrials} linked trials, ${observationalCount} are observational studies (${pctObs}% - biomarker validation, cohort studies, biobank studies) and ${interventionalCount} are interventional. Observational trials don't carry Phase 1-4 by design - ClinicalTrials.gov marks them N/A. The phase-labeled trials above are the interventional subset. This shape is expected for topics centered on diagnostics or biomarker discovery; a therapeutics-focused topic would typically show a phase-dominant distribution.*\n`
+  }
   md += '\n'
 
   // Status distribution — surfaces Terminated / Suspended / Withdrawn

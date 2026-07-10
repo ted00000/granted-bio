@@ -254,13 +254,15 @@ ${titleSample}
 ## TOPIC SCOPE (REQUIRED) — define the field boundary
 
 Also return a "topicScope" object with:
-- scopeKeywords: 4-8 keywords that define the OVERALL topic frame (not category-specific — topic-wide). These will be used to filter broader-NIH cross-reference queries so we compare "metabolomics IN cancer" against "metabolomics in liquid biopsy for cancer detection," not "metabolomics anywhere in NIH."
+- scopeKeywords: 10-16 keywords that define the OVERALL topic frame (not category-specific — topic-wide). These will be used to filter broader-NIH cross-reference queries. CRITICAL: NIH project titles for topic-relevant work often DON'T repeat the canonical topic word. A cancer cfDNA project might be titled "Circulating Cell-Free DNA as a Personalized Biomarker for Glioblastoma" — no "cancer" in the title, but clearly cancer-relevant. To capture these, include disease-name surrogates AND topic-adjacent methodology terms that co-appear in relevant titles.
 - scopeLabel: 2-4 word human-readable label for the scope, used in report copy (e.g., "cancer research" for a cancer topic, "drug discovery" for a drug-discovery topic).
 
-Scope keywords should be broad enough to include work in the general area but narrow enough to exclude clearly-unrelated research. For:
-- "liquid biopsy for early cancer detection" → scopeKeywords: ["cancer", "tumor", "oncology", "neoplasm", "carcinoma"], scopeLabel: "cancer research"
-- "brain organoid electrophysiology" → scopeKeywords: ["organoid", "brain", "neural", "neuron", "cerebral"], scopeLabel: "neural/organoid research"
-- "monoclonal antibody production" → scopeKeywords: ["antibody", "immunoglobulin", "mab", "monoclonal"], scopeLabel: "antibody research"
+Scope keywords should be broad enough to include work in the general area but narrow enough to exclude clearly-unrelated research. Aim for 10-16 keywords covering: canonical topic terms, MAJOR disease-name surrogates (specific cancer types for a cancer topic; specific brain regions for a neuroscience topic), and topic-adjacent methodology terms that consistently appear in relevant titles.
+
+For:
+- "liquid biopsy for early cancer detection" → scopeKeywords: ["cancer", "tumor", "oncology", "neoplasm", "carcinoma", "malignant", "leukemia", "lymphoma", "melanoma", "sarcoma", "glioma", "adenoma", "liquid biopsy", "biomarker", "ctdna", "circulating tumor"], scopeLabel: "cancer research"
+- "brain organoid electrophysiology" → scopeKeywords: ["organoid", "brain", "neural", "neuron", "cerebral", "cortical", "hippocampal", "cortex", "neurodevelopment", "synapse", "ipsc", "stem cell"], scopeLabel: "neural/organoid research"
+- "monoclonal antibody production" → scopeKeywords: ["antibody", "antibodies", "immunoglobulin", "mab", "monoclonal", "igg", "biologics", "adc", "bispecific", "fc-region"], scopeLabel: "antibody research"
 
 Use word-boundary-safe terms (≥${MIN_KEYWORD_LENGTH} chars).
 
@@ -286,13 +288,12 @@ Use word-boundary-safe terms (≥${MIN_KEYWORD_LENGTH} chars).
   try {
     const response = await client.messages.create({
       model: MODEL,
-      // 6000: 5 dimensions × 12 categories × 5-10 keywords fits in ~5k
-      // tokens of dense JSON. Reduced from 8000 to shave real
-      // wall-clock time (Sonnet still generates only what's needed but
-      // request scheduling improves with lower ceilings). If truncation
+      // 6500: 5 dimensions × 12 categories × 5-10 keywords + 10-16
+      // scope keywords + scope label. Sonnet still generates only what's
+      // needed; the ceiling protects against truncation. If truncation
       // happens the JSON.parse falls back to empty analysis, which is
       // acceptable — better than blowing the function budget.
-      max_tokens: 6000,
+      max_tokens: 6500,
       messages: [{ role: 'user', content: prompt }],
     }, {
       timeout: 90_000,
@@ -961,14 +962,14 @@ Return JSON only, exactly this shape:
 
 function buildScopeNote(scopeLabel?: string): string {
   const broaderComparator = scopeLabel
-    ? `Broader-NIH counts are constrained to ${scopeLabel} (title-match) so the comparison is topically apples-to-apples, not raw keyword prevalence across all of NIH. `
+    ? `Broader-NIH counts are constrained to ${scopeLabel} (title-match against a 10-16 term scope filter) so the comparison is topically apples-to-apples, not raw keyword prevalence across all of NIH. `
     : 'Broader-NIH counts are keyword title-match across NIH RePORTER without additional topical constraint. '
   return (
     'This analysis maps what NIH-funded research covers vs. gaps within the topic scope. ' +
     'NIH RePORTER represents the largest publicly-searchable portion of non-dilutive US biomedical grants — a strong signal for federal research investment priorities. ' +
     'Private R&D, international research, and non-NIH federal funding (DoD, DARPA, industry-sponsored) are not captured here. ' +
     broaderComparator +
-    'Counts are derived by keyword matching against project titles and abstracts; a project can appear in multiple categories. ' +
+    'Because both filters (category keyword AND scope keyword) are TITLE-only matches, broader-NIH counts should be read as **directional lower bounds** — an NIH-funded cancer project titled "Circulating Cell-Free DNA in Glioblastoma" won\'t match the "cancer" scope keyword but is clearly cancer-relevant, so the true broader activity is higher than what we count. Counts are derived by keyword matching against project titles and abstracts; a project can appear in multiple categories. ' +
     'Broader-NIH ratios at low denominators (≤2 topic projects) are directional not precise — small changes to the topic classifier could shift them meaningfully.'
   )
 }
