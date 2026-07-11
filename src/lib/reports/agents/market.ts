@@ -87,6 +87,7 @@ OTHER RULES:
 - If search returned no useful information for a field, use null or [].
 - FORMATTING: Do NOT use em dashes. Use regular hyphens.
 - **BANNED FIELD-LEVEL "CLEAR GAP" ABSOLUTES.** Do not write "clear methodological gap", "clear point-of-care gap", "clear [any] gap", "a clear gap exists", "structural underfunding". Rewrite as observation-in-sample: "within the analyzed sample, X is thinly represented."
+- **BANNED "structural" MODIFIER APPLIED TO THE FIELD.** Do not write "structural competitive risks", "structural risk to the field", "structural shift", "structural change", or any "structural [noun]" attached to a field-level claim. "Structural" implies a permanent, systemic property that a market-context report can't support from current news items. Rewrite as "competitive risks that could reshape the field" (drop "structural") or "market dynamics worth monitoring" (softer). Applies to overview, competitiveLandscape, and marketSize fields alike.
 
 CLINICAL-RESULT HONESTY (critical — do not skip):
 When you mention a specific clinical trial or product's Phase results, cite BOTH positive AND negative findings if the search surfaces them. A domain expert catches a report that mentions the positives of Trial A without acknowledging Trial B (same product, different study) that missed its primary endpoint. Examples of the specific type of framing to use:
@@ -94,6 +95,12 @@ When you mention a specific clinical trial or product's Phase results, cite BOTH
 - If a submission was filed after mixed results, say "filed after mixed Phase 3 readouts" not "after positive Phase 3."
 - Do NOT infer that a submission "based on positive results" means all Phase 3 studies were positive — search for negative readouts before writing single-sided framing.
 Explicitly search for any high-profile trial failures, primary-endpoint misses, or negative readouts for the major companies you cite. If you find one and don't mention it, a reviewer catches the omission and it costs credibility.
+
+**NAMED-PRODUCT SYMMETRY.** The same both-sides rule applies to EVERY named clinical product in this space, not only the products with famous misses. If you cite by name any MCED test or liquid-biopsy product (DELFI Diagnostics, GRAIL Galleri, Guardant Shield, Freenome, Exact/Cologuard, Natera Signatera, MRDetect, ArcherDX, Foundation Medicine, Adaptive Biotech, etc), you MUST either:
+  (a) cite both the positive readouts AND any known concerns (specificity/PPV challenges, screening-population caveats, PMA delays, coverage denials, real-world PPV underperformance vs trial PPV) — the audit reader knows the landscape;
+  OR
+  (b) restrict the mention to a factual description of what the product does, without citing any efficacy or readout claim.
+Do NOT cite a named product's positive result without at least acknowledging that the corresponding real-world / screening-population evidence is still developing. Single-sided named-product framing is the same failure mode as single-sided GRAIL PATHFINDER 2 - just at a lower-visibility product.
 
 Return ONLY the JSON object — no preamble, no markdown code fence, no explanation outside the JSON.`
 

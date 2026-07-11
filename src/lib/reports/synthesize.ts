@@ -297,19 +297,31 @@ async function generateExecutiveSummary(
   // active or completed" when the status table showed 14 were
   // terminated/suspended/withdrawn (only 46 were actually active or
   // completed).
-  const trialStatusCounts = { activeOrCompleted: 0, terminated: 0, other: 0 }
+  // 3-way trial status split. r34 audit caught the previous 2-way split
+  // dropping "Not Yet Recruiting" into activeOrCompleted, which made
+  // "N are active or completed" numerically wrong (a NYR trial hasn't
+  // started, so it isn't active). Now split into: active/completed
+  // (running or done), not-yet-started (approved but not open),
+  // terminated (failed/withdrawn/suspended), other (unknown/available/
+  // etc). Prompt hard-forces all four to sum to the total.
+  const trialStatusCounts = {
+    activeOrCompleted: 0,
+    notYetStarted: 0,
+    terminated: 0,
+    other: 0,
+  }
   const ACTIVE_STATUSES = new Set([
     'active, not recruiting',
     'recruiting',
     'enrolling by invitation',
     'completed',
-    'not yet recruiting',
-    'available',
   ])
+  const NOT_YET_STATUSES = new Set(['not yet recruiting', 'approved for marketing'])
   const TERMINATED_STATUSES = new Set(['terminated', 'suspended', 'withdrawn'])
   for (const t of agentOutputs.trials.items) {
     const s = (t.study_status || '').toLowerCase().trim()
     if (ACTIVE_STATUSES.has(s)) trialStatusCounts.activeOrCompleted++
+    else if (NOT_YET_STATUSES.has(s)) trialStatusCounts.notYetStarted++
     else if (TERMINATED_STATUSES.has(s)) trialStatusCounts.terminated++
     else trialStatusCounts.other++
   }
@@ -349,7 +361,7 @@ ${formatYearTrendForPrompt(context.fundingStats.byYear)}
 ## DATA SUMMARY — VERBATIM NUMBERS (use these EXACT figures when writing percentages; do NOT approximate)
 - Total projects: ${context.fundingStats.projectCount} (${preciseCount} Precise-tier, ${balancedCount} Balanced-tier)
 - Total funding: ${formatCurrency(context.fundingStats.total)} across ${context.fundingStats.orgCount} organizations
-- **Trial status split (use these EXACT counts, all three, if you cite trial status):** ${totalTrialsForSummary} total linked trials, of which ${trialStatusCounts.activeOrCompleted} are active or completed, ${trialStatusCounts.terminated} are terminated/suspended/withdrawn, and ${trialStatusCounts.other} carry another status designation (unknown/other). If you cite two of these counts, you MUST also cite the third for the sum to reconcile - ${trialStatusCounts.activeOrCompleted} + ${trialStatusCounts.terminated} + ${trialStatusCounts.other} = ${totalTrialsForSummary}. Do NOT drop the residual "other" count even if it's 1 - the arithmetic must add up to the total. Do NOT write "${totalTrialsForSummary} trials are active or completed" - that only holds if terminated + other == 0. Do NOT attribute the terminated count to any specific cause ("assay attrition", "assay failure", "clinical failure") without corroborating evidence in the data - terminations can reflect enrollment challenges, funding gaps, PI departure, or business decisions unrelated to the assay. If you mention terminations, frame as "worth monitoring" or "warrants investigation," not as "a signal of [specific cause]."
+- **Trial status split (use these EXACT counts, all four, if you cite trial status):** ${totalTrialsForSummary} total linked trials, split as ${trialStatusCounts.activeOrCompleted} active or completed, ${trialStatusCounts.notYetStarted} not yet recruiting, ${trialStatusCounts.terminated} terminated/suspended/withdrawn, and ${trialStatusCounts.other} carry another status designation (unknown/other). ARITHMETIC CHECK: ${trialStatusCounts.activeOrCompleted} + ${trialStatusCounts.notYetStarted} + ${trialStatusCounts.terminated} + ${trialStatusCounts.other} = ${totalTrialsForSummary}. If you cite trial status, cite ALL non-zero categories - do NOT lump "not yet recruiting" trials into "active or completed" (a NYR trial has not started; grouping it with running trials is arithmetically wrong). Do NOT drop any residual even if it's 1 - the arithmetic must add up to the total. Do NOT attribute the terminated count to any specific cause ("assay attrition", "assay failure", "clinical failure") without corroborating evidence - terminations can reflect enrollment challenges, funding gaps, PI departure, or business decisions unrelated to the assay. If you mention terminations, frame as "worth monitoring" or "warrants investigation," not as "a signal of [specific cause]."
 - Clinical trials: ${agentOutputs.trials.items.length} | Patents: ${agentOutputs.patents.items.length}
 - **Category shares** (project count share of ${context.fundingStats.projectCount} total — use these EXACT percentages if you cite a category share):
 ${context.fundingStats.byCategory
@@ -823,8 +835,10 @@ BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to
 DESCRIPTIVE vs PRESCRIPTIVE — read carefully.
 - Naming organizations is FINE when you are describing factual concentration or activity ("methylation appears across UCLA, Johns Hopkins, Stanford").
 - Naming organizations is NOT FINE when you are prescribing action toward them ("MGH is a productive collaboration partner", "align with the Johns Hopkins cluster", "engage with UCLA researchers"). Rewrite as pattern-level observations: "the concentration of methylation work in a small set of nodes suggests differentiation requires a genuinely novel angle" — not a directive to approach any specific institution.
+- **BANNED "hub" / "entry point" / "access node" / "resource node" framing near an institution name.** Do NOT write "MGH functions as a hub", "X is a methodologically diverse hub", "Y is a collaboration entry point", "Z serves as an access node", or use "gateway", "on-ramp", "portal", "resource node" next to an institution name. That framing tells the reader that org is a good target to approach - same prescriptive read as "reach out to". Rewrite as raw factual concentration ("MGH holds 10 projects across 5 methodological categories") without the hub/entry-point/access-node modifier.
 - NEVER name individual principal investigators (PIs) by name in the collaborationSignals, positioningMap, or methodologicalTrends fields. No "PI Zhou at UCLA", no "Dr. Chen's group." The Key Researchers table already carries specifics; narrative sections stay at pattern level so no individual is singled out.
 - Project numbers (5U01CA...) are fine to cite as provenance. Institution names are fine to cite as descriptors. PI names are OFF LIMITS in these narratives. Prescriptive framing toward named orgs is OFF LIMITS.
+- **NAMED-PRODUCT SYMMETRY (clinical honesty).** If you cite a named commercial product by name (DELFI Diagnostics, GRAIL Galleri, Guardant Shield, Freenome, Exact/Cologuard, Natera Signatera, MRDetect, Foundation Medicine, Adaptive Biotech, etc), you MUST either (a) cite the negative or unresolved side of that product's evidence (specificity/PPV concerns, PMA delays, coverage denials, screening-population caveats) alongside any positive framing, or (b) restrict the mention to a factual description of what the product does. Do NOT write "DELFI's fragmentomics approach is well-timed" or "MRDetect's Phase results support X" without acknowledging that real-world / screening-population evidence for the same product is still developing. Single-sided named-product framing costs credibility with a domain reader who knows the landscape.
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 After each substantive claim (an assertion about position, collaboration pattern, or methodological trend), append a formatted confidence/evidence block. Use this exact markdown pattern INLINE within the narrative field, at the end of the relevant sentence or paragraph:
@@ -2019,6 +2033,7 @@ Produce a checklist of 6-8 concrete NEXT ACTIONS the reader should take AFTER re
 - Name any principal investigator (PI) by name. Individual PIs are in the Key Researchers table; do not tell the reader to "examine Zhou's portfolio" or "assess Wong's work" — say "review the top-funded PIs (see Key Researchers table)" instead.
 - Name any institution as a target for outreach, collaboration, licensing, or benchmarking. Do NOT write "use Johns Hopkins as a target", "scout collaborators at MGH", "engage with UCLA researchers".
 - **Also do NOT use "prescriptive targeting" verbs on the community as a group, even when no specific institution is named.** BANNED phrasings: "scout collaborator institutions", "scout collaborators", "identify potential (collaboration|consortium) partners", "identify (natural|potential) partners", "natural co-investigator (partners|candidates)", "natural consortium partners", "consortium partners", "reach out to institutions active in X", "engage with the leading nodes in Y". These read as telling the researcher to hunt for partners in the profiled community. Rewrite as self-directed research: "run a RePORTER search by analyte/cancer type to map the collaboration landscape yourself" or "review the Key Organizations table to see which institutions are active in [category]" (descriptive, not prescriptive).
+- **BANNED "hub" / "entry point" / "access node" framing near a named institution.** Do NOT write "MGH functions as a hub", "X is a methodologically diverse hub", "Y is a collaboration entry point", "Z serves as an access node", or any infrastructure/collaboration verb ("resource node", "gateway", "on-ramp", "portal") next to an institution name. Naming an org that way tells the reader that org is a good target to approach - same prescriptive read as "reach out to". Rewrite as raw factual concentration ("MGH holds 10 projects across 5 methodological categories") without the hub/entry-point/access-node modifier. Applies whether the institution is named directly or referred to by a short-form (MGH, JH, UCSF, etc).
 - Name specific companies as targets. Companies in the Market Context section are for market awareness; they are not action targets in this checklist.
 
 Persona guidance:
@@ -2401,6 +2416,16 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
   md = md.replace(/\bunderscored\b/gi, 'highlighted')
   md = md.replace(/\bunderscores\b/gi, 'highlights')
   md = md.replace(/\bunderscore\b/gi, 'highlight')
+
+  // "structural [claim-noun]" - the modifier implies a permanent
+  // systemic property the sample can't support. Strip the modifier
+  // when it prefixes a claim noun (risks, shifts, changes, gaps).
+  // r34 audit found "structural competitive risks that could reshape
+  // the field" in Market Context.
+  md = md.replace(
+    /\bstructural(?:ly)?\s+(competitive risks?|shifts?|changes?|risks?|barriers?|advantages?|dynamics?)\b/gi,
+    '$1',
+  )
 
   // PI-possessive stripping. r33 audit flagged "Velculescu's DELFI
   // work" in a per-project card insight - the PI is displayed as

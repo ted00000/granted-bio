@@ -1398,6 +1398,228 @@ const RULES: Rule[] = [
   },
 
   // ------------------------------------------------------------------
+  // Trial-status arithmetic reconciliation across sections. r34 audit
+  // found Exec Summary saying "54 are active or completed" when the
+  // By Status table showed 21 recruiting + 22 completed + 10 active-
+  // not-recruiting = 53 (with 1 Not Yet Recruiting dropped into the
+  // active/completed bucket). Compute the true active/completed count
+  // from the underlying data and reconcile against narrative claims.
+  // ------------------------------------------------------------------
+  {
+    id: 'trial-status-reconciles-across-sections',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const ACTIVE = new Set([
+        'active, not recruiting',
+        'recruiting',
+        'enrolling by invitation',
+        'completed',
+      ])
+      const NOT_YET = new Set(['not yet recruiting', 'approved for marketing'])
+      const activeCompleted = ctx.agentOutputs.trials.items.filter((t) =>
+        ACTIVE.has((t.study_status || '').toLowerCase().trim()),
+      ).length
+      const notYet = ctx.agentOutputs.trials.items.filter((t) =>
+        NOT_YET.has((t.study_status || '').toLowerCase().trim()),
+      ).length
+      // Look for "N are active or completed" narrative claims.
+      const pattern =
+        /(\d{1,4})\s+(?:linked )?(?:clinical )?trials?\s+are\s+active or completed/gi
+      let m: RegExpExecArray | null
+      while ((m = pattern.exec(ctx.markdown)) !== null) {
+        const claimed = parseInt(m[1], 10)
+        // If the narrative claims MORE than the true active/completed
+        // count, and the excess matches the not-yet count, they've
+        // incorrectly lumped NYR trials into "active or completed".
+        if (claimed === activeCompleted + notYet && notYet > 0) {
+          violations.push({
+            ruleId: 'trial-status-reconciles-across-sections',
+            severity: 'critical',
+            section: null,
+            offending: m[0],
+            message: `"${m[0]}" appears to lump ${notYet} "Not Yet Recruiting" trial(s) into "active or completed". True active/completed count is ${activeCompleted}; NYR is ${notYet}. Cite them separately.`,
+          })
+        } else if (claimed !== activeCompleted) {
+          violations.push({
+            ruleId: 'trial-status-reconciles-across-sections',
+            severity: 'critical',
+            section: null,
+            offending: m[0],
+            message: `"${m[0]}" doesn't reconcile with ${activeCompleted} active/completed trials in the underlying data.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // "hub" / "entry point" / "access node" framing near institution
+  // name. r34 flagged "MGH functions as a methodologically diverse hub"
+  // and "U2C infrastructure grants at MGH and Pittsburgh as collaboration
+  // entry points". Prescriptive-callout detection needs to include
+  // infrastructure/collaboration nouns.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-hub-entry-point-framing',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      // Look for "[hub|entry point|access node|resource node|gateway|on-ramp]"
+      // within 30 chars of an institution acronym/name.
+      const orgTokens =
+        '(?:UIUC|UConn|MGH|MIT|UCSF|UCLA|UC\\s+\\w+|Cornell|Harvard|Stanford|Johns\\s+Hopkins|Yale|Duke|Penn|Columbia|NYU|MSKCC|Mayo|Broad|Vanderbilt|Fred\\s+Hutch|Dana-?Farber|Sloan\\s+Kettering|Weill|Beckman|City\\s+of\\s+Hope|Baylor|Pittsburgh)'
+      const framingTokens =
+        '(?:hub|entry\\s+point|entry\\s+points|access\\s+node|access\\s+nodes|resource\\s+node|resource\\s+nodes|gateway|on-ramp|portal)'
+      const orgFirst = new RegExp(`${orgTokens}[\\s\\S]{0,60}${framingTokens}`, 'i')
+      const framingFirst = new RegExp(`${framingTokens}[\\s\\S]{0,60}${orgTokens}`, 'i')
+      const m1 = ctx.markdown.match(orgFirst)
+      if (m1) {
+        violations.push({
+          ruleId: 'no-hub-entry-point-framing',
+          severity: 'warning',
+          section: null,
+          offending: m1[0].slice(0, 120),
+          message: `Institution name + hub/entry-point framing detected: "${m1[0].slice(0, 80)}...". Rewrite as factual concentration without the "hub" / "entry point" modifier.`,
+        })
+      } else {
+        const m2 = ctx.markdown.match(framingFirst)
+        if (m2) {
+          violations.push({
+            ruleId: 'no-hub-entry-point-framing',
+            severity: 'warning',
+            section: null,
+            offending: m2[0].slice(0, 120),
+            message: `Hub/entry-point + institution framing detected: "${m2[0].slice(0, 80)}...". Rewrite as factual concentration.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // "structural [claim-noun]" - the modifier implies a permanent
+  // property the sample can't support. r34 flagged "structural
+  // competitive risks that could reshape the field" in Market Context.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-structural-modifier',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      // Post-render substitution should have stripped these. If the
+      // regex still fires, either the substitution missed a variant or
+      // the input is stale.
+      const pattern =
+        /\bstructural(?:ly)?\s+(competitive risks?|shifts?|changes?|risks?|barriers?|advantages?|dynamics?|underfunding)\b/i
+      const m = ctx.markdown.match(pattern)
+      if (m) {
+        violations.push({
+          ruleId: 'no-structural-modifier',
+          severity: 'warning',
+          section: null,
+          offending: m[0],
+          message: `"structural" modifier applied to a field-level claim ("${m[0]}"). Drop "structural" - a market-context observation can't support the permanence implied by that modifier.`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Org table caption "Top N of M" must match actual rendered row
+  // count. r34 audit claimed the caption said "Top 15" while table
+  // listed 14 rows. Compute actual rows by counting pipe-delimited
+  // rows under the "## Key Organizations" section and verify N matches.
+  // ------------------------------------------------------------------
+  {
+    id: 'org-table-caption-matches-rows',
+    severity: 'warning',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const body = sections.get('Key Organizations') || ''
+      if (!body) return violations
+      const captionMatch = body.match(
+        /\*Top\s+(\d+)\s+of\s+(\d+)\s+funded organizations/i,
+      )
+      if (!captionMatch) return violations
+      const captionN = parseInt(captionMatch[1], 10)
+      // Count table data rows (skip header + divider).
+      const rowLines = body
+        .split('\n')
+        .filter((l) => l.trim().startsWith('|') && !l.includes('---'))
+      // Subtract 1 for the header row.
+      const actualRows = Math.max(0, rowLines.length - 1)
+      if (captionN !== actualRows) {
+        violations.push({
+          ruleId: 'org-table-caption-matches-rows',
+          severity: 'warning',
+          section: 'Key Organizations',
+          offending: `caption says Top ${captionN} but ${actualRows} row(s) rendered`,
+          message: `Org table caption "Top ${captionN} of ${captionMatch[2]}" doesn't match ${actualRows} rendered rows. Fix caption to match.`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Named commercial products cited single-sided. r34 flagged DELFI
+  // presented as "planned prospective validation particularly well-
+  // timed" without acknowledging real-world specificity/PPV concerns.
+  // Detect named MCED/liquid-biopsy products and check whether the
+  // surrounding text acknowledges any negative-side language.
+  // ------------------------------------------------------------------
+  {
+    id: 'named-product-single-sided',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const products = [
+        'DELFI',
+        'DELFI Diagnostics',
+        'Galleri',
+        'GRAIL Galleri',
+        'Shield',
+        'Guardant Shield',
+        'Freenome',
+        'Cologuard',
+        'Signatera',
+        'MRDetect',
+      ]
+      const positiveTokens =
+        /(well-timed|positive|robust|strong performance|approved|breakthrough|leading|first-in-class|validated|state-of-the-art)/i
+      const negativeAckTokens =
+        /(specificity|ppv|coverage denial|coverage denials|caveat|missed(?:\s+primary)?|primary endpoint|underperform|scrutiny|concerns?|delay|delayed|pma|challenges?|still developing|remains? developing|unresolved)/i
+      for (const product of products) {
+        const escaped = product.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        const re = new RegExp(`\\b${escaped}\\b`, 'gi')
+        let m: RegExpExecArray | null
+        while ((m = re.exec(ctx.markdown)) !== null) {
+          // Look at a 400-char window around the match.
+          const start = Math.max(0, m.index - 200)
+          const end = Math.min(ctx.markdown.length, m.index + 200)
+          const window = ctx.markdown.slice(start, end)
+          if (positiveTokens.test(window) && !negativeAckTokens.test(window)) {
+            violations.push({
+              ruleId: 'named-product-single-sided',
+              severity: 'warning',
+              section: null,
+              offending: window.slice(150, 250),
+              message: `Named product "${product}" cited with positive framing but no acknowledgment of specificity/PPV/coverage concerns within 200-char window. Either cite both sides or restrict mention to factual description.`,
+            })
+            // One violation per product is enough to flag; move on.
+            break
+          }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Prescriptive institution callouts: telling readers to
   // engage/reach/target a named org.
   // ------------------------------------------------------------------
