@@ -235,7 +235,16 @@ interface UsageTracker {
  * Public entry point. Returns the corrected markdown (or the original
  * if no retries fired or all attempts failed). Never throws — retry
  * failures degrade to log-and-ship.
+ *
+ * Time budget: sections retry in parallel with a per-call timeout of
+ * PER_CALL_TIMEOUT_MS AND an overall wall-clock cap of TOTAL_BUDGET_MS.
+ * The first stuck e8df0ae0 report timed out at 5min because sections
+ * ran sequentially with no per-call timeout — a single hung Anthropic
+ * request could stall the whole synthesis past Vercel's 300s ceiling.
  */
+const PER_CALL_TIMEOUT_MS = 60_000
+const TOTAL_BUDGET_MS = 90_000
+
 export async function applyLintCorrections(
   markdown: string,
   violations: LintViolation[],
@@ -249,9 +258,20 @@ export async function applyLintCorrections(
   )
 
   const client = new Anthropic()
-  let current = markdown
-  const sections = extractSections(current)
+  const sections = extractSections(markdown)
+  const startedAt = Date.now()
 
+  // Run all section corrections in parallel. Each is bounded by
+  // PER_CALL_TIMEOUT_MS; the whole batch is bounded by TOTAL_BUDGET_MS
+  // via Promise.race. Sections that miss the budget are dropped and
+  // the original text is kept for them.
+  interface CorrectionResult {
+    sectionName: string
+    corrected: string | null
+    violationCount: number
+  }
+
+  const correctionTasks: Promise<CorrectionResult>[] = []
   for (const [sectionName, sectionViolations] of grouped) {
     const target = sections.get(sectionName)
     if (!target) {
@@ -260,57 +280,105 @@ export async function applyLintCorrections(
       )
       continue
     }
-    // Skip if section is very short — likely not a real narrative
-    // section (could be a boilerplate header we haven't accounted for).
     if (target.text.length < 100) {
       console.warn(
         `[Lint Retry] Section "${sectionName}" is too short (${target.text.length} chars) - skipping`,
       )
       continue
     }
-    const prompt = buildCorrectionPrompt(sectionName, target.text, sectionViolations, topic)
-    try {
-      const response = await client.messages.create({
-        model: MODEL,
-        // Section rewrite - budget output at ~1.5x input to give the
-        // model room to breathe without allowing unbounded growth.
-        max_tokens: Math.min(8000, Math.max(2000, Math.floor(target.text.length / 3))),
-        messages: [{ role: 'user', content: prompt }],
-      })
-      usageTracker.inputTokens += response.usage.input_tokens
-      usageTracker.outputTokens += response.usage.output_tokens
-      const text = response.content.find((c) => c.type === 'text')
-      if (!text || text.type !== 'text') {
-        console.warn(`[Lint Retry] No text response for section "${sectionName}"`)
-        continue
-      }
-      let corrected = text.text.trim()
-      // Strip any accidental code-fence wrapper.
-      if (corrected.startsWith('```')) {
-        corrected = corrected.replace(/^```(?:markdown)?\s*\n?/, '').replace(/\n?```\s*$/, '').trim()
-      }
-      // Sanitize + reflow tags before splicing so we don't reintroduce
-      // gibberish or inline-tag violations from the correction pass.
-      corrected = normalizeConfidenceTagSpacing(sanitizeText(corrected, `retry:${sectionName}`))
-      if (!corrected || corrected.length < 100) {
-        console.warn(
-          `[Lint Retry] Correction for "${sectionName}" was empty or too short (${corrected.length} chars). Keeping original.`,
-        )
-        continue
-      }
-      // Sanity check: the correction should still start with the
-      // section heading. If not, prepend.
-      if (!corrected.startsWith(`## ${sectionName}`)) {
-        corrected = `## ${sectionName}\n\n${corrected}`
-      }
-      current = spliceSection(current, sectionName, corrected, sections)
-      console.log(
-        `[Lint Retry] Corrected section "${sectionName}" - ${sectionViolations.length} violation(s) addressed`,
+    correctionTasks.push(
+      correctOneSection(
+        client,
+        sectionName,
+        target.text,
+        sectionViolations,
+        topic,
+        usageTracker,
+      ),
+    )
+  }
+
+  if (correctionTasks.length === 0) return markdown
+
+  // Bound the total wait so a stuck request can't stall synthesis.
+  const budgetTimer = new Promise<CorrectionResult[]>((resolve) => {
+    setTimeout(() => {
+      console.warn(
+        `[Lint Retry] Total wall-clock budget of ${TOTAL_BUDGET_MS}ms exceeded - accepting partial results`,
       )
-    } catch (err) {
-      console.warn(`[Lint Retry] Correction for "${sectionName}" failed:`, err)
-      continue
-    }
+      resolve([])
+    }, TOTAL_BUDGET_MS)
+  })
+  const results = await Promise.race([
+    Promise.all(correctionTasks),
+    budgetTimer,
+  ])
+  const elapsed = Date.now() - startedAt
+  console.log(`[Lint Retry] Correction batch finished in ${elapsed}ms`)
+
+  // Splice corrected sections back. Do this against a fresh
+  // extractSections read so offsets stay valid as we mutate.
+  let current = markdown
+  for (const r of results) {
+    if (!r || !r.corrected) continue
+    const currentSections = extractSections(current)
+    current = spliceSection(current, r.sectionName, r.corrected, currentSections)
   }
   return current
+}
+
+/**
+ * Correct a single section. Returns the corrected text or null if the
+ * correction failed / was rejected / timed out.
+ */
+async function correctOneSection(
+  client: Anthropic,
+  sectionName: string,
+  sectionText: string,
+  sectionViolations: LintViolation[],
+  topic: string,
+  usageTracker: UsageTracker,
+): Promise<{ sectionName: string; corrected: string | null; violationCount: number }> {
+  const prompt = buildCorrectionPrompt(sectionName, sectionText, sectionViolations, topic)
+  try {
+    const response = await client.messages.create(
+      {
+        model: MODEL,
+        max_tokens: Math.min(8000, Math.max(2000, Math.floor(sectionText.length / 3))),
+        messages: [{ role: 'user', content: prompt }],
+      },
+      { timeout: PER_CALL_TIMEOUT_MS },
+    )
+    usageTracker.inputTokens += response.usage.input_tokens
+    usageTracker.outputTokens += response.usage.output_tokens
+    const text = response.content.find((c) => c.type === 'text')
+    if (!text || text.type !== 'text') {
+      console.warn(`[Lint Retry] No text response for section "${sectionName}"`)
+      return { sectionName, corrected: null, violationCount: sectionViolations.length }
+    }
+    let corrected = text.text.trim()
+    if (corrected.startsWith('```')) {
+      corrected = corrected
+        .replace(/^```(?:markdown)?\s*\n?/, '')
+        .replace(/\n?```\s*$/, '')
+        .trim()
+    }
+    corrected = normalizeConfidenceTagSpacing(sanitizeText(corrected, `retry:${sectionName}`))
+    if (!corrected || corrected.length < 100) {
+      console.warn(
+        `[Lint Retry] Correction for "${sectionName}" was empty or too short (${corrected.length} chars). Keeping original.`,
+      )
+      return { sectionName, corrected: null, violationCount: sectionViolations.length }
+    }
+    if (!corrected.startsWith(`## ${sectionName}`)) {
+      corrected = `## ${sectionName}\n\n${corrected}`
+    }
+    console.log(
+      `[Lint Retry] Corrected section "${sectionName}" - ${sectionViolations.length} violation(s) addressed`,
+    )
+    return { sectionName, corrected, violationCount: sectionViolations.length }
+  } catch (err) {
+    console.warn(`[Lint Retry] Correction for "${sectionName}" failed:`, err)
+    return { sectionName, corrected: null, violationCount: sectionViolations.length }
+  }
 }
