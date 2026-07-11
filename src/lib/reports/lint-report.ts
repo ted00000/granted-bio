@@ -200,6 +200,8 @@ const RULES: Rule[] = [
     check(ctx) {
       const patterns: Array<{ regex: RegExp; label: string }> = [
         { regex: /\ba clear gap exists\b/i, label: 'a clear gap exists' },
+        { regex: /\bclear\s+\w+\s+gap\b/i, label: 'clear [word] gap (e.g. "clear methodological gap", "clear point-of-care gap")' },
+        { regex: /\bclear\s+gap\s+in\b/i, label: 'clear gap in X' },
         { regex: /\bstructural underfunding\b/i, label: 'structural underfunding' },
         { regex: /\bstructurally underfunded\b/i, label: 'structurally underfunded' },
         {
@@ -357,8 +359,11 @@ const RULES: Rule[] = [
       // Check Next Steps + Strategic Implications for stray
       // concentration claims.
       const suspects = ['Next Steps', 'Patent Activity']
-      const concentrationPattern =
-        /\b(?:moderately concentrated|highly concentrated|fragmented)\b/i
+      // Widened per r32: catches "concentration pattern" as substring
+      // in addition to exact phrase matches. Any concentrat/fragment
+      // token in patent-adjacent sections when N<10 contradicts the
+      // insufficient-sample header.
+      const concentrationPattern = /(concentrat|fragment|consolidat)/i
       for (const sectionName of suspects) {
         const body = sections.get(sectionName) || ''
         // Allow the phrase inside the "Insufficient sample" explainer
@@ -583,8 +588,12 @@ const RULES: Rule[] = [
       const violations: LintViolation[] = []
       const patentCount = ctx.agentOutputs.patents.items.length
       if (patentCount >= 10) return violations
+      // Widened per r32 audit: catches "concentration pattern",
+      // "fragmented landscape", "consolidated view", etc. as substrings
+      // rather than requiring exact phrase match. When patents<10, no
+      // shape/distribution word is permissible in these sections.
       const shapePattern =
-        /\b(consolidated|distributed across|held across [\w\s]+ rather than|spread across)\b/i
+        /(consolidat|fragment|concentrat|distributed across|held across [\w\s]+ rather than|spread across)/i
       const suspects = ['Patent Activity', 'Research Positioning', 'Next Steps']
       for (const sectionName of suspects) {
         const body = sections.get(sectionName) || ''
@@ -838,8 +847,10 @@ const RULES: Rule[] = [
     check(ctx) {
       const violations: LintViolation[] = []
       const OUTLIER = 5
+      // Whole-word patterns (r32 audit fix). Previous substring
+      // /methylation/i matched "Hydroxymethylation" - false positive.
       const GENERIC =
-        /machine learning|artificial intelligence|deep learning|neural network|methylation|exosome|computational|bioinformatic|statistical|\bml\b|\bai\b/i
+        /\b(machine learning|artificial intelligence|deep learning|neural networks?|methylation|exosomes?|computational|bioinformatics?|statistical|ml|ai)\b/i
       for (const dim of ctx.whiteSpace.dimensions) {
         const vals = dim.categories
           .map((c) => c.broaderNihCount)
@@ -1141,6 +1152,76 @@ const RULES: Rule[] = [
             })
             break
           }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // "N terminations" count-label mismatch. r32 audit found narrative
+  // saying "15 trial terminations" when the Status table showed
+  // 10 Terminated + 4 Suspended + 1 Withdrawn = 15 in total, but
+  // "terminations" specifically maps to the Terminated status alone.
+  // ------------------------------------------------------------------
+  {
+    id: 'terminations-count-label-mismatch',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const terminatedOnly = ctx.agentOutputs.trials.items.filter(
+        (t) => (t.study_status || '').toLowerCase().trim() === 'terminated',
+      ).length
+      // Look for "N trial terminations" or "N terminations" claims.
+      const pattern = /(\d{1,4})\s+(?:trial\s+)?terminations?\b/gi
+      let m: RegExpExecArray | null
+      while ((m = pattern.exec(ctx.markdown)) !== null) {
+        const claimed = parseInt(m[1], 10)
+        if (claimed !== terminatedOnly) {
+          violations.push({
+            ruleId: 'terminations-count-label-mismatch',
+            severity: 'warning',
+            section: null,
+            offending: m[0],
+            message: `"${m[0]}" but only ${terminatedOnly} trials have study_status=Terminated. The other status labels (Suspended, Withdrawn) are different — say "terminated/suspended/withdrawn" if that's the combined bucket.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Non-exclusive share double-count: "collectively represent X%" from
+  // a sum of non-exclusive rows is arithmetically wrong. Detect
+  // "collectively represent \d+%" or "top N categories hold M/K"
+  // in coverage-table-adjacent context.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-nonexclusive-share-double-count',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const patterns: Array<{ regex: RegExp; label: string }> = [
+        {
+          regex: /\bcollectively represent\s+(?:approximately\s+|roughly\s+|about\s+)?\d+(?:\.\d+)?%\s+of the (?:\d+-project |)sample\b/i,
+          label: 'collectively represent X% of the sample',
+        },
+        {
+          regex: /\btop\s+\d+\s+categories\s+(?:hold|represent|account for)\s+\d+\/\d+\s+matched\b/i,
+          label: 'top N categories hold M/K matched projects',
+        },
+      ]
+      for (const { regex, label } of patterns) {
+        const match = ctx.markdown.match(regex)
+        if (match) {
+          violations.push({
+            ruleId: 'no-nonexclusive-share-double-count',
+            severity: 'critical',
+            section: 'White Space Analysis',
+            offending: match[0],
+            message: `"${label}" summed non-exclusive category rows. Coverage table rows overlap (a project can appear in multiple categories); their sum expressed as a share is a double-count.`,
+          })
         }
       }
       return violations

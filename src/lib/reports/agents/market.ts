@@ -83,8 +83,10 @@ OTHER RULES:
 - Only include information you actually found via search.
 - Each entry in recentDevelopments must be prefixed with YYYY-MM for transparency about recency.
 - **DATE PREFIX INTEGRITY.** The YYYY-MM prefix MUST match the actual event date described in the entry. If the entry describes an event at ASCO 2026 in May, the prefix is 2026-05, not 2025-05. Before returning a recentDevelopments item, verify the year/month in the prefix matches the year/month in the description text. A mismatched prefix (e.g. "2025-05: filed at ASCO 2026") reads as an error and destroys credibility. Today is ${today} — no valid entry can be prefixed with a date later than today.
+- **TWO-POINT TREND HEDGE.** If your overview or competitiveLandscape mentions two consecutive years of NIH funding side-by-side (e.g. "FY2024 $38.9M and FY2025 $49.6M"), you MUST append the hedge "though two data points do not establish a trend" (or equivalent) in the same sentence. Do NOT write "suggesting sustained and expanding public commitment", "signals growth", "reflects momentum" - those are trend claims and 2 data points can't support them. This rule holds for every field in this response, not just the numbers-dominant paragraphs.
 - If search returned no useful information for a field, use null or [].
 - FORMATTING: Do NOT use em dashes. Use regular hyphens.
+- **BANNED FIELD-LEVEL "CLEAR GAP" ABSOLUTES.** Do not write "clear methodological gap", "clear point-of-care gap", "clear [any] gap", "a clear gap exists", "structural underfunding". Rewrite as observation-in-sample: "within the analyzed sample, X is thinly represented."
 
 CLINICAL-RESULT HONESTY (critical — do not skip):
 When you mention a specific clinical trial or product's Phase results, cite BOTH positive AND negative findings if the search surfaces them. A domain expert catches a report that mentions the positives of Trial A without acknowledging Trial B (same product, different study) that missed its primary endpoint. Examples of the specific type of framing to use:

@@ -373,7 +373,7 @@ SAMPLE-BASED LANGUAGE (still required):
 - Acknowledge NIH-linked scope where it materially affects the reading
 
 **BANNED FIELD-LEVEL ABSOLUTES.** These phrases assert facts about the whole field that the NIH-linked sample cannot support (private industry cfDNA work, ex-US research, and non-NIH federal funding are structurally invisible). Do NOT use:
-- "a clear gap exists" / "clear gap in X"
+- "a clear gap exists" / "clear gap in X" / "clear methodological gap" / "clear point-of-care gap" / any "clear [adjective] gap" or "clear gap in [X]" construction. Rewrite as "within the analyzed sample, X is sparse" or "the sample shows thin representation of X"
 - "structural underfunding" / "structurally underfunded"
 - "the field has abandoned X" / "X is neglected in the field"
 - "unmet need" as a field-level claim (fine inside a quoted clinical unmet-need reference)
@@ -532,6 +532,7 @@ CRITICAL DATA-GROUNDING RULE:
 - Never say "no projects on X" or "only one project on Y" unless the FULL PROJECT LIST actually shows that. Prefer qualitative framing ("relatively underrepresented in the sample") when the count is nonzero but small.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 TWO-POINT TREND HEDGE - REQUIRED: If the funding insight cites two consecutive FY dollar figures side-by-side (e.g. "FY2024 $X and FY2025 $Y"), you MUST append "though two data points do not establish a trend" or equivalent hedge in the SAME sentence. Do NOT write "suggests growing NIH commitment", "signals increased investment", "reflects a rising trajectory" - those are trend claims and 2 data points can't support them. This hedge is not optional prose polish; it's a factual constraint.
@@ -703,6 +704,7 @@ SAMPLE-BASED LANGUAGE: This covers NIH-linked data only, not complete market IP/
 - Acknowledge limitations while providing actionable insight
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
@@ -772,6 +774,7 @@ SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this
 - Acknowledge this represents publicly-funded academic research primarily
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 DESCRIPTIVE vs PRESCRIPTIVE — read carefully.
@@ -923,6 +926,7 @@ SAMPLE-BASED LANGUAGE: NIH data represents publicly-funded academic research. Us
 - Acknowledge NIH sample doesn't capture private/industry R&D
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 Return JSON only:
@@ -1018,6 +1022,7 @@ For each, explain WHY it matters. Consider:
 SAMPLE-BASED LANGUAGE: These are publications linked to NIH-funded projects in our sample. Use language like "among the linked publications" rather than claiming these are the definitive papers in the field.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 Return JSON only (array of 3-5 items). Use the EXACT PMID strings from the
@@ -1278,6 +1283,7 @@ CRITICAL — STATISTICAL HONESTY: When a denominator is small, the percentage is
 - **TWO-POINT FUNDING TREND HEDGE — applies to strategicImplications especially.** If you cite two years of funding side-by-side (e.g. FY2024 vs FY2025), you MUST NOT describe the change as "a clear upward trajectory", "accelerating funding", "sustained growth", or any other trend language. Two data points do not establish a trend. Say "FY2024 to FY2025 rose from $Xm to $Ym in the sample, though two data points do not establish a trend" or similar. This rule holds for every field in this response, INCLUDING strategicImplications — a single hedge in the narrative doesn't license a dropped hedge in the strategic take.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
@@ -1467,6 +1473,7 @@ SAMPLE-BASED LANGUAGE: This analysis covers NIH-funded academic research. Use he
 - Commercial players may exist outside NIH-linked data; acknowledge this limitation
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
@@ -1686,6 +1693,7 @@ SAMPLE-BASED LANGUAGE: CRITICAL - These are only patents linked to NIH projects,
 - Explicitly note that commercial/international patents may exist outside this sample
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
@@ -1840,6 +1848,7 @@ For each project, generate a 2-3 sentence insight explaining:
 Be specific and analytical. Reference the project's actual methods or focus when possible.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 Return JSON only (object mapping application_id to insight string):
@@ -2607,19 +2616,24 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
     // regardless of the ratio math. r30 audit surfaced "machine learning"
     // at 23 broader-NIH — the ratio didn't dagger, but the term itself is
     // a canonical generic-prevalence trap.
+    // Whole-word matching (r32 audit fix): previous substring rules
+    // false-flagged "Hydroxymethylation" and "Methylation-Specific
+    // Assays" as generic because "methylation" was a substring. Now
+    // each pattern requires a word boundary so only the standalone
+    // term matches.
     const GENERIC_TERM_PATTERNS = [
-      /machine learning/i,
+      /\bmachine learning\b/i,
       /\bml\b/i,
-      /artificial intelligence/i,
+      /\bartificial intelligence\b/i,
       /\bai\b/i,
-      /deep learning/i,
-      /neural network/i,
-      /biomarker(?!.*discovery)/i, // "biomarker" alone but not "biomarker discovery"
-      /computational/i,
-      /bioinformatic/i,
-      /statistical/i,
-      /methylation/i,
-      /exosome/i,
+      /\bdeep learning\b/i,
+      /\bneural networks?\b/i,
+      /\bbiomarkers?\b(?!.*(?:discovery|panel|specific))/i,
+      /\bcomputational\b/i,
+      /\bbioinformatics?\b/i,
+      /\bstatistical\b/i,
+      /\bmethylation\b/i, // "DNA Methylation" yes; "Hydroxymethylation" no
+      /\bexosomes?\b/i,
     ]
     const nameLooksGeneric = (name: string): boolean =>
       GENERIC_TERM_PATTERNS.some((r) => r.test(name))
@@ -2627,8 +2641,14 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
     const isKeywordArtifact = (cat: (typeof dim.categories)[number]): boolean => {
       const n = cat.broaderNihCount
       if (n <= 0 || n === -1) return false
-      // Signal 2: generic-term name.
-      if (nameLooksGeneric(cat.name)) return true
+      // Generic-term name AND meaningful count (>= 5x median OR
+      // absolute count >= 15). Prevents daggering categories with
+      // generic names but tiny counts (Hydroxymethylation=4, etc).
+      if (nameLooksGeneric(cat.name)) {
+        if (medianBroader > 0 && n / medianBroader >= OUTLIER_MULTIPLE) return true
+        if (n >= 15) return true
+        return false
+      }
       // Signal 1: ratio to median.
       if (medianBroader > 0 && n / medianBroader >= OUTLIER_MULTIPLE) return true
       // Signal 3: gap to next-largest peers. If this is the max and it's
