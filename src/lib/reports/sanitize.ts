@@ -21,11 +21,17 @@ export function sanitizeText(raw: unknown, contextLabel = 'text'): string {
   for (const token of tokens) {
     const lower = token.toLowerCase()
 
-    // Signal 1: all-consonant tokens >=5 chars. Real English words
-    // >4 chars almost always contain a vowel.
-    if (lower.length >= 5 && !/[aeiouy]/.test(lower)) {
+    // Signal 1: all-consonant tokens >=7 chars (raised from 5 after r33
+    // smoke-test surfaced NSCLC as a false positive). Legit biomedical
+    // acronyms sit in the 3-6 char range (NSCLC, SCLC, HCC, RNA, DNA,
+    // cfDNA, ctDNA, MRD, ML, AI, LC-MS, mAb, EGFR, KRAS, HER2, PDL1);
+    // gibberish tokens from LLM corruption were 8+ chars in the r29
+    // incident ("bifldttiifillhih", "dttibiltfhthbd"). Raising to 7
+    // eliminates the acronym false-positive class while still catching
+    // corruption.
+    if (lower.length >= 7 && !/[aeiouy]/.test(lower)) {
       console.warn(
-        `[Sanitize] Rejected ${contextLabel} - all-consonant token "${token}". Preview:`,
+        `[Sanitize] Rejected ${contextLabel} - all-consonant token "${token}" (${lower.length} chars). Preview:`,
         text.slice(0, 160),
       )
       return ''

@@ -167,14 +167,16 @@ export async function synthesizeReport(
   const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights, whiteSpace, surprisingFindings, nextSteps)
 
   // Run the deterministic report linter against the assembled markdown.
-  // Log-and-ship mode: violations logged to console for review, but
-  // report ships anyway. Once the false-positive rate settles near
-  // zero, we can escalate specific rules to block-and-retry. See
-  // src/lib/reports/lint-report.ts for the rule set.
+  // If critical violations fire and any are retry-eligible, attempt one
+  // LLM correction pass (section-scoped) to fix them, then re-lint. If
+  // violations remain after retry, log and ship. See ./lint-retry.ts
+  // for correction machinery and ./lint-report.ts for the rule set.
+  let finalMarkdown = markdownContent
   try {
     const { lintReport, formatViolations, partitionViolations } = await import('./lint-report')
-    const violations = lintReport({
-      markdown: markdownContent,
+    const { applyLintCorrections } = await import('./lint-retry')
+    let violations = lintReport({
+      markdown: finalMarkdown,
       agentOutputs,
       fundingStats: context.fundingStats,
       topResearchers: context.topResearchers,
@@ -184,15 +186,49 @@ export async function synthesizeReport(
       const { critical, warnings } = partitionViolations(violations)
       console.warn(formatViolations(violations))
       console.warn(
-        `[Report Linter] Summary: ${critical.length} critical, ${warnings.length} warning(s). Report shipping (log-and-ship mode).`,
+        `[Report Linter] Initial pass: ${critical.length} critical, ${warnings.length} warning(s).`,
       )
+      // If any critical violations fired, attempt a single retry pass.
+      // applyLintCorrections rewrites section-scoped violations via
+      // targeted LLM calls; body-wide violations already handled by
+      // post-render substitution are skipped.
+      if (critical.length > 0) {
+        const corrected = await applyLintCorrections(
+          finalMarkdown,
+          violations,
+          topic,
+          usageTracker,
+        )
+        if (corrected !== finalMarkdown) {
+          finalMarkdown = corrected
+          // Re-lint against the corrected markdown. Log the delta.
+          const post = lintReport({
+            markdown: finalMarkdown,
+            agentOutputs,
+            fundingStats: context.fundingStats,
+            topResearchers: context.topResearchers,
+            whiteSpace,
+          })
+          const postPart = partitionViolations(post)
+          console.log(
+            `[Report Linter] After retry: ${postPart.critical.length} critical (was ${critical.length}), ${postPart.warnings.length} warning(s) (was ${warnings.length}).`,
+          )
+          if (post.length > 0) {
+            console.warn(formatViolations(post))
+          }
+          violations = post
+        }
+      }
     } else {
-      console.log('[Report Linter] All rules passed.')
+      console.log('[Report Linter] All rules passed on first pass.')
     }
   } catch (err) {
     // Linter should never break report generation. Log and continue.
     console.warn('[Report Linter] Failed to run:', err)
   }
+  // Rebind markdownContent to the corrected version for downstream
+  // consumers (DB write, return value).
+  const finalMarkdownContent = finalMarkdown
 
   // Log cumulative API usage for billing
   console.log(`[Synthesis Agent] Total API usage: ${usageTracker.inputTokens} input, ${usageTracker.outputTokens} output tokens`)
@@ -214,7 +250,7 @@ export async function synthesizeReport(
     publications: agentOutputs.publications.items,
     topOrganizations: context.topOrganizations,
     topResearchers: context.topResearchers,
-    markdownContent,
+    markdownContent: finalMarkdownContent,
     persona,
     signalsAnalysis,
     curatedPublications,
