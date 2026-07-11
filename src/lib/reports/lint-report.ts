@@ -774,6 +774,175 @@ const RULES: Rule[] = [
   },
 
   // ------------------------------------------------------------------
+  // What Surprised Us: every finding must contain a Confidence tag.
+  // r30 audit found findings with Evidence: line but no Confidence tag.
+  // ------------------------------------------------------------------
+  {
+    id: 'surprising-findings-need-confidence-tag',
+    severity: 'critical',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const body = sections.get('What Surprised Us') || ''
+      if (!body) return violations
+      // Split into finding blocks — each starts with "**N. headline**".
+      const blocks = body.split(/\n(?=\*\*\d+\.\s)/).slice(1)
+      blocks.forEach((block, i) => {
+        if (!/\*\*Confidence:\s*(High|Medium|Low)\*\*/.test(block)) {
+          violations.push({
+            ruleId: 'surprising-findings-need-confidence-tag',
+            severity: 'critical',
+            section: 'What Surprised Us',
+            offending: `Finding #${i + 1}`,
+            message: `What Surprised Us finding #${i + 1} carries an Evidence line but no Confidence tag.`,
+          })
+        }
+      })
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Gap-signal floor enforcement: no numbered Coverage Gap Signal
+  // should be built on broader-NIH < 30. r30 audit surfaced two.
+  // ------------------------------------------------------------------
+  {
+    id: 'gap-signal-floor-enforced',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const belowFloor = ctx.whiteSpace.topOpportunities.filter(
+        (op) => op.broaderNihCount >= 0 && op.broaderNihCount < 30,
+      )
+      belowFloor.forEach((op) => {
+        violations.push({
+          ruleId: 'gap-signal-floor-enforced',
+          severity: 'critical',
+          section: 'White Space Analysis',
+          offending: `${op.categoryName} (broader-NIH=${op.broaderNihCount})`,
+          message: `Coverage Gap Signal "${op.categoryName}" sits at broader-NIH ${op.broaderNihCount}, below the 30-project floor. rankOpportunities should have excluded it.`,
+        })
+      })
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Dagger presence per-dimension: any category >=5x dim median (or
+  // matching generic terms) should be daggered in the rendered
+  // markdown. This catches a case where the render code's dagger
+  // logic diverges from the linter's.
+  // ------------------------------------------------------------------
+  {
+    id: 'dagger-applied-when-required',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const OUTLIER = 5
+      const GENERIC =
+        /machine learning|artificial intelligence|deep learning|neural network|methylation|exosome|computational|bioinformatic|statistical|\bml\b|\bai\b/i
+      for (const dim of ctx.whiteSpace.dimensions) {
+        const vals = dim.categories
+          .map((c) => c.broaderNihCount)
+          .filter((n) => n > 0 && n !== -1)
+          .sort((a, b) => a - b)
+        if (vals.length === 0) continue
+        const mid = Math.floor(vals.length / 2)
+        const median =
+          vals.length % 2 === 0 ? (vals[mid - 1] + vals[mid]) / 2 : vals[mid]
+        for (const cat of dim.categories) {
+          if (cat.broaderNihCount <= 0 || cat.broaderNihCount === -1) continue
+          const ratioTrigger = median > 0 && cat.broaderNihCount / median >= OUTLIER
+          const genericTrigger = GENERIC.test(cat.name)
+          if (!ratioTrigger && !genericTrigger) continue
+          // The rendered row for this category should contain "[†]".
+          // We check the markdown for a line containing the category
+          // name AND [†]. Rough but catches the common cases.
+          const escaped = cat.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+          const rowPattern = new RegExp(`\\|\\s*${escaped}\\s*\\|[^\\n]*\\[†\\]`, 'i')
+          if (!rowPattern.test(ctx.markdown)) {
+            violations.push({
+              ruleId: 'dagger-applied-when-required',
+              severity: 'warning',
+              section: `White Space: ${dim.name}`,
+              offending: `${cat.name} (broader-NIH=${cat.broaderNihCount}, ${ratioTrigger ? `${(cat.broaderNihCount / median).toFixed(1)}x median` : 'generic term'})`,
+              message: `Category "${cat.name}" qualifies for a [†] dagger but isn't marked in the rendered table.`,
+            })
+          }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Forward-looking "will [verb]" absolutes.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-forward-will-absolutes',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const pattern =
+        /\bwill (pressure|force|drive|increase|accelerate|require|shift)\b/gi
+      let m: RegExpExecArray | null
+      let count = 0
+      while ((m = pattern.exec(ctx.markdown)) !== null) {
+        count++
+        if (count > 3) break
+        violations.push({
+          ruleId: 'no-forward-will-absolutes',
+          severity: 'warning',
+          section: null,
+          offending: m[0],
+          message: `Forward-looking absolute "${m[0]}". Use "is likely to ${m[1]}", "may ${m[1]}", or drop the future tense.`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // IP breadth/multiplicity claims when patents < 10.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-ip-breadth-claims-insufficient-sample',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const patentCount = ctx.agentOutputs.patents.items.length
+      if (patentCount >= 10) return violations
+      const patterns: Array<{ regex: RegExp; label: string }> = [
+        { regex: /\bbreadth of (methods|approaches)\b/i, label: 'breadth of methods/approaches' },
+        {
+          regex: /\bmultiple independent (patent families|technical approaches)\b/i,
+          label: 'multiple independent patent families/approaches',
+        },
+        {
+          regex: /\bpursued across multiple\b/i,
+          label: 'pursued across multiple',
+        },
+        {
+          regex: /\brather than converging\b/i,
+          label: 'rather than converging',
+        },
+      ]
+      for (const { regex, label } of patterns) {
+        const match = ctx.markdown.match(regex)
+        if (match) {
+          violations.push({
+            ruleId: 'no-ip-breadth-claims-insufficient-sample',
+            severity: 'critical',
+            section: 'Patent Activity',
+            offending: match[0],
+            message: `IP breadth claim "${label}" with only ${patentCount} linked patents. Sample can't support breadth/convergence inferences.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Prescriptive institution callouts: telling readers to
   // engage/reach/target a named org.
   // ------------------------------------------------------------------

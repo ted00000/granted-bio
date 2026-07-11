@@ -909,6 +909,13 @@ function rankOpportunities(
       const BROADER_FLOOR_ABSENT = 30
       const BROADER_FLOOR_SPARSE = 30
 
+      // Hard floor: NO gap signal ranked when broader-NIH < 30. Applies
+      // to every signal type including sparse-in-topic. r30 audit
+      // flagged two ranked signals sitting below the floor (6 and 23)
+      // that were caveated but still numbered — a caveated gap-signal
+      // reads as a gap to the skim reader. Hard-block instead.
+      if (broaderCount < 30 && broaderCount !== -1) continue
+
       if (cat.projectCount === 0 && broaderCount >= BROADER_FLOOR_ABSENT) {
         // Not in the topic slice at all, but present in broader NIH portfolio
         signal = 'absent-in-topic'

@@ -333,12 +333,14 @@ Return exactly this shape:
   "findings": [
     {
       "headline": "<use the detector's headline verbatim OR minimally rephrase for readability>",
-      "interpretation": "2-3 sentences on why this matters and what a reader should take from it",
+      "interpretation": "2-3 sentences on why this matters and what a reader should take from it, ENDING WITH a confidence tag in the exact format '**Confidence: Low** - Evidence: [1-line concrete count reference]'. Confidence should be Low for aggregate anomaly findings on small topic-sample counts (that's the honest default here); use Medium only if the finding rests on 15+ items across independent evidence streams.",
       "evidence": "<use the detector's evidence line verbatim>",
       "category": "<use the detector's category verbatim>"
     }
   ]
 }
+
+CONFIDENCE TAG REQUIRED: Every finding's interpretation field MUST end with the '**Confidence: Low/Medium/High** - Evidence: ...' tag on its own final sentence. If you don't include the tag, the rendering layer will auto-append a Low tag anyway, but the interpretation reads more coherent when you include it.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.`
 

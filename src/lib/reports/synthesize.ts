@@ -380,7 +380,7 @@ SAMPLE-BASED LANGUAGE (still required):
 
 Rewrite as observation-in-sample language: "Within the analyzed sample, non-plasma biofluids are sparse relative to their biological rationale" or "represents a low share of sample projects (X of Y); whether this reflects true underfunding or NIH-linked scope is not resolvable from this dataset." The observation is fine; the field-level verdict is not.
 
-**BANNED FORWARD-LOOKING ABSOLUTES on market/regulatory dynamics.** Do NOT write "will pressure", "will force", "will drive" for future outcomes derived from current events. Use "is likely to", "may pressure", "creates pressure for" — matching the same hedge convention the report applies to funding trends and clinical readouts.
+**BANNED FORWARD-LOOKING ABSOLUTES on market/regulatory/scientific dynamics.** Do NOT write "will pressure", "will force", "will drive", "will increase", "will accelerate", "will require", "will shift", or any similar future-tense absolute for outcomes derived from current events. Use "is likely to", "may pressure", "could shift", "creates pressure for" - matching the same hedge convention the report applies to funding trends and clinical readouts. Rule: any bare future-tense verb ("will ...") applied to an outcome not yet observed = fail. If you must write about a future state, use "is likely to" or "may" as the modal.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences.`
 
@@ -1657,7 +1657,15 @@ async function generateIPLandscapeAssessment(
   const IP_LABEL_MIN_N = 10
   const insufficientSample = totalPatents < IP_LABEL_MIN_N
   const insufficientSampleRule = insufficientSample
-    ? `\n**INSUFFICIENT-SAMPLE MODE - ${totalPatents} linked patents (below ${IP_LABEL_MIN_N} threshold).** In this mode you MUST NOT use ANY of these words or phrases to describe the landscape shape in narrative or strategicImplications: "fragmented", "concentrated", "moderately concentrated", "highly concentrated", "consolidated", "distributed across", "spread across", "held across ... rather than", "diverse but institutionally", "diverse but", or any construction that implies a distribution SHAPE (fragmented vs consolidated is a spectrum; any point on that spectrum is off-limits when the sample can't support the read). The Patent section header will show "Insufficient sample to characterize"; any distribution-shape claim in your narrative directly contradicts that. Instead describe what the sample contains as descriptors of THIS SAMPLE ("the ${totalPatents} linked patents span N assignees across Y technical areas"), NOT as a shape claim about the field. Strategic implications must frame IP-related actions as "run a full USPTO/Google Patents/PATENTSCOPE search" — never as "align with the [shape] IP base."\n`
+    ? `\n**INSUFFICIENT-SAMPLE MODE - ${totalPatents} linked patents (below ${IP_LABEL_MIN_N} threshold).** In this mode you MUST NOT use ANY of these words, phrases, or construction patterns anywhere in narrative, freedomToOperate, or strategicImplications:
+- Shape words: "fragmented", "concentrated", "moderately concentrated", "highly concentrated", "consolidated", "converged", "converging"
+- Distribution phrases: "distributed across", "spread across", "held across ... rather than", "diverse but institutionally", "diverse but", "diverse landscape", "wide range of"
+- Breadth/multiplicity phrases: "breadth of methods", "breadth of approaches", "multiple independent patent families", "multiple independent technical approaches", "multiple approaches rather than", "pursued across multiple", "across multiple ... approaches", "no single [dominant/preferred] method"
+- Any construction that INFERS a distribution SHAPE, BREADTH, or CONVERGENCE state (fragmented vs consolidated is a spectrum; any point on that spectrum is off-limits when the sample can't support the read). Saying "the patents span multiple technical areas rather than converging on one method" is a shape claim about breadth, banned. Saying "these ${totalPatents} patents include methylation, EV proteomics, CRISPR, and CTC methods" is a factual list of what's in the sample, allowed.
+
+The Patent section header will show "Insufficient sample to characterize"; any distribution/breadth/convergence claim directly contradicts that. Instead describe what the sample contains as literal descriptors of THIS SAMPLE ("the ${totalPatents} linked patents span N assignees across the following technical areas: ..."), NOT as a claim about how the field is organized.
+
+Strategic implications must frame IP-related actions as "run a full USPTO/Google Patents/PATENTSCOPE search" - never as "align with the [shape] IP base" or "clear multiple independent families."\n`
     : ''
 
   const prompt = `Analyze the IP landscape for "${topic}" based on patent data.
@@ -2334,6 +2342,23 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
   // by spaces) back to " - ".
   md = md.replace(/ {2,}- {2,}/g, ' - ').replace(/ +- +/g, ' - ')
 
+  // AI-tell post-render substitutions. Prompt-level ban across every
+  // narrative prompt but LLMs keep sneaking these in. Deterministic
+  // fix at the end of assembly so no banned phrase survives to the
+  // reader. r30 audit surfaced 4+ instances despite the ban.
+  //
+  // - "inflection point" -> "juncture" (crosses on their own)
+  // - "genuine [word]" -> "[word]" (drops the puffery modifier)
+  // - "underscore(s|d|ing)" -> "highlight(s|d|ing)" (equivalent meaning)
+  //
+  // Word-boundary anchored so we don't chew up unrelated tokens.
+  md = md.replace(/\binflection point\b/gi, 'juncture')
+  md = md.replace(/\bgenuine\s+(\w+)/gi, '$1')
+  md = md.replace(/\bunderscoring\b/gi, 'highlighting')
+  md = md.replace(/\bunderscored\b/gi, 'highlighted')
+  md = md.replace(/\bunderscores\b/gi, 'highlights')
+  md = md.replace(/\bunderscore\b/gi, 'highlight')
+
   return md
 }
 
@@ -2496,7 +2521,18 @@ function renderSurprisingFindings(findings: SurprisingFinding[]): string {
   findings.forEach((f, i) => {
     md += `**${i + 1}. ${f.headline}**\n\n`
     md += `${f.interpretation}\n\n`
-    md += `*Evidence: ${f.evidence}*\n\n`
+    // Confidence tag on What Surprised Us findings. Per §4 rubric,
+    // every substantive interpretive claim needs a Confidence tag.
+    // If the LLM interpretation already contains one, don't duplicate;
+    // otherwise append a Low tag (these findings are pattern-level
+    // observations on typically small topic-sample counts, so Low is
+    // the default honest read).
+    const hasTag = /\*\*Confidence:\s*(High|Medium|Low)\*\*/.test(f.interpretation)
+    if (!hasTag) {
+      md += `**Confidence: Low** - Evidence: ${f.evidence}\n\n`
+    } else {
+      md += `*Evidence: ${f.evidence}*\n\n`
+    }
   })
   return md
 }
@@ -2543,25 +2579,74 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
     const broaderHeader = ws.broaderNihScopeLabel
       ? `Broader NIH (${ws.broaderNihScopeLabel})`
       : 'Broader NIH'
-    // Keyword-artifact detection: if a category's broader-NIH count is
-    // dramatically higher than the median of other categories in the
-    // same dimension, that outlier is very likely picking up generic
-    // keyword prevalence (e.g., "methylation" matches thousands of
-    // NIH projects across all of cancer biology) rather than topic-
-    // specific activity. Mark it with a footnote-style flag so the
-    // reader knows not to anchor coverage inferences on it. Threshold
-    // chosen from the r28 audit case where "methylation" (389) and
-    // "exosome" (416) were 10-40x every other analyte's broader count.
-    const validBroader = dim.categories
+    // Keyword-artifact detection. Three signals, any of which flags a
+    // category's broader-NIH cell with a [†] dagger:
+    //   1. Broader count >= 5x the dimension median (tightened from 10x
+    //      after Opus r30 flagged ML at 23 vs median 2 = 11.5x, but my
+    //      previous median calc used upper-middle for even-length arrays
+    //      and computed median=8 not 2, missing the flag).
+    //   2. Category name matches a curated generic-term list. Some
+    //      keywords ("machine learning", "biomarker", "statistical")
+    //      match huge swaths of biomedical research REGARDLESS of ratio,
+    //      because they're broad by nature. Curated list forces the
+    //      dagger for those regardless of the median comparison.
+    //   3. Broader count is more than 2x the sum of the second-and-third
+    //      largest in the dimension — catches strong outliers even when
+    //      the median is inflated by another outlier.
+    const broaderCounts = dim.categories
       .map((c) => c.broaderNihCount)
       .filter((n) => n > 0 && n !== -1)
       .sort((a, b) => a - b)
-    const medianBroader = validBroader.length > 0
-      ? validBroader[Math.floor(validBroader.length / 2)]
-      : 0
-    const OUTLIER_MULTIPLE = 10
-    const isKeywordArtifact = (n: number) =>
-      medianBroader > 0 && n > 0 && n !== -1 && n / medianBroader >= OUTLIER_MULTIPLE
+    // True statistical median (average of two middles for even arrays).
+    let medianBroader = 0
+    if (broaderCounts.length > 0) {
+      const mid = Math.floor(broaderCounts.length / 2)
+      medianBroader =
+        broaderCounts.length % 2 === 0
+          ? (broaderCounts[mid - 1] + broaderCounts[mid]) / 2
+          : broaderCounts[mid]
+    }
+    const OUTLIER_MULTIPLE = 5
+
+    // Generic terms known to over-match against broad biomedical corpora.
+    // If a category NAME contains any of these tokens, the row auto-flags
+    // regardless of the ratio math. r30 audit surfaced "machine learning"
+    // at 23 broader-NIH — the ratio didn't dagger, but the term itself is
+    // a canonical generic-prevalence trap.
+    const GENERIC_TERM_PATTERNS = [
+      /machine learning/i,
+      /\bml\b/i,
+      /artificial intelligence/i,
+      /\bai\b/i,
+      /deep learning/i,
+      /neural network/i,
+      /biomarker(?!.*discovery)/i, // "biomarker" alone but not "biomarker discovery"
+      /computational/i,
+      /bioinformatic/i,
+      /statistical/i,
+      /methylation/i,
+      /exosome/i,
+    ]
+    const nameLooksGeneric = (name: string): boolean =>
+      GENERIC_TERM_PATTERNS.some((r) => r.test(name))
+
+    const isKeywordArtifact = (cat: (typeof dim.categories)[number]): boolean => {
+      const n = cat.broaderNihCount
+      if (n <= 0 || n === -1) return false
+      // Signal 2: generic-term name.
+      if (nameLooksGeneric(cat.name)) return true
+      // Signal 1: ratio to median.
+      if (medianBroader > 0 && n / medianBroader >= OUTLIER_MULTIPLE) return true
+      // Signal 3: gap to next-largest peers. If this is the max and it's
+      // more than 2x the sum of the next two, it's a distributional
+      // outlier even when median is high.
+      if (broaderCounts.length >= 3 && n === broaderCounts[broaderCounts.length - 1]) {
+        const nextTwoSum =
+          broaderCounts[broaderCounts.length - 2] + broaderCounts[broaderCounts.length - 3]
+        if (nextTwoSum > 0 && n / nextTwoSum >= 2) return true
+      }
+      return false
+    }
 
     md += `| Category | Projects | % of Sample | Funding | ${broaderHeader} |\n`
     md += `|----------|---------:|------------:|--------:|------------:|\n`
@@ -2571,7 +2656,7 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
       let broaderCell: string
       if (cat.broaderNihCount === -1) {
         broaderCell = 'n/a'
-      } else if (isKeywordArtifact(cat.broaderNihCount)) {
+      } else if (isKeywordArtifact(cat)) {
         broaderCell = `${cat.broaderNihCount.toLocaleString()} [†]`
         anyArtifact = true
       } else {
@@ -2582,8 +2667,20 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
     md += '\n'
 
     if (anyArtifact) {
-      md += `> [†] Rows marked with a dagger are broader-NIH outliers (${OUTLIER_MULTIPLE}x or more above the dimension median). These very likely reflect generic keyword prevalence (e.g. "methylation" or "exosome" match thousands of NIH projects across all of cancer biology) rather than topic-specific activity. Treat these counts as directional only and do not anchor coverage inferences on them.\n\n`
+      // Callout language tightened per r30 audit — the previous "all of
+      // cancer biology" phrasing contradicted the scope-universe callout
+      // (which says broader-NIH counts are bounded to the scope filter).
+      // The dagger explanation now uses "within the topic scope" so it's
+      // consistent with the base-rate framing.
+      md += `> [†] Rows marked with a dagger are broader-NIH outliers - either their broader count is much higher than the dimension median (>=${OUTLIER_MULTIPLE}x) or the category name contains a generic biomedical term ("machine learning", "biomarker", "methylation") that over-matches within the topic scope. These counts likely reflect generic keyword prevalence within the scope-filtered universe rather than topic-specific activity. Treat as directional only; do not anchor coverage inferences on daggered cells.\n\n`
     }
+
+    // Multi-label sum caveat under each coverage table. Category rows
+    // are non-exclusive - a project can appear in multiple categories,
+    // so the row-count sum can exceed the total classified projects.
+    // Without this note, a reader who adds a table's rows sees a number
+    // that doesn't match the caption (r30 audit).
+    md += `*Rows are non-exclusive: a project can appear in more than one category, so the sum of the Projects column can exceed ${dim.totalMatched} classified projects.*\n\n`
 
     // Show the exact keyword set behind each category so readers can see
     // what was counted. Prevents the credibility gap where a category
@@ -3259,7 +3356,7 @@ function renderSampleInterpretation(
   // Skew interpretation
   if (precise === total && total >= 5) {
     notes.push(
-      `**All ${total} matches are Precise** (similarity ≥50%). This is not a tuned threshold — it reflects the topic mapping to a tightly-bounded research area where nearly every relevant NIH grant lands well above the 50% similarity cutoff. Broader topics with less coherent literature produce mixed Precise + Balanced splits (typically 60/40 to 80/20). All-Precise is a signal that the search terminology cleanly maps to how researchers in this field describe their work.`
+      `**All ${total} matches are Precise** (similarity ≥50%). This is not a tuned threshold - it reflects the topic mapping to a tightly-bounded research area where most relevant NIH grants land above the 50% similarity cutoff. Broader topics with less coherent literature produce mixed Precise + Balanced splits (typically 60/40 to 80/20). Note that "Precise" measures semantic similarity to the query, not perfect topical fit - a project can score above the threshold and still touch adjacent research areas (e.g., a project whose main focus is diagnostic biomarkers but whose abstract mentions sepsis biomarkers as comparator work). Treat this signal as "the field's vocabulary aligns well with our query," not as "every project is a pure topic match."`
     )
   } else if (preciseRatio >= 0.7 && total >= 5) {
     notes.push(
