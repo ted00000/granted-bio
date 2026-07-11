@@ -192,7 +192,14 @@ export async function synthesizeReport(
       // applyLintCorrections rewrites section-scoped violations via
       // targeted LLM calls; body-wide violations already handled by
       // post-render substitution are skipped.
-      if (critical.length > 0) {
+      //
+      // Feature flag: LINT_RETRY_ENABLED. Default OFF because the r34
+      // rollout stalled two reports past Vercel's 300s ceiling despite
+      // per-call timeouts. Disabling here lets synthesis ship without
+      // retry while I debug offline. Flip to 'true' (or set the env
+      // var) once retry timing is verified.
+      const retryEnabled = process.env.LINT_RETRY_ENABLED === 'true'
+      if (critical.length > 0 && retryEnabled) {
         const corrected = await applyLintCorrections(
           finalMarkdown,
           violations,
