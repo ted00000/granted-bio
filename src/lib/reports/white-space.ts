@@ -29,6 +29,7 @@
 import Anthropic from '@anthropic-ai/sdk'
 import { supabaseAdmin } from '@/lib/supabase'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
+import { sanitizeText } from './sanitize'
 import type {
   CoverageCategory,
   CoverageDimension,
@@ -271,7 +272,7 @@ export async function generateWhiteSpaceAnalysis(
   // Step 4: algorithmic ranking of top opportunities before we ask the
   // LLM to interpret. Ranking is deterministic — the LLM cannot invent
   // an opportunity that wasn't identified from the data.
-  const opportunities = rankOpportunities(dimensionsWithBroader, totalProjects)
+  const opportunities = rankOpportunities(dimensionsWithBroader, totalProjects, scopeUniverseCount)
 
   // Step 5: LLM narrative for overview + per-dimension + per-opportunity.
   // Narrative is grounded in the fixed data structure — the LLM sees
@@ -890,46 +891,75 @@ async function addBroaderNihCounts(
 function rankOpportunities(
   dimensions: CoverageDimension[],
   totalProjects: number,
+  scopeUniverseCount: number | null,
 ): WhiteSpaceOpportunity[] {
   const candidates: WhiteSpaceOpportunity[] = []
+
+  // BASE-RATE NORMALIZATION (r31 audit fix). Prior logic compared raw
+  // counts: broader_count / sample_count >= 5 flagged a gap. That's
+  // wrong when the two universes are different sizes. If sample=122
+  // and scope-universe=1,026 (8.4x ratio), then a category showing 39
+  // broader vs 4 sample looks like "10x more broader" but is actually
+  // 3.8% broader-share vs 3.3% sample-share — parity, not a gap.
+  //
+  // Correct signal: compare SHARES.
+  //   sampleShare = cat.sampleCount / totalProjects
+  //   broaderShare = cat.broaderCount / scopeUniverseCount
+  //   Gap exists when broaderShare / sampleShare >= SHARE_RATIO_THRESHOLD.
+  //
+  // When scopeUniverseCount isn't available, we can't normalize, so we
+  // fall back to raw ratio but flag lower-confidence.
+  const SHARE_RATIO_THRESHOLD = 2 // broader-share must be >= 2x sample-share
+  const MIN_BROADER_SHARE = 0.02 // broader-share >= 2% to be meaningful
+  const canNormalize = typeof scopeUniverseCount === 'number' && scopeUniverseCount > 0
 
   for (const dim of dimensions) {
     for (const cat of dim.categories) {
       const sampleShare = totalProjects > 0 ? cat.projectCount / totalProjects : 0
       const broaderCount = cat.broaderNihCount
+      const broaderShare = canNormalize && broaderCount > 0 ? broaderCount / scopeUniverseCount! : 0
 
       let signal: WhiteSpaceOpportunity['gapSignal'] | null = null
 
-      // Small-N floor: require meaningful broader-NIH activity before
-      // calling a category a coverage-gap signal. Without this, a
-      // "0 sample vs 5 broader" case surfaces as a gap when the true
-      // signal is noise — 5 is too few to distinguish an underexplored
-      // intersection from a keyword-match artifact. Raised from 20
-      // (2026-07-10) after reviewer flagged low-N gaps looking dubious.
-      const BROADER_FLOOR_ABSENT = 30
-      const BROADER_FLOOR_SPARSE = 30
-
-      // Hard floor: NO gap signal ranked when broader-NIH < 30. Applies
-      // to every signal type including sparse-in-topic. r30 audit
-      // flagged two ranked signals sitting below the floor (6 and 23)
-      // that were caveated but still numbered — a caveated gap-signal
-      // reads as a gap to the skim reader. Hard-block instead.
+      // Hard floor: broader-NIH < 30 disqualifies from ranked list.
       if (broaderCount < 30 && broaderCount !== -1) continue
 
-      if (cat.projectCount === 0 && broaderCount >= BROADER_FLOOR_ABSENT) {
-        // Not in the topic slice at all, but present in broader NIH portfolio
-        signal = 'absent-in-topic'
-      } else if (
-        sampleShare < SPARSE_SHARE_THRESHOLD &&
-        broaderCount >= BROADER_FLOOR_SPARSE &&
-        broaderCount / Math.max(cat.projectCount, 1) >= BROADER_TO_SAMPLE_RATIO_THRESHOLD
-      ) {
-        // Sparse in the topic slice compared to broader NIH activity —
-        // the strongest signal for actionable white space.
-        signal = 'sample-under-broader'
-      } else if (cat.projectCount > 0 && sampleShare < SPARSE_SHARE_THRESHOLD) {
-        // Present but sparse.
-        signal = 'sparse-in-topic'
+      if (canNormalize) {
+        // Share-normalized signals — the correct math.
+        // absent-in-topic: 0 sample projects but broader-share is
+        // meaningful (>=2% of the scope universe).
+        if (cat.projectCount === 0 && broaderShare >= MIN_BROADER_SHARE) {
+          signal = 'absent-in-topic'
+        }
+        // sample-under-broader: sample-share materially below broader-
+        // share. broaderShare must be at least MIN_BROADER_SHARE AND
+        // broaderShare / sampleShare must exceed the threshold. This is
+        // the ONLY correct way to identify underrepresentation.
+        else if (
+          broaderShare >= MIN_BROADER_SHARE &&
+          sampleShare > 0 &&
+          broaderShare / sampleShare >= SHARE_RATIO_THRESHOLD
+        ) {
+          signal = 'sample-under-broader'
+        }
+        // sparse-in-topic path removed. Being sparse in the topic slice
+        // is NOT by itself a gap — it might just be a sparse category
+        // in the field. A true gap requires broader-share to exceed
+        // sample-share, which is the sample-under-broader path.
+      } else {
+        // Fallback for when scope filter isn't available (rare edge
+        // case). Use the old raw-ratio logic but this branch is
+        // unlikely to fire in production.
+        const BROADER_FLOOR = 30
+        if (cat.projectCount === 0 && broaderCount >= BROADER_FLOOR) {
+          signal = 'absent-in-topic'
+        } else if (
+          sampleShare < SPARSE_SHARE_THRESHOLD &&
+          broaderCount >= BROADER_FLOOR &&
+          broaderCount / Math.max(cat.projectCount, 1) >= BROADER_TO_SAMPLE_RATIO_THRESHOLD
+        ) {
+          signal = 'sample-under-broader'
+        }
       }
 
       if (signal) {
@@ -946,17 +976,23 @@ function rankOpportunities(
     }
   }
 
-  // Sort: absent-in-topic first (strongest signal), then by broader/sample
-  // ratio (most-underrepresented in the topic slice), then by absolute
-  // broader count (biggest addressable population).
+  // Sort by share-normalized signal strength when possible.
   candidates.sort((a, b) => {
     const priority = (s: WhiteSpaceOpportunity['gapSignal']) =>
       s === 'absent-in-topic' ? 3 : s === 'sample-under-broader' ? 2 : 1
     const pDiff = priority(b.gapSignal) - priority(a.gapSignal)
     if (pDiff !== 0) return pDiff
-    const ratioA = a.broaderNihCount / Math.max(a.sampleCount, 1)
-    const ratioB = b.broaderNihCount / Math.max(b.sampleCount, 1)
-    if (ratioA !== ratioB) return ratioB - ratioA
+    if (canNormalize) {
+      const shareRatioA =
+        a.broaderNihCount / scopeUniverseCount! / Math.max(a.sampleShare, 1e-6)
+      const shareRatioB =
+        b.broaderNihCount / scopeUniverseCount! / Math.max(b.sampleShare, 1e-6)
+      if (shareRatioA !== shareRatioB) return shareRatioB - shareRatioA
+    } else {
+      const ratioA = a.broaderNihCount / Math.max(a.sampleCount, 1)
+      const ratioB = b.broaderNihCount / Math.max(b.sampleCount, 1)
+      if (ratioA !== ratioB) return ratioB - ratioA
+    }
     return b.broaderNihCount - a.broaderNihCount
   })
 
@@ -1044,6 +1080,8 @@ For each OPPORTUNITY's rationale field: 2-3 sentences answering "why might this 
 - If sample count is nonzero but small: underserved within the topic focus specifically.
 - Reference actual counts. Do not overstate — say "underrepresented" not "abandoned."
 - MUST END WITH a Confidence+Evidence tag ('**Confidence: High/Medium/Low** - Evidence: [sample count vs broader count, ratio]'). At low sample counts (<=2), confidence must be Low.
+
+**CRITICAL: Share-normalized language, not raw count ratios.** The gap is identified by comparing SHARES (sample-share of the ${totalProjects}-project sample vs broader-share of the scope universe), NOT by raw count ratios. A category showing "broader=39 vs sample=4" is NOT "10x more activity in the broader community" - if the scope universe is 8x the sample size, that ratio is basically parity. The rendered signal card shows the share ratio (e.g. "broader-share is 2.3x sample-share"). Your rationale MUST refer to shares or the share ratio, not to raw count multiples. WRONG: "10x more broader activity". RIGHT: "broader-share (X% of Y-project scope) is 2.3x sample-share (Z% of ${totalProjects}), suggesting the topic slice has less representation than the broader scope would predict."
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens or rewrite sentences.
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation"). Say what the thing IS, not that it is "genuine".

@@ -164,15 +164,70 @@ Return ONLY the JSON object — no preamble, no markdown code fence, no explanat
   const reconciledDevelopments = Array.isArray(parsed.recentDevelopments)
     ? parsed.recentDevelopments.map((entry: unknown) => reconcileDatePrefix(String(entry)))
     : []
+  // Dedupe near-duplicate developments. r31 audit surfaced the Guardant-
+  // Quest Shield CRC collaboration appearing at both 2025-09 and 2026-03
+  // with almost identical phrasing. Web search returns multiple articles
+  // on the same event across months, and the LLM sometimes emits both
+  // as separate bullets. Fuzzy-match on the significant word set
+  // (excluding stopwords + the date prefix) and drop the later dup.
+  const dedupedDevelopments = dedupeDevelopments(reconciledDevelopments)
 
   return {
     overview: parsed.overview || '',
     marketSize: parsed.marketSize || null,
     keyPlayers: Array.isArray(parsed.keyPlayers) ? parsed.keyPlayers : [],
-    recentDevelopments: reconciledDevelopments,
+    recentDevelopments: dedupedDevelopments,
     competitiveLandscape: parsed.competitiveLandscape || '',
     sources: uniqueSources,
   }
+}
+
+const STOPWORDS = new Set([
+  'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+  'of', 'with', 'by', 'from', 'as', 'is', 'was', 'are', 'were', 'be',
+  'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will',
+  'would', 'could', 'should', 'may', 'might', 'shall', 'can', 'this',
+  'that', 'these', 'those', 'over', 'under', 'up', 'down',
+])
+
+/**
+ * Fuzzy-dedupe near-duplicate development entries. Two entries are
+ * "duplicates" when the Jaccard similarity of their meaningful word
+ * sets (lowercased, stopwords + date-prefix removed) is >= 0.5. Keeps
+ * the FIRST occurrence.
+ */
+function dedupeDevelopments(entries: string[]): string[] {
+  const kept: Array<{ entry: string; sig: Set<string> }> = []
+  for (const entry of entries) {
+    // Strip YYYY-MM prefix.
+    const body = entry.replace(/^\d{4}-\d{2}\s*:\s*/, '')
+    // Extract meaningful tokens (alphabetic 4+ chars, not stopwords).
+    const sig = new Set(
+      (body.toLowerCase().match(/[a-z]{4,}/g) || []).filter((w) => !STOPWORDS.has(w)),
+    )
+    if (sig.size === 0) {
+      kept.push({ entry, sig })
+      continue
+    }
+    let isDupe = false
+    for (const prior of kept) {
+      if (prior.sig.size === 0) continue
+      // Jaccard similarity: |A intersect B| / |A union B|.
+      let intersect = 0
+      for (const w of sig) if (prior.sig.has(w)) intersect++
+      const union = sig.size + prior.sig.size - intersect
+      const jaccard = union > 0 ? intersect / union : 0
+      if (jaccard >= 0.5) {
+        console.warn(
+          `[Market Agent] Dropped duplicate development (Jaccard ${jaccard.toFixed(2)}): "${entry.slice(0, 100)}"`,
+        )
+        isDupe = true
+        break
+      }
+    }
+    if (!isDupe) kept.push({ entry, sig })
+  }
+  return kept.map((k) => k.entry)
 }
 
 const MONTH_MAP: Record<string, string> = {

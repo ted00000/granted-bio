@@ -943,6 +943,211 @@ const RULES: Rule[] = [
   },
 
   // ------------------------------------------------------------------
+  // Share-normalized gap check. r31 audit's headline finding: the
+  // whole gap ranking used raw broader/sample count ratio, ignoring
+  // that the two universes have different sizes. Correct signal is
+  // broader-share (broader/scopeUniverse) vs sample-share
+  // (sample/totalProjects). Flag any ranked gap where broader-share
+  // < sample-share (parity or under-broader — not a gap).
+  // ------------------------------------------------------------------
+  {
+    id: 'gap-signal-share-normalized',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const scope = ctx.whiteSpace.scopeUniverseCount
+      const total = ctx.whiteSpace.totalProjects
+      if (!scope || scope <= 0 || total <= 0) return violations
+      for (const op of ctx.whiteSpace.topOpportunities) {
+        if (op.broaderNihCount <= 0 || op.sampleCount <= 0) continue
+        const broaderShare = op.broaderNihCount / scope
+        const sampleShare = op.sampleCount / total
+        // If broader-share is not materially larger than sample-share
+        // (>=2x), the "gap" is a base-rate artifact.
+        if (broaderShare / sampleShare < 2) {
+          violations.push({
+            ruleId: 'gap-signal-share-normalized',
+            severity: 'critical',
+            section: 'White Space Analysis',
+            offending: `${op.categoryName} (sample-share ${(sampleShare * 100).toFixed(1)}%, broader-share ${(broaderShare * 100).toFixed(1)}%)`,
+            message: `Coverage Gap Signal "${op.categoryName}" has broader-share ${(broaderShare * 100).toFixed(2)}% only ${(broaderShare / sampleShare).toFixed(2)}x sample-share ${(sampleShare * 100).toFixed(2)}%. Not a gap - parity or over-represented in sample.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Trial-status arithmetic reconciliation. When narrative cites two
+  // of (active, terminated, other), the sum must reconcile against
+  // the total.
+  // ------------------------------------------------------------------
+  {
+    id: 'trial-status-sum-reconciles',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const total = ctx.agentOutputs.trials.items.length
+      // Look for a sentence citing "N active/completed" and "M terminated"
+      // and check that N + M ~= total (allowing residual up to 5).
+      const activeMatch = ctx.markdown.match(
+        /(\d{1,4})\s+(?:linked )?(?:clinical )?trials?\s+(?:are\s+)?active or completed/i,
+      )
+      const termMatch = ctx.markdown.match(
+        /(\d{1,4})\s+are\s+terminated(?:,\s*suspended)?(?:,?\s*(?:or|and)\s*withdrawn)?/i,
+      )
+      if (activeMatch && termMatch) {
+        const active = parseInt(activeMatch[1], 10)
+        const term = parseInt(termMatch[1], 10)
+        const sum = active + term
+        if (Math.abs(sum - total) > 5) {
+          violations.push({
+            ruleId: 'trial-status-sum-reconciles',
+            severity: 'warning',
+            section: null,
+            offending: `${active} active + ${term} terminated = ${sum} ≠ ${total} total`,
+            message: `Narrative cites ${active} active + ${term} terminated = ${sum}, but total is ${total}. Missing residual of ${total - sum} trials in another status.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // "assay attrition" and similar unsupported causal attributions.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-unsupported-causal-attribution',
+    severity: 'warning',
+    check(ctx) {
+      const patterns: Array<{ regex: RegExp; label: string }> = [
+        { regex: /\bassay attrition\b/i, label: 'assay attrition' },
+        {
+          regex: /\bsignal of (assay|technology) (failure|attrition)\b/i,
+          label: 'signal of assay/tech failure',
+        },
+      ]
+      const violations: LintViolation[] = []
+      for (const { regex, label } of patterns) {
+        const match = ctx.markdown.match(regex)
+        if (match) {
+          violations.push({
+            ruleId: 'no-unsupported-causal-attribution',
+            severity: 'warning',
+            section: null,
+            offending: match[0],
+            message: `"${label}" attributes trial termination to a specific cause without corroborating data. Terminations reflect enrollment, funding, or PI departure at least as often as assay failure.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Widened prescriptive-targeting: catches "scout X institutions",
+  // "identify partners", "natural consortium partners" etc.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-prescriptive-set-targeting',
+    severity: 'warning',
+    check(ctx, sections) {
+      const patterns: Array<{ regex: RegExp; label: string }> = [
+        { regex: /\bscout collaborator institutions\b/i, label: 'scout collaborator institutions' },
+        { regex: /\bscout collaborators?\b/i, label: 'scout collaborators' },
+        {
+          regex: /\bidentify (potential|natural) (consortium |collaboration )?partners\b/i,
+          label: 'identify (potential/natural) partners',
+        },
+        {
+          regex: /\bnatural (co-investigator|consortium) partners\b/i,
+          label: 'natural co-investigator/consortium partners',
+        },
+        {
+          regex: /\bconsortium partners\b/i,
+          label: 'consortium partners',
+        },
+        {
+          regex: /\bengage with (the )?leading nodes\b/i,
+          label: 'engage with leading nodes',
+        },
+      ]
+      const violations: LintViolation[] = []
+      const target = ['Next Steps', 'Research Positioning', 'White Space Analysis']
+      for (const sectionName of target) {
+        const body = sections.get(sectionName) || ''
+        for (const { regex, label } of patterns) {
+          const match = body.match(regex)
+          if (match) {
+            violations.push({
+              ruleId: 'no-prescriptive-set-targeting',
+              severity: 'warning',
+              section: sectionName,
+              offending: match[0],
+              message: `Prescriptive set-targeting "${label}" in ${sectionName}. Rewrite as self-directed research ("run a RePORTER search yourself") not targeting-of-community.`,
+            })
+          }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Duplicate Market Context bullets. Fuzzy-match on meaningful word
+  // set — Jaccard >= 0.5 = likely dup.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-duplicate-market-bullets',
+    severity: 'warning',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const marketBody = sections.get('Market Context') || ''
+      if (!marketBody) return violations
+      // Extract bulleted lines starting with a YYYY-MM prefix.
+      const bullets = (marketBody.match(/^\s*(?:-|\*)\s*\d{4}-\d{2}\s*:[^\n]+/gm) || [])
+      const STOP = new Set([
+        'the', 'and', 'for', 'with', 'from', 'this', 'that', 'has', 'have',
+        'been', 'are', 'was', 'were', 'will', 'would', 'could', 'may',
+        'trial', 'trials', 'test', 'tests', 'study', 'studies',
+      ])
+      const sigs = bullets.map((b) => {
+        const body = b.replace(/^\s*(?:-|\*)\s*\d{4}-\d{2}\s*:\s*/, '')
+        return {
+          bullet: b.trim(),
+          sig: new Set(
+            (body.toLowerCase().match(/[a-z]{4,}/g) || []).filter((w) => !STOP.has(w)),
+          ),
+        }
+      })
+      for (let i = 0; i < sigs.length; i++) {
+        for (let j = i + 1; j < sigs.length; j++) {
+          const a = sigs[i].sig
+          const b = sigs[j].sig
+          if (a.size === 0 || b.size === 0) continue
+          let intersect = 0
+          for (const w of a) if (b.has(w)) intersect++
+          const union = a.size + b.size - intersect
+          const jaccard = union > 0 ? intersect / union : 0
+          if (jaccard >= 0.5) {
+            violations.push({
+              ruleId: 'no-duplicate-market-bullets',
+              severity: 'warning',
+              section: 'Market Context',
+              offending: sigs[j].bullet.slice(0, 120),
+              message: `Duplicate market bullet (Jaccard ${jaccard.toFixed(2)}): "${sigs[j].bullet.slice(0, 80)}..." near-duplicates an earlier bullet.`,
+            })
+            break
+          }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Prescriptive institution callouts: telling readers to
   // engage/reach/target a named org.
   // ------------------------------------------------------------------

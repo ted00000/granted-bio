@@ -26,6 +26,7 @@ import { generateWhiteSpaceAnalysis } from './white-space'
 import { filterTrialsAndPatentsByRelevance } from './relevance-filter'
 import { detectSurprisingFindings, type SurprisingFinding } from './surprising'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
+import { sanitizeText } from './sanitize'
 import { normalizeOrgName, normalizeJournalName } from '@/lib/format-names'
 
 interface SynthesisContext {
@@ -305,7 +306,7 @@ ${formatYearTrendForPrompt(context.fundingStats.byYear)}
 ## DATA SUMMARY — VERBATIM NUMBERS (use these EXACT figures when writing percentages; do NOT approximate)
 - Total projects: ${context.fundingStats.projectCount} (${preciseCount} Precise-tier, ${balancedCount} Balanced-tier)
 - Total funding: ${formatCurrency(context.fundingStats.total)} across ${context.fundingStats.orgCount} organizations
-- **Trial status split (use verbatim if you cite it):** ${totalTrialsForSummary} total linked trials, of which ${trialStatusCounts.activeOrCompleted} are active or completed, ${trialStatusCounts.terminated} are terminated/suspended/withdrawn, and ${trialStatusCounts.other} carry another status designation. Do NOT write "${totalTrialsForSummary} trials are active or completed" — that only holds if terminated == 0.
+- **Trial status split (use these EXACT counts, all three, if you cite trial status):** ${totalTrialsForSummary} total linked trials, of which ${trialStatusCounts.activeOrCompleted} are active or completed, ${trialStatusCounts.terminated} are terminated/suspended/withdrawn, and ${trialStatusCounts.other} carry another status designation (unknown/other). If you cite two of these counts, you MUST also cite the third for the sum to reconcile - ${trialStatusCounts.activeOrCompleted} + ${trialStatusCounts.terminated} + ${trialStatusCounts.other} = ${totalTrialsForSummary}. Do NOT drop the residual "other" count even if it's 1 - the arithmetic must add up to the total. Do NOT write "${totalTrialsForSummary} trials are active or completed" - that only holds if terminated + other == 0. Do NOT attribute the terminated count to any specific cause ("assay attrition", "assay failure", "clinical failure") without corroborating evidence in the data - terminations can reflect enrollment challenges, funding gaps, PI departure, or business decisions unrelated to the assay. If you mention terminations, frame as "worth monitoring" or "warrants investigation," not as "a signal of [specific cause]."
 - Clinical trials: ${agentOutputs.trials.items.length} | Patents: ${agentOutputs.patents.items.length}
 - **Category shares** (project count share of ${context.fundingStats.projectCount} total — use these EXACT percentages if you cite a category share):
 ${context.fundingStats.byCategory
@@ -596,40 +597,25 @@ Return JSON only, no markdown:
 }
 
 /**
- * Reject narrative insights that appear to be LLM gibberish. Two signals:
- *   1. Any "word" (whitespace-delimited alphabetic token >=4 chars) with
- *      4+ consecutive consonants — English rarely has this.
- *   2. Overall vowel ratio below 25% across alphabetic characters —
- *      normal English prose sits above ~35%.
- * Either triggers a full rejection (return empty string). Cheap check,
- * only runs on the assembled insight text.
+ * (Docstring for sanitize logic — implementation now lives in
+ * ./sanitize.ts. Kept here for context.)
+ * Reject narrative text that appears to be LLM gibberish. Three signals,
+ * any of which triggers rejection (returns empty string):
+ *   1. All-consonant tokens >=5 chars — normal English words have vowels.
+ *   2. Low unique-character ratio in a token >=6 chars — real words
+ *      rarely have unique-char/length below 0.4. "ihihhiiliil" has
+ *      3 unique / 11 length = 0.27 — clear gibberish signal.
+ *   3. Tokens with 3+ consecutive identical characters ("thbdd" etc)
+ *      or obvious alternating patterns.
+ *
+ * Applied via sanitizeText() to every LLM-generated narrative field
+ * (not just section insights). r31 audit surfaced garbled tokens in
+ * strategicImplications ("ihihhiiliil lidi") and IP narrative
+ * ("tillif thk thliid dttibiltfhthbd") that the previous rules didn't
+ * catch because they contained vowels and were <7 chars.
  */
 function sanitizeInsight(raw: unknown): string {
-  if (typeof raw !== 'string' || raw.length === 0) return ''
-  const text = raw
-  // Signal 1: impossible consonant runs.
-  const impossibleClusterRegex = /\b[a-z]*[bcdfghjklmnpqrstvwxz]{4,}[a-z]*\b/i
-  if (impossibleClusterRegex.test(text)) {
-    console.warn(
-      '[Synthesis Agent] Rejected insight — impossible consonant cluster detected. Preview:',
-      text.slice(0, 120),
-    )
-    return ''
-  }
-  // Signal 2: vowel ratio.
-  const alphaChars = text.match(/[a-z]/gi) || []
-  const vowels = text.match(/[aeiou]/gi) || []
-  if (alphaChars.length > 40) {
-    const ratio = vowels.length / alphaChars.length
-    if (ratio < 0.25) {
-      console.warn(
-        `[Synthesis Agent] Rejected insight — vowel ratio ${ratio.toFixed(2)} below 0.25. Preview:`,
-        text.slice(0, 120),
-      )
-      return ''
-    }
-  }
-  return text
+  return sanitizeText(raw, 'insight')
 }
 
 function defaultInsights(): SectionInsights {
@@ -1375,7 +1361,7 @@ Return JSON only:
       },
       strategicImplications:
         typeof parsed.strategicImplications === 'string'
-          ? normalizeConfidenceTagSpacing(parsed.strategicImplications)
+          ? normalizeConfidenceTagSpacing(sanitizeText(parsed.strategicImplications, "strategicImplications"))
           : undefined,
       overallAssessment: parsed.overallAssessment || 'emerging',
     }
@@ -1592,7 +1578,7 @@ Return JSON only:
       narrative: typeof parsed.narrative === 'string' ? normalizeConfidenceTagSpacing(parsed.narrative) : '',
       strategicImplications:
         typeof parsed.strategicImplications === 'string'
-          ? normalizeConfidenceTagSpacing(parsed.strategicImplications)
+          ? normalizeConfidenceTagSpacing(sanitizeText(parsed.strategicImplications, "strategicImplications"))
           : undefined,
     }
   } catch (error) {
@@ -1786,7 +1772,7 @@ narrative fields below.
       narrative: normalizeConfidenceTagSpacing(parsed.narrative || ''),
       strategicImplications:
         typeof parsed.strategicImplications === 'string'
-          ? normalizeConfidenceTagSpacing(parsed.strategicImplications)
+          ? normalizeConfidenceTagSpacing(sanitizeText(parsed.strategicImplications, "strategicImplications"))
           : undefined,
     }
   } catch (error) {
@@ -1973,9 +1959,10 @@ Produce a checklist of 6-8 concrete NEXT ACTIONS the reader should take AFTER re
 - Point to a concrete action (search, read, review, apply for, verify, benchmark against)
 - Reference where the reader should look (which NIH program, which section of THIS report — e.g. "see the Key Organizations table", "see the Coverage Gap Signals section")
 
-**CRITICAL — NO NAMED ACTORS AS TARGETS.** This checklist is read by the same community it describes. Do NOT:
+**CRITICAL — NO NAMED ACTORS AS TARGETS AND NO PRESCRIPTIVE TARGETING OF SETS.** This checklist is read by the same community it describes. Do NOT:
 - Name any principal investigator (PI) by name. Individual PIs are in the Key Researchers table; do not tell the reader to "examine Zhou's portfolio" or "assess Wong's work" — say "review the top-funded PIs (see Key Researchers table)" instead.
-- Name any institution as a target for outreach, collaboration, licensing, or benchmarking. Do NOT write "use Johns Hopkins as a target for methodology-focused collaborations", "scout collaborators at MGH", "engage with UCLA researchers". If institutional concentration is relevant to the action, say "institutions with concentrated activity in [category] (see Key Organizations table) are natural [collaboration/licensing/benchmark] candidates."
+- Name any institution as a target for outreach, collaboration, licensing, or benchmarking. Do NOT write "use Johns Hopkins as a target", "scout collaborators at MGH", "engage with UCLA researchers".
+- **Also do NOT use "prescriptive targeting" verbs on the community as a group, even when no specific institution is named.** BANNED phrasings: "scout collaborator institutions", "scout collaborators", "identify potential (collaboration|consortium) partners", "identify (natural|potential) partners", "natural co-investigator (partners|candidates)", "natural consortium partners", "consortium partners", "reach out to institutions active in X", "engage with the leading nodes in Y". These read as telling the researcher to hunt for partners in the profiled community. Rewrite as self-directed research: "run a RePORTER search by analyte/cancer type to map the collaboration landscape yourself" or "review the Key Organizations table to see which institutions are active in [category]" (descriptive, not prescriptive).
 - Name specific companies as targets. Companies in the Market Context section are for market awareness; they are not action targets in this checklist.
 
 Persona guidance:
@@ -2521,18 +2508,25 @@ function renderSurprisingFindings(findings: SurprisingFinding[]): string {
   findings.forEach((f, i) => {
     md += `**${i + 1}. ${f.headline}**\n\n`
     md += `${f.interpretation}\n\n`
-    // Confidence tag on What Surprised Us findings. Per §4 rubric,
-    // every substantive interpretive claim needs a Confidence tag.
-    // If the LLM interpretation already contains one, don't duplicate;
-    // otherwise append a Low tag (these findings are pattern-level
-    // observations on typically small topic-sample counts, so Low is
-    // the default honest read).
+    // Confidence tag on What Surprised Us findings. r31 audit flagged
+    // a double-Evidence pattern: the interpretation sometimes carried
+    // a Confidence + Evidence tag inline AND the render emitted a
+    // separate italic Evidence line, restating the same figures with
+    // slightly different phrasing. Fix: only append a fallback line
+    // when the interpretation lacks a Confidence tag AND we haven't
+    // already surfaced Evidence in the interpretation.
     const hasTag = /\*\*Confidence:\s*(High|Medium|Low)\*\*/.test(f.interpretation)
+    const interpretationHasEvidence = /Evidence:/i.test(f.interpretation)
     if (!hasTag) {
+      // No Confidence tag at all - append one with Evidence.
       md += `**Confidence: Low** - Evidence: ${f.evidence}\n\n`
-    } else {
+    } else if (!interpretationHasEvidence) {
+      // Tag present but Evidence missing - emit italic Evidence line
+      // to complete the pattern.
       md += `*Evidence: ${f.evidence}*\n\n`
     }
+    // else: interpretation already has Confidence + Evidence inline;
+    // do not emit anything additional (prevents double-Evidence).
   })
   return md
 }
@@ -2714,17 +2708,27 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
   // hedging in the header keeps the ranking useful without overclaiming.
   if (ws.topOpportunities.length > 0) {
     md += `### Coverage Gap Signals\n\n`
-    md += `*Candidate gaps — categories sparse in the topic sample but active in the scope-matched broader NIH portfolio. These are **signals to investigate**, not confirmed opportunities: the sample uses semantic matching against the topic while broader-NIH uses keyword matching against the scope, so a delta may reflect true absence, vocabulary drift, or topic-adjacent work our semantic filter excluded. Ratios are directional at low sample counts.*\n\n`
+    md += `*Candidate gaps ranked by **share-normalized** comparison: broader-NIH share of the scope universe divided by sample share. A category only ranks as a gap when its broader-share materially exceeds its sample-share (>=2x). Raw count ratios are misleading when the sample universe (${ws.totalProjects.toLocaleString()} projects) and scope universe (${ws.scopeUniverseCount?.toLocaleString() ?? 'n/a'} projects) differ in size, so the shares are computed against those denominators directly. Signals here are still **directional** - the sample uses semantic matching, broader-NIH uses title-only keyword matching, and vocabulary drift can shift shares in either direction.*\n\n`
     ws.topOpportunities.forEach((op, i) => {
-      const share = (op.sampleShare * 100).toFixed(1)
+      const sampleSharePct = (op.sampleShare * 100).toFixed(1)
       const broader = op.broaderNihCount === -1 ? 'not queried' : op.broaderNihCount.toLocaleString()
+      const scopeUniv = ws.scopeUniverseCount
+      const broaderSharePct =
+        typeof scopeUniv === 'number' && scopeUniv > 0 && op.broaderNihCount > 0
+          ? ((op.broaderNihCount / scopeUniv) * 100).toFixed(1)
+          : null
+      const shareRatio =
+        broaderSharePct !== null && op.sampleShare > 0
+          ? (parseFloat(broaderSharePct) / (op.sampleShare * 100)).toFixed(1)
+          : null
       md += `**${i + 1}. ${op.categoryName}** (${op.dimensionName})\n\n`
-      md += `- Analyzed sample: **${op.sampleCount}** projects (${share}% of sample)\n`
-      md += `- Broader ${ws.broaderNihScopeLabel || 'NIH RePORTER'}: **${broader}** matching projects\n`
-      // Small-sample caveat rendered at the signal level (not just the
-      // narrative-prompt level) so the hedge is guaranteed to appear even
-      // if the LLM rationale doesn't state it plainly. Anything anchored
-      // on <=1 topic sample is directional at best.
+      md += `- Analyzed sample: **${op.sampleCount}** projects (${sampleSharePct}% of ${ws.totalProjects} sample projects)\n`
+      if (broaderSharePct !== null && scopeUniv) {
+        md += `- Broader ${ws.broaderNihScopeLabel || 'NIH RePORTER'}: **${broader}** matching projects (${broaderSharePct}% of ${scopeUniv.toLocaleString()} scope universe)\n`
+        md += `- **Share ratio:** broader-share is ${shareRatio}x sample-share - this is what identifies the gap, not the raw count difference.\n`
+      } else {
+        md += `- Broader ${ws.broaderNihScopeLabel || 'NIH RePORTER'}: **${broader}** matching projects\n`
+      }
       if (op.sampleCount <= 1) {
         md += `- **Small-sample caveat:** the ratio here rests on ${op.sampleCount === 0 ? 'zero' : 'one'} topic project. A single classification change to the topic sample could shift the signal substantially. Treat as directional only.\n`
       }
