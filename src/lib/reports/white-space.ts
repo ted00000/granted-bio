@@ -1039,7 +1039,7 @@ For each OPPORTUNITY's rationale field: 2-3 sentences answering "why might this 
 - MUST END WITH a Confidence+Evidence tag ('**Confidence: High/Medium/Low** - Evidence: [sample count vs broader count, ratio]'). At low sample counts (<=2), confidence must be Low.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens or rewrite sentences.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation"). Say what the thing IS, not that it is "genuine".
 
 DESCRIPTIVE vs PRESCRIPTIVE — critical rule for narrative + strategicImplications fields:
 - Naming institutions is FINE when describing factual concentration ("methylation work concentrates at UCLA, Johns Hopkins, Stanford").

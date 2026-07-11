@@ -155,12 +155,62 @@ Return ONLY the JSON object — no preamble, no markdown code fence, no explanat
     `${parsed.keyPlayers?.length || 0} key players, ${parsed.recentDevelopments?.length || 0} recent developments`
   )
 
+  // Deterministic date-prefix reconciliation. r29 audit surfaced
+  // "2026-03: GRAIL presented at ASCO 2026 (June 1, 2026)" — the LLM's
+  // YYYY-MM prefix contradicted the event date in its own text. Prompt
+  // rule alone doesn't hold. Scan each development for an inline
+  // date/month token that unambiguously specifies a different YYYY-MM,
+  // and if found, rewrite the prefix to match.
+  const reconciledDevelopments = Array.isArray(parsed.recentDevelopments)
+    ? parsed.recentDevelopments.map((entry: unknown) => reconcileDatePrefix(String(entry)))
+    : []
+
   return {
     overview: parsed.overview || '',
     marketSize: parsed.marketSize || null,
     keyPlayers: Array.isArray(parsed.keyPlayers) ? parsed.keyPlayers : [],
-    recentDevelopments: Array.isArray(parsed.recentDevelopments) ? parsed.recentDevelopments : [],
+    recentDevelopments: reconciledDevelopments,
     competitiveLandscape: parsed.competitiveLandscape || '',
     sources: uniqueSources,
   }
+}
+
+const MONTH_MAP: Record<string, string> = {
+  january: '01',
+  february: '02',
+  march: '03',
+  april: '04',
+  may: '05',
+  june: '06',
+  july: '07',
+  august: '08',
+  september: '09',
+  october: '10',
+  november: '11',
+  december: '12',
+}
+
+/**
+ * When an entry's YYYY-MM prefix contradicts a date reference in the
+ * body ("2025-05: filed at ASCO 2026 (May 2026)"), rewrite the prefix
+ * to match the body. Only fires when the body contains a clear
+ * MonthName + YYYY pair that unambiguously specifies a different
+ * YYYY-MM than the prefix — otherwise leaves the entry untouched.
+ */
+function reconcileDatePrefix(entry: string): string {
+  const prefixMatch = entry.match(/^(\d{4})-(\d{2})\s*:\s*([\s\S]*)$/)
+  if (!prefixMatch) return entry
+  const [, prefixYear, prefixMonth, rest] = prefixMatch
+  // Look for "MonthName YYYY" (e.g. "May 2026" or "June 1, 2026").
+  const bodyMatch = rest.match(
+    /\b(january|february|march|april|may|june|july|august|september|october|november|december)\s+(?:\d{1,2}(?:,)?\s+)?(\d{4})\b/i,
+  )
+  if (!bodyMatch) return entry
+  const bodyMonth = MONTH_MAP[bodyMatch[1].toLowerCase()]
+  const bodyYear = bodyMatch[2]
+  if (bodyMonth === prefixMonth && bodyYear === prefixYear) return entry
+  console.warn(
+    `[Market Agent] Reconciling date prefix ${prefixYear}-${prefixMonth} -> ${bodyYear}-${bodyMonth} based on body reference "${bodyMatch[0]}"`,
+  )
+  return `${bodyYear}-${bodyMonth}: ${rest}`
 }

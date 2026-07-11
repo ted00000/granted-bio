@@ -511,6 +511,269 @@ const RULES: Rule[] = [
   },
 
   // ------------------------------------------------------------------
+  // Interventional / phase-labeled framing: never assert 1:1 identity.
+  // r29 audit caught "phase-labeled trials above are the interventional
+  // subset" in the trial-split explainer — banned construction that
+  // implies all interventional trials carry a phase label.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-phase-labeled-interventional-subset',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const match = ctx.markdown.match(
+        /phase-labeled trials (?:above )?are the interventional subset/i,
+      )
+      if (match) {
+        violations.push({
+          ruleId: 'no-phase-labeled-interventional-subset',
+          severity: 'critical',
+          section: null,
+          offending: match[0],
+          message:
+            'Banned framing "phase-labeled trials are the interventional subset" — implies all interventional trials carry a phase. Use "the phased subset of X interventional trials."',
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Two-point trend hedge co-occurrence check. Flags any sentence
+  // containing two FY dollar figures + a trend verb without the hedge
+  // ("two data points do not establish a trend").
+  // ------------------------------------------------------------------
+  {
+    id: 'two-point-trend-hedge-required',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      // Split into sentences (crude split on period + space/newline).
+      const sentences = ctx.markdown.split(/(?<=[.!?])\s+/)
+      const twoFYPattern = /FY\d{2,4}[\s\S]{0,80}?FY\d{2,4}/i
+      const trendVerbPattern =
+        /\b(rose|grew|climbed|jumped|up from|growing|accelerat|sustained|trajectory|suggests growing|signals? (?:growing|increased|sustained|accelerating))\b/i
+      const hedgePattern =
+        /\b(two data points|two-point trend|two consecutive years)\b/i
+      for (const s of sentences) {
+        if (twoFYPattern.test(s) && trendVerbPattern.test(s) && !hedgePattern.test(s)) {
+          violations.push({
+            ruleId: 'two-point-trend-hedge-required',
+            severity: 'critical',
+            section: null,
+            offending: s.slice(0, 160),
+            message:
+              'Two FY dollar figures cited with a trend verb but no "two data points do not establish a trend" hedge.',
+          })
+          if (violations.length >= 3) break
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // IP shape words: when linked patents < 10, no distribution-shape
+  // claim allowed in Patent/Positioning/Next Steps.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-ip-shape-words-insufficient-sample',
+    severity: 'critical',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const patentCount = ctx.agentOutputs.patents.items.length
+      if (patentCount >= 10) return violations
+      const shapePattern =
+        /\b(consolidated|distributed across|held across [\w\s]+ rather than|spread across)\b/i
+      const suspects = ['Patent Activity', 'Research Positioning', 'Next Steps']
+      for (const sectionName of suspects) {
+        const body = sections.get(sectionName) || ''
+        const cleaned = body.replace(/a landscape label like[\s\S]*?to be meaningful/gi, '')
+        const match = cleaned.match(shapePattern)
+        if (match) {
+          violations.push({
+            ruleId: 'no-ip-shape-words-insufficient-sample',
+            severity: 'critical',
+            section: sectionName,
+            offending: match[0],
+            message: `IP shape word "${match[0]}" in ${sectionName} despite only ${patentCount} linked patents. Contradicts insufficient-sample stance.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Trial status arithmetic: any "N active or completed" claim must
+  // match the pre-computed active/completed count from agentOutputs.
+  // ------------------------------------------------------------------
+  {
+    id: 'trial-status-arithmetic-reconciles',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const ACTIVE = new Set([
+        'active, not recruiting',
+        'recruiting',
+        'enrolling by invitation',
+        'completed',
+        'not yet recruiting',
+        'available',
+      ])
+      const activeCompleted = ctx.agentOutputs.trials.items.filter((t) =>
+        ACTIVE.has((t.study_status || '').toLowerCase().trim()),
+      ).length
+      const total = ctx.agentOutputs.trials.items.length
+      // Look for "N active or completed" or "N trials are active or
+      // completed" and reconcile.
+      const claimPattern =
+        /(\d{1,4})\s+(?:linked )?(?:clinical )?trials?\s+(?:are\s+)?active or completed/gi
+      let m: RegExpExecArray | null
+      while ((m = claimPattern.exec(ctx.markdown)) !== null) {
+        const claimed = parseInt(m[1], 10)
+        // Allow a match of either the true active+completed count OR the
+        // total (in the edge case where all trials are active/completed).
+        if (claimed !== activeCompleted && claimed !== 0) {
+          violations.push({
+            ruleId: 'trial-status-arithmetic-reconciles',
+            severity: 'critical',
+            section: null,
+            offending: m[0],
+            message: `"${m[0]}" doesn't reconcile with the ${activeCompleted} active/completed trials in the data (${total} total). The remainder are terminated/suspended/withdrawn or other status.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Date prefix vs body month token. YYYY-MM prefix on a Market
+  // Context recent-development bullet must match the MonthName+YYYY
+  // in the body.
+  // ------------------------------------------------------------------
+  {
+    id: 'date-prefix-matches-body',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const MONTHS: Record<string, string> = {
+        january: '01',
+        february: '02',
+        march: '03',
+        april: '04',
+        may: '05',
+        june: '06',
+        july: '07',
+        august: '08',
+        september: '09',
+        october: '10',
+        november: '11',
+        december: '12',
+      }
+      const bulletPattern = /^\s*(?:-|\*)\s*(\d{4})-(\d{2})\s*:\s*(.+)$/gm
+      let m: RegExpExecArray | null
+      while ((m = bulletPattern.exec(ctx.markdown)) !== null) {
+        const [, prefixYear, prefixMonth, rest] = m
+        const bodyMatch = rest.match(
+          /\b(january|february|march|april|may|june|july|august|september|october|november|december)\s+(?:\d{1,2}(?:,)?\s+)?(\d{4})\b/i,
+        )
+        if (!bodyMatch) continue
+        const bodyMonth = MONTHS[bodyMatch[1].toLowerCase()]
+        const bodyYear = bodyMatch[2]
+        if (bodyMonth !== prefixMonth || bodyYear !== prefixYear) {
+          violations.push({
+            ruleId: 'date-prefix-matches-body',
+            severity: 'warning',
+            section: 'Market Context',
+            offending: m[0].slice(0, 120),
+            message: `Date prefix ${prefixYear}-${prefixMonth} contradicts body reference "${bodyMatch[0]}" (${bodyYear}-${bodyMonth}).`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Keyword-artifact mid-tier caution: 3x-10x median. Between the
+  // dagger threshold (10x) and the "normal" range. Warning-level.
+  // ------------------------------------------------------------------
+  {
+    id: 'keyword-artifact-mid-tier-caution',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      for (const dim of ctx.whiteSpace.dimensions) {
+        const validBroader = dim.categories
+          .map((c) => c.broaderNihCount)
+          .filter((n) => n > 0 && n !== -1)
+          .sort((a, b) => a - b)
+        if (validBroader.length < 3) continue
+        const median = validBroader[Math.floor(validBroader.length / 2)]
+        if (median <= 0) continue
+        for (const cat of dim.categories) {
+          if (cat.broaderNihCount <= 0 || cat.broaderNihCount === -1) continue
+          const ratio = cat.broaderNihCount / median
+          if (ratio >= 3 && ratio < 10) {
+            violations.push({
+              ruleId: 'keyword-artifact-mid-tier-caution',
+              severity: 'warning',
+              section: `White Space: ${dim.name}`,
+              offending: `${cat.name} (${cat.broaderNihCount}, ${ratio.toFixed(1)}x median)`,
+              message: `Category "${cat.name}" broader-NIH count ${cat.broaderNihCount} is ${ratio.toFixed(1)}x the dimension median (${median}). Below the ${10}x dagger threshold but still elevated — consider a mid-tier caution note in the narrative.`,
+            })
+          }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Gibberish guard on assembled markdown. If any 4+ consecutive
+  // consonant cluster survives in the body, the sanitizeInsight guard
+  // in synthesize.ts didn't catch it or the string came from another
+  // path.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-gibberish',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      // Acronyms in biomedical/NIH reports commonly have no vowels
+      // (STTR, CTC/CTCs, MSKCC, NCCN, MYCN, PDAC, HER2). To avoid false
+      // positives, only flag tokens that are BOTH long enough to be
+      // implausible acronyms AND have no vowels. r29 garbled tokens
+      // ranged from 3-16 chars; the shorter ones are almost always
+      // legit acronyms. Set the threshold at 7+ chars so we catch
+      // "bifldttiifillhih" (16) without tripping on "mskcc" (5).
+      const pattern = /\b([a-z]{7,})\b/gi
+      let m: RegExpExecArray | null
+      let count = 0
+      while ((m = pattern.exec(ctx.markdown)) !== null) {
+        const token = m[1].toLowerCase()
+        // Skip if any vowel present.
+        if (/[aeiouy]/i.test(token)) continue
+        // Skip if it looks like a hyphenated compound or has case
+        // mixing in the original (already excluded by [a-z]{7,} but
+        // being explicit).
+        violations.push({
+          ruleId: 'no-gibberish',
+          severity: 'critical',
+          section: null,
+          offending: token,
+          message: `Suspected gibberish token "${token}" (${token.length} chars, no vowels). LLM output may have corrupted mid-generation.`,
+        })
+        count++
+        if (count >= 3) break
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Prescriptive institution callouts: telling readers to
   // engage/reach/target a named org.
   // ------------------------------------------------------------------

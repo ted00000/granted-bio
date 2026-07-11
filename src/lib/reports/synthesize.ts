@@ -247,6 +247,30 @@ async function generateExecutiveSummary(
   // Determine dominant category for context
   const topCategory = context.fundingStats.byCategory[0]?.category || 'research'
 
+  // Pre-compute trial status split so the Exec Summary can't overstate
+  // "N active or completed" by including terminated/suspended/withdrawn.
+  // r29 audit flagged the Exec Summary saying "60 clinical trials are
+  // active or completed" when the status table showed 14 were
+  // terminated/suspended/withdrawn (only 46 were actually active or
+  // completed).
+  const trialStatusCounts = { activeOrCompleted: 0, terminated: 0, other: 0 }
+  const ACTIVE_STATUSES = new Set([
+    'active, not recruiting',
+    'recruiting',
+    'enrolling by invitation',
+    'completed',
+    'not yet recruiting',
+    'available',
+  ])
+  const TERMINATED_STATUSES = new Set(['terminated', 'suspended', 'withdrawn'])
+  for (const t of agentOutputs.trials.items) {
+    const s = (t.study_status || '').toLowerCase().trim()
+    if (ACTIVE_STATUSES.has(s)) trialStatusCounts.activeOrCompleted++
+    else if (TERMINATED_STATUSES.has(s)) trialStatusCounts.terminated++
+    else trialStatusCounts.other++
+  }
+  const totalTrialsForSummary = agentOutputs.trials.items.length
+
   const trialSummaries = agentOutputs.trials.items
     .slice(0, 15)
     .map((t) => `- ${t.study_title} (${t.phase || 'Phase N/A'}, ${t.study_status || 'Status N/A'}) - ${t.lead_sponsor || 'Sponsor N/A'}`)
@@ -281,6 +305,7 @@ ${formatYearTrendForPrompt(context.fundingStats.byYear)}
 ## DATA SUMMARY — VERBATIM NUMBERS (use these EXACT figures when writing percentages; do NOT approximate)
 - Total projects: ${context.fundingStats.projectCount} (${preciseCount} Precise-tier, ${balancedCount} Balanced-tier)
 - Total funding: ${formatCurrency(context.fundingStats.total)} across ${context.fundingStats.orgCount} organizations
+- **Trial status split (use verbatim if you cite it):** ${totalTrialsForSummary} total linked trials, of which ${trialStatusCounts.activeOrCompleted} are active or completed, ${trialStatusCounts.terminated} are terminated/suspended/withdrawn, and ${trialStatusCounts.other} carry another status designation. Do NOT write "${totalTrialsForSummary} trials are active or completed" — that only holds if terminated == 0.
 - Clinical trials: ${agentOutputs.trials.items.length} | Patents: ${agentOutputs.patents.items.length}
 - **Category shares** (project count share of ${context.fundingStats.projectCount} total — use these EXACT percentages if you cite a category share):
 ${context.fundingStats.byCategory
@@ -324,7 +349,8 @@ Rules of thumb (from a critical reviewer):
   - "landscape reveals"
   These phrases mark AI-generated prose immediately and destroy credibility. "Genuine X" in particular reads as puffery — say what X actually is instead.
 - **Ban vague qualifiers.** Replace "significantly", "substantially", "meaningfully" with actual numbers or drop the sentence.
-- **Frame observations as observations, not verdicts.** "5 of the top 10 orgs are academic" — good. "The field is accelerating" from a two-point FY trend — hedge: "FY2025 funding was higher than FY2024, but a two-point trend is not by itself proof of acceleration."
+- **Frame observations as observations, not verdicts.** "5 of the top 10 orgs are academic" - good. "The field is accelerating" from a two-point FY trend - hedge: "FY2025 funding was higher than FY2024, but a two-point trend is not by itself proof of acceleration."
+- **TWO-POINT TREND HEDGE - REQUIRED, not optional.** If you cite two years of funding side-by-side (e.g. FY2024 $Xm and FY2025 $Ym), you MUST append the hedge "though two data points do not establish a trend" (or equivalent) in the SAME sentence or paragraph. Do NOT write "suggests growing NIH commitment", "suggests accelerating investment", "signals sustained growth", or any trend verb ("rose", "grew", "climbed", "up") without the hedge attached. This rule applies to Exec Summary paragraph 1 (data facts) as much as anywhere else - the hedge is not narrative flourish, it's a factual constraint on what 2 points can show.
 - **NUMERIC RIGOR — CRITICAL.** Any percentage or share claim you write MUST come from the "Category shares" list in the DATA SUMMARY above (VERBATIM), or from a table shown below in the report. NEVER approximate. If you want to say "diagnostics-heavy," write "diagnostics account for 60.2% of projects (74 of 123)" not "roughly 70%." If the exact figure isn't in the DATA SUMMARY or a body table, do not write the percentage — describe the pattern qualitatively instead ("diagnostics-dominant"). Loose approximations get spotted in ten seconds by a reader who checks the byCategory table.
 - **TAXONOMY SOURCE — name it every time.** The "Category shares" numbers above come from ONE specific taxonomy (the project **funding category** classifier — e.g. "Diagnostics", "Basic Research", "Biotools", "Medical Device"). The White Space section (rendered later in the report) uses a DIFFERENT taxonomy — dimension-based coverage classes like "Biomarker Discovery / Mechanistic Biology". A reader cross-referencing sections will see similar-sounding categories with DIFFERENT counts and reasonably ask "which is which." When you cite a category count in the Executive Summary, you MUST name the taxonomy source in the same sentence. Concrete examples: "5 projects (4.1%) fall in the Basic Research funding category" — GOOD. "5 projects on basic research into cfDNA biogenesis mechanisms" — BAD (invites the reader to compare against the White Space "Biomarker Discovery" count of 4 projects and find a contradiction that isn't one — they're different taxonomies). Rules: (a) use the phrase "funding category" whenever citing byCategory counts; (b) do NOT describe a byCategory count as "the mechanistic gap", "the discovery gap", or any concept-based framing that overlaps with a White Space dimension; (c) if you want to describe a mechanistic/discovery gap, either cite the White Space count directly (once White Space is rendered below) OR use language that doesn't collide with the byCategory names.
 
@@ -505,7 +531,9 @@ CRITICAL DATA-GROUNDING RULE:
 - Never say "no projects on X" or "only one project on Y" unless the FULL PROJECT LIST actually shows that. Prefer qualitative framing ("relatively underrepresented in the sample") when the count is nonzero but small.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
+
+TWO-POINT TREND HEDGE - REQUIRED: If the funding insight cites two consecutive FY dollar figures side-by-side (e.g. "FY2024 $X and FY2025 $Y"), you MUST append "though two data points do not establish a trend" or equivalent hedge in the SAME sentence. Do NOT write "suggests growing NIH commitment", "signals increased investment", "reflects a rising trajectory" - those are trend claims and 2 data points can't support them. This hedge is not optional prose polish; it's a factual constraint.
 
 CLINICAL PIPELINE — DO NOT CHERRY-PICK STATUSES:
 When writing the clinicalPipeline insight, do NOT selectively narrate encouraging statuses (Recruiting, Active) while ignoring negative ones. If the trial list contains any Terminated, Withdrawn, or Suspended trials, mention that too — either explicitly ("N terminated trials also in the sample, suggesting the field has seen setbacks") or by using neutral framing ("mixed status distribution including several terminated trials"). Cherry-picking is exactly the failure a reader spots by scanning the list below the narrative.
@@ -548,16 +576,60 @@ Return JSON only, no markdown:
     }
 
     const parsed = JSON.parse(jsonMatch[0])
+    // Gibberish guard. r29 audit surfaced a Key Publications intro
+    // ending in literal LLM corruption ("ihl tliid bifldttiifillhih flt
+    // thbd idif th"). Not a code bug — a transient LLM emission that
+    // shouldn't ship. Detects text with impossible consonant clusters
+    // or a very low vowel ratio and replaces with an empty string so
+    // the section falls back to just the disclaimer + curated
+    // publications, not the corrupted narrative.
     return {
-      funding: parsed.funding || '',
-      clinicalPipeline: parsed.clinicalPipeline || '',
-      patents: parsed.patents || '',
-      publications: parsed.publications || '',
+      funding: sanitizeInsight(parsed.funding),
+      clinicalPipeline: sanitizeInsight(parsed.clinicalPipeline),
+      patents: sanitizeInsight(parsed.patents),
+      publications: sanitizeInsight(parsed.publications),
     }
   } catch (error) {
     console.warn('[Synthesis Agent] Failed to generate section insights:', error)
     return defaultInsights()
   }
+}
+
+/**
+ * Reject narrative insights that appear to be LLM gibberish. Two signals:
+ *   1. Any "word" (whitespace-delimited alphabetic token >=4 chars) with
+ *      4+ consecutive consonants — English rarely has this.
+ *   2. Overall vowel ratio below 25% across alphabetic characters —
+ *      normal English prose sits above ~35%.
+ * Either triggers a full rejection (return empty string). Cheap check,
+ * only runs on the assembled insight text.
+ */
+function sanitizeInsight(raw: unknown): string {
+  if (typeof raw !== 'string' || raw.length === 0) return ''
+  const text = raw
+  // Signal 1: impossible consonant runs.
+  const impossibleClusterRegex = /\b[a-z]*[bcdfghjklmnpqrstvwxz]{4,}[a-z]*\b/i
+  if (impossibleClusterRegex.test(text)) {
+    console.warn(
+      '[Synthesis Agent] Rejected insight — impossible consonant cluster detected. Preview:',
+      text.slice(0, 120),
+    )
+    return ''
+  }
+  // Signal 2: vowel ratio.
+  const alphaChars = text.match(/[a-z]/gi) || []
+  const vowels = text.match(/[aeiou]/gi) || []
+  if (alphaChars.length > 40) {
+    const ratio = vowels.length / alphaChars.length
+    if (ratio < 0.25) {
+      console.warn(
+        `[Synthesis Agent] Rejected insight — vowel ratio ${ratio.toFixed(2)} below 0.25. Preview:`,
+        text.slice(0, 120),
+      )
+      return ''
+    }
+  }
+  return text
 }
 
 function defaultInsights(): SectionInsights {
@@ -645,7 +717,7 @@ SAMPLE-BASED LANGUAGE: This covers NIH-linked data only, not complete market IP/
 - Acknowledge limitations while providing actionable insight
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 After each substantive claim (an assertion about TRL, commercial readiness, IP concentration, risk, or comparables), append a formatted confidence/evidence block. Use this exact markdown pattern INLINE within the narrative field, at the end of the relevant sentence or paragraph:
@@ -714,7 +786,7 @@ SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this
 - Acknowledge this represents publicly-funded academic research primarily
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 DESCRIPTIVE vs PRESCRIPTIVE — read carefully.
 - Naming organizations is FINE when you are describing factual concentration or activity ("methylation appears across UCLA, Johns Hopkins, Stanford").
@@ -865,7 +937,7 @@ SAMPLE-BASED LANGUAGE: NIH data represents publicly-funded academic research. Us
 - Acknowledge NIH sample doesn't capture private/industry R&D
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 Return JSON only:
 {
@@ -960,7 +1032,7 @@ For each, explain WHY it matters. Consider:
 SAMPLE-BASED LANGUAGE: These are publications linked to NIH-funded projects in our sample. Use language like "among the linked publications" rather than claiming these are the definitive papers in the field.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 Return JSON only (array of 3-5 items). Use the EXACT PMID strings from the
 input above — do NOT invent PMIDs and do NOT reuse the same PMID twice.
@@ -1220,7 +1292,7 @@ CRITICAL — STATISTICAL HONESTY: When a denominator is small, the percentage is
 - **TWO-POINT FUNDING TREND HEDGE — applies to strategicImplications especially.** If you cite two years of funding side-by-side (e.g. FY2024 vs FY2025), you MUST NOT describe the change as "a clear upward trajectory", "accelerating funding", "sustained growth", or any other trend language. Two data points do not establish a trend. Say "FY2024 to FY2025 rose from $Xm to $Ym in the sample, though two data points do not establish a trend" or similar. This rule holds for every field in this response, INCLUDING strategicImplications — a single hedge in the narrative doesn't license a dropped hedge in the strategic take.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 Append this exact markdown pattern inline at the end of each field's content. Tagging rules:
@@ -1409,7 +1481,7 @@ SAMPLE-BASED LANGUAGE: This analysis covers NIH-funded academic research. Use he
 - Commercial players may exist outside NIH-linked data; acknowledge this limitation
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 For each cluster's commercialReadiness AND for the top-level narrative, append this exact markdown pattern inline at the end of each substantive claim:
@@ -1585,7 +1657,7 @@ async function generateIPLandscapeAssessment(
   const IP_LABEL_MIN_N = 10
   const insufficientSample = totalPatents < IP_LABEL_MIN_N
   const insufficientSampleRule = insufficientSample
-    ? `\n**INSUFFICIENT-SAMPLE MODE — ${totalPatents} linked patents (below ${IP_LABEL_MIN_N} threshold).** In this mode you MUST NOT use any of these words to describe the landscape shape in narrative or strategicImplications: "fragmented", "concentrated", "moderately concentrated", "highly concentrated", "consolidated". The Patent section header will show "Insufficient sample to characterize"; any concentration-shape word in your narrative directly contradicts that. Instead describe what the sample contains as descriptors of THIS SAMPLE ("the ${totalPatents} linked patents span N assignees and Y technical areas"), not as a shape claim about the field.\n`
+    ? `\n**INSUFFICIENT-SAMPLE MODE - ${totalPatents} linked patents (below ${IP_LABEL_MIN_N} threshold).** In this mode you MUST NOT use ANY of these words or phrases to describe the landscape shape in narrative or strategicImplications: "fragmented", "concentrated", "moderately concentrated", "highly concentrated", "consolidated", "distributed across", "spread across", "held across ... rather than", "diverse but institutionally", "diverse but", or any construction that implies a distribution SHAPE (fragmented vs consolidated is a spectrum; any point on that spectrum is off-limits when the sample can't support the read). The Patent section header will show "Insufficient sample to characterize"; any distribution-shape claim in your narrative directly contradicts that. Instead describe what the sample contains as descriptors of THIS SAMPLE ("the ${totalPatents} linked patents span N assignees across Y technical areas"), NOT as a shape claim about the field. Strategic implications must frame IP-related actions as "run a full USPTO/Google Patents/PATENTSCOPE search" — never as "align with the [shape] IP base."\n`
     : ''
 
   const prompt = `Analyze the IP landscape for "${topic}" based on patent data.
@@ -1620,7 +1692,7 @@ SAMPLE-BASED LANGUAGE: CRITICAL - These are only patents linked to NIH projects,
 - Explicitly note that commercial/international patents may exist outside this sample
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 Append this exact markdown pattern inline at the end of each substantive claim in freedomToOperate, recentActivityTrend, and narrative:
@@ -1774,7 +1846,7 @@ For each project, generate a 2-3 sentence insight explaining:
 Be specific and analytical. Reference the project's actual methods or focus when possible.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (e.g. "genuine opportunity", "genuine methodological differentiation"). Say what the thing IS, not that it is "genuine".
+BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 Return JSON only (object mapping application_id to insight string):
 {
@@ -3035,6 +3107,17 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
   ).length
   const otherStudyTypeCount = totalTrials - observationalCount - interventionalCount
   const naCount = trials.byPhase['N/A'] || 0
+  // Count interventional trials that carry an actual phase label.
+  // Interventional does NOT imply phased — some interventional trials
+  // are unphased in ClinicalTrials.gov. r29 audit flagged the framing
+  // "phase-labeled = interventional subset" as misleading when only 6
+  // of 16 interventional trials carried a phase.
+  const interventionalPhased = trials.items.filter((t) => {
+    if ((t.study_type || '').toUpperCase() !== 'INTERVENTIONAL') return false
+    const p = (t.phase || '').toLowerCase()
+    return p.includes('phase') && !p.includes('n/a') && !p.includes('unknown')
+  }).length
+  const interventionalUnphased = Math.max(0, interventionalCount - interventionalPhased)
   if (totalTrials > 0 && naCount / totalTrials >= 0.4 && observationalCount > 0) {
     const pctObs = Math.round((observationalCount / totalTrials) * 100)
     // Reconcile the arithmetic: obs + interv may not equal total when
@@ -3046,7 +3129,15 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
       otherStudyTypeCount > 0
         ? `, and ${otherStudyTypeCount} carry another study_type designation (Expanded Access, Other, or unlabeled)`
         : ''
-    md += `\n*Of the ${totalTrials} linked trials, ${observationalCount} are observational studies (${pctObs}% - biomarker validation, cohort studies, biobank studies), ${interventionalCount} are interventional${residualClause}. Observational trials don't carry Phase 1-4 by design - ClinicalTrials.gov marks them N/A. The phase-labeled trials above are the interventional subset. This shape is expected for topics centered on diagnostics or biomarker discovery; a therapeutics-focused topic would typically show a phase-dominant distribution.*\n`
+    // Phase-labeled subset framing must reflect that interventional
+    // trials aren't all phased. If ALL interventional trials are phased
+    // (edge case), the split is 1:1 and the clarifying clause can be
+    // omitted; otherwise surface the unphased-interventional remainder.
+    const phasedSubsetClause =
+      interventionalUnphased > 0
+        ? `The phase-labeled trials above are the phased subset of the ${interventionalCount} interventional trials; the remaining ${interventionalUnphased} interventional trials carry no phase label.`
+        : `The phase-labeled trials above are the ${interventionalCount} interventional trials (all phased).`
+    md += `\n*Of the ${totalTrials} linked trials, ${observationalCount} are observational studies (${pctObs}% - biomarker validation, cohort studies, biobank studies), ${interventionalCount} are interventional${residualClause}. Observational trials don't carry Phase 1-4 by design - ClinicalTrials.gov marks them N/A. ${phasedSubsetClause} This shape is expected for topics centered on diagnostics or biomarker discovery; a therapeutics-focused topic would typically show a phase-dominant distribution.*\n`
   }
   md += '\n'
 
