@@ -1229,6 +1229,175 @@ const RULES: Rule[] = [
   },
 
   // ------------------------------------------------------------------
+  // PI possessive references in narrative. r33 audit flagged
+  // "Velculescu's DELFI work" in a project card insight - the PI is
+  // structured metadata on the card, so a possessive reference in the
+  // prose is a duplicate + narrative callout. Extract PI surnames from
+  // topResearchers and detect [Surname]'s constructions anywhere in
+  // the markdown.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-pi-possessive-in-narrative',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const surnames = new Set<string>()
+      for (const r of ctx.topResearchers.slice(0, 50)) {
+        const parts = (r.pi_name || '').split(',')
+        const surname = parts[0]?.trim()
+        if (surname && surname.length >= 3) surnames.add(surname)
+      }
+      if (surnames.size === 0) return violations
+      const escaped = Array.from(surnames)
+        .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+        .join('|')
+      const pattern = new RegExp(`\\b(${escaped})['’]s\\s+\\w`, 'gi')
+      let m: RegExpExecArray | null
+      let count = 0
+      while ((m = pattern.exec(ctx.markdown)) !== null) {
+        count++
+        if (count > 3) break
+        violations.push({
+          ruleId: 'no-pi-possessive-in-narrative',
+          severity: 'warning',
+          section: null,
+          offending: m[0],
+          message: `PI possessive "${m[0]}" appears in narrative. Drop the possessive - PI name lives in structured metadata only.`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Institution names as entry points / targets in Competitive
+  // Topology Strategic Implications. r33 audit: "primarily UIUC and
+  // UConn represent more differentiated entry points" tips from
+  // descriptive to prescriptive.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-institutions-as-entry-points',
+    severity: 'warning',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const topology = sections.get('Competitive Topology') || ''
+      if (!topology) return violations
+      // Find Strategic Implications subsection.
+      const siMatch = topology.match(/### Strategic Implications[\s\S]*?(?=\n##|$)/)
+      const siBody = siMatch ? siMatch[0] : ''
+      if (!siBody) return violations
+      // Look for institutional acronyms/names co-occurring with entry-
+      // point/target/differentiated words within a short span.
+      const orgTokens = /(?:UIUC|UConn|MGH|MIT|UCSF|UCLA|UC\s+\w+|Cornell|Harvard|Stanford|Johns Hopkins|Yale|Duke|Penn|Columbia|NYU|MSKCC|Mayo|Broad|Vanderbilt|Fred Hutch|Dana-?Farber|Sloan Kettering|Weill|Beckman|City of Hope)/i
+      const targetVerbs =
+        /\b(entry point|entry points|represent (?:more )?differentiated|differentiated entry|target|targets|target for|choose|prioritize|primarily [A-Z])/i
+      const orgMatch = siBody.match(orgTokens)
+      const verbMatch = siBody.match(targetVerbs)
+      if (orgMatch && verbMatch) {
+        // Both present in the SI - flag. This is not a perfect co-
+        // occurrence test but it fires on the exact pattern r33 hit.
+        violations.push({
+          ruleId: 'no-institutions-as-entry-points',
+          severity: 'warning',
+          section: 'Competitive Topology → Strategic Implications',
+          offending: `${orgMatch[0]} + ${verbMatch[0]}`,
+          message: `Competitive Topology Strategic Implications names an institution ("${orgMatch[0]}") in an entry-point/target context ("${verbMatch[0]}"). Rewrite - keep institution names in the clusters keyPlayers list only, not in the SI recommendation.`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // White Space Strategic Implications naming sub-30 broader-NIH
+  // categories as targets. r33 audit: "tissue-of-origin (1 project),
+  // high-risk surveillance (2 projects)" cited as R21 anchors despite
+  // broader-NIH=6 and 19 (below the 30 floor). Check that any category
+  // named in the SI paragraph is in the ranked-opportunities list.
+  // ------------------------------------------------------------------
+  {
+    id: 'white-space-si-ranked-only',
+    severity: 'warning',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const wsBody = sections.get('White Space Analysis') || ''
+      const siMatch = wsBody.match(/### Strategic Implications[\s\S]*?(?=\n##|$)/)
+      const siBody = siMatch ? siMatch[0] : ''
+      if (!siBody) return violations
+      const rankedNames = new Set(
+        ctx.whiteSpace.topOpportunities.map((op) => op.categoryName.toLowerCase()),
+      )
+      // Also collect category names from ALL dimensions to detect which
+      // are being referenced.
+      const allCats: string[] = []
+      for (const dim of ctx.whiteSpace.dimensions) {
+        for (const cat of dim.categories) {
+          allCats.push(cat.name)
+        }
+      }
+      for (const catName of allCats) {
+        if (catName.length < 6) continue // skip very short names
+        if (rankedNames.has(catName.toLowerCase())) continue
+        // Check if this un-ranked category is named in the SI body.
+        // Use word-boundary match against a normalized version.
+        const escaped = catName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        const re = new RegExp(`\\b${escaped}\\b`, 'i')
+        if (re.test(siBody)) {
+          // Find the underlying category to get broader-NIH count.
+          const cat = ctx.whiteSpace.dimensions
+            .flatMap((d) => d.categories)
+            .find((c) => c.name === catName)
+          if (cat && cat.broaderNihCount > 0 && cat.broaderNihCount < 30) {
+            violations.push({
+              ruleId: 'white-space-si-ranked-only',
+              severity: 'warning',
+              section: 'White Space → Strategic Implications',
+              offending: `${catName} (broader-NIH=${cat.broaderNihCount})`,
+              message: `White Space SI names "${catName}" (broader-NIH ${cat.broaderNihCount}, below 30 floor) but it's not in the ranked opportunities. Strategic Implications must draw only from the ranked list.`,
+            })
+          }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Sample-share-to-structural inference. Pattern: "N% of sample" +
+  // proximity to "limited", "underfunded", "relative to translational
+  // volume", "mechanistic investigation". Turns a sample share into a
+  // field-level structural claim.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-sample-share-to-structural',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      // Look for the pattern within a short window.
+      const patterns = [
+        /\d+(?:\.\d+)?%[^.]{0,120}\b(?:limited (?:mechanistic |mechanism |basic |fundamental )?(?:investigation|work|research)|underfunded|structural(?:ly)?)\b/i,
+        /\b(?:limited (?:mechanistic |mechanism |basic |fundamental )?(?:investigation|work|research)|underfunded|structural(?:ly)?)[^.]{0,120}\d+(?:\.\d+)?%/i,
+        /\brelative to (?:the )?translational volume\b/i,
+      ]
+      for (const regex of patterns) {
+        const match = ctx.markdown.match(regex)
+        if (match) {
+          violations.push({
+            ruleId: 'no-sample-share-to-structural',
+            severity: 'warning',
+            section: null,
+            offending: match[0].slice(0, 160),
+            message:
+              'Sample-share-to-structural inference detected. A low sample % does not support "limited investigation", "underfunded", or "structural" claims. Reframe as observation-in-sample.',
+          })
+          break
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Prescriptive institution callouts: telling readers to
   // engage/reach/target a named org.
   // ------------------------------------------------------------------

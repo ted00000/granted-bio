@@ -1098,10 +1098,12 @@ DESCRIPTIVE vs PRESCRIPTIVE — critical rule for narrative + strategicImplicati
 - Do NOT name individual PIs by name in any narrative or rationale field. PI-level detail belongs in the Key Researchers table, not the narrative.
 
 STRATEGIC IMPLICATIONS (REQUIRED):
-Produce a persona-appropriate strategicImplications paragraph tied to the top opportunities. Reader persona is: **${persona}**.
+Produce a persona-appropriate strategicImplications paragraph tied EXCLUSIVELY to the RANKED WHITE SPACE OPPORTUNITIES listed above. Reader persona is: **${persona}**.
 
-- Researcher persona: frame around grant strategy. "For a researcher writing an R01 or SBIR in this space, the strongest differentiation opportunities are..." Reference specific opportunity names and counts. Mention concrete grant mechanisms where relevant (R01, R21, U01, SBIR/STTR). Speak to patterns and mechanisms, not "approach X institution."
-- Investor persona: frame around investment thesis. "For a seed-stage or Series A investor evaluating this space, the highest-signal bets among under-served categories are..." Reference specific opportunity names and counts. Mention what technical or clinical milestones would validate a bet. Do not name specific companies or PIs as targets.
+**CRITICAL: RANKED-ONLY.** strategicImplications may ONLY reference categories that appear in the RANKED WHITE SPACE OPPORTUNITIES list at the top of this prompt. Categories from the COVERAGE DATA that are NOT in the ranked list are ineligible - do NOT surface them as "R21 anchors", "strongest differentiation opportunities", "least-covered intersections", or any opportunity framing. If the ranked list is empty or has fewer than 3 items, you may say "the sample does not surface strong quantitative gap signals; strategic implications are limited" - do NOT invent opportunities from sub-30 broader-NIH categories.
+
+- Researcher persona: frame around grant strategy. "For a researcher writing an R01 or SBIR in this space, the strongest differentiation opportunities are..." Reference specific opportunity names and counts FROM THE RANKED LIST. Mention concrete grant mechanisms where relevant (R01, R21, U01, SBIR/STTR). Speak to patterns and mechanisms, not "approach X institution."
+- Investor persona: frame around investment thesis. "For a seed-stage or Series A investor evaluating this space, the highest-signal bets among under-served categories are..." Reference specific opportunity names and counts FROM THE RANKED LIST. Mention what technical or clinical milestones would validate a bet. Do not name specific companies or PIs as targets.
 
 3-4 sentences. Concrete and actionable, not hand-wavy. MUST END WITH a Confidence+Evidence tag ('**Confidence: High/Medium/Low** - Evidence: [top opportunity counts + ratios that anchor the implications]'). At low sample counts across the top opportunities, confidence should be Medium or Low.
 

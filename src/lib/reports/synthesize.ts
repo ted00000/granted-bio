@@ -532,7 +532,7 @@ CRITICAL DATA-GROUNDING RULE:
 - Never say "no projects on X" or "only one project on Y" unless the FULL PROJECT LIST actually shows that. Prefer qualitative framing ("relatively underrepresented in the sample") when the count is nonzero but small.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 TWO-POINT TREND HEDGE - REQUIRED: If the funding insight cites two consecutive FY dollar figures side-by-side (e.g. "FY2024 $X and FY2025 $Y"), you MUST append "though two data points do not establish a trend" or equivalent hedge in the SAME sentence. Do NOT write "suggests growing NIH commitment", "signals increased investment", "reflects a rising trajectory" - those are trend claims and 2 data points can't support them. This hedge is not optional prose polish; it's a factual constraint.
@@ -704,7 +704,7 @@ SAMPLE-BASED LANGUAGE: This covers NIH-linked data only, not complete market IP/
 - Acknowledge limitations while providing actionable insight
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
@@ -774,7 +774,7 @@ SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this
 - Acknowledge this represents publicly-funded academic research primarily
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 DESCRIPTIVE vs PRESCRIPTIVE — read carefully.
@@ -926,7 +926,7 @@ SAMPLE-BASED LANGUAGE: NIH data represents publicly-funded academic research. Us
 - Acknowledge NIH sample doesn't capture private/industry R&D
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 Return JSON only:
@@ -1022,7 +1022,7 @@ For each, explain WHY it matters. Consider:
 SAMPLE-BASED LANGUAGE: These are publications linked to NIH-funded projects in our sample. Use language like "among the linked publications" rather than claiming these are the definitive papers in the field.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 Return JSON only (array of 3-5 items). Use the EXACT PMID strings from the
@@ -1283,7 +1283,7 @@ CRITICAL — STATISTICAL HONESTY: When a denominator is small, the percentage is
 - **TWO-POINT FUNDING TREND HEDGE — applies to strategicImplications especially.** If you cite two years of funding side-by-side (e.g. FY2024 vs FY2025), you MUST NOT describe the change as "a clear upward trajectory", "accelerating funding", "sustained growth", or any other trend language. Two data points do not establish a trend. Say "FY2024 to FY2025 rose from $Xm to $Ym in the sample, though two data points do not establish a trend" or similar. This rule holds for every field in this response, INCLUDING strategicImplications — a single hedge in the narrative doesn't license a dropped hedge in the strategic take.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
@@ -1473,7 +1473,7 @@ SAMPLE-BASED LANGUAGE: This analysis covers NIH-funded academic research. Use he
 - Commercial players may exist outside NIH-linked data; acknowledge this limitation
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
@@ -1492,6 +1492,8 @@ Produce a persona-appropriate strategicImplications paragraph tied to the cluste
 - Investor persona: which cluster is closest to commercial deployment vs. earliest-stage? Which cluster's IP/trial signals suggest first-mover risk vs. exit optionality? What technical or clinical milestones would validate a bet in each cluster?
 
 Reference specific cluster names and their counts from the data. 3-4 sentences, concrete and actionable.
+
+**CRITICAL: NO INSTITUTIONS-AS-ENTRY-POINTS.** In strategicImplications, do NOT name specific institutions as "entry points", "targets", "represent differentiated entry points", or attach institutional labels to methodology recommendations. Institution names are FINE inside the clusters[].keyPlayers list (that's factual data) and FINE when the cluster narrative describes concentration ("cfDNA methylation concentrates at UCLA, Johns Hopkins, Stanford"). Institution names are NOT FINE in the strategicImplications field even softened as "primarily UIUC and UConn" attached to a differentiation-target framing. That construction directs the reader toward those institutions. Rewrite: "The CRISPR-based amplification cluster (approximately 5 projects) is a differentiated entry point given its smaller footprint and technical distinctness" - NO institution names in the strategicImplications recommendation. Institution names in that field = fail.
 
 Return JSON only:
 {
@@ -1693,7 +1695,7 @@ SAMPLE-BASED LANGUAGE: CRITICAL - These are only patents linked to NIH projects,
 - Explicitly note that commercial/international patents may exist outside this sample
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
@@ -1847,8 +1849,10 @@ For each project, generate a 2-3 sentence insight explaining:
 
 Be specific and analytical. Reference the project's actual methods or focus when possible.
 
+**NO PI-POSSESSIVE PHRASES.** Do NOT write "Zhou's DELFI work", "Velculescu's approach", "Wang's platform", "Chen's group", or any "[PI Surname]'s [X]" construction. The PI field is displayed as structured metadata in the project card; the insight text must not reference the PI by name at all - not even as a possessive. WRONG: "Velculescu's DELFI work is among the more established fragmentomics programs." RIGHT: "the DELFI work here is among the more established fragmentomics programs" (or drop the reference entirely and describe the method). Same rule applies to first-name possessives ("David's assay") and to team labels ("the Zhou lab").
+
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y".
+BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
 Return JSON only (object mapping application_id to insight string):
@@ -2176,7 +2180,7 @@ ${renderClinicalPipeline(agentOutputs.trials, insights.clinicalPipeline)}
 
     md += `## Key Organizations
 
-${renderOrganizations(context.topOrganizations)}
+${renderOrganizations(context.topOrganizations, context.fundingStats.orgCount)}
 
 ---
 
@@ -2247,7 +2251,7 @@ ${renderCuratedPublications(curatedPublications, agentOutputs.publications, insi
 
 ## Key Organizations
 
-${renderOrganizations(context.topOrganizations)}
+${renderOrganizations(context.topOrganizations, context.fundingStats.orgCount)}
 
 ---
 
@@ -2354,6 +2358,42 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
   md = md.replace(/\bunderscored\b/gi, 'highlighted')
   md = md.replace(/\bunderscores\b/gi, 'highlights')
   md = md.replace(/\bunderscore\b/gi, 'highlight')
+
+  // PI-possessive stripping. r33 audit flagged "Velculescu's DELFI
+  // work" in a per-project card insight - the PI is displayed as
+  // structured metadata in the card header, so referencing the PI
+  // possessively in the interpretive prose is a duplicate + narrative
+  // callout. Strip surname-possessives for every PI in topResearchers,
+  // but ONLY inside per-project INSIGHT text (marked by "**Insight:**").
+  // The rest of the report shouldn't have PI names anyway.
+  //
+  // Regex: `(PI Surname)'s` -> just skip the possessive. Reads a bit
+  // awkward locally ("DELFI work is among the more established...")
+  // but no worse than "the PI's work" and it removes the credibility
+  // hit of a named-actor callout in narrative.
+  const surnames = new Set<string>()
+  for (const r of context.topResearchers.slice(0, 50)) {
+    const raw = r.pi_name || ''
+    // NIH format: "Last, First" or "Last, First Middle"
+    const parts = raw.split(',')
+    if (parts.length >= 1) {
+      const surname = parts[0].trim()
+      if (surname.length >= 3) surnames.add(surname)
+    }
+  }
+  if (surnames.size > 0) {
+    // Build a single regex for efficiency. Match "Surname's" (case-
+    // insensitive) and replace with just "" (drop the token entirely).
+    const escaped = Array.from(surnames)
+      .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+      .join('|')
+    const possessive = new RegExp(`\\b(${escaped})['’]s\\s+`, 'gi')
+    md = md.replace(possessive, '')
+    // Also strip "the [Surname] lab" and "the [Surname] group" - same
+    // named-actor callout pattern.
+    const groupRef = new RegExp(`\\bthe\\s+(${escaped})\\s+(lab|group|team)\\b`, 'gi')
+    md = md.replace(groupRef, 'the $2')
+  }
 
   return md
 }
@@ -3333,10 +3373,19 @@ function normalizeTrialField(value: string | null | undefined): string {
 }
 
 
-function renderOrganizations(orgs: OrgStats[]): string {
+function renderOrganizations(orgs: OrgStats[], totalOrgCount?: number): string {
   if (orgs.length === 0) {
     return 'No organization data available.\n'
   }
+
+  // Caption showing "top N of M" when we know the total funded-org
+  // count. r33 audit flagged the org table listing ~16 orgs with no
+  // "top 16 of 65" label - readers can't tell if the table is complete
+  // or a slice.
+  const caption =
+    typeof totalOrgCount === 'number' && totalOrgCount > orgs.length
+      ? `*Top ${orgs.length} of ${totalOrgCount} funded organizations, ranked by NIH funding within the analyzed sample.*\n\n`
+      : ''
 
   // Column headers explicitly say "grant-linked" to distinguish attribution
   // path from raw assignee/sponsor lookup. r23 audit exposed the
@@ -3346,7 +3395,8 @@ function renderOrganizations(orgs: OrgStats[]): string {
   // whoever owns the patent — often the inventor, a partner institution, or
   // a licensee — which is a different question). Both numbers are correct
   // under different definitions; the label makes that visible.
-  let md = '| Organization | Projects | Funding | Pubs (grant-linked) | Trials (grant-linked) | Patents (grant-linked) |\n'
+  let md = caption
+  md += '| Organization | Projects | Funding | Pubs (grant-linked) | Trials (grant-linked) | Patents (grant-linked) |\n'
   md += '|--------------|----------|---------|--------------------|-----------------------|------------------------|\n'
 
   orgs.forEach((o) => {
