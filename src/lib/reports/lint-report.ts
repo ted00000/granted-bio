@@ -1620,6 +1620,160 @@ const RULES: Rule[] = [
   },
 
   // ------------------------------------------------------------------
+  // "N active or completed" phrasing banned entirely. r35 audit
+  // showed this label is ambiguous - readers disagree on whether
+  // "recruiting" counts as "active". Force explicit status
+  // enumeration instead.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-active-or-completed-bucket',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const pattern = /\b\d{1,4}\s+(?:linked )?(?:clinical )?trials?\s+(?:are\s+)?active or completed\b/gi
+      const match = ctx.markdown.match(pattern)
+      if (match) {
+        violations.push({
+          ruleId: 'no-active-or-completed-bucket',
+          severity: 'critical',
+          section: null,
+          offending: match[0],
+          message: `"${match[0]}" uses the ambiguous "active or completed" bucket. Cite each status individually (recruiting, completed, active-not-recruiting, not yet recruiting) or use "in-progress/planned/completed vs terminated/suspended/withdrawn" split.`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // "N phase-labeled interventional trials" collapse. r35 caught this
+  // in Field Maturity Strategic Implications - implies phase-labeled
+  // = interventional 1:1 when the counts differ.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-phase-labeled-interventional-collapse',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      // Match "N phase-labeled interventional" without an intervening
+      // "subset of" qualifier that would make it correct.
+      const pattern = /\b\d{1,3}\s+phase-labeled\s+interventional\s+(?:trials?)?\b/gi
+      let m: RegExpExecArray | null
+      while ((m = pattern.exec(ctx.markdown)) !== null) {
+        // Look at the surrounding 100 chars for a "subset of" qualifier.
+        const start = Math.max(0, m.index - 100)
+        const end = Math.min(ctx.markdown.length, m.index + m[0].length + 100)
+        const window = ctx.markdown.slice(start, end)
+        if (!/subset of|phased subset/i.test(window)) {
+          violations.push({
+            ruleId: 'no-phase-labeled-interventional-collapse',
+            severity: 'critical',
+            section: null,
+            offending: m[0],
+            message: `"${m[0]}" collapses "phase-labeled" and "interventional" into 1:1 identity. Rewrite as "the phased subset of N interventional trials" so the reader can see the phase-labeled count is a subset.`,
+          })
+          break
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Cluster / clustering language in Patent section when patents<10.
+  // r35 caught "the protected innovations cluster around nucleic acid
+  // detection" in Patent Analysis narrative.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-cluster-in-patent-when-insufficient',
+    severity: 'critical',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const patentCount = ctx.agentOutputs.patents.items.length
+      if (patentCount >= 10) return violations
+      const body = sections.get('Patent Activity') || ''
+      if (!body) return violations
+      const cleaned = body.replace(/a landscape label like[\s\S]*?to be meaningful/gi, '')
+      const pattern = /\b(clusters? around|clustered|clustering|cluster of)\b/i
+      const m = cleaned.match(pattern)
+      if (m) {
+        violations.push({
+          ruleId: 'no-cluster-in-patent-when-insufficient',
+          severity: 'critical',
+          section: 'Patent Activity',
+          offending: m[0],
+          message: `"${m[0]}" is a clustering claim in Patent narrative with only ${patentCount} linked patents. Contradicts the insufficient-sample header.`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Percentages on a small patent base. r35 caught "63% academic,
+  // 25% top assignee" reported on an 8-patent base.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-percentages-in-patent-when-insufficient',
+    severity: 'warning',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const patentCount = ctx.agentOutputs.patents.items.length
+      if (patentCount >= 10) return violations
+      const body = sections.get('Patent Activity') || ''
+      if (!body) return violations
+      // Look for a percentage adjacent to descriptor words like
+      // "academic", "assignee", "held by", "commercial".
+      const pattern =
+        /\d{1,3}(?:\.\d+)?%\s+(?:from\s+)?(?:academic|academic institutions|assignees?|commercial|university|universities|top assignee|held by|classify as)/i
+      const m = body.match(pattern)
+      if (m) {
+        violations.push({
+          ruleId: 'no-percentages-in-patent-when-insufficient',
+          severity: 'warning',
+          section: 'Patent Activity',
+          offending: m[0],
+          message: `"${m[0]}" reports a distribution percentage on ${patentCount} patents. Cite raw counts only ("6 of ${patentCount} are academic") - percentages on a small base imply distribution shape the sample can't support.`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Widened target-noun ban. r35 flagged pervasive "partnership target"
+  // / "collaboration target" framing. Also catches "engagement target".
+  // ------------------------------------------------------------------
+  {
+    id: 'no-target-noun-forms',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const patterns: Array<{ regex: RegExp; label: string }> = [
+        { regex: /\b(?:high-value\s+)?partnership targets?\b/i, label: 'partnership target(s)' },
+        { regex: /\b(?:high-value\s+)?collaboration targets?\b/i, label: 'collaboration target(s)' },
+        { regex: /\bengagement targets?\b/i, label: 'engagement target(s)' },
+        { regex: /\btargets? for collaboration\b/i, label: 'targets for collaboration' },
+        { regex: /\bcandidate (?:partners?|collaborators?|consortium)\b/i, label: 'candidate partner/collaborator' },
+      ]
+      for (const { regex, label } of patterns) {
+        const m = ctx.markdown.match(regex)
+        if (m) {
+          violations.push({
+            ruleId: 'no-target-noun-forms',
+            severity: 'warning',
+            section: null,
+            offending: m[0],
+            message: `Prescriptive "target" noun form "${label}" detected. Rewrite as pattern-level observation without directing the reader to a group to pursue.`,
+          })
+          break
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Prescriptive institution callouts: telling readers to
   // engage/reach/target a named org.
   // ------------------------------------------------------------------
