@@ -1379,12 +1379,15 @@ const RULES: Rule[] = [
         /\b(?:limited (?:mechanistic |mechanism |basic |fundamental )?(?:investigation|work|research)|underfunded|structural(?:ly)?)[^.]{0,120}\d+(?:\.\d+)?%/i,
         /\brelative to (?:the )?translational volume\b/i,
         // r36: "that mechanistic gap may constrain sensitivity improvements"
-        // - a sample-observed gap being cited as a cause of field-level
-        //   limitations. The hedge word ("may") doesn't fix this - the
-        //   sample can't support a causal claim about what constrains
-        //   the field.
         /\b(?:that|this|the)\s+(?:mechanistic|methodological|discovery)\s+gap\s+may\s+(?:constrain|limit|prevent|hinder|delay)\b/i,
         /\bmay\s+constrain\s+(?:sensitivity|specificity|clinical|analytical)\s+(?:improvements|advances|gains)\b/i,
+        // r37: softer sample-share -> field-inference pattern.
+        // "5 projects (4.1%), suggesting mechanistic work on cfDNA
+        //  biogenesis is thin in this sample" - the "thin ... suggesting"
+        // + share pair reads as a field-level judgment.
+        /\d+(?:\.\d+)?%\s*[^.]{0,80}?\bsuggest(?:s|ing)?\b[^.]{0,80}?\b(?:thin|sparse|limited|underrepresented|scarce|meager|missing)\b/i,
+        /\b(?:thin|sparse|scarce|meager)\s+(?:in|within)\s+(?:this\s+)?sample[^.]{0,120}?\bsuggest(?:s|ing)?\b/i,
+        /\bsuggest(?:s|ing)?\s+(?:mechanistic|methodological|discovery)\s+work\s+(?:on|into)?[^.]{0,60}?\b(?:thin|sparse|limited)\b/i,
       ]
       for (const regex of patterns) {
         const match = ctx.markdown.match(regex)
@@ -1817,6 +1820,186 @@ const RULES: Rule[] = [
             message: `Prescriptive "target" noun form "${label}" detected. Rewrite as pattern-level observation without directing the reader to a group to pursue.`,
           })
           break
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Overlapping subtotals in same passage. r37 audit caught Exec
+  // Summary saying "15 terminated, suspended, or withdrawn ...
+  // terminated and suspended trials (12 combined)" - both correct but
+  // citing two overlapping subtotals of the same base reads as a
+  // contradiction.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-overlapping-status-subtotals',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      // Look for passages (sentence + next sentence) that cite BOTH
+      // (T+S+W) and (T+S) or (S+W) or (T+W) in overlapping form.
+      // Simple detection: find "N terminated, suspended, (or|and) withdrawn"
+      // AND within 200 chars "M combined" or "M ... terminated (and|or) suspended"
+      const twswPattern = /\b(\d{1,4})\s+terminated,\s*suspended,?\s*(?:or|and)\s+withdrawn/i
+      const tsCombined = /\b(\d{1,4})\s+combined\b|\b(\d{1,4})\s+terminated\s+(?:and|or)\s+suspended\b/i
+      const twsw = ctx.markdown.match(twswPattern)
+      if (twsw) {
+        // Look at 200 chars after the match for a subset citation.
+        const start = twsw.index || 0
+        const window = ctx.markdown.slice(start, start + 400)
+        const ts = window.match(tsCombined)
+        if (ts) {
+          violations.push({
+            ruleId: 'no-overlapping-status-subtotals',
+            severity: 'critical',
+            section: null,
+            offending: `${twsw[0]} ... ${ts[0]}`,
+            message: `Overlapping status subtotals cited in same passage: "${twsw[0]}" (T+S+W) and "${ts[0]}" (T+S or overlapping subset). Both may be correct in isolation but citing two subtotals of the same base reads as contradiction. Pick one framing.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Orphan trial denominator. r37 audit caught Clinical Validation
+  // Status narrative saying "among the 25 reviewed trials" when the
+  // actual sample is 69 trials. Any "N trials" citation in narrative
+  // must map to a value derivable from the underlying data.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-orphan-trial-denominator',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const trials = ctx.agentOutputs.trials.items
+      const total = trials.length
+      if (total === 0) return violations
+      const observational = trials.filter(
+        (t) => (t.study_type || '').toUpperCase() === 'OBSERVATIONAL',
+      ).length
+      const interventional = trials.filter(
+        (t) => (t.study_type || '').toUpperCase() === 'INTERVENTIONAL',
+      ).length
+      // Compute the set of legitimate trial-count denominators from
+      // the data. Any narrative citation of a trial count MUST match
+      // one of these values (or be a phase-status count, which we
+      // don't fully model here).
+      const validCounts = new Set<number>([
+        total,
+        observational,
+        interventional,
+      ])
+      // Also allow phase-labeled + individual status counts.
+      const trialPhases = ctx.agentOutputs.trials.byPhase
+      for (const v of Object.values(trialPhases)) validCounts.add(v)
+      const trialStatuses = ctx.agentOutputs.trials.byStatus || {}
+      for (const v of Object.values(trialStatuses)) validCounts.add(v)
+      // Look for "N trials" claims (integer + word "trials" within 3 words).
+      const pattern =
+        /\b(?:among|of|the|these|those|reviewed|analyzed)\s+(?:the\s+)?(\d{1,4})\s+(?:linked |analyzed |reviewed |eligible )?trials?\b/gi
+      let m: RegExpExecArray | null
+      const seen = new Set<number>()
+      while ((m = pattern.exec(ctx.markdown)) !== null) {
+        const n = parseInt(m[1], 10)
+        if (seen.has(n)) continue
+        seen.add(n)
+        if (n <= 3) continue // very small numbers OK (e.g. "the 3 EV trials")
+        if (!validCounts.has(n)) {
+          // Allow within-2 rounding (e.g. cited 68 vs actual 69).
+          let found = false
+          for (const v of validCounts) {
+            if (Math.abs(v - n) <= 2) {
+              found = true
+              break
+            }
+          }
+          if (!found) {
+            violations.push({
+              ruleId: 'no-orphan-trial-denominator',
+              severity: 'critical',
+              section: null,
+              offending: m[0],
+              message: `"${m[0]}" cites a trial count of ${n} which doesn't map to any subset in the underlying data (total=${total}, observational=${observational}, interventional=${interventional}, plus phase/status counts). Orphan denominator - probably a hallucinated subset.`,
+            })
+            if (violations.length >= 2) break
+          }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // PI-possessive in Next Steps. r37 caught "read their funded
+  // abstracts" in a Next Steps checklist item - after pointing to
+  // the Key Researchers table, the downstream "their X" treats the
+  // researcher set as an action target.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-their-referring-to-researchers-in-next-steps',
+    severity: 'warning',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const body = sections.get('Next Steps') || ''
+      if (!body) return violations
+      // Look for "their [noun]" patterns where the noun is a
+      // researcher-artifact word.
+      const pattern =
+        /\btheir\s+(?:funded\s+)?(?:abstracts?|publications?|approaches?|methods?|portfolios?|trajector(?:y|ies)|work)\b/i
+      const m = body.match(pattern)
+      if (m) {
+        violations.push({
+          ruleId: 'no-their-referring-to-researchers-in-next-steps',
+          severity: 'warning',
+          section: 'Next Steps',
+          offending: m[0],
+          message: `"${m[0]}" in Next Steps uses possessive "their" referring back to a researcher set - reads as directing action at named individuals. Rewrite to point at the artifact ("the funded abstracts in your methodological category") not the people.`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Enumeration count vs actual list. r37 caught FTO saying "four
+  // distinct technical areas" then enumerating five items.
+  // ------------------------------------------------------------------
+  {
+    id: 'enumeration-count-matches-list',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const NUM_WORDS: Record<string, number> = {
+        two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+      }
+      // Match "N distinct [technical areas|clusters|categories|assignees|approaches|methods]"
+      // followed by a colon or enumeration list.
+      const claimPattern =
+        /\b(two|three|four|five|six|seven|eight|nine|ten|\d+)\s+distinct\s+(technical areas|clusters|categories|assignees|approaches|methods|technical clusters)\b[^.:]*(?:including|:|such as)\s+([\s\S]{0,400}?)(?:[.:]|$)/i
+      const m = ctx.markdown.match(claimPattern)
+      if (m) {
+        const claimedRaw = m[1].toLowerCase()
+        const claimed = NUM_WORDS[claimedRaw] || parseInt(claimedRaw, 10)
+        const listText = m[3]
+        // Count enumeration items separated by commas or semicolons.
+        const items = listText
+          .split(/[,;]|\band\b/i)
+          .map((s) => s.trim())
+          .filter((s) => s.length > 3 && !/^[a-z\s]{0,10}$/i.test(s))
+        // Rough sanity: if listed count differs from claimed by >0,
+        // that's a mismatch.
+        if (items.length > 0 && Math.abs(items.length - claimed) >= 1) {
+          violations.push({
+            ruleId: 'enumeration-count-matches-list',
+            severity: 'warning',
+            section: null,
+            offending: m[0].slice(0, 200),
+            message: `Claim of ${claimed} distinct items but enumeration lists ~${items.length}. Update the count or drop it.`,
+          })
         }
       }
       return violations
