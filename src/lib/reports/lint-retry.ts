@@ -236,14 +236,24 @@ interface UsageTracker {
  * if no retries fired or all attempts failed). Never throws — retry
  * failures degrade to log-and-ship.
  *
- * Time budget: sections retry in parallel with a per-call timeout of
- * PER_CALL_TIMEOUT_MS AND an overall wall-clock cap of TOTAL_BUDGET_MS.
- * The first stuck e8df0ae0 report timed out at 5min because sections
- * ran sequentially with no per-call timeout — a single hung Anthropic
- * request could stall the whole synthesis past Vercel's 300s ceiling.
+ * Time budget (r38 rewrite): the previous version used Promise.race
+ * against a setTimeout to enforce a wall-clock budget, but Promise.race
+ * doesn't CANCEL the losing promise — the Anthropic requests kept
+ * running past the budget and stalled synthesis past Vercel's 300s
+ * ceiling. Two reports (e8df0ae0, 6b9ba9f8) hit that ceiling.
+ *
+ * The fix in this version:
+ *   1. Every LLM call gets an AbortController whose signal is passed
+ *      into client.messages.create via the SDK's `signal` option.
+ *   2. A single wall-clock timer fires abort() on every outstanding
+ *      controller at TOTAL_BUDGET_MS. This actually cancels the
+ *      underlying fetch requests, so wall-clock cannot exceed
+ *      TOTAL_BUDGET_MS + a small teardown grace.
+ *   3. Tighter budget: 60s (was 90s). Base synthesis runs ~180-240s,
+ *      so a 60s retry ceiling keeps total under ~300s with margin.
  */
-const PER_CALL_TIMEOUT_MS = 60_000
-const TOTAL_BUDGET_MS = 90_000
+const PER_CALL_TIMEOUT_MS = 45_000
+const TOTAL_BUDGET_MS = 60_000
 
 export async function applyLintCorrections(
   markdown: string,
@@ -261,16 +271,17 @@ export async function applyLintCorrections(
   const sections = extractSections(markdown)
   const startedAt = Date.now()
 
-  // Run all section corrections in parallel. Each is bounded by
-  // PER_CALL_TIMEOUT_MS; the whole batch is bounded by TOTAL_BUDGET_MS
-  // via Promise.race. Sections that miss the budget are dropped and
-  // the original text is kept for them.
+  // Run all section corrections in parallel. Each gets its own
+  // AbortController; the global timer aborts all of them at
+  // TOTAL_BUDGET_MS so a stuck request cannot outlast the budget.
   interface CorrectionResult {
     sectionName: string
     corrected: string | null
     violationCount: number
+    elapsedMs: number
   }
 
+  const controllers: AbortController[] = []
   const correctionTasks: Promise<CorrectionResult>[] = []
   for (const [sectionName, sectionViolations] of grouped) {
     const target = sections.get(sectionName)
@@ -286,6 +297,8 @@ export async function applyLintCorrections(
       )
       continue
     }
+    const controller = new AbortController()
+    controllers.push(controller)
     correctionTasks.push(
       correctOneSection(
         client,
@@ -294,27 +307,37 @@ export async function applyLintCorrections(
         sectionViolations,
         topic,
         usageTracker,
+        controller,
       ),
     )
   }
 
   if (correctionTasks.length === 0) return markdown
 
-  // Bound the total wait so a stuck request can't stall synthesis.
-  const budgetTimer = new Promise<CorrectionResult[]>((resolve) => {
-    setTimeout(() => {
-      console.warn(
-        `[Lint Retry] Total wall-clock budget of ${TOTAL_BUDGET_MS}ms exceeded - accepting partial results`,
-      )
-      resolve([])
-    }, TOTAL_BUDGET_MS)
-  })
-  const results = await Promise.race([
-    Promise.all(correctionTasks),
-    budgetTimer,
-  ])
+  // Wall-clock enforcement. When the timer fires we abort every
+  // outstanding controller AND resolve the race with the partial
+  // results. This actually cancels the underlying fetch requests
+  // (unlike Promise.race alone, which just abandons them).
+  let budgetHit = false
+  const budgetTimer = setTimeout(() => {
+    budgetHit = true
+    console.warn(
+      `[Lint Retry] Wall-clock budget of ${TOTAL_BUDGET_MS}ms hit - aborting ${controllers.length} outstanding request(s)`,
+    )
+    for (const c of controllers) c.abort()
+  }, TOTAL_BUDGET_MS)
+
+  let results: CorrectionResult[]
+  try {
+    results = await Promise.all(correctionTasks)
+  } finally {
+    clearTimeout(budgetTimer)
+  }
   const elapsed = Date.now() - startedAt
-  console.log(`[Lint Retry] Correction batch finished in ${elapsed}ms`)
+  const succeeded = results.filter((r) => r.corrected !== null).length
+  console.log(
+    `[Lint Retry] Correction batch finished in ${elapsed}ms - ${succeeded}/${results.length} succeeded${budgetHit ? ' (budget hit)' : ''}`,
+  )
 
   // Splice corrected sections back. Do this against a fresh
   // extractSections read so offsets stay valid as we mutate.
@@ -329,7 +352,12 @@ export async function applyLintCorrections(
 
 /**
  * Correct a single section. Returns the corrected text or null if the
- * correction failed / was rejected / timed out.
+ * correction failed / was rejected / timed out / was aborted.
+ *
+ * Timing:
+ *   - Per-call SDK timeout is PER_CALL_TIMEOUT_MS (SDK-level abort).
+ *   - The wall-clock budget aborts via the passed-in controller.
+ *   - Either mechanism produces a caught abort error that returns null.
  */
 async function correctOneSection(
   client: Anthropic,
@@ -338,7 +366,9 @@ async function correctOneSection(
   sectionViolations: LintViolation[],
   topic: string,
   usageTracker: UsageTracker,
-): Promise<{ sectionName: string; corrected: string | null; violationCount: number }> {
+  controller: AbortController,
+): Promise<{ sectionName: string; corrected: string | null; violationCount: number; elapsedMs: number }> {
+  const startedAt = Date.now()
   const prompt = buildCorrectionPrompt(sectionName, sectionText, sectionViolations, topic)
   try {
     const response = await client.messages.create(
@@ -347,14 +377,17 @@ async function correctOneSection(
         max_tokens: Math.min(8000, Math.max(2000, Math.floor(sectionText.length / 3))),
         messages: [{ role: 'user', content: prompt }],
       },
-      { timeout: PER_CALL_TIMEOUT_MS },
+      {
+        signal: controller.signal,
+        timeout: PER_CALL_TIMEOUT_MS,
+      },
     )
     usageTracker.inputTokens += response.usage.input_tokens
     usageTracker.outputTokens += response.usage.output_tokens
     const text = response.content.find((c) => c.type === 'text')
     if (!text || text.type !== 'text') {
       console.warn(`[Lint Retry] No text response for section "${sectionName}"`)
-      return { sectionName, corrected: null, violationCount: sectionViolations.length }
+      return { sectionName, corrected: null, violationCount: sectionViolations.length, elapsedMs: Date.now() - startedAt }
     }
     let corrected = text.text.trim()
     if (corrected.startsWith('```')) {
@@ -368,17 +401,26 @@ async function correctOneSection(
       console.warn(
         `[Lint Retry] Correction for "${sectionName}" was empty or too short (${corrected.length} chars). Keeping original.`,
       )
-      return { sectionName, corrected: null, violationCount: sectionViolations.length }
+      return { sectionName, corrected: null, violationCount: sectionViolations.length, elapsedMs: Date.now() - startedAt }
     }
     if (!corrected.startsWith(`## ${sectionName}`)) {
       corrected = `## ${sectionName}\n\n${corrected}`
     }
+    const elapsedMs = Date.now() - startedAt
     console.log(
-      `[Lint Retry] Corrected section "${sectionName}" - ${sectionViolations.length} violation(s) addressed`,
+      `[Lint Retry] Corrected "${sectionName}" in ${elapsedMs}ms - ${sectionViolations.length} violation(s) addressed`,
     )
-    return { sectionName, corrected, violationCount: sectionViolations.length }
+    return { sectionName, corrected, violationCount: sectionViolations.length, elapsedMs }
   } catch (err) {
-    console.warn(`[Lint Retry] Correction for "${sectionName}" failed:`, err)
-    return { sectionName, corrected: null, violationCount: sectionViolations.length }
+    const elapsedMs = Date.now() - startedAt
+    const isAbort =
+      (err instanceof Error && (err.name === 'AbortError' || /abort/i.test(err.message))) ||
+      controller.signal.aborted
+    if (isAbort) {
+      console.warn(`[Lint Retry] Correction for "${sectionName}" aborted after ${elapsedMs}ms (budget/timeout)`)
+    } else {
+      console.warn(`[Lint Retry] Correction for "${sectionName}" failed after ${elapsedMs}ms:`, err)
+    }
+    return { sectionName, corrected: null, violationCount: sectionViolations.length, elapsedMs }
   }
 }
