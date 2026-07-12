@@ -1378,6 +1378,13 @@ const RULES: Rule[] = [
         /\d+(?:\.\d+)?%[^.]{0,120}\b(?:limited (?:mechanistic |mechanism |basic |fundamental )?(?:investigation|work|research)|underfunded|structural(?:ly)?)\b/i,
         /\b(?:limited (?:mechanistic |mechanism |basic |fundamental )?(?:investigation|work|research)|underfunded|structural(?:ly)?)[^.]{0,120}\d+(?:\.\d+)?%/i,
         /\brelative to (?:the )?translational volume\b/i,
+        // r36: "that mechanistic gap may constrain sensitivity improvements"
+        // - a sample-observed gap being cited as a cause of field-level
+        //   limitations. The hedge word ("may") doesn't fix this - the
+        //   sample can't support a causal claim about what constrains
+        //   the field.
+        /\b(?:that|this|the)\s+(?:mechanistic|methodological|discovery)\s+gap\s+may\s+(?:constrain|limit|prevent|hinder|delay)\b/i,
+        /\bmay\s+constrain\s+(?:sensitivity|specificity|clinical|analytical)\s+(?:improvements|advances|gains)\b/i,
       ]
       for (const regex of patterns) {
         const match = ctx.markdown.match(regex)
@@ -1640,6 +1647,49 @@ const RULES: Rule[] = [
           offending: match[0],
           message: `"${match[0]}" uses the ambiguous "active or completed" bucket. Cite each status individually (recruiting, completed, active-not-recruiting, not yet recruiting) or use "in-progress/planned/completed vs terminated/suspended/withdrawn" split.`,
         })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Trial status enumeration completeness. If narrative cites any
+  // status counts (recruiting=X, completed=Y, etc), the cited counts
+  // must sum to the total. r36 audit caught Exec Summary citing
+  // "20 recruiting, 21 completed, 15 terminated/suspended/withdrawn"
+  // = 56 of 67, silently dropping 11 NYR + Active-Not-Recruiting.
+  // ------------------------------------------------------------------
+  {
+    id: 'trial-status-enumeration-complete',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const total = ctx.agentOutputs.trials.items.length
+      if (total < 5) return violations
+      // Look for a sentence citing recruiting AND (completed OR
+      // terminated) with counts — indicating status enumeration.
+      // Extract every N-preceded status token, sum them, compare to
+      // total.
+      const statusPattern =
+        /\b(\d{1,4})\s+(?:are\s+)?(recruiting|completed|active[\s,-]+not[\s-]+recruiting|not\s+yet\s+recruiting|terminated(?:,\s*suspended)?(?:,?\s*(?:or|and)\s*withdrawn)?|terminated|suspended|withdrawn|enrolling\s+by\s+invitation)/gi
+      // Match sentences (approximate) that enumerate status
+      const sentences = ctx.markdown.split(/(?<=[.!?])\s+/)
+      for (const s of sentences) {
+        const matches = Array.from(s.matchAll(statusPattern))
+        if (matches.length < 2) continue // not an enumeration
+        let sum = 0
+        for (const m of matches) sum += parseInt(m[1], 10)
+        // Allow within 2 of total (rounding, "Not Yet Recruiting" as 0).
+        if (Math.abs(sum - total) > 2 && sum < total) {
+          violations.push({
+            ruleId: 'trial-status-enumeration-complete',
+            severity: 'critical',
+            section: null,
+            offending: s.slice(0, 200),
+            message: `Sentence enumerates status counts summing to ${sum} but total is ${total}. Missing ${total - sum} trials in another status. Cite the residual explicitly (e.g. "the remaining N are not-yet-recruiting or active-not-recruiting").`,
+          })
+          if (violations.length >= 2) break
+        }
       }
       return violations
     },
