@@ -45,8 +45,11 @@ type EventPayloads = {
   }
 }
 
+// App ID matches the Vercel project name ("grantedbio", no dash) so the
+// Vercel-Inngest integration lines up cleanly - a mismatch would create
+// a second/duplicate app on Inngest's dashboard.
 export const inngest = new Inngest({
-  id: 'granted-bio',
+  id: 'grantedbio',
   schemas: undefined as unknown as never, // type-only; runtime not needed
 })
 
