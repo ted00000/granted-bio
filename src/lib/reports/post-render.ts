@@ -24,6 +24,10 @@ export function applyPostRenderSubstitutions(input: string): string {
 
   // AI-tell phrases.
   md = md.replace(/\binflection point\b/gi, 'juncture')
+  // Both "genuine [X]" and "genuinely [X]" get the modifier stripped.
+  // r41 audit found "genuinely unclear" surviving because the regex
+  // required "genuine" + word boundary before the space.
+  md = md.replace(/\bgenuinely\s+(\w+)/gi, '$1')
   md = md.replace(/\bgenuine\s+(\w+)/gi, '$1')
   md = md.replace(/\bunderscoring\b/gi, 'highlighting')
   md = md.replace(/\bunderscored\b/gi, 'highlighted')

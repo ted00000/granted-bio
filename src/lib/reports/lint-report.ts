@@ -1370,7 +1370,11 @@ const RULES: Rule[] = [
   // ------------------------------------------------------------------
   {
     id: 'no-sample-share-to-structural',
-    severity: 'warning',
+    // Upgraded from 'warning' to 'critical' (r41): every external
+    // audit that finds this pattern classifies it as a Dimension 3
+    // fail, and it needs to trigger retry to reformulate the
+    // sentence.
+    severity: 'critical',
     check(ctx) {
       const violations: LintViolation[] = []
       // Look for the pattern within a short window.
@@ -1391,11 +1395,19 @@ const RULES: Rule[] = [
       ]
       for (const regex of patterns) {
         const match = ctx.markdown.match(regex)
-        if (match) {
+        if (match && match.index !== undefined) {
+          // Attribute to the containing section so retry can rewrite
+          // it. Walk backward from the match to find the nearest
+          // `## Heading` and use that as the section name. r41 audit
+          // flagged this pattern in Exec Summary but retry didn't fire
+          // because section was null.
+          const before = ctx.markdown.slice(0, match.index)
+          const headingMatch = before.match(/##\s+([^\n]+)$/m)
+          const section = headingMatch ? headingMatch[1].trim() : null
           violations.push({
             ruleId: 'no-sample-share-to-structural',
-            severity: 'warning',
-            section: null,
+            severity: 'critical',
+            section,
             offending: match[0].slice(0, 160),
             message:
               'Sample-share-to-structural inference detected. A low sample % does not support "limited investigation", "underfunded", or "structural" claims. Reframe as observation-in-sample.',
