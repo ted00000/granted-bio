@@ -193,13 +193,14 @@ export async function synthesizeReport(
       // targeted LLM calls; body-wide violations already handled by
       // post-render substitution are skipped.
       //
-      // Feature flag: LINT_RETRY_ENABLED. Default ON (r38) after the
-      // AbortController rewrite of lint-retry. Local smoke-test showed
-      // 40.8s wall-clock for 4 parallel sections, well under the 60s
-      // budget. Base gen ~180-240s + 60s retry cap keeps total under
-      // Vercel's 300s ceiling with margin. Set the env var to 'false'
-      // to disable if a regression surfaces.
-      const retryEnabled = process.env.LINT_RETRY_ENABLED !== 'false'
+      // HARD-DISABLED (r38 emergency). AbortController rewrite worked
+      // locally but stalled a THIRD production report past the 300s
+      // ceiling. Something about the Vercel runtime environment is
+      // holding requests open past abort() calls. Not fixable in a
+      // patch cycle - the right architectural answer is Inngest for
+      // long-running background jobs. Keeping the retry code in place
+      // so we can flip back on once we move synthesis to Inngest.
+      const retryEnabled = false && process.env.LINT_RETRY_ENABLED !== 'false'
       if (critical.length > 0 && retryEnabled) {
         const corrected = await applyLintCorrections(
           finalMarkdown,
