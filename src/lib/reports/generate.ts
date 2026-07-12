@@ -143,21 +143,10 @@ async function createTopicReportRecord(
 }
 
 /**
- * Execute the actual synthesis pipeline for a topic report. This is the
- * expensive work — 3-4 min wall-clock. Invoked by the Inngest function
- * registered in src/lib/inngest/functions.ts. Not called directly from
- * API routes.
+ * Fetch the report record. Extracted so the Inngest orchestrator can
+ * checkpoint the createdAt across step boundaries without re-querying.
  */
-export async function executeTopicReportGeneration(
-  reportId: string,
-  userId: string,
-  topic: string,
-  dataLimited: boolean = false,
-  persona: ReportPersona = 'researcher',
-  injectedInterpretation?: InjectedInterpretation,
-): Promise<void> {
-  // Fetch the report row for created_at (needed to stamp the "Generated:"
-  // date on the markdown, per r26 audit finding).
+export async function fetchReportForGeneration(reportId: string): Promise<{ id: string; createdAt: string }> {
   const { data: report, error: fetchError } = await supabaseAdmin
     .from('user_reports')
     .select('id, created_at')
@@ -168,137 +157,229 @@ export async function executeTopicReportGeneration(
     console.error(`Failed to fetch report ${reportId}:`, fetchError)
     throw new Error('Report not found')
   }
+  return { id: report.id, createdAt: report.created_at as string }
+}
 
+/**
+ * Phase 1: Run the projects agent. Semantic-match projects for the
+ * topic and return them + all project_number variants for the
+ * downstream data agents to join on.
+ */
+export async function runTopicReportPhase1Projects(
+  reportId: string,
+  topic: string,
+  injectedInterpretation?: InjectedInterpretation,
+): Promise<ProjectsAgentOutput> {
+  console.log(`[Report ${reportId}] Starting agent data gathering for "${topic}"`)
+  await updateProgressStage(reportId, 'searching_projects')
+  const projectsOutput = await runProjectsAgent(topic, injectedInterpretation)
+  console.log(`[Report ${reportId}] Projects agent complete: ${projectsOutput.items.length} projects`)
+  return projectsOutput
+}
+
+/**
+ * Phase 2: Run trials/patents/publications/market agents in parallel.
+ * All are constrained by (or informed by) the topic scope; market is
+ * the only one that doesn't need projectNumbers as input.
+ */
+export async function runTopicReportPhase2DataAgents(
+  reportId: string,
+  topic: string,
+  projectsOutput: ProjectsAgentOutput,
+  injectedInterpretation?: InjectedInterpretation,
+): Promise<AllAgentOutputs> {
+  const projectNumbers = projectsOutput.allProjectNumbers
+  console.log(`[Report ${reportId}] Found ${projectNumbers.length} project_number variants for linked data lookup`)
+  await updateProgressStage(reportId, 'gathering_data')
+  const trialsTopicQuery = injectedInterpretation?.semanticQuery ?? topic
+  const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
+    runTrialsAgent(projectNumbers, trialsTopicQuery),
+    runPatentsAgent(projectNumbers),
+    runPublicationsAgent(projectNumbers),
+    runMarketAgent(topic),
+  ])
+  const agentOutputs: AllAgentOutputs = {
+    projects: projectsOutput,
+    trials: trialsOutput,
+    patents: patentsOutput,
+    publications: publicationsOutput,
+    market: marketOutput,
+  }
+  console.log(`[Report ${reportId}] Agent data gathering complete`)
+  console.log(`  - Trials: ${trialsOutput.items.length} (linked to ${projectNumbers.length} projects)`)
+  console.log(`  - Patents: ${patentsOutput.items.length}`)
+  console.log(`  - Publications: ${publicationsOutput.items.length}`)
+  return agentOutputs
+}
+
+/**
+ * Phase 3: Deterministic aggregation over the agent outputs. No LLM
+ * calls; fast. Kept as a distinct phase so an Inngest step boundary
+ * checkpoints the aggregate results before the expensive synthesis.
+ */
+export async function runTopicReportPhase3Aggregation(
+  reportId: string,
+  agentOutputs: AllAgentOutputs,
+): Promise<{ fundingStats: FundingStats; topOrgs: OrgStats[]; topResearchers: ResearcherStats[] }> {
+  await updateProgressStage(reportId, 'aggregating')
+  const fundingStats = calculateFundingStats(agentOutputs.projects)
+  const topOrgs = await aggregateOrganizations(
+    agentOutputs.projects,
+    agentOutputs.trials,
+    agentOutputs.patents,
+    agentOutputs.publications,
+  )
+  const topResearchers = aggregateResearchers(agentOutputs.projects)
+  return { fundingStats, topOrgs, topResearchers }
+}
+
+/**
+ * Phase 4: LLM-heavy synthesis (executive summary, field maturity,
+ * competitive topology, IP landscape, white space, next steps,
+ * markdown assembly, lint-retry). This is the phase most likely to
+ * push a step past the 300s budget - synthesizeReport internally does
+ * ~10 LLM calls plus a lint-retry pass. Under Inngest, this step gets
+ * its own maxDuration window courtesy of a fresh /api/inngest
+ * invocation.
+ */
+export async function runTopicReportPhase4Synthesis(
+  reportId: string,
+  userId: string,
+  topic: string,
+  agentOutputs: AllAgentOutputs,
+  fundingStats: FundingStats,
+  topOrgs: OrgStats[],
+  topResearchers: ResearcherStats[],
+  dataLimited: boolean,
+  persona: ReportPersona,
+  injectedInterpretation: InjectedInterpretation | undefined,
+  generatedAt: string,
+): Promise<ReportData> {
+  console.log(`[Report ${reportId}] Synthesizing report for ${persona} persona...`)
+  await updateProgressStage(reportId, 'synthesizing')
+  return synthesizeReport(topic, agentOutputs, {
+    userId,
+    fundingStats,
+    topOrganizations: topOrgs,
+    topResearchers,
+    dataLimited,
+    persona,
+    interpretation: injectedInterpretation,
+    generatedAt,
+  })
+}
+
+/**
+ * Phase 5: Persist the completed report to Supabase. Single DB write.
+ * Small, fast, deterministic. Marks status='complete'.
+ */
+export async function runTopicReportPhase5Save(
+  reportId: string,
+  persona: ReportPersona,
+  agentOutputs: AllAgentOutputs,
+  reportData: ReportData,
+  fundingStats: FundingStats,
+  topOrgs: OrgStats[],
+  topResearchers: ResearcherStats[],
+): Promise<void> {
+  const { error: updateError } = await supabaseAdmin
+    .from('user_reports')
+    .update({
+      status: 'complete',
+      progress_stage: null,
+      executive_summary: reportData.executiveSummary,
+      market_context: reportData.marketContext,
+      funding_stats: fundingStats,
+      projects: reportData.projects,
+      clinical_trials: reportData.clinicalTrials,
+      patents: reportData.patents,
+      publications: reportData.publications,
+      top_organizations: topOrgs,
+      top_researchers: topResearchers,
+      markdown_content: reportData.markdownContent,
+      agent_outputs: {
+        ...agentOutputs,
+        whiteSpace: reportData.whiteSpace,
+        fieldMaturity: reportData.fieldMaturity,
+        ipLandscape: reportData.ipLandscape,
+        competitiveTopology: reportData.competitiveTopology,
+        surprisingFindings: reportData.surprisingFindings,
+        nextSteps: reportData.nextSteps,
+      },
+      project_count: agentOutputs.projects.items.length,
+      persona,
+      signals_analysis: reportData.signalsAnalysis,
+      curated_publications: reportData.curatedPublications,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', reportId)
+
+  if (updateError) {
+    throw new Error(`Failed to save report: ${updateError.message}`)
+  }
+  console.log(`[Report ${reportId}] Report complete`)
+}
+
+/**
+ * Mark a report as failed and auto-grant a retry credit. Shared error
+ * handler for both the direct-execution path and the Inngest
+ * orchestrator.
+ */
+export async function markReportFailed(
+  reportId: string,
+  userId: string,
+  error: unknown,
+): Promise<void> {
+  const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+  await supabaseAdmin
+    .from('user_reports')
+    .update({
+      status: 'failed',
+      progress_stage: null,
+      error_message: errorMessage,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', reportId)
+  await autoGrantRetryCreditOnFailure({ userId, originalReportId: reportId })
+  console.error(`[Report ${reportId}] Failed:`, error)
+}
+
+/**
+ * Execute the actual synthesis pipeline for a topic report. Legacy
+ * single-call path - kept as a compatibility wrapper for direct
+ * invocation (e.g. from refresh/retry endpoints that don't go through
+ * Inngest). Inngest orchestrator (functions.ts) calls the phase
+ * functions above directly so each gets its own step budget.
+ */
+export async function executeTopicReportGeneration(
+  reportId: string,
+  userId: string,
+  topic: string,
+  dataLimited: boolean = false,
+  persona: ReportPersona = 'researcher',
+  injectedInterpretation?: InjectedInterpretation,
+): Promise<void> {
+  const report = await fetchReportForGeneration(reportId)
   try {
-    // Phase 1a: Get projects first (other agents depend on project numbers)
-    console.log(`[Report ${reportId}] Starting agent data gathering for "${topic}"`)
-
-    await updateProgressStage(reportId, 'searching_projects')
-    const projectsOutput = await runProjectsAgent(topic, injectedInterpretation)
-    console.log(`[Report ${reportId}] Projects agent complete: ${projectsOutput.items.length} projects`)
-
-    // Use all project_number variants from pre-deduplication for linked data lookup
-    // This ensures we find trials/patents linked to any variant of a deduplicated project
-    // e.g., "5R44MH136894-02" and "1R44MH136894-01" are the same project but linked data could be under either
-    const projectNumbers = projectsOutput.allProjectNumbers
-
-    console.log(`[Report ${reportId}] Found ${projectNumbers.length} project_number variants for linked data lookup`)
-
-    // Phase 1b: Run dependent agents in parallel (they all use project numbers)
-    // Market agent runs independently (doesn't need project numbers)
-    // Projects are pre-filtered for relevance, so linked data is inherently relevant
-    await updateProgressStage(reportId, 'gathering_data')
-    const trialsTopicQuery = injectedInterpretation?.semanticQuery ?? topic
-    const [trialsOutput, patentsOutput, publicationsOutput, marketOutput] = await Promise.all([
-      runTrialsAgent(projectNumbers, trialsTopicQuery),
-      runPatentsAgent(projectNumbers),
-      runPublicationsAgent(projectNumbers),
-      runMarketAgent(topic),
-    ])
-
-    const agentOutputs: AllAgentOutputs = {
-      projects: projectsOutput,
-      trials: trialsOutput,
-      patents: patentsOutput,
-      publications: publicationsOutput,
-      market: marketOutput,
-    }
-
-    console.log(`[Report ${reportId}] Agent data gathering complete`)
-    console.log(`  - Projects: ${projectsOutput.items.length}`)
-    console.log(`  - Trials: ${trialsOutput.items.length} (linked to ${projectNumbers.length} projects)`)
-    console.log(`  - Patents: ${patentsOutput.items.length} (linked to ${projectNumbers.length} projects)`)
-    console.log(`  - Publications: ${publicationsOutput.items.length} (linked to ${projectNumbers.length} projects)`)
-
-    // Phase 2: Aggregation
-    await updateProgressStage(reportId, 'aggregating')
-    const fundingStats = calculateFundingStats(projectsOutput)
-    const topOrgs = await aggregateOrganizations(projectsOutput, trialsOutput, patentsOutput, publicationsOutput)
-    const topResearchers = aggregateResearchers(projectsOutput)
-
-    // Phase 3: Synthesis - generate executive summary and markdown report
-    console.log(`[Report ${reportId}] Synthesizing report for ${persona} persona...`)
-    await updateProgressStage(reportId, 'synthesizing')
-
-    const reportData = await synthesizeReport(topic, agentOutputs, {
+    const projectsOutput = await runTopicReportPhase1Projects(reportId, topic, injectedInterpretation)
+    const agentOutputs = await runTopicReportPhase2DataAgents(reportId, topic, projectsOutput, injectedInterpretation)
+    const { fundingStats, topOrgs, topResearchers } = await runTopicReportPhase3Aggregation(reportId, agentOutputs)
+    const reportData = await runTopicReportPhase4Synthesis(
+      reportId,
       userId,
+      topic,
+      agentOutputs,
       fundingStats,
-      topOrganizations: topOrgs,
+      topOrgs,
       topResearchers,
       dataLimited,
       persona,
-      interpretation: injectedInterpretation,
-      generatedAt: report.created_at,
-    })
-
-    // Save completed report
-    const { error: updateError } = await supabaseAdmin
-      .from('user_reports')
-      .update({
-        status: 'complete',
-        progress_stage: null,
-        executive_summary: reportData.executiveSummary,
-        market_context: reportData.marketContext,
-        funding_stats: fundingStats,
-        projects: reportData.projects,
-        clinical_trials: reportData.clinicalTrials,
-        patents: reportData.patents,
-        publications: reportData.publications,
-        top_organizations: topOrgs,
-        top_researchers: topResearchers,
-        markdown_content: reportData.markdownContent,
-        // agent_outputs stores the raw agent outputs plus the synthesis
-        // outputs that don't yet have dedicated columns (whiteSpace,
-        // fieldMaturity, ipLandscape, competitiveTopology, surprisingFindings,
-        // nextSteps). Nesting them here avoids a schema migration; a
-        // dedicated column is a follow-up. Persisted so downstream
-        // renderers can hydrate structural data instead of re-parsing markdown.
-        agent_outputs: {
-          ...agentOutputs,
-          whiteSpace: reportData.whiteSpace,
-          fieldMaturity: reportData.fieldMaturity,
-          ipLandscape: reportData.ipLandscape,
-          competitiveTopology: reportData.competitiveTopology,
-          surprisingFindings: reportData.surprisingFindings,
-          nextSteps: reportData.nextSteps,
-        },
-        project_count: projectsOutput.items.length,
-        persona,
-        signals_analysis: reportData.signalsAnalysis,
-        curated_publications: reportData.curatedPublications,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', reportId)
-
-    if (updateError) {
-      throw new Error(`Failed to save report: ${updateError.message}`)
-    }
-
-    console.log(`[Report ${reportId}] Report complete`)
-    // executeTopicReportGeneration is void — reportId was already
-    // returned from generateTopicReport before Inngest was invoked.
+      injectedInterpretation,
+      report.createdAt,
+    )
+    await runTopicReportPhase5Save(reportId, persona, agentOutputs, reportData, fundingStats, topOrgs, topResearchers)
   } catch (error) {
-    // Mark report as failed
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
-    await supabaseAdmin
-      .from('user_reports')
-      .update({
-        status: 'failed',
-        progress_stage: null,
-        error_message: errorMessage,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', reportId)
-
-    // Auto-grant a retry credit so the user has a recovery path without
-    // contacting support. Idempotent — duplicate failures (e.g. retried
-    // webhooks) won't double-grant. Logged-not-thrown internally.
-    await autoGrantRetryCreditOnFailure({
-      userId,
-      originalReportId: reportId,
-    })
-
-    console.error(`[Report ${reportId}] Failed:`, error)
+    await markReportFailed(reportId, userId, error)
     throw error
   }
 }
