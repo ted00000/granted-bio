@@ -24,7 +24,12 @@ import { inngest } from '@/lib/inngest/client'
 import { FUNCTIONS } from '@/lib/inngest/functions'
 
 export const runtime = 'nodejs'
-export const maxDuration = 300
+// 900s (15 min) on Vercel Pro. Each Inngest step runs inside a single
+// invocation of this route, so the step's ceiling is this maxDuration.
+// Base synthesis ~180-240s + lint-retry up to 60s + margin. 900s gives
+// ~4-5x headroom over the typical run, so a slow Anthropic day or an
+// unusually chatty retry pass doesn't tip past the ceiling.
+export const maxDuration = 900
 export const dynamic = 'force-dynamic'
 
 export const { GET, POST, PUT } = serve({
