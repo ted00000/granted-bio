@@ -2569,18 +2569,24 @@ function renderCompetitiveTopology(topology: CompetitiveTopology): string {
     md += topology.narrative + '\n\n'
   }
 
-  // Render as a proper 3-column table
+  // Cluster listing. Previously rendered as a markdown table but the
+  // Confidence/Evidence tags inside commercialReadiness contain \n\n
+  // paragraph breaks (inserted by normalizeConfidenceTagSpacing so
+  // tags land on their own line) - those newlines break the table
+  // row layout in inconsistent ways, producing r40's uneven display
+  // where one row's tag stays inside the cell and the next spans
+  // full width. Block-per-cluster format renders each Confidence tag
+  // consistently full-width below its cluster's facts.
   md += '### Methodological Clusters\n\n'
-  md += '| Approach | Key Players | Maturity | Commercial Readiness |\n'
-  md += '|----------|-------------|----------|---------------------|\n'
-
-  topology.clusters.forEach((cluster) => {
+  topology.clusters.forEach((cluster, i) => {
     const players = cluster.keyPlayers.slice(0, 4).join(', ')
     const playersDisplay = cluster.keyPlayers.length > 4 ? `${players}, ...` : players
-    md += `| **${cluster.approach}** | ${playersDisplay} | ${cluster.maturityLevel} | ${cluster.commercialReadiness} |\n`
+    md += `#### ${i + 1}. ${cluster.approach}\n\n`
+    md += `- **Key Players:** ${playersDisplay}\n`
+    md += `- **Maturity:** ${cluster.maturityLevel}\n`
+    md += `- **Commercial Readiness:** ${cluster.commercialReadiness}\n\n`
+    md += '---\n\n'
   })
-
-  md += '\n'
 
   if (topology.strategicImplications) {
     md += '### Strategic Implications\n\n'
