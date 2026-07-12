@@ -254,10 +254,10 @@ export async function runTopicReportPhase4Synthesis(
   persona: ReportPersona,
   injectedInterpretation: InjectedInterpretation | undefined,
   generatedAt: string,
-): Promise<ReportData> {
+): Promise<{ reportData: ReportData; agentOutputs: AllAgentOutputs }> {
   console.log(`[Report ${reportId}] Synthesizing report for ${persona} persona...`)
   await updateProgressStage(reportId, 'synthesizing')
-  return synthesizeReport(topic, agentOutputs, {
+  const reportData = await synthesizeReport(topic, agentOutputs, {
     userId,
     fundingStats,
     topOrganizations: topOrgs,
@@ -267,6 +267,14 @@ export async function runTopicReportPhase4Synthesis(
     interpretation: injectedInterpretation,
     generatedAt,
   })
+  // synthesizeReport mutates agentOutputs in place (relevance filter
+  // recomputes byPhase/byStatus over topically-relevant trials, filters
+  // patents, etc). Under Inngest, state is serialized between steps -
+  // if we don't return the mutated version, Phase 5's save writes the
+  // PRE-filter counts to the DB while the markdown carries POST-filter
+  // counts. That produced two contradictory phase tables (chart from
+  // DB shows pre-filter, markdown table shows post-filter) in r40.
+  return { reportData, agentOutputs }
 }
 
 /**
@@ -364,7 +372,7 @@ export async function executeTopicReportGeneration(
     const projectsOutput = await runTopicReportPhase1Projects(reportId, topic, injectedInterpretation)
     const agentOutputs = await runTopicReportPhase2DataAgents(reportId, topic, projectsOutput, injectedInterpretation)
     const { fundingStats, topOrgs, topResearchers } = await runTopicReportPhase3Aggregation(reportId, agentOutputs)
-    const reportData = await runTopicReportPhase4Synthesis(
+    const { reportData, agentOutputs: filteredAgentOutputs } = await runTopicReportPhase4Synthesis(
       reportId,
       userId,
       topic,
@@ -377,7 +385,7 @@ export async function executeTopicReportGeneration(
       injectedInterpretation,
       report.createdAt,
     )
-    await runTopicReportPhase5Save(reportId, persona, agentOutputs, reportData, fundingStats, topOrgs, topResearchers)
+    await runTopicReportPhase5Save(reportId, persona, filteredAgentOutputs, reportData, fundingStats, topOrgs, topResearchers)
   } catch (error) {
     await markReportFailed(reportId, userId, error)
     throw error

@@ -27,6 +27,7 @@ import { filterTrialsAndPatentsByRelevance } from './relevance-filter'
 import { detectSurprisingFindings, type SurprisingFinding } from './surprising'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import { sanitizeText } from './sanitize'
+import { applyPostRenderSubstitutions, stripPiPossessives } from './post-render'
 import { normalizeOrgName, normalizeJournalName } from '@/lib/format-names'
 
 interface SynthesisContext {
@@ -2423,81 +2424,21 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
 *Data current as of ${now}.*
 `
 
-  // Em-dash purge. Product convention is hyphens only, but LLMs keep
-  // slipping em dashes past the prompt-level ban ("BANNED AI-TELL
-  // PHRASES: Do not use em dashes"). This deterministic substitution
-  // is the belt-and-suspenders fix. Scope-note text uses em dashes
-  // intentionally in the buildScopeNote fixed string; those are
-  // preserved by leaving them un-touched here (they'd be edited in the
-  // source string if we ever changed the convention). Replace with a
-  // space-hyphen-space so the rhythm of the prose is preserved.
-  md = md.replace(/—/g, ' - ')
-  // Collapse " -  " (double-space when em-dash was already surrounded
-  // by spaces) back to " - ".
-  md = md.replace(/ {2,}- {2,}/g, ' - ').replace(/ +- +/g, ' - ')
+  // Post-render substitutions. Extracted to post-render.ts so
+  // lint-retry can apply the same substitutions to retry-corrected
+  // sections (r40 audit found em dashes pervasive because retry
+  // bypassed this pass).
+  md = applyPostRenderSubstitutions(md)
 
-  // AI-tell post-render substitutions. Prompt-level ban across every
-  // narrative prompt but LLMs keep sneaking these in. Deterministic
-  // fix at the end of assembly so no banned phrase survives to the
-  // reader. r30 audit surfaced 4+ instances despite the ban.
-  //
-  // - "inflection point" -> "juncture" (crosses on their own)
-  // - "genuine [word]" -> "[word]" (drops the puffery modifier)
-  // - "underscore(s|d|ing)" -> "highlight(s|d|ing)" (equivalent meaning)
-  //
-  // Word-boundary anchored so we don't chew up unrelated tokens.
-  md = md.replace(/\binflection point\b/gi, 'juncture')
-  md = md.replace(/\bgenuine\s+(\w+)/gi, '$1')
-  md = md.replace(/\bunderscoring\b/gi, 'highlighting')
-  md = md.replace(/\bunderscored\b/gi, 'highlighted')
-  md = md.replace(/\bunderscores\b/gi, 'highlights')
-  md = md.replace(/\bunderscore\b/gi, 'highlight')
-
-  // "structural [claim-noun]" - the modifier implies a permanent
-  // systemic property the sample can't support. Strip the modifier
-  // when it prefixes a claim noun (risks, shifts, changes, gaps).
-  // r34 audit found "structural competitive risks that could reshape
-  // the field" in Market Context.
-  md = md.replace(
-    /\bstructural(?:ly)?\s+(competitive risks?|shifts?|changes?|risks?|barriers?|advantages?|dynamics?)\b/gi,
-    '$1',
-  )
-
-  // PI-possessive stripping. r33 audit flagged "Velculescu's DELFI
-  // work" in a per-project card insight - the PI is displayed as
-  // structured metadata in the card header, so referencing the PI
-  // possessively in the interpretive prose is a duplicate + narrative
-  // callout. Strip surname-possessives for every PI in topResearchers,
-  // but ONLY inside per-project INSIGHT text (marked by "**Insight:**").
-  // The rest of the report shouldn't have PI names anyway.
-  //
-  // Regex: `(PI Surname)'s` -> just skip the possessive. Reads a bit
-  // awkward locally ("DELFI work is among the more established...")
-  // but no worse than "the PI's work" and it removes the credibility
-  // hit of a named-actor callout in narrative.
+  // PI-possessive stripping. Uses stripPiPossessives() from
+  // post-render.ts against the topResearchers surname list.
   const surnames = new Set<string>()
   for (const r of context.topResearchers.slice(0, 50)) {
-    const raw = r.pi_name || ''
-    // NIH format: "Last, First" or "Last, First Middle"
-    const parts = raw.split(',')
-    if (parts.length >= 1) {
-      const surname = parts[0].trim()
-      if (surname.length >= 3) surnames.add(surname)
-    }
+    const parts = (r.pi_name || '').split(',')
+    const surname = parts[0]?.trim()
+    if (surname && surname.length >= 3) surnames.add(surname)
   }
-  if (surnames.size > 0) {
-    // Build a single regex for efficiency. Match "Surname's" (case-
-    // insensitive) and replace with just "" (drop the token entirely).
-    const escaped = Array.from(surnames)
-      .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
-      .join('|')
-    const possessive = new RegExp(`\\b(${escaped})['’]s\\s+`, 'gi')
-    md = md.replace(possessive, '')
-    // Also strip "the [Surname] lab" and "the [Surname] group" - same
-    // named-actor callout pattern.
-    const groupRef = new RegExp(`\\bthe\\s+(${escaped})\\s+(lab|group|team)\\b`, 'gi')
-    md = md.replace(groupRef, 'the $2')
-  }
+  md = stripPiPossessives(md, surnames)
 
   return md
 }

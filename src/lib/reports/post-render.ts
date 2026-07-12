@@ -1,0 +1,59 @@
+/**
+ * Post-render substitutions. Deterministic string replacements applied
+ * to LLM-generated markdown after assembly. The prompt-level bans keep
+ * catching the same phrases, so we belt-and-suspenders strip them at
+ * the end.
+ *
+ * IMPORTANT: this must be run on both the initial assembly AND on any
+ * text produced by lint-retry corrections. r40 audit found em dashes
+ * pervasive because retry-corrected sections weren't going through
+ * this pass - only the initial assembly was.
+ */
+
+/**
+ * Post-render substitutions that don't need topResearcher context.
+ * Called from assembleMarkdown and from lint-retry.
+ */
+export function applyPostRenderSubstitutions(input: string): string {
+  let md = input
+
+  // Em-dash purge (U+2014). Product convention is hyphens only.
+  // Replace with " - " and collapse duplicate spaces.
+  md = md.replace(/—/g, ' - ')
+  md = md.replace(/ {2,}- {2,}/g, ' - ').replace(/ +- +/g, ' - ')
+
+  // AI-tell phrases.
+  md = md.replace(/\binflection point\b/gi, 'juncture')
+  md = md.replace(/\bgenuine\s+(\w+)/gi, '$1')
+  md = md.replace(/\bunderscoring\b/gi, 'highlighting')
+  md = md.replace(/\bunderscored\b/gi, 'highlighted')
+  md = md.replace(/\bunderscores\b/gi, 'highlights')
+  md = md.replace(/\bunderscore\b/gi, 'highlight')
+
+  // "structural [claim-noun]" - drop the modifier.
+  md = md.replace(
+    /\bstructural(?:ly)?\s+(competitive risks?|shifts?|changes?|risks?|barriers?|advantages?|dynamics?)\b/gi,
+    '$1',
+  )
+
+  return md
+}
+
+/**
+ * Strip PI-possessive constructions ("Velculescu's DELFI") using a
+ * list of surnames. Kept separate from applyPostRenderSubstitutions
+ * because it requires context (topResearchers list).
+ */
+export function stripPiPossessives(input: string, surnames: Iterable<string>): string {
+  const escapedSet = Array.from(surnames)
+    .filter((s) => s.length >= 3)
+    .map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+  if (escapedSet.length === 0) return input
+  const escaped = escapedSet.join('|')
+  let md = input
+  const possessive = new RegExp(`\\b(${escaped})['’]s\\s+`, 'gi')
+  md = md.replace(possessive, '')
+  const groupRef = new RegExp(`\\bthe\\s+(${escaped})\\s+(lab|group|team)\\b`, 'gi')
+  md = md.replace(groupRef, 'the $2')
+  return md
+}

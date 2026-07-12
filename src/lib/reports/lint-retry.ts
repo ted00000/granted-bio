@@ -35,6 +35,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import type { LintViolation } from './lint-report'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import { sanitizeText } from './sanitize'
+import { applyPostRenderSubstitutions } from './post-render'
 
 const MODEL = 'claude-sonnet-4-6'
 
@@ -396,6 +397,12 @@ async function correctOneSection(
         .replace(/\n?```\s*$/, '')
         .trim()
     }
+    // Apply the same post-render substitutions the initial assemble
+    // pass runs, so the retry doesn't reintroduce em dashes, "genuine
+    // [noun]", or other banned tokens. r40 audit found em dashes
+    // pervasive after retry because these substitutions only ran in
+    // assembleMarkdown - not on retry-corrected sections.
+    corrected = applyPostRenderSubstitutions(corrected)
     corrected = normalizeConfidenceTagSpacing(sanitizeText(corrected, `retry:${sectionName}`))
     if (!corrected || corrected.length < 100) {
       console.warn(

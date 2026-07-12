@@ -77,8 +77,12 @@ const generateReport = inngest.createFunction(
         )
 
         // Step 5: synthesis (LLM-heavy - the phase that most needed
-        // its own budget window). Includes lint-retry.
-        const reportData = await step.run('phase-4-synthesis', () =>
+        // its own budget window). Includes lint-retry. Returns both
+        // reportData AND the mutated agentOutputs (relevance filter
+        // runs inside synthesizeReport and mutates counts in place;
+        // Inngest state serialization means we must return the
+        // mutated version explicitly to propagate it to Phase 5).
+        const { reportData, agentOutputs: filteredAgentOutputs } = await step.run('phase-4-synthesis', () =>
           runTopicReportPhase4Synthesis(
             reportId,
             userId,
@@ -94,9 +98,10 @@ const generateReport = inngest.createFunction(
           ),
         )
 
-        // Step 6: persist
+        // Step 6: persist. Uses filteredAgentOutputs so the DB
+        // agent_outputs.trials.byPhase matches the markdown table.
         await step.run('phase-5-save', () =>
-          runTopicReportPhase5Save(reportId, persona, agentOutputs, reportData, fundingStats, topOrgs, topResearchers),
+          runTopicReportPhase5Save(reportId, persona, filteredAgentOutputs, reportData, fundingStats, topOrgs, topResearchers),
         )
       } else {
         // Portfolio flow: kept as a single step for now. Fewer LLM
