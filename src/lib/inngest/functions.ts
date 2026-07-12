@@ -32,8 +32,10 @@ const generateReport = inngest.createFunction(
     id: 'generate-report',
     name: 'Generate Report',
     retries: 2,
+    // Inngest plan caps function concurrency at 5. Well within Anthropic
+    // per-project rate limits for the 8-13 calls per synthesis.
     concurrency: {
-      limit: 10,
+      limit: 5,
     },
     triggers: [{ event: 'report.generate.requested' }],
   },
