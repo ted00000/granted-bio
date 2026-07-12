@@ -76,11 +76,13 @@ export interface InjectedInterpretation {
 }
 
 /**
- * Generate a topic-based research landscape report
- *
- * @param injectedInterpretation - Optional human-chosen interpretation from
- *   the picker UI. If provided, anchors the projects agent on a known
- *   semantic query instead of regenerating one via Claude on each run.
+ * Create a report record and enqueue synthesis via Inngest. Returns the
+ * report ID immediately (~200ms). Client polls /api/reports/[id] until
+ * status=complete. r38 migration to Inngest: previously this function
+ * ran synthesis inline and blocked the API response for 3-4 minutes,
+ * hitting Vercel's 300s ceiling under load. Now it enqueues and
+ * returns, and the actual synthesis runs in an Inngest background
+ * function (see src/lib/inngest/functions.ts).
  */
 export async function generateTopicReport(
   userId: string,
@@ -89,9 +91,35 @@ export async function generateTopicReport(
   persona: ReportPersona = 'researcher',
   injectedInterpretation?: InjectedInterpretation
 ): Promise<string> {
-  // Create report record with 'generating' status. Persist the chosen
-  // interpretation so the refresh / retry endpoints can reuse it without
-  // re-deriving from markdown.
+  const reportId = await createTopicReportRecord(userId, topic, dataLimited, persona, injectedInterpretation)
+  // Import lazily to avoid loading Inngest client into non-API code paths.
+  const { inngest } = await import('@/lib/inngest/client')
+  await inngest.send({
+    name: 'report.generate.requested',
+    data: {
+      reportId,
+      userId,
+      reportType: 'topic',
+      topic,
+      dataLimited,
+      persona,
+      interpretation: injectedInterpretation,
+    },
+  })
+  return reportId
+}
+
+/**
+ * Insert the report record, returning ID + created_at. Fast (~50ms).
+ * Called by generateTopicReport before enqueuing the Inngest event.
+ */
+async function createTopicReportRecord(
+  userId: string,
+  topic: string,
+  dataLimited: boolean,
+  persona: ReportPersona,
+  injectedInterpretation: InjectedInterpretation | undefined,
+): Promise<string> {
   const { data: report, error: insertError } = await supabaseAdmin
     .from('user_reports')
     .insert({
@@ -104,20 +132,42 @@ export async function generateTopicReport(
       persona,
       interpretation: injectedInterpretation ?? null,
     })
-    // Select created_at too so we can pass it through to the synthesizer
-    // and stamp the same date on the markdown "Generated:" line that the
-    // UI/PDF header uses (both must reference report.created_at, otherwise
-    // one crosses midnight UTC and the two dates disagree on a paid
-    // product — r26 audit finding).
-    .select('id, created_at')
+    .select('id')
     .single()
 
   if (insertError || !report) {
     console.error('Failed to create report record:', insertError)
     throw new Error('Failed to create report')
   }
+  return report.id
+}
 
-  const reportId = report.id
+/**
+ * Execute the actual synthesis pipeline for a topic report. This is the
+ * expensive work — 3-4 min wall-clock. Invoked by the Inngest function
+ * registered in src/lib/inngest/functions.ts. Not called directly from
+ * API routes.
+ */
+export async function executeTopicReportGeneration(
+  reportId: string,
+  userId: string,
+  topic: string,
+  dataLimited: boolean = false,
+  persona: ReportPersona = 'researcher',
+  injectedInterpretation?: InjectedInterpretation,
+): Promise<void> {
+  // Fetch the report row for created_at (needed to stamp the "Generated:"
+  // date on the markdown, per r26 audit finding).
+  const { data: report, error: fetchError } = await supabaseAdmin
+    .from('user_reports')
+    .select('id, created_at')
+    .eq('id', reportId)
+    .single()
+
+  if (fetchError || !report) {
+    console.error(`Failed to fetch report ${reportId}:`, fetchError)
+    throw new Error('Report not found')
+  }
 
   try {
     // Phase 1a: Get projects first (other agents depend on project numbers)
@@ -225,7 +275,8 @@ export async function generateTopicReport(
     }
 
     console.log(`[Report ${reportId}] Report complete`)
-    return reportId
+    // executeTopicReportGeneration is void — reportId was already
+    // returned from generateTopicReport before Inngest was invoked.
   } catch (error) {
     // Mark report as failed
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
@@ -253,10 +304,78 @@ export async function generateTopicReport(
 }
 
 /**
- * Generate a portfolio report from user's saved projects/trials
+ * Create a portfolio report record and enqueue synthesis via Inngest.
+ * Returns the ID immediately (~200ms). See generateTopicReport for the
+ * migration rationale.
  */
 export async function generatePortfolioReport(userId: string): Promise<string> {
-  // Fetch user's saved items with full project data
+  // Fetch user's saved items with full project data (cheap pre-check;
+  // we validate the user has content before enqueueing).
+  const [savedProjectsResult, savedTrialsResult] = await Promise.all([
+    supabaseAdmin
+      .from('saved_projects')
+      .select('application_id')
+      .eq('user_id', userId),
+    supabaseAdmin
+      .from('saved_trials')
+      .select('nct_id')
+      .eq('user_id', userId),
+  ])
+
+  const savedProjectsCount = savedProjectsResult.data?.length ?? 0
+  const savedTrialsCount = savedTrialsResult.data?.length ?? 0
+
+  if (savedProjectsCount === 0 && savedTrialsCount === 0) {
+    throw new Error('No saved projects or trials to generate report from')
+  }
+
+  const dataLimited = savedProjectsCount < 5
+
+  const { data: report, error: insertError } = await supabaseAdmin
+    .from('user_reports')
+    .insert({
+      user_id: userId,
+      title: 'My Research Portfolio',
+      report_type: 'portfolio' as ReportType,
+      status: 'generating',
+      data_limited: dataLimited,
+      project_count: savedProjectsCount,
+      persona: 'researcher' as ReportPersona,
+    })
+    .select('id')
+    .single()
+
+  if (insertError || !report) {
+    throw new Error('Failed to create report')
+  }
+  const reportId = report.id
+
+  const { inngest } = await import('@/lib/inngest/client')
+  await inngest.send({
+    name: 'report.generate.requested',
+    data: {
+      reportId,
+      userId,
+      reportType: 'portfolio',
+      dataLimited,
+      persona: 'researcher',
+    },
+  })
+  return reportId
+}
+
+/**
+ * Execute the actual portfolio synthesis. Invoked by the Inngest
+ * function registered in src/lib/inngest/functions.ts.
+ */
+export async function executePortfolioReportGeneration(
+  reportId: string,
+  userId: string,
+  dataLimited: boolean,
+): Promise<void> {
+  // Re-fetch saved items with full project data (we only did a count
+  // check in generatePortfolioReport, and Inngest re-runs the function
+  // with only the event payload — no closure over the earlier fetch).
   const [savedProjectsResult, savedTrialsResult] = await Promise.all([
     supabaseAdmin
       .from('saved_projects')
@@ -270,33 +389,6 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
 
   const savedProjects = savedProjectsResult.data ?? []
   const savedTrials = savedTrialsResult.data ?? []
-
-  if (savedProjects.length === 0 && savedTrials.length === 0) {
-    throw new Error('No saved projects or trials to generate report from')
-  }
-
-  const dataLimited = savedProjects.length < 5
-
-  // Create report record
-  const { data: report, error: insertError } = await supabaseAdmin
-    .from('user_reports')
-    .insert({
-      user_id: userId,
-      title: 'My Research Portfolio',
-      report_type: 'portfolio' as ReportType,
-      status: 'generating',
-      data_limited: dataLimited,
-      project_count: savedProjects.length,
-      persona: 'researcher' as ReportPersona,
-    })
-    .select('id')
-    .single()
-
-  if (insertError || !report) {
-    throw new Error('Failed to create report')
-  }
-
-  const reportId = report.id
 
   try {
     console.log(`[Portfolio Report ${reportId}] Starting generation for ${savedProjects.length} projects, ${savedTrials.length} trials`)
@@ -407,7 +499,7 @@ export async function generatePortfolioReport(userId: string): Promise<string> {
     }
 
     console.log(`[Portfolio Report ${reportId}] Report complete`)
-    return reportId
+    // executePortfolioReportGeneration is void.
   } catch (error) {
     // Mark report as failed
     const errorMessage = error instanceof Error ? error.message : 'Unknown error'
