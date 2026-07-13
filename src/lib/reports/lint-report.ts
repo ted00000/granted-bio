@@ -359,11 +359,14 @@ const RULES: Rule[] = [
       // Check Next Steps + Strategic Implications for stray
       // concentration claims.
       const suspects = ['Next Steps', 'Patent Activity']
-      // Widened per r32: catches "concentration pattern" as substring
-      // in addition to exact phrase matches. Any concentrat/fragment
-      // token in patent-adjacent sections when N<10 contradicts the
-      // insufficient-sample header.
+      // r47 audit: same narrowing as no-ip-shape-words. The label
+      // "**IP Concentration:**" was catching the rule on itself. Also
+      // Next Steps "funding concentration in diagnostics" isn't an IP
+      // claim. Only fire when the shape token sits in a sentence that
+      // ALSO carries an IP-context anchor.
       const concentrationPattern = /(concentrat|fragment|consolidat)/i
+      const ipAnchorPattern =
+        /\b(patent|ip\s|ip[.,)]|assignee|uspto|filing|licens(?:e|ing)|fto|freedom to operate|intellectual property)/i
       for (const sectionName of suspects) {
         const body = sections.get(sectionName) || ''
         // Allow the phrase inside the "Insufficient sample" explainer
@@ -373,15 +376,19 @@ const RULES: Rule[] = [
           /a landscape label like[\s\S]*?to be meaningful/gi,
           '',
         )
-        const match = bodyWithoutExplainer.match(concentrationPattern)
-        if (match) {
+        const sentences = bodyWithoutExplainer.split(/(?<=[.!?])\s+/)
+        for (const s of sentences) {
+          const match = s.match(concentrationPattern)
+          if (!match) continue
+          if (!ipAnchorPattern.test(s)) continue
           violations.push({
             ruleId: 'ip-concentration-consistency',
             severity: 'critical',
             section: sectionName,
             offending: match[0],
-            message: `"${match[0]}" appears in ${sectionName} despite only ${patentCount} linked patents. Contradicts the Patent section's insufficient-sample stance.`,
+            message: `"${match[0]}" appears in ${sectionName} within an IP-context sentence despite only ${patentCount} linked patents. Contradicts the Patent section's insufficient-sample stance.`,
           })
+          break
         }
       }
       return violations
@@ -588,25 +595,36 @@ const RULES: Rule[] = [
       const violations: LintViolation[] = []
       const patentCount = ctx.agentOutputs.patents.items.length
       if (patentCount >= 10) return violations
-      // Widened per r32 audit: catches "concentration pattern",
-      // "fragmented landscape", "consolidated view", etc. as substrings
-      // rather than requiring exact phrase match. When patents<10, no
-      // shape/distribution word is permissible in these sections.
+      // r47 audit: rule was firing on "has not yet consolidated around a
+      // single dominant platform" (Research Positioning talking about a
+      // METHODOLOGICAL platform, not IP) and "$11.0M concentrated on a
+      // single project" (Next Steps talking about NIH GRANT funding, not
+      // IP). Narrow the check: only flag when the shape word appears in
+      // a sentence that ALSO carries an IP-context anchor (patent, IP,
+      // assignee, USPTO, filing, licensing, FTO). Methodological or
+      // funding-concentration usage passes.
       const shapePattern =
         /(consolidat|fragment|concentrat|distributed across|held across [\w\s]+ rather than|spread across)/i
+      const ipAnchorPattern =
+        /\b(patent|ip\s|ip[.,)]|assignee|uspto|filing|licens(?:e|ing)|fto|freedom to operate|intellectual property)/i
       const suspects = ['Patent Activity', 'Research Positioning', 'Next Steps']
       for (const sectionName of suspects) {
         const body = sections.get(sectionName) || ''
         const cleaned = body.replace(/a landscape label like[\s\S]*?to be meaningful/gi, '')
-        const match = cleaned.match(shapePattern)
-        if (match) {
+        // Split into sentences (approximate) and check each independently.
+        const sentences = cleaned.split(/(?<=[.!?])\s+/)
+        for (const s of sentences) {
+          const shapeMatch = s.match(shapePattern)
+          if (!shapeMatch) continue
+          if (!ipAnchorPattern.test(s)) continue
           violations.push({
             ruleId: 'no-ip-shape-words-insufficient-sample',
             severity: 'critical',
             section: sectionName,
-            offending: match[0],
-            message: `IP shape word "${match[0]}" in ${sectionName} despite only ${patentCount} linked patents. Contradicts insufficient-sample stance.`,
+            offending: shapeMatch[0],
+            message: `IP shape word "${shapeMatch[0]}" in ${sectionName} within an IP-context sentence despite only ${patentCount} linked patents. Contradicts insufficient-sample stance.`,
           })
+          break // one per section is enough
         }
       }
       return violations
@@ -1489,15 +1507,23 @@ const RULES: Rule[] = [
     check(ctx) {
       const violations: LintViolation[] = []
       // Look for "[hub|entry point|access node|resource node|gateway|on-ramp]"
-      // within 30 chars of an institution acronym/name.
+      // within 60 chars of an institution acronym/name.
+      // r47 audit: "Broad" was matching case-insensitively against "broad
+      // institutional support awards" (adjective, not the Broad Institute).
+      // Require "Broad Institute" as the full phrase.
       const orgTokens =
-        '(?:UIUC|UConn|MGH|MIT|UCSF|UCLA|UC\\s+\\w+|Cornell|Harvard|Stanford|Johns\\s+Hopkins|Yale|Duke|Penn|Columbia|NYU|MSKCC|Mayo|Broad|Vanderbilt|Fred\\s+Hutch|Dana-?Farber|Sloan\\s+Kettering|Weill|Beckman|City\\s+of\\s+Hope|Baylor|Pittsburgh)'
+        '(?:UIUC|UConn|MGH|MIT|UCSF|UCLA|UC\\s+\\w+|Cornell|Harvard|Stanford|Johns\\s+Hopkins|Yale|Duke|Penn|Columbia|NYU|MSKCC|Mayo|Broad\\s+Institute|Vanderbilt|Fred\\s+Hutch|Dana-?Farber|Sloan\\s+Kettering|Weill|Beckman|City\\s+of\\s+Hope|Baylor|Pittsburgh)'
       const framingTokens =
         '(?:hub|entry\\s+point|entry\\s+points|access\\s+node|access\\s+nodes|resource\\s+node|resource\\s+nodes|gateway|on-ramp|portal)'
       const orgFirst = new RegExp(`${orgTokens}[\\s\\S]{0,60}${framingTokens}`, 'i')
       const framingFirst = new RegExp(`${framingTokens}[\\s\\S]{0,60}${orgTokens}`, 'i')
+      // r47 audit: whitelist CTSA — the NIH Clinical and Translational
+      // Science Awards program officially uses "hub" as its program-level
+      // organizational unit ("CTSA hubs"). Descriptions of P30/CTSA
+      // program structure are factual, not prescriptive framing.
+      const ctsaWhitelist = /\bCTSA\b/i
       const m1 = ctx.markdown.match(orgFirst)
-      if (m1) {
+      if (m1 && !ctsaWhitelist.test(m1[0])) {
         violations.push({
           ruleId: 'no-hub-entry-point-framing',
           severity: 'warning',
@@ -1507,7 +1533,7 @@ const RULES: Rule[] = [
         })
       } else {
         const m2 = ctx.markdown.match(framingFirst)
-        if (m2) {
+        if (m2 && !ctsaWhitelist.test(m2[0])) {
           violations.push({
             ruleId: 'no-hub-entry-point-framing',
             severity: 'warning',
@@ -1619,22 +1645,35 @@ const RULES: Rule[] = [
       ]
       const positiveTokens =
         /(well-timed|positive|robust|strong performance|approved|breakthrough|leading|first-in-class|validated|state-of-the-art)/i
+      // r47 audit: expanded negatives to catch balancing language the
+      // Market Context actually uses (Shield's "precaution noting limited
+      // detection", "Medicare reimbursement", "precancerous lesion
+      // sensitivity", "physician adoption remain active"). The narrow
+      // list was over-firing on well-balanced text.
       const negativeAckTokens =
-        /(specificity|ppv|coverage denial|coverage denials|caveat|missed(?:\s+primary)?|primary endpoint|underperform|scrutiny|concerns?|delay|delayed|pma|challenges?|still developing|remains? developing|unresolved)/i
+        /(specificity|ppv|coverage denial|coverage denials|caveat|missed(?:\s+primary)?|primary endpoint|underperform|scrutiny|concerns?|delay|delayed|pma|challenges?|still developing|remains? developing|unresolved|limited detection|limited\s+\w+\s+sensitivity|reimbursement|precaution|adoption remain|non-randomized|does not establish|not\s+separately\s+tracked|unresolved|not\s+detect)/i
       for (const product of products) {
         const escaped = product.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
         const re = new RegExp(`\\b${escaped}\\b`, 'gi')
         let m: RegExpExecArray | null
         while ((m = re.exec(ctx.markdown)) !== null) {
-          // Look at a 400-char window around the match.
-          const start = Math.max(0, m.index - 200)
-          const end = Math.min(ctx.markdown.length, m.index + 200)
+          // r47 audit: widened window from 400 → 800 chars total. The
+          // Market Context narrative often lists positives in one clause
+          // and the offsetting concern 2-3 lines later; a 400-char window
+          // wasn't reaching the balancing text and flagged well-balanced
+          // paragraphs.
+          const start = Math.max(0, m.index - 400)
+          const end = Math.min(ctx.markdown.length, m.index + 400)
           const window = ctx.markdown.slice(start, end)
           if (positiveTokens.test(window) && !negativeAckTokens.test(window)) {
             // Attribute to the containing section so retry can fire.
+            // r47 audit: .match() without /g returns the FIRST ## heading in
+            // the document, not the last one before the match. Iterate all
+            // ## headings and take the last one whose index is < m.index.
             const before = ctx.markdown.slice(0, m.index)
-            const headingMatch = before.match(/##\s+([^\n]+)$/m)
-            const section = headingMatch ? headingMatch[1].trim() : null
+            const headings = Array.from(before.matchAll(/^##\s+([^\n]+)$/gm))
+            const lastHeading = headings.length > 0 ? headings[headings.length - 1] : null
+            const section = lastHeading ? lastHeading[1].trim() : null
             violations.push({
               ruleId: 'named-product-single-sided',
               severity: 'critical',
@@ -2196,6 +2235,21 @@ const RULES: Rule[] = [
           if (catRegex.test(lowerS)) {
             // Whitelist "the analyzed sample" and similar phrases.
             if (/\b(analyzed sample|sample total|sample-wide|whole sample|full sample)\b/i.test(s)) {
+              continue
+            }
+            // r47 audit: whitelist sentences that give the category its own
+            // explicit count in "N of TOTAL" form or "N%%" form alongside the
+            // sample total. If both are present, the sentence is properly
+            // attributing, not conflating. Example passing case:
+            //   "Of 123 projects totaling $100.9M ... diagnostics account for
+            //    60.2% of projects (74 of 123)"
+            // The parenthetical "(74 of 123)" makes it clear that 123 is the
+            // sample and 74 is the category — no conflation.
+            const explicitAttrRegex = new RegExp(
+              `\\b\\d+(?:\\.\\d+)?%\\s+of\\s+(?:projects|the sample|the analyzed)|\\b\\d+\\s+of\\s+${totalProjects}\\b|\\(\\d+\\s+of\\s+${totalProjects}\\)`,
+              'i',
+            )
+            if (explicitAttrRegex.test(s)) {
               continue
             }
             violations.push({

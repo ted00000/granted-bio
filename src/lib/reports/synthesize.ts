@@ -662,6 +662,8 @@ When writing the clinicalPipeline insight, do NOT selectively narrate encouragin
 
 **AGGREGATE ONLY - NO NAMED ILLUSTRATIVE TRIALS.** Do NOT name a specific trial's sponsor institution as an illustrative example when describing termination/suspension patterns. WRONG: "a suspended City of Hope ctDNA MRD trial in breast cancer illustrates that even well-motivated studies face execution challenges". RIGHT: "at least one suspended MRD trial in the sample illustrates that even well-motivated studies face execution challenges" - drop the institution and disease specifics. The Active Trials table below lists specifics for readers who want them; this narrative stays aggregate. Same rule for Terminated/Withdrawn examples.
 
+**COMPLETE ENUMERATION OR COMPACT FORM — required.** If you cite two or more status counts (e.g. "10 terminated and 2 suspended, alongside 21 recruiting and 10 active-not-recruiting") the numbers you cite MUST sum to the total. Partial enumerations (43 cited of 69 total) fail the linter and mislead the reader. Preferred: use the compact form "N active/planned/completed vs M terminated/suspended/withdrawn (T total)". If you insist on itemizing, include EVERY non-zero status so the counts sum exactly to the total (add "Not yet recruiting", "Completed", "Withdrawn" etc. as needed). Do the arithmetic before writing the sentence.
+
 Return JSON only, no markdown:
 {
   "funding": "3-4 sentences analyzing what researchers are actually working on and what the funding patterns reveal about scientific priorities",
@@ -1800,7 +1802,7 @@ async function generateIPLandscapeAssessment(
   const insufficientSample = totalPatents < IP_LABEL_MIN_N
   const insufficientSampleRule = insufficientSample
     ? `\n**INSUFFICIENT-SAMPLE MODE - ${totalPatents} linked patents (below ${IP_LABEL_MIN_N} threshold).** In this mode you MUST NOT use ANY of these words, phrases, or construction patterns anywhere in narrative, freedomToOperate, or strategicImplications:
-- Shape words: "fragmented", "concentrated", "moderately concentrated", "highly concentrated", "consolidated", "converged", "converging", "cluster", "clusters", "clustered", "clustering", "cluster around"
+- Shape words: "fragmented", "concentrated", "moderately concentrated", "highly concentrated", "consolidated", "converged", "converging", "cluster", "clusters", "clustered", "clustering", "cluster around", and the phrasal verb "concentrate on" / "concentrates on" / "concentrating on" when used to describe what the patents cover (r47 audit caught "the protected innovations concentrate on nucleic acid detection" - use "cover", "focus on", "center on", or "address" instead)
 - Distribution phrases: "distributed across", "spread across", "held across ... rather than", "diverse but institutionally", "diverse but", "diverse landscape", "wide range of"
 - Breadth/multiplicity phrases: "breadth of methods", "breadth of approaches", "multiple independent patent families", "multiple independent technical approaches", "multiple approaches rather than", "pursued across multiple", "across multiple ... approaches", "no single [dominant/preferred] method"
 - **PERCENTAGES on the ${totalPatents}-patent base.** DO NOT report distribution as percentages: no "63% academic", no "25% held by top assignee", no "60% of assignees are universities". A percentage on N=${totalPatents} is not a meaningful distribution claim - "5 of 8 are academic" is a raw count; "63% academic" implies a distribution shape the sample can't support. Cite raw counts only ("6 of ${totalPatents} assignee-on-record patents are academic"), never percentages.
@@ -2962,7 +2964,12 @@ function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOu
       ? `Insufficient sample to characterize (${totalLinkedPatents} grant-linked patent${totalLinkedPatents === 1 ? '' : 's'} - a landscape label like "concentrated" or "fragmented" requires at least ${IP_LABEL_MIN_N} patents to be meaningful; the shape below is descriptive of this specific sample, not the broader IP landscape)`
       : concentrationLabels[landscape.concentration] || landscape.concentration
 
-  md += `**IP Concentration:** ${concentrationDisplay}\n\n`
+  // r47 audit: when patents<10 the value string carries an "Insufficient sample"
+  // caveat but the LABEL "IP Concentration" still contains the banned shape word,
+  // triggering ip-concentration-consistency and no-ip-shape-words rules on the
+  // label itself. Swap the label to a neutral phrasing when below threshold.
+  const ipLabel = totalLinkedPatents < IP_LABEL_MIN_N ? 'IP Landscape (this sample)' : 'IP Concentration'
+  md += `**${ipLabel}:** ${concentrationDisplay}\n\n`
 
   if (landscape.dominantAssignees.length > 0) {
     const label = totalLinkedPatents < IP_LABEL_MIN_N ? 'Patent Holders in Sample' : 'Dominant Patent Holders'

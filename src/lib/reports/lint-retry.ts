@@ -174,6 +174,20 @@ function groupBySection(
  * LLM to rewrite the section text without them. Returns the correction
  * prompt.
  */
+// Per-rule extra guidance. r47 audit: retry corrections were swapping one
+// banned word for another ("distributed across" → "consolidated"). Give
+// Sonnet the full banned family per rule so it can avoid the trap.
+const RULE_EXTRA_GUIDANCE: Record<string, string> = {
+  'no-ip-shape-words-insufficient-sample': `IP-shape-word ban family: **all** of these are forbidden when patents < 10, not just the specific token flagged — do not swap one for another. Forbidden shape words: "fragmented", "concentrated", "moderately concentrated", "highly concentrated", "consolidated", "consolidat", "converged", "converging", "cluster around", "clustered", "clustering", "distributed across", "spread across", "held across ... rather than", "diverse landscape", "wide range of". Also forbidden as verbs: "concentrate on", "cluster around", "consolidate around". Replacements: describe the sample as a factual list ("the ${'${totalPatents}'} linked patents span N assignees across the following technical areas: ...") or use neutral verbs like "cover", "focus on", "address", "span".`,
+  'ip-concentration-consistency': `Same ban family as no-ip-shape-words-insufficient-sample. Any concentrat/fragment/consolidat token in an IP-context sentence when patents < 10 contradicts the Patent section's insufficient-sample stance.`,
+  'named-product-single-sided': `When you mention a named clinical product (Galleri, Shield, DELFI, PATHFINDER, NHS-Galleri, Signatera, Cologuard, Freenome, etc), either (a) cite BOTH a positive fact AND a specificity/PPV/coverage/reimbursement/endpoint-miss concern in the SAME sentence, or (b) restrict the mention to a purely factual description with no positive framing at all ("approved", "breakthrough", "leading", "validated", "state-of-the-art", "first-in-class" are all positive framing). Do NOT just delete the product name — the reader knows the product exists.`,
+  'trial-status-arithmetic-reconciles': `If you cite ANY status counts (recruiting, terminated, etc.) the cited counts MUST sum to the total. Prefer the compact form "N in-progress/planned/completed vs M terminated/suspended/withdrawn (T total)". If you itemize, include EVERY non-zero status so counts sum exactly to the total.`,
+  'trial-status-sum-reconciles': `If you cite ANY status counts the cited counts MUST sum to the total. Use the compact form or include every non-zero status.`,
+  'no-sample-share-to-structural': `A sample percentage cannot be used to claim a field-level "structural" gap. "5% of projects" is a sample observation, not a claim about field-wide underinvestment. Rewrite as "within the analyzed sample, X represents a low share" — do not extend to "the field is underfunded".`,
+  'no-pi-names-in-narrative': `Remove the PI name entirely. Do not replace with "Dr. X's group" or "the X lab" — those are equivalent violations.`,
+  'no-institutions-as-entry-points': `Institution names are fine as factual attribution ("2 patents at Johns Hopkins") but NOT as action anchors ("engage Johns Hopkins", "start with the Johns Hopkins node"). Rewrite as method-anchored: "start with the [technical method] present in this sample".`,
+}
+
 function buildCorrectionPrompt(
   sectionName: string,
   sectionText: string,
@@ -184,6 +198,8 @@ function buildCorrectionPrompt(
     .map((v, i) => {
       let entry = `${i + 1}. [${v.ruleId}] ${v.message}`
       if (v.offending) entry += `\n   Offending text/phrase: "${v.offending}"`
+      const extra = RULE_EXTRA_GUIDANCE[v.ruleId]
+      if (extra) entry += `\n   Extra guidance: ${extra}`
       return entry
     })
     .join('\n\n')
@@ -253,8 +269,13 @@ interface UsageTracker {
  *   3. Tighter budget: 60s (was 90s). Base synthesis runs ~180-240s,
  *      so a 60s retry ceiling keeps total under ~300s with margin.
  */
-const PER_CALL_TIMEOUT_MS = 45_000
-const TOTAL_BUDGET_MS = 60_000
+// r47 audit: previous budget (60s total, 45s per-call) was too tight for
+// 3 parallel sections. Patent Activity got aborted at 60002ms while Next
+// Steps + Research Positioning finished at 12.6s / 14.7s. Vercel Pro caps
+// at 900s and base synthesis runs ~180-240s, so raising the retry ceiling
+// still leaves comfortable headroom.
+const PER_CALL_TIMEOUT_MS = 90_000
+const TOTAL_BUDGET_MS = 150_000
 
 export async function applyLintCorrections(
   markdown: string,
