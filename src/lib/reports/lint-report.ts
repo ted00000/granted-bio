@@ -2019,6 +2019,115 @@ const RULES: Rule[] = [
   },
 
   // ------------------------------------------------------------------
+  // Phase-table reconciliation. Every phase count in the byPhase
+  // table should sum to the total, and the split between "observational
+  // (N/A by design)" + "interventional (some phase-labeled, some not)"
+  // must reconcile against the phase table's N/A + Unknown counts.
+  // r42 audit surfaced Phase 1 (2) + Phase 2 (6) + N/A (55) + Unknown
+  // (2) = 65 but 44 observational + 12 unlabeled interventional = 56
+  // not 57 - one trial's classification is inconsistent between
+  // ClinicalTrials.gov's study_type and phase fields.
+  // ------------------------------------------------------------------
+  {
+    id: 'trial-phase-table-reconciles',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const trials = ctx.agentOutputs.trials.items
+      if (trials.length === 0) return violations
+      const byPhase = ctx.agentOutputs.trials.byPhase || {}
+      const phaseSum = Object.values(byPhase).reduce((s, n) => s + n, 0)
+      if (phaseSum !== trials.length) {
+        violations.push({
+          ruleId: 'trial-phase-table-reconciles',
+          severity: 'warning',
+          section: 'Clinical Validation Status',
+          offending: `phase-table sum=${phaseSum} vs trials.items.length=${trials.length}`,
+          message: `byPhase counts sum to ${phaseSum} but there are ${trials.length} trials. Discrepancy of ${trials.length - phaseSum} - phase table is out of sync with the items list.`,
+        })
+      }
+      const observational = trials.filter(
+        (t) => (t.study_type || '').toUpperCase() === 'OBSERVATIONAL',
+      ).length
+      const interventional = trials.filter(
+        (t) => (t.study_type || '').toUpperCase() === 'INTERVENTIONAL',
+      ).length
+      const interventionalPhased = trials.filter((t) => {
+        if ((t.study_type || '').toUpperCase() !== 'INTERVENTIONAL') return false
+        const p = (t.phase || '').toLowerCase()
+        return p.includes('phase') && !p.includes('n/a') && !p.includes('unknown')
+      }).length
+      const interventionalUnphased = interventional - interventionalPhased
+      const naCount = byPhase['N/A'] || 0
+      const unknownCount = byPhase['Unknown'] || 0
+      const expectedNaOrUnknown = observational + interventionalUnphased
+      if (Math.abs(naCount + unknownCount - expectedNaOrUnknown) > 1) {
+        violations.push({
+          ruleId: 'trial-phase-table-reconciles',
+          severity: 'warning',
+          section: 'Clinical Validation Status',
+          offending: `N/A(${naCount}) + Unknown(${unknownCount}) = ${naCount + unknownCount} vs obs(${observational}) + interv_unphased(${interventionalUnphased}) = ${expectedNaOrUnknown}`,
+          message: `Phase table N/A+Unknown = ${naCount + unknownCount}, but observational + unlabeled-interventional = ${expectedNaOrUnknown}. Off by ${Math.abs(naCount + unknownCount - expectedNaOrUnknown)}. Underlying ClinicalTrials.gov classification may have anomalies (e.g., observational trial with a phase).`,
+        })
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Cross-section date consistency for named events. r42 audit caught
+  // "2025-01: GRAIL filed PMA" bullet vs "January-February 2026" in
+  // Market Overview narrative - same event, different years. Detects
+  // events with a MonthName + year token in narrative AND a YYYY-MM
+  // prefix bullet on a similar entity elsewhere; flags year mismatch.
+  // ------------------------------------------------------------------
+  {
+    id: 'cross-section-date-consistency',
+    severity: 'warning',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const marketSection = extractSections(ctx.markdown).get('Market Context') || ''
+      if (!marketSection) return violations
+      // Extract entity anchors + years from narrative "MonthName YYYY"
+      // references. Anchors are 2-3 word phrases containing at least
+      // one capitalized token (product names, agencies).
+      const narrativePattern =
+        /\b(GRAIL|Galleri|NHS-Galleri|PATHFINDER|Signatera|Shield|DELFI|MRDetect|Guardant|Freenome|FDA|Exact)[\s\S]{0,80}?\b(?:January|February|March|April|May|June|July|August|September|October|November|December)(?:-(?:January|February|March|April|May|June|July|August|September|October|November|December))?\s+(\d{4})\b/gi
+      const narrativeMentions: Array<{ entity: string; year: string; text: string }> = []
+      let m: RegExpExecArray | null
+      while ((m = narrativePattern.exec(marketSection)) !== null) {
+        narrativeMentions.push({ entity: m[1], year: m[2], text: m[0].slice(0, 120) })
+      }
+      // Extract bullet prefixes with their body's first entity.
+      const bulletPattern = /^\s*(?:-|\*)\s*(\d{4})-(\d{2})\s*:\s*([^\n]+)$/gm
+      let b: RegExpExecArray | null
+      while ((b = bulletPattern.exec(marketSection)) !== null) {
+        const [, prefixYear, , body] = b
+        const bodyEntity = body.match(
+          /\b(GRAIL|Galleri|NHS-Galleri|PATHFINDER|Signatera|Shield|DELFI|MRDetect|Guardant|Freenome|Exact)\b/i,
+        )
+        if (!bodyEntity) continue
+        const entity = bodyEntity[1]
+        // Find a narrative mention referencing the same entity with a
+        // different year.
+        for (const mention of narrativeMentions) {
+          if (mention.entity.toLowerCase() === entity.toLowerCase() && mention.year !== prefixYear) {
+            violations.push({
+              ruleId: 'cross-section-date-consistency',
+              severity: 'warning',
+              section: 'Market Context',
+              offending: `bullet prefix ${prefixYear}-XX for ${entity} vs narrative year ${mention.year} for same entity`,
+              message: `Cross-section date mismatch for "${entity}": bullet says ${prefixYear}, narrative says ${mention.year}. One is wrong.`,
+            })
+            break
+          }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
   // Prescriptive institution callouts: telling readers to
   // engage/reach/target a named org.
   // ------------------------------------------------------------------
