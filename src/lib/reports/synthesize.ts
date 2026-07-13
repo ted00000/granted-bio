@@ -2618,24 +2618,43 @@ function renderCompetitiveTopology(topology: CompetitiveTopology): string {
     md += topology.narrative + '\n\n'
   }
 
-  // Cluster listing. Previously rendered as a markdown table but the
-  // Confidence/Evidence tags inside commercialReadiness contain \n\n
-  // paragraph breaks (inserted by normalizeConfidenceTagSpacing so
-  // tags land on their own line) - those newlines break the table
-  // row layout in inconsistent ways, producing r40's uneven display
-  // where one row's tag stays inside the cell and the next spans
-  // full width. Block-per-cluster format renders each Confidence tag
-  // consistently full-width below its cluster's facts.
+  // Cluster listing. Table for scan-ability, with Confidence tags
+  // stripped out of each cluster's commercialReadiness cell and
+  // rendered together below in a "Cluster Confidence Signals" block.
+  // This gets both benefits: compact table + consistent tag layout.
+  // (r40 audit flagged inconsistent tag layout when tags were inline;
+  // r45 flagged missing table when we moved to block format. This is
+  // the hybrid.)
   md += '### Methodological Clusters\n\n'
+  md += '| # | Approach | Key Players | Maturity | Commercial Readiness |\n'
+  md += '|---|----------|-------------|----------|---------------------|\n'
+  const clusterTagPattern = /\s*\*\*Confidence:\s*(High|Medium|Low)\*\*[\s\S]*?(?=\n\n|$)/i
+  const strippedReadiness: Array<{ approach: string; tag: string }> = []
   topology.clusters.forEach((cluster, i) => {
     const players = cluster.keyPlayers.slice(0, 4).join(', ')
     const playersDisplay = cluster.keyPlayers.length > 4 ? `${players}, ...` : players
-    md += `#### ${i + 1}. ${cluster.approach}\n\n`
-    md += `- **Key Players:** ${playersDisplay}\n`
-    md += `- **Maturity:** ${cluster.maturityLevel}\n`
-    md += `- **Commercial Readiness:** ${cluster.commercialReadiness}\n\n`
-    md += '---\n\n'
+    // Split the confidence tag out of the readiness cell so the table
+    // row stays single-line-per-cell (readable) and the tag renders
+    // as a full-width block below.
+    const readiness = cluster.commercialReadiness || ''
+    const tagMatch = readiness.match(clusterTagPattern)
+    const readinessNoTag = readiness.replace(clusterTagPattern, '').replace(/\s+$/, '')
+    // Escape any pipe characters that would break the table row.
+    const readinessCell = readinessNoTag.replace(/\|/g, '\\|').replace(/\n+/g, ' ')
+    const playersCell = playersDisplay.replace(/\|/g, '\\|')
+    const approachCell = cluster.approach.replace(/\|/g, '\\|')
+    md += `| ${i + 1} | **${approachCell}** | ${playersCell} | ${cluster.maturityLevel} | ${readinessCell} |\n`
+    if (tagMatch) {
+      strippedReadiness.push({ approach: cluster.approach, tag: tagMatch[0].trim() })
+    }
   })
+  md += '\n'
+  if (strippedReadiness.length > 0) {
+    md += '#### Cluster Confidence Signals\n\n'
+    strippedReadiness.forEach((s, i) => {
+      md += `**${i + 1}. ${s.approach}**\n\n${s.tag}\n\n`
+    })
+  }
 
   if (topology.strategicImplications) {
     md += '### Strategic Implications\n\n'
