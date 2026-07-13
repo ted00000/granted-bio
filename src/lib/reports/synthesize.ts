@@ -232,6 +232,44 @@ export async function synthesizeReport(
     } else {
       console.log('[Report Linter] All rules passed on first pass.')
     }
+
+    // Opus audit-agent pass (r44+). Runs on every report by default -
+    // AUDIT_AGENT_ENABLED=false disables in emergency. Adds ~$0.83
+    // per report. Catches semantic patterns the regex linter and
+    // Sonnet retry can't (adjacent phrasings, cross-section
+    // reconciliation, single-sided named-product framing, subtle
+    // prescriptive framing). Runs AFTER lint-retry so Opus sees the
+    // already-cleaned markdown and only surfaces what remained.
+    const auditAgentEnabled = process.env.AUDIT_AGENT_ENABLED !== 'false'
+    if (auditAgentEnabled) {
+      const { runAuditAgent } = await import('./audit-agent')
+      const result = await runAuditAgent(finalMarkdown, topic, usageTracker)
+      if (result.markdown !== finalMarkdown) {
+        finalMarkdown = result.markdown
+        console.log(
+          `[Audit Agent] Applied ${result.violationsApplied}/${result.violationsFound} corrections.`,
+        )
+        // Post-audit lint (log-only). Any critical remaining after
+        // Opus is a genuine miss - flag for the next round.
+        const finalPass = lintReport({
+          markdown: finalMarkdown,
+          agentOutputs,
+          fundingStats: context.fundingStats,
+          topResearchers: context.topResearchers,
+          whiteSpace,
+        })
+        const finalPart = partitionViolations(finalPass)
+        console.log(
+          `[Report Linter] After Opus audit-agent: ${finalPart.critical.length} critical, ${finalPart.warnings.length} warning(s).`,
+        )
+      } else if (result.violationsFound > 0) {
+        console.log(
+          `[Audit Agent] Opus surfaced ${result.violationsFound} violation(s) but none were applicable as corrections.`,
+        )
+      } else {
+        console.log('[Audit Agent] Opus found no violations.')
+      }
+    }
   } catch (err) {
     // Linter should never break report generation. Log and continue.
     console.warn('[Report Linter] Failed to run:', err)
