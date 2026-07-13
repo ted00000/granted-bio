@@ -1446,6 +1446,21 @@ Confidence scale — apply these thresholds strictly:
 
 For the trlEstimate itself: assign confidence based on whether ALL three signals (pubs, trials, patents) align on the same maturity band. Alignment = High. Disagreement or thin data = Medium/Low.
 
+CATEGORY ATTRIBUTION - REQUIRED FORM:
+When you cite a funding category (diagnostics, biotools, therapeutics, basic_research, etc.) in either maturityNarrative or strategicImplications, you MUST either:
+(a) attach the category's OWN count in "(N of ${context.fundingStats.projectCount})" or "N%" form directly to the category — e.g. "diagnostics (74 of ${context.fundingStats.projectCount})" or "diagnostics account for 60.2%"; OR
+(b) do not cite a category alongside the sample-total figures ($${(context.fundingStats.total / 1000000).toFixed(1)}M or ${context.fundingStats.projectCount} projects) at all.
+
+**BANNED CONSTRUCTIONS** (r48 audit caught these):
+- "$${(context.fundingStats.total / 1000000).toFixed(1)}M across ${context.fundingStats.projectCount} projects, concentrated in diagnostics" — WRONG. Diagnostics is a subset with its own count; the sample-total figures apply to the whole sample.
+- "concentration of NIH funding in diagnostics ($${(context.fundingStats.total / 1000000).toFixed(1)}M across ${context.fundingStats.projectCount} projects)" — WRONG for same reason.
+
+**CORRECT**:
+- "diagnostics account for 60.2% of projects (74 of ${context.fundingStats.projectCount}) in the NIH-linked sample, reinforces that the technology sits in translational validation"
+- "the diagnostics funding category (74 of ${context.fundingStats.projectCount}, 60.2%) dominates the sample"
+
+The linter enforces this — sentences that cite sample-total figures alongside a category name without explicit subset attribution get flagged as no-sample-total-as-category critical violations.
+
 BENCHMARK COMPARISON (REQUIRED):
 Provide a concrete historical reference point for the estimated TRL. Format: one sentence naming a comparable technology at a similar development stage in the past, and roughly when. Examples of the shape (do not copy verbatim — pick a reference relevant to THIS topic):
 - "TRL 5-6 is comparable to where CRISPR-based gene editing was in 2015-2017, before broad clinical adoption but with mounting Phase 1/2 activity."
@@ -2003,6 +2018,12 @@ For each project, generate a 2-3 sentence insight explaining:
 Be specific and analytical. Reference the project's actual methods or focus when possible.
 
 **NO PI-POSSESSIVE PHRASES.** Do NOT write "Zhou's DELFI work", "Velculescu's approach", "Wang's platform", "Chen's group", or any "[PI Surname]'s [X]" construction. The PI field is displayed as structured metadata in the project card; the insight text must not reference the PI by name at all - not even as a possessive. WRONG: "Velculescu's DELFI work is among the more established fragmentomics programs." RIGHT: "the DELFI work here is among the more established fragmentomics programs" (or drop the reference entirely and describe the method). Same rule applies to first-name possessives ("David's assay") and to team labels ("the Zhou lab").
+
+**NAMED-PRODUCT SYMMETRY** (r48 audit). If a project insight cites by name a named clinical product (PATHFINDER, PATHFINDER 2, NHS-Galleri, Galleri, Shield, DELFI, Signatera, Cologuard, Freenome, etc.), you MUST either:
+(a) restrict the mention to a purely factual description (what the product IS, what analyte it uses) with NO evaluative framing about performance, positioning, or the "bar" it sets; OR
+(b) cite BOTH a positive and a specificity/PPV/coverage/reimbursement/endpoint-miss concern in the same sentence.
+WRONG: "aligning with the evidentiary bar informed by PATHFINDER 2" (positive framing without counter-balance).
+RIGHT: "connects to the clinical evidence question raised by PATHFINDER 2 (mixed real-world PPV performance)" — or drop the PATHFINDER 2 reference entirely and describe the clinical question in method terms.
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment), or the softer "N% suggesting X is thin in this sample" pattern (a share paired with "thin", "sparse", "scarce", "meager", "underrepresented" alongside "suggesting" or "indicating" reads as a field-level judgment - the "in this sample" scope word does NOT rescue it), or the sample-gap-may-constrain pattern where a sample-observed gap is cited as a cause of field-level limitations ("that mechanistic gap may constrain sensitivity improvements", "this discovery gap may limit specificity gains" - the "may" hedge does not fix this; the sample cannot support causal claims about what constrains the field). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".

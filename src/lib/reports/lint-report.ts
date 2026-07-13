@@ -1416,12 +1416,14 @@ const RULES: Rule[] = [
         if (match && match.index !== undefined) {
           // Attribute to the containing section so retry can rewrite
           // it. Walk backward from the match to find the nearest
-          // `## Heading` and use that as the section name. r41 audit
-          // flagged this pattern in Exec Summary but retry didn't fire
-          // because section was null.
+          // `## Heading` and use that as the section name.
+          // r48 audit: .match() without /g returns the FIRST ## heading
+          // in the document, not the last one before the match. Iterate
+          // all headings and take the last one whose index is < match.index.
           const before = ctx.markdown.slice(0, match.index)
-          const headingMatch = before.match(/##\s+([^\n]+)$/m)
-          const section = headingMatch ? headingMatch[1].trim() : null
+          const headings = Array.from(before.matchAll(/^##\s+([^\n]+)$/gm))
+          const lastHeading = headings.length > 0 ? headings[headings.length - 1] : null
+          const section = lastHeading ? lastHeading[1].trim() : null
           violations.push({
             ruleId: 'no-sample-share-to-structural',
             severity: 'critical',
@@ -1738,17 +1740,28 @@ const RULES: Rule[] = [
         /\b(\d{1,4})\s+(?:are\s+)?(recruiting|completed|active[\s,-]+not[\s-]+recruiting|not\s+yet\s+recruiting|terminated(?:,\s*suspended)?(?:,?\s*(?:or|and)\s*withdrawn)?|terminated|suspended|withdrawn|enrolling\s+by\s+invitation)/gi
       // Match sentences (approximate) that enumerate status
       const sentences = ctx.markdown.split(/(?<=[.!?])\s+/)
+      // Track cumulative offset so we can attribute back to the section.
+      let cumOffset = 0
       for (const s of sentences) {
+        const sentenceOffset = cumOffset
+        cumOffset += s.length + 1 // approximate: +1 for split delimiter
         const matches = Array.from(s.matchAll(statusPattern))
         if (matches.length < 2) continue // not an enumeration
         let sum = 0
         for (const m of matches) sum += parseInt(m[1], 10)
         // Allow within 2 of total (rounding, "Not Yet Recruiting" as 0).
         if (Math.abs(sum - total) > 2 && sum < total) {
+          // r48 audit: attribute to the containing section so retry can
+          // fire. Walk back from the sentence's position to the last
+          // ## heading.
+          const before = ctx.markdown.slice(0, sentenceOffset)
+          const headings = Array.from(before.matchAll(/^##\s+([^\n]+)$/gm))
+          const lastHeading = headings.length > 0 ? headings[headings.length - 1] : null
+          const section = lastHeading ? lastHeading[1].trim() : null
           violations.push({
             ruleId: 'trial-status-enumeration-complete',
             severity: 'critical',
-            section: null,
+            section,
             offending: s.slice(0, 200),
             message: `Sentence enumerates status counts summing to ${sum} but total is ${total}. Missing ${total - sum} trials in another status. Cite the residual explicitly (e.g. "the remaining N are not-yet-recruiting or active-not-recruiting").`,
           })
@@ -2221,7 +2234,10 @@ const RULES: Rule[] = [
         'gi',
       )
       const sentences = ctx.markdown.split(/(?<=[.!?])\s+/)
+      let cumOffset = 0
       for (const s of sentences) {
+        const sentenceOffset = cumOffset
+        cumOffset += s.length + 1
         if (!(totalProjectsRegex.test(s) || totalFundingRegex.test(s))) continue
         // Reset regex lastIndex for next iteration.
         totalProjectsRegex.lastIndex = 0
@@ -2252,10 +2268,15 @@ const RULES: Rule[] = [
             if (explicitAttrRegex.test(s)) {
               continue
             }
+            // r48 audit: attribute to containing section so retry can fire.
+            const before = ctx.markdown.slice(0, sentenceOffset)
+            const headings = Array.from(before.matchAll(/^##\s+([^\n]+)$/gm))
+            const lastHeading = headings.length > 0 ? headings[headings.length - 1] : null
+            const section = lastHeading ? lastHeading[1].trim() : null
             violations.push({
               ruleId: 'no-sample-total-as-category',
               severity: 'critical',
-              section: null,
+              section,
               offending: s.slice(0, 200),
               message: `Sentence cites sample-total figures (${totalProjects} projects or $${totalFundingM.toFixed(1)}M) AND names the "${cat}" category. Sample totals aren't category subtotals - "${cat}" is a subset with its own count. Rewrite to attribute the total to the sample explicitly or use the category's actual count.`,
             })

@@ -69,8 +69,10 @@ const RETRY_ELIGIBLE_RULES = new Set<string>([
   'no-nonexclusive-share-double-count',
   'trial-status-arithmetic-reconciles',
   'trial-status-sum-reconciles',
+  'trial-status-enumeration-complete',
   'terminations-count-label-mismatch',
   'no-phase-labeled-interventional-subset',
+  'no-sample-total-as-category',
 
   // Small-sample framing:
   'surprising-findings-need-confidence-tag',

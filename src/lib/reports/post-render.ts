@@ -50,6 +50,14 @@ export function applyPostRenderSubstitutions(input: string): string {
     '$2',
   )
 
+  // "structurally invisible" as a scope caveat trips
+  // no-sample-share-to-structural because "structural" is the banned
+  // token. The LLM keeps picking this phrasing to hedge "activity
+  // outside the sample". r48 audit caught it in both Exec Summary
+  // and Signals Analysis. Rewrite to "not captured here".
+  md = md.replace(/\bstructurally\s+invisible\s+here\b/gi, 'not captured here')
+  md = md.replace(/\bstructurally\s+invisible\b/gi, 'not captured in this sample')
+
   return md
 }
 
