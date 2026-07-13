@@ -1538,8 +1538,12 @@ const RULES: Rule[] = [
       // Require "Broad Institute" as the full phrase.
       const orgTokens =
         '(?:UIUC|UConn|MGH|MIT|UCSF|UCLA|UC\\s+\\w+|Cornell|Harvard|Stanford|Johns\\s+Hopkins|Yale|Duke|Penn|Columbia|NYU|MSKCC|Mayo|Broad\\s+Institute|Vanderbilt|Fred\\s+Hutch|Dana-?Farber|Sloan\\s+Kettering|Weill|Beckman|City\\s+of\\s+Hope|Baylor|Pittsburgh)'
+      // r50 audit: "portal" removed — in a liquid-biopsy report the word
+      // more often means portal vein / portal circulation than "web
+      // portal" or "entry-point portal". False-positive rate on medical
+      // domains outweighs signal.
       const framingTokens =
-        '(?:hub|entry\\s+point|entry\\s+points|access\\s+node|access\\s+nodes|resource\\s+node|resource\\s+nodes|gateway|on-ramp|portal)'
+        '(?:hub|entry\\s+point|entry\\s+points|access\\s+node|access\\s+nodes|resource\\s+node|resource\\s+nodes|gateway|on-ramp)'
       const orgFirst = new RegExp(`${orgTokens}[\\s\\S]{0,60}${framingTokens}`, 'i')
       const framingFirst = new RegExp(`${framingTokens}[\\s\\S]{0,60}${orgTokens}`, 'i')
       // r47 audit: whitelist CTSA — the NIH Clinical and Translational
@@ -2241,8 +2245,15 @@ const RULES: Rule[] = [
         training: ['training'],
       }
       // Build category token set from actual data + aliases.
+      // r50 audit: "other" and "unknown" are generic English enumeration
+      // words that read as false positives ("R01, R21, U01, and other
+      // mechanisms" — "other" here is a list completion, not a category
+      // claim). Skip these even if they appear as category names in the
+      // funding stats.
+      const GENERIC_CATEGORY_TOKENS = new Set(['other', 'others', 'unknown', 'misc', 'miscellaneous', 'unspecified'])
       const categoryTokens = new Set<string>()
       for (const cat of categoryNames) {
+        if (GENERIC_CATEGORY_TOKENS.has(cat)) continue
         categoryTokens.add(cat)
         const aliases = CATEGORY_ALIASES[cat.replace(/\s+/g, '_')]
         if (aliases) aliases.forEach((a) => categoryTokens.add(a))
