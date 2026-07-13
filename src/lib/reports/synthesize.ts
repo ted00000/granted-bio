@@ -544,7 +544,8 @@ async function generateSectionInsights(
   const patentAbstracts = agentOutputs.patents.items
     .slice(0, 25)
     .map((p, i) => {
-      return `[${i + 1}] "${p.patent_title}" (${p.assignee || 'Unknown assignee'})\nDate: ${p.patent_date || 'N/A'}\n${p.patent_abstract || 'No abstract available'}`
+      const dateLine = p.patent_date ? `\nDate: ${p.patent_date}` : ''
+      return `[${i + 1}] "${p.patent_title}" (${p.assignee || 'Unknown assignee'})${dateLine}\n${p.patent_abstract || 'No abstract available'}`
     })
     .join('\n\n---\n\n')
 
@@ -658,6 +659,8 @@ TWO-POINT TREND HEDGE - REQUIRED: If the funding insight cites two consecutive F
 
 CLINICAL PIPELINE — DO NOT CHERRY-PICK STATUSES:
 When writing the clinicalPipeline insight, do NOT selectively narrate encouraging statuses (Recruiting, Active) while ignoring negative ones. If the trial list contains any Terminated, Withdrawn, or Suspended trials, mention that too — either explicitly ("N terminated trials also in the sample, suggesting the field has seen setbacks") or by using neutral framing ("mixed status distribution including several terminated trials"). Cherry-picking is exactly the failure a reader spots by scanning the list below the narrative.
+
+**AGGREGATE ONLY - NO NAMED ILLUSTRATIVE TRIALS.** Do NOT name a specific trial's sponsor institution as an illustrative example when describing termination/suspension patterns. WRONG: "a suspended City of Hope ctDNA MRD trial in breast cancer illustrates that even well-motivated studies face execution challenges". RIGHT: "at least one suspended MRD trial in the sample illustrates that even well-motivated studies face execution challenges" - drop the institution and disease specifics. The Active Trials table below lists specifics for readers who want them; this narrative stays aggregate. Same rule for Terminated/Withdrawn examples.
 
 Return JSON only, no markdown:
 {
@@ -903,6 +906,7 @@ DESCRIPTIVE vs PRESCRIPTIVE — read carefully.
 - **BANNED "target" NOUN FORMS pointed at institutions or research groups.** Do NOT write "partnership target", "collaboration target", "engagement target", "high-value partnership target", "high-value collaboration target", "partnership targets", "targets for collaboration", or any "[noun] target" construction that reads as "here's who to pursue." Same rule for verbs: "target [institution X]", "target the [X] cluster", "target this group". Rewrite as pattern-level observation: "the concentration of [approach] work in a small set of nodes means differentiation requires a genuinely novel angle" or drop the recommendation and let the reader decide. Neutral words like "candidate" (as in "candidate approach") are fine; "candidate partner" or "candidate collaborator" is not - same prescriptive read.
 - **BANNED "cross-pollination" / "creates conditions where [X]" / "plausible" framings when applied to a named institution.** Do NOT write "MGH's 10 projects create conditions where methodological cross-pollination is plausible", "X's concentration creates favorable conditions for Y", or "the [institution] cluster makes multi-project synergy plausible". Even without directive verbs, this framing markets the named institution as a productive hub - same prescriptive drift as "collaboration target". Rewrite as pure factual concentration ("MGH's 10 projects span 5 methodological categories - a concentration pattern in the analyzed sample") with NO downstream inference about what that concentration enables or invites.
 - NEVER name individual principal investigators (PIs) by name in the collaborationSignals, positioningMap, or methodologicalTrends fields. No "PI Zhou at UCLA", no "Dr. Chen's group." The Key Researchers table already carries specifics; narrative sections stay at pattern level so no individual is singled out.
+- **DEDUP PROJECT REFERENCES.** If you cite the same project_number more than once in the same narrative field, a reader will notice - r46 audit caught 5R01CA260304-05 listed twice under different descriptions inside the MGH breakdown. Before finalizing each narrative field, scan for duplicate project_number citations and consolidate them into a single reference. Cite each project at most once per narrative field.
 - Project numbers (5U01CA...) are fine to cite as provenance. Institution names are fine to cite as descriptors. PI names are OFF LIMITS in these narratives. Prescriptive framing toward named orgs is OFF LIMITS.
 - **NAMED-PRODUCT SYMMETRY (clinical honesty).** If you cite a named commercial product by name (DELFI Diagnostics, GRAIL Galleri, Guardant Shield, Freenome, Exact/Cologuard, Natera Signatera, MRDetect, Foundation Medicine, Adaptive Biotech, etc), you MUST either (a) cite the negative or unresolved side of that product's evidence (specificity/PPV concerns, PMA delays, coverage denials, screening-population caveats) alongside any positive framing, or (b) restrict the mention to a factual description of what the product does. Do NOT write "DELFI's fragmentomics approach is well-timed" or "MRDetect's Phase results support X" without acknowledging that real-world / screening-population evidence for the same product is still developing. Single-sided named-product framing costs credibility with a domain reader who knows the landscape.
 
@@ -1775,7 +1779,11 @@ async function generateIPLandscapeAssessment(
   // Prepare patent details for analysis
   const patentDetails = agentOutputs.patents.items
     .slice(0, 20)
-    .map((p) => `${p.patent_title} | ${p.assignee || 'Unknown'} | ${p.patent_date || 'N/A'}`)
+    .map((p) => {
+      const parts = [p.patent_title, p.assignee || 'Unknown']
+      if (p.patent_date) parts.push(p.patent_date)
+      return parts.join(' | ')
+    })
     .join('\n')
 
   if (totalPatents === 0) {
@@ -1856,6 +1864,7 @@ Add a persona-appropriate "so what" paragraph tied to the IP finding. Reader per
 DESCRIPTIVE vs PRESCRIPTIVE (critical rule):
 - Naming assignee institutions when describing IP concentration is FINE ("2 patents at Johns Hopkins, 2 at UConn — no single institution dominates").
 - Naming assignee institutions when prescribing action toward them is NOT FINE ("align with the Johns Hopkins node for licensing", "engage with UConn for sponsored research", "collaborators at Cornell would be receptive"). Rewrite as pattern-level observations: "the presence of distinct technical clusters at a handful of academic assignees suggests foundational IP is accessible through standard academic licensing channels" — not a directive to approach any specific assignee.
+- **NAMED INSTITUTION + "FIRST STEP" / "PRACTICAL FIRST STEP" / "STARTING POINT" (subtle prescriptive pattern).** Do NOT write "understanding which claims in the Johns Hopkins and UConn patents overlap with your research would be a practical first step" - the "first step" verb + institution names as the anchor makes the reader's own IP research start at those named institutions. Rewrite as method-anchored: "a practical first step is claim-level prior-art review against the specific technical methods present in this sample (nucleic acid preparation, isothermal amplification, electrochemical biosensing)" - name the METHODS, not the assignees. Same rule applies to "starting point", "diligence anchor", "prior-art starting point" when paired with institution names.
 - Never name individual PIs in the IP narrative fields. Patent inventors as a list are fine only when the reader is looking at the Key Patents table; in the strategicImplications field, keep it at the pattern level.
 
 Return JSON only. Do NOT include a list of patent holders — the system
@@ -2618,43 +2627,35 @@ function renderCompetitiveTopology(topology: CompetitiveTopology): string {
     md += topology.narrative + '\n\n'
   }
 
-  // Cluster listing. Table for scan-ability, with Confidence tags
-  // stripped out of each cluster's commercialReadiness cell and
-  // rendered together below in a "Cluster Confidence Signals" block.
-  // This gets both benefits: compact table + consistent tag layout.
-  // (r40 audit flagged inconsistent tag layout when tags were inline;
-  // r45 flagged missing table when we moved to block format. This is
-  // the hybrid.)
+  // Cluster listing. r47 audit iteration: render each cluster as a
+  // one-row mini-table immediately followed by its Confidence tag +
+  // separator. Keeps the table look for scan-ability but pairs each
+  // signal directly with its cluster (no separate block below).
   md += '### Methodological Clusters\n\n'
-  md += '| # | Approach | Key Players | Maturity | Commercial Readiness |\n'
-  md += '|---|----------|-------------|----------|---------------------|\n'
   const clusterTagPattern = /\s*\*\*Confidence:\s*(High|Medium|Low)\*\*[\s\S]*?(?=\n\n|$)/i
-  const strippedReadiness: Array<{ approach: string; tag: string }> = []
   topology.clusters.forEach((cluster, i) => {
     const players = cluster.keyPlayers.slice(0, 4).join(', ')
     const playersDisplay = cluster.keyPlayers.length > 4 ? `${players}, ...` : players
-    // Split the confidence tag out of the readiness cell so the table
-    // row stays single-line-per-cell (readable) and the tag renders
-    // as a full-width block below.
     const readiness = cluster.commercialReadiness || ''
     const tagMatch = readiness.match(clusterTagPattern)
     const readinessNoTag = readiness.replace(clusterTagPattern, '').replace(/\s+$/, '')
-    // Escape any pipe characters that would break the table row.
     const readinessCell = readinessNoTag.replace(/\|/g, '\\|').replace(/\n+/g, ' ')
     const playersCell = playersDisplay.replace(/\|/g, '\\|')
     const approachCell = cluster.approach.replace(/\|/g, '\\|')
-    md += `| ${i + 1} | **${approachCell}** | ${playersCell} | ${cluster.maturityLevel} | ${readinessCell} |\n`
+    // Header row + separator + single data row = a single-cluster
+    // mini-table. Repeating this per cluster is a valid markdown
+    // sequence; each renders as its own compact table block.
+    md += `| # | Approach | Key Players | Maturity | Commercial Readiness |\n`
+    md += `|---|----------|-------------|----------|---------------------|\n`
+    md += `| ${i + 1} | **${approachCell}** | ${playersCell} | ${cluster.maturityLevel} | ${readinessCell} |\n\n`
     if (tagMatch) {
-      strippedReadiness.push({ approach: cluster.approach, tag: tagMatch[0].trim() })
+      md += `${tagMatch[0].trim()}\n\n`
+    }
+    // Visual separator between clusters (skipped after the last).
+    if (i < topology.clusters.length - 1) {
+      md += '---\n\n'
     }
   })
-  md += '\n'
-  if (strippedReadiness.length > 0) {
-    md += '#### Cluster Confidence Signals\n\n'
-    strippedReadiness.forEach((s, i) => {
-      md += `**${i + 1}. ${s.approach}**\n\n${s.tag}\n\n`
-    })
-  }
 
   if (topology.strategicImplications) {
     md += '### Strategic Implications\n\n'
@@ -3024,7 +3025,13 @@ function renderIPLandscape(landscape: IPLandscapeAssessment, patents: AllAgentOu
       // Always emit Assignee — surface "Not on record" when USPTO
       // doesn't have one rather than silently omitting the field.
       md += `- **Assignee:** ${p.assignee?.trim() || 'Not on record'}\n`
-      md += `- **Date:** ${p.patent_date || 'Not on record'}\n`
+      // Date field is omitted. The patents table has issue_date/filing_date
+      // columns but they're null for every row (0/49k coverage), so surfacing
+      // "Not on record" for every patent read as bulk data-quality failure.
+      // Readers who need the date click through to the /patent/{id} detail.
+      if (p.patent_date) {
+        md += `- **Date:** ${p.patent_date}\n`
+      }
       if (p.patent_abstract) {
         const excerpt = p.patent_abstract.substring(0, 200) + (p.patent_abstract.length > 200 ? '...' : '')
         md += `\n> ${excerpt}\n`
@@ -3475,7 +3482,20 @@ function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: stri
   }
 
   md += '### Active Trials\n\n'
-  trials.items.slice(0, 15).forEach((t) => {
+  // Drop trials where every meaningful field is missing (no phase, no status,
+  // no sponsor, no conditions, no enrollment). r46 audit surfaced NCT06962995
+  // with every field "Not specified" - a placeholder shell that hurts the
+  // report's credibility. If the source row is that sparse, don't render it.
+  const isEmptyTrial = (t: (typeof trials.items)[number]) => {
+    const phaseEmpty = normalizeTrialField(t.phase) === 'Not specified'
+    const statusEmpty = normalizeTrialField(t.study_status) === 'Not specified'
+    const sponsorEmpty = normalizeTrialField(t.lead_sponsor) === 'Not specified'
+    const conditionsEmpty = !t.conditions?.length
+    const enrollmentEmpty = !t.enrollment_count
+    return phaseEmpty && statusEmpty && sponsorEmpty && conditionsEmpty && enrollmentEmpty
+  }
+  const renderableTrials = trials.items.filter((t) => !isEmptyTrial(t))
+  renderableTrials.slice(0, 15).forEach((t) => {
     md += `#### ${t.study_title || '(Untitled trial)'}\n`
     md += `- **NCT ID:** [${t.nct_id}](/trial/${t.nct_id})\n`
     // Emit every field with a consistent label; use "Not specified" when

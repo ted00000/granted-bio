@@ -40,6 +40,16 @@ export function applyPostRenderSubstitutions(input: string): string {
     '$1',
   )
 
+  // Field-level absolute adverbs before "sparse"/"absent"/"scarce" -
+  // "strikingly sparse", "notably sparse", "remarkably absent" drift
+  // toward field-level claims a sample cannot support. Strip the
+  // adverb; the noun-phrase alone reads as observation-in-sample.
+  // r46 audit flagged this pattern.
+  md = md.replace(
+    /\b(strikingly|notably|remarkably|conspicuously|glaringly)\s+(sparse|absent|scarce|underrepresented|thin|missing)\b/gi,
+    '$2',
+  )
+
   return md
 }
 
