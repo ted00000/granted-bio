@@ -1,4 +1,4 @@
-# Parking Lot — 16JUN2026
+# Parking Lot — 13JUL2026
 
 Consolidated nice-to-haves accumulated during the multi-month pre-launch
 build. Pulled from `LANDING_AND_CREDITS_PLAN.md`, `PLATFORM_PLANNING.md`,
@@ -71,6 +71,19 @@ when revising so we can tell what's drifted.
 - **Recovery-cron observability** — surface stuck-purchase recoveries
   in admin (`/admin/recovery` or merged into existing dashboards)
   instead of only Vercel function logs.
+
+## Data pipeline
+
+- **Backfill patent `issue_date` + `filing_date`** — 0 / 49,557 rows in
+  the `patents` table have either column populated (verified 2026-07-13),
+  so the report Date field was uniformly "Not on record" until it was
+  dropped from the render in commit `4229792`. USPTO exposes both dates
+  freely via PatentsView (`patents` endpoint) and the USPTO PatentSearch
+  API — schema already has the columns, upstream loader just isn't
+  writing them. Once backfilled, restore the Date line in
+  `src/lib/reports/synthesize.ts` patent render (currently gated behind
+  `if (p.patent_date)`) and the two prompt payloads at lines ~547 and
+  ~1780.
 
 ## Tech debt / parking lot
 
