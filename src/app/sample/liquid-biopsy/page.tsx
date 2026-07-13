@@ -17,7 +17,7 @@ import { MarketingNav } from '@/components/MarketingNav'
 import { GenerateReportCTA } from '@/components/GenerateReportCTA'
 import { MarkdownRenderer } from '../../reports/[id]/MarkdownRenderer'
 
-const SAMPLE_REPORT_ID = '9c79d96b-44c0-4783-8d51-90727280a52c'
+const SAMPLE_REPORT_ID = '7712e7e7-10b2-45ea-b952-c4e0b2ecf72c'
 
 // Force dynamic rendering — every request pulls the current row from the
 // DB. Was ISR (revalidate = 60), but that caused a real problem: when
