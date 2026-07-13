@@ -1596,7 +1596,9 @@ const RULES: Rule[] = [
   // ------------------------------------------------------------------
   {
     id: 'named-product-single-sided',
-    severity: 'warning',
+    // Upgraded to critical (r43): Dimension 2 is a repeat fail
+    // and the retry pipeline needs to see this violation.
+    severity: 'critical',
     check(ctx) {
       const violations: LintViolation[] = []
       const products = [
@@ -1610,6 +1612,10 @@ const RULES: Rule[] = [
         'Cologuard',
         'Signatera',
         'MRDetect',
+        'EFIRM',
+        'Vanguard',
+        'PATHFINDER',
+        'NHS-Galleri',
       ]
       const positiveTokens =
         /(well-timed|positive|robust|strong performance|approved|breakthrough|leading|first-in-class|validated|state-of-the-art)/i
@@ -1625,10 +1631,14 @@ const RULES: Rule[] = [
           const end = Math.min(ctx.markdown.length, m.index + 200)
           const window = ctx.markdown.slice(start, end)
           if (positiveTokens.test(window) && !negativeAckTokens.test(window)) {
+            // Attribute to the containing section so retry can fire.
+            const before = ctx.markdown.slice(0, m.index)
+            const headingMatch = before.match(/##\s+([^\n]+)$/m)
+            const section = headingMatch ? headingMatch[1].trim() : null
             violations.push({
               ruleId: 'named-product-single-sided',
-              severity: 'warning',
-              section: null,
+              severity: 'critical',
+              section,
               offending: window.slice(150, 250),
               message: `Named product "${product}" cited with positive framing but no acknowledgment of specificity/PPV/coverage concerns within 200-char window. Either cite both sides or restrict mention to factual description.`,
             })
@@ -2121,6 +2131,160 @@ const RULES: Rule[] = [
             })
             break
           }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Whole-sample figure mistakenly attributed to a single category.
+  // r43 audit found: "concentration of NIH-linked activity in
+  // diagnostics (123 projects, $100.9M total)". 123 and $100.9M are
+  // the WHOLE sample; Diagnostics is 74 / $64.6M. LLM conflated
+  // sample-wide totals with a category subtotal.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-sample-total-as-category',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const totalProjects = ctx.fundingStats.projectCount
+      const totalFundingM = ctx.fundingStats.total / 1_000_000
+      const categoryNames = new Set(
+        ctx.fundingStats.byCategory.map((c) => c.category.toLowerCase()),
+      )
+      // Also include common category display names (formatted).
+      const CATEGORY_ALIASES: Record<string, string[]> = {
+        diagnostics: ['diagnostics', 'diagnostic'],
+        biotools: ['biotools', 'bio tools'],
+        therapeutics: ['therapeutics', 'therapeutic'],
+        basic_research: ['basic research'],
+        biomarkers: ['biomarkers', 'biomarker'],
+        medical_device: ['medical device', 'medical devices'],
+        infrastructure: ['infrastructure'],
+        training: ['training'],
+      }
+      // Build category token set from actual data + aliases.
+      const categoryTokens = new Set<string>()
+      for (const cat of categoryNames) {
+        categoryTokens.add(cat)
+        const aliases = CATEGORY_ALIASES[cat.replace(/\s+/g, '_')]
+        if (aliases) aliases.forEach((a) => categoryTokens.add(a))
+      }
+      // Look for sentences containing sample-total figures.
+      const totalProjectsRegex = new RegExp(
+        `\\b${totalProjects}\\s+projects\\b`,
+        'gi',
+      )
+      const totalFundingRegex = new RegExp(
+        `\\$${totalFundingM.toFixed(1)}\\s*M\\b`,
+        'gi',
+      )
+      const sentences = ctx.markdown.split(/(?<=[.!?])\s+/)
+      for (const s of sentences) {
+        if (!(totalProjectsRegex.test(s) || totalFundingRegex.test(s))) continue
+        // Reset regex lastIndex for next iteration.
+        totalProjectsRegex.lastIndex = 0
+        totalFundingRegex.lastIndex = 0
+        // Sentence cites a sample-total figure. Is it also naming a
+        // single category noun (other than "sample" or "study" or
+        // similar general terms)?
+        const lowerS = s.toLowerCase()
+        for (const cat of categoryTokens) {
+          const catRegex = new RegExp(`\\b${cat}\\b`, 'i')
+          if (catRegex.test(lowerS)) {
+            // Whitelist "the analyzed sample" and similar phrases.
+            if (/\b(analyzed sample|sample total|sample-wide|whole sample|full sample)\b/i.test(s)) {
+              continue
+            }
+            violations.push({
+              ruleId: 'no-sample-total-as-category',
+              severity: 'critical',
+              section: null,
+              offending: s.slice(0, 200),
+              message: `Sentence cites sample-total figures (${totalProjects} projects or $${totalFundingM.toFixed(1)}M) AND names the "${cat}" category. Sample totals aren't category subtotals - "${cat}" is a subset with its own count. Rewrite to attribute the total to the sample explicitly or use the category's actual count.`,
+            })
+            break
+          }
+        }
+        if (violations.length >= 2) break
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // IP shape claims stated as negations. r43 audit found "no single
+  // institution holds a dominant share of even this small sample" in
+  // Freedom to Operate - a distribution/concentration claim in
+  // negative form. Existing rules banned "concentrated"/"fragmented"
+  // as positive assertions but missed the "no single X holds" form.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-negation-shape-claims-insufficient-sample',
+    severity: 'critical',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      const patentCount = ctx.agentOutputs.patents.items.length
+      if (patentCount >= 10) return violations
+      const target = ['Patent Activity', 'Research Positioning']
+      const patterns: Array<{ regex: RegExp; label: string }> = [
+        { regex: /\bno single (?:institution|assignee|entity|firm|company|player) (?:holds?|dominates?|controls?|owns?)\b/i, label: 'no single X holds/dominates' },
+        { regex: /\bnot dominated by\b/i, label: 'not dominated by' },
+        { regex: /\bwithout a (?:dominant|clear) (?:owner|assignee|leader)\b/i, label: 'without a dominant owner' },
+        { regex: /\ba dominant share\b/i, label: 'a dominant share' },
+        { regex: /\bfairly even distribution\b/i, label: 'fairly even distribution' },
+      ]
+      for (const sectionName of target) {
+        const body = sections.get(sectionName) || ''
+        if (!body) continue
+        const cleaned = body.replace(/a landscape label like[\s\S]*?to be meaningful/gi, '')
+        for (const { regex, label } of patterns) {
+          const m = cleaned.match(regex)
+          if (m) {
+            violations.push({
+              ruleId: 'no-negation-shape-claims-insufficient-sample',
+              severity: 'critical',
+              section: sectionName,
+              offending: m[0],
+              message: `Negation shape claim "${label}" in ${sectionName} on only ${patentCount} linked patents. The negation form still asserts a distribution shape the sample can't support.`,
+            })
+            break
+          }
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
+  // Institution names + prescriptive framing in same sentence.
+  // r43 audit found "Johns Hopkins, UCLA, Stanford ... holds a
+  // disproportionate share of multi-project awards, compressing
+  // differentiation space for new entrants". Naming for factual
+  // concentration is fine; adding prescriptive framing to the SAME
+  // sentence isn't.
+  // ------------------------------------------------------------------
+  {
+    id: 'no-prescriptive-adjacent-to-named-orgs',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const orgs = /(?:Johns\s+Hopkins|UCLA|Stanford|MGH|Massachusetts\s+General\s+Hospital|MIT|UCSF|Harvard|Yale|Duke|Penn|Columbia|NYU|MSKCC|Mayo\s+Clinic|Broad|Vanderbilt|Fred\s+Hutch|Dana-?Farber|Sloan\s+Kettering|Weill|Beckman|City\s+of\s+Hope|Baylor|Pittsburgh|UConn|UIUC|USC|UNC|Emory|Ohio\s+State|OHSU|Cornell)/i
+      const prescriptive =
+        /(?:compress(?:es|ing)?\s+differentiation|differentiation\s+space\s+for\s+new\s+entrants|crowded\s+for\s+(?:new\s+)?entrants|saturated\s+for\s+(?:new\s+)?entrants|opportunity\s+for\s+entrants\s+to|entry\s+points?\s+lie|target(?:s|ing)?\s+(?:the\s+)?differentiation|competitive\s+space\s+is\s+(?:crowded|thin|open))/i
+      const sentences = ctx.markdown.split(/(?<=[.!?])\s+/)
+      for (const s of sentences) {
+        if (orgs.test(s) && prescriptive.test(s)) {
+          violations.push({
+            ruleId: 'no-prescriptive-adjacent-to-named-orgs',
+            severity: 'critical',
+            section: null,
+            offending: s.slice(0, 240),
+            message: `Sentence names an institution AND uses prescriptive framing ("differentiation space", "crowded for entrants", etc.). Naming for concentration is fine; adding a strategic recommendation in the same sentence reads as targeting that specific institution set. Split the sentences.`,
+          })
+          if (violations.length >= 2) break
         }
       }
       return violations
