@@ -89,14 +89,26 @@ Return valid JSON only:
 \`\`\`
 
 Rules for corrections:
-1. Preserve ALL numeric claims that aren't the violation itself.
-2. Preserve ALL Confidence + Evidence tags.
-3. Preserve ALL markdown structure (headings, tables, bullets, links).
-4. Do NOT introduce new violations of any dimension.
-5. Do NOT invent facts. If a violation requires information not present, drop the offending clause instead of paraphrasing around it.
-6. offendingText MUST appear verbatim in the markdown — copy the substring exactly, do not summarize.
-7. If a violation has no clean fix (structural issue, missing section), report it with correctedText = "" and severity=warning.
-8. Be tight: aim for surgical single-sentence corrections when possible.
+
+1. **offendingText scope rules (critical - violating any of these will cause your correction to be rejected):**
+   - offendingText MUST be prose only. It MUST NOT contain any markdown table row (any line starting with \`|\`), any markdown heading (lines starting with \`#\`, \`##\`, \`###\`, etc.), or any chart marker (\`<!-- chart:... -->\`).
+   - If the violating sentence is directly adjacent to a table or heading, select ONLY the specific sentence. Do NOT include the table or heading in offendingText even if they're in the same paragraph.
+   - offendingText MUST be a substring that appears verbatim in the markdown — copy exactly. Whitespace, punctuation, all preserved.
+   - Keep offendingText tight: a single sentence when possible. Never span multiple paragraphs unless the violation truly spans them.
+
+2. **correctedText rules:**
+   - Preserve ALL numeric claims that aren't the violation itself.
+   - Preserve ALL Confidence + Evidence tags that appear inside offendingText.
+   - Do NOT introduce new violations of any dimension.
+   - Do NOT invent facts. If a violation requires information not present, drop the offending clause and rephrase surrounding context; NEVER return an empty string.
+   - correctedText MUST NOT be empty. If you cannot cleanly fix a violation, omit it from the violations list entirely rather than returning "".
+   - correctedText length should be within roughly 0.5x-2x of offendingText length. Dramatically shorter or longer replacements will be rejected.
+
+3. **When to skip:**
+   - If a violation is structural (missing section, wrong data at a table level), do NOT include it in the violations list. Only include violations that can be fixed via a single prose substring replacement.
+   - If a violation is unfixable without inventing facts, skip it.
+
+4. Be tight: aim for surgical single-sentence corrections when possible.
 
 If you find zero violations, return { "violations": [] }.`
 
@@ -165,21 +177,83 @@ export async function runAuditAgent(
     for (const v of sorted) {
       if (!v.offendingText || v.correctedText === undefined) continue
       if (typeof v.offendingText !== 'string' || typeof v.correctedText !== 'string') continue
+
+      // SAFETY GUARDS (r44 disaster: audit-agent wiped tables from a
+      // shipped report because Opus's offendingText spanned into a
+      // markdown table and its correctedText didn't preserve the
+      // table). Every guard below refuses the correction rather than
+      // apply a dangerous one.
+
+      // Guard 1: offendingText must not contain a markdown table.
+      // Any line starting with `|` is a table row. If Opus wrapped
+      // its target sentence with adjacent table lines, the correction
+      // will destroy the table.
+      if (/^\s*\|/m.test(v.offendingText)) {
+        console.warn(
+          `[Audit Agent] REJECTED dimension-${v.dimension} correction: offendingText contains a markdown table. Preview: "${v.offendingText.slice(0, 100)}..."`,
+        )
+        continue
+      }
+
+      // Guard 2: offendingText must not contain a heading (## or ###).
+      // Correction rewriting a heading would break section boundaries.
+      if (/^\s*#{1,6}\s/m.test(v.offendingText)) {
+        console.warn(
+          `[Audit Agent] REJECTED dimension-${v.dimension} correction: offendingText contains a markdown heading.`,
+        )
+        continue
+      }
+
+      // Guard 3: offendingText must not contain a chart marker.
+      // Charts render from `<!-- chart:X -->` comments; replacing over
+      // one strips the chart.
+      if (/<!--\s*chart:/i.test(v.offendingText)) {
+        console.warn(
+          `[Audit Agent] REJECTED dimension-${v.dimension} correction: offendingText contains a chart marker.`,
+        )
+        continue
+      }
+
       // Sanitize the correction (gibberish check + tag normalization
       // + post-render substitutions) so a bad Opus emission can't
       // introduce new violations.
       let corrected = v.correctedText
       corrected = applyPostRenderSubstitutions(corrected)
       corrected = normalizeConfidenceTagSpacing(sanitizeText(corrected, `audit-agent:${v.dimension}`))
-      // Empty correction means "drop this text" or "no clean fix".
-      // If correctedText === '' AND severity === warning, it's just a
-      // flag — don't apply. If '' AND critical, we drop the offense.
-      if (corrected === '' && v.severity !== 'critical') {
+
+      // Guard 4: refuse empty corrections entirely. Distinguishing
+      // "Opus wants to drop this content" from "sanitizeText rejected
+      // the correction" is not reliable, and either way applying an
+      // empty replacement can silently delete substantial content.
+      // If Opus wants to drop something, it should return
+      // correctedText that omits the offense while preserving
+      // surrounding context.
+      if (corrected === '') {
         console.warn(
-          `[Audit Agent] Skipping dimension-${v.dimension} violation with empty correction (warning-only flag).`,
+          `[Audit Agent] REJECTED dimension-${v.dimension} correction: correctedText is empty (either intentional drop or sanitize rejection). Not applying.`,
         )
         continue
       }
+
+      // Guard 5: correctedText length must be in a reasonable ballpark
+      // relative to offendingText. If it's dramatically shorter
+      // (<40% of the original) it's probably dropping content
+      // rather than fixing a sentence. Longer corrections (up to
+      // 3x) are OK - Opus sometimes adds a hedge or context.
+      const shrinkRatio = corrected.length / v.offendingText.length
+      if (shrinkRatio < 0.4 && v.offendingText.length > 100) {
+        console.warn(
+          `[Audit Agent] REJECTED dimension-${v.dimension} correction: correctedText (${corrected.length} chars) is <40% of offendingText (${v.offendingText.length} chars). Probably dropping content.`,
+        )
+        continue
+      }
+      if (shrinkRatio > 3.5) {
+        console.warn(
+          `[Audit Agent] REJECTED dimension-${v.dimension} correction: correctedText is >3.5x the offendingText length. Rejecting to avoid runaway expansion.`,
+        )
+        continue
+      }
+
       const idx = current.indexOf(v.offendingText)
       if (idx === -1) {
         console.warn(
@@ -187,8 +261,30 @@ export async function runAuditAgent(
         )
         continue
       }
-      current =
+
+      // Guard 6: applying this correction must not remove any table
+      // rows or chart markers from the surrounding markdown. Check
+      // by comparing pre/post counts.
+      const preTableRows = (current.match(/^\s*\|/gm) || []).length
+      const preChartMarkers = (current.match(/<!--\s*chart:/gi) || []).length
+      const candidate =
         current.slice(0, idx) + corrected + current.slice(idx + v.offendingText.length)
+      const postTableRows = (candidate.match(/^\s*\|/gm) || []).length
+      const postChartMarkers = (candidate.match(/<!--\s*chart:/gi) || []).length
+      if (postTableRows < preTableRows) {
+        console.warn(
+          `[Audit Agent] REJECTED dimension-${v.dimension} correction: would remove ${preTableRows - postTableRows} table row(s).`,
+        )
+        continue
+      }
+      if (postChartMarkers < preChartMarkers) {
+        console.warn(
+          `[Audit Agent] REJECTED dimension-${v.dimension} correction: would remove ${preChartMarkers - postChartMarkers} chart marker(s).`,
+        )
+        continue
+      }
+
+      current = candidate
       applied++
       console.log(
         `[Audit Agent] Applied dimension-${v.dimension} (${v.severity}) correction. Reason: ${v.explanation.slice(0, 100)}`,

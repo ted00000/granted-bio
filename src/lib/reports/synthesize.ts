@@ -236,11 +236,14 @@ export async function synthesizeReport(
     // Opus audit-agent pass (r44+). Runs on every report by default -
     // AUDIT_AGENT_ENABLED=false disables in emergency. Adds ~$0.83
     // per report. Catches semantic patterns the regex linter and
-    // Sonnet retry can't (adjacent phrasings, cross-section
-    // reconciliation, single-sided named-product framing, subtle
-    // prescriptive framing). Runs AFTER lint-retry so Opus sees the
-    // already-cleaned markdown and only surfaces what remained.
-    const auditAgentEnabled = process.env.AUDIT_AGENT_ENABLED !== 'false'
+    // Sonnet retry can't.
+    //
+    // EMERGENCY DISABLE (r44): the initial deployment wiped tables
+    // in the generated report because Opus's offendingText boundaries
+    // spanned into markdown tables. Hardened + kept default OFF until
+    // safety guards are proven; opt back in with
+    // AUDIT_AGENT_ENABLED=true on Vercel.
+    const auditAgentEnabled = process.env.AUDIT_AGENT_ENABLED === 'true'
     if (auditAgentEnabled) {
       const { runAuditAgent } = await import('./audit-agent')
       const result = await runAuditAgent(finalMarkdown, topic, usageTracker)
