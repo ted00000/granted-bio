@@ -24,7 +24,11 @@ import { applyPostRenderSubstitutions } from './post-render'
 
 // Opus 4.7 is the strongest available Claude — worth the cost for
 // semantic pattern matching the regex linter misses.
-const MODEL = 'claude-opus-4-7'
+// r46 fix: previous 'claude-opus-4-7' was not a real model ID; the API
+// call returned an instant 400 and the try/catch swallowed it silently,
+// so the audit-agent ran zero corrections without any obvious signal.
+// Real current Opus is 'claude-opus-4-8'.
+const MODEL = 'claude-opus-4-8'
 const CALL_TIMEOUT_MS = 120_000 // 2 min hard cap per call
 
 interface UsageTracker {
@@ -123,6 +127,7 @@ export async function runAuditAgent(
   topic: string,
   usageTracker: UsageTracker,
 ): Promise<{ markdown: string; violationsFound: number; violationsApplied: number }> {
+  console.log(`[Audit Agent] Starting Opus audit pass (model=${MODEL}, markdown=${markdown.length} chars)`)
   const client = new Anthropic()
   const startedAt = Date.now()
 
