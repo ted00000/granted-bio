@@ -567,12 +567,20 @@ const RULES: Rule[] = [
         /\b(rose|grew|climbed|jumped|up from|growing|accelerat|sustained|trajectory|suggests growing|signals? (?:growing|increased|sustained|accelerating))\b/i
       const hedgePattern =
         /\b(two data points|two-point trend|two consecutive years)\b/i
+      let cumOffset = 0
       for (const s of sentences) {
+        const sentenceOffset = cumOffset
+        cumOffset += s.length + 1
         if (twoFYPattern.test(s) && trendVerbPattern.test(s) && !hedgePattern.test(s)) {
+          // r49 audit: attribute to containing section so retry can fire.
+          const before = ctx.markdown.slice(0, sentenceOffset)
+          const headings = Array.from(before.matchAll(/^##\s+([^\n]+)$/gm))
+          const lastHeading = headings.length > 0 ? headings[headings.length - 1] : null
+          const section = lastHeading ? lastHeading[1].trim() : null
           violations.push({
             ruleId: 'two-point-trend-hedge-required',
             severity: 'critical',
-            section: null,
+            section,
             offending: s.slice(0, 160),
             message:
               'Two FY dollar figures cited with a trend verb but no "two data points do not establish a trend" hedge.',
