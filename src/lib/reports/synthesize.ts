@@ -28,6 +28,17 @@ import { detectSurprisingFindings, type SurprisingFinding } from './surprising'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import { sanitizeText } from './sanitize'
 import { applyPostRenderSubstitutions, stripPiPossessives } from './post-render'
+import {
+  UNIVERSAL_BAN_BLOCK,
+  TWO_POINT_TREND_HEDGE_BLOCK,
+  categoryAttributionBlock,
+  ipShapeBanBlock,
+  HUB_ENTRY_POINT_BAN_BLOCK,
+  NAMED_PRODUCT_SYMMETRY_BLOCK,
+  trialStatusEnumerationBlock,
+  PI_CALLOUT_BAN_BLOCK,
+  PRESCRIPTIVE_ORG_BAN_BLOCK,
+} from './ban-catalog'
 import { normalizeOrgName, normalizeJournalName } from '@/lib/format-names'
 
 interface SynthesisContext {
@@ -252,19 +263,48 @@ export async function synthesizeReport(
         console.log(
           `[Audit Agent] Applied ${result.violationsApplied}/${result.violationsFound} corrections.`,
         )
-        // Post-audit lint (log-only). Any critical remaining after
-        // Opus is a genuine miss - flag for the next round.
-        const finalPass = lintReport({
+        // Post-audit lint. Audit-agent sometimes swaps one banned word
+        // for another (r47 pattern: "distributed across" → "consolidat";
+        // r49 pattern: banned shape word → "rather than converging"). If
+        // it introduces critical violations, run one more retry pass
+        // targeted at those specifically. r49 audit rationale: without
+        // this second pass, audit-agent regressions ship silently.
+        let postAuditPass = lintReport({
           markdown: finalMarkdown,
           agentOutputs,
           fundingStats: context.fundingStats,
           topResearchers: context.topResearchers,
           whiteSpace,
         })
-        const finalPart = partitionViolations(finalPass)
+        let postAuditPart = partitionViolations(postAuditPass)
         console.log(
-          `[Report Linter] After Opus audit-agent: ${finalPart.critical.length} critical, ${finalPart.warnings.length} warning(s).`,
+          `[Report Linter] After Opus audit-agent: ${postAuditPart.critical.length} critical, ${postAuditPart.warnings.length} warning(s).`,
         )
+        if (postAuditPart.critical.length > 0) {
+          console.log(
+            `[Lint Retry #2] ${postAuditPart.critical.length} critical remaining post-audit — attempting second retry pass.`,
+          )
+          const corrected2 = await applyLintCorrections(
+            finalMarkdown,
+            [...postAuditPart.critical, ...postAuditPart.warnings],
+            topic,
+            usageTracker,
+          )
+          if (corrected2 !== finalMarkdown) {
+            finalMarkdown = corrected2
+            postAuditPass = lintReport({
+              markdown: finalMarkdown,
+              agentOutputs,
+              fundingStats: context.fundingStats,
+              topResearchers: context.topResearchers,
+              whiteSpace,
+            })
+            postAuditPart = partitionViolations(postAuditPass)
+            console.log(
+              `[Report Linter] After retry #2: ${postAuditPart.critical.length} critical, ${postAuditPart.warnings.length} warning(s).`,
+            )
+          }
+        }
       } else if (result.violationsFound > 0) {
         console.log(
           `[Audit Agent] Opus surfaced ${result.violationsFound} violation(s) but none were applicable as corrections.`,
@@ -477,6 +517,24 @@ Three paragraphs, in this order:
 
 **Paragraph 3 - What a ${persona} should take away.** 2-3 concrete watchpoints, not generic advice. Tie each to something specific in the data. For researcher: which grant mechanisms and collaborators to consider given the funded landscape. For investor: what technical/clinical milestones matter and what commercial signals to watch.
 
+---
+
+${UNIVERSAL_BAN_BLOCK}
+
+${TWO_POINT_TREND_HEDGE_BLOCK}
+
+${categoryAttributionBlock(context.fundingStats.projectCount, context.fundingStats.total / 1000000)}
+
+${NAMED_PRODUCT_SYMMETRY_BLOCK}
+
+${PI_CALLOUT_BAN_BLOCK}
+
+${PRESCRIPTIVE_ORG_BAN_BLOCK}
+
+${trialStatusEnumerationBlock(agentOutputs.trials.items.length)}
+
+---
+
 **DESCRIPTIVE vs PRESCRIPTIVE — critical rule for how you use organization names.** Named orgs are FINE when you're describing factual concentration ("Johns Hopkins, UCLA, Stanford together hold 40% of large awards"). Named orgs are NOT fine when you're prescribing action toward them ("Johns Hopkins is an obvious collaboration target", "UCLA would be receptive to outreach", "engage with the MGH cluster"). The report is read by the same community it describes — telling readers who to approach reads as calling those orgs out. Rewrite prescriptive framing as pattern-level observations: "the concentration of MCED work in a small set of nodes means differentiation requires a genuinely novel angle" (pattern), not "researchers should approach the JH/UCLA/Mayo cluster" (targeting). Never name individual PIs in the summary at all — PI names belong in the Key Researchers table, not the executive narrative.
 
 OUTPUT FORMAT: Three paragraphs, no headings, no bullet points. Do NOT start with a heading.
@@ -651,11 +709,15 @@ CRITICAL DATA-GROUNDING RULE:
 - If you make any claim about presence/absence or counting of specific topics (cancer types, diseases, biofluids, methodologies, organizations), verify against the FULL PROJECT LIST above — NOT the ABSTRACTS section, which is only a subset.
 - Never say "no projects on X" or "only one project on Y" unless the FULL PROJECT LIST actually shows that. Prefer qualitative framing ("relatively underrepresented in the sample") when the count is nonzero but small.
 
-FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment), or the softer "N% suggesting X is thin in this sample" pattern (a share paired with "thin", "sparse", "scarce", "meager", "underrepresented" alongside "suggesting" or "indicating" reads as a field-level judgment - the "in this sample" scope word does NOT rescue it), or the sample-gap-may-constrain pattern where a sample-observed gap is cited as a cause of field-level limitations ("that mechanistic gap may constrain sensitivity improvements", "this discovery gap may limit specificity gains" - the "may" hedge does not fix this; the sample cannot support causal claims about what constrains the field). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
+${UNIVERSAL_BAN_BLOCK}
 
-TWO-POINT TREND HEDGE - REQUIRED: If the funding insight cites two consecutive FY dollar figures side-by-side (e.g. "FY2024 $X and FY2025 $Y"), you MUST append "though two data points do not establish a trend" or equivalent hedge in the SAME sentence. Do NOT write "suggests growing NIH commitment", "signals increased investment", "reflects a rising trajectory" - those are trend claims and 2 data points can't support them. This hedge is not optional prose polish; it's a factual constraint.
+${TWO_POINT_TREND_HEDGE_BLOCK}
+
+${ipShapeBanBlock(agentOutputs.patents.items.length)}
+
+${trialStatusEnumerationBlock(agentOutputs.trials.items.length)}
+
+${NAMED_PRODUCT_SYMMETRY_BLOCK}
 
 CLINICAL PIPELINE — DO NOT CHERRY-PICK STATUSES:
 When writing the clinicalPipeline insight, do NOT selectively narrate encouraging statuses (Recruiting, Active) while ignoring negative ones. If the trial list contains any Terminated, Withdrawn, or Suspended trials, mention that too — either explicitly ("N terminated trials also in the sample, suggesting the field has seen setbacks") or by using neutral framing ("mixed status distribution including several terminated trials"). Cherry-picking is exactly the failure a reader spots by scanning the list below the narrative.
@@ -897,9 +959,17 @@ SAMPLE-BASED LANGUAGE: This covers NIH-funded research, not all activity in this
 - "This pattern suggests..." or "The funding distribution indicates..."
 - Acknowledge this represents publicly-funded academic research primarily
 
-FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment), or the softer "N% suggesting X is thin in this sample" pattern (a share paired with "thin", "sparse", "scarce", "meager", "underrepresented" alongside "suggesting" or "indicating" reads as a field-level judgment - the "in this sample" scope word does NOT rescue it), or the sample-gap-may-constrain pattern where a sample-observed gap is cited as a cause of field-level limitations ("that mechanistic gap may constrain sensitivity improvements", "this discovery gap may limit specificity gains" - the "may" hedge does not fix this; the sample cannot support causal claims about what constrains the field). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
+${UNIVERSAL_BAN_BLOCK}
+
+${TWO_POINT_TREND_HEDGE_BLOCK}
+
+${ipShapeBanBlock(agentOutputs.patents.items.length)}
+
+${HUB_ENTRY_POINT_BAN_BLOCK}
+
+${PI_CALLOUT_BAN_BLOCK}
+
+${PRESCRIPTIVE_ORG_BAN_BLOCK}
 
 DESCRIPTIVE vs PRESCRIPTIVE — read carefully.
 - Naming organizations is FINE when you are describing factual concentration or activity ("methylation appears across UCLA, Johns Hopkins, Stanford").
@@ -1446,6 +1516,12 @@ Confidence scale — apply these thresholds strictly:
 
 For the trlEstimate itself: assign confidence based on whether ALL three signals (pubs, trials, patents) align on the same maturity band. Alignment = High. Disagreement or thin data = Medium/Low.
 
+${UNIVERSAL_BAN_BLOCK}
+
+${TWO_POINT_TREND_HEDGE_BLOCK}
+
+${trialStatusEnumerationBlock(totalTrials)}
+
 CATEGORY ATTRIBUTION - REQUIRED FORM:
 When you cite a funding category (diagnostics, biotools, therapeutics, basic_research, etc.) in either maturityNarrative or strategicImplications, you MUST either:
 (a) attach the category's OWN count in "(N of ${context.fundingStats.projectCount})" or "N%" form directly to the category — e.g. "diagnostics (74 of ${context.fundingStats.projectCount})" or "diagnostics account for 60.2%"; OR
@@ -1863,6 +1939,12 @@ FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sente
 BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment), or the softer "N% suggesting X is thin in this sample" pattern (a share paired with "thin", "sparse", "scarce", "meager", "underrepresented" alongside "suggesting" or "indicating" reads as a field-level judgment - the "in this sample" scope word does NOT rescue it), or the sample-gap-may-constrain pattern where a sample-observed gap is cited as a cause of field-level limitations ("that mechanistic gap may constrain sensitivity improvements", "this discovery gap may limit specificity gains" - the "may" hedge does not fix this; the sample cannot support causal claims about what constrains the field). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
+${UNIVERSAL_BAN_BLOCK}
+
+${ipShapeBanBlock(totalPatents)}
+
+${PRESCRIPTIVE_ORG_BAN_BLOCK}
+
 CONFIDENCE + EVIDENCE (REQUIRED FORMAT):
 Append this exact markdown pattern inline at the end of each substantive claim in freedomToOperate, recentActivityTrend, and narrative:
 
@@ -2025,9 +2107,9 @@ Be specific and analytical. Reference the project's actual methods or focus when
 WRONG: "aligning with the evidentiary bar informed by PATHFINDER 2" (positive framing without counter-balance).
 RIGHT: "connects to the clinical evidence question raised by PATHFINDER 2 (mixed real-world PPV performance)" — or drop the PATHFINDER 2 reference entirely and describe the clinical question in method terms.
 
-FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
-BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment), or the softer "N% suggesting X is thin in this sample" pattern (a share paired with "thin", "sparse", "scarce", "meager", "underrepresented" alongside "suggesting" or "indicating" reads as a field-level judgment - the "in this sample" scope word does NOT rescue it), or the sample-gap-may-constrain pattern where a sample-observed gap is cited as a cause of field-level limitations ("that mechanistic gap may constrain sensitivity improvements", "this discovery gap may limit specificity gains" - the "may" hedge does not fix this; the sample cannot support causal claims about what constrains the field). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
-BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
+${UNIVERSAL_BAN_BLOCK}
+
+${NAMED_PRODUCT_SYMMETRY_BLOCK}
 
 Return JSON only (object mapping application_id to insight string):
 {

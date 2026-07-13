@@ -51,6 +51,21 @@ export interface LintContext {
  * Includes the heading line in the value. Returns a Map so lookups don't
  * silently miss on typos.
  */
+/**
+ * Given a markdown string and a byte offset into it, return the name of
+ * the `## ` section that contains that offset — or null if before the
+ * first `##`. r49 audit: multiple rules were setting `section: null`
+ * unconditionally which made them retry-ineligible even when they
+ * clearly belonged to a specific section.
+ */
+export function attributeToSection(markdown: string, offset: number): string | null {
+  if (offset < 0 || offset > markdown.length) return null
+  const before = markdown.slice(0, offset)
+  const headings = Array.from(before.matchAll(/^##\s+([^\n]+)$/gm))
+  const lastHeading = headings.length > 0 ? headings[headings.length - 1] : null
+  return lastHeading ? lastHeading[1].trim() : null
+}
+
 function extractSections(markdown: string): Map<string, string> {
   const sections = new Map<string, string>()
   const lines = markdown.split('\n')
@@ -220,11 +235,11 @@ const RULES: Rule[] = [
       const violations: LintViolation[] = []
       for (const { regex, label } of patterns) {
         const match = ctx.markdown.match(regex)
-        if (match) {
+        if (match && match.index !== undefined) {
           violations.push({
             ruleId: 'no-field-level-absolutes',
             severity: 'critical',
-            section: null,
+            section: attributeToSection(ctx.markdown, match.index),
             offending: match[0],
             message: `Field-level absolute "${label}" — the sample cannot support this claim.`,
           })
@@ -508,11 +523,11 @@ const RULES: Rule[] = [
       const violations: LintViolation[] = []
       for (const { regex, label } of patterns) {
         const match = ctx.markdown.match(regex)
-        if (match) {
+        if (match && match.index !== undefined) {
           violations.push({
             ruleId: 'no-two-point-trend-absolutes',
             severity: 'critical',
-            section: null,
+            section: attributeToSection(ctx.markdown, match.index),
             offending: match[0],
             message: `Two-point trend absolute "${label}". A two-year rise is not by itself a trend.`,
           })
@@ -536,11 +551,11 @@ const RULES: Rule[] = [
       const match = ctx.markdown.match(
         /phase-labeled trials (?:above )?are the interventional subset/i,
       )
-      if (match) {
+      if (match && match.index !== undefined) {
         violations.push({
           ruleId: 'no-phase-labeled-interventional-subset',
           severity: 'critical',
-          section: null,
+          section: attributeToSection(ctx.markdown, match.index),
           offending: match[0],
           message:
             'Banned framing "phase-labeled trials are the interventional subset" — implies all interventional trials carry a phase. Use "the phased subset of X interventional trials."',
@@ -673,7 +688,7 @@ const RULES: Rule[] = [
           violations.push({
             ruleId: 'trial-status-arithmetic-reconciles',
             severity: 'critical',
-            section: null,
+            section: attributeToSection(ctx.markdown, m.index),
             offending: m[0],
             message: `"${m[0]}" doesn't reconcile with the ${activeCompleted} active/completed trials in the data (${total} total). The remainder are terminated/suspended/withdrawn or other status.`,
           })
@@ -1486,7 +1501,7 @@ const RULES: Rule[] = [
           violations.push({
             ruleId: 'trial-status-reconciles-across-sections',
             severity: 'critical',
-            section: null,
+            section: attributeToSection(ctx.markdown, m.index),
             offending: m[0],
             message: `"${m[0]}" appears to lump ${notYet} "Not Yet Recruiting" trial(s) into "active or completed". True active/completed count is ${activeCompleted}; NYR is ${notYet}. Cite them separately.`,
           })
@@ -1494,7 +1509,7 @@ const RULES: Rule[] = [
           violations.push({
             ruleId: 'trial-status-reconciles-across-sections',
             severity: 'critical',
-            section: null,
+            section: attributeToSection(ctx.markdown, m.index),
             offending: m[0],
             message: `"${m[0]}" doesn't reconcile with ${activeCompleted} active/completed trials in the underlying data.`,
           })
@@ -1712,14 +1727,14 @@ const RULES: Rule[] = [
     check(ctx) {
       const violations: LintViolation[] = []
       const pattern = /\b\d{1,4}\s+(?:linked )?(?:clinical )?trials?\s+(?:are\s+)?active or completed\b/gi
-      const match = ctx.markdown.match(pattern)
-      if (match) {
+      const m = pattern.exec(ctx.markdown)
+      if (m) {
         violations.push({
           ruleId: 'no-active-or-completed-bucket',
           severity: 'critical',
-          section: null,
-          offending: match[0],
-          message: `"${match[0]}" uses the ambiguous "active or completed" bucket. Cite each status individually (recruiting, completed, active-not-recruiting, not yet recruiting) or use "in-progress/planned/completed vs terminated/suspended/withdrawn" split.`,
+          section: attributeToSection(ctx.markdown, m.index),
+          offending: m[0],
+          message: `"${m[0]}" uses the ambiguous "active or completed" bucket. Cite each status individually (recruiting, completed, active-not-recruiting, not yet recruiting) or use "in-progress/planned/completed vs terminated/suspended/withdrawn" split.`,
         })
       }
       return violations
@@ -1803,7 +1818,7 @@ const RULES: Rule[] = [
           violations.push({
             ruleId: 'no-phase-labeled-interventional-collapse',
             severity: 'critical',
-            section: null,
+            section: attributeToSection(ctx.markdown, m.index),
             offending: m[0],
             message: `"${m[0]}" collapses "phase-labeled" and "interventional" into 1:1 identity. Rewrite as "the phased subset of N interventional trials" so the reader can see the phase-labeled count is a subset.`,
           })
@@ -1936,7 +1951,7 @@ const RULES: Rule[] = [
           violations.push({
             ruleId: 'no-overlapping-status-subtotals',
             severity: 'critical',
-            section: null,
+            section: attributeToSection(ctx.markdown, start),
             offending: `${twsw[0]} ... ${ts[0]}`,
             message: `Overlapping status subtotals cited in same passage: "${twsw[0]}" (T+S+W) and "${ts[0]}" (T+S or overlapping subset). Both may be correct in isolation but citing two subtotals of the same base reads as contradiction. Pick one framing.`,
           })
@@ -2003,7 +2018,7 @@ const RULES: Rule[] = [
             violations.push({
               ruleId: 'no-orphan-trial-denominator',
               severity: 'critical',
-              section: null,
+              section: attributeToSection(ctx.markdown, m.index),
               offending: m[0],
               message: `"${m[0]}" cites a trial count of ${n} which doesn't map to any subset in the underlying data (total=${total}, observational=${observational}, interventional=${interventional}, plus phase/status counts). Orphan denominator - probably a hallucinated subset.`,
             })
@@ -2358,12 +2373,15 @@ const RULES: Rule[] = [
       const prescriptive =
         /(?:compress(?:es|ing)?\s+differentiation|differentiation\s+space\s+for\s+new\s+entrants|crowded\s+for\s+(?:new\s+)?entrants|saturated\s+for\s+(?:new\s+)?entrants|opportunity\s+for\s+entrants\s+to|entry\s+points?\s+lie|target(?:s|ing)?\s+(?:the\s+)?differentiation|competitive\s+space\s+is\s+(?:crowded|thin|open))/i
       const sentences = ctx.markdown.split(/(?<=[.!?])\s+/)
+      let cumOffset = 0
       for (const s of sentences) {
+        const sentenceOffset = cumOffset
+        cumOffset += s.length + 1
         if (orgs.test(s) && prescriptive.test(s)) {
           violations.push({
             ruleId: 'no-prescriptive-adjacent-to-named-orgs',
             severity: 'critical',
-            section: null,
+            section: attributeToSection(ctx.markdown, sentenceOffset),
             offending: s.slice(0, 240),
             message: `Sentence names an institution AND uses prescriptive framing ("differentiation space", "crowded for entrants", etc.). Naming for concentration is fine; adding a strategic recommendation in the same sentence reads as targeting that specific institution set. Split the sentences.`,
           })

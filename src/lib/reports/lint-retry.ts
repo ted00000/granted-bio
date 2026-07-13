@@ -49,6 +49,7 @@ const RETRY_ELIGIBLE_RULES = new Set<string>([
   'no-institutions-as-entry-points',
   'no-prescriptive-set-targeting',
   'no-prescriptive-org-targeting',
+  'no-prescriptive-adjacent-to-named-orgs',
 
   // Field-level absolutes that need rephrasing (not just word swap):
   'no-field-level-absolutes',
@@ -61,6 +62,8 @@ const RETRY_ELIGIBLE_RULES = new Set<string>([
   'ip-concentration-consistency',
   'no-ip-shape-words-insufficient-sample',
   'no-ip-breadth-claims-insufficient-sample',
+  'no-cluster-in-patent-when-insufficient',
+  'no-negation-shape-claims-insufficient-sample',
   'white-space-si-ranked-only',
   'no-unsupported-causal-attribution',
 
@@ -70,12 +73,20 @@ const RETRY_ELIGIBLE_RULES = new Set<string>([
   'trial-status-arithmetic-reconciles',
   'trial-status-sum-reconciles',
   'trial-status-enumeration-complete',
+  'trial-status-reconciles-across-sections',
+  'no-active-or-completed-bucket',
+  'no-overlapping-status-subtotals',
+  'no-orphan-trial-denominator',
   'terminations-count-label-mismatch',
   'no-phase-labeled-interventional-subset',
+  'no-phase-labeled-interventional-collapse',
   'no-sample-total-as-category',
 
   // Small-sample framing:
   'surprising-findings-need-confidence-tag',
+
+  // Named-product two-sided requirement:
+  'named-product-single-sided',
 ])
 
 // Rules NOT worth retrying — they're either deterministically fixed
@@ -190,6 +201,15 @@ const RULE_EXTRA_GUIDANCE: Record<string, string> = {
   'no-sample-share-to-structural': `A sample percentage cannot be used to claim a field-level "structural" gap. "5% of projects" is a sample observation, not a claim about field-wide underinvestment. Rewrite as "within the analyzed sample, X represents a low share" — do not extend to "the field is underfunded".`,
   'no-pi-names-in-narrative': `Remove the PI name entirely. Do not replace with "Dr. X's group" or "the X lab" — those are equivalent violations.`,
   'no-institutions-as-entry-points': `Institution names are fine as factual attribution ("2 patents at Johns Hopkins") but NOT as action anchors ("engage Johns Hopkins", "start with the Johns Hopkins node"). Rewrite as method-anchored: "start with the [technical method] present in this sample".`,
+  'no-active-or-completed-bucket': `The phrase "N trials are active or completed" is banned — readers disagree on whether "recruiting" counts as "active". Use the compact form "N in-progress/planned/completed vs M terminated/suspended/withdrawn (T total)" OR itemize each non-zero status.`,
+  'no-overlapping-status-subtotals': `Do NOT cite two overlapping subtotals of the same base in the same passage. Example ban: "15 terminated/suspended/withdrawn (69 total)... terminated and suspended trials (12 combined)". Pick ONE framing (either "15 T/S/W" or "10 T + 2 S + 3 W" itemized) and stay with it.`,
+  'no-orphan-trial-denominator': `You cited a trial-count denominator that doesn't map to any subset in the data. Only cite counts that appear in the underlying trials data: total, observational, interventional, phase-labeled counts, or specific status counts. Do NOT invent subsets ("25 reviewed trials" when the sample has 69) — the linter has the full count set and will catch it.`,
+  'no-forward-will-absolutes': `Bare future-tense absolutes are banned: "will pressure", "will force", "will drive", "will require", "will shift", "will accelerate", "will increase". Rewrite with modal hedges: "is likely to pressure", "may drive", "could shift", "creates pressure for".`,
+  'no-sample-total-as-category': `When you cite a sample-total figure ($100.9M or 123 projects) alongside a category name, you MUST attach the category's own count in "(N of TOTAL)" or "N%" form. WRONG: "$100.9M across 123 projects, concentrated in diagnostics". RIGHT: "diagnostics account for 60.2% of projects (74 of 123)" or "the diagnostics funding category (74 of 123, 60.2%)".`,
+  'trial-status-reconciles-across-sections': `Cite the trial-status split consistently across sections. If Exec Summary says "N active/completed", other sections that cite the same split must use the same N and definition. Preferred: compact form "N in-progress/planned/completed vs M terminated/suspended/withdrawn (T total)".`,
+  'no-cluster-in-patent-when-insufficient': `Same ban family as no-ip-shape-words-insufficient-sample. "Cluster around", "clustered", "clustering", "cluster of" — all banned when patents < 10 in the Patent Activity section.`,
+  'no-negation-shape-claims-insufficient-sample': `Negation of a shape claim is still a shape claim. "No single institution holds a dominant share" implies a distribution shape can be observed. When patents < 10, do NOT write negation shape claims either. Describe the sample as a factual enumeration.`,
+  'no-prescriptive-adjacent-to-named-orgs': `Naming institutions in factual concentration is fine ("Johns Hopkins holds 3 patents"). But do NOT pair a named institution with prescriptive framing in the SAME sentence: "differentiation space", "crowded for entrants", "opportunity for entrants to", "entry points lie", "target the differentiation". Split into two sentences: one factual, one strategic without the institution name.`,
 }
 
 function buildCorrectionPrompt(
