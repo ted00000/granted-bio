@@ -1207,9 +1207,13 @@ async function generateCuratedPublications(
     return []
   }
 
-  // Prepare publication details for curation
+  // Prepare publication details for curation. Bumped 25 → 50 so the
+  // LLM has a wider pool to find landmark papers. Prompt still asks
+  // for 3-5, so this doesn't inflate output count — just improves
+  // recall on topics with many linked pubs where landmarks might
+  // rank 25th-50th by relevance score.
   const pubDetails = agentOutputs.publications.items
-    .slice(0, 25)
+    .slice(0, 50)
     .map((p, i) => {
       const year = p.publication_date ? new Date(p.publication_date).getFullYear() : 'N/A'
       return `[${i + 1}] PMID: ${p.pmid}
