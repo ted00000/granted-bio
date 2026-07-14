@@ -1896,12 +1896,18 @@ async function generateIPLandscapeAssessment(
     .join('\n')
 
   if (totalPatents === 0) {
+    // r51 audit: match the clinical section's empty-state treatment —
+    // explain both possibilities (genuine pre-IP state vs NIH-linkage
+    // filter under-counting) and give the reader a concrete next step.
     return {
       concentration: 'fragmented',
       dominantAssignees: [],
-      freedomToOperate: 'No patents identified in this space, suggesting either early-stage research or limited commercial interest.',
-      recentActivityTrend: 'No patent activity observed',
-      narrative: 'The absence of patents may indicate this is an emerging research area without commercial protection yet, or the technology may be published openly.',
+      freedomToOperate:
+        'No NIH-linked patents were identified for this topic. A zero-patent finding can reflect either (1) a genuinely early-stage field with no patent activity yet, or (2) patents that exist but do not cite an NIH project number in their filing (commercial patents, international filings, and industry-only IP are absent from this sample even when directly relevant). To disambiguate, run a targeted USPTO / Google Patents / PATENTSCOPE search using method-specific claim language; if commercial or international patents surface there, this report is under-counting.',
+      recentActivityTrend:
+        'No recent patent activity observed in the NIH-linked sample. USPTO filings can lag commercial activity by 18-24 months, and non-NIH-acknowledged filings are excluded here.',
+      narrative:
+        'The absence of NIH-linked patents in this sample is consistent with an early-stage platform-technology field where methods and instrumentation are still being validated in the academic setting before commercial IP wrapping. Alternatively, it can reflect the NIH-linkage filter under-counting when commercial developers do not cite an NIH grant number in their patent filings. A defensible IP read on this topic requires a full USPTO / Google Patents / PATENTSCOPE search against the specific technical methods under development.',
     }
   }
 
@@ -2300,8 +2306,12 @@ Start directly with the first "- [ ]" — no preamble, no section heading.`
 /**
  * Determine contextual section title based on topic category
  */
-function getClinicalSectionTitle(topCategory: string, trialCount: number): string | null {
-  if (trialCount === 0) return null
+function getClinicalSectionTitle(topCategory: string, _trialCount: number): string {
+  // Always return a title — the section renders unconditionally so the
+  // reader sees a clear "no NIH-linked trials found" notice rather than
+  // silently missing structure. r51/3D Spatial audit: shipping without
+  // the section made the report scan as if we'd forgotten the topic,
+  // even though the exec summary mentioned "0 trials" explicitly.
   if (topCategory === 'biotools') return 'Research Tool Applications'
   if (topCategory === 'therapeutics') return 'Clinical Development Pipeline'
   if (topCategory === 'diagnostics') return 'Clinical Validation Status'
@@ -2441,16 +2451,15 @@ ${renderProjects(topFundedProjects(agentOutputs.projects.items, 10), projectInsi
 ---
 
 `
-    // Clinical section with dynamic title (only if there are trials)
-    if (clinicalSectionTitle) {
-      md += `## ${clinicalSectionTitle}
+    // Clinical section — always emitted. When trials.length===0 the
+    // renderer produces an explicit empty-state notice explaining why.
+    md += `## ${clinicalSectionTitle}
 
 ${renderClinicalPipeline(agentOutputs.trials, insights.clinicalPipeline)}
 
 ---
 
 `
-    }
 
     md += `## Key Organizations
 
@@ -2500,16 +2509,15 @@ ${renderMarketContext(agentOutputs.market.context)}
 ---
 
 `
-    // Clinical section with dynamic title (only if there are trials)
-    if (clinicalSectionTitle) {
-      md += `## ${clinicalSectionTitle}
+    // Clinical section — always emitted. When trials.length===0 the
+    // renderer produces an explicit empty-state notice explaining why.
+    md += `## ${clinicalSectionTitle}
 
 ${renderClinicalPipeline(agentOutputs.trials, insights.clinicalPipeline)}
 
 ---
 
 `
-    }
 
     md += `## Patent Activity
 
@@ -3495,7 +3503,20 @@ function renderProjects(projects: ProjectItem[], projectInsights?: Record<string
 
 function renderClinicalPipeline(trials: AllAgentOutputs['trials'], insight: string): string {
   if (trials.items.length === 0) {
-    return '*Note: This analysis includes only clinical trials linked to NIH-funded projects.*\n\nNo clinical trials found linked to NIH projects in this space.\n'
+    // r51 audit: previous empty-state was terse — "No clinical trials
+    // found linked to NIH projects in this space." — and gave the reader
+    // no way to interpret whether that meant "the field has no trials"
+    // or "our filter is too narrow." Explain both possibilities and give
+    // the reader a concrete next step (check ClinicalTrials.gov directly).
+    return (
+      '*Note: This analysis includes only clinical trials linked to NIH-funded projects. Industry-sponsored, international, and non-NIH-acknowledged trials may exist outside this sample.*\n\n' +
+      '**No NIH-linked clinical trials were found for this topic.**\n\n' +
+      'A zero-trial finding in this section can reflect either of two states, and the two are not distinguishable from within this dataset alone:\n\n' +
+      '1. **The field is genuinely pre-clinical.** Platform-technology and early-stage discovery topics often have no registered trials because the technology is still at the instrument, method, or preclinical-validation stage. In that case, the absence is a maturity marker, not a data gap.\n' +
+      '2. **Trials exist but not with NIH funding acknowledgments.** This report includes trials only when their ClinicalTrials.gov record cites an NIH project number. Industry-sponsored trials, international trials, and trials funded through non-NIH mechanisms are absent from the sample even when directly relevant to the topic.\n\n' +
+      'To disambiguate: search [ClinicalTrials.gov](https://clinicaltrials.gov) directly using topic-specific keywords, filtered by year and status. If that search also returns zero results for the topic, the field is likely pre-clinical in the sense of finding (1); if it returns industry-sponsored or international trials, the finding is (2) and this report is under-counting.\n\n' +
+      'The absence is called out explicitly in other sections of this report (Executive Summary, Field Maturity Assessment, Next Steps) where it materially shapes the read.\n'
+    )
   }
 
   let md = ''

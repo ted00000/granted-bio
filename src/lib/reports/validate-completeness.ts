@@ -176,12 +176,34 @@ export function validateReportCompleteness(input: CompletenessInput): Completene
   }
 
   // ------------------------------------------------------------------
-  // Clinical Validation Status — only required if trials exist.
+  // Clinical section — ALWAYS required now (r51 audit). Even with 0
+  // trials, the section renders an explicit empty-state notice
+  // explaining both possibilities (pre-clinical field vs. NIH-linkage
+  // filter under-counting). The section title varies by top funding
+  // category, so check all possible headings.
   // ------------------------------------------------------------------
-  if (agentOutputs.trials.items.length > 0) {
-    const s = sections.get('Clinical Validation Status')
-    if (!s) failures.push({ section: 'Clinical Validation Status', reason: `section is missing but ${agentOutputs.trials.items.length} trials exist in the data` })
-    else if (bodyCharCount(s) < 400) failures.push({ section: 'Clinical Validation Status', reason: `body only ${bodyCharCount(s)} chars (need >=400)` })
+  {
+    const CLINICAL_SECTION_TITLES = [
+      'Research Tool Applications',
+      'Clinical Development Pipeline',
+      'Clinical Validation Status',
+      'Device Development Pipeline',
+      'Clinical & Translational Activity',
+    ]
+    const s = CLINICAL_SECTION_TITLES.map((t) => sections.get(t)).find(Boolean)
+    if (!s) {
+      failures.push({ section: 'Clinical section', reason: 'no persona-appropriate clinical section rendered (any of: ' + CLINICAL_SECTION_TITLES.join(', ') + ')' })
+    } else {
+      const hasEmptyStateNotice = /No NIH-linked clinical trials were found/i.test(s)
+      if (agentOutputs.trials.items.length === 0) {
+        // Empty-state notice must be present.
+        if (!hasEmptyStateNotice) {
+          failures.push({ section: 'Clinical section', reason: '0 trials in data but section does not carry the required empty-state notice ("No NIH-linked clinical trials were found")' })
+        }
+      } else if (bodyCharCount(s) < 400) {
+        failures.push({ section: 'Clinical section', reason: `body only ${bodyCharCount(s)} chars (need >=400) with ${agentOutputs.trials.items.length} trials in data` })
+      }
+    }
   }
 
   // ------------------------------------------------------------------
