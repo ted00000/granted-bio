@@ -963,19 +963,23 @@ export default function ReportDetailPage({
           } else if (!isFirstElement) {
             y += 20
           }
-          addNewPageIfNeeded(36)
+          // Measure BEFORE the page-break check so wrapped H1s reserve
+          // the right height. Previously a hardcoded 36pt reservation
+          // let wrapped text render past the footer.
+          doc.setFontSize(18)
+          doc.setFont('helvetica', 'bold')
+          const text = cleanText(trimmed.slice(2))
+          const splitText = doc.splitTextToSize(text, maxWidth - 12)
+          const blockHeight = splitText.length * 22 + 12
+          addNewPageIfNeeded(blockHeight)
 
           // Draw accent bar on left
           doc.setFillColor(...brandColor)
           doc.rect(margin, y - 6, 4, 28, 'F')
 
-          doc.setFontSize(18)
-          doc.setFont('helvetica', 'bold')
           doc.setTextColor(17, 24, 39)
-          const text = cleanText(trimmed.slice(2))
-          const splitText = doc.splitTextToSize(text, maxWidth - 12)
           doc.text(splitText, margin + 12, y)
-          y += splitText.length * 22 + 12
+          y += blockHeight
           isFirstElement = false
           contentRendered = true
           i++
@@ -985,23 +989,27 @@ export default function ReportDetailPage({
         // H2 Header - Section header with subtle background
         if (trimmed.startsWith('## ')) {
           y += 18
-          addNewPageIfNeeded(32)
+          // Measure BEFORE page-break check.
+          doc.setFontSize(14)
+          doc.setFont('helvetica', 'bold')
+          const text = cleanText(trimmed.slice(3))
+          const splitText = doc.splitTextToSize(text, maxWidth - 10)
+          const blockHeight = splitText.length * 18 + 10
+          // Background bar height needs to match wrapped-line count too.
+          const bgHeight = Math.max(26, splitText.length * 18 + 8)
+          addNewPageIfNeeded(blockHeight)
 
           // Subtle background bar
           doc.setFillColor(249, 250, 251) // gray-50
-          doc.rect(margin, y - 10, maxWidth, 26, 'F')
+          doc.rect(margin, y - 10, maxWidth, bgHeight, 'F')
 
           // Left accent line
           doc.setFillColor(...brandColor)
-          doc.rect(margin, y - 10, 3, 26, 'F')
+          doc.rect(margin, y - 10, 3, bgHeight, 'F')
 
-          doc.setFontSize(14)
-          doc.setFont('helvetica', 'bold')
           doc.setTextColor(17, 24, 39)
-          const text = cleanText(trimmed.slice(3))
-          const splitText = doc.splitTextToSize(text, maxWidth - 10)
           doc.text(splitText, margin + 10, y)
-          y += splitText.length * 18 + 10
+          y += blockHeight
           isFirstElement = false
           contentRendered = true
           i++
@@ -1011,14 +1019,15 @@ export default function ReportDetailPage({
         // H3 Header
         if (trimmed.startsWith('### ')) {
           y += 12
-          addNewPageIfNeeded(20)
           doc.setFontSize(12)
           doc.setFont('helvetica', 'bold')
-          doc.setTextColor(55, 65, 81)
           const text = cleanText(trimmed.slice(4))
           const splitText = doc.splitTextToSize(text, maxWidth)
+          const blockHeight = splitText.length * 15 + 8
+          addNewPageIfNeeded(blockHeight)
+          doc.setTextColor(55, 65, 81)
           doc.text(splitText, margin, y)
-          y += splitText.length * 15 + 8
+          y += blockHeight
           isFirstElement = false
           contentRendered = true
           i++
@@ -1028,14 +1037,15 @@ export default function ReportDetailPage({
         // H4 Header
         if (trimmed.startsWith('#### ')) {
           y += 8
-          addNewPageIfNeeded(18)
           doc.setFontSize(11)
           doc.setFont('helvetica', 'bold')
-          doc.setTextColor(75, 85, 99)
           const text = cleanText(trimmed.slice(5))
           const splitText = doc.splitTextToSize(text, maxWidth)
+          const blockHeight = splitText.length * 14 + 6
+          addNewPageIfNeeded(blockHeight)
+          doc.setTextColor(75, 85, 99)
           doc.text(splitText, margin, y)
-          y += splitText.length * 14 + 6
+          y += blockHeight
           isFirstElement = false
           contentRendered = true
           i++
@@ -1055,13 +1065,16 @@ export default function ReportDetailPage({
 
         // Blockquote
         if (trimmed.startsWith('> ')) {
-          addNewPageIfNeeded(22)
+          // Measure BEFORE page-break check — a wrapped blockquote with
+          // hardcoded 22pt reservation overran the footer in wide
+          // paragraphs (r51 3D report Competitive Landscape).
           doc.setFontSize(10)
           doc.setFont('helvetica', 'italic')
-          doc.setTextColor(75, 85, 99)
           const text = cleanText(trimmed.slice(2))
           const splitText = doc.splitTextToSize(text, maxWidth - 20)
           const blockHeight = splitText.length * 13 + 8
+          addNewPageIfNeeded(blockHeight + 8)
+          doc.setTextColor(75, 85, 99)
 
           // Light background
           doc.setFillColor(254, 242, 239) // Very light brand color
@@ -1197,29 +1210,38 @@ export default function ReportDetailPage({
           continue
         }
 
-        // List item
+        // List item — line-by-line rendering so long bullets split
+        // across pages naturally instead of overflowing the footer
+        // (r51 3D report Competitive Landscape). The bullet character
+        // sits on the first line only; wrapped continuation lines
+        // indent to align with the text column.
         if (trimmed.match(/^[-*] /)) {
-          addNewPageIfNeeded(16)
           doc.setFontSize(10.5)
           doc.setFont('helvetica', 'normal')
-          doc.setTextColor(55, 65, 81)
           const lineContent = trimmed.slice(2)
+          const lineHeight = 13
 
-          // Brand-colored bullet
+          // Reserve room for the first line (bullet + first row of text
+          // must live together).
+          addNewPageIfNeeded(lineHeight)
           doc.setTextColor(...brandColor)
           doc.text('•', margin, y)
           doc.setTextColor(55, 65, 81)
 
           if (hasMarkdownLink(lineContent)) {
-            // Link-aware path: word-by-word with clickable link annotations
+            // renderSegmentsWithLinks handles its own page breaks.
             const segments = parseSegments(lineContent)
-            const finalY = renderSegmentsWithLinks(segments, margin + 14, y, maxWidth - 14, 13)
-            y = finalY + 13 + 4
+            const finalY = renderSegmentsWithLinks(segments, margin + 14, y, maxWidth - 14, lineHeight)
+            y = finalY + lineHeight + 4
           } else {
             const text = cleanText(lineContent)
             const splitText = doc.splitTextToSize(text, maxWidth - 14)
-            doc.text(splitText, margin + 14, y)
-            y += splitText.length * 13 + 4
+            for (let li = 0; li < splitText.length; li++) {
+              if (li > 0) addNewPageIfNeeded(lineHeight)
+              doc.text(splitText[li], margin + 14, y)
+              y += lineHeight
+            }
+            y += 4
           }
           isFirstElement = false
           contentRendered = true
@@ -1227,21 +1249,28 @@ export default function ReportDetailPage({
           continue
         }
 
-        // Regular paragraph
-        addNewPageIfNeeded(16)
+        // Regular paragraph — line-by-line rendering (same rationale as
+        // bullets above). Long paragraphs split across pages instead of
+        // overrunning the footer.
         doc.setFontSize(10.5)
         doc.setFont('helvetica', 'normal')
         doc.setTextColor(55, 65, 81)
+        const paraLineHeight = 13
+        addNewPageIfNeeded(paraLineHeight)
 
         if (hasMarkdownLink(trimmed)) {
           const segments = parseSegments(trimmed)
-          const finalY = renderSegmentsWithLinks(segments, margin, y, maxWidth, 13)
-          y = finalY + 13 + 5
+          const finalY = renderSegmentsWithLinks(segments, margin, y, maxWidth, paraLineHeight)
+          y = finalY + paraLineHeight + 5
         } else {
           const text = cleanText(trimmed)
           const splitText = doc.splitTextToSize(text, maxWidth)
-          doc.text(splitText, margin, y)
-          y += splitText.length * 13 + 5
+          for (let li = 0; li < splitText.length; li++) {
+            if (li > 0) addNewPageIfNeeded(paraLineHeight)
+            doc.text(splitText[li], margin, y)
+            y += paraLineHeight
+          }
+          y += 5
         }
         isFirstElement = false
         contentRendered = true
