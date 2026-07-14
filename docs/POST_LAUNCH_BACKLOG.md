@@ -120,6 +120,27 @@ are the improvement callouts, ranked by impact.
   bulk-rewrite; instead audit each formulaic phrase's linter rationale
   and remove only the ones that aren't rule-driven.
 
+## PDF rendering
+
+- **Replace jsPDF with Puppeteer + HTML/CSS Paged Media.** Current PDF
+  export in `src/app/reports/[id]/page.tsx` is a ~1200-line
+  hand-coded jsPDF layout. Every wrapping edge case is a potential
+  bug (r51 3D Spatial report had a Competitive Landscape paragraph
+  running past the footer; commit `61a7208` fixed that class by
+  switching paragraphs/bullets to line-by-line rendering, but the
+  fundamental approach — imperative layout with manual page-break
+  reservations — is fragile for anything new we add. Real fix:
+  markdown → HTML (marked or remark) → styled with brand CSS →
+  Chromium headless renders via `puppeteer-core` + `@sparticuz/chromium`
+  inside a new Inngest step after synthesis. Real CSS Paged Media
+  (`@page`, `page-break-inside: avoid`, widow/orphan control, running
+  headers/footers), styling matches the web report exactly, PDF
+  gets uploaded to Supabase Storage once and served via signed URL
+  (client-side generation delay goes away). ~1-2 hrs implementation
+  + testing. Trigger: any new PDF layout bug OR the first time we
+  need a typographic feature jsPDF can't deliver (footnotes, running
+  section headers, precise table pagination, etc.).
+
 ## Data pipeline
 
 - **Backfill patent `issue_date` + `filing_date`** — 0 / 49,557 rows in
