@@ -1,4 +1,4 @@
-# Parking Lot — 13JUL2026
+# Parking Lot — 14JUL2026
 
 Consolidated nice-to-haves accumulated during the multi-month pre-launch
 build. Pulled from `LANDING_AND_CREDITS_PLAN.md`, `PLATFORM_PLANNING.md`,
@@ -71,6 +71,54 @@ when revising so we can tell what's drifted.
 - **Recovery-cron observability** — surface stuck-purchase recoveries
   in admin (`/admin/recovery` or merged into existing dashboards)
   instead of only Vercel function logs.
+
+## Report content — founder-persona grade (A-) feedback
+
+An external Sonnet playing the role of a life-sciences-tools founder
+graded the r51/3D Spatial Multiomics report an A- at $199. Notes below
+are the improvement callouts, ranked by impact.
+
+- **Commercial Opportunity Map (new section) — highest-leverage add.**
+  Matrix table: Opportunity × Attractiveness × Competition × NIH
+  Momentum × Commercial Readiness, one row per methodological cluster.
+  Founder said "would likely become the most-read page." Signals we
+  already compute (funding shares from `byCategory`, patent counts,
+  trial counts by cluster, competitiveTopology maturity labels,
+  keyPlayers from market context) — the missing piece is a scoring
+  synthesis + a compact interpretive paragraph per row. Investor
+  persona first; could adapt for researcher/BD later.
+
+- **Confidence tag noise (10-15% of report).** Every substantive claim
+  currently gets its own `**Confidence: Medium** - Evidence: [...]` tag,
+  which was defensible per-claim but reads as visual clutter across a
+  50-page report. Fix: one section-level Confidence tag at the end of
+  each section + a compact inline icon on individual claims that
+  expands on hover/tap in the web view. The evidence detail migrates
+  from inline paragraph to a tooltip/footnote. Retain the per-claim
+  tag structure in the underlying data model so linter rules still
+  fire, but change the render.
+
+- **Empty-taxonomy tables (0/0/0/0 rows).** White Space Analysis emits
+  rows for every classified dimension category, so dimensions with
+  mostly-empty categories produce pages of "0 projects" rows followed
+  by explainer text. Fix: collapse below-threshold categories into a
+  single "N categories below the reporting threshold - see full data
+  in [expanded view]" summary row per dimension. Preserve the raw
+  counts in the underlying data model.
+
+- **Disclaimer text compression.** "What This Report Does Not Cover" +
+  per-section `*Note: This analysis includes only...*` italic callouts
+  stack up across sections and read as several pages of caveats. Fix:
+  consolidated single "Methodology & Coverage" page (linked from the
+  top), per-section notes shortened to one line referencing the page.
+
+- **Formulaic prose (audit before touching).** Founder flagged
+  repeated "Within the analyzed sample...", "This suggests..." patterns
+  as AI-tell. Half of these are the linter's fault - we ENFORCE
+  "within the sample" scoping to prevent field-level absolute claims.
+  Compressing 25% risks regressing against ban-catalog rules. Do NOT
+  bulk-rewrite; instead audit each formulaic phrase's linter rationale
+  and remove only the ones that aren't rule-driven.
 
 ## Data pipeline
 
