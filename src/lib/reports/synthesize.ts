@@ -321,6 +321,22 @@ export async function synthesizeReport(
   // consumers (DB write, return value).
   const finalMarkdownContent = finalMarkdown
 
+  // Completeness gate. r51 audit: the 3D Spatial Multiomics report
+  // shipped with a Market Context section that had only its Overview
+  // paragraph — every structured sub-section was silently empty because
+  // web_search returned no external results and the renderer drops
+  // empty sub-sections. This gate runs before persistence and throws
+  // if ANY expected section falls below content thresholds. The Inngest
+  // wrapper retries on error so the user sees a clean regeneration,
+  // never a truncated report.
+  const { assertReportComplete } = await import('./validate-completeness')
+  assertReportComplete({
+    markdown: finalMarkdownContent,
+    agentOutputs,
+    fundingStats: context.fundingStats,
+    reportPersona: persona,
+  })
+
   // Log cumulative API usage for billing
   console.log(`[Synthesis Agent] Total API usage: ${usageTracker.inputTokens} input, ${usageTracker.outputTokens} output tokens`)
   await logApiUsage({

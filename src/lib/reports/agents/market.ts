@@ -8,38 +8,87 @@ import type { MarketAgentOutput, MarketContext } from '../types'
 const anthropic = new Anthropic()
 
 /**
+ * A market context payload is "thin" — probably the result of web_search
+ * returning no results server-side — when both the sources AND the two
+ * structured lists came back empty. When this happens the render layer
+ * drops every sub-section except Overview, which reads as a truncated
+ * section to the reader. Retry with a stronger directive; if still thin,
+ * fail loud rather than ship the stub.
+ *
+ * We deliberately don't gate on marketSize alone — some topics genuinely
+ * have no adjacent market sized in trade press (that's what null means).
+ * The signal is "the web_search tool produced nothing AND the model had
+ * no discoverable key players / recent developments."
+ */
+function isMarketContextThin(context: MarketContext): boolean {
+  const noSources = context.sources.length === 0
+  const noPlayers = context.keyPlayers.length === 0
+  const noDevelopments = context.recentDevelopments.length === 0
+  const noCompetitive = !context.competitiveLandscape || context.competitiveLandscape.trim().length < 100
+  return noSources && noPlayers && noDevelopments && noCompetitive
+}
+
+/**
  * Run the Market Agent to gather external market context for a topic.
  * Uses Claude's server-side web_search tool for current, sourced information.
+ *
+ * Retries up to MAX_ATTEMPTS on thin payloads (web_search returned nothing
+ * usable). Throws on final failure — a truncated market section must
+ * never ship. The Inngest wrapper will retry the whole synthesis; the
+ * user sees a clean "regenerating" state instead of a stub.
  */
 export async function runMarketAgent(topic: string): Promise<MarketAgentOutput> {
   console.log(`[Market Agent] Gathering market context for "${topic}"`)
 
-  try {
-    const context = await gatherMarketContext(topic)
-    return { context }
-  } catch (error) {
-    console.error('[Market Agent] Error:', error)
-    return {
-      context: {
-        overview: `Market context for ${topic} could not be retrieved.`,
-        marketSize: null,
-        keyPlayers: [],
-        recentDevelopments: [],
-        competitiveLandscape: '',
-        sources: [],
-      },
+  const MAX_ATTEMPTS = 2
+  let lastError: unknown = null
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const context = await gatherMarketContext(topic, attempt)
+      if (isMarketContextThin(context)) {
+        console.warn(
+          `[Market Agent] Attempt ${attempt}/${MAX_ATTEMPTS}: payload is thin ` +
+          `(sources=${context.sources.length}, players=${context.keyPlayers.length}, ` +
+          `developments=${context.recentDevelopments.length}, competitive=${context.competitiveLandscape?.length || 0} chars). ` +
+          `${attempt < MAX_ATTEMPTS ? 'Retrying with stronger search directive.' : 'Failing loud - truncated section must not ship.'}`,
+        )
+        if (attempt < MAX_ATTEMPTS) continue
+        throw new Error(
+          `Market agent returned a thin payload after ${MAX_ATTEMPTS} attempts for "${topic}" — ` +
+          `web_search likely failed or returned no usable results. Refusing to ship a truncated Market Context section.`,
+        )
+      }
+      return { context }
+    } catch (error) {
+      lastError = error
+      if (attempt < MAX_ATTEMPTS) {
+        console.warn(`[Market Agent] Attempt ${attempt}/${MAX_ATTEMPTS} threw:`, error)
+        continue
+      }
+      break
     }
   }
+  // If we're here, every attempt threw. Propagate — never ship a stub.
+  throw lastError instanceof Error
+    ? lastError
+    : new Error(`[Market Agent] Failed for "${topic}" after ${MAX_ATTEMPTS} attempts: ${String(lastError)}`)
 }
 
 /**
  * Use Claude with web_search to gather current, cited market intelligence.
  * Sources are extracted from the actual URLs the model retrieved.
  */
-async function gatherMarketContext(topic: string): Promise<MarketContext> {
+async function gatherMarketContext(topic: string, attempt: number = 1): Promise<MarketContext> {
   const today = new Date().toISOString().split('T')[0]
 
-  const prompt = `You are a life-sciences market research analyst. Today is ${today}.
+  // Retry prompt gets an explicit directive to actually use web_search.
+  // First-attempt failure mode is usually the model skipping the tool
+  // when it thinks it "knows" the topic from training data. Force it.
+  const retryDirective = attempt > 1
+    ? `\n\n**RETRY PROTOCOL — attempt ${attempt}.** The previous attempt returned zero web-search sources, which produced a truncated report section. YOU MUST invoke the web_search tool at least 3 times before writing your response. Search with different queries — company names, market size reports, recent trade press. Do not rely on training data. If web_search returns no results after 5 attempts, report that explicitly in the overview and populate keyPlayers/recentDevelopments/competitiveLandscape with the best information you can find (even if partial).\n`
+    : ''
+
+  const prompt = `You are a life-sciences market research analyst. Today is ${today}.${retryDirective}
 
 Use the web_search tool to gather CURRENT market intelligence for: "${topic}"
 
