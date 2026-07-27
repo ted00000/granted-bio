@@ -1,0 +1,303 @@
+/*
+ * Print stylesheet for granted.bio reports.
+ *
+ * Loaded by the /reports/[id]/print route. Chromium headless (via
+ * Puppeteer) will render that route and use these rules to lay out the
+ * PDF. When viewed in a regular browser, the same styles apply so the
+ * output can be previewed visually.
+ *
+ * Running headers/footers are delegated to Puppeteer's headerTemplate/
+ * footerTemplate options at PDF-generation time — Chromium does not
+ * implement the CSS `position: running()` feature, so we can't do them
+ * purely in stylesheets. The elements previously used for that
+ * (.running-header, .running-footer-*) are now hidden and only the
+ * cover + body flow.
+ *
+ * Design goals:
+ *   - Letter, 0.75" margins
+ *   - Body 10.5pt (matches the current jsPDF baseline the user OK'd)
+ *   - Real page-break semantics: never split a table row, never orphan
+ *     a heading at the bottom of a page, keep chart + caption together
+ *   - Widow/orphan control on paragraphs (3-line minimum)
+ *   - Brand accent bars on H1/H2 (matches jsPDF version)
+ *   - Chart SVGs constrained to page width, never fragment across pages
+ */
+
+/* ----------------------------------------------------------------------
+ * Print page setup — Letter, generous margins so Puppeteer can inject
+ * its own header/footer templates into the top/bottom bands.
+ * -------------------------------------------------------------------- */
+@page {
+  size: letter;
+  margin: 0.75in 0.6in 0.9in 0.6in;
+}
+
+/* First page (cover): tighter margins, no top/bottom bands. */
+@page :first {
+  margin: 1.25in 0.75in;
+}
+
+/* ----------------------------------------------------------------------
+ * Hide the elements that were previously wired to CSS Paged Media
+ * running-element positions. Puppeteer generates real headers/footers
+ * at PDF time; on-screen preview doesn't need them either.
+ * -------------------------------------------------------------------- */
+.running-header,
+.running-footer-left,
+.running-footer-right {
+  display: none;
+}
+
+/* ----------------------------------------------------------------------
+ * Document base — typography and color foundation. Applies both on
+ * screen (for browser preview) and in print.
+ * -------------------------------------------------------------------- */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #111827;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.5;
+  -webkit-print-color-adjust: exact; /* preserve brand colors in print */
+  print-color-adjust: exact;
+}
+
+/* Screen-only container width so previews feel like an actual page. */
+@media screen {
+  body {
+    max-width: 7.4in;
+    margin: 1in auto;
+    padding: 1in 0.75in;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
+    background: #fff;
+  }
+}
+
+/* ----------------------------------------------------------------------
+ * Cover page — first page only. Kept compact so the whole cover fits
+ * on one printed page (previous version overflowed onto page 2 because
+ * min-height was too large).
+ * -------------------------------------------------------------------- */
+.print-cover {
+  page-break-after: always;
+  break-after: page;
+  padding-top: 0.5in;
+  display: flex;
+  flex-direction: column;
+  gap: 3in; /* pushes meta to the bottom of the cover naturally */
+}
+.print-cover .brand-mark {
+  font-size: 14pt;
+  color: #E07A5F;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.print-cover .brand-mark .dot {
+  color: #E07A5F;
+}
+.print-cover h1 {
+  font-size: 34pt;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #111827;
+  margin: 0.15in 0 0.25in 0;
+  max-width: 6in;
+  border: none;
+  padding: 0;
+  page-break-before: auto; /* override the body h1 default */
+  break-before: auto;
+}
+.print-cover .subtitle {
+  font-size: 13pt;
+  color: #4b5563;
+  margin: 0;
+  max-width: 5.5in;
+}
+.print-cover .meta {
+  font-size: 10pt;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 0.25in;
+}
+.print-cover .meta .row {
+  display: flex;
+  justify-content: space-between;
+  margin: 6pt 0;
+}
+.print-cover .accent-bar {
+  height: 6pt;
+  width: 0.6in;
+  background: #E07A5F;
+}
+
+/* ----------------------------------------------------------------------
+ * Body — MarkdownRenderer output. `.print-body` is applied by the
+ * client shell.
+ * -------------------------------------------------------------------- */
+.print-body {
+  orphans: 3;
+  widows: 3;
+}
+
+/* Headings — mirror the jsPDF hierarchy, plus real page-break control. */
+.print-body h1 {
+  font-size: 18pt;
+  font-weight: 700;
+  color: #111827;
+  margin: 0.35in 0 0.12in;
+  padding-left: 10pt;
+  border-left: 4pt solid #E07A5F;
+  page-break-before: always;
+  break-before: page;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+.print-body h1:first-of-type {
+  page-break-before: auto;
+  break-before: auto;
+}
+.print-body h2 {
+  font-size: 14pt;
+  font-weight: 700;
+  color: #111827;
+  margin: 0.28in 0 0.1in;
+  padding: 6pt 10pt;
+  background: #f9fafb;
+  border-left: 3pt solid #E07A5F;
+  page-break-after: avoid;
+  break-after: avoid;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+.print-body h3 {
+  font-size: 12pt;
+  font-weight: 700;
+  color: #374151;
+  margin: 0.2in 0 6pt;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+.print-body h4 {
+  font-size: 11pt;
+  font-weight: 700;
+  color: #4b5563;
+  margin: 0.15in 0 5pt;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+/* Body text — paragraphs, lists, blockquotes. */
+.print-body p {
+  margin: 0 0 8pt 0;
+  color: #374151;
+  orphans: 3;
+  widows: 3;
+}
+.print-body strong,
+.print-body b {
+  color: #111827;
+}
+.print-body em,
+.print-body i {
+  color: #4b5563;
+}
+.print-body a {
+  color: #E07A5F;
+  text-decoration: none;
+  border-bottom: 0.5pt solid #f4c1b1;
+}
+
+/* Lists */
+.print-body ul,
+.print-body ol {
+  margin: 0 0 8pt 0;
+  padding-left: 18pt;
+}
+.print-body li {
+  margin-bottom: 3pt;
+  color: #374151;
+}
+.print-body li::marker {
+  color: #E07A5F;
+}
+
+/* Blockquote — matches jsPDF brand-tinted callout. */
+.print-body blockquote {
+  margin: 10pt 0;
+  padding: 8pt 12pt;
+  background: #fef2ef;
+  border-left: 3pt solid #E07A5F;
+  border-radius: 3pt;
+  color: #4b5563;
+  font-style: italic;
+  font-size: 10pt;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+/* Tables — repeat headers on page break, never split a row. */
+.print-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10pt 0 12pt;
+  font-size: 9.5pt;
+  border-top: 1.5pt solid #E07A5F;
+  border-bottom: 1pt solid #e5e7eb;
+  page-break-inside: auto;
+  break-inside: auto;
+}
+.print-body thead {
+  display: table-header-group;
+}
+.print-body tr {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+.print-body th {
+  text-align: left;
+  padding: 6pt 8pt;
+  background: #fef2ef;
+  color: #7c3d2b;
+  font-weight: 700;
+  border-bottom: 1pt solid #f4c1b1;
+}
+.print-body td {
+  padding: 5pt 8pt;
+  border-bottom: 0.5pt solid #f3f4f6;
+  color: #374151;
+  vertical-align: top;
+}
+
+/* ----------------------------------------------------------------------
+ * Charts — Recharts renders SVG inside .recharts-wrapper. Force a
+ * reliable size so ResponsiveContainer measures its parent correctly
+ * even in print media. Missing charts in the first cut were caused by
+ * (a) double <html> wrappers breaking hydration and (b) chart
+ * containers having zero measured width in print mode.
+ * -------------------------------------------------------------------- */
+.print-body .recharts-wrapper,
+.print-body .recharts-responsive-container {
+  max-width: 100%;
+}
+.print-body .recharts-wrapper svg,
+.print-body .recharts-responsive-container svg {
+  max-width: 100%;
+  height: auto !important;
+}
+/* The div that MarkdownRenderer wraps each chart in — keep it with
+   its preceding heading and never fragment across pages. */
+.print-body div.my-4 {
+  page-break-inside: avoid;
+  break-inside: avoid;
+  margin: 14pt 0;
+  min-height: 240px; /* room for ResponsiveContainer's default height */
+}
+
+/* Horizontal rule. */
+.print-body hr {
+  border: none;
+  border-top: 0.5pt solid #e5e7eb;
+  margin: 16pt 0;
+}
