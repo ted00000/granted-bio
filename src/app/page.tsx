@@ -14,10 +14,15 @@ import { MarketingNav } from '@/components/MarketingNav'
 import { AuthForm, AuthFormFallback } from '@/components/AuthForm'
 import { SignUpModal } from '@/components/SignUpModal'
 
+// Hero stats. Bumped manually after each data refresh — the SOP
+// (docs/DATA_REFRESH_SOP.md) reminds to update these here. Values
+// are rounded to the nearest K so small weekly deltas don't require
+// a marketing-page redeploy. Actual DB counts as of 2026-07-28:
+//   projects 171,171 · patents 49,916 · publications 501,327 · trials 39,275
 const stats = [
-  { label: 'NIH Projects', value: '170K' },
+  { label: 'NIH Projects', value: '171K' },
   { label: 'Patents', value: '50K' },
-  { label: 'Publications', value: '500K' },
+  { label: 'Publications', value: '501K' },
   { label: 'Clinical Trials', value: '39K' },
 ]
 

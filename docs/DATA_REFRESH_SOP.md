@@ -313,6 +313,12 @@ across two API windows due to the 15K offset cap.
 - [ ] `SELECT COUNT(*) FROM projects WHERE date_added >= '2026-03-09'` → ~16-17K (after bio filter)
 - [ ] `SELECT COUNT(*) FROM project_publications WHERE created_at > '2026-06-21'` → tens of thousands
 - [ ] Spot-check a few projects on the live site to confirm linked content displays
+- [ ] **Bump landing-page hero stats.** `src/app/page.tsx:17-22` has a
+      hardcoded `const stats = [...]` with rounded totals for NIH
+      Projects, Patents, Publications, and Clinical Trials. After
+      each refresh, re-check DB counts and update any that ticked
+      into a new K-rounded value. Small weekly deltas usually don't
+      cross a K boundary — only bump when they do.
 
 ---
 

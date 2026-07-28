@@ -192,13 +192,20 @@ def upsert_in_batches(
 
 
 def main() -> None:
-    if len(sys.argv) != 2:
-        print(
-            'Usage: python etl/load_clinical_studies_delta.py '
-            '<path-to-ClinicalStudies.csv>'
-        )
-        sys.exit(1)
-    csv_path = sys.argv[1]
+    import argparse
+    parser = argparse.ArgumentParser(
+        description='Delta-ingest clinical studies from an ExPORTER CSV.'
+    )
+    parser.add_argument('csv_path', help='Path to ClinicalStudies.csv')
+    parser.add_argument(
+        '--batch-size',
+        type=int,
+        default=25,
+        help='Rows per upsert batch (default 25; drop to 10 or 5 if you hit code 57014 statement timeout).',
+    )
+    args = parser.parse_args()
+    csv_path = args.csv_path
+    batch_size = args.batch_size
 
     print('=' * 64)
     print('Clinical Studies Delta Ingest (SOP)')
@@ -213,8 +220,8 @@ def main() -> None:
         print('\nNo new or changed rows. Nothing to upsert. Done.')
         return
 
-    print(f'\nUpserting {len(delta):,} rows to clinical_studies...')
-    upserted = upsert_in_batches(supabase, delta)
+    print(f'\nUpserting {len(delta):,} rows to clinical_studies (batch_size={batch_size})...')
+    upserted = upsert_in_batches(supabase, delta, batch_size=batch_size)
     print(f'\n✓ Done. {upserted:,} rows upserted.')
 
     print()
