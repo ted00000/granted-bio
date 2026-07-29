@@ -384,7 +384,7 @@ export default function UsersPage() {
                   <strong>Admin:</strong> Full access to admin dashboard, unlimited API usage
                 </li>
                 <li>
-                  <strong>Associate:</strong> Unlimited search and reports, usage tracked for billing
+                  <strong>Associate:</strong> 500 searches/mo (pro tier); reports still cost $199 per topic (no bypass)
                 </li>
                 <li>
                   <strong>User:</strong> Standard user (Free: 10 searches/mo, Pro: 500 searches/mo)
