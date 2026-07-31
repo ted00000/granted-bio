@@ -141,24 +141,31 @@ export function validateReportCompleteness(input: CompletenessInput): Completene
   // ------------------------------------------------------------------
   // Positioning / Signals — the persona-specific narrative section.
   // Researcher reports render "Research Positioning"; investor renders
-  // "Investor Signals". Both must have substantive prose.
+  // "Investment Signals". Both must have substantive prose.
+  // (r53 fix: gate previously looked for "Investor Signals" — the wrong
+  // heading name — and hard-failed every investor report on false
+  // positive. Actual heading emitted at synthesize.ts:2427 is
+  // "Investment Signals".)
   // ------------------------------------------------------------------
   {
-    const heading = reportPersona === 'investor' ? 'Investor Signals' : 'Research Positioning'
+    const heading = reportPersona === 'investor' ? 'Investment Signals' : 'Research Positioning'
     const s = sections.get(heading)
     if (!s) failures.push({ section: heading, reason: 'section is missing entirely' })
     else if (bodyCharCount(s) < 1000) failures.push({ section: heading, reason: `body only ${bodyCharCount(s)} chars (need >=1000)` })
   }
 
   // ------------------------------------------------------------------
-  // NIH Funding Landscape — insight paragraph + funding table.
+  // NIH funding section — persona-specific heading. Researcher renders
+  // "NIH Funding Landscape"; investor renders "NIH Funding Analysis".
+  // (r53 fix: gate previously assumed the researcher name for both.)
   // ------------------------------------------------------------------
   {
-    const s = sections.get('NIH Funding Landscape')
-    if (!s) failures.push({ section: 'NIH Funding Landscape', reason: 'section is missing entirely' })
+    const heading = reportPersona === 'investor' ? 'NIH Funding Analysis' : 'NIH Funding Landscape'
+    const s = sections.get(heading)
+    if (!s) failures.push({ section: heading, reason: 'section is missing entirely' })
     else {
-      if (bodyCharCount(s) < 400) failures.push({ section: 'NIH Funding Landscape', reason: `body only ${bodyCharCount(s)} chars (need >=400)` })
-      if (!/\| Total Committed Funding \|/.test(s)) failures.push({ section: 'NIH Funding Landscape', reason: 'Funding Summary table missing' })
+      if (bodyCharCount(s) < 400) failures.push({ section: heading, reason: `body only ${bodyCharCount(s)} chars (need >=400)` })
+      if (!/\| Total Committed Funding \|/.test(s)) failures.push({ section: heading, reason: 'Funding Summary table missing' })
     }
   }
 
@@ -207,12 +214,18 @@ export function validateReportCompleteness(input: CompletenessInput): Completene
   }
 
   // ------------------------------------------------------------------
-  // Patent Activity — only required if patents exist.
+  // Patent/IP section — persona-specific heading. Researcher renders
+  // "Patent Activity"; investor renders "IP Landscape". Both hang off
+  // the same underlying renderIPLandscape() output. Only required if
+  // patents exist.
+  // (r53 fix: gate previously only looked for "Patent Activity" and
+  // hard-failed every investor report with patents.)
   // ------------------------------------------------------------------
   if (agentOutputs.patents.items.length > 0) {
-    const s = sections.get('Patent Activity')
-    if (!s) failures.push({ section: 'Patent Activity', reason: `section is missing but ${agentOutputs.patents.items.length} patents exist in the data` })
-    else if (bodyCharCount(s) < 400) failures.push({ section: 'Patent Activity', reason: `body only ${bodyCharCount(s)} chars (need >=400)` })
+    const heading = reportPersona === 'investor' ? 'IP Landscape' : 'Patent Activity'
+    const s = sections.get(heading)
+    if (!s) failures.push({ section: heading, reason: `section is missing but ${agentOutputs.patents.items.length} patents exist in the data` })
+    else if (bodyCharCount(s) < 400) failures.push({ section: heading, reason: `body only ${bodyCharCount(s)} chars (need >=400)` })
   }
 
   // ------------------------------------------------------------------
