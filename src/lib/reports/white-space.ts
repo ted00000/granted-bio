@@ -57,6 +57,140 @@ const MAX_BROADER_QUERIES = 65
 // "development", "several", "evaluate" and inflates coverage 5x).
 const MIN_KEYWORD_LENGTH = 3
 
+// Stopwords stripped from topic-token extraction. Keep this list tight —
+// we want to catch "cell-free antibody engineering" → ["cell-free",
+// "antibody", "engineering"] but tolerate small connector words.
+const TOPIC_STOPWORDS = new Set([
+  'a', 'an', 'the', 'and', 'or', 'but', 'of', 'in', 'on', 'at', 'to',
+  'for', 'with', 'by', 'from', 'as', 'is', 'are', 'be', 'this', 'that',
+  'these', 'those', 'its', 'their', 'our', 'into', 'using', 'based',
+  'via', 'through', 'about', 'over', 'under', 'per',
+])
+
+/**
+ * Extract the meaningful "core tokens" from a topic phrase. A core token
+ * is a substantive word or hyphenated compound that MUST be represented
+ * in the taxonomy for the topic to be well-covered.
+ *
+ * Examples:
+ *   "cell-free antibody engineering" → ["cell-free", "antibody", "engineering"]
+ *   "liquid biopsy for early cancer detection" → ["liquid", "biopsy", "early", "cancer", "detection"]
+ *   "3D spatial multiomics platform" → ["3d", "spatial", "multiomics", "platform"]
+ *   "brain organoid electrophysiology" → ["brain", "organoid", "electrophysiology"]
+ *
+ * Hyphenated compounds (cell-free, high-throughput, in-vivo) are preserved
+ * as one token — they're usually a defining lens that the taxonomy must
+ * respect. Splitting them ("cell", "free") produces garbage matches.
+ *
+ * r53 audit rationale: the cell-free antibody engineering report shipped
+ * a taxonomy that had "CHO Cell Expression", "E. coli Expression",
+ * "Yeast Expression", "HEK293 Expression" as its Production categories —
+ * but NO "Cell-Free Expression" bucket. The topic's defining modifier
+ * was the very category axis the LLM omitted. This function surfaces
+ * the miss deterministically.
+ */
+function topicCoreTokens(topic: string): string[] {
+  return topic
+    .toLowerCase()
+    .split(/[\s,;/()]+/)
+    .map((t) => t.trim())
+    .filter((t) => t.length >= 2 && !TOPIC_STOPWORDS.has(t))
+}
+
+/**
+ * Given the parsed dimensions and the topic's core tokens, return the
+ * tokens that are NOT represented anywhere in the taxonomy.
+ *
+ * "Represented" = the token appears (case-insensitive) in at least one
+ * category name, category keyword, or dimension name/description. This
+ * is intentionally generous — we only flag a token as missing if the
+ * taxonomy is entirely blind to it, not if it's under-emphasized.
+ */
+interface TaxonomyValidation {
+  missing: string[]
+  coveredCount: number
+}
+function validateTaxonomyCoverage(
+  dimensions: Array<{ name: string; description: string; categories: Array<{ name: string; keywords: string[] }> }>,
+  coreTokens: string[],
+): TaxonomyValidation {
+  // Build a searchable haystack from every string in the taxonomy.
+  const haystackParts: string[] = []
+  for (const dim of dimensions) {
+    haystackParts.push(dim.name.toLowerCase())
+    haystackParts.push(dim.description.toLowerCase())
+    for (const cat of dim.categories) {
+      haystackParts.push(cat.name.toLowerCase())
+      for (const kw of cat.keywords) {
+        haystackParts.push(kw.toLowerCase())
+      }
+    }
+  }
+  const haystack = haystackParts.join(' | ')
+
+  const missing: string[] = []
+  let covered = 0
+  for (const token of coreTokens) {
+    // Substring match so "cell-free" matches "cell-free expression",
+    // "antibody" matches "antibody format", etc.
+    if (haystack.includes(token)) {
+      covered++
+    } else {
+      missing.push(token)
+    }
+  }
+  return { missing, coveredCount: covered }
+}
+
+/**
+ * Wrap inferCoverageDimensions with a validate + regenerate loop.
+ *
+ * If the first taxonomy misses one or more of the topic's core tokens,
+ * re-invoke the taxonomy generator once with explicit feedback naming
+ * the missing tokens. This attacks the class of failure where the LLM
+ * generalizes past the topic's defining lens (cell-free, high-
+ * throughput, in-vivo, single-cell, 3D-spatial, etc.).
+ *
+ * Bounded to MAX_ATTEMPTS to prevent infinite loops when a topic
+ * genuinely has no category anchor (e.g., "AI" is too generic).
+ */
+const MAX_TAXONOMY_ATTEMPTS = 2
+
+async function inferCoverageDimensionsWithSelfCheck(
+  topic: string,
+  projects: ProjectItem[],
+  client: Anthropic,
+  usageTracker: UsageTracker,
+): Promise<{ dimensions: DimensionSchema[]; scope: TopicScope }> {
+  const coreTokens = topicCoreTokens(topic)
+  console.log(`[White Space] Topic core tokens: [${coreTokens.join(', ')}]`)
+
+  let feedback = ''
+  for (let attempt = 1; attempt <= MAX_TAXONOMY_ATTEMPTS; attempt++) {
+    const result = await inferCoverageDimensions(topic, projects, client, usageTracker, feedback)
+    if (result.dimensions.length === 0) return result // upstream error, bail
+    const validation = validateTaxonomyCoverage(result.dimensions, coreTokens)
+    if (validation.missing.length === 0) {
+      if (attempt > 1) {
+        console.log(`[White Space] Taxonomy self-check passed on attempt ${attempt}. All ${validation.coveredCount} core tokens covered.`)
+      }
+      return result
+    }
+    console.warn(
+      `[White Space] Taxonomy self-check FAILED on attempt ${attempt}/${MAX_TAXONOMY_ATTEMPTS}. ` +
+      `Missing topic core token(s): [${validation.missing.join(', ')}]. ` +
+      `${attempt < MAX_TAXONOMY_ATTEMPTS ? 'Regenerating with explicit feedback.' : 'Shipping best-effort taxonomy.'}`,
+    )
+    if (attempt < MAX_TAXONOMY_ATTEMPTS) {
+      feedback = `**Your previous taxonomy for "${topic}" MISSED the following topic core tokens: [${validation.missing.join(', ')}].** These are the defining lens of the topic — a taxonomy that omits them cannot audit coverage of what the topic is about. Regenerate the taxonomy so at least one dimension has a category anchored on each missing token. For example, if the missing token is "cell-free", the Production/Manufacturing dimension needs a "Cell-Free Expression" category with keywords like "cell-free protein synthesis", "CFPS", "IVTT", "in vitro transcription translation", "PURE system", "S30 extract".`
+    }
+  }
+  // Fallback — shouldn't reach here given the return inside the loop,
+  // but satisfies the type checker and returns whatever the last
+  // attempt produced.
+  return await inferCoverageDimensions(topic, projects, client, usageTracker, feedback)
+}
+
 // Threshold used to classify "sparse-in-topic" opportunities. If a
 // category has <8% sample share AND the broader NIH portfolio has
 // >5× the count, that's a candidate white space.
@@ -229,8 +363,18 @@ export async function generateWhiteSpaceAnalysis(
 
   const client = new Anthropic()
 
-  // Step 1: topic-adaptive dimensions + topic scope for broader-NIH filtering
-  const { dimensions: schema, scope } = await inferCoverageDimensions(topic, projects, client, usageTracker)
+  // Step 1: topic-adaptive dimensions + topic scope for broader-NIH filtering.
+  // Wrapped in a self-check + regenerate loop (r53 audit fix): if the
+  // first taxonomy misses any of the topic's core tokens (e.g., taxonomy
+  // for "cell-free antibody engineering" builds only cell-based
+  // production categories), re-invoke once with explicit feedback
+  // naming the missing tokens.
+  const { dimensions: schema, scope } = await inferCoverageDimensionsWithSelfCheck(
+    topic,
+    projects,
+    client,
+    usageTracker,
+  )
   if (schema.length === 0) {
     return emptyAnalysis(totalProjects, totalFunding)
   }
@@ -345,6 +489,7 @@ async function inferCoverageDimensions(
   projects: ProjectItem[],
   client: Anthropic,
   usageTracker: UsageTracker,
+  regenerationFeedback: string = '',
 ): Promise<{ dimensions: DimensionSchema[]; scope: TopicScope }> {
   // Send a sample of project titles for topic-flavor context.
   const titleSample = projects
@@ -352,11 +497,28 @@ async function inferCoverageDimensions(
     .map((p, i) => `[${i + 1}] ${p.title || '(untitled)'}`)
     .join('\n')
 
-  const prompt = `You are designing a coverage-gap audit for a research intelligence report on:
+  // If this is a retry after a self-check failure, prepend the explicit
+  // feedback so the LLM sees exactly which tokens it must anchor on.
+  const feedbackBlock = regenerationFeedback
+    ? `## REGENERATION FEEDBACK (read this FIRST — this is your second attempt)\n\n${regenerationFeedback}\n\n---\n\n`
+    : ''
+
+  const prompt = `${feedbackBlock}You are designing a coverage-gap audit for a research intelligence report on:
 
   "${topic}"
 
 Your task: identify exactly 5 coverage DIMENSIONS along which we can meaningfully audit what NIH-funded research covers vs. what's underrepresented within this topic scope. For each dimension, list 8-${MAX_CATEGORIES_PER_DIMENSION} CATEGORIES with keyword variants we'll use to match projects.
+
+## TOPIC-DEFINING LENS — MANDATORY
+
+The topic phrase itself is a signal. Every meaningful noun / adjective / hyphenated compound in the topic ("cell-free", "antibody", "engineering" in "cell-free antibody engineering") IS a lens the taxonomy MUST respect. Before finalizing, verify that every core term from the topic phrase appears as either a dimension focus OR a category anchor somewhere. If the topic contains a defining modifier (cell-free, single-cell, 3D, high-throughput, in-vivo, ex-vivo, MRD, MCED), at least one dimension MUST include a category built around that modifier.
+
+Concrete example: for "cell-free antibody engineering", the Production/Manufacturing dimension MUST include a "Cell-Free Expression" category with keywords like "cell-free protein synthesis", "CFPS", "IVTT", "in vitro transcription translation", "PURE system", "S30 extract". A taxonomy that lists CHO, E. coli, yeast, HEK293 as the production categories without cell-free has failed — it ignored the topic's core lens.
+
+Same rule for other compound topics:
+- "single-cell transcriptomics" → the Methodology dimension needs a "Single-Cell" category, not just "Bulk RNA-seq" variants
+- "3D spatial multiomics" → at least one dimension needs a "3D / Volumetric" category anchor
+- "MRD detection in solid tumors" → the Assay dimension needs an MRD-specific category, not just "ctDNA generic"
 
 ## SAMPLE PROJECT TITLES from the analyzed set (for context on what this topic actually covers in the NIH-funded portfolio)
 ${titleSample}
