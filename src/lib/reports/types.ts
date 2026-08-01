@@ -341,6 +341,46 @@ export interface WhiteSpaceAnalysis {
    * Null when the scope filter is inactive or the count failed.
    */
   scopeUniverseCount?: number | null
+  /**
+   * Deterministic signal describing how much of the sample explicitly
+   * carries the topic's core vocabulary vs. how much is adjacent-topic
+   * work returned by broader semantic matching.
+   *
+   * r53 audit rationale: for niche intersection topics like "cell-free
+   * antibody engineering", the semantic project retrieval returns
+   * mostly ADJACENT projects (mainstream antibody engineering) because
+   * that's what the NIH portfolio actually contains. The White Space
+   * unclassified rates come back at 80-90% not because the taxonomy is
+   * bad but because the sample is mostly off-topic. Surfacing this
+   * signal explicitly turns a confusing high-unclassified rate into an
+   * actual insight: "your topic is niche in NIH-funded work; here's
+   * what the adjacent field looks like."
+   *
+   * Populated by computeTopicRelevanceSignal() in white-space.ts.
+   * Consumed by the White Space renderer as a callout above the
+   * dimension tables when tier is 'weak' or 'off-topic'.
+   */
+  topicRelevance?: TopicRelevanceSignal
+}
+
+export interface TopicRelevanceSignal {
+  /** Projects whose title or abstract explicitly mentions at least one
+   *  of the topic's core tokens. */
+  onTopicCount: number
+  /** totalSampleCount - onTopicCount. */
+  adjacentCount: number
+  /** onTopicCount / totalSampleCount. */
+  onTopicRatio: number
+  /**
+   * Bucketed strength:
+   * - 'strong': >= 50% of sample explicitly on-topic
+   * - 'moderate': 20-50%
+   * - 'weak': 5-20%
+   * - 'off-topic': < 5%
+   */
+  tier: 'strong' | 'moderate' | 'weak' | 'off-topic'
+  /** The topic core tokens the check ran against (for debugging + report copy). */
+  coreTokens: string[]
 }
 
 // IP Landscape Assessment

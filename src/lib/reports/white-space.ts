@@ -34,6 +34,7 @@ import type {
   CoverageCategory,
   CoverageDimension,
   ProjectItem,
+  TopicRelevanceSignal,
   WhiteSpaceAnalysis,
   WhiteSpaceOpportunity,
 } from './types'
@@ -95,6 +96,54 @@ function topicCoreTokens(topic: string): string[] {
     .split(/[\s,;/()]+/)
     .map((t) => t.trim())
     .filter((t) => t.length >= 2 && !TOPIC_STOPWORDS.has(t))
+}
+
+/**
+ * Compute the topic-relevance signal for the analyzed project sample.
+ *
+ * For each project, check whether title + abstract explicitly contains
+ * at least one of the topic's core tokens. Projects that do are
+ * "on-topic"; those that don't are "adjacent" (matched by broader
+ * semantic search but don't foreground the topic's core vocabulary).
+ *
+ * Buckets the ratio into tier labels the White Space renderer uses
+ * to decide whether to surface a "Sample Coverage Note" callout above
+ * the dimension tables.
+ *
+ * r53 audit rationale (post-Move-1): for niche intersection topics
+ * (e.g., "cell-free antibody engineering") the semantic project
+ * retrieval returned 122 projects, only 1 of which mentioned cell-free
+ * vocabulary. The taxonomy correctly included Cell-Free Expression as
+ * a category (Move 1 fix), but every project matched adjacent-topic
+ * categories instead, driving 80%+ unclassified across dimensions.
+ * Surfacing "1 of 122 mention your topic's core lens" directly turns
+ * the confusing coverage numbers into a real finding.
+ */
+function computeTopicRelevanceSignal(topic: string, projects: ProjectItem[]): TopicRelevanceSignal {
+  const coreTokens = topicCoreTokens(topic)
+  const totalSample = projects.length
+  if (totalSample === 0 || coreTokens.length === 0) {
+    return {
+      onTopicCount: 0,
+      adjacentCount: 0,
+      onTopicRatio: 0,
+      tier: 'off-topic',
+      coreTokens,
+    }
+  }
+  let onTopicCount = 0
+  for (const p of projects) {
+    const text = `${p.title || ''} ${p.abstract || ''}`.toLowerCase()
+    if (coreTokens.some((t) => text.includes(t))) onTopicCount++
+  }
+  const adjacentCount = totalSample - onTopicCount
+  const onTopicRatio = totalSample > 0 ? onTopicCount / totalSample : 0
+  let tier: TopicRelevanceSignal['tier']
+  if (onTopicRatio >= 0.5) tier = 'strong'
+  else if (onTopicRatio >= 0.2) tier = 'moderate'
+  else if (onTopicRatio >= 0.05) tier = 'weak'
+  else tier = 'off-topic'
+  return { onTopicCount, adjacentCount, onTopicRatio, tier, coreTokens }
 }
 
 /**
@@ -363,6 +412,17 @@ export async function generateWhiteSpaceAnalysis(
 
   const client = new Anthropic()
 
+  // Compute the topic-relevance signal upfront (deterministic, cheap).
+  // Used both by the narrator to reframe coverage findings and by the
+  // renderer to decide whether to surface a "Sample Coverage Note"
+  // callout. r53 Move 1a fix.
+  const topicRelevance = computeTopicRelevanceSignal(topic, projects)
+  console.log(
+    `[White Space] Topic-relevance signal: ${topicRelevance.onTopicCount}/${totalProjects} on-topic ` +
+    `(${(topicRelevance.onTopicRatio * 100).toFixed(1)}%), tier=${topicRelevance.tier}, ` +
+    `core tokens=[${topicRelevance.coreTokens.join(', ')}]`,
+  )
+
   // Step 1: topic-adaptive dimensions + topic scope for broader-NIH filtering.
   // Wrapped in a self-check + regenerate loop (r53 audit fix): if the
   // first taxonomy misses any of the topic's core tokens (e.g., taxonomy
@@ -430,6 +490,7 @@ export async function generateWhiteSpaceAnalysis(
     client,
     usageTracker,
     persona,
+    topicRelevance,
   )
 
   return {
@@ -442,6 +503,7 @@ export async function generateWhiteSpaceAnalysis(
     strategicImplications: withNarrative.strategicImplications,
     broaderNihScopeLabel: scope.scopeLabel || undefined,
     scopeUniverseCount,
+    topicRelevance,
   }
 }
 
@@ -1176,6 +1238,7 @@ async function narrateCoverage(
   client: Anthropic,
   usageTracker: UsageTracker,
   persona: 'researcher' | 'investor',
+  topicRelevance: TopicRelevanceSignal,
 ): Promise<{
   overview: string
   dimensions: CoverageDimension[]
@@ -1205,15 +1268,39 @@ ${catRows}`
     })
     .join('\n\n')
 
+  // Build a tier-appropriate framing block that pre-loads the narrator
+  // with the honest read on sample composition. When tier is weak/off-
+  // topic, the coverage numbers are dominated by adjacent-topic noise
+  // and the narrator must reframe accordingly (not pretend the low
+  // matches are a taxonomy failure).
+  const tr = topicRelevance
+  const topicRelevanceBlock = `## TOPIC-RELEVANCE OF THE ANALYZED SAMPLE (READ FIRST)
+
+Deterministic check: ${tr.onTopicCount} of ${totalProjects} projects (${(tr.onTopicRatio * 100).toFixed(1)}%) explicitly mention at least one of the topic's core tokens [${tr.coreTokens.join(', ')}] in their title or abstract. The remaining ${tr.adjacentCount} are ADJACENT — matched by broader semantic retrieval but don't foreground the topic's core vocabulary.
+
+Sample-composition tier: **${tr.tier}**.
+
+${tr.tier === 'off-topic' ? `
+**CRITICAL — off-topic sample (${(tr.onTopicRatio * 100).toFixed(1)}% on-topic).** The semantic retrieval returned a sample dominated by adjacent work. High unclassified rates in the dimension tables are NOT taxonomy failures — they reflect the sample being off the topic's core lens. Your overview MUST open by acknowledging this: something like "Only ${tr.onTopicCount} of ${totalProjects} projects in this NIH-linked sample explicitly foreground [topic core lens]. The remaining ${tr.adjacentCount} are adjacent work in the broader [scope] field, retrieved because the semantic search matched conceptually related projects. Read the dimension coverage below as a picture of the ADJACENT field — the topic itself appears to be sparsely represented in current NIH-funded work, which is itself a finding." Do not narrate high unclassified rates as if they were a data quality problem. Do not invent gap opportunities within the topic that the sample can't support.
+` : tr.tier === 'weak' ? `
+**Weak sample match (${(tr.onTopicRatio * 100).toFixed(1)}% on-topic).** Most of the sample is adjacent work. Your overview MUST acknowledge this in the first two sentences: reader needs to know upfront that the coverage picture is heavily shaped by adjacent projects rather than direct topic matches. Frame the dimension narratives with appropriate humility ("of the ${tr.onTopicCount} on-topic projects" when a claim is specific to on-topic work vs "across the ${totalProjects}-project adjacent-plus-on-topic sample" when the claim spans both).
+` : tr.tier === 'moderate' ? `
+Moderate sample match (${(tr.onTopicRatio * 100).toFixed(1)}% on-topic). A meaningful minority of projects are adjacent. Note this briefly in the overview so the reader can calibrate ("of the ${totalProjects}-project sample, ${tr.onTopicCount} explicitly foreground the topic; the remainder are adjacent"). No need to reframe every dimension.
+` : `
+Strong sample match (${(tr.onTopicRatio * 100).toFixed(1)}% on-topic). No reframing needed — the sample is genuinely on-topic and standard coverage narration applies.
+`}
+
+## SCOPE
+- ${totalProjects} projects analyzed, $${(totalFunding / 1_000_000).toFixed(1)}M in NIH funding
+- "Broader NIH" counts reflect NIH RePORTER matches on project title only (not abstracts) — a conservative floor. Actual broader NIH activity may be higher.`
+
   const prompt = `You are writing the White Space Analysis section for an intelligence report on:
 
   "${topic}"
 
 The COVERAGE DATA below was computed deterministically from the actual project titles and abstracts in the analyzed sample. These numbers are FACTS — reference them exactly, do NOT round or approximate in ways that change the story, and do NOT invent counts that aren't shown.
 
-## SCOPE
-- ${totalProjects} projects analyzed, $${(totalFunding / 1_000_000).toFixed(1)}M in NIH funding
-- "Broader NIH" counts reflect NIH RePORTER matches on project title only (not abstracts) — a conservative floor. Actual broader NIH activity may be higher.
+${topicRelevanceBlock}
 
 ## COVERAGE DATA
 ${dimensionSummaries}

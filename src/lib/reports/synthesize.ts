@@ -2840,6 +2840,20 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
   // and doesn't mean before interpreting counts.
   md += `*${ws.scopeNote}*\n\n`
 
+  // Sample Coverage Note — surfaced only when the semantic retrieval
+  // returned a sample dominated by adjacent-topic work. r53 Move 1a
+  // fix: for niche intersection topics (e.g., "cell-free antibody
+  // engineering") the 82-91% unclassified rates in dimension tables
+  // reflect sample composition, not taxonomy quality. Naming this
+  // upfront turns the confusing coverage numbers into a real finding
+  // instead of an apparent data-quality problem.
+  if (ws.topicRelevance && (ws.topicRelevance.tier === 'off-topic' || ws.topicRelevance.tier === 'weak')) {
+    const tr = ws.topicRelevance
+    const pct = (tr.onTopicRatio * 100).toFixed(1)
+    const tierLabel = tr.tier === 'off-topic' ? 'OFF-TOPIC SAMPLE' : 'WEAK ON-TOPIC MATCH'
+    md += `> **Sample Coverage Note — ${tierLabel}.** ${tr.onTopicCount} of ${ws.totalProjects} projects in this analyzed sample (${pct}%) explicitly foreground the topic's core vocabulary. The remaining ${tr.adjacentCount} are ADJACENT work — matched by semantic retrieval because they're conceptually related, but they don't directly cover the topic. **Read the coverage tables below as a picture of the ADJACENT field.** High unclassified rates in the dimension tables reflect this sample composition, not taxonomy quality — the topic itself appears to be sparsely represented in NIH-funded work, which is itself a finding. If you're evaluating whether NIH is where the money is for this topic, the answer may be: not yet.\n\n`
+  }
+
   // Surface the scope-universe count immediately after the scope caveat.
   // A "Broader NIH" cell showing 82 reads very differently against a
   // ~4,000-project scope universe than against the 154K raw NIH
