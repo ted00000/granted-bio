@@ -2865,6 +2865,15 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
     md += `> **Base rate for "Broader NIH" columns:** every broader-NIH cell below is drawn from **${ws.scopeUniverseCount.toLocaleString()} NIH projects** matching the ${scopeLabel} scope filter — not the full ~154K RePORTER universe. Read broader-NIH counts as shares of that ${ws.scopeUniverseCount.toLocaleString()}-project scope, not of all NIH funding.\n\n`
   }
 
+  // Plain-language reading guide for the "matched vs unclassified"
+  // per-dimension metric. Added 2026-08-03 after a user (the same
+  // person who built the system) said the shipped explanation didn't
+  // make it clear what "unclassified" means. If the operator can't
+  // parse it after 3 reports, no first-time reader can. Keep this
+  // short and jargon-free; the goal is one paragraph a founder can
+  // read in 15 seconds and stop wondering.
+  md += `> **How to read this section.** Each of the ${ws.dimensions.length} dimensions below is a different axis (e.g., Production Platform, Therapeutic Target). For each project we check whether its title or abstract mentions any keyword in any of that dimension's categories. If yes, the project is *matched* on that axis. If no, it's *unclassified* on that axis — usually because the project doesn't foreground that particular axis (a "cell-free antibody discovery for HIV" project foregrounds Engineering and Therapeutic Target but rarely names a specific Antibody Format, so it lands unclassified on Format). **A project can be matched on some axes and unclassified on others.** High unclassified rates on an axis typically mean the sample doesn't foreground that axis — not that the projects are broken or the taxonomy is wrong.\n\n`
+
   // Overview narrative
   if (ws.overview) {
     md += `### Overview\n\n${ws.overview}\n\n`

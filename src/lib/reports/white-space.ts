@@ -1449,16 +1449,20 @@ Return JSON only, exactly this shape:
 }
 
 function buildScopeNote(scopeLabel?: string): string {
+  // Trimmed 2026-08-03 to reduce disclaimer bloat. Prior version was a
+  // 6-topic paragraph on scope + matching methods + ratio caveats. The
+  // founder-persona grade flagged this class of note as "too much
+  // disclaimer text — excessive." Kept: what's out-of-scope + the
+  // sample-vs-broader-NIH matching-method distinction (both actually
+  // affect how a reader interprets the numbers). The plain-language
+  // "how to read matched vs unclassified" guide moved to a separate
+  // blockquote in renderWhiteSpace — that's the piece readers were
+  // missing per the 2026-08-03 user question.
   const broaderComparator = scopeLabel
-    ? `Broader-NIH counts are constrained to ${scopeLabel} (title-match against a 10-16 term scope filter) so the comparison is topically apples-to-apples, not raw keyword prevalence across all of NIH. `
-    : 'Broader-NIH counts are keyword title-match across NIH RePORTER without additional topical constraint. '
+    ? `Broader-NIH counts are filtered to ${scopeLabel} scope so comparisons are topically apples-to-apples.`
+    : 'Broader-NIH counts are keyword title-match across NIH RePORTER.'
   return (
-    'This analysis maps what NIH-funded research covers vs. gaps within the topic scope. ' +
-    'NIH RePORTER represents the largest publicly-searchable portion of non-dilutive US biomedical grants — a strong signal for federal research investment priorities. ' +
-    'Private R&D, international research, and non-NIH federal funding (DoD, DARPA, industry-sponsored) are not captured here. ' +
-    broaderComparator +
-    'Two match methods are used and they intentionally differ. **Sample counts** (the analyzed topic-focused projects) are computed against project titles AND abstracts — full-text matching gives higher recall on the ~100-200 project sample. **Broader-NIH counts** are computed against project titles ONLY, because the broader RePORTER projects table is not full-text-indexed on abstracts at query time. Because broader-NIH matching is title-only, broader counts should be read as **directional lower bounds** — an NIH-funded cancer project titled "Circulating Cell-Free DNA in Glioblastoma" won\'t match a "cancer" scope keyword but is clearly cancer-relevant, so the true broader activity is higher than what we count. A project can appear in multiple categories. ' +
-    'Broader-NIH ratios at low denominators (≤2 topic projects) are directional not precise — small changes to the topic classifier could shift them meaningfully.'
+    `This section maps what NIH-funded research covers vs. what's underrepresented within the topic scope. Private R&D, international research, and non-NIH federal funding (DoD, DARPA, industry) are not captured here. ${broaderComparator} **Sample counts** match against title AND abstract for the analyzed project set; **broader-NIH counts** match against title ONLY (abstracts aren't full-text-indexed at query time), so broader counts are directional lower bounds.`
   )
 }
 
