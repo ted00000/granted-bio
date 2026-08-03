@@ -129,7 +129,7 @@ export async function synthesizeReport(
     generateFieldMaturityAssessment(topic, agentOutputs, context, usageTracker),
     generateCompetitiveTopology(topic, agentOutputs, context, usageTracker),
     generateIPLandscapeAssessment(topic, agentOutputs, context, usageTracker),
-    generateWhiteSpaceAnalysis(topic, agentOutputs.projects.items, usageTracker, persona),
+    generateWhiteSpaceAnalysis(topic, agentOutputs.projects.items, usageTracker, persona, context.interpretation?.keywordQuery),
   ])
   stageTiming('main synthesis batch done')
 

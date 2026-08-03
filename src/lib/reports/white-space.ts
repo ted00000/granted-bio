@@ -99,30 +99,73 @@ function topicCoreTokens(topic: string): string[] {
 }
 
 /**
+ * Extract the expanded keyword set the retrieval step actually used.
+ *
+ * The interpretation step (Claude) turns a user query like "cell-free
+ * antibody engineering" into a keywordQuery of the form
+ *   "cell-free antibody engineering | cell-free protein synthesis | CFPS | IVTT | ..."
+ * — a `|`-separated list of synonyms and variants that broaden retrieval
+ * beyond the literal user phrase.
+ *
+ * Returns lowercased, deduped tokens/phrases. Very short entries are
+ * dropped (they'd match arbitrary substrings and inflate the on-topic
+ * count).
+ */
+function parseExpandedKeywordQuery(keywordQuery: string | undefined): string[] {
+  if (!keywordQuery) return []
+  return Array.from(new Set(
+    keywordQuery
+      .split(/\||;|,/)
+      .map((k) => k.trim().toLowerCase())
+      .filter((k) => k.length >= MIN_KEYWORD_LENGTH)
+  ))
+}
+
+/**
  * Compute the topic-relevance signal for the analyzed project sample.
  *
  * For each project, check whether title + abstract explicitly contains
- * at least one of the topic's core tokens. Projects that do are
+ * at least one of the topic's core tokens OR any of the expanded
+ * keywords from the interpretation step. Projects that do are
  * "on-topic"; those that don't are "adjacent" (matched by broader
- * semantic search but don't foreground the topic's core vocabulary).
+ * semantic search but don't foreground the topic's vocabulary).
  *
  * Buckets the ratio into tier labels the White Space renderer uses
  * to decide whether to surface a "Sample Coverage Note" callout above
  * the dimension tables.
  *
- * r53 audit rationale (post-Move-1): for niche intersection topics
- * (e.g., "cell-free antibody engineering") the semantic project
- * retrieval returned 122 projects, only 1 of which mentioned cell-free
- * vocabulary. The taxonomy correctly included Cell-Free Expression as
- * a category (Move 1 fix), but every project matched adjacent-topic
- * categories instead, driving 80%+ unclassified across dimensions.
- * Surfacing "1 of 122 mention your topic's core lens" directly turns
- * the confusing coverage numbers into a real finding.
+ * r53 Move 1a rationale: for niche intersection topics the semantic
+ * retrieval can return a sample dominated by adjacent work.
+ *
+ * r53 Move 1a-fix rationale (2026-08-03): the first version of this
+ * function only checked against topicCoreTokens (raw user input),
+ * which under-counted on-topic projects for any topic where the
+ * interpretation step expanded meaningfully. A "cell-free antibody
+ * engineering" search whose interpretation expanded to include CFPS,
+ * IVTT, in-vitro-transcription-translation, PURE system, etc. would
+ * retrieve projects titled with those synonyms but score them
+ * "off-topic" because the raw phrase "cell-free" wasn't in the title.
+ * Same-topic report generations showed a 0.8% vs 65.8% on-topic
+ * spread between two runs — clear signal the check was fragile.
+ *
+ * Fix: pass in the interpretation's keywordQuery and use it (union
+ * with raw core tokens) as the on-topic match set. Falls back to raw
+ * tokens only when no interpretation is available.
  */
-function computeTopicRelevanceSignal(topic: string, projects: ProjectItem[]): TopicRelevanceSignal {
+function computeTopicRelevanceSignal(
+  topic: string,
+  projects: ProjectItem[],
+  expandedKeywordQuery?: string,
+): TopicRelevanceSignal {
   const coreTokens = topicCoreTokens(topic)
+  const expandedTokens = parseExpandedKeywordQuery(expandedKeywordQuery)
+  // Union: prefer the expanded set when available. When no expansion
+  // exists (portfolio reports, tests) fall back to raw tokens.
+  const matchTokens = expandedTokens.length > 0
+    ? Array.from(new Set([...coreTokens, ...expandedTokens]))
+    : coreTokens
   const totalSample = projects.length
-  if (totalSample === 0 || coreTokens.length === 0) {
+  if (totalSample === 0 || matchTokens.length === 0) {
     return {
       onTopicCount: 0,
       adjacentCount: 0,
@@ -134,7 +177,7 @@ function computeTopicRelevanceSignal(topic: string, projects: ProjectItem[]): To
   let onTopicCount = 0
   for (const p of projects) {
     const text = `${p.title || ''} ${p.abstract || ''}`.toLowerCase()
-    if (coreTokens.some((t) => text.includes(t))) onTopicCount++
+    if (matchTokens.some((t) => text.includes(t))) onTopicCount++
   }
   const adjacentCount = totalSample - onTopicCount
   const onTopicRatio = totalSample > 0 ? onTopicCount / totalSample : 0
@@ -402,6 +445,11 @@ export async function generateWhiteSpaceAnalysis(
   projects: ProjectItem[],
   usageTracker: UsageTracker,
   persona: 'researcher' | 'investor' = 'researcher',
+  // r53 Move 1a-fix: optional expansion of the topic. When present,
+  // used as the on-topic match set for computeTopicRelevanceSignal
+  // (see that function's rationale). Falls back to raw topic tokens
+  // when not provided (portfolio reports, tests, older callers).
+  expandedKeywordQuery?: string,
 ): Promise<WhiteSpaceAnalysis> {
   const totalProjects = projects.length
   const totalFunding = projects.reduce((sum, p) => sum + (p.total_cost || 0), 0)
@@ -415,12 +463,14 @@ export async function generateWhiteSpaceAnalysis(
   // Compute the topic-relevance signal upfront (deterministic, cheap).
   // Used both by the narrator to reframe coverage findings and by the
   // renderer to decide whether to surface a "Sample Coverage Note"
-  // callout. r53 Move 1a fix.
-  const topicRelevance = computeTopicRelevanceSignal(topic, projects)
+  // callout. r53 Move 1a fix + 08-03 fix.
+  const topicRelevance = computeTopicRelevanceSignal(topic, projects, expandedKeywordQuery)
+  const expandedTokenCount = expandedKeywordQuery ? parseExpandedKeywordQuery(expandedKeywordQuery).length : 0
   console.log(
     `[White Space] Topic-relevance signal: ${topicRelevance.onTopicCount}/${totalProjects} on-topic ` +
     `(${(topicRelevance.onTopicRatio * 100).toFixed(1)}%), tier=${topicRelevance.tier}, ` +
-    `core tokens=[${topicRelevance.coreTokens.join(', ')}]`,
+    `raw core tokens=[${topicRelevance.coreTokens.join(', ')}]` +
+    (expandedTokenCount > 0 ? ` + ${expandedTokenCount} expanded synonyms from interpretation` : ' (no interpretation expansion available)'),
   )
 
   // Step 1: topic-adaptive dimensions + topic scope for broader-NIH filtering.
