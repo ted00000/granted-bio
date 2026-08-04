@@ -253,13 +253,14 @@ async function inferCoverageDimensionsWithSelfCheck(
   projects: ProjectItem[],
   client: Anthropic,
   usageTracker: UsageTracker,
+  expandedKeywordQuery?: string,
 ): Promise<{ dimensions: DimensionSchema[]; scope: TopicScope }> {
   const coreTokens = topicCoreTokens(topic)
   console.log(`[White Space] Topic core tokens: [${coreTokens.join(', ')}]`)
 
   let feedback = ''
   for (let attempt = 1; attempt <= MAX_TAXONOMY_ATTEMPTS; attempt++) {
-    const result = await inferCoverageDimensions(topic, projects, client, usageTracker, feedback)
+    const result = await inferCoverageDimensions(topic, projects, client, usageTracker, feedback, expandedKeywordQuery)
     if (result.dimensions.length === 0) return result // upstream error, bail
     const validation = validateTaxonomyCoverage(result.dimensions, coreTokens)
     if (validation.missing.length === 0) {
@@ -280,7 +281,7 @@ async function inferCoverageDimensionsWithSelfCheck(
   // Fallback — shouldn't reach here given the return inside the loop,
   // but satisfies the type checker and returns whatever the last
   // attempt produced.
-  return await inferCoverageDimensions(topic, projects, client, usageTracker, feedback)
+  return await inferCoverageDimensions(topic, projects, client, usageTracker, feedback, expandedKeywordQuery)
 }
 
 // Threshold used to classify "sparse-in-topic" opportunities. If a
@@ -479,11 +480,16 @@ export async function generateWhiteSpaceAnalysis(
   // for "cell-free antibody engineering" builds only cell-based
   // production categories), re-invoke once with explicit feedback
   // naming the missing tokens.
+  //
+  // r54 fix: also pass the interpretation.keywordQuery so the generator
+  // knows what vocabulary the user's query was already expanded to
+  // include and can distribute those synonyms to the right categories.
   const { dimensions: schema, scope } = await inferCoverageDimensionsWithSelfCheck(
     topic,
     projects,
     client,
     usageTracker,
+    expandedKeywordQuery,
   )
   if (schema.length === 0) {
     return emptyAnalysis(totalProjects, totalFunding)
@@ -602,6 +608,7 @@ async function inferCoverageDimensions(
   client: Anthropic,
   usageTracker: UsageTracker,
   regenerationFeedback: string = '',
+  expandedKeywordQuery?: string,
 ): Promise<{ dimensions: DimensionSchema[]; scope: TopicScope }> {
   // Send a sample of project titles for topic-flavor context.
   const titleSample = projects
@@ -615,7 +622,35 @@ async function inferCoverageDimensions(
     ? `## REGENERATION FEEDBACK (read this FIRST — this is your second attempt)\n\n${regenerationFeedback}\n\n---\n\n`
     : ''
 
-  const prompt = `${feedbackBlock}You are designing a coverage-gap audit for a research intelligence report on:
+  // r54 fix (2026-08-04): pass the interpretation.keywordQuery through
+  // as authoritative synonym signal for the taxonomy generator. Prior
+  // to this the interpretation was only used by retrieval + the on-
+  // topic relevance check, but NOT by the taxonomy generator — so
+  // category keyword lists were being built without awareness of the
+  // vocabulary the user's query had already been expanded to include.
+  // Result: for cell-free antibody engineering, the Cell-Free Expression
+  // category shipped with correct keywords (CFPS/IVTT/PURE system) but
+  // the OTHER categories weren't tuned to the topic's actual vocabulary
+  // — leaving 65-85% unclassified rates that the LLM could have
+  // pre-empted if it saw the interpretation.
+  const expandedTokens = parseExpandedKeywordQuery(expandedKeywordQuery)
+  const expansionBlock = expandedTokens.length > 0
+    ? `## AUTHORITATIVE VOCABULARY EXPANSION FOR THIS TOPIC (use this)
+
+The user's query "${topic}" was already expanded by our interpretation step to include the following synonym set. This is AUTHORITATIVE signal about what vocabulary the topic covers in real NIH-funded work — you MUST use these terms to anchor category keywords where they fit semantically. Terms in this expansion should NOT be left as assumed matches; each one should live inside the specific category it belongs to.
+
+Expansion: [${expandedTokens.join(', ')}]
+
+Concrete example: if the expansion contains "CFPS", "IVTT", "PURE system", "cell-free protein synthesis", these are exactly the keywords a "Cell-Free Expression" category needs — put them there. Don't force the LLM (or later keyword matching) to guess. Similarly if the expansion contains disease-specific terms, methodology-specific terms, or platform-specific terms, distribute them to the categories they actually describe.
+
+Categories whose subject matter clearly falls under one of these expansion terms MUST include that term in their keyword list.
+
+---
+
+`
+    : ''
+
+  const prompt = `${feedbackBlock}${expansionBlock}You are designing a coverage-gap audit for a research intelligence report on:
 
   "${topic}"
 
