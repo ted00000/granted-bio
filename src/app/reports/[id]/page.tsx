@@ -561,12 +561,30 @@ export default function ReportDetailPage({
         return result
       }
 
-      const bottomMargin = 72 + footerHeight // Account for footer space
+      // r54 fix (2026-08-04): was 72+footerHeight = 108pt, which reserved
+      // 1.5 inches of blank space at the bottom of every page. That's
+      // what you saw as the large gap on page 4 in the cell-free antibody
+      // report — content ended way above the footer instead of filling
+      // to a normal margin. Tighter: margin (54) + footerHeight (36) = 90pt
+      // gives a normal ~1.25" bottom margin with the footer inside it,
+      // matching print convention. Line spacing (13pt) still fits
+      // comfortably above the footer line at pageHeight - 54.
+      const bottomMargin = margin + footerHeight
       const addNewPageIfNeeded = (height: number) => {
         if (y + height > pageHeight - bottomMargin) {
           doc.addPage()
           currentPageNum++
           addPageBranding(currentPageNum)
+          // r54 fix (2026-08-04): addPageBranding leaves text color at
+          // (156, 163, 175) and font size at 8pt from drawing the footer.
+          // Without resetting, the next body-text render on the new page
+          // uses that light grey / small font — visible in the cell-free
+          // antibody report as light grey continuation text. Reset to
+          // body defaults so paragraphs/bullets that span page breaks
+          // continue in the right style.
+          doc.setFontSize(10.5)
+          doc.setFont('helvetica', 'normal')
+          doc.setTextColor(55, 65, 81)
           y = margin + headerHeight
           return true
         }
@@ -636,6 +654,14 @@ export default function ReportDetailPage({
                 doc.addPage()
                 currentPageNum++
                 addPageBranding(currentPageNum)
+                // r54 fix: addPageBranding leaves text color at 156,163,175
+                // and font size at 8pt from drawing the footer. Reset to
+                // body defaults so the rest of this paragraph continues
+                // in the right style. (Link tokens re-set to linkColor
+                // per token, so only the body-token path is affected.)
+                doc.setFontSize(10.5)
+                doc.setFont('helvetica', 'normal')
+                doc.setTextColor(...bodyColor)
                 yPos = margin + headerHeight
               }
               if (isWhitespace) continue // drop wrapping whitespace
