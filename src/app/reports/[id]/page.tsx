@@ -286,7 +286,10 @@ export default function ReportDetailPage({
       const res = await fetch(`/api/reports/${report.id}/pdf`, { method: 'POST' })
       if (!res.ok) {
         const body = await res.json().catch(() => ({ error: 'PDF request failed' }))
-        throw new Error(body.error || `HTTP ${res.status}`)
+        // Surface the server-side detail (usually the real cause: chromium
+        // launch fail, print-route load fail, storage upload fail).
+        const detail = body.detail ? ` (${body.detail})` : ''
+        throw new Error(`${body.error || `HTTP ${res.status}`}${detail}`)
       }
       const { url } = await res.json() as { url: string }
       // Fetch the signed-URL PDF bytes, then trigger a Save-As download
