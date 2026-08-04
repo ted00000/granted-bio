@@ -269,7 +269,53 @@ export default function ReportDetailPage({
 
   const [exporting, setExporting] = useState<'pdf' | 'docx' | null>(null)
 
+  // r54 fix: primary PDF path is server-rendered Chromium via
+  // /api/reports/[id]/pdf. jsPDF stays in the file as a last-resort
+  // fallback (behind NEXT_PUBLIC_PDF_FALLBACK=jspdf), because it had
+  // recurring imperative-state bugs (footer overrun, light-grey
+  // continuation text, silent mid-word truncation) that CSS Paged
+  // Media doesn't have.
   const downloadPdf = async () => {
+    if (!report?.markdown_content) return
+    const useLegacy = process.env.NEXT_PUBLIC_PDF_FALLBACK === 'jspdf'
+    if (useLegacy) return downloadPdfLegacyJsPdf()
+
+    setExporting('pdf')
+    try {
+      const filename = `${report.title.replace(/[^a-z0-9]/gi, '_')}.pdf`
+      const res = await fetch(`/api/reports/${report.id}/pdf`, { method: 'POST' })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({ error: 'PDF request failed' }))
+        throw new Error(body.error || `HTTP ${res.status}`)
+      }
+      const { url } = await res.json() as { url: string }
+      // Fetch the signed-URL PDF bytes, then trigger a Save-As download
+      // via an anchor. Direct navigation would open in-tab; anchor with
+      // the download attribute forces the file-save flow the user
+      // expects from a Download button.
+      const pdfRes = await fetch(url)
+      if (!pdfRes.ok) throw new Error(`PDF fetch failed: HTTP ${pdfRes.status}`)
+      const blob = await pdfRes.blob()
+      const blobUrl = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = blobUrl
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(blobUrl)
+    } catch (e) {
+      console.error('Error generating PDF via Puppeteer:', e)
+      alert(`Failed to generate PDF. ${e instanceof Error ? e.message : 'Please try again.'}`)
+    } finally {
+      setExporting(null)
+    }
+  }
+
+  // Legacy jsPDF fallback. Kept for env-flag rollback if the Puppeteer
+  // path misfires; will be removed once the Chromium path is proven
+  // for a couple weeks of real reports.
+  const downloadPdfLegacyJsPdf = async () => {
     if (!report?.markdown_content) return
 
     setExporting('pdf')
