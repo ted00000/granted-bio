@@ -97,6 +97,18 @@ def api_row_to_process_dict(api: Dict[str, Any]) -> Dict[str, Any]:
     ]
     pi_names = ';'.join(filter(None, [pi_profile, *other_pis]))
 
+    # Program officers — mirrors the PI extraction pattern. Prior to
+    # 2026-08-05 this field was omitted from the API sync, leaving
+    # program_officer = null on every project inserted via the API path
+    # since the last ExPORTER bulk load (2026-01-31). Multiple POs
+    # occasionally occur on multi-IC awards; join with ';' matching
+    # the pi_names convention.
+    program_officers = ';'.join(
+        p.get('full_name')
+        for p in (api.get('program_officers') or [])
+        if p.get('full_name')
+    )
+
     agency_ics = api.get('agency_ic_fundings') or []
     ic_string = ';'.join(
         [
@@ -140,6 +152,7 @@ def api_row_to_process_dict(api: Dict[str, Any]) -> Dict[str, Any]:
         'project_end': parse_date(api.get('project_end_date') or ''),
         'fiscal_year': api.get('fiscal_year'),
         'pi_names': pi_names,
+        'program_officer': program_officers,
         'funding_agency': 'NIH',
         # Abstract gets stored separately; keep it next to the project here for now
         '_abstract_text': (api.get('abstract_text') or '').strip(),
