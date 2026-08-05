@@ -111,6 +111,7 @@ export interface RenderPdfOptions {
 }
 
 export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Array> {
+  console.log(`[pdf] Rendering ${opts.url}`)
   const browser = await launchBrowser()
   try {
     const page = await browser.newPage()
@@ -118,24 +119,55 @@ export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Arra
     // measurements matches the print output.
     await page.setViewport({ width: 816, height: 1056, deviceScaleFactor: 1 })
 
-    await page.goto(opts.url, { waitUntil: 'networkidle0', timeout: 60_000 })
+    // Surface browser console messages into the Vercel function log.
+    // Critical for diagnosing why __printReady never fires (script
+    // errors, hydration failures, network errors that block PrintShell).
+    page.on('console', (msg) => {
+      console.log(`[pdf][browser:${msg.type()}] ${msg.text()}`)
+    })
+    page.on('pageerror', (err) => {
+      const message = err instanceof Error ? err.message : String(err)
+      console.warn(`[pdf][pageerror] ${message}`)
+    })
+    page.on('requestfailed', (req) => {
+      console.warn(`[pdf][requestfailed] ${req.url()} — ${req.failure()?.errorText}`)
+    })
+
+    const gotoResponse = await page.goto(opts.url, {
+      waitUntil: 'networkidle0',
+      timeout: 60_000,
+    })
+    const status = gotoResponse?.status() ?? 0
+    console.log(`[pdf] page.goto completed with status ${status}`)
+    if (status < 200 || status >= 400) {
+      throw new Error(`Print route returned HTTP ${status} — Chromium can't render the page. URL: ${opts.url}`)
+    }
 
     // Wait for the client shell in /reports/[id]/print to flip
     // window.__printReady after Recharts finishes painting.
-    // NOTE: this predicate runs in the BROWSER context — must be
-    // plain JS. Earlier version passed a TypeScript-cast string
-    // ('(window as unknown as {...}).__printReady === true') which
-    // is invalid JS and threw SyntaxError on every poll until the
-    // wait timed out ("Waiting failed" in prod).
-    //
-    // Timeout raised to 25s to give PrintShell's own 20s chart-
-    // hydration wait a couple of seconds of margin. PrintShell
-    // fails open after 20s (ships without full chart hydration
-    // rather than hanging), so this ceiling is a safety net.
-    await page.waitForFunction(
-      () => (window as unknown as { __printReady?: boolean }).__printReady === true,
-      { timeout: opts.readyTimeoutMs ?? 25_000 },
-    )
+    // PrintShell fails open at 20s (sets __printReady=true even if
+    // some charts didn't paint) so this should always resolve.
+    try {
+      await page.waitForFunction(
+        () => (window as unknown as { __printReady?: boolean }).__printReady === true,
+        { timeout: opts.readyTimeoutMs ?? 25_000 },
+      )
+    } catch (waitErr) {
+      // Timed out. Dump what we can see about the page state so the
+      // Vercel log tells us exactly what's stuck.
+      const state = await page.evaluate(() => ({
+        readyState: document.readyState,
+        printReady: (window as unknown as { __printReady?: unknown }).__printReady,
+        wrapperCount: document.querySelectorAll('.recharts-wrapper').length,
+        svgCount: document.querySelectorAll('.recharts-wrapper svg').length,
+        printBodyExists: !!document.querySelector('.print-body'),
+        bodyHTMLLength: document.body?.innerHTML.length ?? 0,
+        title: document.title,
+      })).catch((e) => ({ evalErr: String(e) }))
+      console.warn(`[pdf] Wait timeout. Page state:`, JSON.stringify(state))
+      throw waitErr
+    }
+    console.log(`[pdf] __printReady resolved`)
 
     const headerTemplate = buildHeaderTemplate(opts.reportTitle)
     const footerTemplate = buildFooterTemplate(opts.generatedDate)
