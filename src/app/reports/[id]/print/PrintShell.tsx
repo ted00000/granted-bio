@@ -28,23 +28,81 @@ interface PrintShellProps {
  */
 export function PrintShell({ content, chartData }: PrintShellProps) {
   useEffect(() => {
-    // Two rAF ticks + a short settle timer — Recharts often paints its
-    // SVGs on the second frame after mount, then rerenders once more if
-    // ResponsiveContainer measured a different width. 250ms covers both.
-    let frame1 = 0
-    let frame2 = 0
-    let timer: ReturnType<typeof setTimeout> | null = null
-    frame1 = requestAnimationFrame(() => {
-      frame2 = requestAnimationFrame(() => {
-        timer = setTimeout(() => {
-          ;(window as unknown as { __printReady?: boolean }).__printReady = true
-        }, 250)
-      })
+    // First pass (r54 fix): the previous "2 rAF + 250ms" hack set
+    // window.__printReady optimistically, but Recharts' ResponsiveContainer
+    // uses ResizeObserver which doesn't reliably fire on headless
+    // Chromium's initial layout. Result: SVGs stayed empty, Puppeteer
+    // waited 15s (which then only checked the flag, not the SVGs),
+    // and PDF shipped with no charts.
+    //
+    // Rewritten: actively wait for actual <svg> elements inside every
+    // .recharts-wrapper. Trigger a resize event first to nudge
+    // ResizeObserver. Poll every 100ms up to 20s. Set __printReady
+    // once ALL wrappers have an SVG child, OR once the max wait
+    // elapses (fail-open so we still ship SOMETHING rather than
+    // hanging forever).
+    let cancelled = false
+    const MAX_WAIT_MS = 20_000
+    const POLL_INTERVAL_MS = 100
+    const start = Date.now()
+
+    const kickResize = () => {
+      // Some ResizeObserver implementations only fire on actual size
+      // changes. Dispatching a resize event is a widely-used workaround
+      // that forces Recharts' ResponsiveContainer to remeasure and
+      // re-render.
+      try {
+        window.dispatchEvent(new Event('resize'))
+      } catch {
+        /* older browser, ignore */
+      }
+    }
+
+    const checkReady = (): boolean => {
+      const wrappers = document.querySelectorAll('.recharts-wrapper')
+      // If there are no charts in this report (e.g., a topic with no
+      // funding-by-year data), we're trivially ready.
+      if (wrappers.length === 0) return true
+      // Every wrapper must contain at least one SVG element for us to
+      // consider hydration complete.
+      let allPainted = true
+      for (const w of Array.from(wrappers)) {
+        if (!w.querySelector('svg')) {
+          allPainted = false
+          break
+        }
+      }
+      return allPainted
+    }
+
+    const tick = () => {
+      if (cancelled) return
+      kickResize()
+      if (checkReady()) {
+        ;(window as unknown as { __printReady?: boolean; __printChartsRendered?: boolean }).__printReady = true
+        ;(window as unknown as { __printChartsRendered?: boolean }).__printChartsRendered = true
+        console.log(`[PrintShell] Ready — all charts painted in ${Date.now() - start}ms`)
+        return
+      }
+      if (Date.now() - start > MAX_WAIT_MS) {
+        // Fail-open: ship the PDF even if some charts didn't paint.
+        // Better a report missing a chart than no report at all.
+        ;(window as unknown as { __printReady?: boolean; __printChartsRendered?: boolean }).__printReady = true
+        ;(window as unknown as { __printChartsRendered?: boolean }).__printChartsRendered = false
+        console.warn(`[PrintShell] Max wait ${MAX_WAIT_MS}ms hit — shipping without full chart hydration.`)
+        return
+      }
+      setTimeout(tick, POLL_INTERVAL_MS)
+    }
+
+    // First tick after 2 rAF so React's initial commit has finished
+    // and the .recharts-wrapper divs exist in the DOM to poll for.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => tick())
     })
+
     return () => {
-      cancelAnimationFrame(frame1)
-      cancelAnimationFrame(frame2)
-      if (timer) clearTimeout(timer)
+      cancelled = true
     }
   }, [])
 

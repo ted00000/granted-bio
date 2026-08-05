@@ -127,9 +127,14 @@ export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Arra
     // ('(window as unknown as {...}).__printReady === true') which
     // is invalid JS and threw SyntaxError on every poll until the
     // wait timed out ("Waiting failed" in prod).
+    //
+    // Timeout raised to 25s to give PrintShell's own 20s chart-
+    // hydration wait a couple of seconds of margin. PrintShell
+    // fails open after 20s (ships without full chart hydration
+    // rather than hanging), so this ceiling is a safety net.
     await page.waitForFunction(
       () => (window as unknown as { __printReady?: boolean }).__printReady === true,
-      { timeout: opts.readyTimeoutMs ?? 15_000 },
+      { timeout: opts.readyTimeoutMs ?? 25_000 },
     )
 
     const headerTemplate = buildHeaderTemplate(opts.reportTitle)
