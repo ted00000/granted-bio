@@ -297,10 +297,20 @@ html, body {
    explicit pixel dimensions after mount, then dispatches resize.
    These CSS rules only handle print-mode page-break behavior + SVG
    overflow protection. */
+/* r54 fix (tenth round): scope page-break-inside:avoid to ONLY
+   chart wrappers. Previously applied to ALL .my-4 divs, but
+   MarkdownRenderer uses .my-4 for tables + blockquotes too — so a
+   table right after a chart couldn't fit on the same page and got
+   pushed to the next page WHOLE, leaving 200-300px of whitespace
+   under the chart. Tables shouldn't be atomic; their tr rows are
+   (handled below).
+   :has() selects only my-4 wrappers that contain a chart. */
 .print-body div.my-4 {
+  margin: 14pt 0;
+}
+.print-body div.my-4:has(.recharts-wrapper) {
   page-break-inside: avoid;
   break-inside: avoid;
-  margin: 14pt 0;
 }
 
 /* r54 fix (ninth and final round): all chart-size CSS overrides
