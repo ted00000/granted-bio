@@ -311,6 +311,21 @@ html, body {
 .print-body div.my-4:has(.recharts-wrapper) {
   page-break-inside: avoid;
   break-inside: avoid;
+  /* Also don't break BEFORE the chart. Combined with break-after:avoid
+     on h3/h4 and on the caption paragraph rule below, this makes
+     Chromium keep the heading+caption+chart together as a group
+     when moving them to a new page. Without break-before:avoid,
+     Chromium was leaving the heading+caption orphaned on the
+     previous page and pushing just the chart. */
+  page-break-before: avoid;
+  break-before: avoid;
+}
+/* The italic caption paragraph that precedes each chart shouldn't
+   be separated from the chart. Targets any <p> that's immediately
+   followed by a chart wrapper. */
+.print-body p:has(+ div.my-4 .recharts-wrapper) {
+  page-break-after: avoid;
+  break-after: avoid;
 }
 
 /* r54 fix (ninth and final round): all chart-size CSS overrides
