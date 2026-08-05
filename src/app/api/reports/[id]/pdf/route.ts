@@ -89,11 +89,25 @@ export async function POST(
       return NextResponse.json({ error: 'Report has no content to render.' }, { status: 400 })
     }
 
-    // Build the internal print URL. In prod we hit our own domain via
-    // NEXT_PUBLIC_SITE_URL. Locally, VERCEL_URL is unset — fall back to
-    // localhost. In Vercel preview, VERCEL_URL is the preview hostname.
-    const origin = process.env.NEXT_PUBLIC_SITE_URL
-      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+    // Build the internal print URL Chromium will fetch.
+    //
+    // CRITICAL: use the incoming request's Host header, NOT env vars.
+    //
+    // process.env.VERCEL_URL is the DEPLOYMENT URL (like
+    // grantedbio-abc123-teds-projects.vercel.app), which has Vercel
+    // Deployment Protection turned on by default. Chromium fetching
+    // that URL without a session cookie gets redirected to Vercel's
+    // login page and never sees our print route.
+    //
+    // The user's browser hits us via the production alias
+    // (www.granted.bio), which is publicly accessible. Use the same
+    // host so Chromium can too. `x-forwarded-host` is set by Vercel's
+    // edge to preserve the original request host across function
+    // invocations.
+    const headers = request.headers
+    const requestHost = headers.get('x-forwarded-host') || headers.get('host') || 'www.granted.bio'
+    const requestProto = headers.get('x-forwarded-proto') || 'https'
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || `${requestProto}://${requestHost}`
     const printUrl = `${origin}/reports/${id}/print`
 
     const generatedDate = new Date(report.created_at as string).toLocaleDateString('en-US', {
