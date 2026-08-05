@@ -281,10 +281,14 @@ html, body {
 .print-body .recharts-responsive-container {
   max-width: 100%;
 }
+/* r54 fix (2026-08-04): the previous height:auto !important rule
+   collapsed Recharts SVGs to zero height because it overrode
+   Recharts' inline height:300 attribute. SVGs have viewBox-based
+   intrinsic scaling — no need to force height:auto. Just constrain
+   max-width so wide charts don't overflow the page. */
 .print-body .recharts-wrapper svg,
 .print-body .recharts-responsive-container svg {
   max-width: 100%;
-  height: auto !important;
 }
 /* The div that MarkdownRenderer wraps each chart in — keep it with
    its preceding heading and never fragment across pages. */
