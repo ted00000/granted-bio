@@ -55,14 +55,25 @@ export async function launchBrowser(): Promise<Browser> {
   )
 
   if (isServerless) {
-    // @sparticuz/chromium v140 simplified its API — only args +
-    // executablePath are exposed as statics. Headless mode is
-    // controlled by the caller now. Viewport is set by the caller
-    // per-page (see setViewport in renderReportPdf).
-    const chromium = (await import('@sparticuz/chromium')).default
+    // Using @sparticuz/chromium-min instead of @sparticuz/chromium
+    // because Vercel's serverless bundler tree-shakes the binary
+    // .br files out of node_modules/@sparticuz/chromium/bin — even
+    // with outputFileTracingIncludes pinned. The `-min` variant
+    // doesn't ship the binary in the package at all; instead we
+    // pass a public CDN URL to executablePath() and the library
+    // downloads + extracts to /tmp on cold start (~2s the first
+    // call, cached for subsequent invocations of the same
+    // function instance).
+    //
+    // The URL version MUST match the installed chromium-min version
+    // (see package.json). Sparticuz publishes signed release tarballs
+    // at github.com/Sparticuz/chromium/releases.
+    const CHROMIUM_PACK_URL =
+      'https://github.com/Sparticuz/chromium/releases/download/v140.0.0/chromium-v140.0.0-pack.x64.tar'
+    const chromium = (await import('@sparticuz/chromium-min')).default
     return await puppeteer.launch({
       args: chromium.args,
-      executablePath: await chromium.executablePath(),
+      executablePath: await chromium.executablePath(CHROMIUM_PACK_URL),
       headless: true,
     })
   }
