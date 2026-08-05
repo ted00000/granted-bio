@@ -1,4 +1,4 @@
-# Parking Lot — 14JUL2026
+# Parking Lot — 05AUG2026
 
 Consolidated nice-to-haves accumulated during the multi-month pre-launch
 build. Pulled from `LANDING_AND_CREDITS_PLAN.md`, `PLATFORM_PLANNING.md`,
@@ -140,6 +140,25 @@ are the improvement callouts, ranked by impact.
   + testing. Trigger: any new PDF layout bug OR the first time we
   need a typographic feature jsPDF can't deliver (footnotes, running
   section headers, precise table pagination, etc.).
+
+## Data pipeline — near-term (user has flagged as next task)
+
+- **Backfill `program_officer` for API-synced projects + wire the
+  field into `sync_projects_via_api.py` for future runs.** Root cause:
+  the API sync script at `etl/sync_projects_via_api.py:95` extracts
+  `principal_investigators` from the RePORTER API response but never
+  touches `program_officers` (an array field the API does return).
+  Every project inserted via the API path since the last ExPORTER
+  bulk load (2026-01-31) has `program_officer = null`. That's roughly
+  8k projects — every project from every weekly refresh since
+  Feb 2026, including today's SBIR/STTR list generation where all
+  148 rows shipped with blank PO. Two-part fix: (a) update the sync
+  script to extract `program_officers[]` and store the first entry
+  (or all joined with `;` for multi-PO projects, mirroring how
+  `pi_names` handles multiple PIs); (b) run a targeted backfill pass
+  over `WHERE program_officer IS NULL AND created_at >= '2026-02-01'`
+  hitting the API's `/v2/projects/search` endpoint by project_number
+  in batches. ~30-60 min total.
 
 ## Data pipeline
 
