@@ -303,19 +303,20 @@ html, body {
   margin: 14pt 0;
 }
 
-/* r54 fix (seventh round): reverted sixth-round after it broke
-   charts entirely in the browser. Confirmed the SVG width/height
-   override IS necessary for Recharts to render — without it the
-   chain of measurements collapses.
-   Keep all four dimension overrides (outer div + RRC + wrapper +
-   SVG) since that was the state where charts rendered in the
-   browser. The remaining PDF-only issue (bars invisible) is
-   addressed via headless-Chromium-specific tweaks below. */
+/* r54 fix (eighth round): tightened after the seventh-round's
+   overflow: visible !important on SVG was extending the chart's
+   visual bounding box beyond its declared height. Chromium's print
+   engine used the extended bounds for pagination, pushing next
+   content to the following page and leaving 600px+ of whitespace
+   below charts.
+
+   Restored the four dimension overrides (outer div + RRC + wrapper
+   + SVG) — those are load-bearing — but dropped the overflow +
+   position tweaks and the min-width/min-height duplicates. Bars
+   already render in PDF via the size overrides alone. */
 .print-body .recharts-responsive-container {
   width: 500px !important;
   height: 300px !important;
-  min-width: 500px !important;
-  min-height: 300px !important;
 }
 .print-body div.my-4 > div.w-full {
   width: 500px !important;
@@ -325,22 +326,12 @@ html, body {
   width: 500px !important;
   height: 300px !important;
   max-width: 500px !important;
-  position: relative !important;
 }
 .print-body .recharts-wrapper svg {
   width: 500px !important;
   height: 300px !important;
   display: block !important;
-  /* Force viewBox to match the explicit dimensions — some Chromium
-     versions treat mismatched viewBox as a viewport clip and render
-     bars outside the visible area. */
-  overflow: visible !important;
-}
-/* Ensure chart bar/path elements aren't clipped by any print-media
-   overflow rules. */
-.print-body .recharts-wrapper svg .recharts-bar-rectangle,
-.print-body .recharts-wrapper svg .recharts-rectangle {
-  overflow: visible !important;
+  max-width: 500px !important;
 }
 
 /* Horizontal rule. */
