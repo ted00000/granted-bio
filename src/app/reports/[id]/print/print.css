@@ -302,11 +302,36 @@ html, body {
   break-inside: avoid;
   margin: 14pt 0;
 }
+
+/* r54 fix (fifth round): explicit fixed dimensions on the
+   ResponsiveContainer. This wins over Recharts' inline
+   style="width:100%;height:100%" because it uses !important.
+   The RRC then has definite size from FIRST render — no
+   waiting on ResizeObserver, no dependency on parent chain
+   width propagation, no -1 measurement path. Chart-only
+   selectors so blockquotes/tables that share .my-4 stay
+   untouched. */
+.print-body .recharts-responsive-container {
+  width: 500px !important;
+  height: 300px !important;
+  min-width: 500px !important;
+  min-height: 300px !important;
+}
 .print-body .recharts-wrapper {
-  max-width: 100%;
+  width: 500px !important;
+  height: 300px !important;
+  max-width: 500px !important;
 }
 .print-body .recharts-wrapper svg {
-  max-width: 100%;
+  width: 500px !important;
+  height: 300px !important;
+}
+/* The chart component's outer div (className="w-full"
+   style={{height:300}}) also needs definite width or the
+   RRC's %-based size query returns 0. */
+.print-body div.my-4 > div.w-full {
+  width: 500px !important;
+  height: 300px !important;
 }
 
 /* Horizontal rule. */
