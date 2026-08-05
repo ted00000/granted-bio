@@ -21,6 +21,15 @@ interface FundingByYearData {
 interface FundingByYearChartProps {
   data: FundingByYearData[]
   height?: number
+  /**
+   * When set, renders with fixed pixel dimensions (no ResponsiveContainer,
+   * no ResizeObserver). Used by the print route (/reports/[id]/print)
+   * because headless Chromium's SVG measurement + CSS-forced-size chain
+   * is unreliable — SVG bars render at wrong coords or invisibly.
+   * Passing explicit fixedWidth/fixedHeight bypasses that entirely.
+   */
+  fixedWidth?: number
+  fixedHeight?: number
 }
 
 const formatFunding = (value: number): string => {
@@ -37,7 +46,7 @@ const COLORS = {
   text: '#525252',
 }
 
-export function FundingByYearChart({ data, height = 300 }: FundingByYearChartProps) {
+export function FundingByYearChart({ data, height = 300, fixedWidth, fixedHeight }: FundingByYearChartProps) {
   // Sort by year ascending; append "YTD" to the x-axis label of partial years
   // so the visual distinction doesn't rely on color alone.
   const sortedData = [...data]
@@ -48,6 +57,52 @@ export function FundingByYearChart({ data, height = 300 }: FundingByYearChartPro
     }))
 
   const hasPartial = sortedData.some((d) => d.isPartial)
+
+  // Print-mode branch: skip ResponsiveContainer entirely, render with
+  // fixed pixel dimensions. Deterministic in any environment (headless
+  // Chromium included).
+  if (fixedWidth && fixedHeight) {
+    return (
+      <div style={{ width: fixedWidth, height: fixedHeight + (hasPartial ? 20 : 0) }}>
+        <BarChart
+          width={fixedWidth}
+          height={fixedHeight}
+          data={sortedData}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke={COLORS.grid} vertical={false} />
+          <XAxis
+            dataKey="xLabel"
+            tick={{ fill: COLORS.text, fontSize: 12 }}
+            axisLine={{ stroke: COLORS.grid }}
+            tickLine={false}
+          />
+          <YAxis
+            tickFormatter={formatFunding}
+            tick={{ fill: COLORS.text, fontSize: 12 }}
+            axisLine={false}
+            tickLine={false}
+            width={60}
+          />
+          <Bar
+            dataKey="funding"
+            radius={[4, 4, 0, 0]}
+            maxBarSize={50}
+            isAnimationActive={false}
+          >
+            {sortedData.map((d, index) => (
+              <Cell key={`cell-${index}`} fill={d.isPartial ? COLORS.barPartial : COLORS.bar} />
+            ))}
+          </Bar>
+        </BarChart>
+        {hasPartial && (
+          <p className="text-xs text-gray-500 mt-1 ml-1">
+            Lighter bar = partial fiscal year (YTD only); not directly comparable to fully-reported prior years.
+          </p>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div className="w-full" style={{ height }}>

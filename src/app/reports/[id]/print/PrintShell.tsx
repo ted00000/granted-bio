@@ -26,13 +26,12 @@ interface PrintShellProps {
  * for its layout, so the load event fires BEFORE charts have final geometry.
  * Two frames of rAF is empirically enough for the SVG paths to settle.
  */
-// Fixed pixel dimensions for chart containers in the print route.
-// Recharts' ResponsiveContainer measures its parent's width/height
-// via ResizeObserver; when that measurement returns 0 or -1 (which
-// happens in the print route regardless of what CSS we try), the
-// SVG never renders. Forcing explicit pixel dimensions via inline
-// style on the ResponsiveContainer bypasses the measurement entirely.
-// 500x300 matches the layout of the main report page's charts.
+// Fixed pixel dimensions for chart components in the print route.
+// After many rounds of CSS !important overrides not reliably working
+// in headless Chromium, we now bypass ResponsiveContainer entirely:
+// chart components accept fixedWidth/fixedHeight props and render
+// <BarChart width height> directly with no measurement chain.
+// 500x300 matches the visual size of charts on the web report.
 const CHART_WIDTH_PX = 500
 const CHART_HEIGHT_PX = 300
 
@@ -56,35 +55,10 @@ export function PrintShell({ content, chartData }: PrintShellProps) {
     const start = Date.now()
 
     const forceChartDims = () => {
-      // Every FundingByYearChart / CategoryDistributionChart /
-      // WhiteSpaceCoverageChart / TrialsByPhaseChart renders a
-      // <div class="w-full"> wrapping a ResponsiveContainer. Set
-      // both dimensions explicitly.
-      const chartOuters = document.querySelectorAll(
-        '.print-body .w-full',
-      )
-      for (const el of Array.from(chartOuters)) {
-        if (!(el instanceof HTMLElement)) continue
-        // Only touch elements that actually contain a Recharts
-        // container — skip generic .w-full usages in other components.
-        if (!el.querySelector('.recharts-responsive-container')) continue
-        el.style.width = `${CHART_WIDTH_PX}px`
-        el.style.height = `${CHART_HEIGHT_PX}px`
-      }
-      const responsive = document.querySelectorAll(
-        '.print-body .recharts-responsive-container',
-      )
-      for (const el of Array.from(responsive)) {
-        if (!(el instanceof HTMLElement)) continue
-        el.style.width = `${CHART_WIDTH_PX}px`
-        el.style.height = `${CHART_HEIGHT_PX}px`
-      }
-      // Kick ResizeObserver to remeasure.
-      try {
-        window.dispatchEvent(new Event('resize'))
-      } catch {
-        /* older browser, ignore */
-      }
+      // No-op now that chart components render at fixed pixel
+      // dimensions directly via fixedWidth/fixedHeight props on
+      // MarkdownRenderer. Kept as an anchor for the tick loop in
+      // case future refactors want to re-introduce DOM tweaks.
     }
 
     const checkReady = (): boolean => {
@@ -130,6 +104,8 @@ export function PrintShell({ content, chartData }: PrintShellProps) {
       <MarkdownRenderer
         content={content}
         chartData={chartData as never}
+        printChartWidth={CHART_WIDTH_PX}
+        printChartHeight={CHART_HEIGHT_PX}
       />
     </div>
   )

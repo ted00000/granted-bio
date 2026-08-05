@@ -52,9 +52,17 @@ interface ChartData {
 interface MarkdownRendererProps {
   content: string
   chartData?: ChartData
+  /**
+   * When set, chart components render with fixed pixel dimensions
+   * instead of ResponsiveContainer. Used by the print route (Puppeteer
+   * PDF rendering) because ResponsiveContainer's ResizeObserver +
+   * CSS-force chain is unreliable in headless Chromium.
+   */
+  printChartWidth?: number
+  printChartHeight?: number
 }
 
-export function MarkdownRenderer({ content, chartData }: MarkdownRendererProps) {
+export function MarkdownRenderer({ content, chartData, printChartWidth, printChartHeight }: MarkdownRendererProps) {
   const lines = content.split('\n')
   const elements: React.ReactNode[] = []
   let i = 0
@@ -77,19 +85,31 @@ export function MarkdownRenderer({ content, chartData }: MarkdownRendererProps) 
       if (name === 'funding-by-year' && chartData?.fundingByYear?.length) {
         elements.push(
           <div key={i} className="my-4">
-            <FundingByYearChart data={chartData.fundingByYear} />
+            <FundingByYearChart
+              data={chartData.fundingByYear}
+              fixedWidth={printChartWidth}
+              fixedHeight={printChartHeight}
+            />
           </div>
         )
       } else if (name === 'categories' && chartData?.categories?.length) {
         elements.push(
           <div key={i} className="my-4">
-            <CategoryDistributionChart data={chartData.categories} />
+            <CategoryDistributionChart
+              data={chartData.categories}
+              fixedWidth={printChartWidth}
+              fixedHeight={printChartHeight}
+            />
           </div>
         )
       } else if (name === 'trials-by-phase' && chartData?.trialsByPhase) {
         elements.push(
           <div key={i} className="my-4">
-            <TrialsByPhaseChart data={chartData.trialsByPhase} />
+            <TrialsByPhaseChart
+              data={chartData.trialsByPhase}
+              fixedWidth={printChartWidth}
+              fixedHeight={printChartHeight}
+            />
           </div>
         )
       } else if (
@@ -105,6 +125,7 @@ export function MarkdownRenderer({ content, chartData }: MarkdownRendererProps) 
               categories={dim.categories}
               totalProjects={chartData.whiteSpace.totalProjects}
               totalUnclassified={dim.totalUnclassified}
+              fixedWidth={printChartWidth}
             />
           </div>
         )

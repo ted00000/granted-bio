@@ -26,6 +26,8 @@ interface WhiteSpaceCoverageChartProps {
   categories: CoverageCategoryDatum[]
   totalProjects: number
   totalUnclassified: number
+  /** Explicit pixel width for print mode (bypasses ResponsiveContainer). */
+  fixedWidth?: number
 }
 
 const formatFunding = (value: number): string => {
@@ -100,6 +102,7 @@ export function WhiteSpaceCoverageChart({
   categories,
   totalProjects,
   totalUnclassified,
+  fixedWidth,
 }: WhiteSpaceCoverageChartProps) {
   if (!categories || categories.length === 0) return null
 
@@ -117,6 +120,59 @@ export function WhiteSpaceCoverageChart({
 
   // Dynamic height — one bar per category, plus padding for axis labels.
   const height = Math.max(180, data.length * 34 + 60)
+
+  // Print-mode branch: fixed pixel dimensions, no ResponsiveContainer.
+  if (fixedWidth) {
+    return (
+      <div className="my-6">
+        <div className="flex items-baseline justify-between mb-2 text-sm text-gray-600">
+          <div>
+            <span className="font-medium text-gray-900">{dimensionName}</span>
+            <span className="ml-3 text-xs">
+              {totalProjects} projects in sample · {totalUnclassified} unclassified
+            </span>
+          </div>
+        </div>
+        <div style={{ width: fixedWidth, height }}>
+          <BarChart
+            width={fixedWidth}
+            height={height}
+            data={data}
+            layout="vertical"
+            margin={{ top: 5, right: 60, left: 5, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" horizontal={false} />
+            <XAxis
+              type="number"
+              tick={{ fontSize: 11, fill: '#6b7280' }}
+              axisLine={{ stroke: '#e5e7eb' }}
+              tickLine={{ stroke: '#e5e7eb' }}
+            />
+            <YAxis
+              type="category"
+              dataKey="name"
+              tick={{ fontSize: 11, fill: '#374151' }}
+              width={140}
+              interval={0}
+              axisLine={{ stroke: '#e5e7eb' }}
+              tickLine={{ stroke: '#e5e7eb' }}
+            />
+            <Bar dataKey="projectCount" radius={[0, 4, 4, 0]} isAnimationActive={false}>
+              {data.map((_, i) => (
+                <Cell key={i} fill={BAR_COLORS[i % BAR_COLORS.length]} />
+              ))}
+              <LabelList
+                dataKey="projectCount"
+                position="right"
+                fill="#374151"
+                style={{ fontSize: 11, fontWeight: 500 }}
+              />
+            </Bar>
+          </BarChart>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="my-6">

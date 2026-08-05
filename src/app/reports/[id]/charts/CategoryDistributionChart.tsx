@@ -21,6 +21,8 @@ interface CategoryDistributionChartProps {
   data: CategoryData[]
   height?: number
   showFunding?: boolean
+  fixedWidth?: number
+  fixedHeight?: number
 }
 
 const formatFunding = (value: number): string => {
@@ -53,6 +55,8 @@ export function CategoryDistributionChart({
   data,
   height = 300,
   showFunding = true,
+  fixedWidth,
+  fixedHeight,
 }: CategoryDistributionChartProps) {
   // Take top 8 categories
   const chartData = data.slice(0, 8).map((d) => ({
@@ -64,6 +68,52 @@ export function CategoryDistributionChart({
     return (
       <div className="flex items-center justify-center h-[200px] text-gray-400">
         No category data available
+      </div>
+    )
+  }
+
+  // Print-mode: fixed pixel dimensions, no ResponsiveContainer.
+  if (fixedWidth && fixedHeight) {
+    return (
+      <div style={{ width: fixedWidth, height: fixedHeight }}>
+        <BarChart
+          width={fixedWidth}
+          height={fixedHeight}
+          data={chartData}
+          layout="vertical"
+          margin={{ top: 10, right: 30, left: 100, bottom: 10 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke="#E5E5E5" horizontal={false} />
+          <XAxis
+            type="number"
+            dataKey={showFunding ? 'funding' : 'projects'}
+            tickFormatter={showFunding ? formatFunding : (v) => v.toString()}
+            tick={{ fill: '#525252', fontSize: 12 }}
+            axisLine={{ stroke: '#E5E5E5' }}
+            tickLine={false}
+          />
+          <YAxis
+            type="category"
+            dataKey="displayCategory"
+            tick={{ fill: '#525252', fontSize: 11 }}
+            axisLine={false}
+            tickLine={false}
+            width={95}
+          />
+          <Bar
+            dataKey={showFunding ? 'funding' : 'projects'}
+            radius={[0, 4, 4, 0]}
+            maxBarSize={25}
+            isAnimationActive={false}
+          >
+            {chartData.map((_, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={CATEGORY_COLORS[index % CATEGORY_COLORS.length]}
+              />
+            ))}
+          </Bar>
+        </BarChart>
       </div>
     )
   }

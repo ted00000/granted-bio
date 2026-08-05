@@ -303,35 +303,17 @@ html, body {
   margin: 14pt 0;
 }
 
-/* r54 fix (eighth round): tightened after the seventh-round's
-   overflow: visible !important on SVG was extending the chart's
-   visual bounding box beyond its declared height. Chromium's print
-   engine used the extended bounds for pagination, pushing next
-   content to the following page and leaving 600px+ of whitespace
-   below charts.
-
-   Restored the four dimension overrides (outer div + RRC + wrapper
-   + SVG) — those are load-bearing — but dropped the overflow +
-   position tweaks and the min-width/min-height duplicates. Bars
-   already render in PDF via the size overrides alone. */
-.print-body .recharts-responsive-container {
-  width: 500px !important;
-  height: 300px !important;
-}
-.print-body div.my-4 > div.w-full {
-  width: 500px !important;
-  height: 300px !important;
-}
-.print-body .recharts-wrapper {
-  width: 500px !important;
-  height: 300px !important;
-  max-width: 500px !important;
-}
+/* r54 fix (ninth and final round): all chart-size CSS overrides
+   REMOVED. Chart components now render at fixed pixel dimensions
+   directly via fixedWidth/fixedHeight props from PrintShell —
+   no ResponsiveContainer, no ResizeObserver, no CSS-force chain
+   in the print route. Deterministic in any environment including
+   headless Chromium.
+   Only keep the max-width guard as a safety belt against future
+   chart components rendering wider than the page. */
+.print-body .recharts-wrapper,
 .print-body .recharts-wrapper svg {
-  width: 500px !important;
-  height: 300px !important;
-  display: block !important;
-  max-width: 500px !important;
+  max-width: 100%;
 }
 
 /* Horizontal rule. */

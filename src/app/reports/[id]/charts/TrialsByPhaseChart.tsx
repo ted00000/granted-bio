@@ -19,6 +19,8 @@ interface TrialsByPhaseData {
 interface TrialsByPhaseChartProps {
   data: Record<string, number>
   height?: number
+  fixedWidth?: number
+  fixedHeight?: number
 }
 
 // Phase order for consistent display
@@ -35,7 +37,7 @@ const PHASE_COLORS: Record<string, string> = {
   'Unknown': '#D4D4D4',
 }
 
-export function TrialsByPhaseChart({ data, height = 250 }: TrialsByPhaseChartProps) {
+export function TrialsByPhaseChart({ data, height = 250, fixedWidth, fixedHeight }: TrialsByPhaseChartProps) {
   // Convert to array and sort by phase order
   const chartData: TrialsByPhaseData[] = Object.entries(data)
     .map(([phase, count]) => ({ phase, count }))
@@ -49,6 +51,44 @@ export function TrialsByPhaseChart({ data, height = 250 }: TrialsByPhaseChartPro
     return (
       <div className="flex items-center justify-center h-[200px] text-gray-400">
         No trial data available
+      </div>
+    )
+  }
+
+  if (fixedWidth && fixedHeight) {
+    return (
+      <div style={{ width: fixedWidth, height: fixedHeight }}>
+        <BarChart
+          width={fixedWidth}
+          height={fixedHeight}
+          data={chartData}
+          layout="vertical"
+          margin={{ top: 10, right: 30, left: 80, bottom: 10 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" stroke="#E5E5E5" horizontal={false} />
+          <XAxis
+            type="number"
+            tick={{ fill: '#525252', fontSize: 12 }}
+            axisLine={{ stroke: '#E5E5E5' }}
+            tickLine={false}
+          />
+          <YAxis
+            type="category"
+            dataKey="phase"
+            tick={{ fill: '#525252', fontSize: 12 }}
+            axisLine={false}
+            tickLine={false}
+            width={75}
+          />
+          <Bar dataKey="count" radius={[0, 4, 4, 0]} maxBarSize={30} isAnimationActive={false}>
+            {chartData.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={PHASE_COLORS[entry.phase] || '#E07A5F'}
+              />
+            ))}
+          </Bar>
+        </BarChart>
       </div>
     )
   }
