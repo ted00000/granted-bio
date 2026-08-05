@@ -26,31 +26,60 @@ interface PrintShellProps {
  * for its layout, so the load event fires BEFORE charts have final geometry.
  * Two frames of rAF is empirically enough for the SVG paths to settle.
  */
+// Fixed pixel dimensions for chart containers in the print route.
+// Recharts' ResponsiveContainer measures its parent's width/height
+// via ResizeObserver; when that measurement returns 0 or -1 (which
+// happens in the print route regardless of what CSS we try), the
+// SVG never renders. Forcing explicit pixel dimensions via inline
+// style on the ResponsiveContainer bypasses the measurement entirely.
+// 500x300 matches the layout of the main report page's charts.
+const CHART_WIDTH_PX = 500
+const CHART_HEIGHT_PX = 300
+
 export function PrintShell({ content, chartData }: PrintShellProps) {
   useEffect(() => {
-    // First pass (r54 fix): the previous "2 rAF + 250ms" hack set
-    // window.__printReady optimistically, but Recharts' ResponsiveContainer
-    // uses ResizeObserver which doesn't reliably fire on headless
-    // Chromium's initial layout. Result: SVGs stayed empty, Puppeteer
-    // waited 15s (which then only checked the flag, not the SVGs),
-    // and PDF shipped with no charts.
+    // Two responsibilities:
+    // 1. Force explicit pixel dimensions on every Recharts container
+    //    the moment they mount, so ResponsiveContainer has definite
+    //    parent geometry and its ResizeObserver produces real numbers.
+    // 2. Poll for actual <svg> children in every wrapper, then flip
+    //    window.__printReady so Puppeteer knows we're done.
     //
-    // Rewritten: actively wait for actual <svg> elements inside every
-    // .recharts-wrapper. Trigger a resize event first to nudge
-    // ResizeObserver. Poll every 100ms up to 20s. Set __printReady
-    // once ALL wrappers have an SVG child, OR once the max wait
-    // elapses (fail-open so we still ship SOMETHING rather than
-    // hanging forever).
+    // r54 audit history: prior attempts using pure CSS (max-width,
+    // width:100%, min-width, forcing height on .my-4 wrappers) all
+    // failed because MarkdownRenderer uses .my-4 for charts +
+    // blockquotes + tables — CSS scoped to .my-4 clobbered
+    // non-chart layout. Doing this in JS is surgical and avoids that.
     let cancelled = false
     const MAX_WAIT_MS = 20_000
-    const POLL_INTERVAL_MS = 100
+    const POLL_INTERVAL_MS = 150
     const start = Date.now()
 
-    const kickResize = () => {
-      // Some ResizeObserver implementations only fire on actual size
-      // changes. Dispatching a resize event is a widely-used workaround
-      // that forces Recharts' ResponsiveContainer to remeasure and
-      // re-render.
+    const forceChartDims = () => {
+      // Every FundingByYearChart / CategoryDistributionChart /
+      // WhiteSpaceCoverageChart / TrialsByPhaseChart renders a
+      // <div class="w-full"> wrapping a ResponsiveContainer. Set
+      // both dimensions explicitly.
+      const chartOuters = document.querySelectorAll(
+        '.print-body .w-full',
+      )
+      for (const el of Array.from(chartOuters)) {
+        if (!(el instanceof HTMLElement)) continue
+        // Only touch elements that actually contain a Recharts
+        // container — skip generic .w-full usages in other components.
+        if (!el.querySelector('.recharts-responsive-container')) continue
+        el.style.width = `${CHART_WIDTH_PX}px`
+        el.style.height = `${CHART_HEIGHT_PX}px`
+      }
+      const responsive = document.querySelectorAll(
+        '.print-body .recharts-responsive-container',
+      )
+      for (const el of Array.from(responsive)) {
+        if (!(el instanceof HTMLElement)) continue
+        el.style.width = `${CHART_WIDTH_PX}px`
+        el.style.height = `${CHART_HEIGHT_PX}px`
+      }
+      // Kick ResizeObserver to remeasure.
       try {
         window.dispatchEvent(new Event('resize'))
       } catch {
@@ -60,24 +89,18 @@ export function PrintShell({ content, chartData }: PrintShellProps) {
 
     const checkReady = (): boolean => {
       const wrappers = document.querySelectorAll('.recharts-wrapper')
-      // If there are no charts in this report (e.g., a topic with no
-      // funding-by-year data), we're trivially ready.
       if (wrappers.length === 0) return true
-      // Every wrapper must contain at least one SVG element for us to
-      // consider hydration complete.
-      let allPainted = true
       for (const w of Array.from(wrappers)) {
-        if (!w.querySelector('svg')) {
-          allPainted = false
-          break
-        }
+        const svg = w.querySelector('svg')
+        // Empty scaffolding SVG (no children yet) doesn't count.
+        if (!svg || svg.children.length === 0) return false
       }
-      return allPainted
+      return true
     }
 
     const tick = () => {
       if (cancelled) return
-      kickResize()
+      forceChartDims()
       if (checkReady()) {
         ;(window as unknown as { __printReady?: boolean; __printChartsRendered?: boolean }).__printReady = true
         ;(window as unknown as { __printChartsRendered?: boolean }).__printChartsRendered = true
@@ -85,8 +108,6 @@ export function PrintShell({ content, chartData }: PrintShellProps) {
         return
       }
       if (Date.now() - start > MAX_WAIT_MS) {
-        // Fail-open: ship the PDF even if some charts didn't paint.
-        // Better a report missing a chart than no report at all.
         ;(window as unknown as { __printReady?: boolean; __printChartsRendered?: boolean }).__printReady = true
         ;(window as unknown as { __printChartsRendered?: boolean }).__printChartsRendered = false
         console.warn(`[PrintShell] Max wait ${MAX_WAIT_MS}ms hit — shipping without full chart hydration.`)
@@ -95,8 +116,6 @@ export function PrintShell({ content, chartData }: PrintShellProps) {
       setTimeout(tick, POLL_INTERVAL_MS)
     }
 
-    // First tick after 2 rAF so React's initial commit has finished
-    // and the .recharts-wrapper divs exist in the DOM to poll for.
     requestAnimationFrame(() => {
       requestAnimationFrame(() => tick())
     })
