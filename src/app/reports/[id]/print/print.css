@@ -64,10 +64,16 @@ html, body {
   print-color-adjust: exact;
 }
 
-/* Screen-only container width so previews feel like an actual page. */
+/* Screen-only container width so previews feel like an actual page.
+   r54 fix (2026-08-04): switched from max-width alone to explicit
+   width. With max-width but no width, browsers compute body's width
+   from content — which is 0 at Recharts' initial layout pass and
+   returns -1 from ResponsiveContainer's measurement. Result: SVGs
+   never render. Explicit width guarantees a measurable parent width
+   through the whole chain. */
 @media screen {
   body {
-    max-width: 7.4in;
+    width: 7.4in;
     margin: 1in auto;
     padding: 1in 0.75in;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
@@ -139,6 +145,12 @@ html, body {
 .print-body {
   orphans: 3;
   widows: 3;
+  /* r54 fix: explicit 100% width propagates through the block-element
+     chain to the chart wrapper divs so Recharts' ResponsiveContainer
+     always has a measurable parent width. Without this, the chain
+     falls back to content-based sizing which can produce -1 dimensions
+     at Recharts' initial mount before ResizeObserver fires. */
+  width: 100%;
 }
 
 /* Headings — mirror the jsPDF hierarchy, plus real page-break control. */
