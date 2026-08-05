@@ -289,26 +289,42 @@ html, body {
  * (a) double <html> wrappers breaking hydration and (b) chart
  * containers having zero measured width in print mode.
  * -------------------------------------------------------------------- */
-.print-body .recharts-wrapper,
-.print-body .recharts-responsive-container {
-  max-width: 100%;
-}
-/* r54 fix (2026-08-04): the previous height:auto !important rule
-   collapsed Recharts SVGs to zero height because it overrode
-   Recharts' inline height:300 attribute. SVGs have viewBox-based
-   intrinsic scaling — no need to force height:auto. Just constrain
-   max-width so wide charts don't overflow the page. */
-.print-body .recharts-wrapper svg,
-.print-body .recharts-responsive-container svg {
-  max-width: 100%;
-}
-/* The div that MarkdownRenderer wraps each chart in — keep it with
-   its preceding heading and never fragment across pages. */
+/* r54 fix (2026-08-04, third round): the chart's parent chain doesn't
+   propagate width reliably in the print route — Recharts'
+   ResponsiveContainer measures 0x0 and gives up. Fix by forcing
+   explicit dimensions on the chart wrapper DIVs so ResponsiveContainer
+   has definite parent geometry to inherit from.
+
+   Confirmed via DevTools:
+     document.querySelector('.recharts-wrapper').parentElement.getBoundingClientRect()
+     → { width: 0, height: 0 }
+
+   The chain (.print-body → .p-8.prose-sm → .my-4 → .w-full →
+   ResponsiveContainer) breaks somewhere. Rather than trace it, force
+   the ResponsiveContainer's grandparent (.my-4) to a fixed height
+   and its immediate parent (.w-full) to inherit that height. */
 .print-body div.my-4 {
   page-break-inside: avoid;
   break-inside: avoid;
   margin: 14pt 0;
-  min-height: 240px; /* room for ResponsiveContainer's default height */
+  width: 100%;
+  height: 320px; /* fixed height so ResponsiveContainer has vertical space */
+}
+.print-body div.my-4 > div {
+  width: 100% !important;
+  height: 100% !important;
+}
+.print-body .recharts-responsive-container {
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 300px;
+  min-height: 280px;
+}
+.print-body .recharts-wrapper {
+  max-width: 100%;
+}
+.print-body .recharts-wrapper svg {
+  max-width: 100%;
 }
 
 /* Horizontal rule. */
