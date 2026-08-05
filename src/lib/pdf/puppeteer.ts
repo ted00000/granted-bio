@@ -122,8 +122,13 @@ export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Arra
 
     // Wait for the client shell in /reports/[id]/print to flip
     // window.__printReady after Recharts finishes painting.
+    // NOTE: this predicate runs in the BROWSER context — must be
+    // plain JS. Earlier version passed a TypeScript-cast string
+    // ('(window as unknown as {...}).__printReady === true') which
+    // is invalid JS and threw SyntaxError on every poll until the
+    // wait timed out ("Waiting failed" in prod).
     await page.waitForFunction(
-      '(window as unknown as { __printReady?: boolean }).__printReady === true',
+      () => (window as unknown as { __printReady?: boolean }).__printReady === true,
       { timeout: opts.readyTimeoutMs ?? 15_000 },
     )
 
