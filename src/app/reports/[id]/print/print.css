@@ -303,35 +303,35 @@ html, body {
   margin: 14pt 0;
 }
 
-/* r54 fix (fifth round): explicit fixed dimensions on the
-   ResponsiveContainer. This wins over Recharts' inline
-   style="width:100%;height:100%" because it uses !important.
-   The RRC then has definite size from FIRST render — no
-   waiting on ResizeObserver, no dependency on parent chain
-   width propagation, no -1 measurement path. Chart-only
-   selectors so blockquotes/tables that share .my-4 stay
-   untouched. */
+/* r54 fix (sixth round): fix bars-missing-in-PDF + whitespace under
+   charts. Prior round forced width/height on the SVG itself via
+   !important, which conflicted with Recharts' internal viewBox
+   computation in headless Chromium (bars rendered at wrong coords
+   or invisible). Also forced height on the wrapper which reserved
+   more vertical space than the chart actually needed.
+
+   Sixth-round approach: force dimensions ONLY on
+   .recharts-responsive-container (that's what fixes the measurement
+   -1 bug) + the outer w-full div. Let Recharts control the wrapper,
+   the SVG's viewBox, and the internal chart drawing. */
 .print-body .recharts-responsive-container {
-  width: 500px !important;
-  height: 300px !important;
-  min-width: 500px !important;
-  min-height: 300px !important;
-}
-.print-body .recharts-wrapper {
-  width: 500px !important;
-  height: 300px !important;
-  max-width: 500px !important;
-}
-.print-body .recharts-wrapper svg {
   width: 500px !important;
   height: 300px !important;
 }
 /* The chart component's outer div (className="w-full"
-   style={{height:300}}) also needs definite width or the
-   RRC's %-based size query returns 0. */
+   style={{height:300}}) needs definite width for the RRC's
+   %-based size query. Match the RRC dimensions exactly. */
 .print-body div.my-4 > div.w-full {
   width: 500px !important;
   height: 300px !important;
+}
+/* Constrain SVGs so wide charts don't overflow, but DON'T force
+   dimensions — Recharts owns the viewBox and internal layout. */
+.print-body .recharts-wrapper {
+  max-width: 100%;
+}
+.print-body .recharts-wrapper svg {
+  max-width: 100%;
 }
 
 /* Horizontal rule. */
