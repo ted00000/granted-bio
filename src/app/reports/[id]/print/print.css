@@ -303,35 +303,44 @@ html, body {
   margin: 14pt 0;
 }
 
-/* r54 fix (sixth round): fix bars-missing-in-PDF + whitespace under
-   charts. Prior round forced width/height on the SVG itself via
-   !important, which conflicted with Recharts' internal viewBox
-   computation in headless Chromium (bars rendered at wrong coords
-   or invisible). Also forced height on the wrapper which reserved
-   more vertical space than the chart actually needed.
-
-   Sixth-round approach: force dimensions ONLY on
-   .recharts-responsive-container (that's what fixes the measurement
-   -1 bug) + the outer w-full div. Let Recharts control the wrapper,
-   the SVG's viewBox, and the internal chart drawing. */
+/* r54 fix (seventh round): reverted sixth-round after it broke
+   charts entirely in the browser. Confirmed the SVG width/height
+   override IS necessary for Recharts to render — without it the
+   chain of measurements collapses.
+   Keep all four dimension overrides (outer div + RRC + wrapper +
+   SVG) since that was the state where charts rendered in the
+   browser. The remaining PDF-only issue (bars invisible) is
+   addressed via headless-Chromium-specific tweaks below. */
 .print-body .recharts-responsive-container {
   width: 500px !important;
   height: 300px !important;
+  min-width: 500px !important;
+  min-height: 300px !important;
 }
-/* The chart component's outer div (className="w-full"
-   style={{height:300}}) needs definite width for the RRC's
-   %-based size query. Match the RRC dimensions exactly. */
 .print-body div.my-4 > div.w-full {
   width: 500px !important;
   height: 300px !important;
 }
-/* Constrain SVGs so wide charts don't overflow, but DON'T force
-   dimensions — Recharts owns the viewBox and internal layout. */
 .print-body .recharts-wrapper {
-  max-width: 100%;
+  width: 500px !important;
+  height: 300px !important;
+  max-width: 500px !important;
+  position: relative !important;
 }
 .print-body .recharts-wrapper svg {
-  max-width: 100%;
+  width: 500px !important;
+  height: 300px !important;
+  display: block !important;
+  /* Force viewBox to match the explicit dimensions — some Chromium
+     versions treat mismatched viewBox as a viewport clip and render
+     bars outside the visible area. */
+  overflow: visible !important;
+}
+/* Ensure chart bar/path elements aren't clipped by any print-media
+   overflow rules. */
+.print-body .recharts-wrapper svg .recharts-bar-rectangle,
+.print-body .recharts-wrapper svg .recharts-rectangle {
+  overflow: visible !important;
 }
 
 /* Horizontal rule. */
