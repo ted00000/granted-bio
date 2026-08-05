@@ -133,9 +133,15 @@ export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Arra
       console.warn(`[pdf][requestfailed] ${req.url()} — ${req.failure()?.errorText}`)
     })
 
+    // Was `networkidle0` (500ms of no network). Recharts + its deps
+    // + progressive hydration keep the network busy long enough that
+    // this can consume the entire budget or time out on its own.
+    // `domcontentloaded` fires as soon as HTML is parsed — much
+    // faster to get to the wait-for-hydration step, which is the
+    // real gate.
     const gotoResponse = await page.goto(opts.url, {
-      waitUntil: 'networkidle0',
-      timeout: 60_000,
+      waitUntil: 'domcontentloaded',
+      timeout: 30_000,
     })
     const status = gotoResponse?.status() ?? 0
     console.log(`[pdf] page.goto completed with status ${status}`)
@@ -143,18 +149,17 @@ export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Arra
       throw new Error(`Print route returned HTTP ${status} — Chromium can't render the page. URL: ${opts.url}`)
     }
 
-    // Wait for the client shell in /reports/[id]/print to flip
-    // window.__printReady after Recharts finishes painting.
-    // PrintShell fails open at 20s (sets __printReady=true even if
-    // some charts didn't paint) so this should always resolve.
+    // Now wait for the client shell to hydrate + charts to paint. Give
+    // it 45s max — Chromium cold start + Recharts hydration + our
+    // 20s fail-open in PrintShell can add up. If PrintShell hasn't
+    // signaled ready by then, dump the page state so we can see
+    // what's actually happening in headless Chromium.
     try {
       await page.waitForFunction(
         () => (window as unknown as { __printReady?: boolean }).__printReady === true,
-        { timeout: opts.readyTimeoutMs ?? 25_000 },
+        { timeout: opts.readyTimeoutMs ?? 45_000, polling: 250 },
       )
     } catch (waitErr) {
-      // Timed out. Dump what we can see about the page state so the
-      // Vercel log tells us exactly what's stuck.
       const state = await page.evaluate(() => ({
         readyState: document.readyState,
         printReady: (window as unknown as { __printReady?: unknown }).__printReady,
@@ -163,6 +168,11 @@ export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Arra
         printBodyExists: !!document.querySelector('.print-body'),
         bodyHTMLLength: document.body?.innerHTML.length ?? 0,
         title: document.title,
+        // Also count how many script tags loaded — helps distinguish
+        // "JS bundle failed" from "JS ran but PrintShell never fired".
+        scriptCount: document.querySelectorAll('script').length,
+        // Look for any React error text on the page.
+        hasReactError: document.body?.innerHTML.includes('Application error') ?? false,
       })).catch((e) => ({ evalErr: String(e) }))
       console.warn(`[pdf] Wait timeout. Page state:`, JSON.stringify(state))
       throw waitErr
