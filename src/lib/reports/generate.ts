@@ -47,15 +47,20 @@ async function updateProgressStage(reportId: string, stage: ProgressStage): Prom
 }
 
 /**
- * Quick check to count projects for a topic before full generation
- * Used to show "limited data" warning if < 5 projects
+ * Quick check to count projects for a topic before full generation.
+ * Used both by the < 5 "limited data" warning and by the preview flow
+ * that shows count-per-interpretation. Pass a higher `matchCount` when
+ * you need actual differentiation between candidate phrasings — the
+ * default 100 exists purely to keep the limited-data check fast.
  */
-export async function checkProjectCount(topic: string): Promise<number> {
-  // Use semantic search to get approximate count
+export async function checkProjectCount(
+  topic: string,
+  matchCount: number = 100
+): Promise<number> {
   const { data, error } = await supabaseAdmin.rpc('search_projects', {
     query_embedding: await getEmbedding(topic),
     match_threshold: 0.25,
-    match_count: 100,
+    match_count: matchCount,
   })
 
   if (error) {

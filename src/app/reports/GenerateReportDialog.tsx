@@ -5,7 +5,7 @@ import { X, AlertTriangle, Loader2, FlaskConical, TrendingUp, CreditCard, Sparkl
 import { useAuth } from '@/contexts/AuthContext'
 
 type Persona = 'researcher' | 'investor'
-type Step = 'input' | 'interpreting' | 'choose-interpretation' | 'checking' | 'confirm' | 'purchasing' | 'generating'
+type Step = 'input' | 'interpreting' | 'choose-interpretation' | 'confirm' | 'purchasing' | 'generating'
 
 interface Interpretation {
   id: 'narrow' | 'standard' | 'broad'
@@ -13,6 +13,11 @@ interface Interpretation {
   description: string
   semanticQuery: string
   keywordQuery: string
+  // Populated by the enhanced interpret-topic endpoint: empirical project
+  // yield for the interpretation's semanticQuery. Null when the count
+  // lookup failed (rare). Displayed as a badge on each card so users
+  // pick with data instead of picking blind.
+  projectCount: number | null
 }
 
 interface GenerateReportDialogProps {
@@ -39,6 +44,11 @@ export function GenerateReportDialog({
   const [error, setError] = useState<string | null>(null)
   const [interpretations, setInterpretations] = useState<Interpretation[]>([])
   const [selectedInterpretation, setSelectedInterpretation] = useState<Interpretation | null>(null)
+  // Second-pass critique + recommendation returned alongside interpretations.
+  // Both are best-effort: the endpoint may return either as null if the
+  // critique call fails; the UI simply hides those sections.
+  const [critique, setCritique] = useState<string | null>(null)
+  const [recommendedId, setRecommendedId] = useState<'narrow' | 'standard' | 'broad' | null>(null)
 
   const { isAdmin, profile } = useAuth()
 
@@ -60,25 +70,31 @@ export function GenerateReportDialog({
   // $199" vs "Generate Anyway").
   const canBypassPayment = isAdmin || (isActiveBeta && !betaCapReached)
 
-  // Step 1: Fetch 3 scoped interpretations of the topic from Claude.
-  // User confirms one before any data lookup or payment happens.
+  // Step 1: Fetch 3 scoped interpretations, their empirical project counts,
+  // and a Claude critique + recommendation. Persona is included so the
+  // critique reasons in the right frame (researcher vs investor). No credit
+  // is deducted; this is the pre-flight preview.
   const fetchInterpretations = async () => {
     if (!topic.trim()) return
 
     setStep('interpreting')
     setError(null)
+    setCritique(null)
+    setRecommendedId(null)
 
     try {
       const response = await fetch('/api/reports/interpret-topic', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic: topic.trim() }),
+        body: JSON.stringify({ topic: topic.trim(), persona }),
       })
       const data = await response.json()
       if (!response.ok) {
         throw new Error(data.error || 'Failed to interpret topic')
       }
       setInterpretations(data.interpretations)
+      setCritique(data.critique ?? null)
+      setRecommendedId(data.recommendedId ?? null)
       setStep('choose-interpretation')
     } catch (e) {
       console.error('Error fetching interpretations:', e)
@@ -87,36 +103,21 @@ export function GenerateReportDialog({
     }
   }
 
-  // Step 2: User picked an interpretation. Now check project count and route
-  // to either limited-data confirm, direct generation, or Stripe purchase.
-  const checkTopic = async (interp: Interpretation) => {
+  // Step 2: User picked an interpretation. Count is already known from the
+  // preview response — no /check-topic round-trip. Route directly to
+  // limited-data confirm (< 5), direct generation (admin/beta), or purchase.
+  const selectInterpretation = async (interp: Interpretation) => {
     setSelectedInterpretation(interp)
-    setStep('checking')
+    const count = interp.projectCount ?? 0
+    setProjectCount(count)
     setError(null)
 
-    try {
-      const response = await fetch(
-        `/api/reports/check-topic?topic=${encodeURIComponent(topic.trim())}`
-      )
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to check topic')
-      }
-
-      setProjectCount(data.project_count)
-
-      if (data.project_count < 5) {
-        setStep('confirm')
-      } else if (canBypassPayment) {
-        await generateReportDirect(false, interp)
-      } else {
-        await purchaseReport(false, interp)
-      }
-    } catch (e) {
-      console.error('Error checking topic:', e)
-      setError(e instanceof Error ? e.message : 'Failed to check topic')
-      setStep('input')
+    if (count < 5) {
+      setStep('confirm')
+    } else if (canBypassPayment) {
+      await generateReportDirect(false, interp)
+    } else {
+      await purchaseReport(false, interp)
     }
   }
 
@@ -325,33 +326,72 @@ export function GenerateReportDialog({
           {step === 'interpreting' && (
             <div className="flex flex-col items-center py-10">
               <Loader2 className="w-8 h-8 text-[#E07A5F] animate-spin mb-3" />
-              <p className="text-gray-900 font-medium mb-1">Interpreting your topic</p>
+              <p className="text-gray-900 font-medium mb-1">Analyzing your topic</p>
               <p className="text-sm text-gray-500 text-center max-w-xs">
-                Generating three search interpretations for you to choose from. Takes about 5 seconds.
+                Generating three search interpretations, checking the data yield of each, and picking a recommendation. Takes about 10 seconds.
               </p>
             </div>
           )}
 
           {step === 'choose-interpretation' && (
             <div className="space-y-3">
-              <p className="text-sm text-gray-600 mb-3">
-                Pick the interpretation that best matches what you want to search for. Each option searches a different scope.
-              </p>
+              {critique ? (
+                <div className="rounded-lg bg-[#E07A5F]/5 border border-[#E07A5F]/20 p-3">
+                  <div className="flex items-center gap-1.5 mb-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[#E07A5F]" />
+                    <span className="text-xs font-semibold text-[#E07A5F] uppercase tracking-wide">
+                      Recommendation
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-700 leading-snug">{critique}</p>
+                </div>
+              ) : (
+                <p className="text-sm text-gray-600">
+                  Pick the interpretation that best matches what you want to search for. Each option searches a different scope.
+                </p>
+              )}
               {interpretations.map((interp) => {
                 const Icon =
                   interp.id === 'narrow' ? Telescope : interp.id === 'standard' ? Compass : Globe
+                const isRecommended = recommendedId === interp.id
                 return (
                   <button
                     key={interp.id}
-                    onClick={() => checkTopic(interp)}
-                    className="w-full text-left p-4 rounded-lg border-2 border-gray-200 hover:border-[#E07A5F] hover:bg-[#E07A5F]/5 transition-all"
+                    onClick={() => selectInterpretation(interp)}
+                    className={`w-full text-left p-4 rounded-lg border-2 transition-all ${
+                      isRecommended
+                        ? 'border-[#E07A5F] bg-[#E07A5F]/5 hover:bg-[#E07A5F]/10'
+                        : 'border-gray-200 hover:border-[#E07A5F] hover:bg-[#E07A5F]/5'
+                    }`}
                   >
                     <div className="flex items-start gap-3">
                       <Icon className="w-5 h-5 text-[#E07A5F] flex-shrink-0 mt-0.5" />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-baseline gap-2 mb-1">
-                          <span className="text-sm font-semibold text-gray-900">{interp.label}</span>
-                          <span className="text-xs text-gray-500">{interp.description}</span>
+                        <div className="flex items-center justify-between gap-2 mb-1">
+                          <div className="flex items-baseline gap-2 min-w-0">
+                            <span className="text-sm font-semibold text-gray-900">{interp.label}</span>
+                            <span className="text-xs text-gray-500 truncate">{interp.description}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 flex-shrink-0">
+                            {isRecommended && (
+                              <span className="inline-block px-1.5 py-0.5 text-[10px] font-semibold bg-[#E07A5F] text-white rounded uppercase tracking-wide">
+                                Recommended
+                              </span>
+                            )}
+                            <span
+                              className={`inline-block px-2 py-0.5 text-xs font-semibold rounded ${
+                                interp.projectCount === null
+                                  ? 'bg-gray-100 text-gray-500'
+                                  : interp.projectCount < 5
+                                    ? 'bg-amber-100 text-amber-800'
+                                    : 'bg-emerald-100 text-emerald-800'
+                              }`}
+                            >
+                              {interp.projectCount === null
+                                ? '— projects'
+                                : `${interp.projectCount} project${interp.projectCount === 1 ? '' : 's'}`}
+                            </span>
+                          </div>
                         </div>
                         <p className="text-sm text-gray-700 mb-2 leading-snug">
                           &ldquo;{interp.semanticQuery}&rdquo;
@@ -376,13 +416,6 @@ export function GenerateReportDialog({
                   </button>
                 )
               })}
-            </div>
-          )}
-
-          {step === 'checking' && (
-            <div className="flex flex-col items-center py-8">
-              <Loader2 className="w-8 h-8 text-[#E07A5F] animate-spin mb-3" />
-              <p className="text-gray-600">Checking available data...</p>
             </div>
           )}
 
