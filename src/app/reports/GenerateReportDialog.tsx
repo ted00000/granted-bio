@@ -501,7 +501,7 @@ export function GenerateReportDialog({
                   setStep('input')
                   setError(null)
                 }}
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-[#E07A5F] rounded-lg hover:bg-[#C96A4F] transition-colors"
               >
                 Back
               </button>
