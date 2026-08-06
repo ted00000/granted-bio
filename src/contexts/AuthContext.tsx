@@ -26,6 +26,16 @@ interface AuthContextType {
   isAdmin: boolean
   isAssociate: boolean
   isLoading: boolean
+  /**
+   * True when there IS an authenticated user (JWT cookie is valid,
+   * middleware let us in) but the client-side profile fetch has
+   * exhausted its retry budget without success. UI should surface a
+   * "session needs refresh" affordance rather than silently rendering
+   * as unprivileged — this is the "nether state" (server sees admin,
+   * client sees no profile, admin links vanish). Reload usually
+   * resolves it.
+   */
+  profileLoadFailed: boolean
   signOut: () => Promise<void>
   refetchUsage: () => Promise<void>
   refetchProfile: () => Promise<void>
@@ -38,6 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [usage, setUsage] = useState<UsageData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [profileLoadFailed, setProfileLoadFailed] = useState(false)
 
   const supabase = createBrowserSupabaseClient()
 
@@ -46,16 +57,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // definitively missing (PostgREST error code PGRST116 = "no rows"),
   // and { found: 'error' } for transient failures (network, perm).
   //
-  // Callers use the missing case to detect ghost sessions — cookies
-  // whose underlying auth.users row was deleted (cascade-removing
-  // user_profiles) but whose JWT is still valid until expiry.
+  // The three failure modes this retry policy handles:
+  //   - Fresh-signup commit lag. Supabase auth trigger inserts
+  //     user_profiles asynchronously; a brief window can return
+  //     PGRST116 on the first read but succeed on retry.
+  //   - Token-refresh race (the "nether state" bug). When Supabase
+  //     auto-refreshes the JWT (every ~55min), there's a small window
+  //     where the client's cached token is stale. RLS uses auth.uid()
+  //     from the JWT to gate row visibility, so a stale JWT returns
+  //     zero rows — indistinguishable from a truly-missing row without
+  //     forcing a fresh session. We call refreshSession() before the
+  //     final PGRST116 retry to distinguish real ghost sessions from
+  //     this race.
+  //   - Transient network / cold-start / connection reset. Previously
+  //     these hit `{found: 'error'}` and had NO retry path — one bad
+  //     network moment left the user stranded with profile=null (admin
+  //     link vanishes, "nether state") until manual reload. Now all
+  //     transient failures share the same retry backoff.
   //
-  // For a brand-new sign-up there's a brief window between the
-  // Supabase auth trigger inserting user_profiles and that row being
-  // visible to client reads (replication lag / pooler caching /
-  // transaction visibility). To avoid misclassifying that race as a
-  // ghost, we retry once with a short delay on the first PGRST116.
-  // A real ghost stays missing on the retry; a new sign-up resolves.
+  // Callers use the definitive `{found: false}` result (real ghost —
+  // JWT valid but auth.users row deleted) to trigger sign-out cleanup.
+  // Anything else keeps the session intact.
   const fetchProfile = useCallback(
     async (
       userId: string
@@ -118,13 +140,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { found: 'error' }
       }
 
-      const first = await tryOnce()
-      if (first.found !== false) return first
+      // Attempt 1: fast path. Most sessions succeed here.
+      let result = await tryOnce()
+      if (result.found === true) return result
 
-      // First read returned PGRST116. Retry once after a short delay
-      // to absorb a fresh-signup commit lag before declaring ghost.
-      await new Promise((resolve) => setTimeout(resolve, 1200))
-      return await tryOnce()
+      // Retry schedule: 500ms, 1.2s, 2s (3 additional attempts). Applies
+      // to both PGRST116 (row missing) and transient errors — same
+      // backoff, different meanings. On the final attempt, if we're
+      // still seeing PGRST116, force a session refresh to rule out a
+      // stale-JWT race before declaring ghost. If refresh throws, the
+      // session is dead and we let the ghost path take over.
+      const BACKOFFS_MS = [500, 1200, 2000]
+      for (let i = 0; i < BACKOFFS_MS.length; i++) {
+        await new Promise((resolve) => setTimeout(resolve, BACKOFFS_MS[i]))
+
+        const isLastAttempt = i === BACKOFFS_MS.length - 1
+        if (isLastAttempt && result.found === false) {
+          try {
+            await supabase.auth.refreshSession()
+          } catch (e) {
+            console.warn(
+              '[AuthContext] refreshSession failed before ghost declaration:',
+              e
+            )
+          }
+        }
+
+        result = await tryOnce()
+        if (result.found === true) return result
+      }
+      return result
     },
     [supabase]
   )
@@ -178,6 +223,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null)
         setProfile(null)
         setUsage(null)
+        setProfileLoadFailed(false)
       }
     }
 
@@ -204,6 +250,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               `[AuthContext] ghost session detected for ${user.id} — signing out`
             )
             await cleanupGhostSession()
+          } else if (profileResult.found === 'error') {
+            // Transient failure survived all retries. Session is valid
+            // but profile couldn't be hydrated — flag it so UI can
+            // surface a reload affordance instead of silently rendering
+            // the nether state (admin link vanishes, tier reads free).
+            console.warn(
+              `[AuthContext] profile load failed for ${user.id} after retries — flagging profileLoadFailed`
+            )
+            if (!cancelled) setProfileLoadFailed(true)
+          } else if (!cancelled) {
+            setProfileLoadFailed(false)
           }
         }
       }
@@ -235,6 +292,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(null)
           setProfile(null)
           setUsage(null)
+          setProfileLoadFailed(false)
           return
         }
 
@@ -248,6 +306,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               `[AuthContext] ghost session detected for ${newUser.id} — signing out`
             )
             await cleanupGhostSession()
+          } else if (profileResult.found === 'error') {
+            console.warn(
+              `[AuthContext] profile load failed for ${newUser.id} after retries — flagging profileLoadFailed`
+            )
+            if (!cancelled) setProfileLoadFailed(true)
+          } else if (!cancelled) {
+            setProfileLoadFailed(false)
           }
         }
         // Other events without a session (rare in practice) are
@@ -303,10 +368,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     setProfile(null)
     setUsage(null)
+    setProfileLoadFailed(false)
   }, [supabase])
 
   const refetchProfile = useCallback(async () => {
-    if (user) await fetchProfile(user.id)
+    if (!user) return
+    const result = await fetchProfile(user.id)
+    // Keep profileLoadFailed in sync when callers manually retry —
+    // otherwise a successful retry would leave the flag stuck at true
+    // and the reload prompt would stay visible even after recovery.
+    if (result.found === true) {
+      setProfileLoadFailed(false)
+    } else if (result.found === 'error') {
+      setProfileLoadFailed(true)
+    }
+    // {found: false} keeps the flag as-is; the caller (or the auth
+    // state machine) will trigger ghost cleanup separately if needed.
   }, [user, fetchProfile])
 
   const value: AuthContextType = {
@@ -316,6 +393,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAdmin: profile?.role === 'admin',
     isAssociate: profile?.role === 'associate',
     isLoading,
+    profileLoadFailed,
     signOut,
     refetchUsage,
     refetchProfile

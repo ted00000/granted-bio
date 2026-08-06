@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Users, Settings, Shield } from 'lucide-react'
+import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Users, Settings, Shield, LogIn, RefreshCw } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { useAuth } from '@/contexts/AuthContext'
 import { getDisplayedSearchLimit } from '@/lib/stripe/config'
@@ -18,7 +18,7 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
-  const { isAdmin, isAssociate, usage, signOut, profile } = useAuth()
+  const { user, isAdmin, isAssociate, usage, signOut, profile, profileLoadFailed } = useAuth()
   // Read the displayed name from AuthContext directly so every
   // AppLayout-wrapped surface (reports, account, projects, etc.)
   // shows it consistently — previously only /chat passed userName
@@ -149,95 +149,125 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
             </div>
           </Link>
 
-          {/* Divider */}
-          <div className="py-2">
-            <div className="border-t border-gray-100" />
-          </div>
+          {/* Saved-work nav — gated on `user`. These pages require a
+              session to read from (RLS returns empty otherwise), so
+              showing them to logged-out users is a UX bait-and-switch.
+              Also fixes the misleading "nether state" appearance where
+              the sidebar previously looked mostly-logged-in even after
+              a session drop. */}
+          {user && (
+            <>
+              {/* Divider */}
+              <div className="py-2">
+                <div className="border-t border-gray-100" />
+              </div>
 
-          {/* My Projects Link */}
-          <Link
-            href="/projects"
-            onClick={() => setIsOpen(false)}
-            className={`
-              w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
-              transition-all duration-150
-              ${pathname === '/projects'
-                ? 'bg-gray-50 text-gray-900'
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-              }
-            `}
-          >
-            <FlaskConical
-              className={`w-5 h-5 flex-shrink-0 ${pathname === '/projects' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
-              strokeWidth={pathname === '/projects' ? 2 : 1.5}
-            />
-            <div className="min-w-0">
-              <div className={`text-sm font-medium ${pathname === '/projects' ? 'text-gray-900' : ''}`}>
-                My Projects
-              </div>
-              <div className="text-xs text-gray-400 truncate">
-                Saved projects
-              </div>
-            </div>
-          </Link>
+              {/* My Projects Link */}
+              <Link
+                href="/projects"
+                onClick={() => setIsOpen(false)}
+                className={`
+                  w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                  transition-all duration-150
+                  ${pathname === '/projects'
+                    ? 'bg-gray-50 text-gray-900'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }
+                `}
+              >
+                <FlaskConical
+                  className={`w-5 h-5 flex-shrink-0 ${pathname === '/projects' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                  strokeWidth={pathname === '/projects' ? 2 : 1.5}
+                />
+                <div className="min-w-0">
+                  <div className={`text-sm font-medium ${pathname === '/projects' ? 'text-gray-900' : ''}`}>
+                    My Projects
+                  </div>
+                  <div className="text-xs text-gray-400 truncate">
+                    Saved projects
+                  </div>
+                </div>
+              </Link>
 
-          {/* My People Link */}
-          <Link
-            href="/people"
-            onClick={() => setIsOpen(false)}
-            className={`
-              w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
-              transition-all duration-150
-              ${pathname === '/people'
-                ? 'bg-gray-50 text-gray-900'
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-              }
-            `}
-          >
-            <Users
-              className={`w-5 h-5 flex-shrink-0 ${pathname === '/people' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
-              strokeWidth={pathname === '/people' ? 2 : 1.5}
-            />
-            <div className="min-w-0">
-              <div className={`text-sm font-medium ${pathname === '/people' ? 'text-gray-900' : ''}`}>
-                My People
-              </div>
-              <div className="text-xs text-gray-400 truncate">
-                Saved researchers
-              </div>
-            </div>
-          </Link>
+              {/* My People Link */}
+              <Link
+                href="/people"
+                onClick={() => setIsOpen(false)}
+                className={`
+                  w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                  transition-all duration-150
+                  ${pathname === '/people'
+                    ? 'bg-gray-50 text-gray-900'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }
+                `}
+              >
+                <Users
+                  className={`w-5 h-5 flex-shrink-0 ${pathname === '/people' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                  strokeWidth={pathname === '/people' ? 2 : 1.5}
+                />
+                <div className="min-w-0">
+                  <div className={`text-sm font-medium ${pathname === '/people' ? 'text-gray-900' : ''}`}>
+                    My People
+                  </div>
+                  <div className="text-xs text-gray-400 truncate">
+                    Saved researchers
+                  </div>
+                </div>
+              </Link>
 
-          {/* My Trials Link */}
-          <Link
-            href="/trials"
-            onClick={() => setIsOpen(false)}
-            className={`
-              w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
-              transition-all duration-150
-              ${pathname === '/trials'
-                ? 'bg-gray-50 text-gray-900'
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-              }
-            `}
-          >
-            <Activity
-              className={`w-5 h-5 flex-shrink-0 ${pathname === '/trials' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
-              strokeWidth={pathname === '/trials' ? 2 : 1.5}
-            />
-            <div className="min-w-0">
-              <div className={`text-sm font-medium ${pathname === '/trials' ? 'text-gray-900' : ''}`}>
-                My Trials
-              </div>
-              <div className="text-xs text-gray-400 truncate">
-                Saved trials
-              </div>
-            </div>
-          </Link>
+              {/* My Trials Link */}
+              <Link
+                href="/trials"
+                onClick={() => setIsOpen(false)}
+                className={`
+                  w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                  transition-all duration-150
+                  ${pathname === '/trials'
+                    ? 'bg-gray-50 text-gray-900'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }
+                `}
+              >
+                <Activity
+                  className={`w-5 h-5 flex-shrink-0 ${pathname === '/trials' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                  strokeWidth={pathname === '/trials' ? 2 : 1.5}
+                />
+                <div className="min-w-0">
+                  <div className={`text-sm font-medium ${pathname === '/trials' ? 'text-gray-900' : ''}`}>
+                    My Trials
+                  </div>
+                  <div className="text-xs text-gray-400 truncate">
+                    Saved trials
+                  </div>
+                </div>
+              </Link>
+            </>
+          )}
         </nav>
 
         {/* Bottom section */}
         <div className="flex-shrink-0 border-t border-gray-100 p-3 space-y-1">
+          {/* Nether-state recovery affordance: server-side session is
+              valid (middleware let us in and `user` is populated) but
+              client-side profile fetch exhausted its retry budget.
+              Renders a subtle Reload prompt so the user can fix it
+              instead of being stuck without their name, tier, or admin
+              link. Only visible when we're SURE this is the failure
+              state (user AND profileLoadFailed both true), so it
+              never appears for legitimately-logged-out visitors. */}
+          {user && profileLoadFailed && (
+            <button
+              onClick={() => window.location.reload()}
+              className="w-full mb-1 flex items-center gap-2 px-3 py-2 text-xs rounded-lg bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors"
+              title="Session profile couldn't be loaded. Reload to retry."
+            >
+              <RefreshCw className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="text-left leading-tight">
+                Session hiccup — reload to refresh
+              </span>
+            </button>
+          )}
           {userName && (
             <div className="px-3 py-2 text-sm text-gray-500 truncate flex items-center gap-2">
               <span className="truncate">{userName}</span>
@@ -293,51 +323,73 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
               </Link>
             )
           })()}
-          <Link
-            href="/account"
-            onClick={() => setIsOpen(false)}
-            className={`
-              w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
-              transition-all duration-150
-              ${pathname === '/account'
-                ? 'bg-gray-50 text-gray-900'
-                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-              }
-            `}
-          >
-            <Settings
-              className={`w-5 h-5 flex-shrink-0 ${pathname === '/account' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
-              strokeWidth={pathname === '/account' ? 2 : 1.5}
-            />
-            <span className={`text-sm ${pathname === '/account' ? 'font-medium' : ''}`}>Account</span>
-          </Link>
-          {isAdmin && (
+          {user ? (
+            <>
+              <Link
+                href="/account"
+                onClick={() => setIsOpen(false)}
+                className={`
+                  w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                  transition-all duration-150
+                  ${pathname === '/account'
+                    ? 'bg-gray-50 text-gray-900'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }
+                `}
+              >
+                <Settings
+                  className={`w-5 h-5 flex-shrink-0 ${pathname === '/account' ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                  strokeWidth={pathname === '/account' ? 2 : 1.5}
+                />
+                <span className={`text-sm ${pathname === '/account' ? 'font-medium' : ''}`}>Account</span>
+              </Link>
+              {isAdmin && (
+                <Link
+                  href="/admin"
+                  onClick={() => setIsOpen(false)}
+                  className={`
+                    w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                    transition-all duration-150
+                    ${pathname?.startsWith('/admin')
+                      ? 'bg-gray-50 text-gray-900'
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    }
+                  `}
+                >
+                  <Shield
+                    className={`w-5 h-5 flex-shrink-0 ${pathname?.startsWith('/admin') ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                    strokeWidth={pathname?.startsWith('/admin') ? 2 : 1.5}
+                  />
+                  <span className={`text-sm ${pathname?.startsWith('/admin') ? 'font-medium' : ''}`}>Admin</span>
+                </Link>
+              )}
+              <button
+                onClick={handleSignOut}
+                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all"
+              >
+                <LogOut className="w-5 h-5 text-gray-400" strokeWidth={1.5} />
+                <span className="text-sm">Sign out</span>
+              </button>
+            </>
+          ) : (
+            // Logged-out state. Not all AppLayout-wrapped pages are
+            // middleware-protected (only /chat and /admin/* are), so
+            // this sidebar can render for anon visitors on /reports,
+            // /people, /trials, /account, /projects. Previously it
+            // showed the whole user-nav to those visitors, which was
+            // misleading (RLS returns empty and pages sit there
+            // showing "no saved X"). Now we show a single Sign-in
+            // CTA that routes back to the landing page with an
+            // intent hint so post-login navigation returns them.
             <Link
-              href="/admin"
+              href={`/?redirect=${encodeURIComponent(pathname || '/')}`}
               onClick={() => setIsOpen(false)}
-              className={`
-                w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
-                transition-all duration-150
-                ${pathname?.startsWith('/admin')
-                  ? 'bg-gray-50 text-gray-900'
-                  : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }
-              `}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left bg-[#E07A5F] text-white hover:bg-[#C96A4F] transition-colors"
             >
-              <Shield
-                className={`w-5 h-5 flex-shrink-0 ${pathname?.startsWith('/admin') ? 'text-[#E07A5F]' : 'text-gray-400'}`}
-                strokeWidth={pathname?.startsWith('/admin') ? 2 : 1.5}
-              />
-              <span className={`text-sm ${pathname?.startsWith('/admin') ? 'font-medium' : ''}`}>Admin</span>
+              <LogIn className="w-5 h-5 flex-shrink-0" strokeWidth={1.75} />
+              <span className="text-sm font-medium">Sign in</span>
             </Link>
           )}
-          <button
-            onClick={handleSignOut}
-            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all"
-          >
-            <LogOut className="w-5 h-5 text-gray-400" strokeWidth={1.5} />
-            <span className="text-sm">Sign out</span>
-          </button>
           <div className="flex items-center justify-center gap-4 pt-2 text-xs text-gray-400">
             <Link href="/privacy" className="hover:text-gray-600">Privacy</Link>
             <Link href="/terms" className="hover:text-gray-600">Terms</Link>
