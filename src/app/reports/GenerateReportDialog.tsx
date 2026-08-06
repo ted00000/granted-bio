@@ -204,10 +204,15 @@ export function GenerateReportDialog({
         onClick={onClose}
       />
 
-      {/* Dialog */}
-      <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md">
+      {/* Dialog. Column layout with a max height + scrollable middle so
+          long content (multi-sentence critique on the interpretation
+          picker step, plus three interpretation cards) never overflows
+          the viewport. Previously the dialog had no height cap and long
+          Claude critiques pushed the picker cards off the top of the
+          screen with no way to scroll to them. */}
+      <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+        <div className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <h2 className="text-lg font-semibold text-gray-900">
             Generate Intelligence Report
           </h2>
@@ -219,8 +224,8 @@ export function GenerateReportDialog({
           </button>
         </div>
 
-        {/* Content */}
-        <div className="px-6 py-4">
+        {/* Content — scrollable when it exceeds the dialog's max height. */}
+        <div className="flex-1 min-h-0 overflow-y-auto px-6 py-4">
           {/* Beta progress indicator — visible at every step inside the dialog */}
           {isActiveBeta && (
             <div className={`mb-4 rounded-lg border px-3 py-2 text-sm ${
@@ -468,8 +473,9 @@ export function GenerateReportDialog({
           )}
         </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100">
+        {/* Footer — pinned to the bottom of the dialog so buttons stay
+            reachable even when the middle content scrolls. */}
+        <div className="flex-shrink-0 flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-100">
           {step === 'input' && (
             <>
               <button

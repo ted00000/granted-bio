@@ -60,6 +60,18 @@ Return ONLY this JSON object, no markdown code fences:
 // Second-pass critique prompt. Called after we have the three interpretations
 // AND their empirical project counts. Sonnet gets the actual yield numbers
 // plus the user's persona so it can reason like a human helper would.
+//
+// HARD length cap enforced in the prompt because Sonnet ignores "2-4
+// sentences" left-loose and can spill into 8+ sentence essays that overflow
+// the dialog. Word budget is a stronger signal than sentence count.
+//
+// Close-count guidance: when narrow/standard/broad return counts within
+// ~10% of each other, the raw number is noise (semantic search is
+// picking up the same core pool with different edge cases). In that
+// regime the recommendation should hinge on VOCABULARY QUALITY and
+// PERSONA FIT, not "narrow returned 5 more, pick narrow." Baking this
+// into the prompt because Sonnet was defaulting to raw-count reasoning
+// and picking narrow when standard was the better semantic match.
 const CRITIQUE_PROMPT = `A user is about to generate a paid intelligence report on their topic. Three search interpretations have been generated and we ran the semantic-search yield for each. Help the user pick.
 
 User topic: "{topic}"
@@ -68,15 +80,23 @@ Persona: {persona}
 Interpretations with empirical project yield:
 {interpretationsWithCounts}
 
-Write a critique that helps the user choose. Consider:
-- Which interpretation is likely to produce the best report for this persona (researcher = depth + methodology diversity; investor = market context + commercial signal).
-- Whether the industry uses a different preferred term than the user's phrasing (e.g. "radioligand therapy" is Novartis's marketing term for Pluvicto, "radiopharmaceuticals" is the older academic term). If so, call it out.
-- Whether one interpretation dilutes the topic with too many adjacencies, or another is too narrow to fill a full report.
-- If counts differ dramatically (e.g. 25 vs 200), what that means for report depth.
+Write a critique that helps the user choose. Reasoning heuristics:
+
+1. Count deltas within ~10% of each other are NOISE, not signal. Do not recommend based on "X yields 5 more projects than Y." When counts are close, decide on VOCABULARY QUALITY and PERSONA FIT.
+
+2. Persona-specific priors:
+   - RESEARCHER: Usually pick STANDARD when it uses the field's actual technical vocabulary (e.g. ctDNA/cfDNA for liquid biopsy, PSMA/lutetium for radiopharmaceuticals, MERFISH/Visium for spatial transcriptomics). Researchers search using those terms; a report anchored on them matches how the audience thinks. NARROW only wins when the topic is already a precise field term.
+   - INVESTOR: Usually pick STANDARD for commercial industry vocabulary (what deal-flow announcements and pitch decks use). BROAD only when the user's topic is clearly a category rather than a specific modality and they need adjacent-technology context for market sizing.
+
+3. Only recommend NARROW when the user's phrasing is already the community-standard technical term AND expanding it would dilute results. Only recommend BROAD when the topic is genuinely a category label and the user needs adjacent-market context.
+
+4. If a specific vocabulary mismatch exists (e.g. user says "radiopharmaceuticals" but Novartis markets Pluvicto as "radioligand therapy"), flag it in one clause.
+
+HARD LIMIT: maximum 3 sentences OR 60 words, whichever is shorter. Direct, no hedging, no throat-clearing ("It's worth noting that...", "One should consider..."). Just the reasoning + the pick.
 
 Return ONLY this JSON object, no markdown code fences, no em dashes:
 {
-  "critique": "2-4 sentence paragraph. Direct, no hedging. Reference the actual counts and vocabulary where relevant.",
+  "critique": "...",
   "recommendedId": "narrow" | "standard" | "broad"
 }`
 
