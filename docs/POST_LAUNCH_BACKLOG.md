@@ -1,4 +1,4 @@
-# Parking Lot — 05AUG2026
+# Parking Lot — 06AUG2026
 
 Consolidated nice-to-haves accumulated during the multi-month pre-launch
 build. Pulled from `LANDING_AND_CREDITS_PLAN.md`, `PLATFORM_PLANNING.md`,
@@ -175,6 +175,23 @@ are the improvement callouts, ranked by impact.
 
 ## Tech debt / parking lot
 
+- **Middleware auth coverage — extend beyond `/chat` and `/admin/*`.**
+  Current matcher in `src/middleware.ts:65-80` only guards `/chat` and
+  `/admin/*`. Every other AppLayout-wrapped page (`/reports`, `/people`,
+  `/trials`, `/account`, `/projects`, `/report/[id]` detail routes)
+  renders for logged-out visitors — the pages themselves just show
+  empty states because RLS blocks the underlying queries. Not a
+  security hole (row-level enforcement is intact), but it's a UX
+  "nether state" for anon visitors: they see the app shell + sidebar
+  + page frame with nothing in it, no indication that sign-in is what
+  they need. The 2026-08-06 sidebar fix (commit `80afdd2`) added a
+  "Sign in" CTA in the sidebar footer when `!user`, which is the
+  minimum viable band-aid. Real fix: audit each AppLayout route,
+  decide gate vs. anon-preview, extend middleware to redirect the
+  gated ones with `?redirect=` preserved. Trigger: any user report
+  of "why does this page look broken," OR when we build a marketing
+  flow that deep-links to an authed page and needs graceful anon
+  handling.
 - **React Query adoption** — parking-lot item from
   `PLATFORM_PLANNING.md` §9.9. Trigger: caching/deduplication pain.
   Would replace manual `fetch` calls, add auto-refetch.
