@@ -1,7 +1,7 @@
 // Chrome wrapper used by the four "drill-down" detail pages — project,
 // trial, patent, publication. For logged-in users it renders the
 // standard AppLayout (Sidebar + main). For logged-out visitors (who
-// followed a link from /sample/liquid-biopsy) it renders the marketing
+// followed a link from /sample/<slug>) it renders the marketing
 // nav and a soft-gate banner instead — same content underneath, no
 // hard auth wall.
 //

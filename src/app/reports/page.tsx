@@ -64,11 +64,11 @@ function ReportsLanding() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
-                href="/sample/liquid-biopsy"
+                href="/samples"
                 className="inline-flex items-center gap-2 px-5 py-3 border border-gray-200 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
               >
                 <Sparkles className="w-4 h-4 text-[#E07A5F]" />
-                See a Sample Report
+                See Sample Reports
               </Link>
               <button
                 type="button"

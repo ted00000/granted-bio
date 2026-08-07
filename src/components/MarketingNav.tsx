@@ -9,10 +9,15 @@ import { SignUpModal } from '@/components/SignUpModal'
 import { useOptionalAuth } from '@/contexts/AuthContext'
 
 // Match a nav link against the current pathname. Uses startsWith so
-// nested sample/report routes (e.g. /sample/liquid-biopsy → /sample,
+// nested sample/report routes (e.g. /sample/liquid-biopsy → /samples,
 // /reports/[id] → /reports) still light up their parent nav item.
+// The Samples link owns both /samples (index) AND /sample/<slug>
+// (individual sample pages) so the nav item stays active as visitors
+// drill into a specific sample.
 function isActive(pathname: string, href: string): boolean {
-  if (href === '/sample/liquid-biopsy') return pathname.startsWith('/sample')
+  if (href === '/samples') {
+    return pathname === '/samples' || pathname.startsWith('/sample/')
+  }
   return pathname === href || pathname.startsWith(`${href}/`)
 }
 
@@ -69,10 +74,10 @@ export function MarketingNav() {
             Home
           </Link>
           <Link
-            href="/sample/liquid-biopsy"
-            className={linkClass('/sample/liquid-biopsy')}
+            href="/samples"
+            className={linkClass('/samples')}
           >
-            Sample
+            Samples
           </Link>
           <Link
             href="/reports"

@@ -64,7 +64,7 @@ export default function Home() {
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
-                    href="/sample/liquid-biopsy"
+                    href="/samples"
                     className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
                   >
                     See a Sample Report
@@ -268,10 +268,10 @@ export default function Home() {
             </p>
             <div className="text-center mt-6">
               <Link
-                href="/sample/liquid-biopsy"
+                href="/samples"
                 className="inline-flex items-center gap-2 text-[#E07A5F] hover:text-[#C96A4F] font-medium text-sm"
               >
-                See the full sample report
+                See the full sample reports
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -438,7 +438,7 @@ export default function Home() {
                     who's leading, and where the opportunity gaps sit. Generated in two minutes.
                   </p>
                   <Link
-                    href="/sample/liquid-biopsy"
+                    href="/samples"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
                   >
                     See a Sample Report
