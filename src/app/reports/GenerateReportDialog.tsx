@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { X, AlertTriangle, Loader2, FlaskConical, TrendingUp, CreditCard, Sparkles, Telescope, Compass, Globe } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
+import { postWithJsonRetry } from '@/lib/fetch-with-retry'
 
 type Persona = 'researcher' | 'investor'
 type Step = 'input' | 'interpreting' | 'choose-interpretation' | 'confirm' | 'purchasing' | 'generating'
@@ -121,14 +122,21 @@ export function GenerateReportDialog({
     }
   }
 
-  // Admin-only: Generate report directly without payment
+  // Admin-only: Generate report directly without payment.
+  //
+  // Uses postWithJsonRetry to absorb the Vercel cold-start / transient
+  // 5xx pattern that surfaced 2026-08-07: first click showed "Failed
+  // to parse JSON" (client couldn't parse a truncated body), second
+  // click succeeded because the function was warm. The helper retries
+  // once on non-JSON body or 5xx, so users no longer see the transient
+  // failure at all.
   const generateReportDirect = async (dataLimited: boolean, interp?: Interpretation) => {
     setStep('generating')
     setError(null)
     const chosen = interp ?? selectedInterpretation
 
     try {
-      const response = await fetch('/api/reports', {
+      const { ok, data } = await postWithJsonRetry('/api/reports', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -140,10 +148,9 @@ export function GenerateReportDialog({
         }),
       })
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to generate report')
+      if (!ok) {
+        const errorData = data as { error?: string }
+        throw new Error(errorData.error || 'Failed to generate report')
       }
 
       // Report generation started - stay on generating step so user sees the message
