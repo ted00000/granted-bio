@@ -84,18 +84,23 @@ export function GenerateReportDialog({
     setRecommendedId(null)
 
     try {
-      const response = await fetch('/api/reports/interpret-topic', {
+      const { ok, data } = await postWithJsonRetry('/api/reports/interpret-topic', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic: topic.trim(), persona }),
       })
-      const data = await response.json()
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to interpret topic')
+      const payload = data as {
+        error?: string
+        interpretations?: Interpretation[]
+        critique?: string | null
+        recommendedId?: 'narrow' | 'standard' | 'broad' | null
       }
-      setInterpretations(data.interpretations)
-      setCritique(data.critique ?? null)
-      setRecommendedId(data.recommendedId ?? null)
+      if (!ok) {
+        throw new Error(payload.error || 'Failed to interpret topic')
+      }
+      setInterpretations(payload.interpretations ?? [])
+      setCritique(payload.critique ?? null)
+      setRecommendedId(payload.recommendedId ?? null)
       setStep('choose-interpretation')
     } catch (e) {
       console.error('Error fetching interpretations:', e)
@@ -168,8 +173,11 @@ export function GenerateReportDialog({
     const chosen = interp ?? selectedInterpretation
 
     try {
-      // Create Stripe checkout session for report purchase
-      const response = await fetch('/api/stripe/checkout', {
+      // Create Stripe checkout session for report purchase.
+      // postWithJsonRetry absorbs cold-start / transient 5xx (see
+      // src/lib/fetch-with-retry.ts). 401 is preserved as a hard
+      // failure since it's a real auth state, not a transient hiccup.
+      const { ok, status, data } = await postWithJsonRetry('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -181,20 +189,20 @@ export function GenerateReportDialog({
         }),
       })
 
-      const data = await response.json()
+      const payload = data as { error?: string; url?: string }
 
-      if (!response.ok) {
-        if (response.status === 401) {
+      if (!ok) {
+        if (status === 401) {
           // User not logged in
           window.location.href = '/?redirect=/reports'
           return
         }
-        throw new Error(data.error || 'Failed to start checkout')
+        throw new Error(payload.error || 'Failed to start checkout')
       }
 
-      if (data.url) {
+      if (payload.url) {
         // Redirect to Stripe checkout
-        window.location.href = data.url
+        window.location.href = payload.url
       }
     } catch (e) {
       console.error('Error starting checkout:', e)
