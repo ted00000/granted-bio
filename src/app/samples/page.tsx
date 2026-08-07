@@ -45,7 +45,7 @@ const SAMPLES: Sample[] = [
     modality: 'Therapeutics',
     personaLabel: 'Research persona',
     description:
-      "One of oncology's fastest-growing modalities. Pluvicto-class radioligand therapies, PSMA/DOTATATE targeting, and the pipeline of alpha- and beta-emitter programs behind $6B+ of recent M&A.",
+      "The oncology modality behind Pluvicto and Lutathera. PSMA and DOTATATE targeting, alpha- and beta-emitter pipelines, and the theranostic platform companies that emerged from the 2023-2024 M&A cycle.",
     reportId: '3b638569-8d3e-40c5-96a6-ca6c69c1d798',
     isNew: true,
   },
