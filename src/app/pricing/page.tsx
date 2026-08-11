@@ -41,7 +41,7 @@ export default function PricingPage() {
           {/* Intelligence Reports — primary */}
           <div className="bg-white rounded-2xl border-2 border-[#E07A5F] p-8 relative shadow-sm">
             <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#E07A5F] text-white text-xs font-medium rounded-full">
-              Get the report
+              Get the analysis
             </div>
 
             <div className="mb-6">
@@ -49,22 +49,22 @@ export default function PricingPage() {
                 <div className="w-8 h-8 rounded-lg bg-[#FDF2EF] flex items-center justify-center">
                   <FileText className="w-4 h-4 text-[#E07A5F]" strokeWidth={1.5} />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900">Intelligence Report</h2>
+                <h2 className="text-xl font-semibold text-gray-900">Intelligence Analysis</h2>
               </div>
               <p className="text-gray-600 text-sm">
-                A complete cross-source synthesis on any life-sciences topic.
+                A complete cross-source synthesis on any life-sciences topic, delivered as a navigable portal.
               </p>
             </div>
 
             <div className="mb-6">
               <span className="text-4xl font-semibold text-gray-900">$199</span>
-              <span className="text-gray-500"> per report</span>
+              <span className="text-gray-500"> per analysis</span>
             </div>
 
             <GenerateReportCTA
               className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors mb-8"
             >
-              Generate a Report
+              Generate an Analysis
               <ArrowRight className="w-4 h-4" />
             </GenerateReportCTA>
 

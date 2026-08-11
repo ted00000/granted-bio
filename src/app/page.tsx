@@ -47,7 +47,7 @@ export default function Home() {
                 <div className="space-y-4">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#E07A5F]/10 text-[#E07A5F] rounded-full text-sm font-medium">
                     <FileText className="w-4 h-4" />
-                    Intelligence Reports
+                    Intelligence Analyses
                   </div>
                   <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 leading-tight">
                     A complete intelligence report on any life-sciences research topic.
@@ -67,7 +67,7 @@ export default function Home() {
                     href="/samples"
                     className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
                   >
-                    See a Sample Report
+                    See a Sample Analysis
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                   <a
@@ -271,7 +271,7 @@ export default function Home() {
                 href="/samples"
                 className="inline-flex items-center gap-2 text-[#E07A5F] hover:text-[#C96A4F] font-medium text-sm"
               >
-                See the full sample reports
+                See the full sample analyses
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -427,7 +427,7 @@ export default function Home() {
                 <div>
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-sm mb-4">
                     <FileText className="w-4 h-4" />
-                    Intelligence Reports
+                    Intelligence Analyses
                   </div>
                   <h2 className="text-2xl md:text-3xl font-semibold mb-4">
                     Weeks of cross-source work, done in two minutes.
@@ -441,14 +441,14 @@ export default function Home() {
                     href="/samples"
                     className="inline-flex items-center gap-2 px-6 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
                   >
-                    See a Sample Report
+                    See a Sample Analysis
                     <ArrowRight className="w-4 h-4" />
                   </Link>
                 </div>
                 <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                   <div className="text-center">
                     <div className="text-4xl font-semibold mb-2">$199</div>
-                    <div className="text-gray-400 mb-4">per report</div>
+                    <div className="text-gray-400 mb-4">per analysis</div>
                     <ul className="text-sm text-gray-300 space-y-2 text-left">
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />

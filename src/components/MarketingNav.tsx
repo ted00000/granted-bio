@@ -84,7 +84,7 @@ export function MarketingNav() {
             className={linkClass('/reports', 'flex items-center gap-2')}
           >
             <FileText className="w-4 h-4" strokeWidth={1.5} />
-            <span>Reports</span>
+            <span>Analyses</span>
           </Link>
           <Link href="/pricing" className={linkClass('/pricing')}>
             Pricing

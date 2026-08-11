@@ -38,7 +38,7 @@ export const dynamic = 'force-dynamic'
 
 export const metadata = {
   title:
-    'Sample Intelligence Report — Liquid Biopsy for Early Cancer Detection | granted.bio',
+    'Sample Intelligence Analysis — Liquid Biopsy for Early Cancer Detection | granted.bio',
   description:
     'See exactly what a granted.bio intelligence report contains. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative on the liquid biopsy field. Generated in two minutes.',
 }
@@ -99,7 +99,7 @@ export default async function SampleLiquidBiopsyPage() {
         <MarketingNav />
         <main className="max-w-4xl mx-auto px-6 py-16 text-center">
           <p className="text-gray-600">
-            Sample report is temporarily unavailable. Please try again in a moment.
+            Sample analysis is temporarily unavailable. Please try again in a moment.
           </p>
           <Link
             href="/"
@@ -127,7 +127,7 @@ export default async function SampleLiquidBiopsyPage() {
           <div className="flex items-center gap-2 text-sm">
             <Sparkles className="w-4 h-4 text-[#E07A5F] flex-shrink-0" />
             <span className="text-gray-700">
-              <span className="font-medium">Sample report.</span> This is the
+              <span className="font-medium">Sample analysis.</span> This is the
               intelligence we generate for any life-sciences research topic.
             </span>
           </div>
@@ -198,7 +198,7 @@ export default async function SampleLiquidBiopsyPage() {
           <GenerateReportCTA
             className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#E07A5F] rounded-lg font-medium hover:bg-gray-50 transition-colors"
           >
-            Generate a Report
+            Generate an Analysis
             <ArrowRight className="w-4 h-4" />
           </GenerateReportCTA>
         </div>

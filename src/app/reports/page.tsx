@@ -68,7 +68,7 @@ function ReportsLanding() {
                 className="inline-flex items-center gap-2 px-5 py-3 border border-gray-200 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
               >
                 <Sparkles className="w-4 h-4 text-[#E07A5F]" />
-                See Sample Reports
+                See Sample Analyses
               </Link>
               <button
                 type="button"
@@ -98,7 +98,7 @@ function ReportsLanding() {
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
               <div className="text-center mb-6">
                 <div className="text-4xl font-semibold text-gray-900">$199</div>
-                <div className="text-gray-500 text-sm mt-1">per report</div>
+                <div className="text-gray-500 text-sm mt-1">per analysis</div>
               </div>
               <ul className="space-y-3 text-sm text-gray-700 mb-6">
                 <li className="flex items-start gap-2.5">
@@ -332,7 +332,7 @@ function ReportsDashboard() {
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[#E07A5F] hover:bg-[#FDF2EF] rounded-lg transition-colors text-sm font-medium"
               >
                 <Plus className="w-4 h-4" strokeWidth={1.5} />
-                New Report
+                New Analysis
               </button>
             )}
           </div>
@@ -388,7 +388,7 @@ function ReportsDashboard() {
                 onClick={() => setShowGenerateDialog(true)}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors text-sm"
               >
-                {canBypassPayment ? 'Generate Report' : 'Generate Report - $199'}
+                {canBypassPayment ? 'Generate Analysis' : 'Generate Analysis - $199'}
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

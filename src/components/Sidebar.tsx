@@ -143,7 +143,7 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <span className={`text-sm font-medium ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-gray-900' : ''}`}>
-                  Reports
+                  Analyses
                 </span>
               </div>
             </div>
@@ -289,7 +289,7 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
                 href="/account"
                 className="px-3 py-1.5 text-xs rounded flex items-center justify-between bg-violet-50 text-violet-700"
               >
-                <span>Reports</span>
+                <span>Analyses</span>
                 <span className="font-medium">{reportsLeft} left · {daysLeft}d</span>
               </Link>
             )

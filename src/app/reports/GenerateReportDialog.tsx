@@ -229,7 +229,7 @@ export function GenerateReportDialog({
         {/* Header */}
         <div className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-gray-100">
           <h2 className="text-lg font-semibold text-gray-900">
-            Generate Intelligence Report
+            Generate Intelligence Analysis
           </h2>
           <button
             onClick={onClose}

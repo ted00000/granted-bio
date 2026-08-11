@@ -7,6 +7,7 @@ import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw, Sparkles
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { Logo } from '@/components/Logo'
 import { MarkdownRenderer } from './MarkdownRenderer'
+import { pickSections, extractScopeWarning, DASHBOARD_SECTIONS } from './section-utils'
 import { jsPDF } from 'jspdf'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, Header, Footer, AlignmentType } from 'docx'
 import { saveAs } from 'file-saver'
@@ -1647,61 +1648,50 @@ export default function ReportDetailPage({
   }
 
   if (loading) {
+    // Renders inside the portal layout's <main>; no outer wrapper.
     return (
-      <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
+      <div className="min-h-full flex items-center justify-center py-16">
         <div className="w-8 h-8 border-2 border-gray-200 border-t-[#E07A5F] rounded-full animate-spin" />
       </div>
     )
   }
 
   if (error || !report) {
+    // Portal layout (from src/app/reports/[id]/layout.tsx) provides the
+    // sidebar shell + main container; page-level render just fills
+    // the main area with an error card.
     return (
-      <div className="min-h-screen bg-[#FAFAF9]">
-        <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-          <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6">
-            <div className="flex items-center justify-between">
-              <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
-                <Logo height={36} priority />
-              </Link>
-              <Breadcrumbs
-                items={[
-                  { label: 'Reports', href: '/reports' },
-                  { label: 'Report' },
-                ]}
-              />
-            </div>
-          </div>
-        </header>
-        <main className="max-w-4xl mx-auto px-4 py-8 sm:px-6">
-          <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-            <AlertCircle className="w-12 h-12 text-rose-400 mx-auto mb-4" />
-            <h2 className="text-lg font-medium text-gray-900 mb-2">
-              {error || 'Report not found'}
-            </h2>
-            <Link
-              href="/reports"
-              className="text-[#E07A5F] hover:text-[#C96A4F] font-medium"
-            >
-              Go back to reports
-            </Link>
-          </div>
-        </main>
+      <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6">
+        <div className="bg-white rounded-lg shadow-sm p-8 text-center">
+          <AlertCircle className="w-12 h-12 text-rose-400 mx-auto mb-4" />
+          <h2 className="text-lg font-medium text-gray-900 mb-2">
+            {error || 'Report not found'}
+          </h2>
+          <Link
+            href="/reports"
+            className="text-[#E07A5F] hover:text-[#C96A4F] font-medium"
+          >
+            Go back to analyses
+          </Link>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      {/* Header */}
+    <div className="min-h-full">
+      {/* Header — 'Generated' + 'projects analyzed' bar. Portal layout
+          owns the outer chrome (sidebar + main); this component only
+          renders inside <main>. Sticky within the scrollable main so
+          the metrics + actions stay visible when the reader scrolls
+          through the narrative body. */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6">
           <div className="flex items-center justify-between">
-            <Link href="/" aria-label="granted.bio home" className="inline-flex items-center hover:opacity-80 transition-opacity">
-              <Logo height={36} priority />
-            </Link>
+            <div />
             <Breadcrumbs
               items={[
-                { label: 'Reports', href: '/reports' },
+                { label: 'Analyses', href: '/reports' },
                 { label: report.title.length > 30 ? report.title.slice(0, 30) + '...' : report.title },
               ]}
             />
@@ -1882,19 +1872,44 @@ export default function ReportDetailPage({
           </div>
         )}
 
-        {report.status === 'complete' && report.markdown_content && (
-          <div id="report-content" className="bg-white rounded-lg shadow-sm">
-            <MarkdownRenderer
-              content={report.markdown_content}
-              chartData={{
-                fundingByYear: report.funding_stats?.byYear,
-                categories: report.funding_stats?.byCategory,
-                trialsByPhase: report.agent_outputs?.trials?.byPhase,
-                whiteSpace: (report.agent_outputs as { whiteSpace?: unknown })?.whiteSpace as never,
-              }}
-            />
-          </div>
-        )}
+        {report.status === 'complete' && report.markdown_content && (() => {
+          // Portal Dashboard renders ONLY the narrative sections a
+          // first-time reader wants (~5-8 pages of "so what"). Every
+          // other section — projects, trials, patents, publications,
+          // organizations, researchers, white space, market context,
+          // methodology — has its own destination in the portal
+          // sidebar. The full report body still exists at those URLs;
+          // the reader clicks in when they want depth, not by default.
+          //
+          // The scope-warning banner (from the trust-fixes bundle) is
+          // extracted separately so it renders BEFORE the dashboard
+          // narrative — a reader who lands on the dashboard sees the
+          // "sample missed the topic" caveat before any body text.
+          const scopeWarning = extractScopeWarning(report.markdown_content)
+          const dashboardMd = pickSections(report.markdown_content, DASHBOARD_SECTIONS)
+          return (
+            <>
+              {scopeWarning && (
+                <div id="scope-warning" className="mb-6">
+                  <div className="bg-amber-50 border border-amber-300 rounded-lg p-4">
+                    <MarkdownRenderer content={scopeWarning} />
+                  </div>
+                </div>
+              )}
+              <div id="report-content" className="bg-white rounded-lg shadow-sm">
+                <MarkdownRenderer
+                  content={dashboardMd}
+                  chartData={{
+                    fundingByYear: report.funding_stats?.byYear,
+                    categories: report.funding_stats?.byCategory,
+                    trialsByPhase: report.agent_outputs?.trials?.byPhase,
+                    whiteSpace: (report.agent_outputs as { whiteSpace?: unknown })?.whiteSpace as never,
+                  }}
+                />
+              </div>
+            </>
+          )
+        })()}
       </main>
 
       {/* Refresh confirm modal — refresh is a one-shot entitlement

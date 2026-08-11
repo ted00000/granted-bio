@@ -18,9 +18,9 @@ import { GenerateReportCTA } from '@/components/GenerateReportCTA'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Sample Intelligence Reports | granted.bio',
+  title: 'Sample Intelligence Analyses | granted.bio',
   description:
-    'See real granted.bio intelligence reports. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative. Two full samples on different topics — see what you get for $199 before you buy.',
+    'See real granted.bio intelligence analyses. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative you can navigate section by section. Two full samples on different topics — see what you get for $199 before you buy.',
 }
 
 interface Sample {
@@ -112,10 +112,10 @@ export default async function SamplesIndexPage() {
         <div className="mb-10 text-center">
           <div className="inline-flex items-center gap-2 mb-3 px-3 py-1 rounded-full bg-[#E07A5F]/10 text-[#E07A5F] text-xs font-medium">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Sample reports</span>
+            <span>Sample analyses</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-3">
-            See what a granted.bio report looks like
+            See what a granted.bio analysis looks like
           </h1>
           <p className="text-gray-500 max-w-2xl mx-auto">
             Two full samples on different topics — a therapeutic modality and a diagnostic modality. This is exactly what you get for $199 on any life-sciences research topic.
@@ -177,7 +177,7 @@ export default async function SamplesIndexPage() {
                 </div>
 
                 <div className="inline-flex items-center gap-1.5 text-sm font-medium text-[#E07A5F] group-hover:gap-2 transition-all">
-                  View report
+                  View analysis
                   <ArrowRight className="w-4 h-4" />
                 </div>
               </Link>
@@ -194,7 +194,7 @@ export default async function SamplesIndexPage() {
             Any life-sciences research topic. $199, generated in two minutes.
           </p>
           <GenerateReportCTA className="inline-flex items-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors">
-            Generate a Report
+            Generate an Analysis
             <ArrowRight className="w-4 h-4" />
           </GenerateReportCTA>
         </div>

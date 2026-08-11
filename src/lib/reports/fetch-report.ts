@@ -1,0 +1,88 @@
+// Shared, cached fetcher for a single report row. Used by the report
+// portal's layout + every section page so a single request only touches
+// the DB once even though multiple server components read from it.
+//
+// The portal shape (2026-08-11 UI-first pivot, see docs/UI_FIRST_PIVOT_SPEC.md)
+// splits what used to be one 2168-line client component into a shell +
+// per-section pages. Each page needs (at most) two things: a slice of
+// the report data, and confirmation that the current user is allowed to
+// see it. Both are handled here so the section pages themselves stay
+// small and declarative.
+
+import { cache } from 'react'
+import { redirect } from 'next/navigation'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { supabaseAdmin } from '@/lib/supabase'
+
+export interface ReportRow {
+  id: string
+  user_id: string
+  title: string
+  report_type: 'topic' | 'portfolio'
+  topic: string | null
+  persona: 'researcher' | 'investor' | null
+  status: 'generating' | 'complete' | 'failed'
+  project_count: number | null
+  data_limited: boolean
+  error_message: string | null
+  created_at: string
+  updated_at: string
+  markdown_content: string | null
+  executive_summary: string | null
+  interpretation: unknown | null
+  market_context: unknown | null
+  funding_stats: unknown | null
+  projects: unknown[] | null
+  clinical_trials: unknown[] | null
+  patents: unknown[] | null
+  publications: unknown[] | null
+  top_organizations: unknown[] | null
+  top_researchers: unknown[] | null
+  curated_publications: unknown[] | null
+  signals_analysis: unknown | null
+  agent_outputs: unknown | null
+}
+
+/**
+ * Fetch a report with auth enforcement. Redirects to sign-in for
+ * anonymous visitors, returns null if the report belongs to another
+ * user (RLS handles both cases at the DB layer — this just wraps it
+ * in Next.js navigation semantics).
+ *
+ * Wrapped in React `cache` so multiple components in the same request
+ * (layout + page + nested server components) share one DB round-trip.
+ */
+export const getReport = cache(async (id: string): Promise<ReportRow | null> => {
+  const supabase = await createServerSupabaseClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) {
+    // Preserve intended destination for the sign-in flow. Middleware
+    // doesn't cover /reports/[id] so we redirect explicitly.
+    redirect(`/?redirect=${encodeURIComponent(`/reports/${id}`)}`)
+  }
+  const { data, error } = await supabase
+    .from('user_reports')
+    .select('*')
+    .eq('id', id)
+    .single()
+  if (error || !data) return null
+  return data as ReportRow
+})
+
+/**
+ * Fetch a report by ID using the admin client, bypassing user auth.
+ * Used by the public sample pages that hardcode a report ID and want
+ * to render the portal to any visitor. Do NOT expose this to any route
+ * that accepts arbitrary IDs from the URL — public sample routes only.
+ */
+export const getReportAsAdmin = cache(async (id: string): Promise<ReportRow | null> => {
+  const { data, error } = await supabaseAdmin
+    .from('user_reports')
+    .select('*')
+    .eq('id', id)
+    .single()
+  if (error || !data) return null
+  return data as ReportRow
+})
