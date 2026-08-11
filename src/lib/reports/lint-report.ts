@@ -2443,6 +2443,192 @@ const RULES: Rule[] = [
       return violations
     },
   },
+
+  // ---------------------------------------------------------------------
+  // Self-correction leak (CellFreeGroup review 2026-08-11, §4 CRITICAL).
+  // Report p.28 shipped Claude's own editing language into final prose,
+  // twice on the same page:
+  //   "...5R33CA272331-03 is Minnesota - correcting: UC Irvine
+  //    projects include..."
+  // Highest damage-to-effort ratio finding in the review — it tells a
+  // paying reader the text was not read by anyone before shipping.
+  // Deterministic regex catch; must never survive to render.
+  // ---------------------------------------------------------------------
+  {
+    id: 'no-model-self-correction-leak',
+    severity: 'critical',
+    check(ctx) {
+      const patterns: Array<{ regex: RegExp; label: string }> = [
+        { regex: /\s-\s+correcting:/gi,          label: '- correcting:' },
+        { regex: /\bcorrection:\s/gi,            label: 'correction:' },
+        { regex: /\bactually,\s*(the|it|this|that)\b/gi, label: 'actually, [the|it|this|that]' },
+        { regex: /\bwait,\s+(that|this|the)\b/gi,label: 'wait, [that|this|the]' },
+        { regex: /\bI\s+mean,?\s/gi,             label: 'I mean' },
+        { regex: /\bto\s+clarify:\s/gi,          label: 'to clarify:' },
+        { regex: /\blet\s+me\s+(rephrase|correct|clarify)\b/gi, label: 'let me [rephrase|correct|clarify]' },
+      ]
+      const violations: LintViolation[] = []
+      for (const { regex, label } of patterns) {
+        // Use exec loop rather than match so we capture positions for
+        // section attribution; each occurrence is a separate violation.
+        regex.lastIndex = 0
+        let m: RegExpExecArray | null
+        while ((m = regex.exec(ctx.markdown)) !== null) {
+          violations.push({
+            ruleId: 'no-model-self-correction-leak',
+            severity: 'critical',
+            section: attributeToSection(ctx.markdown, m.index),
+            offending: m[0],
+            message: `Raw model self-correction leaked into prose ("${label}"). Strip and re-generate the surrounding sentence.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
+
+  // ---------------------------------------------------------------------
+  // Category funding = share% (CellFreeGroup review 2026-08-11, §4 HIGH).
+  // Report table showed "In Vivo B Cell Engineering: 4 projects, 3.4%, $7.9M"
+  // and prose two paragraphs later read "(4 projects, $3.4M)" — Sonnet
+  // pulled the share percentage into the funding slot. We reformatted the
+  // data feed to name each field explicitly, but this rule catches the
+  // same class of error if it slips through: for every byCategory row,
+  // check whether the markdown mentions the category near a dollar
+  // figure that matches the SHARE percent instead of the actual funding.
+  // ---------------------------------------------------------------------
+  {
+    id: 'category-funding-mismatched-share',
+    severity: 'critical',
+    check(ctx) {
+      const violations: LintViolation[] = []
+      const totalProjects = ctx.fundingStats?.projectCount ?? 0
+      if (totalProjects <= 0) return violations
+      const byCategory = ctx.fundingStats?.byCategory ?? []
+      for (const row of byCategory) {
+        if (!row?.category || typeof row.funding !== 'number' || typeof row.projects !== 'number') continue
+        const share = (row.projects / totalProjects) * 100
+        const actualFundingM = row.funding / 1_000_000
+        // Only care when share (as $M) is clearly different from the
+        // actual funding (as $M). If they happen to be numerically
+        // close, we can't distinguish them from the text anyway.
+        if (Math.abs(share - actualFundingM) < 1) continue
+        // Category label in prose may be formatted several ways. Loose
+        // pattern: any word from the category name near a "$share.share M"
+        // (or "$share M") that clearly is the SHARE misread as funding.
+        const categoryWords = row.category.replace(/_/g, ' ').split(/\s+/).filter((w) => w.length > 3)
+        if (categoryWords.length === 0) continue
+        // Build "share as dollar" candidates: exact ("$3.4M"), one-decimal
+        // rounded ("$3M"), and with space ("$3.4 M"). Case-insensitive.
+        const shareStr = share.toFixed(1)
+        const shareInt = Math.round(share).toString()
+        const dollarCandidates = [
+          new RegExp(`\\$\\s?${shareStr.replace('.', '\\.')}\\s?M(?:illion)?\\b`, 'i'),
+          new RegExp(`\\$\\s?${shareInt}\\s?M(?:illion)?\\b`, 'i'),
+        ]
+        // Scan every occurrence of a categoryWord + look forward 120 chars
+        // for the mis-dollar. Report only the first hit per category to
+        // avoid rule-noise on legitimate re-mentions.
+        for (const word of categoryWords) {
+          const wordRe = new RegExp(`\\b${word.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}\\b`, 'gi')
+          let m: RegExpExecArray | null
+          let flagged = false
+          wordRe.lastIndex = 0
+          while ((m = wordRe.exec(ctx.markdown)) !== null && !flagged) {
+            const window = ctx.markdown.slice(m.index, m.index + 200)
+            for (const cand of dollarCandidates) {
+              const hit = window.match(cand)
+              if (hit) {
+                violations.push({
+                  ruleId: 'category-funding-mismatched-share',
+                  severity: 'critical',
+                  section: attributeToSection(ctx.markdown, m.index),
+                  offending: `${word} ... ${hit[0]}`,
+                  message: `Category "${row.category}" cited near ${hit[0]}, which matches its ${shareStr}% share, not its actual funding of $${actualFundingM.toFixed(1)}M. Likely share-as-dollars confusion.`,
+                })
+                flagged = true
+                break
+              }
+            }
+          }
+          if (flagged) break
+        }
+      }
+      return violations
+    },
+  },
+
+  // ---------------------------------------------------------------------
+  // Vendor-product misattribution (CellFreeGroup review 2026-08-11, §4 HIGH).
+  // Report attributed cell-free products to the wrong vendors:
+  //   "Thermo Fisher's PUREexpress kit"  (PURExpress is NEB)
+  //   "Merck KGaA (ReadyToProcess CFPS line)"  (Cytiva, not a CFPS line)
+  // First-week factual errors in domain-specific vendor names are
+  // disproportionately costly with subject-matter buyers. Controlled
+  // list applied at lint; extend the map as new products come up in
+  // reports. The regex uses a fixed 60-char proximity window so
+  // "PUREexpress" isn't flagged when the correct vendor is anywhere
+  // in the same clause.
+  // ---------------------------------------------------------------------
+  {
+    id: 'vendor-product-misattribution',
+    severity: 'critical',
+    check(ctx) {
+      // Canonical vendor for each named product. Keys are case-
+      // insensitive product strings; value is an array of accepted
+      // vendor spellings (any of them near the product is OK).
+      const VENDOR_MAP: Record<string, string[]> = {
+        'PUREexpress': ['NEB', 'New England Biolabs'],
+        'PURExpress':  ['NEB', 'New England Biolabs'],
+        'ReadyToProcess': ['Cytiva', 'Danaher'],
+        'TnT': ['Promega'],
+        'S30': ['Promega'],
+        'Expressway': ['Thermo Fisher', 'Thermo', 'Invitrogen', 'Life Technologies'],
+      }
+      // Vendors commonly seen in reports; the regex looks for one of
+      // these appearing WITHIN ~60 chars of the product name (either
+      // side). Absence of the correct vendor + presence of a wrong
+      // vendor triggers the violation.
+      const KNOWN_VENDORS = [
+        'NEB', 'New England Biolabs',
+        'Cytiva', 'Danaher', 'GE Healthcare',
+        'Promega',
+        'Thermo Fisher', 'Thermo', 'Invitrogen', 'Life Technologies',
+        'Merck', 'MilliporeSigma', 'Sigma-Aldrich', 'Millipore',
+        'Bio-Rad', 'Roche', 'Qiagen', 'Agilent', 'Illumina',
+      ]
+      const violations: LintViolation[] = []
+      for (const [product, correctVendors] of Object.entries(VENDOR_MAP)) {
+        const productRe = new RegExp(`\\b${product}\\b`, 'gi')
+        let m: RegExpExecArray | null
+        productRe.lastIndex = 0
+        while ((m = productRe.exec(ctx.markdown)) !== null) {
+          // Window: 80 chars each side. Enough to cover "vendor X's
+          // product" and "product from vendor X" phrasings.
+          const start = Math.max(0, m.index - 80)
+          const end = Math.min(ctx.markdown.length, m.index + m[0].length + 80)
+          const window = ctx.markdown.slice(start, end)
+          const hasCorrectVendor = correctVendors.some((v) =>
+            new RegExp(`\\b${v.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}\\b`, 'i').test(window)
+          )
+          if (hasCorrectVendor) continue
+          const wrongVendor = KNOWN_VENDORS.find((v) => {
+            if (correctVendors.some((c) => c.toLowerCase() === v.toLowerCase())) return false
+            return new RegExp(`\\b${v.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')}\\b`, 'i').test(window)
+          })
+          if (!wrongVendor) continue
+          violations.push({
+            ruleId: 'vendor-product-misattribution',
+            severity: 'critical',
+            section: attributeToSection(ctx.markdown, m.index),
+            offending: `${wrongVendor} ... ${m[0]}`,
+            message: `Product "${m[0]}" appears near "${wrongVendor}" but is made by ${correctVendors[0]}. Fix attribution.`,
+          })
+        }
+      }
+      return violations
+    },
+  },
 ]
 
 // -----------------------------------------------------------------------

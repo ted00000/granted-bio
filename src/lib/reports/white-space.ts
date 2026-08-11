@@ -152,7 +152,7 @@ function parseExpandedKeywordQuery(keywordQuery: string | undefined): string[] {
  * with raw core tokens) as the on-topic match set. Falls back to raw
  * tokens only when no interpretation is available.
  */
-function computeTopicRelevanceSignal(
+export function computeTopicRelevanceSignal(
   topic: string,
   projects: ProjectItem[],
   expandedKeywordQuery?: string,

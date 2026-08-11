@@ -22,7 +22,8 @@ import type {
   WhiteSpaceAnalysis,
 } from './types'
 import { logApiUsage } from '@/lib/billing/usage'
-import { generateWhiteSpaceAnalysis } from './white-space'
+import { generateWhiteSpaceAnalysis, computeTopicRelevanceSignal } from './white-space'
+import type { TopicRelevanceSignal } from './types'
 import { filterTrialsAndPatentsByRelevance } from './relevance-filter'
 import { detectSurprisingFindings, type SurprisingFinding } from './surprising'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
@@ -38,6 +39,7 @@ import {
   trialStatusEnumerationBlock,
   PI_CALLOUT_BAN_BLOCK,
   PRESCRIPTIVE_ORG_BAN_BLOCK,
+  noManufacturedRelevanceBlock,
 } from './ban-catalog'
 import { normalizeOrgName, normalizeJournalName } from '@/lib/format-names'
 
@@ -91,6 +93,31 @@ export async function synthesizeReport(
   const stageTiming = (label: string) => {
     const elapsed = ((Date.now() - synthStart) / 1000).toFixed(1)
     console.log(`[Synthesis Agent] +${elapsed}s: ${label}`)
+  }
+
+  // Pre-flight scope-integrity check (CellFreeGroup review 2026-08-11).
+  // Detect the failure mode where retrieval collapsed the query onto a
+  // broader concept — e.g., "cell-free antibody engineering" retrieved
+  // 118 projects but 0 of them explicitly mentioned "cell-free" in
+  // title or abstract. Left undetected, downstream synthesis then
+  // invents cell-free framing for antibody-engineering projects. We
+  // compute the on-topic ratio against the interpretation's expanded
+  // keyword set (so synonyms count as on-topic — CFPS, IVTT, PURE
+  // system, etc. all match a cell-free query) and inject a scope
+  // warning at the top of the report when the tier is 'off-topic'.
+  // The report still generates — the user paid — but the reader knows
+  // upfront that the sample missed the topic.
+  const topicRelevance = computeTopicRelevanceSignal(
+    topic,
+    agentOutputs.projects.items,
+    context.interpretation?.keywordQuery,
+  )
+  if (topicRelevance.tier === 'off-topic' || topicRelevance.tier === 'weak') {
+    console.warn(
+      `[Synthesis Agent] SCOPE WARNING for "${topic}": on-topic ratio ` +
+        `${(topicRelevance.onTopicRatio * 100).toFixed(1)}% (${topicRelevance.onTopicCount}/${agentOutputs.projects.items.length}), tier=${topicRelevance.tier}. ` +
+        `Report will be generated with a scope-warning banner.`,
+    )
   }
 
   // Trial + patent topical relevance filter — runs first so downstream
@@ -175,8 +202,22 @@ export async function synthesizeReport(
   ])
   stageTiming('post-batch synthesis done')
 
+  // Combine substring + taxonomy signals into a single scope-collapse
+  // decision now that White Space has computed (needed for the head-term
+  // bucket check). Log every scope-collapse fire — high-signal event we
+  // want visible in logs even when the report ships.
+  const scopeCollapse = evaluateScopeCollapse(topicRelevance, whiteSpace, agentOutputs.projects.items.length)
+  if (scopeCollapse.fired) {
+    console.warn(
+      `[Synthesis Agent] SCOPE COLLAPSE detected for "${topic}": reason=${scopeCollapse.reason}, ` +
+        `substring-on-topic=${scopeCollapse.onTopicCount}/${scopeCollapse.totalSample}, ` +
+        `zero-buckets=[${scopeCollapse.zeroBuckets.map((b) => b.category).join(', ')}]. ` +
+        `Banner will render at top of report.`,
+    )
+  }
+
   // Assemble markdown report with persona-aware structure
-  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights, whiteSpace, surprisingFindings, nextSteps)
+  const markdownContent = assembleMarkdown(topic, agentOutputs, context, executiveSummary, sectionInsights, signalsAnalysis, curatedPublications, fieldMaturity, competitiveTopology, ipLandscape, projectInsights, whiteSpace, surprisingFindings, nextSteps, scopeCollapse)
 
   // Run the deterministic report linter against the assembled markdown.
   // If critical violations fire and any are retry-eligible, attempt one
@@ -477,13 +518,13 @@ ${formatYearTrendForPrompt(context.fundingStats.byYear)}
 - **NO OVERLAPPING SUBTOTALS.** Do NOT cite two different subtotals of the same base in the same passage. Example of what's banned: "15 terminated, suspended, or withdrawn (69 total)... terminated and suspended trials (12 combined)." Even if both numbers are correct in isolation (T+S+W=15 AND T+S=12), citing both in one passage makes readers see contradiction. Pick ONE framing per passage (either "15 terminated/suspended/withdrawn" OR "10 terminated + 2 suspended + 3 withdrawn" broken out) and stay with it.
 - Do NOT attribute the terminated count to any specific cause ("assay attrition", "assay failure", "clinical failure") without corroborating evidence. If you mention terminations, frame as "worth monitoring" or "warrants investigation."
 - Clinical trials: ${agentOutputs.trials.items.length} | Patents: ${agentOutputs.patents.items.length}
-- **Category shares** (project count share of ${context.fundingStats.projectCount} total — use these EXACT percentages if you cite a category share):
+- **Category breakdown** (project count and funding by category — CellFreeGroup review 2026-08-11 caught a report that cited "$3.4M" for a category whose actual funding was $7.9M; Sonnet read the "3.4%" share into the dollar slot. Fields are named explicitly to make this impossible). Use the exact numbers below when citing category counts, shares, or funding:
 ${context.fundingStats.byCategory
   .slice(0, 6)
-  .map(
-    (c) =>
-      `  - ${formatCategory(c.category)}: ${c.projects} projects (${((c.projects / Math.max(context.fundingStats.projectCount, 1)) * 100).toFixed(1)}%), ${formatCurrency(c.funding)}`,
-  )
+  .map((c) => {
+    const share = ((c.projects / Math.max(context.fundingStats.projectCount, 1)) * 100).toFixed(1)
+    return `  - ${formatCategory(c.category)}: projects=${c.projects} | share=${share}% of ${context.fundingStats.projectCount} projects | funding=${formatCurrency(c.funding)}`
+  })
   .join('\n')}
 - Dominant category: ${formatCategory(topCategory)}
 
@@ -1239,6 +1280,8 @@ For each, explain WHY it matters. Consider:
 - Reviews that provide comprehensive understanding
 
 SAMPLE-BASED LANGUAGE: These are publications linked to NIH-funded projects in our sample. Use language like "among the linked publications" rather than claiming these are the definitive papers in the field.
+
+${noManufacturedRelevanceBlock(topic)}
 
 FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sentences to avoid them.
 BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment), or the softer "N% suggesting X is thin in this sample" pattern (a share paired with "thin", "sparse", "scarce", "meager", "underrepresented" alongside "suggesting" or "indicating" reads as a field-level judgment - the "in this sample" scope word does NOT rescue it), or the sample-gap-may-constrain pattern where a sample-observed gap is cited as a cause of field-level limitations ("that mechanistic gap may constrain sensitivity improvements", "this discovery gap may limit specificity gains" - the "may" hedge does not fix this; the sample cannot support causal claims about what constrains the field). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
@@ -2125,6 +2168,8 @@ For each project, generate a 2-3 sentence insight explaining:
 
 Be specific and analytical. Reference the project's actual methods or focus when possible.
 
+${noManufacturedRelevanceBlock(topic)}
+
 **NO PI-POSSESSIVE PHRASES.** Do NOT write "Zhou's DELFI work", "Velculescu's approach", "Wang's platform", "Chen's group", or any "[PI Surname]'s [X]" construction. The PI field is displayed as structured metadata in the project card; the insight text must not reference the PI by name at all - not even as a possessive. WRONG: "Velculescu's DELFI work is among the more established fragmentomics programs." RIGHT: "the DELFI work here is among the more established fragmentomics programs" (or drop the reference entirely and describe the method). Same rule applies to first-name possessives ("David's assay") and to team labels ("the Zhou lab").
 
 **NAMED-PRODUCT SYMMETRY** (r48 audit). If a project insight cites by name a named clinical product (PATHFINDER, PATHFINDER 2, NHS-Galleri, Galleri, Shield, DELFI, Signatera, Cologuard, Freenome, etc.), you MUST either:
@@ -2340,7 +2385,8 @@ function assembleMarkdown(
   projectInsights?: Record<string, string>,
   whiteSpace?: WhiteSpaceAnalysis,
   surprisingFindings?: SurprisingFinding[],
-  nextSteps?: string
+  nextSteps?: string,
+  scopeCollapse?: ScopeCollapse,
 ): string {
   const persona = context.persona || 'researcher'
   // Use the report's created_at date (passed in via context) so this
@@ -2372,7 +2418,7 @@ function assembleMarkdown(
 **Report Type:** ${persona === 'investor' ? 'Investment Intelligence' : 'Research Intelligence'}
 **Data Sources:** NIH RePORTER, ClinicalTrials.gov, USPTO, PubMed
 ${context.dataLimited ? '\n**Note:** This report has limited data available for this topic.\n' : ''}
-
+${scopeCollapse ? renderScopeWarningBanner(topic, scopeCollapse) : ''}
 ---
 
 ## How to Use This Report
@@ -2635,6 +2681,122 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
 }
 
 // --- Render functions ---
+
+/**
+ * Scope-collapse detector. Combines two independent signals to catch the
+ * failure mode where retrieval returned a sample that isn't really about
+ * the topic. Either signal is enough to fire the banner.
+ *
+ * Signal 1: substring on-topic ratio (from computeTopicRelevanceSignal).
+ * Fires when 'off-topic' (<5% of sample mentions topic in title/abstract).
+ * Catches extreme cases where the retrieval is way off.
+ *
+ * Signal 2: head-term taxonomy bucket with zero projects. This is Nathan's
+ * (CellFreeGroup) specific catch. When the taxonomy classifier built a
+ * category whose name matches the query's head term (e.g. "Cell-Free
+ * Expression" for a "cell-free antibody engineering" query) and that
+ * bucket got zero projects, the sample is definitively off the head-term
+ * axis even if substring matches score high (which happens when abstracts
+ * mention the head term casually rather than as the project's focus).
+ */
+interface ScopeCollapse {
+  fired: boolean
+  reason: 'substring-off-topic' | 'head-term-zero-bucket' | 'both' | null
+  onTopicCount: number
+  onTopicRatio: number
+  totalSample: number
+  zeroBuckets: Array<{ dimension: string; category: string }>
+}
+
+function evaluateScopeCollapse(
+  topicRelevance: TopicRelevanceSignal | undefined,
+  whiteSpace: WhiteSpaceAnalysis | undefined,
+  totalSample: number,
+): ScopeCollapse {
+  const substringFired = !!topicRelevance && topicRelevance.tier === 'off-topic'
+  const coreTokens = topicRelevance?.coreTokens ?? []
+  // Head-term zero-bucket detection. The head term is the FIRST core
+  // token, which is typically the query's most specific anchor (e.g.
+  // "cell-free" in "cell-free antibody engineering", "radioligand" in
+  // "radioligand therapy for cancer"). We only fire on categories that:
+  //   1. Start with the head term (prefix match, so "Cell-Free
+  //      Expression" matches but "Radioligand Therapy with Cancer
+  //      Vaccines" wouldn't need to — see #2)
+  //   2. Are NOT compound categories (no "and", "or", "with", "combined"
+  //      in the name — those are combination buckets that name the head
+  //      term as one of several ingredients, not as the standalone
+  //      concept the query is asking about)
+  // Without both guards this produced false positives on radioligand
+  // (compound "Radioligand Therapy with Cancer Vaccines" bucket) during
+  // testing 2026-08-11.
+  const headTerm = coreTokens[0] ?? ''
+  const COMPOUND_MARKERS = /\b(and|or|with|combined|combination|versus|vs\.?)\b/i
+  const zeroBuckets: Array<{ dimension: string; category: string }> = []
+  if (whiteSpace && headTerm) {
+    for (const dim of whiteSpace.dimensions ?? []) {
+      for (const cat of dim.categories ?? []) {
+        const catNameLower = cat.name.toLowerCase()
+        if (!catNameLower.startsWith(headTerm)) continue
+        if (COMPOUND_MARKERS.test(cat.name)) continue
+        if (cat.projectCount !== 0) continue
+        zeroBuckets.push({ dimension: dim.name, category: cat.name })
+      }
+    }
+  }
+  const bucketFired = zeroBuckets.length > 0
+  const reason: ScopeCollapse['reason'] = substringFired && bucketFired
+    ? 'both'
+    : substringFired
+    ? 'substring-off-topic'
+    : bucketFired
+    ? 'head-term-zero-bucket'
+    : null
+  return {
+    fired: substringFired || bucketFired,
+    reason,
+    onTopicCount: topicRelevance?.onTopicCount ?? 0,
+    onTopicRatio: topicRelevance?.onTopicRatio ?? 0,
+    totalSample,
+    zeroBuckets,
+  }
+}
+
+/**
+ * Scope-integrity warning banner. Rendered at the very top of the report
+ * (right after the header metadata) when scope collapse is detected.
+ * Silent (empty string) when the retrieval was on-topic.
+ *
+ * Added 2026-08-11 in response to the CellFreeGroup domain review, where
+ * a "cell-free antibody engineering" report generated 53 pages of
+ * antibody-engineering content with 0 actual cell-free projects in the
+ * "Cell-Free Expression" taxonomy bucket. The report acknowledged this
+ * on p.17 but buried the finding inside a skimmable section. This banner
+ * puts it at the top so the reader sees it before spending time on the
+ * body.
+ */
+function renderScopeWarningBanner(
+  topic: string,
+  collapse: ScopeCollapse,
+): string {
+  if (!collapse.fired) return ''
+  const lines: string[] = []
+  if (collapse.reason === 'substring-off-topic' || collapse.reason === 'both') {
+    const pct = (collapse.onTopicRatio * 100).toFixed(1)
+    lines.push(
+      `Only ${collapse.onTopicCount} of ${collapse.totalSample} retrieved projects (${pct}%) explicitly mention "${topic}" or one of its direct core methods in the title or abstract.`,
+    )
+  }
+  if (collapse.reason === 'head-term-zero-bucket' || collapse.reason === 'both') {
+    const bucketNames = collapse.zeroBuckets.map((b) => `"${b.category}"`).join(', ')
+    lines.push(
+      `The methodology taxonomy explicitly created a ${collapse.zeroBuckets.length === 1 ? 'bucket' : 'bucket set'} for the topic's core method (${bucketNames}) and classified ZERO of the retrieved projects into ${collapse.zeroBuckets.length === 1 ? 'it' : 'them'}. The sample is adjacent to the topic but not on it.`,
+    )
+  }
+  const body = lines.join(' ')
+  return `
+> **SCOPE WARNING.** ${body} This report describes the broader neighborhood the retrieval surfaced, not "${topic}" specifically. If you need a report that stays tightly on "${topic}", narrow the query (add specific methods, targets, or platforms) and regenerate.
+`
+}
 
 /**
  * Boilerplate explaining the value of the report — appears in every report.

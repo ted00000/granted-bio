@@ -1007,12 +1007,32 @@ async function aggregateOrganizations(
 function aggregateResearchers(
   projects: AllAgentOutputs['projects']
 ): ResearcherStats[] {
-  // Key by NORMALIZED PI name (lowercase trimmed) so case variants of the
-  // same researcher merge — pi_names strings can vary across grants for
-  // the same person ("ZHOU, XIANGHONG JASMINE" vs "Zhou, Xianghong Jasmine").
-  // Without normalization the rollup splits one researcher into two rows.
+  // Key by NORMALIZED PI name so name variants of the same researcher
+  // merge — pi_names strings vary across grants for the same person:
+  //   "ZHOU, XIANGHONG JASMINE" vs "Zhou, Xianghong Jasmine"  (case)
+  //   "MILLER, SHANNON MARIE"   vs "Shannon Marie Miller"     (order)
+  // Without normalization the rollup splits one researcher across two
+  // rows and inflates the top-PI count (flagged by CellFreeGroup review
+  // 2026-08-11: "MILLER, SHANNON MARIE" and "Shannon Marie Miller"
+  // appeared as duplicate rows on p.49 of the reviewed report).
   const piMap = new Map<string, ResearcherStats>()
-  const normalize = (name: string) => name.toLowerCase().trim().replace(/\s+/g, ' ')
+  const normalize = (name: string) => {
+    let s = name.toLowerCase().trim().replace(/\s+/g, ' ')
+    // If the name contains a comma, treat as "Last, First [Middle...]"
+    // and swap to "first [middle...] last". Splitting on the FIRST
+    // comma only preserves suffixes ("Smith Jr., John" -> "john smith jr.").
+    const commaIdx = s.indexOf(',')
+    if (commaIdx > 0) {
+      const last = s.slice(0, commaIdx).trim()
+      const rest = s.slice(commaIdx + 1).trim()
+      if (rest.length > 0) s = `${rest} ${last}`
+    }
+    // Strip any remaining punctuation the two forms may differ on
+    // (trailing commas, stray periods on initials) and re-collapse
+    // whitespace after the swap.
+    s = s.replace(/[.,]/g, '').replace(/\s+/g, ' ').trim()
+    return s
+  }
 
   projects.items.forEach((p) => {
     if (!p.pi_names) return

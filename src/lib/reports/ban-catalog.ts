@@ -101,3 +101,36 @@ export const PI_CALLOUT_BAN_BLOCK = `**NO PI NAMES OR POSSESSIVES IN NARRATIVE.*
 // ---------------------------------------------------------------------------
 
 export const PRESCRIPTIVE_ORG_BAN_BLOCK = `**NO PRESCRIPTIVE ACTION ANCHORED TO NAMED INSTITUTIONS.** Naming institutions in factual descriptions is fine ("2 patents at Johns Hopkins"). Naming institutions as action anchors is NOT fine ("engage Johns Hopkins for licensing", "align with the UConn node", "a practical first step is engaging the JHU and UConn patents"). Rewrite as method-anchored: "a practical first step is claim-level prior-art review of the specific technical methods present" — name the methods, not the assignees. Same rule applies to "starting point", "first step", "diligence anchor", "prior-art starting point" paired with institution names.`
+
+// ---------------------------------------------------------------------------
+// Ban on manufactured relevance / invented methodological bridges.
+// From CellFreeGroup domain review (2026-08-11): when retrieval mis-
+// matched the topic, Sonnet invented methodological bridges to justify
+// including off-topic projects/publications. Reviewer catalogued four
+// specific instances on pages 33-34 of the reviewed report (plasma cell
+// project, bone marrow organoid, adenoviral vector, structural virology
+// core) — all wrong on the science in ways a domain reader spots
+// immediately. Rule-level fix: for any item without an EXPLICIT link
+// to the topic's core method (in title or abstract), the insight must
+// say so plainly instead of manufacturing a connection.
+// ---------------------------------------------------------------------------
+
+export function noManufacturedRelevanceBlock(topic: string): string {
+  return `**NO MANUFACTURED METHODOLOGICAL BRIDGES — CRITICAL for trust.**
+
+For each project or publication, before writing anything about it, decide: does the TITLE or ABSTRACT explicitly mention "${topic}" or one of its direct core methods? If NO, you MUST NOT invent a methodological bridge to explain why it belongs. Instead, write ONE of these two forms verbatim:
+
+- "No direct methodological link to ${topic}; included for landscape context."
+- "Adjacent to ${topic} via [factual adjacency — e.g., shared biological target, same disease area, related computational method]; not a ${topic} project itself."
+
+BANNED bridge phrases (these are the exact patterns a domain reader flags as manufactured):
+- "sits conceptually between fully X and fully Y approaches"
+- "informs the broader ${topic} landscape by..."
+- "bridges ${topic} with [something the abstract doesn't mention]"
+- "connects to ${topic} through [invented mechanism]"
+- "may inform / could benefit / has implications for ${topic}"
+- "requires iterative [core method] testing before [step]" (when the abstract does not require it)
+- "relies on / requires / integrates with cell-free/${topic} components" (when the abstract does not)
+
+The failure mode this prevents: an off-topic project gets 2-3 sentences of invented "${topic} relevance" that reads plausible to a non-expert but is factually wrong to anyone in the field. Every wrong bridge sentence destroys the reader's trust in the correct sentences elsewhere in the report. When in doubt, use the "no direct link, included for landscape context" form — that costs the reader nothing and buys back the credibility of every other sentence in the document.`
+}
