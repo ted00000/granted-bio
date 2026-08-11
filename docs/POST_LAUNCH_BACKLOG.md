@@ -1,4 +1,4 @@
-# Parking Lot — 06AUG2026
+# Parking Lot — 11AUG2026
 
 Consolidated nice-to-haves accumulated during the multi-month pre-launch
 build. Pulled from `LANDING_AND_CREDITS_PLAN.md`, `PLATFORM_PLANNING.md`,
@@ -71,6 +71,41 @@ when revising so we can tell what's drifted.
 - **Recovery-cron observability** — surface stuck-purchase recoveries
   in admin (`/admin/recovery` or merged into existing dashboards)
   instead of only Vercel function logs.
+
+## Trust fixes — from CellFreeGroup domain review (2026-08-11)
+
+Nathan Gardner, PhD (Cell-Free Group) reviewed report `293caa10`
+(cell-free antibody engineering) and identified a class of trust-
+killing issues. Full review: `docs/CellFreeGroup_Report-Review_
+granted-bio.pdf`. User priority: trust fixes gate all other
+momentum work (see `project_directional_2026-08-11` memory).
+
+- **Pre-flight scope integrity check.** After project retrieval,
+  detect when the query has collapsed onto a broader concept (e.g.
+  "cell-free antibody engineering" retrieves 0 cell-free projects,
+  118 antibody-engineering projects). Signature: White Space bucket
+  named after the query's head term returns 0 projects while total
+  matches are high. Gate report generation with warning.
+- **Ban manufactured relevance in synthesis.** For any project or
+  publication without a demonstrable link to the query's core
+  method, emit "no direct link; included for landscape context"
+  instead of Claude inventing a bridge. Rule-level fix in the
+  synthesis prompt.
+- **Raw model-editing regex guard.** Strip patterns like
+  `" - correcting:"`, `"I mean"`, `"actually,"` from final markdown
+  before render. p.28 of the reviewed report shipped Claude's own
+  self-correction language twice.
+- **Vendor controlled-list validation.** PUREexpress→NEB (not
+  Thermo Fisher), ReadyToProcess→Cytiva (not Merck KGaA), etc.
+  First-week factual errors in cell-free are disproportionately
+  costly with domain buyers. Applied at synthesis or as a lint pass.
+- **Percentage-as-dollars template bug.** Table showed
+  `4 projects, 3.4%, $7.9M`; prose composed from it read
+  `"(4 projects, $3.4M)"` — share column read into funding slot.
+  Formatter helper needs audit.
+- **Case-insensitive PI dedup.** "MILLER, SHANNON MARIE" and
+  "Shannon Marie Miller" appeared as two rows; inflated the
+  headline PI count.
 
 ## Report content — founder-persona grade (A-) feedback
 
