@@ -82,34 +82,18 @@ export function extractScopeWarning(markdown: string): string {
 }
 
 /**
- * The "tl;dr paragraph" narrative that anchors the bottom of the
- * dashboard. Kept as its own constant so the exec summary can be
- * rendered independently from Next Steps (which now lives in a
- * compact above-the-fold action card next to the Surprising Findings
- * teaser — see dashboard layout notes 2026-08-12).
+ * Sections rendered on the dashboard's narrative area (below the
+ * metric tiles and the Surprising Findings teaser). Includes both
+ * the exec-summary tl;dr paragraphs and the Next Steps checklist —
+ * the classic "situational awareness + recommended action" pair.
+ * Discrete analytical outputs (Field Maturity, Competitive Topology,
+ * White Space, Market Context, Funding Landscape, full What Surprised
+ * Us) live on their own Analysis pages so each is shareable via URL.
  */
-export const DASHBOARD_SECTIONS: string[] = ['Executive Summary']
-
-/**
- * Extract just the body of the Next Steps section — the actual
- * checklist items, stripped of the H2 heading and the italic caption
- * synthesize.ts prepends ("*Concrete actions the report suggests
- * based on what's above...*"). The dashboard's compact Next Steps
- * card provides its own header + framing, so those elements would
- * be redundant if rendered inline.
- *
- * Returns empty string when the report has no Next Steps section
- * (rare — most reports emit one).
- */
-export function extractNextStepsBody(markdown: string): string {
-  const section = pickSections(markdown, ['Next Steps'])
-  if (!section) return ''
-  // Strip `## Next Steps` header (one line, optional trailing blank).
-  let body = section.replace(/^##\s+Next Steps\s*\n\n?/i, '')
-  // Strip a single italic-only intro paragraph if present.
-  body = body.replace(/^\*[^\n]+\*\s*\n\n?/, '')
-  return body.trim()
-}
+export const DASHBOARD_SECTIONS: string[] = [
+  'Executive Summary',
+  'Next Steps',
+]
 
 /**
  * Extract the first N "surprising findings" headlines from a

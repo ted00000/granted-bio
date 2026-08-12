@@ -3,11 +3,11 @@
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw, Sparkles, X, ArrowRight, ListChecks } from 'lucide-react'
+import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw, Sparkles, X, ArrowRight } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { Logo } from '@/components/Logo'
 import { MarkdownRenderer } from './MarkdownRenderer'
-import { pickSections, extractScopeWarning, DASHBOARD_SECTIONS, extractSurprisingHeadlines, extractNextStepsBody } from './section-utils'
+import { pickSections, extractScopeWarning, DASHBOARD_SECTIONS, extractSurprisingHeadlines } from './section-utils'
 import { DashboardTiles } from './DashboardTiles'
 import { jsPDF } from 'jspdf'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, Header, Footer, AlignmentType } from 'docx'
@@ -1874,26 +1874,19 @@ export default function ReportDetailPage({
         )}
 
         {report.status === 'complete' && report.markdown_content && (() => {
-          // Dashboard — "at-a-glance + what should I do" landing.
-          // Layout (top-to-bottom, above-the-fold on desktop):
-          //   1. Scope-warning banner (only when scope-collapse fired)
+          // Dashboard layout (2026-08-12 iteration):
+          //   1. Scope-warning banner (when scope-collapse fired)
           //   2. Metric tiles — 6 dimensions, click-through to Data
-          //   3. Two-column row (stacks on mobile):
-          //      LEFT:  Surprising-findings teaser (top 3 headlines)
-          //      RIGHT: Next Steps checklist (in full — usually short)
-          //   4. Executive Summary — deeper narrative, longer read
+          //   3. What Surprised Us teaser — top 3 headlines, link to
+          //      the full /surprising Analysis page
+          //   4. Executive Summary + Next Steps (combined narrative)
           //
-          // Rationale (2026-08-12): the previous layout put Exec
-          // Summary above Next Steps, so the "what should I do"
-          // checklist was often below the fold. Two-column above-the-
-          // fold keeps both action-relevant items scannable at first
-          // glance. Exec Summary drops to below because it's the fuller
-          // narrative — users who want the tl;dr paragraphs can scroll
-          // one screen height.
+          // Surprising sits between tiles and the exec-summary block
+          // so the "non-obvious findings" hit reads immediately after
+          // the "here's the scope" tiles and before the paragraphs.
           const scopeWarning = extractScopeWarning(report.markdown_content)
           const dashboardMd = pickSections(report.markdown_content, DASHBOARD_SECTIONS)
           const surprisingHeadlines = extractSurprisingHeadlines(report.markdown_content, 3)
-          const nextStepsBody = extractNextStepsBody(report.markdown_content)
           return (
             <>
               {scopeWarning && (
@@ -1919,63 +1912,35 @@ export default function ReportDetailPage({
                 />
               </div>
 
-              {(surprisingHeadlines.length > 0 || nextStepsBody) && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                  {surprisingHeadlines.length > 0 && (
-                    <Link
-                      href={`/reports/${report.id}/surprising`}
-                      className="group block bg-white rounded-lg border border-gray-200 hover:border-[#E07A5F] hover:shadow-sm transition-all p-5"
-                    >
-                      <div className="flex items-start gap-3 h-full">
-                        <div className="p-1.5 bg-[#FDF2EF] rounded-md flex-shrink-0">
-                          <Sparkles className="w-4 h-4 text-[#E07A5F]" strokeWidth={1.75} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="text-sm font-semibold text-gray-900 group-hover:text-[#E07A5F] transition-colors">
-                              What Surprised Us
-                            </div>
-                            <div className="text-xs text-gray-400 group-hover:text-[#E07A5F] transition-colors">
-                              See all {surprisingHeadlines.length}+ &rarr;
-                            </div>
-                          </div>
-                          <ul className="space-y-1.5">
-                            {surprisingHeadlines.map((h) => (
-                              <li key={h.index} className="text-sm text-gray-700 leading-snug">
-                                <span className="text-gray-400 font-medium mr-1.5">{h.index}.</span>
-                                {h.headline}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </Link>
-                  )}
-
-                  {nextStepsBody && (
-                    <div className="bg-white rounded-lg border border-gray-200 p-5">
-                      <div className="flex items-start gap-3 h-full">
-                        <div className="p-1.5 bg-[#FDF2EF] rounded-md flex-shrink-0">
-                          <ListChecks className="w-4 h-4 text-[#E07A5F]" strokeWidth={1.75} />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="mb-2">
-                            <div className="text-sm font-semibold text-gray-900">
-                              Next Steps
-                            </div>
-                          </div>
-                          {/* Renders the checklist body only — the H2
-                              heading and italic caption are stripped
-                              by extractNextStepsBody so the card owns
-                              the framing. */}
-                          <div className="text-sm text-gray-700 dashboard-next-steps">
-                            <MarkdownRenderer content={nextStepsBody} />
-                          </div>
-                        </div>
-                      </div>
+              {surprisingHeadlines.length > 0 && (
+                <Link
+                  href={`/reports/${report.id}/surprising`}
+                  className="group block bg-white rounded-lg border border-gray-200 hover:border-[#E07A5F] hover:shadow-sm transition-all p-5 mb-6"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="p-1.5 bg-[#FDF2EF] rounded-md flex-shrink-0">
+                      <Sparkles className="w-4 h-4 text-[#E07A5F]" strokeWidth={1.75} />
                     </div>
-                  )}
-                </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-sm font-semibold text-gray-900 group-hover:text-[#E07A5F] transition-colors">
+                          What Surprised Us
+                        </div>
+                        <div className="text-xs text-gray-400 group-hover:text-[#E07A5F] transition-colors">
+                          See all {surprisingHeadlines.length}+ &rarr;
+                        </div>
+                      </div>
+                      <ul className="space-y-1.5">
+                        {surprisingHeadlines.map((h) => (
+                          <li key={h.index} className="text-sm text-gray-700 leading-snug">
+                            <span className="text-gray-400 font-medium mr-1.5">{h.index}.</span>
+                            {h.headline}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </Link>
               )}
 
               {dashboardMd && (
