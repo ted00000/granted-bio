@@ -2,15 +2,10 @@ import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
 import { PortalSectionView } from '../PortalSectionView'
 
-interface FundingStats {
-  byYear?: unknown
-  byCategory?: unknown
-}
-interface AgentOutputs {
-  trials?: { byPhase?: Record<string, number> }
-}
+interface FundingStats { byYear?: unknown; byCategory?: unknown }
+interface AgentOutputs { trials?: { byPhase?: Record<string, number> } }
 
-export default async function ProjectsSectionPage({
+export default async function FundingLandscapePage({
   params,
 }: {
   params: Promise<{ id: string }>
@@ -27,12 +22,12 @@ export default async function ProjectsSectionPage({
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
-      sectionLabel="Projects"
-      sectionSubtitle="Top NIH-funded projects analyzed, with per-project relevance notes."
-      // Funding-landscape narrative lives on its own Analysis page
-      // (/reports/[id]/funding). This page holds the project list
-      // only — one page, one job.
-      markdownSections={['Key Research Projects']}
+      sectionLabel="Funding Landscape"
+      sectionSubtitle="Where NIH funding flows in this space — trends, category concentration, and top-funded organizations."
+      // Researcher persona emits "NIH Funding Landscape"; investor
+      // persona emits "NIH Funding Analysis". Same analytical content,
+      // different framing per audience — extract either.
+      markdownSections={['NIH Funding Landscape', 'NIH Funding Analysis']}
       fullMarkdown={report.markdown_content}
       chartData={{
         fundingByYear: fundingStats.byYear,

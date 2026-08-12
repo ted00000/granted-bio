@@ -27,6 +27,7 @@ import {
   Sparkles,
   Gauge,
   Network,
+  DollarSign,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 
@@ -86,9 +87,13 @@ export function ReportPortalNav({
     },
     {
       label: 'Analysis',
+      // Ordered as: quick hits -> state of field -> where money flows
+      // -> how the space is organized -> what is missing -> commercial
+      // framing. Roughly the traversal a first-time analyst would do.
       items: [
         { href: `${base}/surprising`, label: 'What Surprised Us', icon: Sparkles },
         { href: `${base}/field-maturity`, label: 'Field Maturity', icon: Gauge },
+        { href: `${base}/funding`, label: 'Funding Landscape', icon: DollarSign },
         { href: `${base}/competitive-topology`, label: 'Competitive Topology', icon: Network },
         { href: `${base}/whitespace`, label: 'White Space', icon: Compass },
         { href: `${base}/market`, label: 'Market Context', icon: Globe },
