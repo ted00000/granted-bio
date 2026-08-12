@@ -1,7 +1,39 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
+// Maintenance mode. Toggled by the MAINTENANCE_MODE env var on
+// Vercel (or locally): when === 'true', every user-facing page
+// redirects to /maintenance. API routes are left alone so
+// background systems (Inngest, Stripe webhooks) don't break and
+// so the bypass endpoint keeps working. Admins/testers who want to
+// preview during maintenance visit /api/maintenance/bypass?token=X
+// once — that sets a cookie the middleware honors on subsequent
+// requests. See docs/MAINTENANCE_MODE.md for how to flip on/off.
+const MAINTENANCE_BYPASS_COOKIE = 'granted_maintenance_bypass'
+
+function shouldServeMaintenance(request: NextRequest): boolean {
+  if (process.env.MAINTENANCE_MODE !== 'true') return false
+  const pathname = request.nextUrl.pathname
+  // Never intercept:
+  //  - /maintenance itself (else redirect loop)
+  //  - /api/* (background systems + the bypass endpoint)
+  //  - Static assets (already excluded by matcher, but belt+suspenders)
+  if (pathname === '/maintenance') return false
+  if (pathname.startsWith('/api/')) return false
+  if (pathname.startsWith('/_next/')) return false
+  // Bypass cookie holders pass through.
+  if (request.cookies.get(MAINTENANCE_BYPASS_COOKIE)?.value === '1') return false
+  return true
+}
+
 export async function middleware(request: NextRequest) {
+  if (shouldServeMaintenance(request)) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/maintenance'
+    url.search = ''
+    return NextResponse.redirect(url)
+  }
+
   let supabaseResponse = NextResponse.next({
     request,
   })
