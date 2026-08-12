@@ -7,7 +7,8 @@ import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw, Sparkles
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { Logo } from '@/components/Logo'
 import { MarkdownRenderer } from './MarkdownRenderer'
-import { pickSections, extractScopeWarning, DASHBOARD_SECTIONS } from './section-utils'
+import { pickSections, extractScopeWarning, DASHBOARD_SECTIONS, extractSurprisingHeadlines } from './section-utils'
+import { DashboardTiles } from './DashboardTiles'
 import { jsPDF } from 'jspdf'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, Header, Footer, AlignmentType } from 'docx'
 import { saveAs } from 'file-saver'
@@ -1873,20 +1874,23 @@ export default function ReportDetailPage({
         )}
 
         {report.status === 'complete' && report.markdown_content && (() => {
-          // Portal Dashboard renders ONLY the narrative sections a
-          // first-time reader wants (~5-8 pages of "so what"). Every
-          // other section — projects, trials, patents, publications,
-          // organizations, researchers, white space, market context,
-          // methodology — has its own destination in the portal
-          // sidebar. The full report body still exists at those URLs;
-          // the reader clicks in when they want depth, not by default.
+          // Dashboard = the "at-a-glance + what should I do" landing.
+          // Layout:
+          //   1. Scope-warning banner (only when scope-collapse fired)
+          //   2. Metric tiles — 6 dimensions, click-through to Data
+          //   3. Executive Summary (structured column, 2-3 paragraphs)
+          //   4. Next Steps (from markdown, the actionable checklist)
+          //   5. Surprising-findings teaser (top 3 headlines, link to
+          //      the full What Surprised Us analysis page)
           //
-          // The scope-warning banner (from the trust-fixes bundle) is
-          // extracted separately so it renders BEFORE the dashboard
-          // narrative — a reader who lands on the dashboard sees the
-          // "sample missed the topic" caveat before any body text.
+          // Discrete analytical outputs (Field Maturity, Competitive
+          // Topology, White Space, Market Context, full What Surprised
+          // Us) each have their own /reports/[id]/<section> URL so
+          // they're shareable. This dashboard is the launchpad, not
+          // the whole document.
           const scopeWarning = extractScopeWarning(report.markdown_content)
           const dashboardMd = pickSections(report.markdown_content, DASHBOARD_SECTIONS)
+          const surprisingHeadlines = extractSurprisingHeadlines(report.markdown_content, 3)
           return (
             <>
               {scopeWarning && (
@@ -1896,17 +1900,66 @@ export default function ReportDetailPage({
                   </div>
                 </div>
               )}
-              <div id="report-content" className="bg-white rounded-lg shadow-sm">
-                <MarkdownRenderer
-                  content={dashboardMd}
-                  chartData={{
-                    fundingByYear: report.funding_stats?.byYear,
-                    categories: report.funding_stats?.byCategory,
-                    trialsByPhase: report.agent_outputs?.trials?.byPhase,
-                    whiteSpace: (report.agent_outputs as { whiteSpace?: unknown })?.whiteSpace as never,
-                  }}
+
+              <div className="mb-6">
+                <DashboardTiles
+                  reportId={report.id}
+                  projectCount={report.project_count ?? (report.funding_stats?.projectCount ?? 0)}
+                  fundingTotal={report.funding_stats?.total ?? 0}
+                  fundingByYear={report.funding_stats?.byYear ?? []}
+                  trialsCount={(report.agent_outputs?.trials?.items ?? []).length}
+                  trialsByPhase={report.agent_outputs?.trials?.byPhase}
+                  patentsCount={((report.agent_outputs as { patents?: { items?: unknown[] } })?.patents?.items ?? []).length}
+                  publicationsCount={((report.agent_outputs as { publications?: { items?: unknown[] } })?.publications?.items ?? []).length}
+                  organizationsCount={report.funding_stats?.orgCount ?? 0}
+                  researchersCount={report.funding_stats?.piCount ?? 0}
                 />
               </div>
+
+              {dashboardMd && (
+                <div id="report-content" className="bg-white rounded-lg shadow-sm mb-6">
+                  <MarkdownRenderer
+                    content={dashboardMd}
+                    chartData={{
+                      fundingByYear: report.funding_stats?.byYear,
+                      categories: report.funding_stats?.byCategory,
+                      trialsByPhase: report.agent_outputs?.trials?.byPhase,
+                      whiteSpace: (report.agent_outputs as { whiteSpace?: unknown })?.whiteSpace as never,
+                    }}
+                  />
+                </div>
+              )}
+
+              {surprisingHeadlines.length > 0 && (
+                <Link
+                  href={`/reports/${report.id}/surprising`}
+                  className="group block bg-white rounded-lg border border-gray-200 hover:border-[#E07A5F] hover:shadow-sm transition-all p-5"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="p-1.5 bg-[#FDF2EF] rounded-md flex-shrink-0">
+                      <Sparkles className="w-4 h-4 text-[#E07A5F]" strokeWidth={1.75} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="text-sm font-semibold text-gray-900 group-hover:text-[#E07A5F] transition-colors">
+                          What Surprised Us
+                        </div>
+                        <div className="text-xs text-gray-400 group-hover:text-[#E07A5F] transition-colors">
+                          See all {surprisingHeadlines.length}+ &rarr;
+                        </div>
+                      </div>
+                      <ul className="space-y-1.5">
+                        {surprisingHeadlines.map((h) => (
+                          <li key={h.index} className="text-sm text-gray-700 leading-snug">
+                            <span className="text-gray-400 font-medium mr-1.5">{h.index}.</span>
+                            {h.headline}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </Link>
+              )}
             </>
           )
         })()}

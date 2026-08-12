@@ -24,6 +24,9 @@ import {
   Compass,
   Globe,
   Info,
+  Sparkles,
+  Gauge,
+  Network,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 
@@ -65,14 +68,30 @@ export function ReportPortalNav({
       pathname.split('/').slice(0, 3).join('/')
     : `/reports/${reportId}`
 
-  // Section groups. Ordered as the reader would traverse: narrative
-  // first, then the raw evidence, then the analytical layers, then
-  // reference material. Each group renders as a labeled cluster.
+  // Section groups. Order reflects reading intent: the dashboard is
+  // the "what's happening + what should I do" landing pad; Analysis
+  // groups the discrete analytical outputs (each a shareable URL);
+  // Data groups the raw evidence tables; Reference holds methodology.
+  //
+  // Next Steps intentionally NOT its own page — it lives on the
+  // dashboard next to the exec summary, per the "situational
+  // awareness + recommended action" dashboard pattern. See
+  // dashboard rewrite 2026-08-11 for rationale.
   const groups: Array<{ label: string; items: NavItem[] }> = [
     {
       label: 'Overview',
       items: [
         { href: base, label: 'Dashboard', icon: LayoutDashboard },
+      ],
+    },
+    {
+      label: 'Analysis',
+      items: [
+        { href: `${base}/surprising`, label: 'What Surprised Us', icon: Sparkles },
+        { href: `${base}/field-maturity`, label: 'Field Maturity', icon: Gauge },
+        { href: `${base}/competitive-topology`, label: 'Competitive Topology', icon: Network },
+        { href: `${base}/whitespace`, label: 'White Space', icon: Compass },
+        { href: `${base}/market`, label: 'Market Context', icon: Globe },
       ],
     },
     {
@@ -84,13 +103,6 @@ export function ReportPortalNav({
         { href: `${base}/publications`, label: 'Publications', icon: BookOpen, count: counts.publications },
         { href: `${base}/organizations`, label: 'Organizations', icon: Building2, count: counts.organizations },
         { href: `${base}/researchers`, label: 'Researchers', icon: Users, count: counts.researchers },
-      ],
-    },
-    {
-      label: 'Analysis',
-      items: [
-        { href: `${base}/whitespace`, label: 'White Space', icon: Compass },
-        { href: `${base}/market`, label: 'Market Context', icon: Globe },
       ],
     },
     {

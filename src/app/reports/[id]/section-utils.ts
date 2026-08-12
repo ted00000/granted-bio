@@ -82,15 +82,56 @@ export function extractScopeWarning(markdown: string): string {
 }
 
 /**
- * Dashboard section list — the narrative subset a first-time visitor
- * sees on `/reports/[id]`. Reading material only; reference material
- * (project cards, publication lists, patent tables) lives on dedicated
- * section pages the visitor can navigate to via the sidebar.
+ * Sections rendered on the dashboard's narrative area (below the
+ * metric tiles, above the surprising-findings teaser). Kept small:
+ * this is the "situational awareness + recommended action" pair
+ * that anchors every visit. Discrete analytical outputs (Field
+ * Maturity, Competitive Topology, What Surprised Us, White Space,
+ * Market Context) live on their own Analysis pages so each is
+ * shareable via URL.
  */
 export const DASHBOARD_SECTIONS: string[] = [
   'Executive Summary',
-  'What Surprised Us',
-  'Field Maturity Assessment',
-  'Competitive Topology',
   'Next Steps',
 ]
+
+/**
+ * Extract the first N "surprising findings" headlines from a
+ * `What Surprised Us` section so the dashboard can show a teaser
+ * card linking to the full page. Returns [] when the section is
+ * absent (persona variant that omitted it, or a report where the
+ * detector found nothing).
+ *
+ * The markdown format emitted by renderSurprisingFindings in
+ * synthesize.ts is:
+ *   **1. [headline]**
+ *   [interpretation]
+ *   **Confidence: X** - Evidence: [...]
+ * so we scan for lines matching the numbered-headline pattern.
+ */
+export interface SurprisingHeadline {
+  index: number
+  headline: string
+}
+
+export function extractSurprisingHeadlines(
+  markdown: string,
+  max: number = 3,
+): SurprisingHeadline[] {
+  if (!markdown) return []
+  const section = splitMarkdownSections(markdown).find(
+    (s) => s.heading.toLowerCase() === 'what surprised us',
+  )
+  if (!section) return []
+  const headlines: SurprisingHeadline[] = []
+  // Match `**N. headline**` at start of line. Non-greedy to stop at
+  // the closing bold. The `*` inside a claim's inline emphasis won't
+  // match because we anchor on the "N. " prefix.
+  const re = /^\*\*(\d+)\.\s+([^*]+?)\*\*\s*$/gm
+  let m: RegExpExecArray | null
+  while ((m = re.exec(section.body)) !== null) {
+    headlines.push({ index: Number(m[1]), headline: m[2].trim() })
+    if (headlines.length >= max) break
+  }
+  return headlines
+}
