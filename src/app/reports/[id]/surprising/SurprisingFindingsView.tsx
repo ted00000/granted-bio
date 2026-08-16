@@ -66,7 +66,7 @@ export function SurprisingFindingsView({
           return (
             <article
               key={f.index}
-              className="bg-white rounded-lg border border-gray-200 shadow-sm p-6"
+              className="bg-white rounded-lg border border-gray-200 shadow-sm p-5"
             >
               <div className="flex items-start gap-4">
                 {/* Numbered badge — brand-orange circle so the reader
@@ -75,7 +75,7 @@ export function SurprisingFindingsView({
                   {f.index}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <h3 className="text-base font-semibold text-gray-900 leading-snug mb-3">
+                  <h3 className="text-base font-semibold text-gray-900 leading-snug mb-2">
                     {f.headline}
                   </h3>
 
@@ -83,8 +83,13 @@ export function SurprisingFindingsView({
                       so inline formatting (bold, italics, links) inside
                       the interpretation still renders correctly. The
                       confidence tag has been stripped by the parser so
-                      it doesn't appear mid-paragraph. */}
-                  <div className="text-sm text-gray-700 leading-relaxed">
+                      it doesn't appear mid-paragraph.
+                      [&_p]:my-0 kills MarkdownRenderer's default paragraph
+                      margins so the outer wrapper controls the rhythm —
+                      previously they compounded with H3 mb + confidence
+                      mt and produced the excess white space the user
+                      called out. */}
+                  <div className="text-sm text-gray-700 leading-relaxed [&_p]:my-0 [&_p+p]:mt-2">
                     <MarkdownRenderer content={f.interpretation} />
                   </div>
 
@@ -93,7 +98,7 @@ export function SurprisingFindingsView({
                       When evidence is present it renders on its own
                       italic line below the chip. */}
                   {(confStyle || f.evidence) && (
-                    <div className="mt-4 pt-3 border-t border-gray-100">
+                    <div className="mt-3">
                       {confStyle && (
                         <span
                           className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full border ${confStyle.chip}`}
@@ -103,7 +108,7 @@ export function SurprisingFindingsView({
                         </span>
                       )}
                       {f.evidence && (
-                        <p className="mt-2 text-xs text-gray-500 leading-relaxed">
+                        <p className="mt-1.5 text-xs text-gray-500 leading-relaxed">
                           <span className="font-medium text-gray-600">Evidence:</span>{' '}
                           {f.evidence}
                         </p>
