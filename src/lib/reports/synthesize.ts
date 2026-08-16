@@ -2316,9 +2316,9 @@ DATA-INTEGRITY CAVEATS — bake these into item wording, not as a footer:
 - **NIH-ack-gating.** Trial/patent counts in this report only reflect items acknowledging an NIH grant. Do NOT recommend "in-license from Org X because they have no filed IP" — commercial patents and international filings are structurally invisible. Frame IP-related actions as "search USPTO + Google Patents + PATENTSCOPE for full assignee landscape, don't rely on the NIH-linked patent count alone."
 - **Do NOT recommend actions that assume the broader-NIH counts are precise.** Use phrases like "explore whether the underrepresentation of X reflects real whitespace" rather than "capitalize on the X gap."
 
-FORMATTING: Return raw markdown (NOT wrapped in JSON). Each item as a checkbox line: "- [ ] Item text here"
+FORMATTING: Return raw markdown (NOT wrapped in JSON). Each item as a plain markdown bullet: "- Item text here". Do NOT prepend "[ ]" or "[x]" — our renderer treats them as literal text, not checkboxes, so they display as visual noise.
 Do NOT use em dashes (—). Use regular hyphens (-) or rewrite.
-Start directly with the first "- [ ]" — no preamble, no section heading.`
+Start directly with the first "- " bullet — no preamble, no section heading.`
 
   try {
     const response = await client.messages.create({
@@ -2339,12 +2339,19 @@ Start directly with the first "- [ ]" — no preamble, no section heading.`
     if (raw.startsWith('```')) {
       raw = raw.replace(/```(?:markdown)?\n?/g, '').replace(/```$/g, '').trim()
     }
-    // Only keep checkbox lines and empty lines — LLM sometimes prepends a heading
-    // despite the instruction. Filter to safe output.
-    const lines = raw.split('\n').filter((l) => {
-      const t = l.trim()
-      return t.startsWith('- [ ]') || t.startsWith('- [x]') || t === ''
-    })
+    // Only keep bullet lines and empty lines — LLM sometimes prepends
+    // a heading despite the instruction. Accept plain bullets ("- Item")
+    // AND checkbox-style ("- [ ] Item" / "- [x] Item") for backwards
+    // compatibility with runs from before the 2026-08-15 prompt change,
+    // then normalize checkbox prefixes off since our renderer doesn't
+    // render them as actual checkboxes.
+    const lines = raw
+      .split('\n')
+      .filter((l) => {
+        const t = l.trim()
+        return t.startsWith('- ') || t === ''
+      })
+      .map((l) => l.replace(/^(\s*-\s+)\[[ x]\]\s+/, '$1'))
     return lines.join('\n').trim()
   } catch (err) {
     console.warn('[Synthesis Agent] Failed to generate Next Steps:', err)

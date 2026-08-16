@@ -53,6 +53,11 @@ export function splitMarkdownSections(markdown: string): MarkdownSection[] {
  *
  * Separator between kept sections is a horizontal rule so the render
  * matches the linear-report visual rhythm.
+ *
+ * Runs through stripTaskListCheckboxes so old reports whose Next Steps
+ * were emitted with `- [ ]` prefixes (before the 2026-08-15 prompt
+ * change) render cleanly — the checkboxes were meant as GitHub-flavored
+ * task lists, but our MarkdownRenderer treats them as literal text.
  */
 export function pickSections(markdown: string, headings: string[]): string {
   const sections = splitMarkdownSections(markdown)
@@ -62,7 +67,17 @@ export function pickSections(markdown: string, headings: string[]): string {
     const s = sections.find((x) => x.heading.toLowerCase() === h)
     if (s) kept.push(s.body)
   }
-  return kept.join('\n\n---\n\n')
+  return stripTaskListCheckboxes(kept.join('\n\n---\n\n'))
+}
+
+/**
+ * Remove GitHub-flavored task-list checkbox prefixes (`- [ ]` / `- [x]`)
+ * from bullet items, leaving a plain `- ` bullet in their place. Our
+ * MarkdownRenderer doesn't parse GFM task lists, so the checkboxes
+ * render as literal `[ ]` text — visual noise for the reader.
+ */
+export function stripTaskListCheckboxes(markdown: string): string {
+  return markdown.replace(/^(\s*[-*+]\s+)\[[ xX]\]\s+/gm, '$1')
 }
 
 /**
