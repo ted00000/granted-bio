@@ -250,7 +250,7 @@ export function MarkdownRenderer({ content, chartData, printChartWidth, printCha
   )
 }
 
-function processInline(text: string): React.ReactNode {
+export function processInline(text: string): React.ReactNode {
   // Process inline elements: bold, italic, links, code
   const parts: React.ReactNode[] = []
   let remaining = text
