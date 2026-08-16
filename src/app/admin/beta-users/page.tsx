@@ -175,7 +175,7 @@ export default function BetaUsersPage() {
               <tr className="text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <th className="px-5 py-3">Email</th>
                 <th className="px-5 py-3">Status</th>
-                <th className="px-5 py-3">Reports</th>
+                <th className="px-5 py-3">Analyses</th>
                 <th className="px-5 py-3">Expires</th>
                 <th className="px-5 py-3">Notes</th>
                 <th className="px-5 py-3"></th>
