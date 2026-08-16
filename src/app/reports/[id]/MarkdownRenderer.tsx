@@ -60,9 +60,17 @@ interface MarkdownRendererProps {
    */
   printChartWidth?: number
   printChartHeight?: number
+  /**
+   * When true, the wrapper div drops the default `p-8` padding. Use
+   * this when embedding the renderer inside a component that already
+   * provides its own padding (e.g. finding cards on the What Surprised
+   * Us page). Without this the p-8 stacks with the parent padding and
+   * produces a visible content indent.
+   */
+  compact?: boolean
 }
 
-export function MarkdownRenderer({ content, chartData, printChartWidth, printChartHeight }: MarkdownRendererProps) {
+export function MarkdownRenderer({ content, chartData, printChartWidth, printChartHeight, compact }: MarkdownRendererProps) {
   const lines = content.split('\n')
   const elements: React.ReactNode[] = []
   let i = 0
@@ -236,7 +244,7 @@ export function MarkdownRenderer({ content, chartData, printChartWidth, printCha
   }
 
   return (
-    <div className="p-8 prose-sm">
+    <div className={compact ? 'prose-sm' : 'p-8 prose-sm'}>
       {elements}
     </div>
   )

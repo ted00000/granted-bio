@@ -93,7 +93,17 @@ export function extractSurprisingFindings(body: string): SurprisingFinding[] {
     // Clean up trailing punctuation/whitespace artifacts left by the
     // extraction (e.g. a paragraph that ended "...worth investigating.
     // **Confidence: Low**" now ends "...worth investigating.").
-    interpretation = interpretation.replace(/\s+\.$/, '.').trim()
+    interpretation = interpretation.replace(/\s+\.$/, '.')
+    // Strip section-separator horizontal rules (`---` on their own line)
+    // that get captured by the lookahead split. Without this, the
+    // MarkdownRenderer sees `---` and emits an <hr>, which appears as
+    // a spurious separator line between the interpretation and the
+    // confidence chip below it.
+    interpretation = interpretation
+      .replace(/^\s*-{3,}\s*$/gm, '')
+      // Collapse any leading/trailing blank lines the strip created.
+      .replace(/\n{3,}/g, '\n\n')
+      .trim()
 
     findings.push({ index, headline, interpretation, confidence, evidence })
   }

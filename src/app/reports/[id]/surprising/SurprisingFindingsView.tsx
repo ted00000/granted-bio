@@ -90,7 +90,7 @@ export function SurprisingFindingsView({
                       mt and produced the excess white space the user
                       called out. */}
                   <div className="text-sm text-gray-700 leading-relaxed [&_p]:my-0 [&_p+p]:mt-2">
-                    <MarkdownRenderer content={f.interpretation} />
+                    <MarkdownRenderer content={f.interpretation} compact />
                   </div>
 
                   {/* Confidence chip — always positioned at the bottom
