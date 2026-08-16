@@ -112,14 +112,14 @@ export function SurprisingFindingsView({
               <div className={`h-1 ${confStyle ? confStyle.topBorder : 'bg-gray-200'}`} />
 
               <div className="px-6 py-5">
-                {/* Position marker + numbered badge row */}
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="flex-shrink-0 w-9 h-9 rounded-full bg-[#E07A5F] text-white flex items-center justify-center text-sm font-semibold tabular-nums">
-                    {f.index}
-                  </div>
-                  <div className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-                    Finding {f.index} of {total}
-                  </div>
+                {/* Position marker only. The numbered badge was pulled
+                    (2026-08-16) — it repeated info already in this
+                    text label and its bold orange competed with the
+                    confidence top-border for visual identity. Card
+                    identity now comes from the border color + this
+                    label + the headline hierarchy. */}
+                <div className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">
+                  Finding {f.index} of {total}
                 </div>
 
                 {/* Headline — larger, tighter, real hierarchy */}
