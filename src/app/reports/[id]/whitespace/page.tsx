@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
-import { PortalSectionView } from '../PortalSectionView'
+import { SectionShell } from '../SectionShell'
+import { WhiteSpaceView } from './WhiteSpaceView'
 
-interface FundingStats { byYear?: unknown; byCategory?: unknown }
-interface AgentOutputs { trials?: { byPhase?: Record<string, number> } }
+interface AgentOutputs {
+  whiteSpace?: React.ComponentProps<typeof WhiteSpaceView>['whiteSpace']
+}
 
 export default async function WhiteSpaceSectionPage({
   params,
@@ -14,25 +16,19 @@ export default async function WhiteSpaceSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  const fundingStats = (report.funding_stats ?? {}) as FundingStats
   const agentOutputs = (report.agent_outputs ?? {}) as AgentOutputs
+  const whiteSpace = agentOutputs.whiteSpace ?? null
 
   return (
-    <PortalSectionView
+    <SectionShell
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="White Space"
       sectionSubtitle="Coverage-gap analysis: dimensions and categories under-represented in this sample."
-      markdownSections={['White Space Analysis']}
       fullMarkdown={report.markdown_content}
-      chartData={{
-        fundingByYear: fundingStats.byYear,
-        categories: fundingStats.byCategory,
-        trialsByPhase: agentOutputs.trials?.byPhase,
-        whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
-      }}
-      emptyMessage="This analysis did not include a White Space section (typically because the sample was too small to compute meaningful gap signals)."
-    />
+    >
+      <WhiteSpaceView whiteSpace={whiteSpace} />
+    </SectionShell>
   )
 }

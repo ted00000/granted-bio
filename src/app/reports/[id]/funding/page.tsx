@@ -1,9 +1,8 @@
 import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
-import { PortalSectionView } from '../PortalSectionView'
-
-interface FundingStats { byYear?: unknown; byCategory?: unknown }
-interface AgentOutputs { trials?: { byPhase?: Record<string, number> } }
+import { SectionShell } from '../SectionShell'
+import { pickSections, stripTaskListCheckboxes } from '../section-utils'
+import { FundingLandscapeView } from './FundingLandscapeView'
 
 export default async function FundingLandscapePage({
   params,
@@ -14,27 +13,31 @@ export default async function FundingLandscapePage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  const fundingStats = (report.funding_stats ?? {}) as FundingStats
-  const agentOutputs = (report.agent_outputs ?? {}) as AgentOutputs
+  // Structured funding stats live on their own column. Narrative body
+  // still lives in the assembled markdown — extract it and strip the
+  // `##` heading so the view can render its own labeled Analysis
+  // block without a duplicated heading.
+  const fundingStats = (report.funding_stats ?? null) as
+    | React.ComponentProps<typeof FundingLandscapeView>['fundingStats']
+    | null
+
+  const raw = report.markdown_content
+    ? pickSections(report.markdown_content, ['NIH Funding Landscape', 'NIH Funding Analysis'])
+    : ''
+  const narrative = stripTaskListCheckboxes(raw)
+    .replace(/^##\s+NIH Funding (?:Landscape|Analysis)\s*\n?/i, '')
+    .trim()
 
   return (
-    <PortalSectionView
+    <SectionShell
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Funding Landscape"
       sectionSubtitle="Where NIH funding flows in this space — trends, category concentration, and top-funded organizations."
-      // Researcher persona emits "NIH Funding Landscape"; investor
-      // persona emits "NIH Funding Analysis". Same analytical content,
-      // different framing per audience — extract either.
-      markdownSections={['NIH Funding Landscape', 'NIH Funding Analysis']}
       fullMarkdown={report.markdown_content}
-      chartData={{
-        fundingByYear: fundingStats.byYear,
-        categories: fundingStats.byCategory,
-        trialsByPhase: agentOutputs.trials?.byPhase,
-        whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
-      }}
-    />
+    >
+      <FundingLandscapeView fundingStats={fundingStats} narrative={narrative} />
+    </SectionShell>
   )
 }

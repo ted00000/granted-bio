@@ -472,7 +472,7 @@ function renderTable(lines: string[], key: number): React.ReactNode {
 // gets the same treatment.
 // -------------------------------------------------------------------
 
-interface ConfidenceChipProps {
+export interface ConfidenceChipProps {
   level: 'High' | 'Medium' | 'Low'
 }
 
@@ -482,7 +482,7 @@ const CONFIDENCE_CHIP_STYLES: Record<ConfidenceChipProps['level'], { chip: strin
   Low:    { chip: 'bg-rose-50 text-rose-800',       dot: 'bg-rose-500',    label: 'Low confidence' },
 }
 
-function ConfidenceChip({ level }: ConfidenceChipProps) {
+export function ConfidenceChip({ level }: ConfidenceChipProps) {
   const s = CONFIDENCE_CHIP_STYLES[level]
   return (
     <div className="mt-4 mb-1">
@@ -494,11 +494,11 @@ function ConfidenceChip({ level }: ConfidenceChipProps) {
   )
 }
 
-interface EvidencePanelProps {
+export interface EvidencePanelProps {
   text: string
 }
 
-function EvidencePanel({ text }: EvidencePanelProps) {
+export function EvidencePanel({ text }: EvidencePanelProps) {
   return (
     <div className="mt-2 mb-4 bg-gray-50 rounded-md px-3 py-2 border border-gray-100">
       <p className="text-xs text-gray-600 leading-relaxed my-0">

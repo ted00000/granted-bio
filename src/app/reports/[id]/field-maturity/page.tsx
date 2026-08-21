@@ -1,9 +1,22 @@
 import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
-import { PortalSectionView } from '../PortalSectionView'
+import { SectionShell } from '../SectionShell'
+import { FieldMaturityView } from './FieldMaturityView'
 
-interface FundingStats { byYear?: unknown; byCategory?: unknown }
-interface AgentOutputs { trials?: { byPhase?: Record<string, number> } }
+interface AgentOutputs {
+  fieldMaturity?: {
+    trlEstimate: string
+    maturityNarrative: string
+    benchmarkComparison?: string
+    evidenceSummary: {
+      preprintRatio: string
+      trialProgression: string
+      patentActivity: string
+    }
+    strategicImplications?: string
+    overallAssessment: 'nascent' | 'emerging' | 'maturing' | 'established'
+  }
+}
 
 export default async function FieldMaturityPage({
   params,
@@ -14,24 +27,19 @@ export default async function FieldMaturityPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  const fundingStats = (report.funding_stats ?? {}) as FundingStats
   const agentOutputs = (report.agent_outputs ?? {}) as AgentOutputs
+  const fm = agentOutputs.fieldMaturity ?? null
 
   return (
-    <PortalSectionView
+    <SectionShell
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Field Maturity"
       sectionSubtitle="Where this space sits on the nascent-to-established spectrum, and the signals that place it there."
-      markdownSections={['Field Maturity Assessment']}
       fullMarkdown={report.markdown_content}
-      chartData={{
-        fundingByYear: fundingStats.byYear,
-        categories: fundingStats.byCategory,
-        trialsByPhase: agentOutputs.trials?.byPhase,
-        whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
-      }}
-    />
+    >
+      <FieldMaturityView fieldMaturity={fm} />
+    </SectionShell>
   )
 }

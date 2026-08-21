@@ -1,9 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
-import { PortalSectionView } from '../PortalSectionView'
-
-interface FundingStats { byYear?: unknown; byCategory?: unknown }
-interface AgentOutputs { trials?: { byPhase?: Record<string, number> } }
+import { SectionShell } from '../SectionShell'
+import { MarketContextView } from './MarketContextView'
 
 export default async function MarketContextPage({
   params,
@@ -14,24 +12,23 @@ export default async function MarketContextPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  const fundingStats = (report.funding_stats ?? {}) as FundingStats
-  const agentOutputs = (report.agent_outputs ?? {}) as AgentOutputs
+  // Market context lives on its own column (market_context, enriched
+  // by the synthesis step). agent_outputs.market.context has the same
+  // shape but the top-level column is authoritative post-synthesis.
+  const market = (report.market_context ?? null) as
+    | React.ComponentProps<typeof MarketContextView>['market']
+    | null
 
   return (
-    <PortalSectionView
+    <SectionShell
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Market Context"
       sectionSubtitle="Commercial framing pulled from web sources — competitors, market sizing, deal flow."
-      markdownSections={['Market Context']}
       fullMarkdown={report.markdown_content}
-      chartData={{
-        fundingByYear: fundingStats.byYear,
-        categories: fundingStats.byCategory,
-        trialsByPhase: agentOutputs.trials?.byPhase,
-        whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
-      }}
-    />
+    >
+      <MarketContextView market={market} />
+    </SectionShell>
   )
 }
