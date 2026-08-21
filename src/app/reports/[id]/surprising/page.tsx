@@ -49,19 +49,21 @@ export default async function SurprisingSectionPage({
           navigation between pages feels continuous, but this page
           owns the body render. */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6">
-          <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-2">
+        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-5 sm:px-6">
+          <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-2">
             <Link
               href={`/reports/${report.id}`}
-              className="hover:text-gray-800 transition-colors truncate max-w-xs"
+              className="hover:text-gray-700 transition-colors truncate max-w-xs"
             >
               {report.topic || report.title}
             </Link>
             <ChevronRight className="w-3 h-3 flex-shrink-0" />
-            <span className="text-gray-800 font-medium">What Surprised Us</span>
+            <span className="text-gray-700">What Surprised Us</span>
           </div>
-          <h1 className="text-xl font-semibold text-gray-900">What Surprised Us</h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <h1 className="text-2xl font-semibold text-gray-900 tracking-tight leading-tight">
+            What Surprised Us
+          </h1>
+          <p className="text-sm text-gray-500 mt-1.5 max-w-3xl leading-relaxed">
             Non-obvious findings detected algorithmically from the data. Flagged hypotheses, not verified conclusions.
           </p>
         </div>

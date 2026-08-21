@@ -67,40 +67,51 @@ export function PortalSectionView({
 
   return (
     <div className="min-h-full">
-      {/* Section header — mirrors dashboard's structure so navigation
-          between sections feels continuous. Breadcrumb links back
-          to the dashboard so the reader always has an anchor home. */}
+      {/* Section header. Sticky at top of the scrollable main so the
+          reader always sees the breadcrumb + section title when they
+          navigate mid-scroll. Editorial rhythm: small uppercase
+          section label, larger H1 (tight tracking), one-line subtitle
+          in muted gray. Mirrors the Analyses portal's app-wide
+          typography. */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-4 sm:px-6">
-          <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-2">
+        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-5 sm:px-6">
+          <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-2">
             <Link
               href={`/reports/${reportId}`}
-              className="hover:text-gray-800 transition-colors truncate max-w-xs"
+              className="hover:text-gray-700 transition-colors truncate max-w-xs"
             >
               {reportTopic || reportTitle}
             </Link>
             <ChevronRight className="w-3 h-3 flex-shrink-0" />
-            <span className="text-gray-800 font-medium">{sectionLabel}</span>
+            <span className="text-gray-700">{sectionLabel}</span>
           </div>
-          <h1 className="text-xl font-semibold text-gray-900">{sectionLabel}</h1>
-          <p className="text-sm text-gray-500 mt-0.5">{sectionSubtitle}</p>
+          <h1 className="text-2xl font-semibold text-gray-900 tracking-tight leading-tight">
+            {sectionLabel}
+          </h1>
+          <p className="text-sm text-gray-500 mt-1.5 max-w-3xl leading-relaxed">
+            {sectionSubtitle}
+          </p>
         </div>
       </header>
 
       <div className="max-w-4xl mx-auto px-4 py-8 sm:px-6">
         {scopeWarning && (
           <div className="mb-6">
-            <div className="bg-amber-50 border border-amber-300 rounded-lg p-4">
-              <MarkdownRenderer content={scopeWarning} />
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <MarkdownRenderer content={scopeWarning} compact />
             </div>
           </div>
         )}
         {hasContent ? (
-          <div className="bg-white rounded-lg shadow-sm">
-            <MarkdownRenderer content={body} chartData={chartData as never} />
+          // White content card with generous padding. The old
+          // shadow-sm alone read as thin; combined the border + light
+          // shadow gives the block a bit more presence without
+          // shouting.
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm px-8 py-7">
+            <MarkdownRenderer content={body} chartData={chartData as never} compact />
           </div>
         ) : (
-          <div className="bg-white rounded-lg shadow-sm p-8 text-center">
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-8 text-center">
             <p className="text-sm text-gray-500">
               {emptyMessage ||
                 `This analysis does not include a ${sectionLabel.toLowerCase()} section.`}
