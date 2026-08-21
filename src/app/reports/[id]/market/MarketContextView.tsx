@@ -10,6 +10,7 @@
 //   - Sources list with external-link icons
 
 import { MarkdownRenderer } from '../MarkdownRenderer'
+import { SectionLabel } from '../SectionLabel'
 import { Globe, TrendingUp, Users2, ExternalLink } from 'lucide-react'
 
 interface MarketContext {
@@ -48,9 +49,7 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
           <div className="h-1 bg-[#E07A5F]" />
           <div className="px-6 py-5">
-            <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-2">
-              Market size
-            </div>
+            <SectionLabel className="mb-2">Market Size</SectionLabel>
             <div className="text-lg font-semibold text-gray-900 leading-snug">
               {market.marketSize}
             </div>
@@ -61,9 +60,7 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
       {/* Overview */}
       {market.overview && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Overview
-          </div>
+          <SectionLabel>Overview</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={market.overview} compact />
           </div>
@@ -73,10 +70,9 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
       {/* Key players grid */}
       {market.keyPlayers.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            <Users2 className="w-3.5 h-3.5" strokeWidth={1.75} />
-            Key Players ({market.keyPlayers.length})
-          </div>
+          <SectionLabel icon={Users2} count={market.keyPlayers.length}>
+            Key Players
+          </SectionLabel>
           <div className="flex flex-wrap gap-2">
             {market.keyPlayers.map((player, i) => (
               <span
@@ -93,10 +89,9 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
       {/* Recent developments — editorial-style timeline */}
       {market.recentDevelopments.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            <TrendingUp className="w-3.5 h-3.5" strokeWidth={1.75} />
-            Recent Developments ({market.recentDevelopments.length})
-          </div>
+          <SectionLabel icon={TrendingUp} count={market.recentDevelopments.length}>
+            Recent Developments
+          </SectionLabel>
           <ol className="space-y-3">
             {market.recentDevelopments.map((dev, i) => (
               <li key={i} className="flex items-start gap-3">
@@ -115,9 +110,7 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
       {/* Competitive landscape narrative */}
       {market.competitiveLandscape && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Competitive Landscape
-          </div>
+          <SectionLabel>Competitive Landscape</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={market.competitiveLandscape} compact />
           </div>
@@ -127,9 +120,7 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
       {/* Sources */}
       {market.sources.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Sources ({market.sources.length})
-          </div>
+          <SectionLabel count={market.sources.length}>Sources</SectionLabel>
           <ul className="space-y-1.5">
             {market.sources.map((src, i) => {
               const host = safeHost(src)

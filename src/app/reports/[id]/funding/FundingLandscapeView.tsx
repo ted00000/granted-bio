@@ -11,6 +11,7 @@
 //   - Narrative (with confidence chips auto-extracted)
 
 import { MarkdownRenderer } from '../MarkdownRenderer'
+import { SectionLabel } from '../SectionLabel'
 import { FundingByYearChart, CategoryDistributionChart } from '../charts'
 import { DollarSign, Building2, Users, FlaskConical } from 'lucide-react'
 
@@ -114,9 +115,7 @@ export function FundingLandscapeView({ fundingStats, narrative }: FundingLandsca
     <div className="space-y-5">
       {/* Metric tiles — 4 across on desktop, 2x2 on mobile */}
       <section>
-        <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3 px-1">
-          Sample scope
-        </div>
+        <SectionLabel className="mb-3 px-1">Sample Scope</SectionLabel>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {tiles.map((t) => {
             const Icon = t.icon
@@ -144,9 +143,7 @@ export function FundingLandscapeView({ fundingStats, narrative }: FundingLandsca
       {/* Funding by year chart — reuses existing chart component */}
       {fundingStats.byYear.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-4">
-            Funding by fiscal year
-          </div>
+          <SectionLabel className="mb-4">Funding by Fiscal Year</SectionLabel>
           <FundingByYearChart data={fundingStats.byYear} />
           {fundingStats.partialFYNote && (
             <p className="text-[11px] text-gray-500 mt-3 italic">
@@ -159,9 +156,7 @@ export function FundingLandscapeView({ fundingStats, narrative }: FundingLandsca
       {/* Category distribution — chart + table side by side on desktop */}
       {fundingStats.byCategory.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-4">
-            Funding by category
-          </div>
+          <SectionLabel className="mb-4">Funding by Category</SectionLabel>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
             <div className="md:col-span-2">
               <CategoryDistributionChart data={fundingStats.byCategory} />
@@ -214,9 +209,7 @@ export function FundingLandscapeView({ fundingStats, narrative }: FundingLandsca
       {/* Top orgs by funding */}
       {fundingStats.byOrg.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-4">
-            Top-funded organizations
-          </div>
+          <SectionLabel className="mb-4">Top-Funded Organizations</SectionLabel>
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="border-b border-gray-200">
@@ -252,9 +245,7 @@ export function FundingLandscapeView({ fundingStats, narrative }: FundingLandsca
           panels light up automatically inside MarkdownRenderer. */}
       {narrative && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Analysis
-          </div>
+          <SectionLabel>Analysis</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={narrative} compact />
           </div>

@@ -10,6 +10,7 @@
 //   - Strategic implications block
 
 import { MarkdownRenderer } from '../MarkdownRenderer'
+import { SectionLabel } from '../SectionLabel'
 import { Gauge, FileText, FlaskConical, Award, Target } from 'lucide-react'
 
 type MaturityTier = 'nascent' | 'emerging' | 'maturing' | 'established'
@@ -60,9 +61,7 @@ export function FieldMaturityView({ fieldMaturity }: { fieldMaturity: FieldMatur
       <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
         <div className={`h-1 ${currentStyle.bar}`} />
         <div className="px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Maturity Tier
-          </div>
+          <SectionLabel>Maturity Tier</SectionLabel>
           <div className="flex items-center gap-3 mb-5">
             <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-sm font-medium rounded-full ${currentStyle.chip}`}>
               <span className={`w-1.5 h-1.5 rounded-full ${currentStyle.dot}`} />
@@ -124,9 +123,7 @@ export function FieldMaturityView({ fieldMaturity }: { fieldMaturity: FieldMatur
           by MarkdownRenderer since the tags appear in prose. */}
       {fieldMaturity.maturityNarrative && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Assessment
-          </div>
+          <SectionLabel>Assessment</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={fieldMaturity.maturityNarrative} compact />
           </div>
@@ -135,11 +132,13 @@ export function FieldMaturityView({ fieldMaturity }: { fieldMaturity: FieldMatur
 
       {/* Evidence grid — three signals the LLM's assessment is grounded
           in. Each tile has its own icon so at-a-glance scanning maps
-          the signal (paper vs. flask vs. award) to its content. */}
+          the signal (paper vs. flask vs. award) to its content.
+          Tile values pass through MarkdownRenderer so any inline
+          `**Confidence: X**` + `- Evidence: ...` embedded in the LLM's
+          text gets extracted into the shared chip + evidence-panel
+          treatment instead of rendering as literal markdown syntax. */}
       <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-        <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-4">
-          Evidence
-        </div>
+        <SectionLabel className="mb-4">Evidence</SectionLabel>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {[
             { icon: FileText,      label: 'Preprint ratio',     value: fieldMaturity.evidenceSummary.preprintRatio },
@@ -153,8 +152,8 @@ export function FieldMaturityView({ fieldMaturity }: { fieldMaturity: FieldMatur
                   <Icon className="w-3.5 h-3.5" strokeWidth={1.75} />
                   {cell.label}
                 </div>
-                <div className="text-sm text-gray-700 leading-snug">
-                  {cell.value}
+                <div className="text-[14px] text-gray-700 leading-relaxed [&_p]:my-0 [&_p+p]:mt-2">
+                  <MarkdownRenderer content={cell.value} compact />
                 </div>
               </div>
             )
@@ -165,10 +164,7 @@ export function FieldMaturityView({ fieldMaturity }: { fieldMaturity: FieldMatur
       {/* Strategic implications — the "so what" for the reader. */}
       {fieldMaturity.strategicImplications && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            <Target className="w-3.5 h-3.5" strokeWidth={1.75} />
-            Strategic Implications
-          </div>
+          <SectionLabel icon={Target}>Strategic Implications</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={fieldMaturity.strategicImplications} compact />
           </div>

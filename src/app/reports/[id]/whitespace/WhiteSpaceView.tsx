@@ -13,6 +13,7 @@
 //   - Strategic implications
 
 import { MarkdownRenderer } from '../MarkdownRenderer'
+import { SectionLabel } from '../SectionLabel'
 import { Compass, Target, AlertTriangle } from 'lucide-react'
 
 interface Category {
@@ -97,9 +98,7 @@ export function WhiteSpaceView({ whiteSpace }: { whiteSpace: WhiteSpace | null }
       {/* Overview + scope note */}
       {whiteSpace.overview && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Overview
-          </div>
+          <SectionLabel>Overview</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={whiteSpace.overview} compact />
           </div>
@@ -127,9 +126,9 @@ export function WhiteSpaceView({ whiteSpace }: { whiteSpace: WhiteSpace | null }
 
       {/* Dimension cards */}
       <div>
-        <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3 px-1">
-          Coverage dimensions ({whiteSpace.dimensions.length})
-        </div>
+        <SectionLabel className="mb-3 px-1" count={whiteSpace.dimensions.length}>
+          Coverage Dimensions
+        </SectionLabel>
         <div className="space-y-4">
           {whiteSpace.dimensions.map((dim, i) => (
             <article
@@ -222,9 +221,7 @@ export function WhiteSpaceView({ whiteSpace }: { whiteSpace: WhiteSpace | null }
       {/* Top opportunities */}
       {whiteSpace.topOpportunities.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Top gap opportunities
-          </div>
+          <SectionLabel>Top Gap Opportunities</SectionLabel>
           <div className="space-y-3">
             {whiteSpace.topOpportunities.slice(0, 8).map((opp, i) => {
               const gapStyle = GAP_SIGNAL_STYLES[opp.gapSignal]
@@ -264,10 +261,7 @@ export function WhiteSpaceView({ whiteSpace }: { whiteSpace: WhiteSpace | null }
       {/* Strategic implications */}
       {whiteSpace.strategicImplications && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            <Target className="w-3.5 h-3.5" strokeWidth={1.75} />
-            Strategic Implications
-          </div>
+          <SectionLabel icon={Target}>Strategic Implications</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={whiteSpace.strategicImplications} compact />
           </div>

@@ -8,6 +8,7 @@
 //   - Strategic implications block
 
 import { MarkdownRenderer } from '../MarkdownRenderer'
+import { SectionLabel } from '../SectionLabel'
 import { Network, Target } from 'lucide-react'
 
 interface Cluster {
@@ -53,9 +54,7 @@ export function CompetitiveTopologyView({ topology }: { topology: CompetitiveTop
     <div className="space-y-5">
       {topology.narrative && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            Overview
-          </div>
+          <SectionLabel>Overview</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={topology.narrative} compact />
           </div>
@@ -64,9 +63,9 @@ export function CompetitiveTopologyView({ topology }: { topology: CompetitiveTop
 
       {total > 0 && (
         <div>
-          <div className="text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3 px-1">
-            Methodological clusters ({total})
-          </div>
+          <SectionLabel className="mb-3 px-1" count={total}>
+            Methodological Clusters
+          </SectionLabel>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {topology.clusters.map((cluster, i) => {
               const style = maturityStyle(cluster.maturityLevel)
@@ -133,10 +132,7 @@ export function CompetitiveTopologyView({ topology }: { topology: CompetitiveTop
 
       {topology.strategicImplications && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-3">
-            <Target className="w-3.5 h-3.5" strokeWidth={1.75} />
-            Strategic Implications
-          </div>
+          <SectionLabel icon={Target}>Strategic Implications</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={topology.strategicImplications} compact />
           </div>
