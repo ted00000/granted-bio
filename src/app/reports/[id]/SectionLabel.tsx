@@ -5,9 +5,11 @@
 // of M", tile sub-labels like "Preprint ratio", table column headers)
 // keep the muted gray treatment so the coral means something.
 //
-// Optional icon prefix + count suffix keep the component general
-// enough to cover all Analysis-page top labels without per-page
-// custom markup.
+// Icon prop is intentionally sparse — the coral color already carries
+// the "this is a section label" signal, and mixed icon/no-icon labels
+// across a page reads as arbitrary. Add an icon only when it earns
+// its space semantically (e.g., mapping a specific concept to a
+// well-known glyph). In practice: leave it off.
 
 import type { LucideIcon } from 'lucide-react'
 

@@ -9,7 +9,7 @@
 
 import { MarkdownRenderer } from '../MarkdownRenderer'
 import { SectionLabel } from '../SectionLabel'
-import { Network, Target } from 'lucide-react'
+import { Network } from 'lucide-react'
 
 interface Cluster {
   approach: string
@@ -132,7 +132,7 @@ export function CompetitiveTopologyView({ topology }: { topology: CompetitiveTop
 
       {topology.strategicImplications && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <SectionLabel icon={Target}>Strategic Implications</SectionLabel>
+          <SectionLabel>Strategic Implications</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={topology.strategicImplications} compact />
           </div>

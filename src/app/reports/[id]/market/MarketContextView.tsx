@@ -11,7 +11,7 @@
 
 import { MarkdownRenderer } from '../MarkdownRenderer'
 import { SectionLabel } from '../SectionLabel'
-import { Globe, TrendingUp, Users2, ExternalLink } from 'lucide-react'
+import { Globe, ExternalLink } from 'lucide-react'
 
 interface MarketContext {
   overview: string
@@ -70,9 +70,7 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
       {/* Key players grid */}
       {market.keyPlayers.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <SectionLabel icon={Users2} count={market.keyPlayers.length}>
-            Key Players
-          </SectionLabel>
+          <SectionLabel count={market.keyPlayers.length}>Key Players</SectionLabel>
           <div className="flex flex-wrap gap-2">
             {market.keyPlayers.map((player, i) => (
               <span
@@ -89,9 +87,7 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
       {/* Recent developments — editorial-style timeline */}
       {market.recentDevelopments.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <SectionLabel icon={TrendingUp} count={market.recentDevelopments.length}>
-            Recent Developments
-          </SectionLabel>
+          <SectionLabel count={market.recentDevelopments.length}>Recent Developments</SectionLabel>
           <ol className="space-y-3">
             {market.recentDevelopments.map((dev, i) => (
               <li key={i} className="flex items-start gap-3">

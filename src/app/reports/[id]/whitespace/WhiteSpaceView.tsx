@@ -14,7 +14,7 @@
 
 import { MarkdownRenderer } from '../MarkdownRenderer'
 import { SectionLabel } from '../SectionLabel'
-import { Compass, Target, AlertTriangle } from 'lucide-react'
+import { Compass, AlertTriangle } from 'lucide-react'
 
 interface Category {
   name: string
@@ -261,7 +261,7 @@ export function WhiteSpaceView({ whiteSpace }: { whiteSpace: WhiteSpace | null }
       {/* Strategic implications */}
       {whiteSpace.strategicImplications && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <SectionLabel icon={Target}>Strategic Implications</SectionLabel>
+          <SectionLabel>Strategic Implications</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={whiteSpace.strategicImplications} compact />
           </div>

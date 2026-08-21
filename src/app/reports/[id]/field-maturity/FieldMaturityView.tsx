@@ -11,7 +11,7 @@
 
 import { MarkdownRenderer } from '../MarkdownRenderer'
 import { SectionLabel } from '../SectionLabel'
-import { Gauge, FileText, FlaskConical, Award, Target } from 'lucide-react'
+import { Gauge, FileText, FlaskConical, Award } from 'lucide-react'
 
 type MaturityTier = 'nascent' | 'emerging' | 'maturing' | 'established'
 
@@ -164,7 +164,7 @@ export function FieldMaturityView({ fieldMaturity }: { fieldMaturity: FieldMatur
       {/* Strategic implications — the "so what" for the reader. */}
       {fieldMaturity.strategicImplications && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <SectionLabel icon={Target}>Strategic Implications</SectionLabel>
+          <SectionLabel>Strategic Implications</SectionLabel>
           <div className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
             <MarkdownRenderer content={fieldMaturity.strategicImplications} compact />
           </div>
