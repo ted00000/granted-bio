@@ -1,5 +1,6 @@
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
+import { ExternalLinkAnchor } from '../EntityLink'
 
 interface Publication {
   pmid: string
@@ -64,9 +65,13 @@ export function PublicationsView({
       widthClass: 'w-2/5',
       render: (p) => (
         <div>
-          <div className="text-gray-900 font-medium leading-snug mb-0.5">
+          <ExternalLinkAnchor
+            href={`https://pubmed.ncbi.nlm.nih.gov/${p.pmid}/`}
+            showIcon
+            className="text-gray-900 font-medium leading-snug mb-0.5"
+          >
             {p.publication_title || '(No title)'}
-          </div>
+          </ExternalLinkAnchor>
           <div className="text-[11px] text-gray-400 tabular-nums">PMID {p.pmid}</div>
         </div>
       ),
@@ -106,10 +111,14 @@ export function PublicationsView({
           <div className="space-y-3">
             {curated.map((c) => (
               <div key={c.pmid} className="pb-3 border-b border-gray-100 last:border-b-0 last:pb-0">
-                <div className="text-sm font-medium text-gray-900 leading-snug mb-1">
+                <ExternalLinkAnchor
+                  href={`https://pubmed.ncbi.nlm.nih.gov/${c.pmid}/`}
+                  showIcon
+                  className="text-sm font-medium text-gray-900 leading-snug mb-1"
+                >
                   {c.title}
-                </div>
-                <div className="text-[11px] text-gray-400 tabular-nums mb-2">
+                </ExternalLinkAnchor>
+                <div className="text-[11px] text-gray-400 tabular-nums mt-1 mb-2">
                   {c.journal ?? '—'} {c.year ? `· ${c.year}` : ''} · PMID {c.pmid}
                 </div>
                 <p className="text-[13px] text-gray-700 leading-relaxed mb-1.5">

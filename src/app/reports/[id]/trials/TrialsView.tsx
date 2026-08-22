@@ -1,5 +1,6 @@
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
+import { InternalLink } from '../EntityLink'
 
 interface Trial {
   nct_id: string
@@ -47,7 +48,12 @@ export function TrialsView({ trials, byPhase, byStatus }: TrialsViewProps) {
       widthClass: 'w-2/5',
       render: (t) => (
         <div>
-          <div className="text-gray-900 font-medium leading-snug mb-0.5">{t.study_title}</div>
+          <InternalLink
+            href={`/trial/${t.nct_id}`}
+            className="text-gray-900 font-medium leading-snug block mb-0.5"
+          >
+            {t.study_title}
+          </InternalLink>
           <div className="text-[11px] text-gray-400 tabular-nums">{t.nct_id}</div>
         </div>
       ),

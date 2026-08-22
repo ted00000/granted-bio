@@ -7,6 +7,7 @@
 
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
+import { InternalLink } from '../EntityLink'
 
 interface Project {
   application_id: string
@@ -52,7 +53,12 @@ export function ProjectsView({ projects, totalProjects, totalFunding }: Projects
       widthClass: 'w-2/5',
       render: (p) => (
         <div>
-          <div className="text-gray-900 font-medium leading-snug mb-0.5">{p.title}</div>
+          <InternalLink
+            href={`/project/${p.application_id}`}
+            className="text-gray-900 font-medium leading-snug block mb-0.5"
+          >
+            {p.title}
+          </InternalLink>
           {p.project_number && (
             <div className="text-[11px] text-gray-400 tabular-nums">{p.project_number}</div>
           )}
@@ -61,11 +67,29 @@ export function ProjectsView({ projects, totalProjects, totalFunding }: Projects
     },
     {
       label: 'PI',
-      render: (p) => <span className="text-gray-700">{firstPI(p.pi_names)}</span>,
+      render: (p) => {
+        const name = firstPI(p.pi_names)
+        if (name === '—') return <span className="text-gray-400">—</span>
+        return (
+          <InternalLink href={`/researcher/${encodeURIComponent(name)}`} className="text-gray-700">
+            {name}
+          </InternalLink>
+        )
+      },
     },
     {
       label: 'Organization',
-      render: (p) => <span className="text-gray-700 leading-snug block">{p.org_name || '—'}</span>,
+      render: (p) => {
+        if (!p.org_name) return <span className="text-gray-400">—</span>
+        return (
+          <InternalLink
+            href={`/org/${encodeURIComponent(p.org_name)}`}
+            className="text-gray-700 leading-snug block"
+          >
+            {p.org_name}
+          </InternalLink>
+        )
+      },
     },
     {
       label: 'Category',

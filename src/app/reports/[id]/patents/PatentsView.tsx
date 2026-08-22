@@ -1,5 +1,6 @@
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
+import { InternalLink } from '../EntityLink'
 
 interface Patent {
   patent_id: string
@@ -37,16 +38,29 @@ export function PatentsView({ patents, byAssignee, recentCount }: PatentsViewPro
       widthClass: 'w-2/5',
       render: (p) => (
         <div>
-          <div className="text-gray-900 font-medium leading-snug mb-0.5">
+          <InternalLink
+            href={`/patent/${p.patent_id}`}
+            className="text-gray-900 font-medium leading-snug block mb-0.5"
+          >
             {p.patent_title || '(No title)'}
-          </div>
+          </InternalLink>
           <div className="text-[11px] text-gray-400 tabular-nums">{p.patent_id}</div>
         </div>
       ),
     },
     {
       label: 'Assignee',
-      render: (p) => <span className="text-gray-700 leading-snug block">{p.assignee || '—'}</span>,
+      render: (p) => {
+        if (!p.assignee) return <span className="text-gray-400">—</span>
+        return (
+          <InternalLink
+            href={`/org/${encodeURIComponent(p.assignee)}`}
+            className="text-gray-700 leading-snug block"
+          >
+            {p.assignee}
+          </InternalLink>
+        )
+      },
     },
     {
       label: 'Inventors',

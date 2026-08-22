@@ -1,5 +1,6 @@
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
+import { InternalLink } from '../EntityLink'
 
 interface Researcher {
   pi_name: string
@@ -40,11 +41,28 @@ export function ResearchersView({ researchers, totalPIs }: ResearchersViewProps)
     {
       label: 'Principal Investigator',
       widthClass: 'w-1/3',
-      render: (r) => <span className="text-gray-900 font-medium">{displayName(r.pi_name)}</span>,
+      render: (r) => (
+        <InternalLink
+          href={`/researcher/${encodeURIComponent(r.pi_name)}`}
+          className="text-gray-900 font-medium"
+        >
+          {displayName(r.pi_name)}
+        </InternalLink>
+      ),
     },
     {
       label: 'Organization',
-      render: (r) => <span className="text-gray-700 leading-snug block">{r.org || '—'}</span>,
+      render: (r) => {
+        if (!r.org) return <span className="text-gray-400">—</span>
+        return (
+          <InternalLink
+            href={`/org/${encodeURIComponent(r.org)}`}
+            className="text-gray-700 leading-snug block"
+          >
+            {r.org}
+          </InternalLink>
+        )
+      },
     },
     {
       label: 'Projects',

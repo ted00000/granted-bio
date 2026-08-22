@@ -1,5 +1,6 @@
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
+import { InternalLink } from '../EntityLink'
 
 interface Org {
   org_name: string
@@ -30,7 +31,14 @@ export function OrganizationsView({ orgs, totalOrgs }: OrganizationsViewProps) {
     {
       label: 'Organization',
       widthClass: 'w-2/5',
-      render: (o) => <span className="text-gray-900 font-medium leading-snug block">{o.org_name}</span>,
+      render: (o) => (
+        <InternalLink
+          href={`/org/${encodeURIComponent(o.org_name)}`}
+          className="text-gray-900 font-medium leading-snug block"
+        >
+          {o.org_name}
+        </InternalLink>
+      ),
     },
     {
       label: 'Projects',
