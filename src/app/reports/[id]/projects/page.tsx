@@ -12,6 +12,11 @@ export default async function ProjectsSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
+  // Curated top-N (currently top-20 by funding) — scoped intentionally.
+  // The full retrieval is available in agent_outputs.projects.items but
+  // we deliberately do NOT dump it here; the whole product value is
+  // curation. The caption clarifies "top N of M" so the reader knows
+  // the scope.
   const projects = (report.projects ?? []) as React.ComponentProps<typeof ProjectsView>['projects']
   const fs = (report.funding_stats ?? {}) as { projectCount?: number; total?: number }
   const totalProjects = fs.projectCount ?? report.project_count ?? projects.length

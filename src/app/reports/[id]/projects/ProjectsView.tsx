@@ -45,6 +45,11 @@ function firstPI(names: string | null): string {
 
 export function ProjectsView({ projects, totalProjects, totalFunding }: ProjectsViewProps) {
   const shownCount = projects.length
+  // Curation-by-design: we always show the top-N stored slice. When
+  // the true sample count exceeds it, the caption reads "top N of M"
+  // so the reader knows what's on screen relative to the whole
+  // analyzed sample. If we ever offer a "see all" affordance it's an
+  // explicit action, not a default dump.
   const isTruncated = totalProjects > shownCount
 
   const columns: Column<Project>[] = [

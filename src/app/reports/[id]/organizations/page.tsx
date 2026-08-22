@@ -12,6 +12,8 @@ export default async function OrganizationsSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
+  // Curated top-N (currently top-15 by funding) — scoped intentionally.
+  // Caption clarifies "showing N of M" so the reader knows the total.
   const orgs = (report.top_organizations ?? []) as React.ComponentProps<typeof OrganizationsView>['orgs']
   const fs = (report.funding_stats ?? {}) as { orgCount?: number }
   const totalOrgs = fs.orgCount ?? orgs.length
