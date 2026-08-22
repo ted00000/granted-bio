@@ -1,9 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
-import { PortalSectionView } from '../PortalSectionView'
-
-interface FundingStats { byYear?: unknown; byCategory?: unknown }
-interface AgentOutputs { trials?: { byPhase?: Record<string, number> } }
+import { SectionShell } from '../SectionShell'
+import { ResearchersView } from './ResearchersView'
 
 export default async function ResearchersSectionPage({
   params,
@@ -14,24 +12,22 @@ export default async function ResearchersSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  const fundingStats = (report.funding_stats ?? {}) as FundingStats
-  const agentOutputs = (report.agent_outputs ?? {}) as AgentOutputs
+  const researchers = (report.top_researchers ?? []) as React.ComponentProps<
+    typeof ResearchersView
+  >['researchers']
+  const fs = (report.funding_stats ?? {}) as { piCount?: number }
+  const totalPIs = fs.piCount ?? researchers.length
 
   return (
-    <PortalSectionView
+    <SectionShell
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Researchers"
-      sectionSubtitle="Principal investigators funded in this space, ranked by NIH funding."
-      markdownSections={['Key Researchers']}
+      sectionSubtitle="Principal investigators funded in this space, ranked by total NIH funding."
       fullMarkdown={report.markdown_content}
-      chartData={{
-        fundingByYear: fundingStats.byYear,
-        categories: fundingStats.byCategory,
-        trialsByPhase: agentOutputs.trials?.byPhase,
-        whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
-      }}
-    />
+    >
+      <ResearchersView researchers={researchers} totalPIs={totalPIs} />
+    </SectionShell>
   )
 }

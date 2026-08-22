@@ -1,9 +1,14 @@
 import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
-import { PortalSectionView } from '../PortalSectionView'
+import { SectionShell } from '../SectionShell'
+import { PatentsView } from './PatentsView'
 
-interface FundingStats { byYear?: unknown; byCategory?: unknown }
-interface AgentOutputs { trials?: { byPhase?: Record<string, number> } }
+interface AgentOutputs {
+  patents?: {
+    byAssignee?: Array<{ assignee: string; count: number }>
+    recentCount?: number
+  }
+}
 
 export default async function PatentsSectionPage({
   params,
@@ -14,27 +19,23 @@ export default async function PatentsSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  const fundingStats = (report.funding_stats ?? {}) as FundingStats
+  const patents = (report.patents ?? []) as React.ComponentProps<typeof PatentsView>['patents']
   const agentOutputs = (report.agent_outputs ?? {}) as AgentOutputs
 
   return (
-    <PortalSectionView
+    <SectionShell
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Patents"
-      sectionSubtitle="USPTO patents linked to the projects, assignees, and IP concentration."
-      // Researcher persona emits "Patent Activity"; investor persona
-      // emits "IP Landscape". Extract both — only one will match per
-      // report, so the missing one is silently skipped.
-      markdownSections={['Patent Activity', 'IP Landscape']}
+      sectionSubtitle="USPTO patents linked to the projects in this analysis sample."
       fullMarkdown={report.markdown_content}
-      chartData={{
-        fundingByYear: fundingStats.byYear,
-        categories: fundingStats.byCategory,
-        trialsByPhase: agentOutputs.trials?.byPhase,
-        whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
-      }}
-    />
+    >
+      <PatentsView
+        patents={patents}
+        byAssignee={agentOutputs.patents?.byAssignee}
+        recentCount={agentOutputs.patents?.recentCount}
+      />
+    </SectionShell>
   )
 }

@@ -1,9 +1,13 @@
 import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
-import { PortalSectionView } from '../PortalSectionView'
+import { SectionShell } from '../SectionShell'
+import { PublicationsView } from './PublicationsView'
 
-interface FundingStats { byYear?: unknown; byCategory?: unknown }
-interface AgentOutputs { trials?: { byPhase?: Record<string, number> } }
+interface AgentOutputs {
+  publications?: {
+    totalUniqueJournals?: number
+  }
+}
 
 export default async function PublicationsSectionPage({
   params,
@@ -14,24 +18,24 @@ export default async function PublicationsSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  const fundingStats = (report.funding_stats ?? {}) as FundingStats
+  const publications = (report.publications ?? []) as React.ComponentProps<typeof PublicationsView>['publications']
+  const curated = (report.curated_publications ?? []) as React.ComponentProps<typeof PublicationsView>['curated']
   const agentOutputs = (report.agent_outputs ?? {}) as AgentOutputs
 
   return (
-    <PortalSectionView
+    <SectionShell
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Publications"
-      sectionSubtitle="PubMed publications linked to the projects, with curated must-reads."
-      markdownSections={['Key Publications']}
+      sectionSubtitle="PubMed publications linked to the projects, with curated must-reads highlighted."
       fullMarkdown={report.markdown_content}
-      chartData={{
-        fundingByYear: fundingStats.byYear,
-        categories: fundingStats.byCategory,
-        trialsByPhase: agentOutputs.trials?.byPhase,
-        whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
-      }}
-    />
+    >
+      <PublicationsView
+        publications={publications}
+        curated={curated}
+        totalUniqueJournals={agentOutputs.publications?.totalUniqueJournals}
+      />
+    </SectionShell>
   )
 }

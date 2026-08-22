@@ -1,9 +1,14 @@
 import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
-import { PortalSectionView } from '../PortalSectionView'
+import { SectionShell } from '../SectionShell'
+import { TrialsView } from './TrialsView'
 
-interface FundingStats { byYear?: unknown; byCategory?: unknown }
-interface AgentOutputs { trials?: { byPhase?: Record<string, number> } }
+interface AgentOutputs {
+  trials?: {
+    byPhase?: Record<string, number>
+    byStatus?: Record<string, number>
+  }
+}
 
 export default async function TrialsSectionPage({
   params,
@@ -14,33 +19,23 @@ export default async function TrialsSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  const fundingStats = (report.funding_stats ?? {}) as FundingStats
+  const trials = (report.clinical_trials ?? []) as React.ComponentProps<typeof TrialsView>['trials']
   const agentOutputs = (report.agent_outputs ?? {}) as AgentOutputs
 
   return (
-    <PortalSectionView
+    <SectionShell
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Clinical Trials"
       sectionSubtitle="ClinicalTrials.gov studies linked to the NIH projects in this sample."
-      // Clinical section title varies by top funding category
-      // (getClinicalSectionTitle in synthesize.ts). Enumerate all known
-      // variants so any report renders the correct section here.
-      markdownSections={[
-        'Clinical Development Pipeline',
-        'Clinical Validation Status',
-        'Device Development Pipeline',
-        'Research Tool Applications',
-        'Clinical & Translational Activity',
-      ]}
       fullMarkdown={report.markdown_content}
-      chartData={{
-        fundingByYear: fundingStats.byYear,
-        categories: fundingStats.byCategory,
-        trialsByPhase: agentOutputs.trials?.byPhase,
-        whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
-      }}
-    />
+    >
+      <TrialsView
+        trials={trials}
+        byPhase={agentOutputs.trials?.byPhase}
+        byStatus={agentOutputs.trials?.byStatus}
+      />
+    </SectionShell>
   )
 }

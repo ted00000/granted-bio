@@ -1,14 +1,7 @@
 import { notFound } from 'next/navigation'
 import { getReport } from '@/lib/reports/fetch-report'
-import { PortalSectionView } from '../PortalSectionView'
-
-interface FundingStats {
-  byYear?: unknown
-  byCategory?: unknown
-}
-interface AgentOutputs {
-  trials?: { byPhase?: Record<string, number> }
-}
+import { SectionShell } from '../SectionShell'
+import { ProjectsView } from './ProjectsView'
 
 export default async function ProjectsSectionPage({
   params,
@@ -19,27 +12,25 @@ export default async function ProjectsSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  const fundingStats = (report.funding_stats ?? {}) as FundingStats
-  const agentOutputs = (report.agent_outputs ?? {}) as AgentOutputs
+  const projects = (report.projects ?? []) as React.ComponentProps<typeof ProjectsView>['projects']
+  const fs = (report.funding_stats ?? {}) as { projectCount?: number; total?: number }
+  const totalProjects = fs.projectCount ?? report.project_count ?? projects.length
+  const totalFunding = fs.total ?? 0
 
   return (
-    <PortalSectionView
+    <SectionShell
       reportId={report.id}
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Projects"
-      sectionSubtitle="Top NIH-funded projects analyzed, with per-project relevance notes."
-      // Funding-landscape narrative lives on its own Analysis page
-      // (/reports/[id]/funding). This page holds the project list
-      // only — one page, one job.
-      markdownSections={['Key Research Projects']}
+      sectionSubtitle="Top NIH-funded projects in the analyzed sample, ranked by total funding."
       fullMarkdown={report.markdown_content}
-      chartData={{
-        fundingByYear: fundingStats.byYear,
-        categories: fundingStats.byCategory,
-        trialsByPhase: agentOutputs.trials?.byPhase,
-        whiteSpace: (agentOutputs as { whiteSpace?: unknown })?.whiteSpace as never,
-      }}
-    />
+    >
+      <ProjectsView
+        projects={projects}
+        totalProjects={totalProjects}
+        totalFunding={totalFunding}
+      />
+    </SectionShell>
   )
 }

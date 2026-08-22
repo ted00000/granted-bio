@@ -9,6 +9,7 @@ import { Logo } from '@/components/Logo'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { pickSections, extractScopeWarning, DASHBOARD_SECTIONS, extractSurprisingHeadlines } from './section-utils'
 import { DashboardTiles } from './DashboardTiles'
+import { SectionLabel } from './SectionLabel'
 import { jsPDF } from 'jspdf'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, Header, Footer, AlignmentType } from 'docx'
 import { saveAs } from 'file-saver'
@@ -1891,13 +1892,14 @@ export default function ReportDetailPage({
             <>
               {scopeWarning && (
                 <div id="scope-warning" className="mb-6">
-                  <div className="bg-amber-50 border border-amber-300 rounded-lg p-4">
-                    <MarkdownRenderer content={scopeWarning} />
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                    <MarkdownRenderer content={scopeWarning} compact />
                   </div>
                 </div>
               )}
 
-              <div className="mb-6">
+              <section className="mb-6">
+                <SectionLabel className="mb-3 px-1">Sample Scope</SectionLabel>
                 <DashboardTiles
                   reportId={report.id}
                   projectCount={report.project_count ?? (report.funding_stats?.projectCount ?? 0)}
@@ -1906,9 +1908,6 @@ export default function ReportDetailPage({
                   // Trials/patents/publications counts read from the
                   // top-level report columns (same source the sidebar
                   // uses) so dashboard tiles + sidebar always agree.
-                  // agent_outputs.*.items and the top-level columns
-                  // are usually equivalent but can drift in edge
-                  // cases; standardize on one source.
                   trialsCount={((report as { clinical_trials?: unknown[] }).clinical_trials ?? []).length}
                   trialsByPhase={report.agent_outputs?.trials?.byPhase}
                   patentsCount={((report as { patents?: unknown[] }).patents ?? []).length}
@@ -1916,43 +1915,39 @@ export default function ReportDetailPage({
                   organizationsCount={report.funding_stats?.orgCount ?? 0}
                   researchersCount={report.funding_stats?.piCount ?? 0}
                 />
-              </div>
+              </section>
 
               {surprisingHeadlines.length > 0 && (
                 <Link
                   href={`/reports/${report.id}/surprising`}
-                  className="group block bg-white rounded-lg border border-gray-200 hover:border-[#E07A5F] hover:shadow-sm transition-all p-5 mb-6"
+                  className="group block bg-white rounded-lg border border-gray-200 hover:border-[#E07A5F] hover:shadow-sm transition-all px-6 py-5 mb-6"
                 >
-                  <div className="flex items-start gap-3">
-                    <div className="p-1.5 bg-[#FDF2EF] rounded-md flex-shrink-0">
-                      <Sparkles className="w-4 h-4 text-[#E07A5F]" strokeWidth={1.75} />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="text-sm font-semibold text-gray-900 group-hover:text-[#E07A5F] transition-colors">
-                          What Surprised Us
-                        </div>
-                        <div className="text-xs text-gray-400 group-hover:text-[#E07A5F] transition-colors">
-                          See all {surprisingHeadlines.length}+ &rarr;
-                        </div>
-                      </div>
-                      <ul className="space-y-1.5">
-                        {surprisingHeadlines.map((h) => (
-                          <li key={h.index} className="text-sm text-gray-700 leading-snug">
-                            <span className="text-gray-400 font-medium mr-1.5">{h.index}.</span>
-                            {h.headline}
-                          </li>
-                        ))}
-                      </ul>
+                  <div className="flex items-center justify-between mb-3">
+                    <SectionLabel className="mb-0">What Surprised Us</SectionLabel>
+                    <div className="text-[11px] font-medium text-gray-400 group-hover:text-[#E07A5F] uppercase tracking-wider transition-colors">
+                      See all {surprisingHeadlines.length}+ &rarr;
                     </div>
                   </div>
+                  <ul className="space-y-2">
+                    {surprisingHeadlines.map((h) => (
+                      <li key={h.index} className="flex items-start gap-3 text-[14px] text-gray-700 leading-snug">
+                        <span className="flex-shrink-0 text-gray-400 font-medium tabular-nums mt-px">
+                          {h.index}.
+                        </span>
+                        <span>{h.headline}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </Link>
               )}
 
               {dashboardMd && (
-                <div id="report-content" className="bg-white rounded-lg shadow-sm">
+                <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
+                  <SectionLabel>Executive Summary &amp; Next Steps</SectionLabel>
+                  <div id="report-content" className="[&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
                   <MarkdownRenderer
                     content={dashboardMd}
+                    compact
                     chartData={{
                       fundingByYear: report.funding_stats?.byYear,
                       categories: report.funding_stats?.byCategory,
@@ -1960,7 +1955,8 @@ export default function ReportDetailPage({
                       whiteSpace: (report.agent_outputs as { whiteSpace?: unknown })?.whiteSpace as never,
                     }}
                   />
-                </div>
+                  </div>
+                </section>
               )}
             </>
           )
