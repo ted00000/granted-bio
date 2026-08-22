@@ -25,13 +25,30 @@ export default async function ReportPortalLayout({
   const report = await getReport(id)
   if (!report) notFound()
 
+  // Sidebar counts must reflect the FULL analyzed sample, not the
+  // truncated top-N slices stored in some columns. Storage layout:
+  //   report.projects           -> top 20 by funding (for narrative)
+  //   report.top_organizations  -> top 15 by funding
+  //   report.top_researchers    -> top 15 by funding
+  //   report.clinical_trials    -> full linked trials list
+  //   report.patents            -> full linked patents list
+  //   report.publications       -> full linked publications list
+  // For projects/orgs/researchers pull the total from funding_stats
+  // (computed once at generation time against the full retrieval)
+  // so the sidebar matches the counts referenced in Field Maturity
+  // / Funding Landscape / narrative prose.
+  const fs = (report.funding_stats ?? {}) as {
+    projectCount?: number
+    orgCount?: number
+    piCount?: number
+  }
   const counts: SectionCounts = {
-    projects: (report.projects ?? []).length,
+    projects: fs.projectCount ?? report.project_count ?? (report.projects ?? []).length,
     trials: (report.clinical_trials ?? []).length,
     patents: (report.patents ?? []).length,
     publications: (report.publications ?? []).length,
-    organizations: (report.top_organizations ?? []).length,
-    researchers: (report.top_researchers ?? []).length,
+    organizations: fs.orgCount ?? (report.top_organizations ?? []).length,
+    researchers: fs.piCount ?? (report.top_researchers ?? []).length,
   }
 
   return (

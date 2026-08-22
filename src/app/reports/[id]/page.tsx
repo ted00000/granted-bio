@@ -1903,10 +1903,16 @@ export default function ReportDetailPage({
                   projectCount={report.project_count ?? (report.funding_stats?.projectCount ?? 0)}
                   fundingTotal={report.funding_stats?.total ?? 0}
                   fundingByYear={report.funding_stats?.byYear ?? []}
-                  trialsCount={(report.agent_outputs?.trials?.items ?? []).length}
+                  // Trials/patents/publications counts read from the
+                  // top-level report columns (same source the sidebar
+                  // uses) so dashboard tiles + sidebar always agree.
+                  // agent_outputs.*.items and the top-level columns
+                  // are usually equivalent but can drift in edge
+                  // cases; standardize on one source.
+                  trialsCount={((report as { clinical_trials?: unknown[] }).clinical_trials ?? []).length}
                   trialsByPhase={report.agent_outputs?.trials?.byPhase}
-                  patentsCount={((report.agent_outputs as { patents?: { items?: unknown[] } })?.patents?.items ?? []).length}
-                  publicationsCount={((report.agent_outputs as { publications?: { items?: unknown[] } })?.publications?.items ?? []).length}
+                  patentsCount={((report as { patents?: unknown[] }).patents ?? []).length}
+                  publicationsCount={((report as { publications?: unknown[] }).publications ?? []).length}
                   organizationsCount={report.funding_stats?.orgCount ?? 0}
                   researchersCount={report.funding_stats?.piCount ?? 0}
                 />
