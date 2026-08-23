@@ -37,7 +37,7 @@ export default async function CompetitiveTopologyPage({
       sectionSubtitle="Methodological clusters, key players, and how the space is organized by technical approach."
       fullMarkdown={report.markdown_content}
     >
-      <CompetitiveTopologyView topology={topology} />
+      <CompetitiveTopologyView reportId={report.id} topology={topology} />
     </SectionShell>
   )
 }

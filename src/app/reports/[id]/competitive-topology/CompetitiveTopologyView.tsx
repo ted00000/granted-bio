@@ -7,6 +7,7 @@
 //     a commercial readiness line
 //   - Strategic implications block
 
+import Link from 'next/link'
 import { MarkdownRenderer } from '../MarkdownRenderer'
 import { SectionLabel } from '../SectionLabel'
 import { Network } from 'lucide-react'
@@ -36,7 +37,12 @@ function maturityStyle(level: string): { chip: string; dot: string } {
   return { chip: 'bg-gray-100 text-gray-700', dot: 'bg-gray-400' }
 }
 
-export function CompetitiveTopologyView({ topology }: { topology: CompetitiveTopology | null }) {
+interface CompetitiveTopologyViewProps {
+  reportId: string
+  topology: CompetitiveTopology | null
+}
+
+export function CompetitiveTopologyView({ reportId, topology }: CompetitiveTopologyViewProps) {
   if (!topology) {
     return (
       <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
@@ -96,12 +102,13 @@ export function CompetitiveTopologyView({ topology }: { topology: CompetitiveTop
                         </div>
                         <div className="flex flex-wrap gap-1.5">
                           {cluster.keyPlayers.slice(0, 8).map((player, j) => (
-                            <span
+                            <Link
                               key={j}
-                              className="inline-block px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded"
+                              href={`/reports/${reportId}/organizations/${encodeURIComponent(player)}`}
+                              className="inline-block px-2 py-0.5 text-xs bg-gray-100 text-gray-700 rounded hover:bg-[#FDF2EF] hover:text-[#E07A5F] transition-colors"
                             >
                               {player}
-                            </span>
+                            </Link>
                           ))}
                           {cluster.keyPlayers.length > 8 && (
                             <span className="inline-block px-2 py-0.5 text-xs text-gray-400">
