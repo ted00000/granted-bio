@@ -12,6 +12,7 @@ interface Org {
 }
 
 interface OrganizationsViewProps {
+  reportId: string
   orgs: Org[]
   totalOrgs: number
 }
@@ -23,7 +24,7 @@ function formatMoney(n: number): string {
   return `$${n}`
 }
 
-export function OrganizationsView({ orgs, totalOrgs }: OrganizationsViewProps) {
+export function OrganizationsView({ reportId, orgs, totalOrgs }: OrganizationsViewProps) {
   const shown = orgs.length
   const isTruncated = totalOrgs > shown
 
@@ -33,7 +34,7 @@ export function OrganizationsView({ orgs, totalOrgs }: OrganizationsViewProps) {
       widthClass: 'w-2/5',
       render: (o) => (
         <InternalLink
-          href={`/org/${encodeURIComponent(o.org_name)}`}
+          href={`/reports/${reportId}/organizations/${encodeURIComponent(o.org_name)}`}
           className="text-gray-900 font-medium leading-snug block"
         >
           {o.org_name}

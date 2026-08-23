@@ -16,6 +16,7 @@ interface AssigneeRow {
 }
 
 interface PatentsViewProps {
+  reportId: string
   patents: Patent[]
   byAssignee?: AssigneeRow[]
   recentCount?: number
@@ -29,7 +30,7 @@ function formatInventors(names: string | null): string {
   return `${list[0]} +${list.length - 1}`
 }
 
-export function PatentsView({ patents, byAssignee, recentCount }: PatentsViewProps) {
+export function PatentsView({ reportId, patents, byAssignee, recentCount }: PatentsViewProps) {
   const total = patents.length
 
   const columns: Column<Patent>[] = [
@@ -54,7 +55,7 @@ export function PatentsView({ patents, byAssignee, recentCount }: PatentsViewPro
         if (!p.assignee) return <span className="text-gray-400">—</span>
         return (
           <InternalLink
-            href={`/org/${encodeURIComponent(p.assignee)}`}
+            href={`/reports/${reportId}/organizations/${encodeURIComponent(p.assignee)}`}
             className="text-gray-700 leading-snug block"
           >
             {p.assignee}

@@ -32,6 +32,7 @@ export default async function PatentsSectionPage({
       fullMarkdown={report.markdown_content}
     >
       <PatentsView
+        reportId={report.id}
         patents={patents}
         byAssignee={agentOutputs.patents?.byAssignee}
         recentCount={agentOutputs.patents?.recentCount}

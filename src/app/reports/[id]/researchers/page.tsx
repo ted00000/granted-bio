@@ -27,7 +27,7 @@ export default async function ResearchersSectionPage({
       sectionSubtitle="Principal investigators funded in this space, ranked by total NIH funding."
       fullMarkdown={report.markdown_content}
     >
-      <ResearchersView researchers={researchers} totalPIs={totalPIs} />
+      <ResearchersView reportId={report.id} researchers={researchers} totalPIs={totalPIs} />
     </SectionShell>
   )
 }

@@ -10,6 +10,7 @@ interface Researcher {
 }
 
 interface ResearchersViewProps {
+  reportId: string
   researchers: Researcher[]
   totalPIs: number
 }
@@ -33,7 +34,7 @@ function displayName(raw: string): string {
   return swapped.replace(/\s+/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
 }
 
-export function ResearchersView({ researchers, totalPIs }: ResearchersViewProps) {
+export function ResearchersView({ reportId, researchers, totalPIs }: ResearchersViewProps) {
   const shown = researchers.length
   const isTruncated = totalPIs > shown
 
@@ -56,7 +57,7 @@ export function ResearchersView({ researchers, totalPIs }: ResearchersViewProps)
         if (!r.org) return <span className="text-gray-400">—</span>
         return (
           <InternalLink
-            href={`/org/${encodeURIComponent(r.org)}`}
+            href={`/reports/${reportId}/organizations/${encodeURIComponent(r.org)}`}
             className="text-gray-700 leading-snug block"
           >
             {r.org}

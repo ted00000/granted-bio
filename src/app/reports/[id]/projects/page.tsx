@@ -32,6 +32,7 @@ export default async function ProjectsSectionPage({
       fullMarkdown={report.markdown_content}
     >
       <ProjectsView
+        reportId={report.id}
         projects={projects}
         totalProjects={totalProjects}
         totalFunding={totalFunding}

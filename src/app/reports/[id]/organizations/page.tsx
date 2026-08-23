@@ -27,7 +27,7 @@ export default async function OrganizationsSectionPage({
       sectionSubtitle="Institutions with the largest presence in this NIH-funded sample."
       fullMarkdown={report.markdown_content}
     >
-      <OrganizationsView orgs={orgs} totalOrgs={totalOrgs} />
+      <OrganizationsView reportId={report.id} orgs={orgs} totalOrgs={totalOrgs} />
     </SectionShell>
   )
 }

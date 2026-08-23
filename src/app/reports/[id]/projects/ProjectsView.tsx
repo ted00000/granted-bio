@@ -21,6 +21,7 @@ interface Project {
 }
 
 interface ProjectsViewProps {
+  reportId: string
   projects: Project[]
   totalProjects: number
   totalFunding: number
@@ -43,7 +44,7 @@ function firstPI(names: string | null): string {
   return names.split(';')[0]?.trim() || '—'
 }
 
-export function ProjectsView({ projects, totalProjects, totalFunding }: ProjectsViewProps) {
+export function ProjectsView({ reportId, projects, totalProjects, totalFunding }: ProjectsViewProps) {
   const shownCount = projects.length
   // Curation-by-design: we always show the top-N stored slice. When
   // the true sample count exceeds it, the caption reads "top N of M"
@@ -88,7 +89,7 @@ export function ProjectsView({ projects, totalProjects, totalFunding }: Projects
         if (!p.org_name) return <span className="text-gray-400">—</span>
         return (
           <InternalLink
-            href={`/org/${encodeURIComponent(p.org_name)}`}
+            href={`/reports/${reportId}/organizations/${encodeURIComponent(p.org_name)}`}
             className="text-gray-700 leading-snug block"
           >
             {p.org_name}
