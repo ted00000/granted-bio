@@ -37,7 +37,11 @@ export default async function FundingLandscapePage({
       sectionSubtitle="Where NIH funding flows in this space — trends, category concentration, and top-funded organizations."
       fullMarkdown={report.markdown_content}
     >
-      <FundingLandscapeView fundingStats={fundingStats} narrative={narrative} />
+      <FundingLandscapeView
+        reportId={report.id}
+        fundingStats={fundingStats}
+        narrative={narrative}
+      />
     </SectionShell>
   )
 }

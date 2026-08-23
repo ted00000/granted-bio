@@ -10,6 +10,7 @@
 //   - Top organizations by funding table
 //   - Narrative (with confidence chips auto-extracted)
 
+import Link from 'next/link'
 import { MarkdownRenderer } from '../MarkdownRenderer'
 import { SectionLabel } from '../SectionLabel'
 import { FundingByYearChart, CategoryDistributionChart } from '../charts'
@@ -47,6 +48,7 @@ interface FundingStats {
 }
 
 interface FundingLandscapeViewProps {
+  reportId: string
   fundingStats: FundingStats | null
   narrative: string
 }
@@ -73,7 +75,7 @@ function computeYoY(byYear: FundingByYear[]): string | null {
   return `${sign}${delta.toFixed(0)}% FY${String(curr.year).slice(-2)}`
 }
 
-export function FundingLandscapeView({ fundingStats, narrative }: FundingLandscapeViewProps) {
+export function FundingLandscapeView({ reportId, fundingStats, narrative }: FundingLandscapeViewProps) {
   if (!fundingStats) {
     return (
       <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
@@ -87,7 +89,16 @@ export function FundingLandscapeView({ fundingStats, narrative }: FundingLandsca
 
   const yoy = computeYoY(fundingStats.byYear)
 
-  const tiles: Array<{ icon: typeof DollarSign; label: string; primary: string; secondary?: string }> = [
+  // Tile config. `href` is optional — when present, the tile renders
+  // as a clickable link to the corresponding Data page. Total NIH
+  // Funding has no natural drill-in, so it stays a plain card.
+  const tiles: Array<{
+    icon: typeof DollarSign
+    label: string
+    primary: string
+    secondary?: string
+    href?: string
+  }> = [
     {
       icon: DollarSign,
       label: 'Total NIH funding',
@@ -98,16 +109,19 @@ export function FundingLandscapeView({ fundingStats, narrative }: FundingLandsca
       icon: FlaskConical,
       label: 'Projects',
       primary: fundingStats.projectCount.toLocaleString(),
+      href: `/reports/${reportId}/projects`,
     },
     {
       icon: Building2,
       label: 'Organizations',
       primary: fundingStats.orgCount.toLocaleString(),
+      href: `/reports/${reportId}/organizations`,
     },
     {
       icon: Users,
       label: 'Principal Investigators',
       primary: fundingStats.piCount.toLocaleString(),
+      href: `/reports/${reportId}/researchers`,
     },
   ]
 
@@ -119,21 +133,29 @@ export function FundingLandscapeView({ fundingStats, narrative }: FundingLandsca
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {tiles.map((t) => {
             const Icon = t.icon
-            return (
-              <div
-                key={t.label}
-                className="bg-white rounded-lg border border-gray-200 shadow-sm px-4 py-4"
-              >
+            const inner = (
+              <>
                 <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-2">
                   <Icon className="w-3.5 h-3.5" strokeWidth={1.75} />
                   {t.label}
                 </div>
-                <div className="text-xl font-semibold text-gray-900 tabular-nums leading-tight">
+                <div className={`text-xl font-semibold tabular-nums leading-tight ${t.href ? 'text-gray-900 group-hover:text-[#E07A5F] transition-colors' : 'text-gray-900'}`}>
                   {t.primary}
                 </div>
                 {t.secondary && (
                   <div className="text-[11px] text-gray-500 mt-1">{t.secondary}</div>
                 )}
+              </>
+            )
+            const baseClass = 'bg-white rounded-lg border border-gray-200 shadow-sm px-4 py-4'
+            const linkClass = `${baseClass} block group hover:border-[#E07A5F] hover:shadow transition-all`
+            return t.href ? (
+              <Link key={t.label} href={t.href} className={linkClass}>
+                {inner}
+              </Link>
+            ) : (
+              <div key={t.label} className={baseClass}>
+                {inner}
               </div>
             )
           })}
