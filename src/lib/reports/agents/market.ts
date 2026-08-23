@@ -100,16 +100,31 @@ Run multiple searches as needed to verify and triangulate facts. Search for:
 
 Prefer sources from the last 2 years. Industry reports, reputable trade press, company announcements, and FDA/regulatory filings are all valid.
 
-After searching, return your analysis as JSON with this exact structure:
+After searching, return your analysis as JSON with this exact structure. The types shown below are strict — marketSize MUST be a string (or null) and marketSizing MUST be an object with a scenarios array (or null). Do NOT emit description strings in place of the real values.
 
 {
   "overview": "2-3 paragraph market overview synthesized from search results",
-  "marketSize": "See MARKET SIZING RULES below — either a direct estimate, an explicitly-labeled adjacent-market anchor, or null",
-  "marketSizing": "See MARKET SIZING RULES — parallel structured object with the numbers extracted from your marketSize prose, or null if marketSize is null",
+  "marketSize": "String following MARKET SIZING RULES below — direct estimate, adjacent-market anchor, or null",
+  "marketSizing": {
+    "scenarios": [
+      {
+        "label": "MCED (multi-cancer early detection)",
+        "startValue": 2.48,
+        "startYear": 2025,
+        "endValue": 7.85,
+        "endYear": 2035,
+        "cagr": 12.1,
+        "source": "DataM Intelligence, 2026"
+      }
+    ],
+    "firmRange": { "min": 2.5, "max": 13.6, "year": 2025 }
+  },
   "keyPlayers": ["Company A", "Company B", "Company C"],
   "recentDevelopments": ["YYYY-MM: brief description of development", "YYYY-MM: brief description"],
   "competitiveLandscape": "Brief paragraph describing competitive dynamics"
 }
+
+(The marketSizing shape above is illustrative — populate with the actual scenarios your search surfaced. Omit firmRange when not applicable. Set marketSizing to null when marketSize is null OR when the sizing available is an adjacent-market anchor without explicit CAGR + end-year.)
 
 MARKET SIZING RULES (be strict):
 
