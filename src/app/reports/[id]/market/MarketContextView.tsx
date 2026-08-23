@@ -44,13 +44,17 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
 
   return (
     <div className="space-y-5">
-      {/* Market size hero — pulled out visually when present */}
+      {/* Market size hero — coral top-border still signals importance,
+          but body text is normal body size. The old text-lg font-semibold
+          was designed for a short pull-out ($X → $Y by Z) but the LLM
+          emits multi-sentence detail, which read as shouty at that
+          weight. */}
       {market.marketSize && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
           <div className="h-1 bg-[#E07A5F]" />
           <div className="px-6 py-5">
             <SectionLabel className="mb-2">Market Size</SectionLabel>
-            <div className="text-lg font-semibold text-gray-900 leading-snug">
+            <div className="text-[15px] text-gray-700 leading-relaxed">
               {market.marketSize}
             </div>
           </div>
