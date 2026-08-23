@@ -13,6 +13,7 @@
 import Link from 'next/link'
 import { MarkdownRenderer } from '../MarkdownRenderer'
 import { SectionLabel } from '../SectionLabel'
+import { InternalLink } from '../EntityLink'
 import { FundingByYearChart, CategoryDistributionChart } from '../charts'
 import { DollarSign, Building2, Users, FlaskConical } from 'lucide-react'
 
@@ -47,9 +48,20 @@ interface FundingStats {
   partialFYNote?: string
 }
 
+interface ProjectRow {
+  application_id: string
+  title: string
+  org_name: string | null
+  total_cost: number | null
+}
+
 interface FundingLandscapeViewProps {
   reportId: string
   fundingStats: FundingStats | null
+  /** Full project sample from agent_outputs.projects.items — used to
+   *  show which specific projects make up each top-funded org's total
+   *  instead of just an abstract count. */
+  allProjects: ProjectRow[]
   narrative: string
 }
 
@@ -75,7 +87,7 @@ function computeYoY(byYear: FundingByYear[]): string | null {
   return `${sign}${delta.toFixed(0)}% FY${String(curr.year).slice(-2)}`
 }
 
-export function FundingLandscapeView({ reportId, fundingStats, narrative }: FundingLandscapeViewProps) {
+export function FundingLandscapeView({ reportId, fundingStats, allProjects, narrative }: FundingLandscapeViewProps) {
   if (!fundingStats) {
     return (
       <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
@@ -228,38 +240,64 @@ export function FundingLandscapeView({ reportId, fundingStats, narrative }: Fund
         </section>
       )}
 
-      {/* Top orgs by funding */}
+      {/* Top-funded organizations — each org expanded to show the
+          actual projects making up its funding total. Org name links
+          to /org/[name] for cross-source detail; each project links
+          to /project/[id]. Reader sees WHAT the org is funded for,
+          not just an abstract project count. Cap per-org at 5 with
+          "+N more" to keep the list scannable when a single org
+          holds many projects. */}
       {fundingStats.byOrg.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
           <SectionLabel className="mb-4">Top-Funded Organizations</SectionLabel>
-          <table className="w-full text-sm border-collapse">
-            <thead>
-              <tr className="border-b border-gray-200">
-                <th className="pb-2 pr-2 text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
-                  Organization
-                </th>
-                <th className="pb-2 px-2 text-right text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
-                  Projects
-                </th>
-                <th className="pb-2 pl-2 text-right text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
-                  Funding
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {fundingStats.byOrg.slice(0, 10).map((row) => (
-                <tr key={row.org} className="border-b border-gray-100 last:border-b-0">
-                  <td className="py-2 pr-2 text-[14px] text-gray-900">{row.org}</td>
-                  <td className="py-2 px-2 text-[14px] text-gray-700 tabular-nums text-right">
-                    {row.projects}
-                  </td>
-                  <td className="py-2 pl-2 text-[14px] text-gray-900 tabular-nums font-medium text-right">
-                    {formatMoney(row.funding)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="divide-y divide-gray-100">
+            {fundingStats.byOrg.slice(0, 10).map((row) => {
+              const orgProjects = allProjects
+                .filter((p) => p.org_name === row.org)
+                .sort((a, b) => (b.total_cost ?? 0) - (a.total_cost ?? 0))
+              const shownProjects = orgProjects.slice(0, 5)
+              const moreCount = orgProjects.length - shownProjects.length
+              return (
+                <div key={row.org} className="py-4 first:pt-0 last:pb-0">
+                  <div className="flex items-baseline justify-between gap-4 mb-2">
+                    <InternalLink
+                      href={`/org/${encodeURIComponent(row.org)}`}
+                      className="text-[14px] font-medium text-gray-900 leading-snug"
+                    >
+                      {row.org}
+                    </InternalLink>
+                    <div className="flex-shrink-0 flex items-baseline gap-3 text-[13px] text-gray-500 tabular-nums">
+                      <span>
+                        {row.projects} {row.projects === 1 ? 'project' : 'projects'}
+                      </span>
+                      <span className="text-gray-900 font-medium text-[14px]">
+                        {formatMoney(row.funding)}
+                      </span>
+                    </div>
+                  </div>
+                  {shownProjects.length > 0 && (
+                    <ul className="space-y-1 pl-3 border-l border-gray-100">
+                      {shownProjects.map((p) => (
+                        <li key={p.application_id} className="text-[13px] leading-snug text-gray-600">
+                          <InternalLink
+                            href={`/project/${p.application_id}`}
+                            className="text-gray-600"
+                          >
+                            {p.title}
+                          </InternalLink>
+                        </li>
+                      ))}
+                      {moreCount > 0 && (
+                        <li className="text-[12px] text-gray-400 italic">
+                          +{moreCount} more {moreCount === 1 ? 'project' : 'projects'}
+                        </li>
+                      )}
+                    </ul>
+                  )}
+                </div>
+              )
+            })}
+          </div>
         </section>
       )}
 
