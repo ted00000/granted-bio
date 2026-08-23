@@ -105,6 +105,7 @@ After searching, return your analysis as JSON with this exact structure:
 {
   "overview": "2-3 paragraph market overview synthesized from search results",
   "marketSize": "See MARKET SIZING RULES below — either a direct estimate, an explicitly-labeled adjacent-market anchor, or null",
+  "marketSizing": "See MARKET SIZING RULES — parallel structured object with the numbers extracted from your marketSize prose, or null if marketSize is null",
   "keyPlayers": ["Company A", "Company B", "Company C"],
   "recentDevelopments": ["YYYY-MM: brief description of development", "YYYY-MM: brief description"],
   "competitiveLandscape": "Brief paragraph describing competitive dynamics"
@@ -112,7 +113,7 @@ After searching, return your analysis as JSON with this exact structure:
 
 MARKET SIZING RULES (be strict):
 
-The marketSize field must follow exactly ONE of three patterns:
+The marketSize field (PROSE) must follow exactly ONE of three patterns:
 
 1. **Direct estimate** — when a reputable source has sized THIS topic specifically:
    "$X billion in YYYY, projected to $Y by YYYY at Z% CAGR (Source Name, Year)"
@@ -121,6 +122,36 @@ The marketSize field must follow exactly ONE of three patterns:
    "Direct sizing for [topic] is not separately tracked. The closest adjacent market is [parent market name]: $X billion in YYYY (Source, Year). [Optional: one more anchor if it adds clarity.]"
 
 3. **null** — when no reliable figure exists for either the topic or a clearly-related adjacent market.
+
+The marketSizing field (STRUCTURED) must be a JSON object mirroring the numbers in the prose so the UI can render stat tiles + growth visuals:
+
+{
+  "scenarios": [
+    {
+      "label": "Human-facing scenario label — e.g. 'MCED (multi-cancer early detection)' or 'Broader liquid biopsy market'",
+      "startValue": 2.48,     // USD BILLIONS (float, not millions)
+      "startYear": 2025,
+      "endValue": 7.85,       // USD BILLIONS (float)
+      "endYear": 2035,
+      "cagr": 12.1,           // percentage (12.1 means 12.1%, not 0.121)
+      "source": "DataM Intelligence, 2026"
+    }
+    // ... additional scenarios (usually 1-2 more) if the prose cites multiple markets
+  ],
+  "firmRange": {              // optional — only when prose calls out cross-firm variation
+    "min": 2.5,               // USD BILLIONS
+    "max": 13.6,
+    "year": 2025
+  }
+}
+
+Rules for marketSizing:
+- Every scenario cited in the marketSize PROSE must appear as a scenario object here (same source, same numbers).
+- Do NOT invent scenarios not in the prose. If the prose only cites one scenario, emit one scenario object.
+- Do NOT include speculative/derived figures.
+- If marketSize is null OR is an "adjacent-market anchor" with no explicit CAGR/end-year, set marketSizing to null (structured object requires start + end + cagr).
+- Values must be in USD billions as floats (2.48, not "2.48B" and not 2_480_000_000).
+- CAGR is a percentage (12.1 means 12.1%).
 
 PROHIBITED PATTERNS (do NOT do these):
 - Do NOT speculate about what fraction of a parent market this topic represents (no "meaningful but unquantified fraction" language)
@@ -233,11 +264,77 @@ Return ONLY the JSON object — no preamble, no markdown code fence, no explanat
   return {
     overview: parsed.overview || '',
     marketSize: parsed.marketSize || null,
+    marketSizing: validateMarketSizing(parsed.marketSizing),
     keyPlayers: Array.isArray(parsed.keyPlayers) ? parsed.keyPlayers : [],
     recentDevelopments: dedupedDevelopments,
     competitiveLandscape: parsed.competitiveLandscape || '',
     sources: uniqueSources,
   }
+}
+
+/**
+ * Validate + coerce the marketSizing structured object. Each scenario
+ * must have all required numeric fields — start/end value + years +
+ * cagr + source + label. Missing or malformed scenarios are dropped
+ * silently rather than crashing the whole market context; a stray
+ * bad shape shouldn't take down the section.
+ *
+ * Returns null when the input is missing, not an object, has no
+ * valid scenarios, or the LLM emitted null explicitly (which happens
+ * when marketSize prose is an adjacent-market anchor without CAGR).
+ */
+function validateMarketSizing(raw: unknown): {
+  scenarios: Array<{
+    label: string
+    startValue: number
+    startYear: number
+    endValue: number
+    endYear: number
+    cagr: number
+    source: string
+  }>
+  firmRange: { min: number; max: number; year: number } | null
+} | null {
+  if (!raw || typeof raw !== 'object') return null
+  const obj = raw as Record<string, unknown>
+  const rawScenarios = Array.isArray(obj.scenarios) ? obj.scenarios : []
+  const scenarios = rawScenarios
+    .map((s) => {
+      if (!s || typeof s !== 'object') return null
+      const sc = s as Record<string, unknown>
+      const label = typeof sc.label === 'string' ? sc.label.trim() : ''
+      const startValue = typeof sc.startValue === 'number' ? sc.startValue : NaN
+      const startYear = typeof sc.startYear === 'number' ? sc.startYear : NaN
+      const endValue = typeof sc.endValue === 'number' ? sc.endValue : NaN
+      const endYear = typeof sc.endYear === 'number' ? sc.endYear : NaN
+      const cagr = typeof sc.cagr === 'number' ? sc.cagr : NaN
+      const source = typeof sc.source === 'string' ? sc.source.trim() : ''
+      if (
+        !label
+        || !source
+        || !Number.isFinite(startValue)
+        || !Number.isFinite(startYear)
+        || !Number.isFinite(endValue)
+        || !Number.isFinite(endYear)
+        || !Number.isFinite(cagr)
+      ) {
+        return null
+      }
+      return { label, startValue, startYear, endValue, endYear, cagr, source }
+    })
+    .filter((s): s is NonNullable<typeof s> => s !== null)
+  if (scenarios.length === 0) return null
+  let firmRange: { min: number; max: number; year: number } | null = null
+  if (obj.firmRange && typeof obj.firmRange === 'object') {
+    const fr = obj.firmRange as Record<string, unknown>
+    const min = typeof fr.min === 'number' ? fr.min : NaN
+    const max = typeof fr.max === 'number' ? fr.max : NaN
+    const year = typeof fr.year === 'number' ? fr.year : NaN
+    if (Number.isFinite(min) && Number.isFinite(max) && Number.isFinite(year) && max >= min) {
+      firmRange = { min, max, year }
+    }
+  }
+  return { scenarios, firmRange }
 }
 
 const STOPWORDS = new Set([

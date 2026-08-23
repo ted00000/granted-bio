@@ -13,9 +13,25 @@ import { MarkdownRenderer } from '../MarkdownRenderer'
 import { SectionLabel } from '../SectionLabel'
 import { Globe, ExternalLink } from 'lucide-react'
 
+interface MarketSizeScenario {
+  label: string
+  startValue: number
+  startYear: number
+  endValue: number
+  endYear: number
+  cagr: number
+  source: string
+}
+
+interface MarketSizingStructured {
+  scenarios: MarketSizeScenario[]
+  firmRange?: { min: number; max: number; year: number } | null
+}
+
 interface MarketContext {
   overview: string
   marketSize: string | null
+  marketSizing?: MarketSizingStructured | null
   keyPlayers: string[]
   recentDevelopments: string[]
   competitiveLandscape: string
@@ -44,19 +60,32 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
 
   return (
     <div className="space-y-5">
-      {/* Market size hero — coral top-border still signals importance,
-          but body text is normal body size. The old text-lg font-semibold
-          was designed for a short pull-out ($X → $Y by Z) but the LLM
-          emits multi-sentence detail, which read as shouty at that
-          weight. */}
-      {market.marketSize && (
+      {/* Market size hero. When structured marketSizing is available
+          (new reports 2026-08-23+), render stat tiles per scenario +
+          firm-range callout + the prose as narrative context below.
+          Legacy reports fall through to prose-only. */}
+      {(market.marketSize || (market.marketSizing?.scenarios.length ?? 0) > 0) && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
           <div className="h-1 bg-[#E07A5F]" />
           <div className="px-6 py-5">
-            <SectionLabel className="mb-2">Market Size</SectionLabel>
-            <div className="text-[15px] text-gray-700 leading-relaxed">
-              {market.marketSize}
-            </div>
+            <SectionLabel className="mb-4">Market Size</SectionLabel>
+
+            {market.marketSizing && market.marketSizing.scenarios.length > 0 && (
+              <div className="space-y-5 mb-5">
+                {market.marketSizing.scenarios.map((s, i) => (
+                  <MarketScenarioTile key={i} scenario={s} />
+                ))}
+                {market.marketSizing.firmRange && (
+                  <FirmRangeCallout range={market.marketSizing.firmRange} />
+                )}
+              </div>
+            )}
+
+            {market.marketSize && (
+              <div className={`text-[14px] text-gray-500 leading-relaxed ${market.marketSizing ? 'pt-4 border-t border-gray-100' : ''}`}>
+                {market.marketSize}
+              </div>
+            )}
           </div>
         </section>
       )}
@@ -146,6 +175,97 @@ export function MarketContextView({ market }: { market: MarketContext | null }) 
           </ul>
         </section>
       )}
+    </div>
+  )
+}
+
+// ------------------------------------------------------------------
+// Market-size structured render primitives
+// ------------------------------------------------------------------
+
+function formatBillions(value: number): string {
+  if (value >= 1) return `$${value.toFixed(value >= 10 ? 1 : 2)}B`
+  const inMillions = value * 1000
+  if (inMillions >= 100) return `$${Math.round(inMillions)}M`
+  return `$${inMillions.toFixed(0)}M`
+}
+
+function MarketScenarioTile({ scenario }: { scenario: MarketSizeScenario }) {
+  const span = scenario.endYear - scenario.startYear
+  return (
+    <div>
+      <div className="text-[13px] font-semibold text-gray-800 mb-2 leading-snug">
+        {scenario.label}
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        <div className="bg-gray-50 rounded-md px-3 py-3 border border-gray-100">
+          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-1">
+            {scenario.startYear}
+          </div>
+          <div className="text-xl font-semibold text-gray-900 tabular-nums leading-tight">
+            {formatBillions(scenario.startValue)}
+          </div>
+        </div>
+        <div className="bg-gray-50 rounded-md px-3 py-3 border border-gray-100">
+          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider mb-1">
+            {scenario.endYear} projected
+          </div>
+          <div className="text-xl font-semibold text-gray-900 tabular-nums leading-tight">
+            {formatBillions(scenario.endValue)}
+          </div>
+        </div>
+        <div className="bg-[#FDF2EF] rounded-md px-3 py-3 border border-[#E07A5F]/20">
+          <div className="text-[10px] font-semibold text-[#E07A5F] uppercase tracking-wider mb-1">
+            CAGR
+          </div>
+          <div className="text-xl font-semibold text-gray-900 tabular-nums leading-tight">
+            {scenario.cagr.toFixed(1)}%
+          </div>
+          {span > 0 && (
+            <div className="text-[10px] text-gray-500 mt-0.5 tabular-nums">
+              {span}-yr window
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="text-[11px] text-gray-500 mt-2 italic">
+        Source: {scenario.source}
+      </div>
+    </div>
+  )
+}
+
+function FirmRangeCallout({
+  range,
+}: {
+  range: { min: number; max: number; year: number }
+}) {
+  // Range width as % of max — used to place the min-endpoint marker
+  // visually along a track between 0 and max.
+  const minPct = range.max > 0 ? Math.max(2, (range.min / range.max) * 100) : 0
+  return (
+    <div className="bg-gray-50 rounded-md px-4 py-3 border border-gray-100">
+      <div className="flex items-baseline justify-between mb-2">
+        <div className="text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+          Cross-firm range · {range.year}
+        </div>
+        <div className="text-[13px] text-gray-700 tabular-nums">
+          <span className="font-semibold text-gray-900">{formatBillions(range.min)}</span>
+          <span className="text-gray-400 mx-1.5">to</span>
+          <span className="font-semibold text-gray-900">{formatBillions(range.max)}</span>
+        </div>
+      </div>
+      {/* Visual range indicator — bar spans min→max within the 0→max
+          scale so readers see how wide the disagreement is. */}
+      <div className="relative h-1.5 bg-gray-200 rounded-full overflow-hidden">
+        <div
+          className="absolute h-full bg-[#E07A5F]/60"
+          style={{ left: `${minPct}%`, right: '0%' }}
+        />
+      </div>
+      <div className="text-[11px] text-gray-500 mt-1.5 italic leading-relaxed">
+        Estimates vary by scope definition across research firms — treat these figures as directional.
+      </div>
     </div>
   )
 }

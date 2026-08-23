@@ -1223,6 +1223,10 @@ Keep existing key players, market size, and recent developments unchanged.`
     return {
       ...rawContext,
       overview: parsed.overview || rawContext.overview,
+      // Structured marketSizing is preserved as-is from the market
+      // agent — this synthesis step only rewrites the `overview`
+      // narrative; the sizing numbers stay put.
+      marketSizing: rawContext.marketSizing ?? null,
       sources: [...rawContext.sources, 'NIH RePORTER funding analysis'],
     }
   } catch (error) {

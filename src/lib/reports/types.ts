@@ -136,10 +136,48 @@ export interface ResearcherStats {
 export interface MarketContext {
   overview: string
   marketSize: string | null
+  /**
+   * Optional structured market-sizing data — parallel to the prose in
+   * `marketSize`, used to render stat tiles + range visuals on the
+   * Market Context page instead of just a paragraph. Emitted by the
+   * market agent when a reputable direct or adjacent-market sizing is
+   * available. Null for topics with no reliable figures (matches
+   * `marketSize: null`) OR for legacy reports generated before the
+   * structured field shipped (2026-08-23) — the renderer falls back
+   * to prose-only in that case.
+   */
+  marketSizing?: MarketSizingStructured | null
   keyPlayers: string[]
   recentDevelopments: string[]
   competitiveLandscape: string
   sources: string[]
+}
+
+export interface MarketSizeScenario {
+  /** Human-facing label (e.g. "Multi-Cancer Early Detection (MCED)"
+   *  or "Broader liquid biopsy market"). */
+  label: string
+  /** Start-of-window value in USD BILLIONS (float). $2.48B → 2.48. */
+  startValue: number
+  startYear: number
+  /** End-of-window projected value in USD BILLIONS (float). */
+  endValue: number
+  endYear: number
+  /** Compound annual growth rate as a percentage (12.1 not 0.121). */
+  cagr: number
+  /** Attribution — "DataM Intelligence, 2026" etc. */
+  source: string
+}
+
+export interface MarketSizingStructured {
+  scenarios: MarketSizeScenario[]
+  /** Optional cross-firm range for a single year (context on how
+   *  much estimates vary by definition/scope). USD billions. */
+  firmRange?: {
+    min: number
+    max: number
+    year: number
+  } | null
 }
 
 // Agent outputs
