@@ -1,4 +1,4 @@
-# Parking Lot — 11AUG2026
+# Parking Lot — 23AUG2026
 
 Consolidated nice-to-haves accumulated during the multi-month pre-launch
 build. Pulled from `LANDING_AND_CREDITS_PLAN.md`, `PLATFORM_PLANNING.md`,
@@ -46,6 +46,19 @@ when revising so we can tell what's drifted.
   (therapeutics, brain organoids, biotools) so visitors see breadth,
   not just liquid biopsy. Each new sample needs a `SAMPLE_REPORT_ID`
   constant + a route under `/sample/`.
+- **White Space category → projects drilldown.** Each White Space
+  category row (e.g., "Blood Plasma: 8 projects") currently shows
+  aggregate count + funding + broader-NIH ref only. Reader can't see
+  WHICH projects drove the count. Two viable paths: (a) inline top-3
+  examples using the stored `category.projectExamples` (up to 3
+  project_numbers already tracked at synthesis — minimal build); or
+  (b) live drilldown page `/reports/[id]/whitespace/[dimension]/
+  [category]` that re-runs the keyword match (`category.keywords`
+  against `agent_outputs.projects.items`) to expose the full
+  N-project list, mirroring the scoped-org page pattern at
+  `/reports/[id]/organizations/[org]`. User (2026-08-23) parked
+  after weighing scope — not clear it earns the space until we see
+  a reader ask for it or engagement data shows drilldown intent.
 
 ## Operational / process
 
