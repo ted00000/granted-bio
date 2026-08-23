@@ -9,7 +9,7 @@
 
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, ArrowLeft } from 'lucide-react'
 import { getReport } from '@/lib/reports/fetch-report'
 import { extractScopeWarning } from '../../section-utils'
 import { MarkdownRenderer } from '../../MarkdownRenderer'
@@ -57,6 +57,16 @@ export default async function ScopedOrgPage({
     <div className="min-h-full">
       <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-5 sm:px-6">
+          {/* Back link — dedicated affordance to return to the parent
+              Organizations list. Sits above the breadcrumb so it's
+              the first thing a reader looking to escape sees. */}
+          <Link
+            href={`/reports/${report.id}/organizations`}
+            className="inline-flex items-center gap-1 text-[12px] text-gray-500 hover:text-[#E07A5F] transition-colors mb-3"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" strokeWidth={2} />
+            <span>Back to Organizations</span>
+          </Link>
           <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-2 flex-wrap">
             <Link
               href={`/reports/${report.id}`}
