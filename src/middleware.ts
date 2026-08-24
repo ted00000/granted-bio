@@ -1,10 +1,17 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 import {
+  checkShareRateLimit,
   findValidShareByToken,
   SHARE_TOKEN_HEADER,
   SHARE_REPORT_ID_HEADER,
 } from '@/lib/reports/share-tokens'
+
+// Custom header the middleware forwards so fetch-report can hash
+// the viewer without re-plumbing the request. Distinct name from
+// x-forwarded-for so it can't be spoofed by a client that happens
+// to be able to set XFF (e.g., a proxy the visitor controls).
+const SHARE_VIEWER_IP_HEADER = 'x-granted-share-viewer-ip'
 
 // Maintenance mode. Toggled by the MAINTENANCE_MODE env var on
 // Vercel (or locally): when === 'true', every user-facing page
@@ -150,6 +157,18 @@ async function resolveShareUrl(request: NextRequest): Promise<NextResponse | nul
   // invalid). Don't try to validate "expired" as a token.
   if (token === 'expired') return null
 
+  // Rate-limit BEFORE the DB lookup — a scraper hammering unknown
+  // tokens would otherwise generate a DB read per request. Falls
+  // open when we can't identify the caller (dev/testing).
+  const viewerIp = clientIp(request)
+  const rate = await checkShareRateLimit(viewerIp)
+  if (!rate.ok) {
+    return new NextResponse('Too many requests', {
+      status: 429,
+      headers: { 'Retry-After': String(rate.retryAfterSec) },
+    })
+  }
+
   const share = await findValidShareByToken(token)
   if (!share) {
     // Invalid / revoked / expired all map to the same terminal page.
@@ -170,10 +189,34 @@ async function resolveShareUrl(request: NextRequest): Promise<NextResponse | nul
   const headers = new Headers(request.headers)
   headers.set(SHARE_TOKEN_HEADER, token)
   headers.set(SHARE_REPORT_ID_HEADER, share.report_id)
+  // Forward the viewer's IP under our own header name so
+  // recordShareView can hash it for uniqueness without trusting
+  // client-settable x-forwarded-for.
+  if (viewerIp !== 'unknown') {
+    headers.set(SHARE_VIEWER_IP_HEADER, viewerIp)
+  }
 
   return NextResponse.rewrite(rewriteUrl, {
     request: { headers },
   })
+}
+
+/**
+ * Best-effort client IP for rate limiting + view analytics. Vercel
+ * Edge sets x-forwarded-for reliably; the fallback path returns
+ * 'unknown' rather than a spoofable localhost so rate-limit
+ * fail-open behavior stays predictable.
+ */
+function clientIp(request: NextRequest): string {
+  const xff = request.headers.get('x-forwarded-for')
+  if (xff) {
+    // First value is the client; the rest is the proxy chain.
+    const first = xff.split(',')[0]?.trim()
+    if (first) return first
+  }
+  const realIp = request.headers.get('x-real-ip')
+  if (realIp) return realIp.trim()
+  return 'unknown'
 }
 
 export const config = {

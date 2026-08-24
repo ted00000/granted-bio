@@ -15,6 +15,7 @@ import {
   listSharesForReport,
   toShareSummary,
   buildShareUrl,
+  getShareViewAnalyticsBatch,
   SHARE_TOKEN_DEFAULT_TTL_DAYS,
 } from '@/lib/reports/share-tokens'
 
@@ -60,7 +61,10 @@ export async function GET(
     }
 
     const rows = await listSharesForReport({ reportId: id, ownerUserId: user.id })
-    return NextResponse.json({ shares: rows.map(toShareSummary) })
+    const analytics = await getShareViewAnalyticsBatch(rows.map((r) => r.id))
+    return NextResponse.json({
+      shares: rows.map((r) => toShareSummary(r, analytics[r.id])),
+    })
   } catch (e) {
     console.error('[shares GET] error:', e)
     return NextResponse.json({ error: 'Failed to list shares' }, { status: 500 })

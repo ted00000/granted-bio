@@ -1,4 +1,4 @@
-# Parking Lot — 23AUG2026
+# Parking Lot — 24AUG2026
 
 Consolidated nice-to-haves accumulated during the multi-month pre-launch
 build. Pulled from `LANDING_AND_CREDITS_PLAN.md`, `PLATFORM_PLANNING.md`,
@@ -22,6 +22,22 @@ when revising so we can tell what's drifted.
   `project_persona_priority.md` memory). Reintroduce if/when the motion
   shapes up. Requires audit of pricing FAQ, lens picker, and persona
   cards before re-enabling.
+- **Team-seat conversion nudge on high-view shares** (2026-08-24, from
+  share Phase 2 planning) — when an analysis-share link crosses N views
+  (proposed threshold 10, revisit against real data), surface a nudge
+  in the owner's manage-shares list: *"This share is getting a lot of
+  traffic — want a team seat?"* Blocked on: no team-seat SKU exists
+  yet. When one ships, wire the nudge to that flow. Until then the
+  view-count column already gives the owner the signal manually.
+- **Org name in share attribution bar** (2026-08-24) — the
+  ShareAttributionBar on `/share/[token]` currently reads *"Shared
+  with you by Alice Chen · granted.bio"*. Adding org (*"…by Alice
+  Chen (Genentech) …"*) makes the attribution socially heavier, which
+  is exactly the anti-broadcast lever we want. Blocked on: signup
+  flow doesn't capture org. Add an `org` column on `user_profiles`
+  + capture during onboarding + backfill from email domain heuristic
+  for existing users, then the ShareAttributionBar wiring is a
+  three-line change.
 
 ## UX polish
 

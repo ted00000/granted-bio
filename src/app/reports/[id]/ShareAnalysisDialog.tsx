@@ -30,7 +30,10 @@ interface ShareSummary {
   expiresAt: string
   revokedAt: string | null
   viewCount: number
+  uniqueViewerCount: number
+  firstViewedAt: string | null
   lastViewedAt: string | null
+  countries: string[]
   url: string
 }
 
@@ -338,7 +341,21 @@ function ShareRow({
             <span className="text-gray-300">•</span>
             <span>
               {share.viewCount} view{share.viewCount === 1 ? '' : 's'}
+              {share.uniqueViewerCount > 0 && share.uniqueViewerCount !== share.viewCount && (
+                <span className="text-gray-400">
+                  {' '}({share.uniqueViewerCount} unique)
+                </span>
+              )}
             </span>
+            {share.countries.length > 0 && (
+              <>
+                <span className="text-gray-300">•</span>
+                <span title={share.countries.join(', ')}>
+                  {share.countries.slice(0, 3).join(', ')}
+                  {share.countries.length > 3 && ` +${share.countries.length - 3}`}
+                </span>
+              </>
+            )}
             {share.lastViewedAt && (
               <>
                 <span className="text-gray-300">•</span>

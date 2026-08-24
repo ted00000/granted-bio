@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, type ReactNode } from 'react'
 import { MarkdownRenderer } from '../MarkdownRenderer'
 
 interface ChartData {
@@ -11,62 +11,48 @@ interface ChartData {
 }
 
 interface PrintShellProps {
-  content: string
+  /** Legacy markdown-rendering mode. When set, PrintShell renders
+   *  the full markdown via MarkdownRenderer (used before the
+   *  2026-08-24 exec-summary shift, kept for the fallback path). */
+  content?: string
   chartData?: ChartData
+  /** Preferred mode: caller provides fully-rendered JSX. PrintShell
+   *  wraps it in the .print-body container and handles the Puppeteer
+   *  ready-signal exactly the same way. */
+  children?: ReactNode
 }
 
 /**
- * Client shell that renders the same MarkdownRenderer used by the web
- * view, then signals `window.__printReady = true` after the first two
- * animation frames — which gives Recharts a chance to mount, measure,
- * and paint SVGs. Puppeteer's PDF generation waits on this flag before
+ * Client shell that renders the print body and signals
+ * `window.__printReady = true` once any Recharts SVGs have fully
+ * painted. Puppeteer's PDF generator waits on this flag before
  * calling page.pdf().
  *
- * Why not window.load: recharts uses ResponsiveContainer + requestAnimationFrame
- * for its layout, so the load event fires BEFORE charts have final geometry.
- * Two frames of rAF is empirically enough for the SVG paths to settle.
+ * Two rendering modes:
+ *   * `children` (new default) — caller passes JSX we render as-is.
+ *   * `content` (legacy) — caller passes markdown; we render it via
+ *     MarkdownRenderer. Kept for backwards compatibility until we're
+ *     sure the exec-summary path is stable.
+ *
+ * Ready-signal logic is unchanged — polls for `.recharts-wrapper`
+ * elements with actual svg children, falls back to a 20s ceiling so
+ * Puppeteer never hangs on a broken render.
  */
-// Fixed pixel dimensions for chart components in the print route.
-// After many rounds of CSS !important overrides not reliably working
-// in headless Chromium, we now bypass ResponsiveContainer entirely:
-// chart components accept fixedWidth/fixedHeight props and render
-// <BarChart width height> directly with no measurement chain.
-// 500x300 matches the visual size of charts on the web report.
 const CHART_WIDTH_PX = 500
 const CHART_HEIGHT_PX = 300
 
-export function PrintShell({ content, chartData }: PrintShellProps) {
+export function PrintShell({ content, chartData, children }: PrintShellProps) {
   useEffect(() => {
-    // Two responsibilities:
-    // 1. Force explicit pixel dimensions on every Recharts container
-    //    the moment they mount, so ResponsiveContainer has definite
-    //    parent geometry and its ResizeObserver produces real numbers.
-    // 2. Poll for actual <svg> children in every wrapper, then flip
-    //    window.__printReady so Puppeteer knows we're done.
-    //
-    // r54 audit history: prior attempts using pure CSS (max-width,
-    // width:100%, min-width, forcing height on .my-4 wrappers) all
-    // failed because MarkdownRenderer uses .my-4 for charts +
-    // blockquotes + tables — CSS scoped to .my-4 clobbered
-    // non-chart layout. Doing this in JS is surgical and avoids that.
     let cancelled = false
     const MAX_WAIT_MS = 20_000
     const POLL_INTERVAL_MS = 150
     const start = Date.now()
-
-    const forceChartDims = () => {
-      // No-op now that chart components render at fixed pixel
-      // dimensions directly via fixedWidth/fixedHeight props on
-      // MarkdownRenderer. Kept as an anchor for the tick loop in
-      // case future refactors want to re-introduce DOM tweaks.
-    }
 
     const checkReady = (): boolean => {
       const wrappers = document.querySelectorAll('.recharts-wrapper')
       if (wrappers.length === 0) return true
       for (const w of Array.from(wrappers)) {
         const svg = w.querySelector('svg')
-        // Empty scaffolding SVG (no children yet) doesn't count.
         if (!svg || svg.children.length === 0) return false
       }
       return true
@@ -74,7 +60,6 @@ export function PrintShell({ content, chartData }: PrintShellProps) {
 
     const tick = () => {
       if (cancelled) return
-      forceChartDims()
       if (checkReady()) {
         ;(window as unknown as { __printReady?: boolean; __printChartsRendered?: boolean }).__printReady = true
         ;(window as unknown as { __printChartsRendered?: boolean }).__printChartsRendered = true
@@ -101,12 +86,15 @@ export function PrintShell({ content, chartData }: PrintShellProps) {
 
   return (
     <div className="print-body">
-      <MarkdownRenderer
-        content={content}
-        chartData={chartData as never}
-        printChartWidth={CHART_WIDTH_PX}
-        printChartHeight={CHART_HEIGHT_PX}
-      />
+      {children}
+      {content ? (
+        <MarkdownRenderer
+          content={content}
+          chartData={chartData as never}
+          printChartWidth={CHART_WIDTH_PX}
+          printChartHeight={CHART_HEIGHT_PX}
+        />
+      ) : null}
     </div>
   )
 }

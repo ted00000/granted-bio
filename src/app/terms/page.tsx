@@ -25,7 +25,7 @@ export default function TermsPage() {
 
           <div className="space-y-6 text-gray-700 leading-relaxed">
             <p className="text-sm text-gray-500">
-              Last updated: June 14, 2026
+              Last updated: August 24, 2026
             </p>
 
             <p>
@@ -147,6 +147,27 @@ export default function TermsPage() {
                 informs, provided that they comply with these Terms. You may
                 not publicly distribute, sell, sublicense, or use the report
                 content to train AI models.
+              </p>
+              <p>
+                <strong>Share links.</strong> granted.bio provides a
+                feature that lets you generate a tokenized read-only URL
+                pointing to an analysis you have purchased. Recipients of
+                the link may view the analysis without a granted.bio
+                account. Share links are intended for{' '}
+                <strong>private circulation with named colleagues</strong> —
+                for example, a collaborator on the underlying research
+                question, a member of your investment committee, or a
+                partner or client you are actively working with.
+                Redistribution of share links to a general public audience,
+                including but not limited to posting on social media
+                platforms, publishing in newsletters, embedding on
+                third-party websites, or otherwise making them broadly
+                accessible, is not permitted. Share links expire
+                automatically after a limited period (currently sixty days)
+                and may be revoked by you at any time from your account;
+                granted.bio also reserves the right to revoke a share link
+                without prior notice if we have reason to believe it is
+                being used in violation of these Terms.
               </p>
               <p>
                 <strong>Platform.</strong> The granted.bio website, software,

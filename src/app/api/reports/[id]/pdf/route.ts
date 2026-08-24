@@ -28,6 +28,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { renderReportPdf } from '@/lib/pdf/puppeteer'
+import { getOrCreateActiveShareForReport, buildShareUrl } from '@/lib/reports/share-tokens'
 
 // Vercel function config. Chromium cold-start + PDF render + upload can
 // take up to 60s on a large report; bump the ceiling.
@@ -108,7 +109,19 @@ export async function POST(
     const requestHost = headers.get('x-forwarded-host') || headers.get('host') || 'www.granted.bio'
     const requestProto = headers.get('x-forwarded-proto') || 'https'
     const origin = process.env.NEXT_PUBLIC_SITE_URL || `${requestProto}://${requestHost}`
-    const printUrl = `${origin}/reports/${id}/print`
+
+    // Get-or-mint an active share URL for the report owner so the
+    // PDF's "view full analysis" back-link works without requiring
+    // the recipient to sign in. When admins generate a PDF on
+    // behalf of another user, the share is owned by that user (the
+    // report's user_id), not the admin.
+    const share = await getOrCreateActiveShareForReport({
+      reportId: id,
+      ownerUserId: report.user_id as string,
+    })
+    const shareUrl = buildShareUrl(share.token)
+
+    const printUrl = `${origin}/reports/${id}/print?shareUrl=${encodeURIComponent(shareUrl)}`
 
     const generatedDate = new Date(report.created_at as string).toLocaleDateString('en-US', {
       year: 'numeric',

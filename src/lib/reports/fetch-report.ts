@@ -74,9 +74,16 @@ export const getReport = cache(async (id: string): Promise<ReportRow | null> => 
   // Share-mode: middleware already validated the token; use admin
   // client so anonymous recipients can read the row without RLS.
   if (shareCtx && shareCtx.report_id === id) {
-    // Fire-and-forget view-count bump. Fails silently — a broken
-    // view counter shouldn't 500 the recipient's page load.
-    void recordShareView(shareCtx.id)
+    // Fire-and-forget view-count bump + per-view detail. Fails
+    // silently — a broken view counter shouldn't 500 the recipient's
+    // page load. Fingerprint is pulled from headers the middleware
+    // forwarded so we don't have to re-plumb the request.
+    const h = await headers()
+    void recordShareView(shareCtx.id, {
+      ip: h.get('x-granted-share-viewer-ip') || h.get('x-forwarded-for') || 'unknown',
+      userAgent: h.get('user-agent') || 'unknown',
+      country: h.get('x-vercel-ip-country') || 'ZZ',
+    })
     return getReportAsAdmin(id)
   }
 
