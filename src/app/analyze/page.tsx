@@ -11,7 +11,7 @@
 //   My Analyses / My Projects <- nouns (collections you own)
 // See docs/POST_LAUNCH_BACKLOG and related discussion.
 
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import {
@@ -26,7 +26,7 @@ import { SignUpModal } from '@/components/SignUpModal'
 import { useAuth } from '@/contexts/AuthContext'
 import { GenerateReportDialog } from '../reports/GenerateReportDialog'
 
-export default function AnalyzePage() {
+function AnalyzePageInner() {
   const { user, isLoading } = useAuth()
 
   if (isLoading) {
@@ -38,6 +38,23 @@ export default function AnalyzePage() {
   }
 
   return user ? <AuthedAnalyze /> : <AnonAnalyze />
+}
+
+// Wrapped in Suspense because AuthedAnalyze calls useSearchParams()
+// to pick up the ?topic=&generate=1 auto-open params from /chat.
+// Next.js requires the boundary so the page can still prerender.
+export default function AnalyzePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+        </div>
+      }
+    >
+      <AnalyzePageInner />
+    </Suspense>
+  )
 }
 
 // ------------------------------------------------------------------

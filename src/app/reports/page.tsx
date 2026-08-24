@@ -9,7 +9,7 @@
 // Logged-out visitors get redirected to /analyze, which handles the
 // marketing pitch + sign-up flow.
 
-import { useState, useEffect } from 'react'
+import { Suspense, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import {
@@ -334,7 +334,11 @@ function StatusBadge({ status, progressStage }: { status: Report['status']; prog
 // ?topic=&generate=1 params get forwarded to /analyze, which owns the
 // pitch + generate flow. AuthContext is the single source of truth for
 // auth state so a transient /api blip doesn't misclassify.
-export default function ReportsPage() {
+//
+// useSearchParams() forces a Suspense boundary — Next.js 15+ refuses
+// to prerender pages that read search params without one. The inner
+// component holds the hook; the default export is the shell.
+function ReportsPageInner() {
   const { user, isLoading } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -365,4 +369,18 @@ export default function ReportsPage() {
   }
 
   return <ReportsDashboard />
+}
+
+export default function ReportsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
+        </div>
+      }
+    >
+      <ReportsPageInner />
+    </Suspense>
+  )
 }
