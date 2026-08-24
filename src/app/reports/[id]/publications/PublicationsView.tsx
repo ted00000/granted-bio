@@ -48,6 +48,29 @@ function bestYear(p: Publication): string {
   return '—'
 }
 
+// Numeric year for sorting (0 when unknown, so unknowns sink to the
+// bottom of a descending sort). Matches bestYear's precedence.
+function yearOrder(p: Publication): number {
+  if (p.pub_year) return p.pub_year
+  if (p.publication_date) {
+    const y = p.publication_date.match(/\d{4}/)?.[0]
+    if (y) return Number(y)
+  }
+  return 0
+}
+
+// Full-date timestamp for sort tiebreakers within a year. Falls back
+// to Jan 1 of the year when only pub_year exists. Publications with
+// no parseable date order after those with dates within the same year.
+function dateOrder(p: Publication): number {
+  if (p.publication_date) {
+    const t = Date.parse(p.publication_date)
+    if (!Number.isNaN(t)) return t
+  }
+  if (p.pub_year) return Date.UTC(p.pub_year, 0, 1)
+  return 0
+}
+
 export function PublicationsView({
   publications,
   curated,
@@ -57,7 +80,19 @@ export function PublicationsView({
   const total = publications.length
   const shown = Math.min(total, displayLimit)
   const isTruncated = total > shown
-  const rows = publications.slice(0, shown)
+  // Sort by recency BEFORE slicing. The stored `publications`
+  // array comes from the generation pipeline in whatever order the
+  // PubMed link step produced them (roughly by project match, not
+  // by date), so displaying the first N gives a scrambled sample.
+  // Year desc, then publication_date desc as a within-year
+  // tiebreaker; unknown dates sink to the end.
+  const rows = [...publications]
+    .sort((a, b) => {
+      const dy = yearOrder(b) - yearOrder(a)
+      if (dy !== 0) return dy
+      return dateOrder(b) - dateOrder(a)
+    })
+    .slice(0, shown)
 
   const columns: Column<Publication>[] = [
     {
