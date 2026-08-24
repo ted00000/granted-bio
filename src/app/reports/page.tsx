@@ -1,8 +1,17 @@
 'use client'
 
+// "My Analyses" — list of prior analyses owned by the signed-in user.
+// The create surface (pitch + topic picker + generate dialog) lives at
+// /analyze; this page is intentionally list-only. Split from a
+// combined page on 2026-08-23 so nav semantics stay clean:
+//   Search / Analyze          <- verbs
+//   My Analyses / My Projects <- nouns
+// Logged-out visitors get redirected to /analyze, which handles the
+// marketing pitch + sign-up flow.
+
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   FileText,
   Trash2,
@@ -10,15 +19,9 @@ import {
   AlertCircle,
   Loader2,
   CheckCircle,
-  Check,
-  ArrowRight,
-  Sparkles,
 } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
-import { MarketingNav } from '@/components/MarketingNav'
-import { SignUpModal } from '@/components/SignUpModal'
 import { NameCapturePrompt } from '@/components/NameCapturePrompt'
-import { GenerateReportDialog } from './GenerateReportDialog'
 import { useAuth } from '@/contexts/AuthContext'
 import { fetchWithRetry } from '@/lib/retry'
 
@@ -35,192 +38,16 @@ interface Report {
   updated_at: string
 }
 
-// Logged-out /reports — per LANDING_AND_CREDITS_PLAN.md §7. Title +
-// sample link + pricing card + CTA. No mid-funnel loss of conversion:
-// the marketing header from MarketingNav stays consistent with the home
-// page, and the page is intentionally lean (the home page is where we
-// do the long-form pitch).
-function ReportsLanding() {
-  const [signUpOpen, setSignUpOpen] = useState<
-    null | { title?: string; description?: string }
-  >(null)
-
-  return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      <MarketingNav />
-
-      <main>
-        {/* Hero — short, since the home page already does the heavy
-            lifting. The visitor landed here on intent. */}
-        <section className="py-16 md:py-20 px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-gray-900 mb-5">
-              Generate a complete intelligence report on any topic.
-            </h1>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              NIH funding, clinical trials, patents, and publications, synthesized
-              into strategic narrative — generated in two minutes, with access to
-              drill into every linked record for three months.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link
-                href="/samples"
-                className="inline-flex items-center gap-2 px-5 py-3 border border-gray-200 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-              >
-                <Sparkles className="w-4 h-4 text-[#E07A5F]" />
-                See Sample Analyses
-              </Link>
-              <button
-                type="button"
-                onClick={() =>
-                  setSignUpOpen({
-                    title: 'Create a free account to start',
-                    description:
-                      "A free account is required to generate a report — it ties the report to your login so you can drill into every linked record for 3 months. Signing up takes a few seconds.",
-                  })
-                }
-                className="inline-flex items-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
-              >
-                Get Started Free
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-            <p className="text-xs uppercase tracking-wider text-gray-400 mt-6">
-              Data sources: NIH RePORTER · ClinicalTrials.gov · USPTO · PubMed
-            </p>
-          </div>
-        </section>
-
-        {/* Pricing card — matches the home page §5 card so the
-            conversion language is consistent across surfaces. */}
-        <section className="py-12 px-6 bg-white border-y border-gray-100">
-          <div className="max-w-xl mx-auto">
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
-              <div className="text-center mb-6">
-                <div className="text-4xl font-semibold text-gray-900">$199</div>
-                <div className="text-gray-500 text-sm mt-1">per analysis</div>
-              </div>
-              <ul className="space-y-3 text-sm text-gray-700 mb-6">
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Complete intelligence report (PDF + web)
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Full access to every linked project, trial, patent, publication
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  3 months of in-platform exploration from generation
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  One free refresh within 12 months
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Not what you expected? Refine and regenerate, free.
-                </li>
-              </ul>
-              <button
-                type="button"
-                onClick={() =>
-                  setSignUpOpen({
-                    title: 'Create a free account to continue',
-                    description:
-                      'A free account is required so the report ties to your login and you can drill into every linked record during the 3-month window. Signing up takes a few seconds.',
-                  })
-                }
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
-              >
-                Buy a Report
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <p className="text-center text-xs text-gray-500 mt-4">
-                Need 5+ reports?{' '}
-                <Link href="/contact" className="text-[#E07A5F] hover:text-[#C96A4F] underline">
-                  Talk to us about volume.
-                </Link>
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Free account positioning — same §6 framing as home. Keeps
-            the soft path open for visitors not ready to buy. */}
-        <section className="py-16 px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-3">
-              Not ready to commit? Browse the data first.
-            </h2>
-            <p className="text-gray-600 mb-6">
-              A free account lets you search every project, trial, patent, and
-              publication in our database. Verify your topic has signal before
-              you buy the report.
-            </p>
-            <button
-              type="button"
-              onClick={() => setSignUpOpen({})}
-              className="inline-flex items-center gap-2 text-[#E07A5F] hover:text-[#C96A4F] font-medium"
-            >
-              Create a Free Account
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </section>
-      </main>
-
-      <footer className="border-t border-gray-100 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm text-gray-400">
-          <p>Data from NIH RePORTER, ClinicalTrials.gov, USPTO &amp; PubMed</p>
-          <div className="flex items-center gap-6">
-            <a href="mailto:hello@granted.bio" className="hover:text-gray-600 transition-colors">
-              Contact
-            </a>
-            <Link href="/privacy" className="hover:text-gray-600 transition-colors">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-gray-600 transition-colors">
-              Terms
-            </Link>
-          </div>
-        </div>
-      </footer>
-
-      <SignUpModal
-        open={signUpOpen !== null}
-        onClose={() => setSignUpOpen(null)}
-        redirect="/reports"
-        title={signUpOpen?.title}
-        description={signUpOpen?.description}
-      />
-    </div>
-  )
-}
-
-// Dashboard for authenticated users
 function ReportsDashboard() {
-  // Inbound query params from in-platform CTAs (e.g., the /chat inline
-  // "Generate the intelligence report" prompt). Auto-opens the dialog
-  // with the topic preloaded when both ?topic=... and ?generate=1 are
-  // present.
-  const searchParams = useSearchParams()
-  const inboundTopic = searchParams.get('topic')?.trim() || null
-  const shouldAutoGenerate = searchParams.get('generate') === '1'
-
   const [reports, setReports] = useState<Report[]>([])
   const [loading, setLoading] = useState(true)
   const [deletingId, setDeletingId] = useState<string | null>(null)
-  const [showGenerateDialog, setShowGenerateDialog] = useState(
-    Boolean(shouldAutoGenerate && inboundTopic)
-  )
-  const [presetTopic, setPresetTopic] = useState<string | null>(
-    shouldAutoGenerate ? inboundTopic : null
-  )
 
-  const { user, isAdmin, profile, refetchProfile } = useAuth()
+  const { user, profile } = useAuth()
 
-  // Active beta = beta tier with non-expired window
+  // Active beta = beta tier with non-expired window. Retained here
+  // purely for the progress banner; the "start analysis" action itself
+  // lives on /analyze now.
   const isActiveBeta =
     profile?.tier === 'beta' &&
     !!profile.betaExpiresAt &&
@@ -236,17 +63,10 @@ function ReportsDashboard() {
       ))
     : null
 
-  // Associates get expanded search but NOT free report generation —
-  // they pay like regular users. Only admins and active beta users
-  // (within the cap) bypass payment. See the matching check at
-  // /api/reports for the server-side enforcement.
-  const canBypassPayment = isAdmin || (isActiveBeta && !betaCapReached)
-
   useEffect(() => {
     fetchReports()
   }, [])
 
-  // Poll for generating reports
   useEffect(() => {
     const generatingReports = reports.filter((r) => r.status === 'generating')
     if (generatingReports.length === 0) return
@@ -287,21 +107,10 @@ function ReportsDashboard() {
     }
   }
 
-  const handleReportGenerated = () => {
-    setShowGenerateDialog(false)
-    fetchReports()
-    // Refresh the global profile so the beta progress banner ticks up
-    // (reportsGenerated comes from useAuth and is computed at fetch time).
-    refetchProfile()
-  }
-
   // Name capture gate. New users who arrive here via the
   // GenerateReportCTA modal flow have authenticated but haven't been
   // through the /chat welcome screen, so their profile.firstName is
-  // still null. Block the dashboard until we've captured a name —
-  // otherwise receipts, future emails, and any later personalization
-  // will all be nameless. needsName mirrors the /chat check: user is
-  // present, profile loaded, but firstName is missing.
+  // still null. Block the dashboard until we've captured a name.
   const needsName = !!user && profile !== null && !profile.firstName
   if (needsName) {
     return (
@@ -327,13 +136,13 @@ function ReportsDashboard() {
                 Beta limit reached
               </span>
             ) : (
-              <button
-                onClick={() => setShowGenerateDialog(true)}
+              <Link
+                href="/analyze"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[#E07A5F] hover:bg-[#FDF2EF] rounded-lg transition-colors text-sm font-medium"
               >
                 <Plus className="w-4 h-4" strokeWidth={1.5} />
                 New Analysis
-              </button>
+              </Link>
             )}
           </div>
 
@@ -379,18 +188,18 @@ function ReportsDashboard() {
               <div className="w-16 h-16 rounded-2xl bg-amber-50 flex items-center justify-center mx-auto mb-4">
                 <FileText className="w-8 h-8 text-amber-600" />
               </div>
-              <h3 className="font-medium text-gray-900 mb-2">No reports yet</h3>
+              <h3 className="font-medium text-gray-900 mb-2">No analyses yet</h3>
               <p className="text-gray-500 text-sm mb-6 max-w-sm mx-auto">
-                Generate your first intelligence report to get comprehensive
-                analysis on any life science topic.
+                Generate your first intelligence analysis to get comprehensive
+                coverage on any life science topic.
               </p>
-              <button
-                onClick={() => setShowGenerateDialog(true)}
+              <Link
+                href="/analyze"
                 className="inline-flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors text-sm"
               >
-                {canBypassPayment ? 'Generate Analysis' : 'Generate Analysis - $199'}
-                <ArrowRight className="w-4 h-4" />
-              </button>
+                Start an Analysis
+                <Plus className="w-4 h-4" />
+              </Link>
             </div>
           ) : (
             <div className="space-y-3">
@@ -470,19 +279,6 @@ function ReportsDashboard() {
               ))}
             </div>
           )}
-
-          {showGenerateDialog && (
-            <GenerateReportDialog
-              onClose={() => {
-                setShowGenerateDialog(false)
-                // Clear the preset so reopening via "Generate New Report"
-                // doesn't re-inject a stale topic from the URL.
-                setPresetTopic(null)
-              }}
-              onGenerated={handleReportGenerated}
-              initialTopic={presetTopic ?? undefined}
-            />
-          )}
         </div>
       </div>
     </AppLayout>
@@ -534,15 +330,33 @@ function StatusBadge({ status, progressStage }: { status: Report['status']; prog
   )
 }
 
-// Main component that decides which view to show.
-// Uses AuthContext as the single source of truth — previously the page
-// did its own /api/reports fetch and treated ANY error (including
-// transient network blips during a Vercel redeploy) as logged-out,
-// which would flip an authenticated visitor to the marketing landing.
+// Main entrypoint. Logged-out visitors and any inbound with the legacy
+// ?topic=&generate=1 params get forwarded to /analyze, which owns the
+// pitch + generate flow. AuthContext is the single source of truth for
+// auth state so a transient /api blip doesn't misclassify.
 export default function ReportsPage() {
   const { user, isLoading } = useAuth()
+  const router = useRouter()
+  const searchParams = useSearchParams()
 
-  if (isLoading) {
+  // Forward the legacy in-platform CTA params (?topic=X&generate=1)
+  // to /analyze. Older /chat prompts and any bookmarks still hit
+  // /reports with these params — preserve the behavior by redirecting.
+  useEffect(() => {
+    if (isLoading) return
+    const topic = searchParams.get('topic')?.trim()
+    const gen = searchParams.get('generate')
+    if (topic && gen === '1') {
+      const qs = new URLSearchParams({ topic, generate: '1' })
+      router.replace(`/analyze?${qs.toString()}`)
+      return
+    }
+    if (!user) {
+      router.replace('/analyze')
+    }
+  }, [isLoading, user, searchParams, router])
+
+  if (isLoading || !user) {
     return (
       <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
@@ -550,5 +364,5 @@ export default function ReportsPage() {
     )
   }
 
-  return user ? <ReportsDashboard /> : <ReportsLanding />
+  return <ReportsDashboard />
 }

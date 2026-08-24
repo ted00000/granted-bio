@@ -80,8 +80,8 @@ export function MarketingNav() {
             Samples
           </Link>
           <Link
-            href="/reports"
-            className={linkClass('/reports', 'flex items-center gap-2')}
+            href="/analyze"
+            className={linkClass('/analyze', 'flex items-center gap-2')}
           >
             <FileText className="w-4 h-4" strokeWidth={1.5} />
             <span>Analyses</span>

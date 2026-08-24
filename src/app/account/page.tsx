@@ -310,7 +310,7 @@ export default function AccountPage() {
                 </button>
               ) : (
                 <Link
-                  href="/reports"
+                  href="/analyze"
                   className="flex items-center gap-2 px-4 py-2 bg-[#E07A5F] text-white text-sm font-medium rounded-lg hover:bg-[#C96A4F] transition-colors"
                 >
                   Generate a Report
@@ -408,7 +408,7 @@ export default function AccountPage() {
                     <p className="text-sm text-amber-600 mt-3">
                       Running low on searches.{' '}
                       <Link
-                        href="/reports"
+                        href="/analyze"
                         className="font-medium underline hover:no-underline"
                       >
                         Generate a report instead — $199
@@ -439,7 +439,7 @@ export default function AccountPage() {
                 </div>
               </div>
               <Link
-                href="/reports"
+                href="/analyze"
                 className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
               >
                 Generate Report

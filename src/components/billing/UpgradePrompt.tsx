@@ -176,7 +176,7 @@ export function UpgradePrompt({
 
               <div className="flex flex-col gap-3">
                 <Link
-                  href="/reports"
+                  href="/analyze"
                   onClick={onClose}
                   className="w-full py-3 px-4 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors flex items-center justify-center gap-2"
                 >

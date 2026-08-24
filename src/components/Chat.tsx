@@ -2534,7 +2534,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                             Generate the intelligence report — <span className="font-semibold text-white">$199</span>, in minutes.
                           </p>
                           <Link
-                            href={`/reports?topic=${encodeURIComponent(userQuery)}&generate=1`}
+                            href={`/analyze?topic=${encodeURIComponent(userQuery)}&generate=1`}
                             className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E07A5F] hover:bg-[#C96A4F] text-white text-xs font-medium rounded-md transition-colors"
                           >
                             Generate Report

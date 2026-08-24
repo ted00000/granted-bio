@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Users, Settings, Shield, LogIn, RefreshCw } from 'lucide-react'
+import { Search, Activity, Menu, X, LogOut, FlaskConical, FileText, Users, Settings, Shield, LogIn, RefreshCw, Sparkles } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { useAuth } from '@/contexts/AuthContext'
 import { getDisplayedSearchLimit } from '@/lib/stripe/config'
@@ -123,30 +123,29 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
             </span>
           </button>
 
-          {/* Reports */}
+          {/* Analyze — verb, create surface. Split from /reports on
+              2026-08-23 so nav semantics stay clean: verbs (Search,
+              Analyze) at the top, nouns (My Projects, My Analyses,
+              …) grouped under the divider. */}
           <Link
-            href="/reports"
+            href="/analyze"
             onClick={() => setIsOpen(false)}
             className={`
               w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left mb-1
               transition-all duration-150
-              ${pathname === '/reports' || pathname.startsWith('/reports/')
+              ${pathname === '/analyze' || pathname?.startsWith('/analyze')
                 ? 'bg-gray-50 text-gray-900'
                 : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
               }
             `}
           >
-            <FileText
-              className={`w-5 h-5 flex-shrink-0 ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-[#E07A5F]' : 'text-gray-400'}`}
-              strokeWidth={pathname === '/reports' || pathname.startsWith('/reports/') ? 2 : 1.5}
+            <Sparkles
+              className={`w-5 h-5 flex-shrink-0 ${pathname === '/analyze' || pathname?.startsWith('/analyze') ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+              strokeWidth={pathname === '/analyze' || pathname?.startsWith('/analyze') ? 2 : 1.5}
             />
-            <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
-                <span className={`text-sm font-medium ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-gray-900' : ''}`}>
-                  Analyze
-                </span>
-              </div>
-            </div>
+            <span className={`text-sm font-medium ${pathname === '/analyze' || pathname?.startsWith('/analyze') ? 'text-gray-900' : ''}`}>
+              Analyze
+            </span>
           </Link>
 
           {/* Saved-work nav — gated on `user`. These pages require a
@@ -161,6 +160,35 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
               <div className="py-2">
                 <div className="border-t border-gray-100" />
               </div>
+
+              {/* My Analyses — noun, list of prior analyses. Sits at
+                  the top of the saved-work group as the direct
+                  counterpart to the Analyze verb above. */}
+              <Link
+                href="/reports"
+                onClick={() => setIsOpen(false)}
+                className={`
+                  w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left
+                  transition-all duration-150
+                  ${pathname === '/reports' || pathname.startsWith('/reports/')
+                    ? 'bg-gray-50 text-gray-900'
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                  }
+                `}
+              >
+                <FileText
+                  className={`w-5 h-5 flex-shrink-0 ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-[#E07A5F]' : 'text-gray-400'}`}
+                  strokeWidth={pathname === '/reports' || pathname.startsWith('/reports/') ? 2 : 1.5}
+                />
+                <div className="min-w-0">
+                  <div className={`text-sm font-medium ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-gray-900' : ''}`}>
+                    My Analyses
+                  </div>
+                  <div className="text-xs text-gray-400 truncate">
+                    Prior reports
+                  </div>
+                </div>
+              </Link>
 
               {/* My Projects Link */}
               <Link

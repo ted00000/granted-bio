@@ -2,11 +2,10 @@
 // like /sample and /pricing where the visitor has already seen the
 // value pitch and the next meaningful step is either:
 //
-// - Logged in: jump straight to /reports dashboard so they can name
-//   a topic and pay.
-// - Logged out: open the sign-in modal here, skipping the /reports
-//   marketing landing (which is a duplicate pitch for someone who
-//   just clicked a deliberate CTA).
+// - Logged in: jump straight to the /analyze create surface so they
+//   can name a topic and pay.
+// - Logged out: open the sign-in modal here; after auth they land on
+//   /analyze rather than the (now list-only) /reports page.
 //
 // The caller styles the button via className + children so each
 // surface can keep its existing visual language; this component only
@@ -21,7 +20,7 @@ import { SignUpModal } from '@/components/SignUpModal'
 
 interface GenerateReportCTAProps {
   /** Where to land the visitor after they sign in (or right away if
-   *  already signed in). Defaults to /reports. */
+   *  already signed in). Defaults to /analyze. */
   redirectTo?: string
   /** Modal title for the logged-out path. */
   modalTitle?: string
@@ -32,7 +31,7 @@ interface GenerateReportCTAProps {
 }
 
 export function GenerateReportCTA({
-  redirectTo = '/reports',
+  redirectTo = '/analyze',
   modalTitle = 'Create a free account to generate',
   modalDescription = 'A free account is required so the report ties to your login and you can drill into every linked record during the 3-month window. Signing up takes a few seconds.',
   className,
@@ -45,9 +44,9 @@ export function GenerateReportCTA({
   // Gate the "logged-in" branch on BOTH user and profile being present.
   // A ghost session (valid JWT but the user_profiles row was cascade-
   // deleted) has user=truthy + profile=null and would otherwise route
-  // to /reports, where every authed action then fails. With profile
-  // required, the ghost case correctly falls through to the modal —
-  // and the AuthContext's ghost-cleanup will catch up on its own.
+  // straight to /analyze, where every authed action then fails. With
+  // profile required, the ghost case correctly falls through to the
+  // modal — and the AuthContext's ghost-cleanup will catch up on its own.
   const onClick = () => {
     if (isLoading) return
     if (user && profile) {
