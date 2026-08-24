@@ -45,7 +45,12 @@ interface ReportPortalNavProps {
   reportTitle: string
   topic: string | null
   counts: SectionCounts
-  /** When null, this is a public sample page — hide the "back to Reports" link. */
+  /** URL prefix for section links — `/reports/[id]` in owner view,
+   *  `/share/[token]` in share view. When absent, derived from
+   *  pathname for legacy sample-page callers. */
+  basePath?: string
+  /** When null, this is a public sample page or share view — hide
+   *  the "back to Reports" link. */
   backHref?: string | null
 }
 
@@ -61,13 +66,18 @@ export function ReportPortalNav({
   reportTitle,
   topic,
   counts,
+  basePath,
   backHref = '/reports',
 }: ReportPortalNavProps) {
   const pathname = usePathname()
-  const base = pathname.startsWith('/sample/')
-    ? // Anchor sample routes to their own base so all nav links stay under /sample/[slug]
-      pathname.split('/').slice(0, 3).join('/')
-    : `/reports/${reportId}`
+  // Prefer the explicit basePath (set by the report layout) so share
+  // views correctly prefix every section link with /share/[token].
+  // Fall back to path-derived defaults for the sample pages which
+  // don't pass basePath through.
+  const base = basePath
+    ?? (pathname.startsWith('/sample/')
+      ? pathname.split('/').slice(0, 3).join('/')
+      : `/reports/${reportId}`)
 
   // Section groups. Order reflects reading intent: the dashboard is
   // the "what's happening + what should I do" landing pad; Analysis

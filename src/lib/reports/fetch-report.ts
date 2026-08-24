@@ -10,9 +10,17 @@
 // small and declarative.
 
 import { cache } from 'react'
+import { headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { supabaseAdmin } from '@/lib/supabase'
+import {
+  findValidShareByToken,
+  recordShareView,
+  SHARE_TOKEN_HEADER,
+  SHARE_REPORT_ID_HEADER,
+  type AnalysisShareRow,
+} from './share-tokens'
 
 export interface ReportRow {
   id: string
@@ -49,10 +57,29 @@ export interface ReportRow {
  * user (RLS handles both cases at the DB layer — this just wraps it
  * in Next.js navigation semantics).
  *
+ * When the request carries a middleware-validated share-token header
+ * (a /share/[token] URL rewritten to /reports/[id]/…), we skip auth
+ * entirely and fetch via the admin client. Middleware only sets that
+ * header after validating token + expiry + revocation, so trusting
+ * it here is safe as long as no other code path can spoof it — the
+ * request-header set in `NextResponse.rewrite({ request: { headers }})`
+ * is only observable to server components, not to client requests.
+ *
  * Wrapped in React `cache` so multiple components in the same request
  * (layout + page + nested server components) share one DB round-trip.
  */
 export const getReport = cache(async (id: string): Promise<ReportRow | null> => {
+  const shareCtx = await getShareContextFromHeaders()
+
+  // Share-mode: middleware already validated the token; use admin
+  // client so anonymous recipients can read the row without RLS.
+  if (shareCtx && shareCtx.report_id === id) {
+    // Fire-and-forget view-count bump. Fails silently — a broken
+    // view counter shouldn't 500 the recipient's page load.
+    void recordShareView(shareCtx.id)
+    return getReportAsAdmin(id)
+  }
+
   const supabase = await createServerSupabaseClient()
   const {
     data: { user },
@@ -85,4 +112,25 @@ export const getReportAsAdmin = cache(async (id: string): Promise<ReportRow | nu
     .single()
   if (error || !data) return null
   return data as ReportRow
+})
+
+/**
+ * Read the middleware-set share-token headers off the current
+ * request. Returns null when the caller isn't inside a /share/[token]
+ * rewrite (the common case), which lets components fall back to
+ * owner-view behavior without an explicit branch.
+ *
+ * Also re-validates the token against the DB — the middleware already
+ * did so, but re-checking here is cheap (indexed lookup on token) and
+ * closes the tiny window where a token was valid at middleware time
+ * and revoked before the page rendered.
+ */
+export const getShareContextFromHeaders = cache(async (): Promise<AnalysisShareRow | null> => {
+  const h = await headers()
+  const token = h.get(SHARE_TOKEN_HEADER)
+  const reportId = h.get(SHARE_REPORT_ID_HEADER)
+  if (!token || !reportId) return null
+  const share = await findValidShareByToken(token)
+  if (!share || share.report_id !== reportId) return null
+  return share
 })

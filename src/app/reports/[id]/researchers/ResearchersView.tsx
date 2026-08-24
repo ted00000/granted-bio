@@ -1,6 +1,7 @@
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
 import { InternalLink } from '../EntityLink'
+import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
 
 interface Researcher {
   pi_name: string
@@ -34,9 +35,13 @@ function displayName(raw: string): string {
   return swapped.replace(/\s+/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase())
 }
 
-export function ResearchersView({ reportId, researchers, totalPIs }: ResearchersViewProps) {
+export async function ResearchersView({ reportId, researchers, totalPIs }: ResearchersViewProps) {
   const shown = researchers.length
   const isTruncated = totalPIs > shown
+  const share = await getShareContextFromHeaders()
+  const basePath = share && share.report_id === reportId
+    ? `/share/${share.token}`
+    : `/reports/${reportId}`
 
   const columns: Column<Researcher>[] = [
     {
@@ -57,7 +62,7 @@ export function ResearchersView({ reportId, researchers, totalPIs }: Researchers
         if (!r.org) return <span className="text-gray-400">—</span>
         return (
           <InternalLink
-            href={`/reports/${reportId}/organizations/${encodeURIComponent(r.org)}`}
+            href={`${basePath}/organizations/${encodeURIComponent(r.org)}`}
             className="text-gray-700 leading-snug block"
           >
             {r.org}

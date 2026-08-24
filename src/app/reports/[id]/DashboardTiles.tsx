@@ -12,6 +12,7 @@
 
 import { FlaskConical, Activity, Award, BookOpen, Building2, Users } from 'lucide-react'
 import Link from 'next/link'
+import { useReportView } from './ReportViewContext'
 
 interface FundingByYear {
   year: number
@@ -65,7 +66,6 @@ function topPhase(byPhase?: Record<string, number>): string | null {
 }
 
 export function DashboardTiles({
-  reportId,
   projectCount,
   fundingTotal,
   fundingByYear,
@@ -76,6 +76,11 @@ export function DashboardTiles({
   organizationsCount,
   researchersCount,
 }: DashboardTilesProps) {
+  // reportId prop is kept in the interface for callsite compatibility
+  // but the actual URL prefix now comes from context so share-view
+  // tile clicks stay under /share/[token] instead of leaking back to
+  // /reports/[id] (which the recipient can't access).
+  const { basePath } = useReportView()
   const yoy = computeYoYDelta(fundingByYear)
   const topPhaseLabel = topPhase(trialsByPhase)
 
@@ -88,42 +93,42 @@ export function DashboardTiles({
   }> = [
     {
       label: 'Projects',
-      href: `/reports/${reportId}/projects`,
+      href: `${basePath}/projects`,
       primary: projectCount.toLocaleString(),
       secondary: fundingTotal > 0 ? `${formatMoney(fundingTotal)} NIH funding` : null,
       icon: FlaskConical,
     },
     {
       label: 'Clinical Trials',
-      href: `/reports/${reportId}/trials`,
+      href: `${basePath}/trials`,
       primary: trialsCount.toLocaleString(),
       secondary: topPhaseLabel,
       icon: Activity,
     },
     {
       label: 'Patents',
-      href: `/reports/${reportId}/patents`,
+      href: `${basePath}/patents`,
       primary: patentsCount.toLocaleString(),
       secondary: patentsCount === 0 ? 'none linked in sample' : null,
       icon: Award,
     },
     {
       label: 'Publications',
-      href: `/reports/${reportId}/publications`,
+      href: `${basePath}/publications`,
       primary: publicationsCount.toLocaleString(),
       secondary: null,
       icon: BookOpen,
     },
     {
       label: 'Organizations',
-      href: `/reports/${reportId}/organizations`,
+      href: `${basePath}/organizations`,
       primary: organizationsCount.toLocaleString(),
       secondary: null,
       icon: Building2,
     },
     {
       label: 'Researchers',
-      href: `/reports/${reportId}/researchers`,
+      href: `${basePath}/researchers`,
       primary: researchersCount.toLocaleString(),
       secondary: null,
       icon: Users,

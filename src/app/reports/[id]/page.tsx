@@ -3,13 +3,15 @@
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw, Sparkles, X, ArrowRight } from 'lucide-react'
+import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw, Sparkles, X, ArrowRight, Share2 } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { Logo } from '@/components/Logo'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { pickSections, extractScopeWarning, DASHBOARD_SECTIONS, extractSurprisingHeadlines } from './section-utils'
 import { DashboardTiles } from './DashboardTiles'
 import { SectionLabel } from './SectionLabel'
+import { ShareAnalysisDialog } from './ShareAnalysisDialog'
+import { useReportView } from './ReportViewContext'
 import { jsPDF } from 'jspdf'
 import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, Header, Footer, AlignmentType } from 'docx'
 import { saveAs } from 'file-saver'
@@ -91,9 +93,11 @@ export default function ReportDetailPage({
 }) {
   const { id } = use(params)
   const router = useRouter()
+  const { basePath, isShared } = useReportView()
   const [report, setReport] = useState<Report | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showShareDialog, setShowShareDialog] = useState(false)
   const [refreshAvailable, setRefreshAvailable] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
   const [refreshError, setRefreshError] = useState<string | null>(null)
@@ -1724,8 +1728,17 @@ export default function ReportDetailPage({
                 </div>
               </div>
             </div>
-            {report.status === 'complete' && report.markdown_content && (
+            {report.status === 'complete' && report.markdown_content && !isShared && (
               <div className="flex items-center gap-3 text-xs">
+                <button
+                  onClick={() => setShowShareDialog(true)}
+                  title="Share this analysis with a colleague — no login required for them to view."
+                  className="flex items-center gap-1.5 text-gray-500 hover:text-[#E07A5F] transition-colors"
+                >
+                  <Share2 className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  Share
+                </button>
+                <span className="text-gray-300">|</span>
                 {retryAvailable && (
                   <>
                     <button
@@ -1789,8 +1802,9 @@ export default function ReportDetailPage({
 
         {/* Smart timing nudge: report is >60 days old and the included
             refresh is still available. NIH RePORTER updates monthly so
-            60+ days is virtually guaranteed to have new data. */}
-        {showRefreshNudge && (
+            60+ days is virtually guaranteed to have new data.
+            Owner-only — recipients can't refresh someone else's report. */}
+        {showRefreshNudge && !isShared && (
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 flex items-start gap-3">
             <RefreshCw className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" strokeWidth={1.5} />
             <div className="flex-1">
@@ -1919,7 +1933,7 @@ export default function ReportDetailPage({
 
               {surprisingHeadlines.length > 0 && (
                 <Link
-                  href={`/reports/${report.id}/surprising`}
+                  href={`${basePath}/surprising`}
                   className="group block bg-white rounded-lg border border-gray-200 hover:border-[#E07A5F] hover:shadow-sm transition-all px-6 py-5 mb-6"
                 >
                   <div className="flex items-center justify-between mb-3">
@@ -2228,6 +2242,14 @@ export default function ReportDetailPage({
             </div>
           </div>
         </div>
+      )}
+
+      {showShareDialog && report && (
+        <ShareAnalysisDialog
+          reportId={report.id}
+          reportTopic={report.topic}
+          onClose={() => setShowShareDialog(false)}
+        />
       )}
     </div>
   )

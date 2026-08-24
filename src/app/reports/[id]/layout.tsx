@@ -7,10 +7,20 @@
 // mirroring how portals like Notion / Linear treat "inside a document"
 // vs "workspace nav." A "back to All analyses" link in the report
 // sidebar handles global escape.
+//
+// Also serves the share-view surface: when middleware rewrites
+// /share/[token] → /reports/[id]/…, `getShareContextFromHeaders`
+// returns a valid share row. In that mode we render the same tree
+// but with an attribution bar on top, links prefixed with
+// /share/[token], and owner-only affordances hidden. The
+// ReportViewProvider carries the mode down to every client component.
 
 import { notFound } from 'next/navigation'
-import { getReport } from '@/lib/reports/fetch-report'
+import { supabaseAdmin } from '@/lib/supabase'
+import { getReport, getShareContextFromHeaders } from '@/lib/reports/fetch-report'
 import { ReportPortalNav, type SectionCounts } from './ReportPortalNav'
+import { ReportViewProvider, type ReportViewCtx } from './ReportViewContext'
+import { ShareAttributionBar } from './ShareAttributionBar'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -24,6 +34,9 @@ export default async function ReportPortalLayout({
   const { id } = await params
   const report = await getReport(id)
   if (!report) notFound()
+
+  const share = await getShareContextFromHeaders()
+  const isShared = share !== null && share.report_id === id
 
   // Sidebar counts must reflect the FULL analyzed sample, not the
   // truncated top-N slices stored in some columns. Storage layout:
@@ -51,18 +64,59 @@ export default async function ReportPortalLayout({
     researchers: fs.piCount ?? (report.top_researchers ?? []).length,
   }
 
+  const basePath = isShared ? `/share/${share!.token}` : `/reports/${report.id}`
+  const sharedByName = isShared ? await lookupOwnerName(share!.owner_user_id) : null
+  const backHref = isShared ? null : '/reports'
+
+  const viewCtx: ReportViewCtx = {
+    reportId: report.id,
+    basePath,
+    isShared,
+    sharedByName,
+  }
+
   return (
-    <div className="fixed inset-0 flex bg-[#FAFAF9] overflow-hidden">
-      <ReportPortalNav
-        reportId={report.id}
-        reportTitle={report.title}
-        topic={report.topic}
-        counts={counts}
-        backHref="/reports"
-      />
-      <main className="flex-1 min-w-0 overflow-y-auto">
-        {children}
-      </main>
-    </div>
+    <ReportViewProvider value={viewCtx}>
+      <div className="fixed inset-0 flex flex-col bg-[#FAFAF9] overflow-hidden">
+        {isShared && (
+          <ShareAttributionBar
+            senderName={sharedByName ?? 'A colleague'}
+            reportTopic={report.topic}
+          />
+        )}
+        <div className="flex-1 min-h-0 flex overflow-hidden">
+          <ReportPortalNav
+            reportId={report.id}
+            reportTitle={report.title}
+            topic={report.topic}
+            counts={counts}
+            basePath={basePath}
+            backHref={backHref}
+          />
+          <main className="flex-1 min-w-0 overflow-y-auto">
+            {children}
+          </main>
+        </div>
+      </div>
+    </ReportViewProvider>
   )
+}
+
+/**
+ * Look up the sender's display name for the attribution bar. Kept
+ * inline in the layout because it's the only server-side callsite;
+ * duplicates the helper in the shares POST route intentionally (that
+ * one is in an API context, this one runs during page render).
+ */
+async function lookupOwnerName(ownerUserId: string): Promise<string> {
+  const { data } = await supabaseAdmin
+    .from('user_profiles')
+    .select('first_name, last_name')
+    .eq('id', ownerUserId)
+    .maybeSingle()
+  const first = (data?.first_name as string | null | undefined)?.trim()
+  const last = (data?.last_name as string | null | undefined)?.trim()
+  if (first && last) return `${first} ${last}`
+  if (first) return first
+  return 'A colleague'
 }

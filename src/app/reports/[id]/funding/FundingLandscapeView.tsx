@@ -16,6 +16,7 @@ import { SectionLabel } from '../SectionLabel'
 import { InternalLink } from '../EntityLink'
 import { FundingByYearChart, CategoryDistributionChart } from '../charts'
 import { DollarSign, Building2, Users, FlaskConical } from 'lucide-react'
+import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
 
 interface FundingByYear {
   year: number
@@ -76,7 +77,14 @@ function computeYoY(byYear: FundingByYear[]): string | null {
   return `${sign}${delta.toFixed(0)}% FY${String(curr.year).slice(-2)}`
 }
 
-export function FundingLandscapeView({ reportId, fundingStats, narrative }: FundingLandscapeViewProps) {
+export async function FundingLandscapeView({ reportId, fundingStats, narrative }: FundingLandscapeViewProps) {
+  // Prefix internal drill-in links with /share/[token] when this
+  // Analysis is being rendered under a share URL so client-side nav
+  // stays inside the recipient's authorized surface.
+  const share = await getShareContextFromHeaders()
+  const basePath = share && share.report_id === reportId
+    ? `/share/${share.token}`
+    : `/reports/${reportId}`
   if (!fundingStats) {
     return (
       <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
@@ -110,19 +118,19 @@ export function FundingLandscapeView({ reportId, fundingStats, narrative }: Fund
       icon: FlaskConical,
       label: 'Projects',
       primary: fundingStats.projectCount.toLocaleString(),
-      href: `/reports/${reportId}/projects`,
+      href: `${basePath}/projects`,
     },
     {
       icon: Building2,
       label: 'Organizations',
       primary: fundingStats.orgCount.toLocaleString(),
-      href: `/reports/${reportId}/organizations`,
+      href: `${basePath}/organizations`,
     },
     {
       icon: Users,
       label: 'Principal Investigators',
       primary: fundingStats.piCount.toLocaleString(),
-      href: `/reports/${reportId}/researchers`,
+      href: `${basePath}/researchers`,
     },
   ]
 
@@ -256,7 +264,7 @@ export function FundingLandscapeView({ reportId, fundingStats, narrative }: Fund
                 <tr key={row.org} className="border-b border-gray-100 last:border-b-0">
                   <td className="py-2 pr-2 text-[14px]">
                     <InternalLink
-                      href={`/reports/${reportId}/organizations/${encodeURIComponent(row.org)}`}
+                      href={`${basePath}/organizations/${encodeURIComponent(row.org)}`}
                       className="text-gray-900"
                     >
                       {row.org}

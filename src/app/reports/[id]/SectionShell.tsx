@@ -14,6 +14,7 @@ import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { extractScopeWarning } from './section-utils'
+import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
 
 interface SectionShellProps {
   reportId: string
@@ -29,7 +30,7 @@ interface SectionShellProps {
   children: React.ReactNode
 }
 
-export function SectionShell({
+export async function SectionShell({
   reportId,
   reportTopic,
   reportTitle,
@@ -39,6 +40,13 @@ export function SectionShell({
   children,
 }: SectionShellProps) {
   const scopeWarning = fullMarkdown ? extractScopeWarning(fullMarkdown) : ''
+  // Prefix the breadcrumb "back to dashboard" link with the share
+  // token when viewing in shared mode, so client-side nav from a
+  // shared section stays inside /share/[token]/….
+  const share = await getShareContextFromHeaders()
+  const basePath = share && share.report_id === reportId
+    ? `/share/${share.token}`
+    : `/reports/${reportId}`
 
   return (
     <div className="min-h-full">
@@ -46,7 +54,7 @@ export function SectionShell({
         <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-5 sm:px-6">
           <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-2">
             <Link
-              href={`/reports/${reportId}`}
+              href={basePath}
               className="hover:text-gray-700 transition-colors truncate max-w-xs"
             >
               {reportTopic || reportTitle}
