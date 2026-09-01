@@ -3,7 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FileText, AlertCircle, FileDown, Loader2, FileType, RefreshCw, Sparkles, X, ArrowRight, Share2 } from 'lucide-react'
+import { FileText, AlertCircle, FileDown, Loader2, RefreshCw, Sparkles, X, ArrowRight, Share2 } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { Logo } from '@/components/Logo'
 import { MarkdownRenderer } from './MarkdownRenderer'
@@ -13,8 +13,6 @@ import { SectionLabel } from './SectionLabel'
 import { ShareAnalysisDialog } from './ShareAnalysisDialog'
 import { useReportView } from './ReportViewContext'
 import { jsPDF } from 'jspdf'
-import { Document, Packer, Paragraph, TextRun, HeadingLevel, Table, TableRow, TableCell, WidthType, BorderStyle, Header, Footer, AlignmentType } from 'docx'
-import { saveAs } from 'file-saver'
 
 interface FundingByYear {
   year: number
@@ -274,7 +272,7 @@ export default function ReportDetailPage({
     { value: 'wrong_field', label: 'Wrong research field entirely' },
   ]
 
-  const [exporting, setExporting] = useState<'pdf' | 'docx' | null>(null)
+  const [exporting, setExporting] = useState<'pdf' | null>(null)
 
   // r54 fix: primary PDF path is server-rendered Chromium via
   // /api/reports/[id]/pdf. jsPDF stays in the file as a last-resort
@@ -1368,291 +1366,6 @@ export default function ReportDetailPage({
     }
   }
 
-  const downloadWord = async () => {
-    if (!report?.markdown_content) return
-
-    setExporting('docx')
-
-    try {
-      const filename = `${report.title.replace(/[^a-z0-9]/gi, '_')}.docx`
-      const children: (Paragraph | Table)[] = []
-
-      // Parse markdown content into Word document elements
-      const lines = report.markdown_content.split('\n')
-      let inTable = false
-      let tableRows: string[][] = []
-      let inBlockquote = false
-      let blockquoteLines: string[] = []
-
-      const flushBlockquote = () => {
-        if (blockquoteLines.length > 0) {
-          children.push(
-            new Paragraph({
-              children: [
-                new TextRun({
-                  text: blockquoteLines.join(' '),
-                  italics: true,
-                  color: '555555',
-                }),
-              ],
-              indent: { left: 720 },
-              border: {
-                left: {
-                  color: 'E07A5F',
-                  size: 24,
-                  style: BorderStyle.SINGLE,
-                  space: 10,
-                },
-              },
-              spacing: { before: 120, after: 120 },
-            })
-          )
-          blockquoteLines = []
-        }
-        inBlockquote = false
-      }
-
-      const flushTable = () => {
-        if (tableRows.length > 0) {
-          const table = new Table({
-            width: { size: 100, type: WidthType.PERCENTAGE },
-            rows: tableRows.map((row, rowIndex) =>
-              new TableRow({
-                children: row.map(
-                  (cell) =>
-                    new TableCell({
-                      children: [
-                        new Paragraph({
-                          children: [
-                            new TextRun({
-                              text: cell.trim(),
-                              bold: rowIndex === 0,
-                            }),
-                          ],
-                        }),
-                      ],
-                      shading: rowIndex === 0 ? { fill: 'F5F5F5' } : undefined,
-                    })
-                ),
-              })
-            ),
-          })
-          children.push(table)
-          children.push(new Paragraph({ text: '' })) // spacing after table
-          tableRows = []
-        }
-        inTable = false
-      }
-
-      for (const line of lines) {
-        const trimmed = line.trim()
-
-        // Handle tables
-        if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
-          flushBlockquote()
-          // Skip separator rows (|---|---|)
-          if (trimmed.match(/^\|[\s\-:|]+\|$/)) {
-            continue
-          }
-          inTable = true
-          const cells = trimmed
-            .split('|')
-            .slice(1, -1)
-            .map((c) => c.trim())
-          tableRows.push(cells)
-          continue
-        } else if (inTable) {
-          flushTable()
-        }
-
-        // Handle blockquotes
-        if (trimmed.startsWith('>')) {
-          inBlockquote = true
-          blockquoteLines.push(trimmed.slice(1).trim())
-          continue
-        } else if (inBlockquote) {
-          flushBlockquote()
-        }
-
-        // Handle headings
-        if (trimmed.startsWith('# ')) {
-          children.push(
-            new Paragraph({
-              text: trimmed.slice(2),
-              heading: HeadingLevel.HEADING_1,
-              spacing: { before: 400, after: 200 },
-            })
-          )
-        } else if (trimmed.startsWith('## ')) {
-          children.push(
-            new Paragraph({
-              text: trimmed.slice(3),
-              heading: HeadingLevel.HEADING_2,
-              spacing: { before: 300, after: 150 },
-            })
-          )
-        } else if (trimmed.startsWith('### ')) {
-          children.push(
-            new Paragraph({
-              text: trimmed.slice(4),
-              heading: HeadingLevel.HEADING_3,
-              spacing: { before: 200, after: 100 },
-            })
-          )
-        } else if (trimmed.startsWith('#### ')) {
-          children.push(
-            new Paragraph({
-              text: trimmed.slice(5),
-              heading: HeadingLevel.HEADING_4,
-              spacing: { before: 150, after: 80 },
-            })
-          )
-        } else if (trimmed.startsWith('---')) {
-          // Horizontal rule - add some spacing
-          children.push(
-            new Paragraph({
-              text: '',
-              border: {
-                bottom: {
-                  color: 'DDDDDD',
-                  size: 6,
-                  style: BorderStyle.SINGLE,
-                  space: 10,
-                },
-              },
-              spacing: { before: 200, after: 200 },
-            })
-          )
-        } else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-          // Bullet points
-          const bulletText = trimmed.slice(2)
-          // Handle bold text within bullets
-          const parts = bulletText.split(/\*\*([^*]+)\*\*/)
-          const runs: TextRun[] = []
-          parts.forEach((part, index) => {
-            if (index % 2 === 1) {
-              runs.push(new TextRun({ text: part, bold: true }))
-            } else if (part) {
-              runs.push(new TextRun({ text: part }))
-            }
-          })
-          children.push(
-            new Paragraph({
-              children: runs,
-              bullet: { level: 0 },
-              spacing: { before: 60, after: 60 },
-            })
-          )
-        } else if (trimmed === '') {
-          // Empty line
-          children.push(new Paragraph({ text: '' }))
-        } else {
-          // Regular paragraph - handle bold and links
-          const parts = trimmed.split(/\*\*([^*]+)\*\*|\[([^\]]+)\]\([^)]+\)/)
-          const runs: TextRun[] = []
-          let plainIndex = 0
-
-          // Simple approach: just handle bold for now
-          const boldParts = trimmed.split(/\*\*([^*]+)\*\*/)
-          boldParts.forEach((part, index) => {
-            if (index % 2 === 1) {
-              runs.push(new TextRun({ text: part, bold: true }))
-            } else if (part) {
-              // Remove markdown links but keep text
-              const cleanText = part.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-              runs.push(new TextRun({ text: cleanText }))
-            }
-          })
-
-          if (runs.length > 0) {
-            children.push(
-              new Paragraph({
-                children: runs,
-                spacing: { before: 60, after: 60 },
-              })
-            )
-          }
-        }
-      }
-
-      // Flush any remaining content
-      flushBlockquote()
-      flushTable()
-
-      const currentYear = new Date().getFullYear()
-      const doc = new Document({
-        sections: [
-          {
-            properties: {
-              page: {
-                margin: {
-                  top: 1440, // 1 inch in twips
-                  right: 1440,
-                  bottom: 1440,
-                  left: 1440,
-                },
-              },
-            },
-            headers: {
-              default: new Header({
-                children: [
-                  new Paragraph({
-                    children: [
-                      new TextRun({ text: 'granted', bold: true, size: 22 }),
-                      new TextRun({ text: '.bio', bold: true, size: 22, color: 'E07A5F' }),
-                    ],
-                    border: {
-                      bottom: {
-                        color: 'E5E7EB',
-                        size: 6,
-                        style: BorderStyle.SINGLE,
-                        space: 8,
-                      },
-                    },
-                    spacing: { after: 200 },
-                  }),
-                ],
-              }),
-            },
-            footers: {
-              default: new Footer({
-                children: [
-                  new Paragraph({
-                    children: [
-                      new TextRun({
-                        text: `© ${currentYear} Granted Bio. All rights reserved.`,
-                        size: 16,
-                        color: '9CA3AF',
-                      }),
-                    ],
-                    border: {
-                      top: {
-                        color: 'E5E7EB',
-                        size: 6,
-                        style: BorderStyle.SINGLE,
-                        space: 8,
-                      },
-                    },
-                    alignment: AlignmentType.CENTER,
-                  }),
-                ],
-              }),
-            },
-            children,
-          },
-        ],
-      })
-
-      const blob = await Packer.toBlob(doc)
-      saveAs(blob, filename)
-    } catch (e) {
-      console.error('Error generating Word document:', e)
-      alert('Failed to generate Word document. Please try again.')
-    } finally {
-      setExporting(null)
-    }
-  }
-
   if (loading) {
     // Renders inside the portal layout's <main>; no outer wrapper.
     return (
@@ -1781,19 +1494,6 @@ export default function ReportDetailPage({
                     <FileDown className="w-3.5 h-3.5" strokeWidth={1.5} />
                   )}
                   {exporting === 'pdf' ? 'Generating...' : 'PDF'}
-                </button>
-                <span className="text-gray-300">|</span>
-                <button
-                  onClick={downloadWord}
-                  disabled={exporting !== null}
-                  className="flex items-center gap-1.5 text-gray-500 hover:text-[#E07A5F] transition-colors disabled:opacity-50"
-                >
-                  {exporting === 'docx' ? (
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  ) : (
-                    <FileType className="w-3.5 h-3.5" strokeWidth={1.5} />
-                  )}
-                  {exporting === 'docx' ? 'Generating...' : 'Word'}
                 </button>
               </div>
             )}

@@ -115,13 +115,27 @@ export async function POST(
     // the recipient to sign in. When admins generate a PDF on
     // behalf of another user, the share is owned by that user (the
     // report's user_id), not the admin.
-    const share = await getOrCreateActiveShareForReport({
-      reportId: id,
-      ownerUserId: report.user_id as string,
-    })
-    const shareUrl = buildShareUrl(share.token)
+    //
+    // Resilient — if the share step fails for any reason (migration
+    // not yet applied, RLS misconfig, DB blip), we still ship the
+    // PDF. The print page has a fallback path that renders a
+    // /reports/[id] URL with a "sign in" note when shareUrl is
+    // absent; better to give the user a usable PDF than to fail the
+    // whole export because the back-link URL didn't mint.
+    let shareUrl: string | null = null
+    try {
+      const share = await getOrCreateActiveShareForReport({
+        reportId: id,
+        ownerUserId: report.user_id as string,
+      })
+      shareUrl = buildShareUrl(share.token)
+    } catch (e) {
+      console.error('[PDF] Share URL mint failed — proceeding without back-link:', e)
+    }
 
-    const printUrl = `${origin}/reports/${id}/print?shareUrl=${encodeURIComponent(shareUrl)}`
+    const printUrl = shareUrl
+      ? `${origin}/reports/${id}/print?shareUrl=${encodeURIComponent(shareUrl)}`
+      : `${origin}/reports/${id}/print`
 
     const generatedDate = new Date(report.created_at as string).toLocaleDateString('en-US', {
       year: 'numeric',
