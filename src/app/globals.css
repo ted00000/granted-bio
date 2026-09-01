@@ -34,3 +34,80 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* ==============================================================
+   Print styles for the report portal (2026-08-31).
+   Replaces the server-side Puppeteer PDF pipeline. Any page in
+   the report portal gains a "Print" button that fires the
+   browser's native print dialog; these rules make what's on the
+   screen render cleanly to paper (or Save-as-PDF).
+
+   Scoped to .report-portal-shell so account/chat/etc. pages
+   are unaffected — they use browser defaults.
+   ============================================================== */
+@media print {
+  html,
+  body {
+    background: white !important;
+    overflow: visible !important;
+  }
+
+  /* Unfix the report portal container so content flows across
+     printer pages instead of clipping at viewport height. */
+  .report-portal-shell {
+    position: static !important;
+    inset: auto !important;
+    display: block !important;
+    overflow: visible !important;
+    background: white !important;
+    height: auto !important;
+  }
+
+  /* Hide the report sidebar, share attribution bar, and any
+     button/link marked with print:hidden (Tailwind's
+     `print:hidden` variant). */
+  .report-portal-shell aside,
+  .report-portal-shell .print\:hidden,
+  .report-portal-shell [data-print-hide] {
+    display: none !important;
+  }
+
+  /* Section pages have a sticky header + scrollable main; both
+     need to become normal-flow for print. */
+  .report-portal-shell main {
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .report-portal-shell header {
+    position: static !important;
+    background: white !important;
+    border-color: transparent !important;
+  }
+
+  /* Keep white cards from getting split across page breaks when
+     it's cheap to avoid it. Long tables (Publications, Projects)
+     still break naturally — page-break-inside on a huge element
+     just wastes paper if it exceeds a page. */
+  .report-portal-shell section.bg-white,
+  .report-portal-shell div.bg-white.rounded-lg,
+  .report-portal-shell div.bg-white.rounded-xl {
+    page-break-inside: avoid;
+    box-shadow: none !important;
+    border-color: #e5e7eb !important;
+  }
+
+  /* Ensure the coral accent colors print — Chromium disables
+     background printing by default; user can override in the
+     print dialog, but this hint helps. */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* Letter with modest margins — matches what a browser Save-as-PDF
+     produces without user tweaking. */
+  @page {
+    size: letter;
+    margin: 0.5in 0.6in;
+  }
+}

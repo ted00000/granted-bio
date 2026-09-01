@@ -411,42 +411,6 @@ export async function listSharesForReport(params: {
 }
 
 /**
- * Return an active (non-revoked, non-expired) share for this report
- * if one exists, otherwise mint a new one with no recipient. Used
- * by the PDF exec-summary generator so every downloaded PDF carries
- * a working "view full analysis" link back to the portal without
- * requiring the owner to open the share dialog first.
- *
- * Prefer the most recent active share (that's what the owner
- * probably means when they think "the link for this report"). Never
- * creates duplicates when one already exists.
- */
-export async function getOrCreateActiveShareForReport(params: {
-  reportId: string
-  ownerUserId: string
-}): Promise<AnalysisShareRow> {
-  const { data } = await supabaseAdmin
-    .from('analysis_shares')
-    .select('*')
-    .eq('report_id', params.reportId)
-    .eq('owner_user_id', params.ownerUserId)
-    .is('revoked_at', null)
-    .gt('expires_at', new Date().toISOString())
-    .order('created_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  if (data) return data as AnalysisShareRow
-
-  return createShare({
-    reportId: params.reportId,
-    ownerUserId: params.ownerUserId,
-    recipientEmail: null,
-    senderMessage: null,
-  })
-}
-
-/**
  * Soft-revoke a share. Owner check is done at the API route layer
  * before calling; this helper just does the write.
  */
