@@ -17,10 +17,11 @@ import { MarketingNav } from '@/components/MarketingNav'
 import { GenerateReportCTA } from '@/components/GenerateReportCTA'
 import { MarkdownRenderer } from '../../reports/[id]/MarkdownRenderer'
 
-// Regenerated 2026-08-07 on the current pipeline (post-preview + linter
-// updates) so the sample stays consistent with what a new buyer would
-// receive today. Old id: 7712e7e7-10b2-45ea-b952-c4e0b2ecf72c.
-const SAMPLE_REPORT_ID = 'a4dbfb7b-2343-46a4-8763-35b1f16d8e58'
+// Regenerated 2026-09-01 on the current pipeline so the sample
+// captures recent changes (tool_use JSON, sorted top-N, dedup'd
+// pi/org counts, "Show all N" pagination toggle, Print button).
+// Prior ids: 7712e7e7 → a4dbfb7b → this.
+const SAMPLE_REPORT_ID = '0555ef1d-3cdc-4d97-b8da-a114d2721550'
 
 // Force dynamic rendering — every request pulls the current row from the
 // DB. Was ISR (revalidate = 60), but that caused a real problem: when

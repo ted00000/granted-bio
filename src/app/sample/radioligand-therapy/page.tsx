@@ -14,7 +14,10 @@ import { MarketingNav } from '@/components/MarketingNav'
 import { GenerateReportCTA } from '@/components/GenerateReportCTA'
 import { MarkdownRenderer } from '../../reports/[id]/MarkdownRenderer'
 
-const SAMPLE_REPORT_ID = '3b638569-8d3e-40c5-96a6-ca6c69c1d798'
+// Regenerated 2026-09-01 on the current pipeline (tool_use JSON,
+// sorted top-N, dedup'd pi/org counts, "Show all N" pagination,
+// Print button). Prior id: 3b638569-8d3e-40c5-96a6-ca6c69c1d798.
+const SAMPLE_REPORT_ID = '2ef956ba-8aa8-45a2-81b7-50010fe353e1'
 
 // See /sample/liquid-biopsy for the rationale on force-dynamic — same
 // reasoning applies (avoid stale CDN edge cache masking a report swap).
