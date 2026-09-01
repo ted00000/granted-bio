@@ -239,12 +239,20 @@ export function validateReportCompleteness(input: CompletenessInput): Completene
 
   // ------------------------------------------------------------------
   // Next Steps — persona-specific checklist. Must have at least 3 items.
+  //
+  // The synthesis prompt (see synthesize.ts::generateNextSteps) tells
+  // the LLM to emit plain `- Item` bullets and explicitly forbids the
+  // `[ ]` checkbox prefix — our renderer treats "[ ]" as literal text,
+  // not a checkbox, so it displays as visual noise. Prior gate regex
+  // was /^- \[ \]/gm which only counted the FORBIDDEN checkbox form;
+  // any well-behaved LLM response scored 0 and the whole synthesis
+  // retried indefinitely. Now we count any bullet with content.
   // ------------------------------------------------------------------
   {
     const s = sections.get('Next Steps')
     if (!s) failures.push({ section: 'Next Steps', reason: 'section is missing entirely' })
     else {
-      const checklistItems = (s.match(/^- \[ \]/gm) || []).length
+      const checklistItems = (s.match(/^-\s+\S/gm) || []).length
       if (checklistItems < 3) failures.push({ section: 'Next Steps', reason: `only ${checklistItems} checklist items rendered (need >=3)` })
     }
   }
