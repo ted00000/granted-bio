@@ -72,9 +72,10 @@ const generateReport = inngest.createFunction(
         )
 
         // Step 4: aggregation
-        const { fundingStats, topOrgs, topResearchers } = await step.run('phase-3-aggregation', () =>
-          runTopicReportPhase3Aggregation(reportId, agentOutputs),
-        )
+        const { fundingStats, topOrgs, topResearchers, allOrgs, allResearchers } =
+          await step.run('phase-3-aggregation', () =>
+            runTopicReportPhase3Aggregation(reportId, agentOutputs),
+          )
 
         // Step 5: synthesis (LLM-heavy - the phase that most needed
         // its own budget window). Includes lint-retry. Returns both
@@ -101,7 +102,17 @@ const generateReport = inngest.createFunction(
         // Step 6: persist. Uses filteredAgentOutputs so the DB
         // agent_outputs.trials.byPhase matches the markdown table.
         await step.run('phase-5-save', () =>
-          runTopicReportPhase5Save(reportId, persona, filteredAgentOutputs, reportData, fundingStats, topOrgs, topResearchers),
+          runTopicReportPhase5Save(
+            reportId,
+            persona,
+            filteredAgentOutputs,
+            reportData,
+            fundingStats,
+            topOrgs,
+            topResearchers,
+            allOrgs,
+            allResearchers,
+          ),
         )
       } else {
         // Portfolio flow: kept as a single step for now. Fewer LLM

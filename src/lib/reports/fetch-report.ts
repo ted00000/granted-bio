@@ -46,6 +46,12 @@ export interface ReportRow {
   publications: unknown[] | null
   top_organizations: unknown[] | null
   top_researchers: unknown[] | null
+  /** Full analyzed sample of projects (nullable — populated for
+   *  reports generated after 2026-09-01 migration; older reports
+   *  fall back to the top-20 `projects` slice for their Data page). */
+  all_projects: unknown[] | null
+  all_organizations: unknown[] | null
+  all_researchers: unknown[] | null
   curated_publications: unknown[] | null
   signals_analysis: unknown | null
   agent_outputs: unknown | null

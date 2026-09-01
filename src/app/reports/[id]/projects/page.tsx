@@ -12,12 +12,13 @@ export default async function ProjectsSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  // Curated top-N (currently top-20 by funding) — scoped intentionally.
-  // The full retrieval is available in agent_outputs.projects.items but
-  // we deliberately do NOT dump it here; the whole product value is
-  // curation. The caption clarifies "top N of M" so the reader knows
-  // the scope.
+  // Curated top-N (top-20 by funding) is the default view. The full
+  // analyzed sample lives in `all_projects` (populated for reports
+  // generated after the 2026-09-01 migration); when present, the
+  // ProjectsTable renders a "Show all N" toggle that paginates the
+  // full list. Older reports have null there and behave as before.
   const projects = (report.projects ?? []) as React.ComponentProps<typeof ProjectsView>['projects']
+  const allProjects = (report.all_projects ?? null) as React.ComponentProps<typeof ProjectsView>['allProjects']
   const fs = (report.funding_stats ?? {}) as { projectCount?: number; total?: number }
   const totalProjects = fs.projectCount ?? report.project_count ?? projects.length
   const totalFunding = fs.total ?? 0
@@ -28,12 +29,13 @@ export default async function ProjectsSectionPage({
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Projects"
-      sectionSubtitle="Top NIH-funded projects in the analyzed sample, ranked by total funding."
+      sectionSubtitle="NIH-funded projects in the analyzed sample, ranked by total funding."
       fullMarkdown={report.markdown_content}
     >
       <ProjectsView
         reportId={report.id}
         projects={projects}
+        allProjects={allProjects}
         totalProjects={totalProjects}
         totalFunding={totalFunding}
       />

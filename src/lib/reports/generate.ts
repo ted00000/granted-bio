@@ -225,17 +225,29 @@ export async function runTopicReportPhase2DataAgents(
 export async function runTopicReportPhase3Aggregation(
   reportId: string,
   agentOutputs: AllAgentOutputs,
-): Promise<{ fundingStats: FundingStats; topOrgs: OrgStats[]; topResearchers: ResearcherStats[] }> {
+): Promise<{
+  fundingStats: FundingStats
+  topOrgs: OrgStats[]
+  topResearchers: ResearcherStats[]
+  allOrgs: OrgStats[]
+  allResearchers: ResearcherStats[]
+}> {
   await updateProgressStage(reportId, 'aggregating')
   const fundingStats = calculateFundingStats(agentOutputs.projects)
-  const topOrgs = await aggregateOrganizations(
+  const allOrgs = await aggregateOrganizations(
     agentOutputs.projects,
     agentOutputs.trials,
     agentOutputs.patents,
     agentOutputs.publications,
   )
-  const topResearchers = aggregateResearchers(agentOutputs.projects)
-  return { fundingStats, topOrgs, topResearchers }
+  const allResearchers = aggregateResearchers(agentOutputs.projects)
+  // Top-N slices are still used by narrative synthesis, DashboardTiles,
+  // FundingLandscape drill-downs — kept as their own arrays so callers
+  // that expect a curated summary don't accidentally receive the full
+  // sample.
+  const topOrgs = allOrgs.slice(0, 15)
+  const topResearchers = allResearchers.slice(0, 15)
+  return { fundingStats, topOrgs, topResearchers, allOrgs, allResearchers }
 }
 
 /**
@@ -294,6 +306,8 @@ export async function runTopicReportPhase5Save(
   fundingStats: FundingStats,
   topOrgs: OrgStats[],
   topResearchers: ResearcherStats[],
+  allOrgs: OrgStats[],
+  allResearchers: ResearcherStats[],
 ): Promise<void> {
   const { error: updateError } = await supabaseAdmin
     .from('user_reports')
@@ -309,6 +323,13 @@ export async function runTopicReportPhase5Save(
       publications: reportData.publications,
       top_organizations: topOrgs,
       top_researchers: topResearchers,
+      // Full sorted lists persisted alongside the top-N so the
+      // Data pages can paginate the "show all N" view. Full
+      // projects are the entire agentOutputs.projects.items array
+      // (already the raw retrieval, not a curated slice).
+      all_projects: agentOutputs.projects.items,
+      all_organizations: allOrgs,
+      all_researchers: allResearchers,
       markdown_content: reportData.markdownContent,
       agent_outputs: {
         ...agentOutputs,
@@ -376,7 +397,8 @@ export async function executeTopicReportGeneration(
   try {
     const projectsOutput = await runTopicReportPhase1Projects(reportId, topic, injectedInterpretation)
     const agentOutputs = await runTopicReportPhase2DataAgents(reportId, topic, projectsOutput, injectedInterpretation)
-    const { fundingStats, topOrgs, topResearchers } = await runTopicReportPhase3Aggregation(reportId, agentOutputs)
+    const { fundingStats, topOrgs, topResearchers, allOrgs, allResearchers } =
+      await runTopicReportPhase3Aggregation(reportId, agentOutputs)
     const { reportData, agentOutputs: filteredAgentOutputs } = await runTopicReportPhase4Synthesis(
       reportId,
       userId,
@@ -390,7 +412,17 @@ export async function executeTopicReportGeneration(
       injectedInterpretation,
       report.createdAt,
     )
-    await runTopicReportPhase5Save(reportId, persona, filteredAgentOutputs, reportData, fundingStats, topOrgs, topResearchers)
+    await runTopicReportPhase5Save(
+      reportId,
+      persona,
+      filteredAgentOutputs,
+      reportData,
+      fundingStats,
+      topOrgs,
+      topResearchers,
+      allOrgs,
+      allResearchers,
+    )
   } catch (error) {
     await markReportFailed(reportId, userId, error)
     throw error
@@ -990,6 +1022,10 @@ async function aggregateOrganizations(
   // projects and $8.1M is a stronger topic player than UCLA with 6
   // projects and $8.8M, even though UCLA has slightly more funding
   // (r18 audit surfaced the funding-first sort as counterintuitive).
+  // Return the FULL sorted list — the caller (phase 3 aggregation)
+  // takes the .slice(0, 15) for the narrative/dashboard top-N and
+  // also persists the full array to `all_organizations` for the
+  // Organizations page's paginated "show all" view.
   return Array.from(orgByKey.values())
     .sort((a, b) => {
       const projDiff = b.projects - a.projects
@@ -998,7 +1034,6 @@ async function aggregateOrganizations(
       if (fundingDiff !== 0) return fundingDiff
       return (b.trials + b.patents) - (a.trials + a.patents)
     })
-    .slice(0, 15)
 }
 
 /**
@@ -1074,10 +1109,11 @@ function aggregateResearchers(
     }
   })
 
-  // Sort by funding
+  // Return the FULL sorted list — caller takes the .slice(0, 15) for
+  // the narrative/dashboard top-N and also persists the full array
+  // to `all_researchers` for the paginated "show all" view.
   return Array.from(piMap.values())
     .sort((a, b) => b.funding - a.funding)
-    .slice(0, 15)
 }
 
 /**

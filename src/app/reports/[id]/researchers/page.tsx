@@ -12,9 +12,16 @@ export default async function ResearchersSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
+  // Top-15 by funding is the default view. The full sorted list
+  // lives in `all_researchers` (populated for reports generated
+  // after 2026-09-01); when present the ResearchersTable renders a
+  // "Show all N" toggle with pagination.
   const researchers = (report.top_researchers ?? []) as React.ComponentProps<
     typeof ResearchersView
   >['researchers']
+  const allResearchers = (report.all_researchers ?? null) as React.ComponentProps<
+    typeof ResearchersView
+  >['allResearchers']
   const fs = (report.funding_stats ?? {}) as { piCount?: number }
   const totalPIs = fs.piCount ?? researchers.length
 
@@ -27,7 +34,12 @@ export default async function ResearchersSectionPage({
       sectionSubtitle="Principal investigators funded in this space, ranked by total NIH funding."
       fullMarkdown={report.markdown_content}
     >
-      <ResearchersView reportId={report.id} researchers={researchers} totalPIs={totalPIs} />
+      <ResearchersView
+        reportId={report.id}
+        researchers={researchers}
+        allResearchers={allResearchers}
+        totalPIs={totalPIs}
+      />
     </SectionShell>
   )
 }

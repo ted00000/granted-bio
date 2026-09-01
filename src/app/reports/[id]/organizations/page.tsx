@@ -12,9 +12,12 @@ export default async function OrganizationsSectionPage({
   const report = await getReport(id)
   if (!report) notFound()
 
-  // Curated top-N (currently top-15 by funding) — scoped intentionally.
-  // Caption clarifies "showing N of M" so the reader knows the total.
+  // Curated top-N (top-15 by activity) is the default view. The full
+  // sorted list lives in `all_organizations` (populated for reports
+  // generated after 2026-09-01); when present the OrganizationsTable
+  // renders a "Show all N" toggle with pagination.
   const orgs = (report.top_organizations ?? []) as React.ComponentProps<typeof OrganizationsView>['orgs']
+  const allOrgs = (report.all_organizations ?? null) as React.ComponentProps<typeof OrganizationsView>['allOrgs']
   const fs = (report.funding_stats ?? {}) as { orgCount?: number }
   const totalOrgs = fs.orgCount ?? orgs.length
 
@@ -27,7 +30,12 @@ export default async function OrganizationsSectionPage({
       sectionSubtitle="Institutions with the largest presence in this NIH-funded sample."
       fullMarkdown={report.markdown_content}
     >
-      <OrganizationsView reportId={report.id} orgs={orgs} totalOrgs={totalOrgs} />
+      <OrganizationsView
+        reportId={report.id}
+        orgs={orgs}
+        allOrgs={allOrgs}
+        totalOrgs={totalOrgs}
+      />
     </SectionShell>
   )
 }
