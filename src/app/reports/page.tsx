@@ -301,7 +301,7 @@ const PROGRESS_LABELS: Record<string, string> = {
   searching_projects: 'Searching projects...',
   gathering_data: 'Gathering data...',
   aggregating: 'Analyzing...',
-  synthesizing: 'Writing report...',
+  synthesizing: 'Writing analysis...',
 }
 
 function StatusBadge({ status, progressStage }: { status: Report['status']; progressStage?: Report['progress_stage'] }) {
