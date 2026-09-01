@@ -182,10 +182,10 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
                 />
                 <div className="min-w-0">
                   <div className={`text-sm font-medium ${pathname === '/reports' || pathname.startsWith('/reports/') ? 'text-gray-900' : ''}`}>
-                    My Analyses
+                    Purchased Research
                   </div>
                   <div className="text-xs text-gray-400 truncate">
-                    Prior reports
+                    My Analyses
                   </div>
                 </div>
               </Link>
