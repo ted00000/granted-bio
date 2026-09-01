@@ -15,12 +15,22 @@
 // /share/[token], and owner-only affordances hidden. The
 // ReportViewProvider carries the mode down to every client component.
 
+import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import { supabaseAdmin } from '@/lib/supabase'
 import { getReport, getShareContextFromHeaders } from '@/lib/reports/fetch-report'
 import { ReportPortalNav, type SectionCounts } from './ReportPortalNav'
 import { ReportViewProvider, type ReportViewCtx } from './ReportViewContext'
 import { ShareAttributionBar } from './ShareAttributionBar'
+
+// Header the PDF pipeline sets on its Puppeteer requests. Value is
+// checked against PDF_INTERNAL_TOKEN; when it matches we short-
+// circuit this layout so the print page renders raw HTML — no
+// sidebar, no auth check, no share-context. Without this the
+// anonymous Puppeteer request would hit getReport's auth branch
+// and get redirected to /, and Puppeteer would end up PDFing the
+// marketing homepage instead of the print route.
+const PDF_INTERNAL_HEADER = 'x-granted-pdf-token'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -32,6 +42,16 @@ export default async function ReportPortalLayout({
   params,
 }: LayoutProps) {
   const { id } = await params
+
+  // PDF pipeline bypass: skip the entire portal shell for internal
+  // Puppeteer render requests. The print/page.tsx underneath uses
+  // supabaseAdmin directly, so no auth machinery is needed here.
+  const pdfToken = (await headers()).get(PDF_INTERNAL_HEADER)
+  const expectedPdfToken = process.env.PDF_INTERNAL_TOKEN
+  if (expectedPdfToken && pdfToken === expectedPdfToken) {
+    return <>{children}</>
+  }
+
   const report = await getReport(id)
   if (!report) notFound()
 

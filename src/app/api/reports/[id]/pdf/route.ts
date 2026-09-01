@@ -145,11 +145,29 @@ export async function POST(
     })
     const reportTitle = (report.title || report.topic || 'Intelligence Report').trim()
 
+    // Internal PDF token bypasses the report layout's auth check +
+    // sidebar chrome for the Puppeteer render request. Missing env
+    // is a hard error here — better to fail loudly than silently
+    // let Puppeteer PDF the /?redirect=... marketing page again.
+    const pdfInternalToken = process.env.PDF_INTERNAL_TOKEN
+    if (!pdfInternalToken) {
+      console.error('[PDF] PDF_INTERNAL_TOKEN is not set on the server')
+      return NextResponse.json(
+        {
+          error: 'PDF service is misconfigured (missing internal token).',
+        },
+        { status: 500 },
+      )
+    }
+
     // Render Chromium → PDF bytes.
     const pdfBytes = await renderReportPdf({
       url: printUrl,
       reportTitle,
       generatedDate,
+      extraHeaders: {
+        'x-granted-pdf-token': pdfInternalToken,
+      },
     })
 
     // Upload to Storage. Use upsert so re-generation overwrites the

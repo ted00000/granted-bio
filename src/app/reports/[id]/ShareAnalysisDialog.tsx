@@ -134,9 +134,6 @@ export function ShareAnalysisDialog({
       }
       setRecipientEmail('')
       setSenderMessage('')
-      // Auto-copy the newly minted URL as a courtesy — the most
-      // common next action is pasting it somewhere anyway.
-      void copyUrl(share)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create share')
     } finally {
@@ -268,7 +265,7 @@ export function ShareAnalysisDialog({
               <div className="flex items-start gap-2 text-xs text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-2">
                 <Check className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
                 <span>
-                  Emailed <span className="font-medium">{emailNotice.recipient}</span>. Link is also copied to your clipboard.
+                  Emailed <span className="font-medium">{emailNotice.recipient}</span>.
                 </span>
               </div>
             )}

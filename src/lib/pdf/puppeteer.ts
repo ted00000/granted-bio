@@ -108,6 +108,13 @@ export interface RenderPdfOptions {
    * for large reports with many charts.
    */
   readyTimeoutMs?: number
+  /**
+   * Extra HTTP headers Puppeteer will send on every request under
+   * this page. Used by callers to pass an internal PDF token that
+   * the report route's parent layout recognizes to bypass its auth
+   * check and sidebar chrome for headless renders.
+   */
+  extraHeaders?: Record<string, string>
 }
 
 export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Array> {
@@ -118,6 +125,13 @@ export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Arra
     // Standard letter viewport so any layout that depends on window
     // measurements matches the print output.
     await page.setViewport({ width: 816, height: 1056, deviceScaleFactor: 1 })
+
+    // Extra headers (e.g., internal PDF token) so the print route's
+    // parent layout can distinguish Puppeteer render requests from
+    // anonymous public traffic and skip auth accordingly.
+    if (opts.extraHeaders && Object.keys(opts.extraHeaders).length > 0) {
+      await page.setExtraHTTPHeaders(opts.extraHeaders)
+    }
 
     // Surface browser console messages into the Vercel function log.
     // Critical for diagnosing why __printReady never fires (script
