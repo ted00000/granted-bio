@@ -57,6 +57,11 @@ export function ShareAnalysisDialog({
   const [copiedShareId, setCopiedShareId] = useState<string | null>(null)
   const [revokingId, setRevokingId] = useState<string | null>(null)
   const [justCreatedShareId, setJustCreatedShareId] = useState<string | null>(null)
+  const [emailNotice, setEmailNotice] = useState<
+    | { kind: 'sent'; recipient: string }
+    | { kind: 'failed'; recipient: string; detail: string }
+    | null
+  >(null)
 
   useEffect(() => {
     void loadShares()
@@ -82,10 +87,12 @@ export function ShareAnalysisDialog({
   const handleCreate = async (e?: React.FormEvent) => {
     e?.preventDefault()
     setError(null)
+    setEmailNotice(null)
     setSubmitting(true)
     try {
+      const attemptedRecipient = recipientEmail.trim()
       const body: Record<string, string> = {}
-      if (recipientEmail.trim()) body.recipientEmail = recipientEmail.trim()
+      if (attemptedRecipient) body.recipientEmail = attemptedRecipient
       if (senderMessage.trim()) body.senderMessage = senderMessage.trim()
 
       const res = await fetch(`/api/reports/${reportId}/shares`, {
@@ -100,6 +107,23 @@ export function ShareAnalysisDialog({
       const share = data.share as ShareSummary
       setShares((prev) => [share, ...prev])
       setJustCreatedShareId(share.id)
+      // Surface the email outcome so the user isn't left assuming a
+      // silent success. The server responds with a shape like
+      // { attempted: bool, sent: bool, error: string | null }.
+      const emailStatus = data?.email as
+        | { attempted?: boolean; sent?: boolean; error?: string | null }
+        | undefined
+      if (attemptedRecipient && emailStatus?.attempted) {
+        if (emailStatus.sent) {
+          setEmailNotice({ kind: 'sent', recipient: attemptedRecipient })
+        } else {
+          setEmailNotice({
+            kind: 'failed',
+            recipient: attemptedRecipient,
+            detail: emailStatus.error ?? 'Unknown email error',
+          })
+        }
+      }
       setRecipientEmail('')
       setSenderMessage('')
       // Auto-copy the newly minted URL as a courtesy — the most
@@ -214,6 +238,24 @@ export function ShareAnalysisDialog({
               <div className="flex items-start gap-2 text-xs text-rose-700 bg-rose-50 border border-rose-100 rounded-md px-3 py-2">
                 <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
                 <span>{error}</span>
+              </div>
+            )}
+            {emailNotice?.kind === 'sent' && (
+              <div className="flex items-start gap-2 text-xs text-emerald-800 bg-emerald-50 border border-emerald-100 rounded-md px-3 py-2">
+                <Check className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                <span>
+                  Emailed <span className="font-medium">{emailNotice.recipient}</span>. Link is also copied to your clipboard.
+                </span>
+              </div>
+            )}
+            {emailNotice?.kind === 'failed' && (
+              <div className="flex items-start gap-2 text-xs text-amber-800 bg-amber-50 border border-amber-100 rounded-md px-3 py-2">
+                <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" />
+                <span>
+                  Link is ready, but we couldn&apos;t email{' '}
+                  <span className="font-medium">{emailNotice.recipient}</span> — copy the URL from the list below and share it directly.{' '}
+                  <span className="text-amber-700">({emailNotice.detail})</span>
+                </span>
               </div>
             )}
             <div className="flex items-center justify-end gap-3">

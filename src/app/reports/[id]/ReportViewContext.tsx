@@ -28,6 +28,13 @@ export interface ReportViewCtx {
   /** True when the current visitor is a share recipient (no auth,
    *  attribution bar visible, owner affordances hidden). */
   isShared: boolean
+  /** The middleware-validated share token, or null in owner view.
+   *  Client components use this to append ?shareToken=X to fetches
+   *  they make against /api/reports/[id] — the API route validates
+   *  the token and uses admin-client reads when it's present, so
+   *  anonymous recipients can hydrate the dashboard without a
+   *  session cookie. */
+  shareToken: string | null
   /** Populated in share view only — the sender's display name for
    *  the attribution bar + any share-specific CTAs. Null in owner view. */
   sharedByName: string | null

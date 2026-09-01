@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { supabaseAdmin } from '@/lib/supabase'
 import { findRefreshCreditForReport, findRetryCreditForReport } from '@/lib/billing/credits'
+import { findValidShareByToken } from '@/lib/reports/share-tokens'
 
 const FOURTEEN_DAYS_MS = 14 * 24 * 60 * 60 * 1000
 
@@ -17,6 +19,38 @@ export async function GET(
 ) {
   try {
     const { id } = await params
+
+    // Share-token path: when the caller passes ?shareToken=X, we
+    // validate the token against analysis_shares and, if it matches
+    // this report, use the admin client to hydrate the row without
+    // a user session. This is the path share recipients take —
+    // their browser is on /share/[token]/... which the middleware
+    // rewrites server-side, but the report page's client-side
+    // fetch to /api/reports/[id] bypasses middleware and would 401
+    // without this branch.
+    const shareToken = request.nextUrl.searchParams.get('shareToken')
+    if (shareToken) {
+      const share = await findValidShareByToken(shareToken)
+      if (!share || share.report_id !== id) {
+        return NextResponse.json({ error: 'Share link is invalid or expired' }, { status: 401 })
+      }
+      const { data: sharedReport, error: sharedErr } = await supabaseAdmin
+        .from('user_reports')
+        .select('*')
+        .eq('id', id)
+        .single()
+      if (sharedErr || !sharedReport) {
+        return NextResponse.json({ error: 'Report not found' }, { status: 404 })
+      }
+      // Refresh/retry are owner-only affordances; share recipients
+      // never see them, so we save the credit lookups.
+      return NextResponse.json({
+        report: sharedReport,
+        refreshAvailable: false,
+        retryAvailable: false,
+      })
+    }
+
     const supabase = await createServerSupabaseClient()
 
     const {

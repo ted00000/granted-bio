@@ -322,18 +322,20 @@ export async function getShareViewAnalyticsBatch(
 // ------------------------------------------------------------------
 
 /**
- * Sliding-window rate limit for share-token resolution. 20 requests
- * per minute per IP is deliberately loose — the goal is to block
- * scraper hammering, not to constrain legitimate sharing patterns
- * (a viewer clicking around a dashboard triggers a handful of RSC
- * requests per navigation, each hitting middleware).
+ * Sliding-window rate limit for share-token resolution. 20 was too
+ * tight (2026-08-31) — real recipient sessions triggered 429s
+ * after ~10 clicks because Next.js App Router navigation fires 3–5
+ * requests per click (page load + RSC payload + prefetches). 200 is
+ * loose enough for a legitimate reader browsing a dozen sections
+ * and tight enough that a scraper hammering the endpoint still hits
+ * a wall within seconds.
  *
  * The window resets when the caller's row is older than
  * SHARE_RATE_LIMIT_WINDOW_MS. On reset we UPDATE the row atomically
  * — a colliding request from the same IP might undercount for that
  * transition second, but that's fine for anti-abuse purposes.
  */
-export const SHARE_RATE_LIMIT_MAX = 20
+export const SHARE_RATE_LIMIT_MAX = 200
 export const SHARE_RATE_LIMIT_WINDOW_MS = 60 * 1000
 
 export async function checkShareRateLimit(ip: string): Promise<{ ok: true } | { ok: false; retryAfterSec: number }> {

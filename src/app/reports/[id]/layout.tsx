@@ -72,6 +72,7 @@ export default async function ReportPortalLayout({
     reportId: report.id,
     basePath,
     isShared,
+    shareToken: isShared ? share!.token : null,
     sharedByName,
   }
 

@@ -91,7 +91,7 @@ export default function ReportDetailPage({
 }) {
   const { id } = use(params)
   const router = useRouter()
-  const { basePath, isShared } = useReportView()
+  const { basePath, isShared, shareToken } = useReportView()
   const [report, setReport] = useState<Report | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -137,7 +137,14 @@ export default function ReportDetailPage({
 
   const fetchReport = async () => {
     try {
-      const response = await fetch(`/api/reports/${id}`)
+      // In share mode append ?shareToken=X so the API route can
+      // validate the token and hydrate via admin client without a
+      // user session. shareToken comes from the layout-injected
+      // ReportViewContext, which the middleware populates.
+      const url = shareToken
+        ? `/api/reports/${id}?shareToken=${encodeURIComponent(shareToken)}`
+        : `/api/reports/${id}`
+      const response = await fetch(url)
       const data = await response.json()
 
       if (!response.ok) {

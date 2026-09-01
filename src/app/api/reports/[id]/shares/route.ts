@@ -138,11 +138,18 @@ export async function POST(
       senderMessage,
     })
 
-    // Fire-and-forget email — the mint has already succeeded, so
-    // failures here don't reject the request. Owner gets the URL
-    // in the response and can send it manually if the email fails.
+    // Await the email so we can report the outcome back to the
+    // client — the dialog needs to know whether to say "sent" vs
+    // "link created but email failed, please copy the URL manually."
+    // The mint has already succeeded so an email failure never
+    // rejects the request; we just surface the reason.
+    let emailStatus: { attempted: boolean; sent: boolean; error: string | null } = {
+      attempted: false,
+      sent: false,
+      error: null,
+    }
     if (recipientEmail) {
-      void sendShareEmail({
+      emailStatus = await sendShareEmail({
         recipientEmail,
         senderName: await lookupSenderName(user.id),
         senderMessage,
@@ -155,6 +162,7 @@ export async function POST(
     return NextResponse.json({
       share: toShareSummary(row),
       ttlDays: SHARE_TOKEN_DEFAULT_TTL_DAYS,
+      email: emailStatus,
     })
   } catch (e) {
     console.error('[shares POST] error:', e)
@@ -190,11 +198,23 @@ interface ShareEmailParams {
   shareUrl: string
 }
 
-async function sendShareEmail(params: ShareEmailParams): Promise<void> {
+interface EmailResult {
+  attempted: boolean
+  sent: boolean
+  error: string | null
+}
+
+async function sendShareEmail(params: ShareEmailParams): Promise<EmailResult> {
   const apiKey = process.env.RESEND_API_KEY || process.env.RESEND_CONTACT_FORM_API_KEY
   if (!apiKey) {
-    console.log('[shares] RESEND_API_KEY not set; skipping recipient email')
-    return
+    console.warn(
+      '[shares] Neither RESEND_API_KEY nor RESEND_CONTACT_FORM_API_KEY set; skipping recipient email',
+    )
+    return {
+      attempted: true,
+      sent: false,
+      error: 'Email delivery is not configured on the server.',
+    }
   }
 
   const resend = new Resend(apiKey)
@@ -218,8 +238,17 @@ async function sendShareEmail(params: ShareEmailParams): Promise<void> {
     'The link works for 60 days and no account is required to view it.',
   ].filter((line): line is string => line !== null)
 
+  // Loud logging both sides of the call — Resend failures were
+  // invisible before because the send was fire-and-forget and the
+  // caller had no way to distinguish "sent" from "silently dropped."
+  // Prints on every attempt so Vercel logs can be grep'd for
+  // "[shares] Resend attempt" to build a full trace.
+  console.log(
+    `[shares] Resend attempt: to=${params.recipientEmail} from=hello@granted.bio subject="${subject.slice(0, 80)}"`,
+  )
+
   try {
-    const { error } = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: 'granted.bio <hello@granted.bio>',
       to: params.recipientEmail,
       replyTo: 'hello@granted.bio',
@@ -227,9 +256,22 @@ async function sendShareEmail(params: ShareEmailParams): Promise<void> {
       text: textLines.join('\n'),
     })
     if (error) {
-      console.error('[shares] Resend send failed:', error)
+      const detail = JSON.stringify(error)
+      console.error(`[shares] Resend send failed for ${params.recipientEmail}:`, detail)
+      return {
+        attempted: true,
+        sent: false,
+        // The Resend error object typically has `name` + `message`.
+        // Surface both so the client can render something meaningful.
+        error: (error as { message?: string }).message ?? detail,
+      }
     }
+    const messageId = (data as { id?: string } | null)?.id ?? '(no id)'
+    console.log(`[shares] Resend send OK for ${params.recipientEmail}: message_id=${messageId}`)
+    return { attempted: true, sent: true, error: null }
   } catch (e) {
-    console.error('[shares] Resend threw:', e)
+    const msg = e instanceof Error ? e.message : String(e)
+    console.error(`[shares] Resend threw for ${params.recipientEmail}: ${msg}`)
+    return { attempted: true, sent: false, error: msg }
   }
 }
