@@ -15,7 +15,7 @@
 
 import { Suspense, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
   ArrowRight,
   Sparkles,
@@ -227,6 +227,7 @@ function AnonAnalyze() {
 // ==================================================================
 
 function AuthedAnalyze() {
+  const router = useRouter()
   const searchParams = useSearchParams()
   const inboundTopic = searchParams.get('topic')?.trim() || null
   const shouldAutoGenerate = searchParams.get('generate') === '1'
@@ -414,7 +415,14 @@ function AuthedAnalyze() {
           }}
           onGenerated={() => {
             setShowDialog(false)
+            // Once generation has kicked off in the background, route
+            // the user to My Analyses. They'll see the new analysis
+            // at the top with a "Generating..." status badge and the
+            // page polls for status updates automatically. Without
+            // this redirect the user is stranded on /analyze with no
+            // signal that anything happened after clicking Close.
             refetchProfile()
+            router.push('/reports')
           }}
           initialTopic={presetTopic ?? undefined}
         />

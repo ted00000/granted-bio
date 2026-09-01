@@ -480,9 +480,11 @@ export function GenerateReportDialog({
                   <Loader2 className="w-4 h-4 text-[#E07A5F] animate-spin" />
                 </div>
               </div>
-              <p className="text-gray-900 font-medium mb-1">Report Started</p>
+              <p className="text-gray-900 font-medium mb-1">Analysis Started</p>
               <p className="text-sm text-gray-500 text-center max-w-xs">
-                Your report is being generated in the background. You can close this dialog and check back in a few minutes.
+                Your analysis is being generated in the background. Close this
+                dialog and you&apos;ll see it in <span className="font-medium">My Analyses</span>{' '}
+                as it completes.
               </p>
             </div>
           )}
