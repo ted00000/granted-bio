@@ -21,6 +21,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import { sanitizeText } from './sanitize'
 import { applyPostRenderSubstitutions } from './post-render'
+import { generateStructured } from './llm-json'
 
 // Opus 4.7 is the strongest available Claude — worth the cost for
 // semantic pattern matching the regex linter misses.
@@ -74,23 +75,12 @@ You are auditing a paid intelligence report ($199 product) on a life-sciences re
 
 ## Your output
 
-For every violation you find, produce a JSON object with:
+Call the record_violations tool with a violations array. Every element:
 - **dimension**: which numbered dimension it violates (1-11)
 - **severity**: "critical" if it would embarrass the report with a domain expert, "warning" otherwise
 - **offendingText**: the EXACT substring from the markdown that must be replaced (verbatim; whitespace, punctuation, everything). Must be unique enough to find with a string search. Keep it under 400 chars. If the offense spans a whole paragraph, include the whole paragraph.
 - **correctedText**: the replacement text that fixes the violation while preserving all other content, numeric claims, Confidence tags, and prose structure. Use the same length ballpark as the offending text; do not truncate context.
 - **explanation**: one sentence on why this is a violation.
-
-Return valid JSON only:
-
-\`\`\`
-{
-  "violations": [
-    { "dimension": "5", "severity": "critical", "offendingText": "...", "correctedText": "...", "explanation": "..." },
-    ...
-  ]
-}
-\`\`\`
 
 Rules for corrections:
 
@@ -114,7 +104,7 @@ Rules for corrections:
 
 4. Be tight: aim for surgical single-sentence corrections when possible.
 
-If you find zero violations, return { "violations": [] }.`
+If you find zero violations, call record_violations with an empty violations array.`
 
 /**
  * Public entry point. Runs the Opus audit-agent against the assembled
@@ -133,35 +123,68 @@ export async function runAuditAgent(
 
   try {
     const prompt = `${RUBRIC}\n\n## TOPIC\n\n${topic}\n\n## REPORT MARKDOWN\n\n${markdown}`
-    const response = await client.messages.create(
-      {
-        model: MODEL,
-        max_tokens: 8000,
-        messages: [{ role: 'user', content: prompt }],
+
+    const result = await generateStructured<{ violations?: AuditCorrection[] }>({
+      client,
+      model: MODEL,
+      prompt,
+      maxTokens: 8000,
+      timeoutMs: CALL_TIMEOUT_MS,
+      usageTracker,
+      toolName: 'record_violations',
+      toolDescription:
+        'Record all rubric violations found in the report. Each violation must include the exact offending substring, a replacement, and a one-sentence explanation.',
+      schema: {
+        type: 'object',
+        properties: {
+          violations: {
+            type: 'array',
+            items: {
+              type: 'object',
+              properties: {
+                dimension: {
+                  type: 'string',
+                  description: 'Rubric dimension number (1-11) as a string.',
+                },
+                severity: {
+                  type: 'string',
+                  enum: ['critical', 'warning'],
+                },
+                offendingText: {
+                  type: 'string',
+                  description:
+                    'Exact substring from the report markdown to replace. Prose only — no table rows, no headings, no chart markers. Keep under 400 chars.',
+                },
+                correctedText: {
+                  type: 'string',
+                  description:
+                    'Replacement text. Must not be empty. Preserve numeric claims and Confidence + Evidence tags from the offending text.',
+                },
+                explanation: {
+                  type: 'string',
+                  description: 'One sentence on why this is a violation.',
+                },
+              },
+              required: [
+                'dimension',
+                'severity',
+                'offendingText',
+                'correctedText',
+                'explanation',
+              ],
+            },
+          },
+        },
+        required: ['violations'],
       },
-      { timeout: CALL_TIMEOUT_MS },
-    )
-    usageTracker.inputTokens += response.usage.input_tokens
-    usageTracker.outputTokens += response.usage.output_tokens
+    })
 
-    const text = response.content.find((c) => c.type === 'text')
-    if (!text || text.type !== 'text') {
-      console.warn('[Audit Agent] No text response from Opus')
+    if (!result) {
+      // Structured call failed (network/timeout). Log-and-ship.
       return { markdown, violationsFound: 0, violationsApplied: 0 }
     }
 
-    let raw = text.text.trim()
-    if (raw.startsWith('```')) {
-      raw = raw.replace(/^```(?:json)?\s*\n?/, '').replace(/\n?```\s*$/, '').trim()
-    }
-    const jsonMatch = raw.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
-      console.warn('[Audit Agent] No JSON in Opus response')
-      return { markdown, violationsFound: 0, violationsApplied: 0 }
-    }
-
-    const parsed = JSON.parse(jsonMatch[0]) as { violations?: AuditCorrection[] }
-    const violations = Array.isArray(parsed.violations) ? parsed.violations : []
+    const violations = Array.isArray(result.violations) ? result.violations : []
     const elapsed = Date.now() - startedAt
     console.log(
       `[Audit Agent] Opus returned ${violations.length} violation(s) in ${elapsed}ms`,

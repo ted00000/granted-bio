@@ -30,6 +30,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { supabaseAdmin } from '@/lib/supabase'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import { sanitizeText } from './sanitize'
+import { generateStructured } from './llm-json'
 import type {
   CoverageCategory,
   CoverageDimension,
@@ -1443,93 +1444,139 @@ Produce a persona-appropriate strategicImplications paragraph tied EXCLUSIVELY t
 
 3-4 sentences. Concrete and actionable, not hand-wavy. MUST END WITH a Confidence+Evidence tag ('**Confidence: High/Medium/Low** - Evidence: [top opportunity counts + ratios that anchor the implications]'). At low sample counts across the top opportunities, confidence should be Medium or Low.
 
-Return JSON only, exactly this shape:
-{
-  "overview": "...",
-  "dimensionNarratives": [
-    { "name": "Cancer Type", "narrative": "..." },
-    { "name": "Biofluid", "narrative": "..." }
-  ],
-  "opportunityRationales": [
-    { "categoryName": "Pancreatic", "dimensionName": "Cancer Type", "rationale": "..." }
-  ],
-  "strategicImplications": "3-4 sentences of persona-specific 'so what' advice tied to the top opportunities"
-}`
+Call record_white_space_narrative with an overview, one narrative per dimension, one rationale per ranked opportunity, and a strategicImplications paragraph.`
 
-  try {
-    const response = await client.messages.create({
-      model: MODEL,
-      // 3800 for overview + 5 dimension narratives + up to 5 opportunity
-      // rationales + strategicImplications. 3500 was landing tight on
-      // longer topics; 3800 restores headroom against truncation.
-      max_tokens: 3800,
-      messages: [{ role: 'user', content: prompt }],
-    }, {
-      timeout: 120_000,
-    })
-    usageTracker.inputTokens += response.usage.input_tokens
-    usageTracker.outputTokens += response.usage.output_tokens
+  interface DimensionNarrative {
+    name: string
+    narrative: string
+  }
+  interface OpportunityRationale {
+    categoryName: string
+    dimensionName: string
+    rationale: string
+  }
+  interface NarrateToolInput {
+    overview?: string
+    dimensionNarratives?: DimensionNarrative[]
+    opportunityRationales?: OpportunityRationale[]
+    strategicImplications?: string
+  }
 
-    const text = response.content.find((c) => c.type === 'text')
-    if (!text || text.type !== 'text') {
-      return { overview: '', dimensions, opportunities }
-    }
-    let raw = text.text.trim()
-    if (raw.startsWith('```')) {
-      raw = raw.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
-    }
-    const jsonMatch = raw.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
-      return { overview: '', dimensions, opportunities }
-    }
-    const parsed = JSON.parse(jsonMatch[0])
+  const parsed = await generateStructured<NarrateToolInput>({
+    client,
+    model: MODEL,
+    prompt,
+    // 3800 covers overview + 5 dimension narratives + up to 5
+    // opportunity rationales + strategicImplications with headroom.
+    maxTokens: 3800,
+    timeoutMs: 120_000,
+    usageTracker,
+    toolName: 'record_white_space_narrative',
+    toolDescription:
+      'Record the White Space narrative fields: overview, per-dimension narratives, per-opportunity rationales, and a strategic-implications paragraph.',
+    schema: {
+      type: 'object',
+      properties: {
+        overview: {
+          type: 'string',
+          description:
+            '3-4 sentences framing coverage across dimensions. MUST end with a **Confidence: High/Medium/Low** - Evidence: ... tag on its own line.',
+        },
+        dimensionNarratives: {
+          type: 'array',
+          description: 'One narrative per dimension. Use the exact dimension name from the input.',
+          items: {
+            type: 'object',
+            properties: {
+              name: { type: 'string' },
+              narrative: {
+                type: 'string',
+                description:
+                  '2-3 sentences interpreting this dimension. MUST end with a Confidence + Evidence tag.',
+              },
+            },
+            required: ['name', 'narrative'],
+          },
+        },
+        opportunityRationales: {
+          type: 'array',
+          description:
+            'One rationale per ranked opportunity. Only rank-listed categories are eligible.',
+          items: {
+            type: 'object',
+            properties: {
+              categoryName: { type: 'string' },
+              dimensionName: { type: 'string' },
+              rationale: {
+                type: 'string',
+                description:
+                  '2-3 sentences answering "why might this white space matter." MUST end with a Confidence + Evidence tag.',
+              },
+            },
+            required: ['categoryName', 'dimensionName', 'rationale'],
+          },
+        },
+        strategicImplications: {
+          type: 'string',
+          description:
+            '3-4 sentence persona-specific paragraph tied to the top ranked opportunities. MUST end with a Confidence + Evidence tag.',
+        },
+      },
+      required: [
+        'overview',
+        'dimensionNarratives',
+        'opportunityRationales',
+        'strategicImplications',
+      ],
+    },
+  })
 
-    // Merge narrative back into the fixed data structure. The LLM cannot
-    // change the numbers; it only fills in narrative fields. Every
-    // narrative field runs through normalizeConfidenceTagSpacing so the
-    // inline "**Confidence:**" tags land on their own paragraph — Fable
-    // r28 audit flagged pervasive inline tags across White Space fields.
-    const dimNarrativeMap = new Map<string, string>()
-    if (Array.isArray(parsed.dimensionNarratives)) {
-      for (const dn of parsed.dimensionNarratives) {
-        if (dn?.name && typeof dn.narrative === 'string') {
-          dimNarrativeMap.set(dn.name.toLowerCase(), normalizeConfidenceTagSpacing(dn.narrative))
-        }
-      }
-    }
-    const dimensionsOut = dimensions.map((d) => ({
-      ...d,
-      narrative: dimNarrativeMap.get(d.name.toLowerCase()) || '',
-    }))
-
-    const rationaleMap = new Map<string, string>()
-    if (Array.isArray(parsed.opportunityRationales)) {
-      for (const or of parsed.opportunityRationales) {
-        if (or?.categoryName && or?.dimensionName && typeof or.rationale === 'string') {
-          const key = `${or.dimensionName.toLowerCase()}|${or.categoryName.toLowerCase()}`
-          rationaleMap.set(key, normalizeConfidenceTagSpacing(or.rationale))
-        }
-      }
-    }
-    const opportunitiesOut = opportunities.map((op) => ({
-      ...op,
-      rationale:
-        rationaleMap.get(`${op.dimensionName.toLowerCase()}|${op.categoryName.toLowerCase()}`) || '',
-    }))
-
-    return {
-      overview:
-        typeof parsed.overview === 'string' ? normalizeConfidenceTagSpacing(parsed.overview) : '',
-      dimensions: dimensionsOut,
-      opportunities: opportunitiesOut,
-      strategicImplications:
-        typeof parsed.strategicImplications === 'string'
-          ? normalizeConfidenceTagSpacing(parsed.strategicImplications)
-          : undefined,
-    }
-  } catch (err) {
-    console.error('[White Space] Narrate step failed:', err)
+  if (!parsed) {
     return { overview: '', dimensions, opportunities }
+  }
+
+  // Merge narrative back into the fixed data structure. The LLM cannot
+  // change the numbers; it only fills in narrative fields. Every
+  // narrative field runs through normalizeConfidenceTagSpacing so the
+  // inline "**Confidence:**" tags land on their own paragraph — Fable
+  // r28 audit flagged pervasive inline tags across White Space fields.
+  const dimNarrativeMap = new Map<string, string>()
+  if (Array.isArray(parsed.dimensionNarratives)) {
+    for (const dn of parsed.dimensionNarratives) {
+      if (dn?.name && typeof dn.narrative === 'string') {
+        dimNarrativeMap.set(dn.name.toLowerCase(), normalizeConfidenceTagSpacing(dn.narrative))
+      }
+    }
+  }
+  const dimensionsOut = dimensions.map((d) => ({
+    ...d,
+    narrative: dimNarrativeMap.get(d.name.toLowerCase()) || '',
+  }))
+
+  const rationaleMap = new Map<string, string>()
+  if (Array.isArray(parsed.opportunityRationales)) {
+    for (const or of parsed.opportunityRationales) {
+      if (or?.categoryName && or?.dimensionName && typeof or.rationale === 'string') {
+        const key = `${or.dimensionName.toLowerCase()}|${or.categoryName.toLowerCase()}`
+        rationaleMap.set(key, normalizeConfidenceTagSpacing(or.rationale))
+      }
+    }
+  }
+  const opportunitiesOut = opportunities.map((op) => ({
+    ...op,
+    rationale:
+      rationaleMap.get(`${op.dimensionName.toLowerCase()}|${op.categoryName.toLowerCase()}`) || '',
+  }))
+
+  return {
+    overview:
+      typeof parsed.overview === 'string' ? normalizeConfidenceTagSpacing(parsed.overview) : '',
+    dimensions: dimensionsOut,
+    opportunities: opportunitiesOut,
+    strategicImplications:
+      typeof parsed.strategicImplications === 'string'
+        ? normalizeConfidenceTagSpacing(parsed.strategicImplications)
+        : undefined,
   }
 }
 

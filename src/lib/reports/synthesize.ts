@@ -1245,6 +1245,7 @@ async function generateCuratedPublications(
   usageTracker: UsageTracker
 ): Promise<CuratedPublication[]> {
   const { default: Anthropic } = await import('@anthropic-ai/sdk')
+  const { generateStructured } = await import('./llm-json')
   const client = new Anthropic()
   const persona = context.persona || 'researcher'
 
@@ -1291,8 +1292,9 @@ FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sente
 BANNED FIELD-LEVEL ABSOLUTES: Do not use "clear gap", "clear methodological gap", "clear point-of-care gap", "clear [any word] gap", "a clear gap exists", "structural underfunding", "structurally underfunded", "will pressure/force/drive/require/shift/increase/accelerate" (any bare future-tense absolute), or the sample-share-to-structural inference pattern where a low sample percentage is used to claim "limited investigation into X relative to translational volume" / "limited mechanistic work" / "underfunded relative to Y" (that turns a share into a field-level judgment), or the softer "N% suggesting X is thin in this sample" pattern (a share paired with "thin", "sparse", "scarce", "meager", "underrepresented" alongside "suggesting" or "indicating" reads as a field-level judgment - the "in this sample" scope word does NOT rescue it), or the sample-gap-may-constrain pattern where a sample-observed gap is cited as a cause of field-level limitations ("that mechanistic gap may constrain sensitivity improvements", "this discovery gap may limit specificity gains" - the "may" hedge does not fix this; the sample cannot support causal claims about what constrains the field). Rewrite as "within the analyzed sample, X is sparse" or "is likely to Y" or "represents a low share of sample projects; whether this reflects true underfunding or NIH-linked scope is not resolvable here".
 BANNED AI-TELL PHRASES: Do not use "inflection point", "step-change", "poised to", "underscores", "landscape reveals", "perhaps most critically", or the "genuine [noun]" pattern (any construction where "genuine" modifies a claim-noun — e.g. "genuine opportunity", "genuine gap", "genuine bottleneck", "genuine differentiation", "genuine methodological opportunity"). Drop the modifier and say what the thing IS. Say what the thing IS, not that it is "genuine".
 
-Return JSON only (array of 3-5 items). Use the EXACT PMID strings from the
-input above — do NOT invent PMIDs and do NOT reuse the same PMID twice.
+Call record_curated_publications with an array of 3-5 items. Use the EXACT
+PMID strings from the input above — do NOT invent PMIDs and do NOT reuse
+the same PMID twice.
 
 CRITICAL ANTI-HALLUCINATION CHECK — include an "abstractQuote" field per
 item. This must be a 6-15 word DIRECT VERBATIM QUOTE copied exactly from
@@ -1303,54 +1305,68 @@ pmid you cited (a common failure mode), your abstractQuote will not
 match the pmid's actual abstract and the entry will be dropped. Copy
 the quote character-for-character from the abstract text shown above.
 
-[
-  {
-    "pmid": "12345678",
-    "significance": "1-2 sentences on why this paper matters for the field",
-    "keyFinding": "One sentence key takeaway",
-    "abstractQuote": "6-15 words copied verbatim from the abstract of this pmid"
-  }
-]
-
 The title, journal, and year will be filled in by the system from the source
-data, so omit them here.`
+data, so omit them from the tool call.`
+
+  interface CuratedPubRaw {
+    pmid: string
+    significance: string
+    keyFinding: string
+    abstractQuote: string
+  }
+
+  const result = await generateStructured<{ items?: CuratedPubRaw[] }>({
+    client,
+    model: 'claude-sonnet-4-6',
+    prompt,
+    // Bumped from 1500 to cover the abstractQuote validation field.
+    maxTokens: 2000,
+    timeoutMs: 90_000,
+    usageTracker,
+    toolName: 'record_curated_publications',
+    toolDescription:
+      'Record 3-5 must-read publications from the input list, with per-item significance and a verbatim abstract quote for verification.',
+    schema: {
+      type: 'object',
+      properties: {
+        items: {
+          type: 'array',
+          minItems: 3,
+          maxItems: 5,
+          items: {
+            type: 'object',
+            properties: {
+              pmid: {
+                type: 'string',
+                description: 'EXACT PMID from the input list. Never invent.',
+              },
+              significance: {
+                type: 'string',
+                description: '1-2 sentences on why this paper matters for the field.',
+              },
+              keyFinding: {
+                type: 'string',
+                description: 'One-sentence key takeaway from the paper.',
+              },
+              abstractQuote: {
+                type: 'string',
+                description:
+                  '6-15 word verbatim quote copied EXACTLY from THIS pmid\'s abstract above. Used to verify the LLM is describing the same paper as the pmid.',
+              },
+            },
+            required: ['pmid', 'significance', 'keyFinding', 'abstractQuote'],
+          },
+        },
+      },
+      required: ['items'],
+    },
+  })
+
+  if (!result) return []
 
   try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      // Bumped from 1500 to cover the added abstractQuote validation field.
-      max_tokens: 2000,
-      messages: [{ role: 'user', content: prompt }],
-    }, {
-      timeout: 90_000,
-    })
-
-    // Track usage
-    usageTracker.inputTokens += response.usage.input_tokens
-    usageTracker.outputTokens += response.usage.output_tokens
-
-    const textContent = response.content.find((c) => c.type === 'text')
-    if (!textContent || textContent.type !== 'text') {
-      return []
-    }
-
-    // Parse JSON array from response. Strip ```json fences if present, then
-    // regex-extract just the array. Matches the defensive pattern used by
-    // every other JSON-output function in this file — without the regex
-    // extraction, any prefix text from Claude ("Here are the picks:\n[...")
-    // breaks parsing and silently empties the Key Publications section.
-    let jsonText = textContent.text.trim()
-    if (jsonText.startsWith('```')) {
-      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
-    }
-    const arrayMatch = jsonText.match(/\[[\s\S]*\]/)
-    if (!arrayMatch) {
-      console.warn('[Synthesis Agent] No JSON array found in curated publications response')
-      return []
-    }
-
-    const parsedRaw = JSON.parse(arrayMatch[0])
-    if (!Array.isArray(parsedRaw)) return []
+    const parsedRaw = Array.isArray(result.items) ? result.items : []
+    if (parsedRaw.length === 0) return []
 
     // Hydrate title/journal/year from the source data — the model only
     // returns pmid + significance + keyFinding now. This eliminates two
@@ -1415,10 +1431,9 @@ data, so omit them here.`
         const derived = new Date(source.publication_date).getFullYear()
         if (!isNaN(derived)) year = derived
       }
-      if (year === null && typeof raw.year === 'number') year = raw.year
       hydrated.push({
         pmid,
-        title: source.publication_title || raw.title || 'Untitled',
+        title: source.publication_title || 'Untitled',
         journal: source.journal || null,
         year,
         significance: typeof raw.significance === 'string' ? raw.significance : '',

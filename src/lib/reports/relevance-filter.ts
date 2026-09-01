@@ -8,9 +8,14 @@
 //      the render layer can keep tangential items visible while dropping
 //      clearly off-topic ones. This is the primary use for the report
 //      Active Trials / Key Patents sections.
+//
+// Both callsites use Anthropic tool_use (see `generateStructured` in
+// ./llm-json) so the model output is schema-validated at the API layer;
+// no fragile JSON-parsing on prose responses.
 
 import Anthropic from '@anthropic-ai/sdk'
 import type { PatentItem, TrialItem } from './types'
+import { generateStructured } from './llm-json'
 
 const anthropic = new Anthropic()
 
@@ -62,7 +67,9 @@ export async function filterForRelevance(
 }
 
 /**
- * Filter a single batch of items
+ * Filter a single batch of items using tool_use so the LLM must
+ * return schema-valid IDs — not raw JSON prose that has to be
+ * regex-extracted + JSON.parse'd.
  */
 async function filterBatch(
   topic: string,
@@ -92,39 +99,51 @@ An item is NOT relevant if:
 Items to evaluate:
 ${itemsList}
 
-Respond with ONLY a JSON object in this exact format:
-{"relevant": ["id1", "id2", ...], "not_relevant": ["id3", "id4", ...]}
+Call the record_relevance tool with two arrays covering ALL item IDs — every ID above must appear in exactly one of the two arrays.`
 
-Include ALL item IDs in your response, categorized as either relevant or not_relevant.`
+  interface FilterToolInput {
+    relevant?: string[]
+    not_relevant?: string[]
+  }
 
-  try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1024,
-      messages: [{ role: 'user', content: prompt }],
-    }, {
-      timeout: 60_000,
-    })
+  const result = await generateStructured<FilterToolInput>({
+    client: anthropic,
+    model: 'claude-sonnet-4-6',
+    prompt,
+    maxTokens: 1024,
+    timeoutMs: 60_000,
+    toolName: 'record_relevance',
+    toolDescription:
+      'Record which items are relevant vs not relevant to the report topic. Every input ID must appear in exactly one array.',
+    schema: {
+      type: 'object',
+      properties: {
+        relevant: {
+          type: 'array',
+          items: { type: 'string' },
+          description: 'IDs of items directly relevant to the topic.',
+        },
+        not_relevant: {
+          type: 'array',
+          items: { type: 'string' },
+          description: 'IDs of items NOT directly relevant to the topic.',
+        },
+      },
+      required: ['relevant', 'not_relevant'],
+    },
+  })
 
-    const text = response.content[0].type === 'text' ? response.content[0].text : ''
+  if (!result) {
+    // Structured call failed — fail open (keep everything) so the
+    // downstream section still renders. Matches the historical
+    // fallback behavior.
+    console.warn(`[Relevance Filter] Structured call failed for ${itemType}; keeping all items`)
+    return { kept: items.map((i) => i.id), removed: [] }
+  }
 
-    // Extract JSON from response
-    const jsonMatch = text.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
-      console.warn(`[Relevance Filter] Failed to parse response for ${itemType}, keeping all items`)
-      return { kept: items.map(i => i.id), removed: [] }
-    }
-
-    const parsed = JSON.parse(jsonMatch[0]) as { relevant: string[], not_relevant: string[] }
-
-    return {
-      kept: parsed.relevant || [],
-      removed: parsed.not_relevant || [],
-    }
-  } catch (error) {
-    console.error(`[Relevance Filter] Error filtering ${itemType}:`, error)
-    // On error, keep all items rather than losing data
-    return { kept: items.map(i => i.id), removed: [] }
+  return {
+    kept: Array.isArray(result.relevant) ? result.relevant : [],
+    removed: Array.isArray(result.not_relevant) ? result.not_relevant : [],
   }
 }
 
@@ -146,7 +165,7 @@ Include ALL item IDs in your response, categorized as either relevant or not_rel
 
 export type RelevanceVerdict = 'relevant' | 'tangential' | 'unrelated'
 
-interface UsageTracker {
+interface LocalUsageTracker {
   inputTokens: number
   outputTokens: number
 }
@@ -170,7 +189,7 @@ export async function filterTrialsAndPatentsByRelevance(
   topic: string,
   trials: TrialItem[],
   patents: PatentItem[],
-  usageTracker: UsageTracker,
+  usageTracker: LocalUsageTracker,
 ): Promise<{
   trials: TrialWithVerdict[]
   patents: PatentWithVerdict[]
@@ -207,50 +226,79 @@ ${trialLines.join('\n')}
 ## PATENTS (${patents.length})
 ${patentLines.join('\n')}
 
-Return JSON only. One verdict per item; use the exact ID (NCT_ID for trials, patent_id for patents).
+Call record_verdicts with one verdict per item. Use the exact ID (NCT_ID for trials, patent_id for patents). Every trial ID and patent ID above must appear exactly once.`
 
-{
-  "trialVerdicts": [
-    { "id": "NCT06962995", "verdict": "relevant" }
-  ],
-  "patentVerdicts": [
-    { "id": "10556956", "verdict": "unrelated" }
-  ]
-}`
+  interface VerdictEntry {
+    id: string
+    verdict: RelevanceVerdict
+  }
+  interface VerdictToolInput {
+    trialVerdicts?: VerdictEntry[]
+    patentVerdicts?: VerdictEntry[]
+  }
 
   const verdictMap = new Map<string, RelevanceVerdict>()
 
-  try {
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }],
-    }, {
-      timeout: 90_000,
-    })
-    usageTracker.inputTokens += response.usage.input_tokens
-    usageTracker.outputTokens += response.usage.output_tokens
+  const result = await generateStructured<VerdictToolInput>({
+    client: anthropic,
+    model: 'claude-sonnet-4-6',
+    prompt,
+    maxTokens: 4000,
+    timeoutMs: 90_000,
+    usageTracker,
+    toolName: 'record_verdicts',
+    toolDescription:
+      'Record a 3-way topical-relevance verdict (relevant / tangential / unrelated) for every trial and patent in the input.',
+    schema: {
+      type: 'object',
+      properties: {
+        trialVerdicts: {
+          type: 'array',
+          description: 'One verdict per input trial. Use NCT_ID as the id.',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              verdict: {
+                type: 'string',
+                enum: ['relevant', 'tangential', 'unrelated'],
+              },
+            },
+            required: ['id', 'verdict'],
+          },
+        },
+        patentVerdicts: {
+          type: 'array',
+          description: 'One verdict per input patent. Use patent_id as the id.',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              verdict: {
+                type: 'string',
+                enum: ['relevant', 'tangential', 'unrelated'],
+              },
+            },
+            required: ['id', 'verdict'],
+          },
+        },
+      },
+      required: ['trialVerdicts', 'patentVerdicts'],
+    },
+  })
 
-    const text = response.content.find((c) => c.type === 'text')
-    if (text && text.type === 'text') {
-      let raw = text.text.trim()
-      if (raw.startsWith('```')) {
-        raw = raw.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
-      }
-      const jsonMatch = raw.match(/\{[\s\S]*\}/)
-      if (jsonMatch) {
-        const parsed = JSON.parse(jsonMatch[0])
-        for (const v of parsed.trialVerdicts || []) {
-          if (v?.id && isVerdict(v.verdict)) verdictMap.set(v.id, v.verdict)
-        }
-        for (const v of parsed.patentVerdicts || []) {
-          if (v?.id && isVerdict(v.verdict)) verdictMap.set(v.id, v.verdict)
-        }
-      }
+  if (result) {
+    for (const v of result.trialVerdicts ?? []) {
+      if (v?.id && isVerdict(v.verdict)) verdictMap.set(v.id, v.verdict)
     }
-  } catch (err) {
-    console.error('[Relevance Filter] LLM call failed, keeping all items:', err)
+    for (const v of result.patentVerdicts ?? []) {
+      if (v?.id && isVerdict(v.verdict)) verdictMap.set(v.id, v.verdict)
+    }
+  } else {
     // Fail open — mark everything as relevant so we don't lose the section.
+    console.warn(
+      '[Relevance Filter] Structured verdicts call failed; keeping all trials/patents as relevant',
+    )
   }
 
   const trialsAnnotated: TrialWithVerdict[] = trials.map((t) => ({

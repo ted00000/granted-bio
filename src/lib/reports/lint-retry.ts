@@ -293,13 +293,17 @@ interface UsageTracker {
  *   3. Tighter budget: 60s (was 90s). Base synthesis runs ~180-240s,
  *      so a 60s retry ceiling keeps total under ~300s with margin.
  */
-// r47 audit: previous budget (60s total, 45s per-call) was too tight for
-// 3 parallel sections. Patent Activity got aborted at 60002ms while Next
-// Steps + Research Positioning finished at 12.6s / 14.7s. Vercel Pro caps
-// at 900s and base synthesis runs ~180-240s, so raising the retry ceiling
-// still leaves comfortable headroom.
-const PER_CALL_TIMEOUT_MS = 90_000
-const TOTAL_BUDGET_MS = 150_000
+// Prior budgets:
+//   * r38 → 60s total / 45s per-call: too tight for 3 parallel sections;
+//     one section always got aborted at ~60s while others finished fast.
+//   * r47 → 150s total / 90s per-call: worked for most sections, but
+//     White Space Analysis (largest section, ~15KB with tables + narrative)
+//     regularly consumed the full budget and aborted, dropping its
+//     correction. Base synthesis runs ~180-240s; Vercel Pro cap is 900s.
+//     Raising to 240s / 150s gives White Space room to finish while
+//     still leaving comfortable synthesis-total headroom.
+const PER_CALL_TIMEOUT_MS = 150_000
+const TOTAL_BUDGET_MS = 240_000
 
 export async function applyLintCorrections(
   markdown: string,
