@@ -20,6 +20,7 @@
 
 import { useEffect, useState } from 'react'
 import { X, Loader2, Copy, Check, AlertTriangle, ExternalLink, Trash2 } from 'lucide-react'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface ShareSummary {
   id: string
@@ -48,6 +49,12 @@ export function ShareAnalysisDialog({
   reportTopic,
   onClose,
 }: ShareAnalysisDialogProps) {
+  const { profile } = useAuth()
+  // Pre-fill the sender name from the profile's first name so most
+  // users don't have to type it. Empty string when the profile has
+  // no name captured yet — the field is visible either way so the
+  // sender can override or fill it in.
+  const [senderName, setSenderName] = useState<string>(profile?.firstName ?? '')
   const [recipientEmail, setRecipientEmail] = useState('')
   const [senderMessage, setSenderMessage] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -94,6 +101,7 @@ export function ShareAnalysisDialog({
       const body: Record<string, string> = {}
       if (attemptedRecipient) body.recipientEmail = attemptedRecipient
       if (senderMessage.trim()) body.senderMessage = senderMessage.trim()
+      if (senderName.trim()) body.senderDisplayName = senderName.trim()
 
       const res = await fetch(`/api/reports/${reportId}/shares`, {
         method: 'POST',
@@ -203,6 +211,22 @@ export function ShareAnalysisDialog({
         <div className="flex-1 overflow-y-auto p-5">
           {/* Create panel */}
           <form onSubmit={handleCreate} className="space-y-3 pb-5 border-b border-gray-100">
+            <div>
+              <label htmlFor="sender-name" className="block text-xs font-medium text-gray-700 mb-1">
+                Your name
+                <span className="text-gray-400 font-normal ml-1">(shown to the recipient)</span>
+              </label>
+              <input
+                id="sender-name"
+                type="text"
+                value={senderName}
+                onChange={(e) => setSenderName(e.target.value)}
+                placeholder="e.g., Ted Nunes"
+                maxLength={120}
+                className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-[#E07A5F] focus:ring-2 focus:ring-[#E07A5F]/20"
+                disabled={submitting}
+              />
+            </div>
             <div>
               <label htmlFor="recipient-email" className="block text-xs font-medium text-gray-700 mb-1">
                 Share with a colleague

@@ -149,16 +149,22 @@ export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Arra
       throw new Error(`Print route returned HTTP ${status} — Chromium can't render the page. URL: ${opts.url}`)
     }
 
-    // Now wait for the client shell to hydrate + charts to paint. Give
-    // it 45s max — Chromium cold start + Recharts hydration + our
-    // 20s fail-open in PrintShell can add up. If PrintShell hasn't
-    // signaled ready by then, dump the page state so we can see
-    // what's actually happening in headless Chromium.
+    // Wait for the client shell to hydrate + any charts to paint.
+    // The 2026-08-24 exec-summary print page has no charts and
+    // PrintShell fires __printReady on mount, so this typically
+    // resolves in <1s. The old markdown-heavy path needed a longer
+    // ceiling because Recharts hydration was async — we keep a 15s
+    // budget for safety, but on timeout we now DUMP THE STATE AND
+    // CONTINUE rather than fail the whole PDF. Better to ship a
+    // usable PDF (the page HTML is already fully rendered server-
+    // side; hydration only matters for charts) than to 500 the
+    // user when hydration is slow or broken.
     try {
       await page.waitForFunction(
         () => (window as unknown as { __printReady?: boolean }).__printReady === true,
-        { timeout: opts.readyTimeoutMs ?? 45_000, polling: 250 },
+        { timeout: opts.readyTimeoutMs ?? 15_000, polling: 250 },
       )
+      console.log(`[pdf] __printReady resolved`)
     } catch (waitErr) {
       const state = await page.evaluate(() => ({
         readyState: document.readyState,
@@ -166,18 +172,18 @@ export async function renderReportPdf(opts: RenderPdfOptions): Promise<Uint8Arra
         wrapperCount: document.querySelectorAll('.recharts-wrapper').length,
         svgCount: document.querySelectorAll('.recharts-wrapper svg').length,
         printBodyExists: !!document.querySelector('.print-body'),
+        printSummaryExists: !!document.querySelector('.print-summary'),
         bodyHTMLLength: document.body?.innerHTML.length ?? 0,
         title: document.title,
-        // Also count how many script tags loaded — helps distinguish
-        // "JS bundle failed" from "JS ran but PrintShell never fired".
         scriptCount: document.querySelectorAll('script').length,
-        // Look for any React error text on the page.
         hasReactError: document.body?.innerHTML.includes('Application error') ?? false,
       })).catch((e) => ({ evalErr: String(e) }))
-      console.warn(`[pdf] Wait timeout. Page state:`, JSON.stringify(state))
-      throw waitErr
+      const errMsg = waitErr instanceof Error ? waitErr.message : String(waitErr)
+      console.warn(
+        `[pdf] __printReady timeout (${errMsg}). Generating PDF anyway. Page state:`,
+        JSON.stringify(state),
+      )
     }
-    console.log(`[pdf] __printReady resolved`)
 
     const headerTemplate = buildHeaderTemplate(opts.reportTitle)
     const footerTemplate = buildFooterTemplate(opts.generatedDate)

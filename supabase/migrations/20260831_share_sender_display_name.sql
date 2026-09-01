@@ -1,0 +1,22 @@
+-- Per-share sender display name.
+--
+-- Before this column, the recipient email + the /share/[token]
+-- attribution bar both read the sender's name from user_profiles
+-- (first_name + last_name) and fell back to "A colleague" when the
+-- profile was missing a name — a common state, because the
+-- NameCapturePrompt only runs when a user first hits /chat.
+--
+-- Adding a per-share override column so the ShareAnalysisDialog can
+-- let the sender type their name at share time. Pre-filled from
+-- profile when available, editable per share. When present, both
+-- the email + attribution bar use this value; when absent, they
+-- fall back to the profile lookup (and then the "A colleague"
+-- default).
+--
+-- Deliberately per-share, not per-user: keeps the share dialog
+-- self-contained, avoids silently mutating account state from an
+-- adjacent flow, and lets the sender vary display name per audience
+-- (e.g., "Ted Nunes" for a colleague, "Ted from granted.bio" for
+-- an intro to a potential customer).
+ALTER TABLE analysis_shares
+  ADD COLUMN IF NOT EXISTS sender_display_name TEXT;

@@ -36,6 +36,7 @@ export interface AnalysisShareRow {
   token: string
   recipient_email: string | null
   sender_message: string | null
+  sender_display_name: string | null
   created_at: string
   expires_at: string
   revoked_at: string | null
@@ -48,6 +49,7 @@ export interface ShareSummary {
   reportId: string
   recipientEmail: string | null
   senderMessage: string | null
+  senderDisplayName: string | null
   createdAt: string
   expiresAt: string
   revokedAt: string | null
@@ -95,6 +97,7 @@ export async function createShare(params: {
   ownerUserId: string
   recipientEmail: string | null
   senderMessage: string | null
+  senderDisplayName?: string | null
   ttlDays?: number
 }): Promise<AnalysisShareRow> {
   const ttlDays = params.ttlDays ?? SHARE_TOKEN_DEFAULT_TTL_DAYS
@@ -114,6 +117,7 @@ export async function createShare(params: {
         token,
         recipient_email: params.recipientEmail,
         sender_message: params.senderMessage,
+        sender_display_name: params.senderDisplayName ?? null,
         expires_at: expiresAt,
       })
       .select('*')
@@ -484,6 +488,7 @@ export function toShareSummary(
     reportId: row.report_id,
     recipientEmail: row.recipient_email,
     senderMessage: row.sender_message,
+    senderDisplayName: row.sender_display_name,
     createdAt: row.created_at,
     expiresAt: row.expires_at,
     revokedAt: row.revoked_at,

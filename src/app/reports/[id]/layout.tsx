@@ -65,7 +65,13 @@ export default async function ReportPortalLayout({
   }
 
   const basePath = isShared ? `/share/${share!.token}` : `/reports/${report.id}`
-  const sharedByName = isShared ? await lookupOwnerName(share!.owner_user_id) : null
+  // Prefer the sender name captured on the share row (typed in the
+  // "Your name" field of the share dialog) over the profile lookup.
+  // Falls back to the profile lookup → "A colleague" default when
+  // the share was created before we started capturing it.
+  const sharedByName = isShared
+    ? share!.sender_display_name ?? (await lookupOwnerName(share!.owner_user_id))
+    : null
   const backHref = isShared ? null : '/reports'
 
   const viewCtx: ReportViewCtx = {

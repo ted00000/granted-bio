@@ -22,6 +22,7 @@ import {
 interface CreateShareBody {
   recipientEmail?: string | null
   senderMessage?: string | null
+  senderDisplayName?: string | null
 }
 
 function isValidEmail(v: unknown): v is string {
@@ -103,6 +104,10 @@ export async function POST(
       typeof body.senderMessage === 'string' && body.senderMessage.trim()
         ? body.senderMessage.trim().slice(0, 2000) // hard cap to avoid abuse
         : null
+    const senderDisplayName =
+      typeof body.senderDisplayName === 'string' && body.senderDisplayName.trim()
+        ? body.senderDisplayName.trim().slice(0, 120)
+        : null
 
     if (recipientEmail && !isValidEmail(recipientEmail)) {
       return NextResponse.json(
@@ -136,7 +141,15 @@ export async function POST(
       ownerUserId: user.id,
       recipientEmail,
       senderMessage,
+      senderDisplayName,
     })
+
+    // Resolve the display name to use in the email + attribution:
+    // prefer the per-share name (just-typed override), fall back to
+    // profile lookup, then to "A colleague." Same precedence used by
+    // the /share/[token] layout so email + attribution stay in sync.
+    const resolvedSenderName =
+      senderDisplayName ?? (await lookupSenderName(user.id))
 
     // Await the email so we can report the outcome back to the
     // client — the dialog needs to know whether to say "sent" vs
@@ -151,7 +164,7 @@ export async function POST(
     if (recipientEmail) {
       emailStatus = await sendShareEmail({
         recipientEmail,
-        senderName: await lookupSenderName(user.id),
+        senderName: resolvedSenderName,
         senderMessage,
         reportTitle: report.title,
         reportTopic: report.topic,
