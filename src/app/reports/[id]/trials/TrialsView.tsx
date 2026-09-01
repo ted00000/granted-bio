@@ -1,6 +1,8 @@
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
 import { InternalLink } from '../EntityLink'
+import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
+import { detailHref } from '@/lib/reports/share-nav'
 
 interface Trial {
   nct_id: string
@@ -39,7 +41,8 @@ function statusStyle(status: string | null): string {
   return 'text-gray-600'
 }
 
-export function TrialsView({ trials, byPhase, byStatus }: TrialsViewProps) {
+export async function TrialsView({ trials, byPhase, byStatus }: TrialsViewProps) {
+  const inShare = !!(await getShareContextFromHeaders())
   const total = trials.length
 
   const columns: Column<Trial>[] = [
@@ -49,7 +52,7 @@ export function TrialsView({ trials, byPhase, byStatus }: TrialsViewProps) {
       render: (t) => (
         <div>
           <InternalLink
-            href={`/trial/${t.nct_id}`}
+            href={detailHref(`/trial/${t.nct_id}`, inShare)}
             className="text-gray-900 font-medium leading-snug block mb-0.5"
           >
             {t.study_title}

@@ -1,6 +1,8 @@
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
 import { InternalLink } from '../EntityLink'
+import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
+import { detailHref } from '@/lib/reports/share-nav'
 
 interface Patent {
   patent_id: string
@@ -30,7 +32,9 @@ function formatInventors(names: string | null): string {
   return `${list[0]} +${list.length - 1}`
 }
 
-export function PatentsView({ reportId, patents, byAssignee, recentCount }: PatentsViewProps) {
+export async function PatentsView({ reportId, patents, byAssignee, recentCount }: PatentsViewProps) {
+  const share = await getShareContextFromHeaders()
+  const inShare = !!share && share.report_id === reportId
   const total = patents.length
 
   const columns: Column<Patent>[] = [
@@ -40,7 +44,7 @@ export function PatentsView({ reportId, patents, byAssignee, recentCount }: Pate
       render: (p) => (
         <div>
           <InternalLink
-            href={`/patent/${p.patent_id}`}
+            href={detailHref(`/patent/${p.patent_id}`, inShare)}
             className="text-gray-900 font-medium leading-snug block mb-0.5"
           >
             {p.patent_title || '(No title)'}

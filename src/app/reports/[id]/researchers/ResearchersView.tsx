@@ -2,6 +2,7 @@ import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
 import { InternalLink } from '../EntityLink'
 import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
+import { detailHref } from '@/lib/reports/share-nav'
 
 interface Researcher {
   pi_name: string
@@ -39,9 +40,8 @@ export async function ResearchersView({ reportId, researchers, totalPIs }: Resea
   const shown = researchers.length
   const isTruncated = totalPIs > shown
   const share = await getShareContextFromHeaders()
-  const basePath = share && share.report_id === reportId
-    ? `/share/${share.token}`
-    : `/reports/${reportId}`
+  const inShare = !!share && share.report_id === reportId
+  const basePath = inShare ? `/share/${share!.token}` : `/reports/${reportId}`
 
   const columns: Column<Researcher>[] = [
     {
@@ -49,7 +49,7 @@ export async function ResearchersView({ reportId, researchers, totalPIs }: Resea
       widthClass: 'w-1/3',
       render: (r) => (
         <InternalLink
-          href={`/researcher/${encodeURIComponent(r.pi_name)}`}
+          href={detailHref(`/researcher/${encodeURIComponent(r.pi_name)}`, inShare)}
           className="text-gray-900 font-medium"
         >
           {displayName(r.pi_name)}

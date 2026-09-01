@@ -8,6 +8,8 @@
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
 import { InternalLink } from '../EntityLink'
+import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
+import { detailHref } from '@/lib/reports/share-nav'
 
 interface Project {
   application_id: string
@@ -44,7 +46,15 @@ function firstPI(names: string | null): string {
   return names.split(';')[0]?.trim() || '—'
 }
 
-export function ProjectsView({ reportId, projects, totalProjects, totalFunding }: ProjectsViewProps) {
+export async function ProjectsView({ reportId, projects, totalProjects, totalFunding }: ProjectsViewProps) {
+  // Share context: drill-in links to global detail pages (/project,
+  // /researcher) get ?from=share so DetailLayout shifts the anon
+  // banner copy from "sample" to "shared." Internal report-tree
+  // links (organization page) use basePath so client-side nav
+  // stays inside /share/[token]/…
+  const share = await getShareContextFromHeaders()
+  const inShare = !!share && share.report_id === reportId
+  const basePath = inShare ? `/share/${share!.token}` : `/reports/${reportId}`
   const shownCount = projects.length
   // Curation-by-design: we always show the top-N stored slice. When
   // the true sample count exceeds it, the caption reads "top N of M"
@@ -60,7 +70,7 @@ export function ProjectsView({ reportId, projects, totalProjects, totalFunding }
       render: (p) => (
         <div>
           <InternalLink
-            href={`/project/${p.application_id}`}
+            href={detailHref(`/project/${p.application_id}`, inShare)}
             className="text-gray-900 font-medium leading-snug block mb-0.5"
           >
             {p.title}
@@ -77,7 +87,7 @@ export function ProjectsView({ reportId, projects, totalProjects, totalFunding }
         const name = firstPI(p.pi_names)
         if (name === '—') return <span className="text-gray-400">—</span>
         return (
-          <InternalLink href={`/researcher/${encodeURIComponent(name)}`} className="text-gray-700">
+          <InternalLink href={detailHref(`/researcher/${encodeURIComponent(name)}`, inShare)} className="text-gray-700">
             {name}
           </InternalLink>
         )
@@ -89,7 +99,7 @@ export function ProjectsView({ reportId, projects, totalProjects, totalFunding }
         if (!p.org_name) return <span className="text-gray-400">—</span>
         return (
           <InternalLink
-            href={`/reports/${reportId}/organizations/${encodeURIComponent(p.org_name)}`}
+            href={`${basePath}/organizations/${encodeURIComponent(p.org_name)}`}
             className="text-gray-700 leading-snug block"
           >
             {p.org_name}

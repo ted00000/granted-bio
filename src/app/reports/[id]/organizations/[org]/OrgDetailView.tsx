@@ -18,6 +18,8 @@ import { ArrowRight, Building2 } from 'lucide-react'
 import { SectionLabel } from '../../SectionLabel'
 import { DataTable, type Column } from '../../DataTable'
 import { InternalLink } from '../../EntityLink'
+import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
+import { detailHref } from '@/lib/reports/share-nav'
 
 interface Project {
   application_id: string
@@ -52,7 +54,8 @@ function firstPI(names: string | null): string {
   return names.split(';')[0]?.trim() || '—'
 }
 
-export function OrgDetailView({ orgName, projects, totalFunding }: OrgDetailViewProps) {
+export async function OrgDetailView({ orgName, projects, totalFunding }: OrgDetailViewProps) {
+  const inShare = !!(await getShareContextFromHeaders())
   const columns: Column<Project>[] = [
     {
       label: 'Project',
@@ -60,7 +63,7 @@ export function OrgDetailView({ orgName, projects, totalFunding }: OrgDetailView
       render: (p) => (
         <div>
           <InternalLink
-            href={`/project/${p.application_id}`}
+            href={detailHref(`/project/${p.application_id}`, inShare)}
             className="text-gray-900 font-medium leading-snug block mb-0.5"
           >
             {p.title}
@@ -77,7 +80,7 @@ export function OrgDetailView({ orgName, projects, totalFunding }: OrgDetailView
         const name = firstPI(p.pi_names)
         if (name === '—') return <span className="text-gray-400">—</span>
         return (
-          <InternalLink href={`/researcher/${encodeURIComponent(name)}`} className="text-gray-700">
+          <InternalLink href={detailHref(`/researcher/${encodeURIComponent(name)}`, inShare)} className="text-gray-700">
             {name}
           </InternalLink>
         )
@@ -137,7 +140,7 @@ export function OrgDetailView({ orgName, projects, totalFunding }: OrgDetailView
 
       {/* Cross-link to the unscoped platform-wide org page */}
       <Link
-        href={`/org/${encodeURIComponent(orgName)}`}
+        href={detailHref(`/org/${encodeURIComponent(orgName)}`, inShare)}
         className="group block bg-white rounded-lg border border-gray-200 hover:border-[#E07A5F] hover:shadow-sm transition-all px-5 py-4"
       >
         <div className="flex items-center justify-between gap-3">
