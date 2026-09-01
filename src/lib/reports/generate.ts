@@ -233,7 +233,9 @@ export async function runTopicReportPhase3Aggregation(
   allResearchers: ResearcherStats[]
 }> {
   await updateProgressStage(reportId, 'aggregating')
-  const fundingStats = calculateFundingStats(agentOutputs.projects)
+  // Compute aggregate lists FIRST so the funding-stats counts can be
+  // pinned to the normalized entity totals — see the override comment
+  // in calculateFundingStats.
   const allOrgs = await aggregateOrganizations(
     agentOutputs.projects,
     agentOutputs.trials,
@@ -241,6 +243,10 @@ export async function runTopicReportPhase3Aggregation(
     agentOutputs.publications,
   )
   const allResearchers = aggregateResearchers(agentOutputs.projects)
+  const fundingStats = calculateFundingStats(agentOutputs.projects, {
+    orgCount: allOrgs.length,
+    piCount: allResearchers.length,
+  })
   // Top-N slices are still used by narrative synthesis, DashboardTiles,
   // FundingLandscape drill-downs — kept as their own arrays so callers
   // that expect a curated summary don't accidentally receive the full
@@ -681,6 +687,13 @@ function transformSavedProjectsToOutput(savedProjects: any[]): ProjectsAgentOutp
         match_tier: null,
       }
     })
+    // Sort by total_cost descending so downstream `.slice(0, N)` calls
+    // (top-20 for narrative, top-20 for the Projects page top view)
+    // actually return the top N by funding, not the first N in
+    // whatever order the DB happened to return. Null costs sink to
+    // the bottom. This also gives the paginated "Show all" view a
+    // stable, meaningful default ordering.
+    .sort((a, b) => (b.total_cost ?? 0) - (a.total_cost ?? 0))
 
   // Calculate total funding
   const totalFunding = items.reduce((sum, p) => sum + (p.total_cost || 0), 0)
@@ -820,11 +833,24 @@ function derivePortfolioTopic(projectsOutput: ProjectsAgentOutput): string {
  * Calculate funding statistics from projects
  */
 function calculateFundingStats(
-  projectsOutput: AllAgentOutputs['projects']
+  projectsOutput: AllAgentOutputs['projects'],
+  // Optional canonical counts from the Phase 3 aggregation step.
+  // When provided, these override the raw string-set counts computed
+  // below — because aggregateOrganizations/aggregateResearchers use
+  // normalized keys (case-fold, name-order swap, whitespace collapse)
+  // that merge variant spellings of the same org/PI. Without this
+  // override, funding_stats.piCount (raw strings, e.g., 142) drifted
+  // from all_researchers.length (normalized, e.g., 122), so the
+  // Data-page caption said "Showing 15 of 142" but the "Show all"
+  // button showed 122. Same class of bug for orgs. Phase 3 passes
+  // both; the portfolio flow leaves them undefined and gets the
+  // raw counts.
+  overrides?: { orgCount?: number; piCount?: number },
 ): FundingStats {
   const items = projectsOutput.items
 
-  // Count unique orgs and PIs
+  // Count unique orgs and PIs (raw strings — used only when the
+  // caller didn't pass normalized counts through).
   const orgs = new Set<string>()
   const pis = new Set<string>()
 
@@ -844,8 +870,8 @@ function calculateFundingStats(
   return {
     total: projectsOutput.totalFunding,
     projectCount: items.length,
-    orgCount: orgs.size,
-    piCount: pis.size,
+    orgCount: overrides?.orgCount ?? orgs.size,
+    piCount: overrides?.piCount ?? pis.size,
     byYear: projectsOutput.byYear,
     byCategory: projectsOutput.byCategory,
     byOrg: projectsOutput.byOrg.slice(0, 10),
