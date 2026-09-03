@@ -204,7 +204,7 @@ export default function UsersPage() {
                       This Month
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Tokens
+                      API Tokens
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Joined
@@ -248,16 +248,26 @@ export default function UsersPage() {
                           {new Date(user.created_at).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <select
-                            value={user.role}
-                            onChange={(e) => updateRole(user.id, e.target.value)}
-                            disabled={updating === user.id}
-                            className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                          >
-                            <option value="user">User</option>
-                            <option value="associate">Associate</option>
-                            <option value="admin">Admin</option>
-                          </select>
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setGrantTarget(user)}
+                              className="text-xs px-2.5 py-1 border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                              title="Grant free analysis credits to this associate"
+                            >
+                              Grant credits
+                            </button>
+                            <select
+                              value={user.role}
+                              onChange={(e) => updateRole(user.id, e.target.value)}
+                              disabled={updating === user.id}
+                              className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                            >
+                              <option value="user">User</option>
+                              <option value="associate">Associate</option>
+                              <option value="admin">Admin</option>
+                            </select>
+                          </div>
                         </td>
                       </tr>
                     )
