@@ -31,7 +31,7 @@ export default function PricingPage() {
             Simple, transparent pricing
           </h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Strategic intelligence reports priced to use, not to ration.
+            Strategic intelligence analyses priced to use, not to ration.
           </p>
         </div>
 
@@ -171,7 +171,7 @@ export default function PricingPage() {
                 With granted.bio
               </div>
               <h3 className="font-semibold text-gray-900 mb-4">
-                The report, ready
+                The analysis, ready
               </h3>
               <ul className="space-y-2.5 text-sm text-gray-600 mb-6">
                 <li className="flex items-start gap-2">
@@ -193,7 +193,7 @@ export default function PricingPage() {
               </ul>
               <div className="mt-auto pt-4 border-t border-gray-100">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-2xl font-semibold text-gray-900">2 minutes</span>
+                  <span className="text-2xl font-semibold text-gray-900">A few minutes</span>
                   <span className="text-gray-400">·</span>
                   <span className="text-2xl font-semibold text-[#E07A5F]">$199</span>
                 </div>
@@ -202,7 +202,7 @@ export default function PricingPage() {
           </div>
 
           <p className="text-sm text-gray-500 text-center mt-8 max-w-2xl mx-auto italic">
-            At analyst rates, the report pays for itself the first time you skip
+            At analyst rates, the analysis pays for itself the first time you skip
             the manual workflow.
           </p>
         </div>
@@ -216,8 +216,8 @@ export default function PricingPage() {
           </h2>
           <div className="space-y-4">
             <FAQ
-              question="Do I need an account to buy a report?"
-              answer="Yes — a free account is required so the report ties to your login and you can drill into every linked record for the 3-month window. Signing up takes a few seconds and doesn't cost anything."
+              question="Do I need an account to buy?"
+              answer="Yes — a free account is required so the analysis ties to your login and you can drill into every linked record for the 3-month window. Signing up takes a few seconds and doesn't cost anything."
             />
             <FAQ
               question="What data sources do you use?"
