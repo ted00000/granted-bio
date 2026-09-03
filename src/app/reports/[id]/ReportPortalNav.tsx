@@ -49,8 +49,12 @@ interface ReportPortalNavProps {
    *  `/share/[token]` in share view. When absent, derived from
    *  pathname for legacy sample-page callers. */
   basePath?: string
-  /** When null, this is a public sample page or share view — hide
-   *  the "back to Reports" link. */
+  /** When null, this is a share view — hide the back link entirely
+   *  (recipients don't have a My Analyses list to go back to). When
+   *  set to `/reports`, the label reads "All analyses" (owner view).
+   *  When set to `/samples`, the label reads "All samples" (public
+   *  sample view). Any other path defaults to the generic "Back"
+   *  label. */
   backHref?: string | null
 }
 
@@ -141,7 +145,13 @@ export function ReportPortalNav({
             className="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-gray-800 transition-colors"
           >
             <ChevronLeft className="w-3.5 h-3.5" />
-            <span>All analyses</span>
+            <span>
+              {backHref === '/samples'
+                ? 'All samples'
+                : backHref === '/reports'
+                  ? 'All analyses'
+                  : 'Back'}
+            </span>
           </Link>
         )}
       </div>

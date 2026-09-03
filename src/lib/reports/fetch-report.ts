@@ -55,6 +55,10 @@ export interface ReportRow {
   curated_publications: unknown[] | null
   signals_analysis: unknown | null
   agent_outputs: unknown | null
+  /** When TRUE, the report is anon-accessible via /reports/[id]
+   *  regardless of user_id. Set only by admins for marketing sample
+   *  reports; getReport() honors this flag to skip the auth check. */
+  is_public_sample: boolean
 }
 
 /**
@@ -93,6 +97,14 @@ export const getReport = cache(async (id: string): Promise<ReportRow | null> => 
     return getReportAsAdmin(id)
   }
 
+  // Public-sample mode: if the row is flagged as a public sample
+  // (admins set the flag; not user-facing), allow anon access. The
+  // check is a cheap indexed lookup — see the partial index in
+  // 20260903_public_sample_flag.sql. Falls through to user auth for
+  // every other report.
+  const publicSample = await getPublicSampleReport(id)
+  if (publicSample) return publicSample
+
   const supabase = await createServerSupabaseClient()
   const {
     data: { user },
@@ -109,6 +121,25 @@ export const getReport = cache(async (id: string): Promise<ReportRow | null> => 
     .single()
   if (error || !data) return null
   return data as ReportRow
+})
+
+/**
+ * Cached helper: returns the report only if it is flagged as a
+ * public sample. Any other row (including reports the caller owns
+ * that AREN'T flagged) resolves to null so getReport falls through
+ * to the normal user-auth path.
+ *
+ * Cached so a single request's layout + page + section components
+ * only trigger the flag check once per report_id.
+ */
+export const getPublicSampleReport = cache(async (id: string): Promise<ReportRow | null> => {
+  const { data } = await supabaseAdmin
+    .from('user_reports')
+    .select('*')
+    .eq('id', id)
+    .eq('is_public_sample', true)
+    .maybeSingle()
+  return (data as ReportRow) ?? null
 })
 
 /**

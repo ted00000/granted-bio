@@ -21,6 +21,7 @@ import { getReport, getShareContextFromHeaders } from '@/lib/reports/fetch-repor
 import { ReportPortalNav, type SectionCounts } from './ReportPortalNav'
 import { ReportViewProvider, type ReportViewCtx } from './ReportViewContext'
 import { ShareAttributionBar } from './ShareAttributionBar'
+import { SampleAttributionBar } from './SampleAttributionBar'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -37,6 +38,12 @@ export default async function ReportPortalLayout({
 
   const share = await getShareContextFromHeaders()
   const isShared = share !== null && share.report_id === id
+  // Public sample = row's is_public_sample flag is set AND the
+  // visitor didn't arrive via a share URL. Share view takes
+  // precedence: someone who accesses a sample report via a valid
+  // share token gets the "shared" framing (attribution bar), not
+  // the marketing sample bar.
+  const isPublicSample = !isShared && report.is_public_sample === true
 
   // Sidebar counts must reflect the FULL analyzed sample, not the
   // truncated top-N slices stored in some columns. Storage layout:
@@ -72,7 +79,15 @@ export default async function ReportPortalLayout({
   const sharedByName = isShared
     ? share!.sender_display_name ?? (await lookupOwnerName(share!.owner_user_id))
     : null
-  const backHref = isShared ? null : '/reports'
+  // Back link points to /reports (My Analyses) for owners,
+  // /samples for public sample viewers, and is hidden for share
+  // recipients (their landing surface is the analysis itself; a
+  // "back to samples" would confuse them).
+  const backHref = isShared
+    ? null
+    : isPublicSample
+      ? '/samples'
+      : '/reports'
 
   const viewCtx: ReportViewCtx = {
     reportId: report.id,
@@ -80,6 +95,7 @@ export default async function ReportPortalLayout({
     isShared,
     shareToken: isShared ? share!.token : null,
     sharedByName,
+    isPublicSample,
   }
 
   return (
@@ -95,6 +111,7 @@ export default async function ReportPortalLayout({
             reportTopic={report.topic}
           />
         )}
+        {isPublicSample && <SampleAttributionBar />}
         <div className="flex-1 min-h-0 flex overflow-hidden">
           <ReportPortalNav
             reportId={report.id}

@@ -38,6 +38,12 @@ export interface ReportViewCtx {
   /** Populated in share view only — the sender's display name for
    *  the attribution bar + any share-specific CTAs. Null in owner view. */
   sharedByName: string | null
+  /** True when this report is being served as a public marketing
+   *  sample (row's is_public_sample flag is set + no auth session
+   *  is required). Sibling to isShared: both are anon-viewer modes
+   *  but they render different attribution bars and CTAs. Owner
+   *  affordances are hidden in both modes. */
+  isPublicSample: boolean
 }
 
 const ReportViewContext = createContext<ReportViewCtx | null>(null)

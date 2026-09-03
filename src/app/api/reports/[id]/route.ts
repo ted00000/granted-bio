@@ -51,6 +51,27 @@ export async function GET(
       })
     }
 
+    // Public-sample path: if the row is flagged as a public marketing
+    // sample, allow anon access. Same rationale as the share-token
+    // branch — the dashboard page is a client component that fetches
+    // this endpoint after render, bypassing middleware. Without this
+    // branch, anon visitors to /reports/[id] (via the /sample/[slug]
+    // redirect) would see server-rendered section pages just fine
+    // but the dashboard would 401 mid-load.
+    const { data: publicSample } = await supabaseAdmin
+      .from('user_reports')
+      .select('*')
+      .eq('id', id)
+      .eq('is_public_sample', true)
+      .maybeSingle()
+    if (publicSample) {
+      return NextResponse.json({
+        report: publicSample,
+        refreshAvailable: false,
+        retryAvailable: false,
+      })
+    }
+
     const supabase = await createServerSupabaseClient()
 
     const {
