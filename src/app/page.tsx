@@ -47,7 +47,7 @@ export default function Home() {
                 <div className="space-y-4">
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#E07A5F]/10 text-[#E07A5F] rounded-full text-sm font-medium">
                     <FileText className="w-4 h-4" />
-                    Intelligence Analyses
+                    NIH Grants Intelligence Layer
                   </div>
                   <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 leading-tight">
                     Understand a research field in a few minutes, not weeks.
@@ -428,7 +428,7 @@ export default function Home() {
                 <div>
                   <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-sm mb-4">
                     <FileText className="w-4 h-4" />
-                    Intelligence Analyses
+                    NIH Grants Intelligence Layer
                   </div>
                   <h2 className="text-2xl md:text-3xl font-semibold mb-4">
                     Weeks of cross-source work, done in a few minutes.
