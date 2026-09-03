@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { FileText, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 import { SignUpModal } from '@/components/SignUpModal'
 import { useOptionalAuth } from '@/contexts/AuthContext'
@@ -78,13 +78,6 @@ export function MarketingNav() {
             className={linkClass('/samples')}
           >
             Samples
-          </Link>
-          <Link
-            href="/analyze"
-            className={linkClass('/analyze', 'flex items-center gap-2')}
-          >
-            <FileText className="w-4 h-4" strokeWidth={1.5} />
-            <span>Analyses</span>
           </Link>
           <Link href="/pricing" className={linkClass('/pricing')}>
             Pricing

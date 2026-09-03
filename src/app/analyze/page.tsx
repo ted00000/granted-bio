@@ -1,13 +1,19 @@
 'use client'
 
-// The "create a new analysis" surface.
+// The "create a new analysis" surface — logged-in only.
 //
-// - Logged-out visitors get the marketing pitch (hero + pricing +
-//   sign-up) wrapped in MarketingNav.
-// - Logged-in visitors get a focused, platform-native topic-picker:
-//   header + short prompt + big topic input that opens the
-//   GenerateReportDialog with the topic pre-filled. No pitch, no
-//   pricing card — an authed user is already sold; they need to act.
+// Logged-in visitors get a focused, platform-native topic-picker:
+// header + short prompt + big topic input that opens the
+// GenerateReportDialog with the topic pre-filled. No pitch, no
+// pricing card — an authed user is already sold; they need to act.
+//
+// Anon visitors redirect to `/` (the landing page owns the pitch).
+// Prior to 2026-09-03 this page had a full anon marketing variant
+// (hero + pricing card + sign-up modal), but every element
+// duplicated content on /, /pricing, or /samples. Removed for
+// clarity; the sign-up flow (GenerateReportCTA → SignUpModal →
+// post-auth redirect to /analyze) still lands users here after
+// signing up.
 //
 // Split from /reports on 2026-08-23 so nav semantics stay clean:
 //   Search / Analyze          <- verbs (actions)
@@ -25,15 +31,22 @@ import {
   TrendingUp,
 } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
-import { MarketingNav } from '@/components/MarketingNav'
-import { SignUpModal } from '@/components/SignUpModal'
 import { useAuth } from '@/contexts/AuthContext'
 import { GenerateReportDialog } from '../reports/GenerateReportDialog'
 
 function AnalyzePageInner() {
   const { user, isLoading } = useAuth()
+  const router = useRouter()
 
-  if (isLoading) {
+  // Anon → send to the landing page. The GenerateReportCTA flow
+  // brings authed users back here after sign-up automatically, so
+  // this redirect only fires for direct-URL anon hits (bookmarks,
+  // external links, session expiry).
+  useEffect(() => {
+    if (!isLoading && !user) router.replace('/')
+  }, [isLoading, user, router])
+
+  if (isLoading || !user) {
     return (
       <div className="min-h-screen bg-[#FAFAF9] flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
@@ -41,7 +54,7 @@ function AnalyzePageInner() {
     )
   }
 
-  return user ? <AuthedAnalyze /> : <AnonAnalyze />
+  return <AuthedAnalyze />
 }
 
 // Wrapped in Suspense because AuthedAnalyze calls useSearchParams()
@@ -60,167 +73,6 @@ export default function AnalyzePage() {
     </Suspense>
   )
 }
-
-// ==================================================================
-// Anon variant — pitch page for logged-out visitors. Kept as-is
-// (marketing framing lives here for anyone who arrived from a public
-// surface without a session).
-// ==================================================================
-
-function AnonAnalyze() {
-  const [signUpOpen, setSignUpOpen] = useState<
-    null | { title?: string; description?: string }
-  >(null)
-
-  return (
-    <div className="min-h-screen bg-[#FAFAF9]">
-      <MarketingNav />
-
-      <main>
-        <section className="py-16 md:py-20 px-6">
-          <div className="max-w-3xl mx-auto text-center">
-            <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-gray-900 mb-5">
-              Get 3 months inside the granted.bio intelligence platform.
-            </h1>
-            <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              NIH funding, clinical trials, patents, and publications, cross-linked
-              and drillable. One synthesized analysis on the topic of your choice
-              included with every pass — generates in a few minutes.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link
-                href="/samples"
-                className="inline-flex items-center gap-2 px-5 py-3 border border-gray-200 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-50 transition-colors"
-              >
-                <Sparkles className="w-4 h-4 text-[#E07A5F]" />
-                See Sample Analyses
-              </Link>
-              <button
-                type="button"
-                onClick={() =>
-                  setSignUpOpen({
-                    title: 'Create a free account to start',
-                    description:
-                      "A free account is required to generate an analysis — it ties the analysis to your login so you can drill into every linked record for 3 months. Signing up takes a few seconds.",
-                  })
-                }
-                className="inline-flex items-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
-              >
-                Get Started Free
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-            <p className="text-xs uppercase tracking-wider text-gray-400 mt-6">
-              Data sources: NIH RePORTER · ClinicalTrials.gov · USPTO · PubMed
-            </p>
-          </div>
-        </section>
-
-        <section className="py-12 px-6 bg-white border-y border-gray-100">
-          <div className="max-w-xl mx-auto">
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
-              <div className="text-center mb-6">
-                <div className="text-4xl font-semibold text-gray-900">$199</div>
-                <div className="text-gray-500 text-sm mt-1">3-month intelligence platform pass</div>
-              </div>
-              <ul className="space-y-3 text-sm text-gray-700 mb-6">
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Full drill-down access to every NIH project, trial, patent, publication
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  One intelligence analysis included on the topic of your choice
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Free refresh within 12 months against current NIH data
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Refine &amp; regenerate if the first pass isn&apos;t right
-                </li>
-              </ul>
-              <button
-                type="button"
-                onClick={() =>
-                  setSignUpOpen({
-                    title: 'Create a free account to continue',
-                    description:
-                      'A free account is required so the analysis ties to your login and you can drill into every linked record during the 3-month window. Signing up takes a few seconds.',
-                  })
-                }
-                className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors"
-              >
-                Get Started Free
-                <ArrowRight className="w-4 h-4" />
-              </button>
-              <p className="text-center text-xs text-gray-500 mt-4">
-                Need 5+ analyses?{' '}
-                <Link href="/contact" className="text-[#E07A5F] hover:text-[#C96A4F] underline">
-                  Talk to us about volume.
-                </Link>
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16 px-6">
-          <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-3">
-              Not ready to commit? Browse the data first.
-            </h2>
-            <p className="text-gray-600 mb-6">
-              A free account lets you search every project, trial, patent, and
-              publication in our database. Verify your topic has signal before
-              you buy the analysis.
-            </p>
-            <button
-              type="button"
-              onClick={() => setSignUpOpen({})}
-              className="inline-flex items-center gap-2 text-[#E07A5F] hover:text-[#C96A4F] font-medium"
-            >
-              Create a Free Account
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </section>
-      </main>
-
-      <footer className="border-t border-gray-100 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-sm text-gray-400">
-          <p>Data from NIH RePORTER, ClinicalTrials.gov, USPTO &amp; PubMed</p>
-          <div className="flex items-center gap-6">
-            <a href="mailto:hello@granted.bio" className="hover:text-gray-600 transition-colors">
-              Contact
-            </a>
-            <Link href="/privacy" className="hover:text-gray-600 transition-colors">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-gray-600 transition-colors">
-              Terms
-            </Link>
-          </div>
-        </div>
-      </footer>
-
-      <SignUpModal
-        open={signUpOpen !== null}
-        onClose={() => setSignUpOpen(null)}
-        redirect="/analyze"
-        title={signUpOpen?.title}
-        description={signUpOpen?.description}
-      />
-    </div>
-  )
-}
-
-// ==================================================================
-// Authed variant — focused topic-picker page. No pitch, no pricing
-// card, no marketing framing. Compact header + a single big input
-// card. Submitting opens the GenerateReportDialog with the topic
-// pre-filled so the interpret-topic preview flow runs unchanged.
-// ==================================================================
 
 function AuthedAnalyze() {
   const router = useRouter()
