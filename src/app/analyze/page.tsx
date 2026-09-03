@@ -80,12 +80,12 @@ function AnonAnalyze() {
         <section className="py-16 md:py-20 px-6">
           <div className="max-w-3xl mx-auto text-center">
             <h1 className="text-3xl md:text-5xl font-semibold tracking-tight text-gray-900 mb-5">
-              Generate a complete intelligence analysis on any topic.
+              Get 3 months inside the granted.bio intelligence platform.
             </h1>
             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              NIH funding, clinical trials, patents, and publications, synthesized
-              into strategic narrative — generated in two minutes, with access to
-              drill into every linked record for three months.
+              NIH funding, clinical trials, patents, and publications, cross-linked
+              and drillable. One synthesized analysis on the topic of your choice
+              included with every pass — generates in a few minutes.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
@@ -121,28 +121,24 @@ function AnonAnalyze() {
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8">
               <div className="text-center mb-6">
                 <div className="text-4xl font-semibold text-gray-900">$199</div>
-                <div className="text-gray-500 text-sm mt-1">per analysis</div>
+                <div className="text-gray-500 text-sm mt-1">3-month intelligence platform pass</div>
               </div>
               <ul className="space-y-3 text-sm text-gray-700 mb-6">
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Complete intelligence analysis (web portal + PDF export)
+                  Full drill-down access to every NIH project, trial, patent, publication
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Full access to every linked project, trial, patent, publication
+                  One intelligence analysis included on the topic of your choice
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  3 months of in-platform exploration from generation
+                  Free refresh within 12 months against current NIH data
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  One free refresh within 12 months
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Not what you expected? Refine and regenerate, free.
+                  Refine &amp; regenerate if the first pass isn&apos;t right
                 </li>
               </ul>
               <button
@@ -362,10 +358,10 @@ function AuthedAnalyze() {
             <div className="mt-4 flex items-center justify-between gap-3 flex-wrap">
               <p className="text-xs text-gray-500">
                 {canBypassPayment ? (
-                  <>Free under your current tier. Two minutes to generate.</>
+                  <>Free under your current tier. A few minutes to generate.</>
                 ) : (
                   <>
-                    <span className="text-gray-700 font-medium">$199</span> per analysis &middot; free refresh included &middot; ~2 min to generate
+                    <span className="text-gray-700 font-medium">$199</span> &middot; 3-month platform pass with one analysis included &middot; a few minutes to generate
                   </>
                 )}
               </p>

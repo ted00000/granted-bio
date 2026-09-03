@@ -20,7 +20,7 @@ export const dynamic = 'force-dynamic'
 export const metadata = {
   title: 'Sample Intelligence Analyses | granted.bio',
   description:
-    'See real granted.bio intelligence analyses. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative you can navigate section by section. Two full samples on different topics — see what you get for $199 before you buy.',
+    'See real granted.bio intelligence analyses. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative you can navigate section by section. Two full samples on different topics — see what a $199 3-month platform pass includes before you buy.',
 }
 
 interface Sample {
@@ -118,7 +118,7 @@ export default async function SamplesIndexPage() {
             See what a granted.bio analysis looks like
           </h1>
           <p className="text-gray-500 max-w-2xl mx-auto">
-            Two full samples on different topics — a therapeutic modality and a diagnostic modality. This is exactly what you get for $199 on any life-sciences research topic.
+            Two full samples on different topics — a therapeutic modality and a diagnostic modality. This is exactly what your included analysis looks like under a $199 3-month platform pass.
           </p>
         </div>
 
@@ -188,10 +188,10 @@ export default async function SamplesIndexPage() {
         <div className="mt-12 text-center bg-white border border-gray-200 rounded-xl p-8">
           <FileText className="w-8 h-8 text-[#E07A5F] mx-auto mb-3" strokeWidth={1.5} />
           <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-2">
-            Generate one on your own topic
+            Get your own 3-month platform pass
           </h2>
           <p className="text-gray-500 mb-6 max-w-xl mx-auto">
-            Any life-sciences research topic. $199, generated in two minutes.
+            $199 · 3 months of platform access + one analysis on any life-sciences topic. Generates in a few minutes.
           </p>
           <GenerateReportCTA className="inline-flex items-center gap-2 px-5 py-3 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors">
             Generate an Analysis

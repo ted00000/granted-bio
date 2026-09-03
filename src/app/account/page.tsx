@@ -429,12 +429,12 @@ export default function AccountPage() {
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold text-gray-900">
-                    Intelligence Reports
+                    Intelligence Analyses
                   </h2>
                   <p className="text-sm text-gray-500">
                     {isBeta
                       ? `${betaReportsUsed} of ${BETA_REPORT_CAP} used · ${betaReportsRemaining} remaining`
-                      : '$199 per report'}
+                      : '$199 · 3-month platform pass'}
                   </p>
                 </div>
               </div>

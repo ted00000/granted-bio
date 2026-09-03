@@ -49,31 +49,31 @@ export default function PricingPage() {
                 <div className="w-8 h-8 rounded-lg bg-[#FDF2EF] flex items-center justify-center">
                   <FileText className="w-4 h-4 text-[#E07A5F]" strokeWidth={1.5} />
                 </div>
-                <h2 className="text-xl font-semibold text-gray-900">Intelligence Analysis</h2>
+                <h2 className="text-xl font-semibold text-gray-900">Intelligence Platform Pass</h2>
               </div>
               <p className="text-gray-600 text-sm">
-                A complete cross-source synthesis on any life-sciences topic, delivered as a navigable portal.
+                Three months of access to the granted.bio intelligence platform, plus one synthesized analysis on any life-sciences topic — cross-linked and drillable end to end.
               </p>
             </div>
 
             <div className="mb-6">
               <span className="text-4xl font-semibold text-gray-900">$199</span>
-              <span className="text-gray-500"> per analysis</span>
+              <span className="text-gray-500"> · 3-month pass</span>
             </div>
 
             <GenerateReportCTA
               className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#E07A5F] text-white rounded-lg font-medium hover:bg-[#C96A4F] transition-colors mb-8"
             >
-              Generate an Analysis
+              Start Your Pass
               <ArrowRight className="w-4 h-4" />
             </GenerateReportCTA>
 
             <ul className="space-y-3">
+              <Feature>3 months of full drill-down access to every NIH project, trial, patent, publication</Feature>
+              <Feature>One intelligence analysis included on the topic of your choice</Feature>
               <Feature>Researcher or investor lens</Feature>
-              <Feature>Full access to every linked project, trial, patent, publication</Feature>
-              <Feature>3 months of in-platform drill-down access</Feature>
-              <Feature>One free refresh within 12 months</Feature>
-              <Feature>Refine &amp; regenerate, free, if not satisfied</Feature>
+              <Feature>Free refresh within 12 months against current NIH data</Feature>
+              <Feature>Refine &amp; regenerate if the first pass isn&apos;t right</Feature>
             </ul>
           </div>
 
@@ -83,7 +83,7 @@ export default function PricingPage() {
               <h2 className="text-xl font-semibold text-gray-900 mb-2">Free account</h2>
               <p className="text-gray-600 text-sm">
                 Browse the underlying data and validate your topic has signal
-                before you buy a report.
+                before you buy a pass.
               </p>
             </div>
 
@@ -111,7 +111,7 @@ export default function PricingPage() {
         {/* Need more? — BD / enterprise punchline pointing at /contact.
             Mirrors the home page §5 footer line. */}
         <p className="text-center text-sm text-gray-500 mb-16">
-          Need 5+ reports for a team?{' '}
+          Need 5+ passes for a team?{' '}
           <Link href="/contact" className="text-[#E07A5F] hover:text-[#C96A4F] underline">
             Talk to us about volume.
           </Link>
@@ -224,12 +224,12 @@ export default function PricingPage() {
               answer="NIH RePORTER (grants), ClinicalTrials.gov (active and completed trials), USPTO (patents), and PubMed (publications). All cross-linked at the project_number level so a project, its funded trials, its filed patents, and its published papers appear together."
             />
             <FAQ
-              question="What's included in a report?"
-              answer="Executive summary, field maturity assessment, competitive topology, funding landscape, key projects with insights, clinical validation status, patent and IP landscape, key publications, top organizations and researchers. About 30 pages of analysis, tailored to your chosen lens (researcher or investor)."
+              question="What's included in an analysis?"
+              answer="Executive summary, field maturity assessment, competitive topology, funding landscape, key projects with insights, clinical validation status, patent and IP landscape, key publications, top organizations and researchers. Renders as a navigable web portal, tailored to your chosen lens (researcher or investor)."
             />
             <FAQ
-              question="What if I'm not happy with my report?"
-              answer="We'll help you refine your search and regenerate, free. The platform asks what didn't work, our analysis engine proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per report, within 14 days of generation."
+              question="What if I'm not happy with my analysis?"
+              answer="We'll help you refine your search and regenerate, free. The platform asks what didn't work, our analysis engine proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per analysis, within 14 days of generation."
             />
             <FAQ
               question="Do credits expire?"

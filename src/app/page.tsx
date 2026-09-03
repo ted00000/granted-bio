@@ -58,7 +58,7 @@ export default function Home() {
                     positioning, investment diligence, and partnership scouting.
                   </p>
                   <p className="text-2xl font-semibold text-gray-900 pt-2">
-                    $199, generated in two minutes.
+                    3 months of platform access. One analysis included. $199.
                   </p>
                 </div>
 
@@ -262,7 +262,7 @@ export default function Home() {
             </div>
 
             <p className="text-sm text-gray-500 text-center mt-8 max-w-2xl mx-auto leading-relaxed italic">
-              Every claim in the report links to the underlying project, trial, patent,
+              Every claim in the analysis links to the underlying project, trial, patent,
               or publication. Drill into any reference, see the original abstract, follow
               the data — for 3 months from purchase.
             </p>
@@ -288,7 +288,7 @@ export default function Home() {
               How it works
             </h2>
             <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
-              Reports generate in two minutes and include three months of in-platform exploration.
+              Every $199 pass includes three months of platform access with one full analysis on the topic of your choice. Analyses generate in a few minutes.
             </p>
 
             <div className="grid md:grid-cols-4 gap-6">
@@ -306,12 +306,12 @@ export default function Home() {
                 {
                   step: 3,
                   title: 'We synthesize',
-                  body: 'Projects, trials, patents, publications cross-linked and analyzed. About two minutes.',
+                  body: 'Projects, trials, patents, publications cross-linked and analyzed. A few minutes end to end.',
                 },
                 {
                   step: 4,
                   title: 'You explore',
-                  body: 'The report renders as a navigable document. Every reference stays live for 3 months.',
+                  body: 'The analysis renders as a navigable web portal. Every reference stays live for 3 months.',
                 },
               ].map(({ step, title, body }) => (
                 <div
@@ -430,12 +430,12 @@ export default function Home() {
                     Intelligence Analyses
                   </div>
                   <h2 className="text-2xl md:text-3xl font-semibold mb-4">
-                    Weeks of cross-source work, done in two minutes.
+                    Weeks of cross-source work, done in a few minutes.
                   </h2>
                   <p className="text-gray-300 mb-6">
                     Cross-source synthesis of NIH funding, clinical trials, patents, and
                     publications — analyzed into strategic narrative on where a field is going,
-                    who's leading, and where the opportunity gaps sit. Generated in two minutes.
+                    who&apos;s leading, and where the opportunity gaps sit. Generates in a few minutes.
                   </p>
                   <Link
                     href="/samples"
@@ -448,23 +448,23 @@ export default function Home() {
                 <div className="bg-white/5 rounded-xl p-6 border border-white/10">
                   <div className="text-center">
                     <div className="text-4xl font-semibold mb-2">$199</div>
-                    <div className="text-gray-400 mb-4">per analysis</div>
+                    <div className="text-gray-400 mb-4">3-month intelligence platform pass</div>
                     <ul className="text-sm text-gray-300 space-y-2 text-left">
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        Complete report (PDF + web)
+                        Full drill-down access to every NIH project, trial, patent, publication
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        3 months of in-platform drill-down access
+                        One intelligence analysis included on the topic of your choice
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        One free refresh within 12 months
+                        Free refresh within 12 months against current NIH data
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        Refine &amp; regenerate if not satisfied
+                        Refine &amp; regenerate if the first pass isn&apos;t right
                       </li>
                     </ul>
                   </div>
@@ -485,8 +485,8 @@ export default function Home() {
             <div className="space-y-3">
               {[
                 {
-                  q: "What's in a report?",
-                  a: 'A complete synthesized intelligence report — executive summary, field maturity assessment, competitive topology, funding landscape, key projects with insights, market context, clinical validation status, patent and IP landscape, key publications, top organizations and researchers. About 30 pages of analysis. See the sample for a real example.',
+                  q: "What's in an analysis?",
+                  a: 'A complete synthesized intelligence analysis — executive summary, field maturity assessment, competitive topology, funding landscape, key projects with insights, market context, clinical validation status, patent and IP landscape, key publications, top organizations and researchers. Renders as a navigable web portal with drill-down on every referenced record. See the sample for a real example.',
                 },
                 {
                   q: 'What data sources do you use?',
@@ -494,23 +494,23 @@ export default function Home() {
                 },
                 {
                   q: 'How accurate is the AI synthesis?',
-                  a: 'The data layer is deterministic — every claim links to the underlying NIH-indexed record. The narrative layer runs through our analysis engine with strict sample-aware framing: hedged language, small-N caveats, and explicit acknowledgment of what NIH-linked data does and does not capture. Reports are auditable; the methodology section explains exactly how each section was generated.',
+                  a: 'The data layer is deterministic — every claim links to the underlying NIH-indexed record. The narrative layer runs through our analysis engine with strict sample-aware framing: hedged language, small-N caveats, and explicit acknowledgment of what NIH-linked data does and does not capture. Analyses are auditable; the methodology section explains exactly how each section was generated.',
                 },
                 {
-                  q: 'What does "3 months of access" include?',
-                  a: 'Three months from generation to navigate the report inside the platform — click any project, trial, patent, or publication reference and explore the underlying record. The PDF is yours to keep; the in-platform exploration is what the three months gates.',
+                  q: 'What do I get for $199?',
+                  a: "Three months of access to the granted.bio intelligence platform, plus one synthesized analysis on the topic of your choice. During those three months, click any referenced project, trial, patent, or publication and explore the underlying record. Use the Print button on any page to save it as a PDF via your browser's print dialog.",
                 },
                 {
                   q: 'What does the free refresh do?',
-                  a: 'Within 12 months of purchase you can re-synthesize the same report against current NIH data, free. NIH RePORTER updates monthly; if material new projects or trials appear in your topic during your window, refresh gives you the updated picture without paying again.',
+                  a: 'Within 12 months of purchase you can re-synthesize the same analysis against current NIH data, free. NIH RePORTER updates monthly; if material new projects or trials appear in your topic during your window, refresh gives you the updated picture without paying again.',
                 },
                 {
-                  q: "What if I'm not happy with my report?",
-                  a: "We'll help you refine your search and regenerate, free. The platform asks what didn't work, our analysis engine proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per report, within 14 days of generation.",
+                  q: "What if I'm not happy with my analysis?",
+                  a: "We'll help you refine your search and regenerate, free. The platform asks what didn't work, our analysis engine proposes three reformulated interpretations based on your feedback, and you pick one to retry. One retry per analysis, within 14 days of generation.",
                 },
                 {
-                  q: 'Can I share the PDF with my team?',
-                  a: 'Yes — the PDF is yours. In-platform exploration of every linked record is tied to your account for the 3-month window.',
+                  q: 'Can I share the analysis with my team?',
+                  a: 'Yes — use the Share button on any analysis to create a tokenized link. Recipients see the full interactive analysis without needing an account. Links expire after 60 days and can be revoked from your account any time.',
                 },
                 {
                   q: 'Do credits expire?',

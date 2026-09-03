@@ -27,7 +27,7 @@ export const metadata = {
   title:
     'Sample Intelligence Analysis — Radioligand Therapy for Cancer | granted.bio',
   description:
-    'See exactly what a granted.bio intelligence report contains. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative on the radioligand therapy field — 121 projects, 70 trials, $113.8M in active NIH commitments. Generated in two minutes.',
+    'See exactly what a granted.bio intelligence analysis contains. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative on the radioligand therapy field — 121 projects, 70 trials, $113.8M in active NIH commitments. Generates in a few minutes.',
 }
 
 interface FundingByYear {
@@ -116,7 +116,7 @@ export default async function SampleRadioligandTherapyPage() {
           <GenerateReportCTA
             className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#E07A5F] hover:bg-[#C96A4F] text-white text-xs font-medium rounded-md transition-colors whitespace-nowrap"
           >
-            Generate on your topic — $199
+            Get your own pass — $199
             <ArrowRight className="w-3.5 h-3.5" />
           </GenerateReportCTA>
         </div>
@@ -168,7 +168,7 @@ export default async function SampleRadioligandTherapyPage() {
             into insights no single source can produce.
           </p>
           <p className="text-white text-lg font-semibold mb-8">
-            $199, generated in two minutes.
+            $199 · 3 months of platform access with one analysis included.
           </p>
           <GenerateReportCTA
             className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#E07A5F] rounded-lg font-medium hover:bg-gray-50 transition-colors"
