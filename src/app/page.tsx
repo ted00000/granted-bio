@@ -341,8 +341,9 @@ export default function Home() {
                 Who it's for
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Three audiences, one report. Each draws different value from the same
-                cross-source synthesis.
+                Same cross-linked intelligence, different strategic read &mdash;
+                depending on whether you&apos;re writing a grant, developing a thesis,
+                or scouting a partnership.
               </p>
             </div>
 
