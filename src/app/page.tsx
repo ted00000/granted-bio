@@ -50,12 +50,13 @@ export default function Home() {
                     Intelligence Analyses
                   </div>
                   <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 leading-tight">
-                    A complete intelligence report on any life-sciences research topic.
+                    Understand a research field in a few minutes, not weeks.
                   </h1>
                   <p className="text-lg text-gray-500 leading-relaxed">
-                    Cross-linking NIH funding, clinical trials, patents, and publications
-                    to reveal patterns, momentum, and opportunity gaps — for grant
-                    positioning, investment diligence, and partnership scouting.
+                    Cross-linked intelligence on every NIH-funded project, clinical trial,
+                    patent, and publication in your topic &mdash; synthesized into
+                    strategic narrative for grant writing, investment diligence,
+                    and partnership scouting.
                   </p>
                   <p className="text-2xl font-semibold text-gray-900 pt-2">
                     3 months of platform access. One analysis included. $199.
