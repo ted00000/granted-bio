@@ -1,4 +1,4 @@
-# Parking Lot — 24AUG2026
+# Parking Lot — 03SEP2026
 
 Consolidated nice-to-haves accumulated during the multi-month pre-launch
 build. Pulled from `LANDING_AND_CREDITS_PLAN.md`, `PLATFORM_PLANNING.md`,
@@ -41,6 +41,18 @@ when revising so we can tell what's drifted.
 
 ## UX polish
 
+- **Sample drill-in return path** (2026-09-03) — when a sample
+  visitor on /reports/[id] clicks a Project / Researcher / Trial /
+  Patent, they land on the global detail route (/project/[id],
+  etc.) via DetailLayout, which renders the SampleGateBanner. That
+  banner has no back link to the sample analysis they came from —
+  they'd hit browser Back or "All samples" from MarketingNav.
+  Fix: append `?from=sample&back=/reports/[id]` on drill-in links
+  from the sample tree; DetailLayout reads those params and renders
+  a "← Back to [sample topic]" chip when present. Same pattern
+  applies to the share flow if we ever want share recipients to
+  return to the shared analysis after drilling into a linked
+  record.
 - **Real multi-level breadcrumbs** — back button shipped as the
   launch-day simpler fix. Real breadcrumbs would render the full
   `Search › Org › Project › Patent` trail. Requires sessionStorage
