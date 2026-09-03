@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe/client'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { supabaseAdmin } from '@/lib/supabase'
-import { STRIPE_PRICES, REPORT_PRICE_CENTS } from '@/lib/stripe/config'
+import { REPORT_PRICE_CENTS } from '@/lib/stripe/config'
 import { createPendingReportPurchase } from '@/lib/billing/usage'
 
 const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
@@ -27,12 +27,17 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { type, topic, persona, dataLimited, interpretation } = body as {
+    const { type, topic, persona, dataLimited, interpretation, promoCode } = body as {
       type: 'subscription' | 'report'
       topic?: string
       persona?: 'researcher' | 'investor'
       dataLimited?: boolean
       interpretation?: { semanticQuery: string; keywordQuery: string; label: string }
+      /** Optional promotion code string (e.g., "PRESS100"). When present,
+       *  the API resolves it to a Stripe coupon and pre-applies to the
+       *  checkout session. When absent, the checkout page shows an "Enter
+       *  promotion code" field so the user can type one manually. */
+      promoCode?: string
     }
 
     // Get or create Stripe customer
@@ -82,6 +87,45 @@ export async function POST(request: NextRequest) {
         )
       }
 
+      // Resolve optional promotion code → Stripe promotion_code ID.
+      // Stripe forbids combining `discounts` with
+      // `allow_promotion_codes`, so we branch: if the caller supplied
+      // a code (typically via /analyze?promo=CODE), pre-apply it as
+      // a discount. Otherwise, let the checkout page show the manual
+      // entry field.
+      let prefilledDiscount: { promotion_code: string } | null = null
+      if (promoCode && promoCode.trim()) {
+        const codeQuery = promoCode.trim().toUpperCase()
+        try {
+          const codes = await stripe.promotionCodes.list({
+            code: codeQuery,
+            active: true,
+            limit: 1,
+          })
+          const found = codes.data[0]
+          if (found?.id) {
+            // discounts accepts promotion_code (the code's ID) OR
+            // coupon (the underlying coupon's ID). Using the promo
+            // code ID directly avoids expanding + typing the nested
+            // coupon object.
+            prefilledDiscount = { promotion_code: found.id }
+          } else {
+            // Invalid code — fail fast so the user isn't silently charged
+            // full price after typing what they thought was a discount.
+            return NextResponse.json(
+              { error: `Promotion code "${codeQuery}" is not valid or has expired.` },
+              { status: 400 },
+            )
+          }
+        } catch (err) {
+          console.error('[Stripe Checkout] Promo code lookup failed:', err)
+          return NextResponse.json(
+            { error: 'Could not verify promotion code. Please try again.' },
+            { status: 500 },
+          )
+        }
+      }
+
       const session = await stripe.checkout.sessions.create({
         customer: customerId,
         mode: 'payment',
@@ -99,6 +143,11 @@ export async function POST(request: NextRequest) {
             quantity: 1,
           },
         ],
+        // Manual code-entry field on checkout — only when no code was
+        // pre-applied (Stripe rejects sessions that set both).
+        ...(prefilledDiscount
+          ? { discounts: [prefilledDiscount] }
+          : { allow_promotion_codes: true }),
         success_url: `${appUrl}/reports?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${appUrl}/reports?checkout=canceled`,
         metadata: {

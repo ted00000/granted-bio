@@ -227,6 +227,11 @@ function AuthedAnalyze() {
   const searchParams = useSearchParams()
   const inboundTopic = searchParams.get('topic')?.trim() || null
   const shouldAutoGenerate = searchParams.get('generate') === '1'
+  // Pre-applied Stripe promo code from a marketing URL — e.g.,
+  // /analyze?promo=LAUNCH20 pre-applies the LAUNCH20 coupon at
+  // checkout so the recipient doesn't have to type it. Codes can
+  // still be entered manually at Stripe checkout when this is absent.
+  const inboundPromoCode = searchParams.get('promo')?.trim().toUpperCase() || null
 
   const { profile, isAdmin, refetchProfile } = useAuth()
 
@@ -400,6 +405,17 @@ function AuthedAnalyze() {
               Browse sample analyses
             </Link>
           </div>
+
+          {/* Pre-applied promo code notice. Without this, a
+              /analyze?promo=CODE recipient has no signal the discount
+              is loaded until they hit Stripe checkout — surfaces it as
+              a compact chip above the input. */}
+          {inboundPromoCode && (
+            <div className="mt-4 inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-md text-xs text-emerald-800">
+              <Check className="w-3.5 h-3.5" strokeWidth={2} />
+              Promo code <span className="font-semibold">{inboundPromoCode}</span> will apply at checkout.
+            </div>
+          )}
         </div>
       </div>
 
@@ -421,6 +437,7 @@ function AuthedAnalyze() {
             router.push('/reports')
           }}
           initialTopic={presetTopic ?? undefined}
+          promoCode={inboundPromoCode ?? undefined}
         />
       )}
     </AppLayout>

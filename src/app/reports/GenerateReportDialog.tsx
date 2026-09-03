@@ -31,12 +31,20 @@ interface GenerateReportDialogProps {
    * just-searched topic. Falls back to empty string when not supplied.
    */
   initialTopic?: string
+  /**
+   * Optional Stripe promotion code. When present, the checkout session
+   * pre-applies the discount instead of showing the manual code-entry
+   * field. Sourced from ?promo=CODE on /analyze — lets marketing emails
+   * ship pre-discounted links that skip the "enter code" step.
+   */
+  promoCode?: string
 }
 
 export function GenerateReportDialog({
   onClose,
   onGenerated,
   initialTopic,
+  promoCode,
 }: GenerateReportDialogProps) {
   const [topic, setTopic] = useState(initialTopic ?? '')
   const [persona, setPersona] = useState<Persona>('researcher')
@@ -186,6 +194,9 @@ export function GenerateReportDialog({
           persona,
           dataLimited,
           interpretation: chosen ?? undefined,
+          // Pre-applied promo code from a marketing URL (?promo=CODE).
+          // When absent, Stripe checkout shows a manual entry field.
+          promoCode: promoCode?.trim() || undefined,
         }),
       })
 

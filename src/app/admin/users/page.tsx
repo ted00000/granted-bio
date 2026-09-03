@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
+import { GrantCreditsModal } from './GrantCreditsModal'
 
 interface UserProfile {
   id: string
@@ -27,6 +28,7 @@ export default function UsersPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [updating, setUpdating] = useState<string | null>(null)
+  const [grantTarget, setGrantTarget] = useState<UserProfile | null>(null)
 
   const supabase = createBrowserSupabaseClient()
 
@@ -339,16 +341,26 @@ export default function UsersPage() {
                           {new Date(user.created_at).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                          <select
-                            value={user.role || 'user'}
-                            onChange={(e) => updateRole(user.id, e.target.value)}
-                            disabled={updating === user.id}
-                            className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-                          >
-                            <option value="user">User</option>
-                            <option value="associate">Associate</option>
-                            <option value="admin">Admin</option>
-                          </select>
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setGrantTarget(user)}
+                              className="text-xs px-2.5 py-1 border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 hover:border-gray-300 transition-colors"
+                              title="Grant free analysis credits to this user"
+                            >
+                              Grant credits
+                            </button>
+                            <select
+                              value={user.role || 'user'}
+                              onChange={(e) => updateRole(user.id, e.target.value)}
+                              disabled={updating === user.id}
+                              className="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                            >
+                              <option value="user">User</option>
+                              <option value="associate">Associate</option>
+                              <option value="admin">Admin</option>
+                            </select>
+                          </div>
                         </td>
                       </tr>
                     )
@@ -358,6 +370,17 @@ export default function UsersPage() {
             )}
           </div>
         </>
+      )}
+
+      {grantTarget && (
+        <GrantCreditsModal
+          user={{
+            id: grantTarget.id,
+            email: grantTarget.email,
+            name: grantTarget.full_name,
+          }}
+          onClose={() => setGrantTarget(null)}
+        />
       )}
 
       {/* Info Box */}
