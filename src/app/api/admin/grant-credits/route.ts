@@ -126,13 +126,34 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Refresh the target's 3-month platform pass alongside the credits.
+  // A comp'd analysis should carry the full paid experience — Pro-
+  // tier search, drill-down, refresh/retry — not just the credit
+  // and then a downgraded platform. Same reset model as a paid
+  // purchase: NOW() + 90 days regardless of current value.
+  const passExpiresAt = new Date()
+  passExpiresAt.setDate(passExpiresAt.getDate() + 90)
+  const { error: passErr } = await supabaseAdmin
+    .from('user_profiles')
+    .update({ platform_pass_expires_at: passExpiresAt.toISOString() })
+    .eq('id', targetUserId)
+  if (passErr) {
+    // Log-and-continue — the credit grant already succeeded, so
+    // failing to bump the pass shouldn't roll it back.
+    console.error(
+      `[admin grant-credits] failed to refresh platform pass for user ${targetUserId}:`,
+      passErr.message,
+    )
+  }
+
   console.log(
-    `[admin grant-credits] admin=${auth.adminId} granted count=${count} to user=${targetUserId} (${targetProfile.email}). Note="${note}". IDs: ${inserted?.map((r) => r.id).join(',')}`,
+    `[admin grant-credits] admin=${auth.adminId} granted count=${count} to user=${targetUserId} (${targetProfile.email}). Note="${note}". IDs: ${inserted?.map((r) => r.id).join(',')}. Pass reset to ${passExpiresAt.toISOString()}.`,
   )
 
   return NextResponse.json({
     granted: inserted?.length ?? 0,
     creditIds: inserted?.map((r) => r.id) ?? [],
     targetEmail: targetProfile.email,
+    passExpiresAt: passExpiresAt.toISOString(),
   })
 }

@@ -165,6 +165,19 @@ export default function AccountPage() {
       ))
     : 0
 
+  // Platform pass status — the primary paid entitlement under the
+  // 2026-09-03 pricing model. Renders alongside the tier badges.
+  const passActive =
+    !!profile?.platformPassExpiresAt &&
+    new Date(profile.platformPassExpiresAt) > new Date()
+  const passDaysRemaining = profile?.platformPassExpiresAt
+    ? Math.ceil(
+        (new Date(profile.platformPassExpiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24),
+      )
+    : 0
+  const passExpiredButPurchased =
+    !!profile?.platformPassExpiresAt && !passActive
+
   const formatCost = (cents: number) => {
     return `$${(cents / 100).toFixed(2)}`
   }
@@ -286,6 +299,34 @@ export default function AccountPage() {
                         }
                       )}
                     </p>
+                  )}
+                  {/* Platform pass expiry — shown for anyone who has
+                      ever purchased. Active state shows the expiry
+                      date; expired state prompts renewal with a
+                      concrete offer ("$199 for another 3 months"). */}
+                  {profile?.platformPassExpiresAt && !isAdmin && !isBeta && (
+                    passActive ? (
+                      <p className="text-sm text-gray-500 mt-2">
+                        3-month platform pass expires{' '}
+                        {new Date(profile.platformPassExpiresAt).toLocaleDateString('en-US', {
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })}{' '}
+                        <span className="text-gray-400">
+                          &middot; {passDaysRemaining} day{passDaysRemaining === 1 ? '' : 's'} left
+                        </span>
+                      </p>
+                    ) : passExpiredButPurchased ? (
+                      <p className="text-sm text-amber-700 mt-2">
+                        Your platform pass expired{' '}
+                        {new Date(profile.platformPassExpiresAt).toLocaleDateString('en-US', {
+                          month: 'long',
+                          day: 'numeric',
+                        })}
+                        . Buy a new analysis to renew for another 3 months.
+                      </p>
+                    ) : null
                   )}
                 </div>
               </div>

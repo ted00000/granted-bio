@@ -322,6 +322,41 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
               </Link>
             )
           })()}
+          {/* Platform pass status — active users see days remaining;
+              expired users see a subtle renewal nudge. Only surfaces
+              for users who have ever purchased (platformPassExpiresAt
+              is not null) and who aren't on the beta path (beta
+              badge above owns that space). */}
+          {profile?.platformPassExpiresAt && profile.tier !== 'beta' && (() => {
+            const expiresAt = new Date(profile.platformPassExpiresAt)
+            const now = Date.now()
+            const daysLeft = Math.ceil((expiresAt.getTime() - now) / (1000 * 60 * 60 * 24))
+            const active = daysLeft > 0
+            if (active) {
+              return (
+                <Link
+                  href="/account"
+                  className="px-3 py-1.5 text-xs rounded flex items-center justify-between bg-[#FDF2EF] text-[#C96A4F]"
+                  title={`Your 3-month platform pass expires on ${expiresAt.toLocaleDateString()}`}
+                >
+                  <span>Pass</span>
+                  <span className="font-medium">
+                    {daysLeft}d left
+                  </span>
+                </Link>
+              )
+            }
+            return (
+              <Link
+                href="/analyze"
+                className="px-3 py-1.5 text-xs rounded flex items-center justify-between bg-amber-50 text-amber-800 hover:bg-amber-100 transition-colors"
+                title="Your 3-month platform pass expired. Buy a new analysis to renew."
+              >
+                <span>Pass expired</span>
+                <span className="font-medium">Renew &rarr;</span>
+              </Link>
+            )
+          })()}
           {/* Usage indicator. Displayed limit is masked for free users
               so the bonus 5 stays hidden until the soft modal reveals
               it — see getDisplayedSearchLimit. Color thresholds are

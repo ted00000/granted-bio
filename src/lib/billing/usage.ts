@@ -29,7 +29,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
   // Get user profile with usage data
   const { data: profile, error } = await supabaseAdmin
     .from('user_profiles')
-    .select('role, tier, subscription_status, beta_expires_at, searches_this_month, searches_reset_at')
+    .select('role, tier, subscription_status, beta_expires_at, platform_pass_expires_at, searches_this_month, searches_reset_at')
     .eq('id', userId)
     .single()
 
@@ -86,11 +86,13 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
     return { allowed: false, remaining: 0, limit, tier: 'pro', subscriptionStatus: 'active' }
   }
 
-  // Map to billing tier (beta gets pro perks while not expired)
+  // Map to billing tier — pro perks if the user has an active
+  // platform pass, an unexpired beta window, or a legacy paid sub.
   const tier = mapDatabaseTierToBillingTier(
     profile.tier,
     profile.subscription_status,
-    profile.beta_expires_at
+    profile.beta_expires_at,
+    profile.platform_pass_expires_at,
   )
   const limit = TIER_LIMITS[tier].searchesPerMonth
 
@@ -151,7 +153,7 @@ export async function checkAndIncrementSearch(userId: string): Promise<UsageChec
 export async function getUserUsage(userId: string): Promise<UserUsage> {
   const { data: profile, error } = await supabaseAdmin
     .from('user_profiles')
-    .select('role, tier, subscription_status, beta_expires_at, current_period_end, searches_this_month, searches_reset_at')
+    .select('role, tier, subscription_status, beta_expires_at, platform_pass_expires_at, current_period_end, searches_this_month, searches_reset_at')
     .eq('id', userId)
     .single()
 
@@ -200,7 +202,8 @@ export async function getUserUsage(userId: string): Promise<UserUsage> {
   const tier = mapDatabaseTierToBillingTier(
     profile.tier,
     profile.subscription_status,
-    profile.beta_expires_at
+    profile.beta_expires_at,
+    profile.platform_pass_expires_at,
   )
   const limit = TIER_LIMITS[tier].searchesPerMonth
 

@@ -78,21 +78,31 @@ export const REPORT_PRICE_CENTS = 19900 // $199
 // Pro Search subscription price — preserved for future revival.
 // export const PRO_SUBSCRIPTION_PRICE_CENTS = 4900 // $49/month
 
-// Map database tier values to billing tiers
-// The database has legacy tiers (basic, advanced, unlimited) that all map to 'pro'
+// Map database tier values to billing tiers.
+// The database has legacy tiers (basic, advanced, unlimited) that all map to 'pro'.
 // Beta tier maps to 'pro' for search limits, but only while beta_expires_at is in the future.
+// Platform-pass buyers (any user with a non-expired platform_pass_expires_at)
+// map to 'pro' for the duration of their pass — this is the primary Pro
+// entitlement path since the 2026-09-03 pricing model change.
 export function mapDatabaseTierToBillingTier(
   dbTier: string | null,
   subscriptionStatus: string | null,
-  betaExpiresAt?: string | null
+  betaExpiresAt?: string | null,
+  platformPassExpiresAt?: string | null,
 ): BillingTier {
+  // Active platform pass — takes precedence. This is how every
+  // paying customer earns Pro tier under the current model.
+  if (platformPassExpiresAt && new Date(platformPassExpiresAt) > new Date()) {
+    return 'pro'
+  }
   // Beta tier — get pro perks while not expired
   if (dbTier === 'beta') {
     if (!betaExpiresAt) return 'free'
     if (new Date(betaExpiresAt) > new Date()) return 'pro'
     return 'free'
   }
-  // Paid pro: only treat as 'pro' if subscription is active
+  // Paid pro (legacy subscription tier, kept for compatibility):
+  // only treat as 'pro' if subscription is active.
   if (subscriptionStatus === 'active' && dbTier && dbTier !== 'free') {
     return 'pro'
   }

@@ -10,6 +10,11 @@ interface UserProfile {
   firstName: string | null
   betaExpiresAt: string | null
   reportsGenerated: number
+  /** When the current 3-month platform pass expires. NULL for users
+   *  who have never purchased. Refreshed to NOW()+90 days on every
+   *  successful $199 purchase or admin credit grant. Client uses
+   *  this to render the pass status badge + renewal nudge. */
+  platformPassExpiresAt: string | null
 }
 
 interface UsageData {
@@ -88,7 +93,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const [profileRes, reportsRes] = await Promise.all([
           supabase
             .from('user_profiles')
-            .select('role, tier, first_name, beta_expires_at, subscription_status')
+            .select('role, tier, first_name, beta_expires_at, subscription_status, platform_pass_expires_at')
             .eq('id', userId)
             .single(),
           supabase
@@ -105,8 +110,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           // but get pro-equivalent access (500 searches/mo, expanded results).
           // Without this override the sidebar would render the free-tier "0/10"
           // search counter for associates.
+          // Platform pass — the primary Pro entitlement under the
+          // 2026-09-03 pricing model. Users with a non-expired pass
+          // get Pro-tier search + drill-down + refresh/retry.
+          const passActive =
+            !!data.platform_pass_expires_at &&
+            new Date(data.platform_pass_expires_at) > new Date()
+
           let uiTier: 'free' | 'pro' | 'beta' = 'free'
           if (data.role === 'admin' || data.role === 'associate') {
+            uiTier = 'pro'
+          } else if (passActive) {
             uiTier = 'pro'
           } else if (data.tier === 'beta') {
             uiTier =
@@ -127,6 +141,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             firstName: data.first_name,
             betaExpiresAt: data.beta_expires_at,
             reportsGenerated: reportsRes.count ?? 0,
+            platformPassExpiresAt: data.platform_pass_expires_at ?? null,
           })
           return { found: true }
         }

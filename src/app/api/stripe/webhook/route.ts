@@ -151,6 +151,38 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
     console.log(`[Stripe Webhook] Completed report purchase for session ${session.id}`)
 
+    // Refresh the buyer's 3-month platform pass. Reset model (not
+    // stack): every purchase sets expiry to NOW() + 90 days
+    // regardless of current value — matches the promise "every $199
+    // purchase gives you 3 months of platform access from that
+    // date." Idempotency: the atomic claim above guarantees this
+    // block runs exactly once per session, so we won't double-set
+    // on Stripe retries.
+    const buyerUserId = session.metadata?.userId
+    if (buyerUserId) {
+      const passExpiresAt = new Date()
+      passExpiresAt.setDate(passExpiresAt.getDate() + 90)
+      const { error: passErr } = await supabaseAdmin
+        .from('user_profiles')
+        .update({ platform_pass_expires_at: passExpiresAt.toISOString() })
+        .eq('id', buyerUserId)
+      if (passErr) {
+        // Log-and-continue — the report purchase already completed,
+        // so failing to bump the pass shouldn't roll it back. The
+        // user still gets the analysis; only the ambient Pro-tier
+        // search quota is at risk, which a support ticket / admin
+        // credit-grant can repair.
+        console.error(
+          `[Stripe Webhook] Failed to refresh platform pass for user ${buyerUserId}:`,
+          passErr.message,
+        )
+      } else {
+        console.log(
+          `[Stripe Webhook] Reset platform pass for user ${buyerUserId} to ${passExpiresAt.toISOString()}`,
+        )
+      }
+    }
+
     // Spawn the long-running generation in the background so the
     // webhook can return 200 to Stripe within ~100ms. The atomic
     // claim above prevents a retry from kicking off a second
