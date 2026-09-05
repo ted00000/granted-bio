@@ -218,7 +218,7 @@ function AuthedAnalyze() {
                   <>Free under your current tier. A few minutes to generate.</>
                 ) : (
                   <>
-                    <span className="text-gray-700 font-medium">$199</span> &middot; 3-month platform pass with one analysis included &middot; a few minutes to generate
+                    <span className="text-gray-700 font-medium">$199</span> &middot; one analysis + 3 months of Pro-tier search &middot; a few minutes to generate
                   </>
                 )}
               </p>

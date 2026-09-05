@@ -137,13 +137,15 @@ export default function PrivacyPage() {
 
             <Section title="5. Data retention and access">
               <p>
-                We retain your account information and generated reports for
-                as long as your account remains active. After report
-                generation, you have <strong>three months</strong> of in-platform
-                drill-down access to every linked project, trial, patent, and
-                publication referenced in the report. You may also use one
-                free <strong>refresh</strong> within twelve months of purchase
-                to re-synthesize the report against current NIH data.
+                We retain your account information and generated analyses for
+                as long as your account remains active. Every $199 analysis
+                purchase includes full in-platform drill-down access to every
+                linked project, trial, patent, and publication referenced in
+                the analysis, with no expiration. The purchase also includes
+                three months of Pro-tier search access across our underlying
+                data sources, and one free <strong>refresh</strong> within
+                twelve months of purchase to re-synthesize the analysis
+                against current NIH data.
               </p>
               <p>
                 You may request deletion of your account and associated data

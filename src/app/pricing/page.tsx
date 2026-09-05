@@ -69,11 +69,12 @@ export default function PricingPage() {
             </GenerateReportCTA>
 
             <ul className="space-y-3">
-              <Feature>3 months of full drill-down access to every NIH project, trial, patent, publication</Feature>
-              <Feature>One intelligence analysis included on the topic of your choice</Feature>
+              <Feature>One synthesized intelligence analysis on your topic</Feature>
+              <Feature>Full drill-down on every linked project, trial, patent, publication &mdash; yours to keep</Feature>
+              <Feature>3 months of Pro-tier search across all four data sources (500/mo vs free 10)</Feature>
               <Feature>Researcher or investor lens</Feature>
               <Feature>Free refresh within 12 months against current NIH data</Feature>
-              <Feature>Refine &amp; regenerate if the first pass isn&apos;t right</Feature>
+              <Feature>Refine &amp; regenerate if the first pass isn&apos;t right (within 14 days)</Feature>
             </ul>
           </div>
 
@@ -184,7 +185,7 @@ export default function PricingPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                  Drill into every linked record for 3 months
+                  Drill into every linked record &mdash; yours to keep
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
@@ -217,7 +218,7 @@ export default function PricingPage() {
           <div className="space-y-4">
             <FAQ
               question="Do I need an account to buy?"
-              answer="Yes — a free account is required so the analysis ties to your login and you can drill into every linked record for the 3-month window. Signing up takes a few seconds and doesn't cost anything."
+              answer="Yes — a free account is required so the analysis ties to your login and you can drill into every linked record. Signing up takes a few seconds and doesn't cost anything."
             />
             <FAQ
               question="What data sources do you use?"

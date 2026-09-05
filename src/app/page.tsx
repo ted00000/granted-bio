@@ -265,7 +265,7 @@ export default function Home() {
             <p className="text-sm text-gray-500 text-center mt-8 max-w-2xl mx-auto leading-relaxed italic">
               Every claim in the analysis links to the underlying project, trial, patent,
               or publication. Drill into any reference, see the original abstract, follow
-              the data — for 3 months from purchase.
+              the data.
             </p>
             <div className="text-center mt-6">
               <Link
@@ -312,7 +312,7 @@ export default function Home() {
                 {
                   step: 4,
                   title: 'You explore',
-                  body: 'The analysis renders as a navigable web portal. Every reference stays live for 3 months.',
+                  body: 'The analysis renders as a navigable web portal. Drill into every linked project, trial, patent, and publication.',
                 },
               ].map(({ step, title, body }) => (
                 <div
@@ -454,19 +454,19 @@ export default function Home() {
                     <ul className="text-sm text-gray-300 space-y-2 text-left">
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        Full drill-down access to every NIH project, trial, patent, publication
+                        One synthesized intelligence analysis on your topic
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        One intelligence analysis included on the topic of your choice
+                        Full drill-down on every linked project, trial, patent, publication &mdash; yours to keep
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        Free refresh within 12 months against current NIH data
+                        3 months of Pro-tier search across all four data sources
                       </li>
                       <li className="flex items-center gap-2">
                         <Check className="w-4 h-4 text-[#E07A5F]" />
-                        Refine &amp; regenerate if the first pass isn&apos;t right
+                        Free refresh (12 months) + refine &amp; regenerate (14 days)
                       </li>
                     </ul>
                   </div>
@@ -500,7 +500,7 @@ export default function Home() {
                 },
                 {
                   q: 'What do I get for $199?',
-                  a: "Three months of access to the granted.bio intelligence platform, plus one synthesized analysis on the topic of your choice. During those three months, click any referenced project, trial, patent, or publication and explore the underlying record. Use the Print button on any page to save it as a PDF via your browser's print dialog.",
+                  a: "One synthesized analysis on the topic of your choice — yours to keep and explore forever, with full drill-down on every linked project, trial, patent, and publication. Plus three months of Pro-tier search across NIH RePORTER, ClinicalTrials.gov, USPTO, and PubMed (500/mo vs the free tier's 10/mo). Use the Print button on any page to save it as a PDF via your browser's print dialog.",
                 },
                 {
                   q: 'What does the free refresh do?',
