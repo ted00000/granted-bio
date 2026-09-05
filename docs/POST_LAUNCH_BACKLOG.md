@@ -9,6 +9,23 @@ when revising so we can tell what's drifted.
 
 ## Product growth
 
+- **Consider drill-down expiry after platform pass ends** (2026-09-03) —
+  Current model: platform pass expires 90 days after last purchase,
+  search downgrades to free tier, new-analysis generation requires
+  another $199. But existing analyses stay fully drillable forever
+  — every linked project / trial / patent / publication detail
+  page loads regardless of pass state. That's a real "own it
+  forever" promise but arguably too generous: someone who buys
+  once could sit on 3 months of Pro perks + then indefinitely
+  browse cross-linked NIH data on their topic without ever
+  renewing. Alternatives to consider (only if we see this pattern
+  hurt renewal rates): (a) hard cutoff — after 12 months, drill-in
+  links to global detail pages require an active pass; (b) soft
+  gate — drill-in still works but sensitive fields (PI emails,
+  abstracts, cross-source counts) hide behind a "renew pass to
+  view" prompt; (c) leave as-is if renewal-vs-drilldown correlation
+  data suggests it doesn't matter. Decision waits on real usage
+  data — don't gate speculatively.
 - **Bulk pricing SKUs** (Phase 5 in `LANDING_AND_CREDITS_PLAN.md`) —
   5-pack / 10-pack with toggle UI, volume discount math; "TBD when
   volume justifies it."
