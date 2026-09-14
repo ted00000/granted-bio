@@ -14,7 +14,7 @@ DIAGNOSTIC_KEYWORDS = [
     'device trial', 'feasibility',
 ]
 
-# Therapeutic trial keywords (default assumption)
+# Therapeutic trial keywords
 THERAPEUTIC_KEYWORDS = [
     'treatment', 'therapy', 'therapeutic', 'drug',
     'phase i', 'phase ii', 'phase iii', 'phase 1', 'phase 2', 'phase 3',
@@ -25,18 +25,18 @@ THERAPEUTIC_KEYWORDS = [
 
 def classify_clinical_study(study_title: str) -> Dict[str, bool]:
     """
-    Classify a clinical study based on its title.
+    Legacy title-keyword classifier. Retained because the delta loader
+    still needs SOMETHING at CSV-ingest time (before CT.gov enrichment
+    provides `primary_purpose`, which is the source-truth field).
 
-    Returns dict with is_diagnostic_trial, is_therapeutic_trial
+    Ambiguous titles (no keyword hit) now return both flags FALSE —
+    "unclassified". The prior behavior was to default is_therapeutic
+    to TRUE, which silently inflated every therapeutic count downstream.
     """
     title_lower = (study_title or '').lower()
 
     is_diagnostic = any(kw in title_lower for kw in DIAGNOSTIC_KEYWORDS)
     is_therapeutic = any(kw in title_lower for kw in THERAPEUTIC_KEYWORDS)
-
-    # If neither is detected, default to therapeutic (most common)
-    if not is_diagnostic and not is_therapeutic:
-        is_therapeutic = True
 
     return {
         'is_diagnostic_trial': is_diagnostic,

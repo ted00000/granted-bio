@@ -96,6 +96,11 @@ def parse_api_response(data: dict) -> dict:
     enrollment_info = design.get('enrollmentInfo', {})
     enrollment_count = enrollment_info.get('count')
     study_type = design.get('studyType')
+    # Source-truth trial purpose (see migration
+    # 20260914_clinical_trial_primary_purpose.sql). Replaces the
+    # is_therapeutic_trial / is_diagnostic_trial title-keyword heuristic.
+    design_info = design.get('designInfo', {})
+    primary_purpose = design_info.get('primaryPurpose')
 
     # Status module
     status = protocol.get('statusModule', {})
@@ -147,6 +152,7 @@ def parse_api_response(data: dict) -> dict:
         'completion_date': normalize_date(completion_date),
         'eligibility_criteria': eligibility_criteria if eligibility_criteria else None,
         'study_type': study_type,
+        'primary_purpose': primary_purpose,
         'brief_summary': brief_summary if brief_summary else None,
         'api_last_updated': datetime.now().isoformat(),
         'api_raw_data': data  # Store full response
