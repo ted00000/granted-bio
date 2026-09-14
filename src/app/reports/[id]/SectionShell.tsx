@@ -52,7 +52,11 @@ export async function SectionShell({
   return (
     <div className="min-h-full">
       <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-5 sm:px-6">
+        {/* pl-14 on <lg leaves ~56px of left space clear for the
+            fixed hamburger button (see ReportPortalNav mobile drawer).
+            lg:px-6 restores the original inset when the sidebar is
+            static and the hamburger is display-none. */}
+        <div className="max-w-4xl mx-auto pl-14 pr-4 sm:pr-6 lg:px-6 pt-[max(1rem,env(safe-area-inset-top))] pb-5">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-2">
