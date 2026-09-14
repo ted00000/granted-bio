@@ -154,6 +154,10 @@ def api_row_to_process_dict(api: Dict[str, Any]) -> Dict[str, Any]:
         'pi_names': pi_names,
         'program_officer': program_officers,
         'funding_agency': 'NIH',
+        # Full RePORTER API response preserved for future column additions.
+        # See supabase/migrations/20260914_store_api_raw_data.sql. Extraction
+        # here is partial by design; raw preserves optionality.
+        'api_raw_data': api,
         # Abstract gets stored separately; keep it next to the project here for now
         '_abstract_text': (api.get('abstract_text') or '').strip(),
     }

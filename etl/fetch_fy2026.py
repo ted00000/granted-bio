@@ -189,6 +189,9 @@ def transform_project(api_project: Dict, fiscal_year: int = None) -> Dict:
         'is_bio_related': True,
         'is_supplement': False,  # TODO: Parse from project number
         'supplement_number': None,
+        # Full RePORTER API response preserved for future column additions.
+        # See supabase/migrations/20260914_store_api_raw_data.sql.
+        'api_raw_data': api_project,
     }
 
 

@@ -133,6 +133,10 @@ def parse_esummary_record(rec: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         'author_list': author_list,
         'pmc_id': extract_pmc_id(rec.get('articleids') or []),
         'issn': rec.get('issn') or rec.get('essn') or None,
+        # Full PubMed esummary record preserved for future column additions
+        # (MeSH terms, article type, ORCID, citation count, etc.). See
+        # supabase/migrations/20260914_store_api_raw_data.sql.
+        'api_raw_data': rec,
         **flags,
     }
 

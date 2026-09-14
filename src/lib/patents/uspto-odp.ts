@@ -149,16 +149,26 @@ interface AssignmentResponse {
 }
 
 // ---------------------------------------------------------------
-// Public API
+// Public API — each function returns { value, raw } so the caller can
+// both consume the extracted data AND persist the full response for
+// future column additions (see patents.api_raw_data in the
+// 20260914_store_api_raw_data.sql migration).
 // ---------------------------------------------------------------
+
+export interface Fetched<T> {
+  value: T
+  raw: unknown | null
+}
 
 /**
  * Look up the USPTO application number for a granted patent number.
  * Uses the search endpoint (POST body) with a Solr-style filter and a
  * fields allowlist to keep the response minimal.
- * Returns null if USPTO cannot find the patent.
+ * Returns value=null if USPTO cannot find the patent.
  */
-export async function searchApplicationNumber(patentNumber: string): Promise<string | null> {
+export async function searchApplicationNumber(
+  patentNumber: string,
+): Promise<Fetched<string | null>> {
   const body = {
     q: `applicationMetaData.patentNumber:${patentNumber}`,
     fields: ['applicationNumberText'],
@@ -168,36 +178,39 @@ export async function searchApplicationNumber(patentNumber: string): Promise<str
     '/api/v1/patent/applications/search',
     { method: 'POST', body: JSON.stringify(body) },
   )
-  if (!res || res.count === 0) return null
-  return res.patentFileWrapperDataBag[0]?.applicationNumberText ?? null
+  if (!res || res.count === 0) return { value: null, raw: res }
+  const value = res.patentFileWrapperDataBag[0]?.applicationNumberText ?? null
+  return { value, raw: res }
 }
 
 /**
  * Fetch bibliographic meta-data for an application number.
- * Returns the ApplicationMetaData object, or null on 404.
+ * Returns value=null on 404 or if the response has no rows.
  */
 export async function fetchApplicationMetaData(
   applicationNumber: string,
-): Promise<ApplicationMetaData | null> {
+): Promise<Fetched<ApplicationMetaData | null>> {
   const res = await odpFetch<MetaDataResponse>(
     `/api/v1/patent/applications/${encodeURIComponent(applicationNumber)}/meta-data`,
   )
-  if (!res || res.count === 0) return null
-  return res.patentFileWrapperDataBag[0]?.applicationMetaData ?? null
+  if (!res || res.count === 0) return { value: null, raw: res }
+  const value = res.patentFileWrapperDataBag[0]?.applicationMetaData ?? null
+  return { value, raw: res }
 }
 
 /**
  * Fetch the assignment history for an application number.
- * Returns the raw assignment entries (may be empty array) or null on 404.
+ * Returns value=[] on empty history, value=null on 404.
  */
 export async function fetchAssignmentHistory(
   applicationNumber: string,
-): Promise<AssignmentEntry[] | null> {
+): Promise<Fetched<AssignmentEntry[] | null>> {
   const res = await odpFetch<AssignmentResponse>(
     `/api/v1/patent/applications/${encodeURIComponent(applicationNumber)}/assignment`,
   )
-  if (!res || res.count === 0) return null
-  return res.patentFileWrapperDataBag[0]?.assignmentBag ?? []
+  if (!res || res.count === 0) return { value: null, raw: res }
+  const value = res.patentFileWrapperDataBag[0]?.assignmentBag ?? []
+  return { value, raw: res }
 }
 
 export type { ApplicationMetaData, AssignmentEntry }

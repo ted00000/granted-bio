@@ -48,6 +48,13 @@ interface PatentUpdate {
   api_last_updated: string
   hydration_error: null
   hydration_error_at: null
+  // Full ODP responses preserved for future column additions. See the
+  // 20260914_store_api_raw_data.sql migration comment.
+  api_raw_data: {
+    search: unknown
+    meta_data: unknown
+    assignment: unknown
+  }
   // Only write title if the row's existing title is missing, so we
   // don't clobber an already-good value with a possibly stale one.
   patent_title?: string | null
@@ -109,34 +116,48 @@ export async function hydratePatent(
   if (!row) return { status: 'error', error: 'patent_not_in_index' }
   if (row.api_last_updated) return { status: 'already_hydrated' }
 
-  // 2. Run the 3-call flow, catching typed errors as we go.
+  // 2. Run the 3-call flow, catching typed errors as we go. Each
+  //    ODP fetch returns both the extracted value and the raw response
+  //    — we persist the raws in api_raw_data so future column additions
+  //    can backfill without re-hitting USPTO (see the "always store raw"
+  //    rule and patents.api_raw_data comment).
   try {
-    const applicationNumber = await searchApplicationNumber(cleanId)
+    const searchResult = await searchApplicationNumber(cleanId)
+    const applicationNumber = searchResult.value
     if (!applicationNumber) {
       await supabaseAdmin
         .from('patents')
         .update({
           hydration_error: 'not_found_in_odp',
           hydration_error_at: new Date().toISOString(),
+          api_raw_data: { search: searchResult.raw },
         })
         .eq('patent_id', cleanId)
       return { status: 'not_found_in_odp' }
     }
 
-    const meta = await fetchApplicationMetaData(applicationNumber)
+    const metaResult = await fetchApplicationMetaData(applicationNumber)
+    const meta = metaResult.value
     if (!meta) {
       await supabaseAdmin
         .from('patents')
         .update({
           hydration_error: 'meta_data_empty',
           hydration_error_at: new Date().toISOString(),
+          api_raw_data: { search: searchResult.raw, meta_data: metaResult.raw },
         })
         .eq('patent_id', cleanId)
       return { status: 'not_found_in_odp' }
     }
 
-    const assignments = (await fetchAssignmentHistory(applicationNumber)) ?? []
+    const assignmentResult = await fetchAssignmentHistory(applicationNumber)
+    const assignments = assignmentResult.value ?? []
     const history = compactAssignmentHistory(assignments)
+    const rawBundle = {
+      search: searchResult.raw,
+      meta_data: metaResult.raw,
+      assignment: assignmentResult.raw,
+    }
 
     // 3. Build update payload. Keep existing patent_title if present
     // — hydration should never overwrite a curated title with USPTO's
@@ -160,6 +181,7 @@ export async function hydratePatent(
       api_last_updated: new Date().toISOString(),
       hydration_error: null,
       hydration_error_at: null,
+      api_raw_data: rawBundle,
     }
     if (!row.patent_title && meta.inventionTitle) {
       update.patent_title = meta.inventionTitle
