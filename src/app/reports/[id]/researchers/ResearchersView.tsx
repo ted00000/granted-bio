@@ -3,6 +3,7 @@
 // ResearchersTable which owns the top/all toggle + pagination.
 
 import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
+import { AggregationMethodologyNote } from '../AggregationMethodologyNote'
 import { ResearchersTable } from './ResearchersTable'
 
 interface Researcher {
@@ -30,12 +31,15 @@ export async function ResearchersView({
   const basePath = inShare ? `/share/${share!.token}` : `/reports/${reportId}`
 
   return (
-    <ResearchersTable
-      topResearchers={researchers}
-      allResearchers={allResearchers}
-      totalPIs={totalPIs}
-      basePath={basePath}
-      inShare={inShare}
-    />
+    <>
+      <AggregationMethodologyNote variant="researcher" />
+      <ResearchersTable
+        topResearchers={researchers}
+        allResearchers={allResearchers}
+        totalPIs={totalPIs}
+        basePath={basePath}
+        inShare={inShare}
+      />
+    </>
   )
 }

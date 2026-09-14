@@ -3,6 +3,7 @@
 // OrganizationsTable which owns the top/all toggle + pagination.
 
 import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
+import { AggregationMethodologyNote } from '../AggregationMethodologyNote'
 import { OrganizationsTable } from './OrganizationsTable'
 
 interface Org {
@@ -32,11 +33,14 @@ export async function OrganizationsView({
   const basePath = inShare ? `/share/${share!.token}` : `/reports/${reportId}`
 
   return (
-    <OrganizationsTable
-      topOrgs={orgs}
-      allOrgs={allOrgs}
-      totalOrgs={totalOrgs}
-      basePath={basePath}
-    />
+    <>
+      <AggregationMethodologyNote variant="organization" />
+      <OrganizationsTable
+        topOrgs={orgs}
+        allOrgs={allOrgs}
+        totalOrgs={totalOrgs}
+        basePath={basePath}
+      />
+    </>
   )
 }

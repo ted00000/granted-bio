@@ -346,6 +346,73 @@ const RULES: Rule[] = [
   },
 
   // ------------------------------------------------------------------
+  // Aggregation caveat required when narrative asserts PI/org rankings.
+  //
+  // The Researchers and Organizations data pages carry a visible
+  // AggregationMethodologyNote disclosing that (a) PI/org identity is
+  // a name-string dedup with no canonical ID, and (b) grant funding is
+  // split evenly across co-listed PIs. Any narrative section that
+  // makes a comparative "top-funded" / "leading" / "top-N by funding"
+  // claim should either use hedged, source-scoped language
+  // ("NIH-linked funding") OR reference the aggregation methodology.
+  //
+  // Fires as a warning: prompts already forbid naming PIs in narrative
+  // (see `no-pi-names-in-narrative`); this rule catches the remaining
+  // pattern where the LLM asserts a numeric ranking of PIs or orgs
+  // without acknowledging the aggregation is a directional read.
+  // ------------------------------------------------------------------
+  {
+    id: 'require-aggregation-caveat',
+    severity: 'warning',
+    check(ctx, sections) {
+      const violations: LintViolation[] = []
+      // Ranking-claim patterns: comparative or superlative statements
+      // about PIs/researchers/investigators/organizations that imply
+      // a definitive ranking. Kept narrow to avoid firing on benign
+      // uses of "top" (e.g., "at the top of the field").
+      const rankingPatterns: Array<{ regex: RegExp; label: string }> = [
+        { regex: /\btop[- ]funded\s+(pi|principal investigator|researcher|investigator|organization|org|institution)s?\b/i, label: 'top-funded [PI/org]' },
+        { regex: /\btop\s+\d+\s+(pis?|principal investigators?|researchers?|investigators?|organizations?|orgs?|institutions?)\s+(by|account|represent|receive|hold)\b/i, label: 'top N [PIs/orgs] by/account for' },
+        { regex: /\bleading\s+(pi|principal investigator|researcher|investigator|organization|org|institution)s?\b/i, label: 'leading [PI/org]' },
+        { regex: /\bhighest[- ]funded\s+(pi|principal investigator|researcher|investigator|organization|org|institution)s?\b/i, label: 'highest-funded [PI/org]' },
+        { regex: /\bthe\s+top\s+\d+\s+(researchers?|pis?|principal investigators?|investigators?|organizations?|orgs?)\b/i, label: 'the top N [PIs/orgs]' },
+      ]
+
+      // Caveat phrases: any presence in the offending SECTION satisfies
+      // the rule. "NIH-linked funding" is the load-bearing hedge; the
+      // other phrases explicitly reference the aggregation methodology.
+      const caveatPatterns: RegExp[] = [
+        /\bNIH[- ]linked funding\b/i,
+        /\bNIH[- ]attributed funding\b/i,
+        /\baggregation methodology\b/i,
+        /\bname[- ]string (dedup|match)\b/i,
+        /\beven split across co[- ]PIs?\b/i,
+        /\bsee.{0,20}(researchers?|organizations?).{0,20}methodology\b/i,
+      ]
+
+      for (const sectionName of NARRATIVE_SECTION_NAMES) {
+        const body = sections.get(sectionName)
+        if (!body) continue
+        for (const { regex, label } of rankingPatterns) {
+          const match = body.match(regex)
+          if (!match) continue
+          const hasCaveat = caveatPatterns.some((p) => p.test(body))
+          if (hasCaveat) continue
+          violations.push({
+            ruleId: 'require-aggregation-caveat',
+            severity: 'warning',
+            section: sectionName,
+            offending: match[0],
+            message: `Ranking claim "${label}" in "${sectionName}" without an aggregation caveat. PI/org identity is a name-string dedup and grant funding is split evenly across co-PIs — either hedge with "NIH-linked funding" language or reference the aggregation methodology.`,
+          })
+          break
+        }
+      }
+      return violations
+    },
+  },
+
+  // ------------------------------------------------------------------
   // IP concentration label consistency: if patent count < 10, the
   // Patent section must say "Insufficient sample" and no other section
   // should assert a concentration read.
