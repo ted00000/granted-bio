@@ -1,13 +1,19 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
-import { FileText, Calendar, Users, Building2, Tag, ExternalLink, Quote, Bookmark } from 'lucide-react'
+import { FileText, Calendar, Users, Building2, Tag, ExternalLink, Quote, Bookmark, Loader2, AlertCircle } from 'lucide-react'
 import { DetailLayout } from '@/components/DetailLayout'
 import { BackButton } from '@/components/BackButton'
 import { useAuth } from '@/contexts/AuthContext'
 import { normalizeOrgName } from '@/lib/format-names'
+
+interface AssignmentHistoryEntry {
+  conveyance: string | null
+  recorded_date: string | null
+  assignees: string[]
+}
 
 interface PatentData {
   patent_id: string
@@ -20,6 +26,17 @@ interface PatentData {
   inventors: string[]
   cpc_codes: string[]
   cited_by_count: number
+  // ODP-hydrated fields (null / empty until hydration writes them)
+  application_number: string | null
+  patent_type_code: string | null
+  patent_status: string | null
+  examiner_name: string | null
+  art_unit: string | null
+  uspc_code: string | null
+  current_assignees: string[]
+  assignment_history: AssignmentHistoryEntry[]
+  api_last_updated: string | null
+  hydration_error: string | null
   linked_project: {
     project_number: string
     application_id: string
@@ -69,6 +86,12 @@ export default function PatentDetailPage() {
   const [error, setError] = useState<string | null>(null)
   const [isSaved, setIsSaved] = useState(false)
   const [savingPatent, setSavingPatent] = useState(false)
+  // Hydration state: fires exactly once per page load if the row is
+  // un-hydrated. Ref-guarded so React StrictMode's double-invoke of
+  // effects in development doesn't double-post to /hydrate.
+  const [hydrating, setHydrating] = useState(false)
+  const [hydrationMessage, setHydrationMessage] = useState<string | null>(null)
+  const hydrateFiredRef = useRef(false)
   const { user } = useAuth()
 
 
@@ -139,11 +162,74 @@ export default function PatentDetailPage() {
         }
         const data: ApiResponse = await response.json()
         setPatent(data.patent)
+        // Lazy hydration: if this row has never been enriched from
+        // USPTO ODP AND we haven't previously errored on hydration,
+        // fire the hydrate endpoint and refetch. Fires at most once
+        // per page load (ref-guarded against StrictMode).
+        if (
+          !data.patent.api_last_updated &&
+          !data.patent.hydration_error &&
+          !hydrateFiredRef.current
+        ) {
+          hydrateFiredRef.current = true
+          void triggerHydration()
+        }
       } catch (e) {
         console.error('Error fetching patent:', e)
         setError('Failed to load patent')
       } finally {
         setLoading(false)
+      }
+    }
+
+    async function triggerHydration() {
+      setHydrating(true)
+      setHydrationMessage(null)
+      try {
+        const res = await fetch(`/api/patents/${patentId}/hydrate`, {
+          method: 'POST',
+        })
+        if (res.status === 429) {
+          const body = await res.json().catch(() => ({}))
+          const retryAfter = body?.retry_after_seconds ?? 60
+          setHydrationMessage(
+            `USPTO rate limit hit. Try again in about ${retryAfter}s.`,
+          )
+          return
+        }
+        if (res.status === 404) {
+          setHydrationMessage('USPTO does not have this patent on record.')
+          // Refetch anyway so the persisted hydration_error is picked up.
+          await refetchPatent()
+          return
+        }
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}))
+          setHydrationMessage(
+            body?.error ? `Enrichment failed: ${body.error}` : 'Enrichment failed.',
+          )
+          await refetchPatent()
+          return
+        }
+        // Success — refetch to pull the newly written columns.
+        await refetchPatent()
+      } catch (e) {
+        console.error('Hydration failed:', e)
+        setHydrationMessage('Enrichment request failed. Please retry later.')
+      } finally {
+        setHydrating(false)
+      }
+    }
+
+    async function refetchPatent() {
+      try {
+        const r = await fetch(`/api/patents/${patentId}`)
+        if (r.ok) {
+          const d: ApiResponse = await r.json()
+          setPatent(d.patent)
+        }
+      } catch (e) {
+        console.error('Refetch after hydration failed:', e)
       }
     }
 
@@ -252,6 +338,17 @@ export default function PatentDetailPage() {
             )}
           </div>
 
+          {/* Hydration status message (rate-limit / error banners).
+              Rendered only when there is something to say — success is
+              silent because the panels below already reflect the new
+              data.  */}
+          {hydrationMessage && (
+            <div className="mb-4 flex items-start gap-2 rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+              <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" strokeWidth={1.75} />
+              <span>{hydrationMessage}</span>
+            </div>
+          )}
+
           {/* Details Grid */}
           <div className="grid md:grid-cols-2 gap-4 mb-6">
             {/* Assignee */}
@@ -259,29 +356,60 @@ export default function PatentDetailPage() {
               <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Users className="w-4 h-4 text-[#E07A5F]" />
                 Assignee
+                {hydrating && (
+                  <span className="ml-auto flex items-center gap-1.5 text-xs font-normal text-gray-400">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Fetching from USPTO
+                  </span>
+                )}
               </h2>
-              <dl className="space-y-3 text-sm">
-                {patent.assignees.length > 0 ? (
-                  <div>
-                    <dd className="text-gray-900">
-                      {patent.assignees.map((assignee, idx) => (
-                        <div key={idx} className="font-medium">{normalizeOrgName(assignee)}</div>
-                      ))}
-                    </dd>
-                  </div>
-                ) : (
-                  <p className="text-gray-500 italic">View full patent on USPTO for assignee details</p>
-                )}
-                {patent.inventors.length > 0 && (
-                  <div className="pt-2 border-t border-gray-100">
-                    <dt className="text-gray-500 mb-1">Inventors</dt>
-                    <dd className="text-gray-900">
-                      {patent.inventors.slice(0, 5).join(', ')}
-                      {patent.inventors.length > 5 && ` +${patent.inventors.length - 5} more`}
-                    </dd>
-                  </div>
-                )}
-              </dl>
+              {hydrating && patent.assignees.length === 0 ? (
+                <p className="text-xs text-gray-400 italic">
+                  Getting inventors and assignees from USPTO (~3 seconds)…
+                </p>
+              ) : (
+                <dl className="space-y-3 text-sm">
+                  {patent.assignees.length > 0 ? (
+                    <div>
+                      <dt className="text-gray-500 mb-1">
+                        Original applicant{patent.assignees.length > 1 ? 's' : ''}
+                      </dt>
+                      <dd className="text-gray-900">
+                        {patent.assignees.map((assignee, idx) => (
+                          <div key={idx} className="font-medium">{normalizeOrgName(assignee)}</div>
+                        ))}
+                      </dd>
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 italic">
+                      View full patent on USPTO for assignee details
+                    </p>
+                  )}
+                  {patent.current_assignees.length > 0 &&
+                    JSON.stringify(patent.current_assignees.map(normalizeOrgName).sort()) !==
+                      JSON.stringify(patent.assignees.map(normalizeOrgName).sort()) && (
+                      <div className="pt-2 border-t border-gray-100">
+                        <dt className="text-gray-500 mb-1">Current owner</dt>
+                        <dd className="text-gray-900">
+                          {patent.current_assignees.map((a, idx) => (
+                            <div key={idx} className="font-medium">
+                              {normalizeOrgName(a)}
+                            </div>
+                          ))}
+                        </dd>
+                      </div>
+                    )}
+                  {patent.inventors.length > 0 && (
+                    <div className="pt-2 border-t border-gray-100">
+                      <dt className="text-gray-500 mb-1">Inventors</dt>
+                      <dd className="text-gray-900">
+                        {patent.inventors.slice(0, 5).join(', ')}
+                        {patent.inventors.length > 5 && ` +${patent.inventors.length - 5} more`}
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+              )}
             </div>
 
             {/* Details */}
@@ -289,12 +417,48 @@ export default function PatentDetailPage() {
               <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-[#E07A5F]" />
                 Details
+                {hydrating && (
+                  <span className="ml-auto flex items-center gap-1.5 text-xs font-normal text-gray-400">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Fetching from USPTO
+                  </span>
+                )}
               </h2>
               <dl className="space-y-3 text-sm">
                 <div>
                   <dt className="text-gray-500">Issue Date</dt>
                   <dd className="text-gray-900 font-medium">{formatDate(patent.patent_date)}</dd>
                 </div>
+                {patent.application_number && (
+                  <div>
+                    <dt className="text-gray-500">Application number</dt>
+                    <dd className="text-gray-900 font-medium">{patent.application_number}</dd>
+                  </div>
+                )}
+                {patent.patent_status && (
+                  <div>
+                    <dt className="text-gray-500">Status</dt>
+                    <dd className="text-gray-900 font-medium">{patent.patent_status}</dd>
+                  </div>
+                )}
+                {patent.examiner_name && (
+                  <div>
+                    <dt className="text-gray-500">USPTO examiner</dt>
+                    <dd className="text-gray-900">{patent.examiner_name}</dd>
+                  </div>
+                )}
+                {patent.art_unit && (
+                  <div>
+                    <dt className="text-gray-500">Art unit</dt>
+                    <dd className="text-gray-900">{patent.art_unit}</dd>
+                  </div>
+                )}
+                {patent.uspc_code && (
+                  <div>
+                    <dt className="text-gray-500">USPC</dt>
+                    <dd className="text-gray-900">{patent.uspc_code}</dd>
+                  </div>
+                )}
                 {patent.cpc_codes.length > 0 && (
                   <div>
                     <dt className="text-gray-500 flex items-center gap-1">
@@ -307,9 +471,39 @@ export default function PatentDetailPage() {
                     </dd>
                   </div>
                 )}
+                {hydrating && patent.cpc_codes.length === 0 && (
+                  <p className="text-xs text-gray-400 italic">
+                    Getting CPC codes and examiner data from USPTO…
+                  </p>
+                )}
               </dl>
             </div>
           </div>
+
+          {/* Assignment history — only renders when hydrated AND there
+              is more than one entry (single-entry history is redundant
+              with the "original applicant" line). */}
+          {patent.assignment_history.length > 1 && (
+            <div className="bg-white rounded-lg shadow-sm p-5 mb-6">
+              <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-[#E07A5F]" />
+                Assignment history
+              </h2>
+              <ol className="space-y-3 text-sm">
+                {patent.assignment_history.map((entry, idx) => (
+                  <li key={idx} className="border-l-2 border-gray-100 pl-3">
+                    <div className="text-gray-500 text-xs">
+                      {entry.recorded_date ? formatDate(entry.recorded_date) : 'Undated'}
+                      {entry.conveyance && ` · ${entry.conveyance}`}
+                    </div>
+                    <div className="text-gray-900">
+                      {entry.assignees.map((a) => normalizeOrgName(a)).join(', ') || '—'}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
 
           {/* Linked NIH Project */}
           {patent.linked_project && (

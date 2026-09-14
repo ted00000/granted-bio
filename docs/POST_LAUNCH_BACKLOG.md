@@ -1,3 +1,51 @@
+# Parking Lot — 14SEP2026
+
+## Patent enrichment
+
+- **On-demand rehydrate for patents** (2026-09-14) — v0 hydrator writes
+  once per patent and never refreshes. If assignments change (M&A, sale,
+  license), we won't reflect the new owner until we build a refresh path.
+  Options when we care: (a) an admin "re-hydrate this patent" button on
+  the detail page that clears `api_last_updated` and re-fires the flow,
+  (b) a scheduled cron that re-hydrates rows older than N months but only
+  those with any user views in the last M months, (c) invalidate on demand
+  from a user-visible "data seems stale?" link. Current api budget (60
+  req/min per key, 3 calls per patent = 20 re-hydrations per minute) makes
+  bulk periodic refresh expensive but small-batch on-demand is fine.
+  Nothing to build until (i) we have M&A signal we care about or (ii) a
+  buyer flags a stale assignee.
+
+## Data retention
+
+- **Fiscal-year window bump is a manual, four-file operation** (2026-09-13) —
+  `MIN_FISCAL_YEAR` is hardcoded independently in
+  `src/app/api/org/[name]/route.ts:31`,
+  `src/app/api/researcher/[name]/route.ts:31`,
+  `src/app/api/saved-people/route.ts:6`, and
+  `src/lib/chat/tools.ts:1841`. Policy is 3-year rolling (current FY +
+  2 prior). Value is `2024` today (correct for FY 2026). Must be bumped
+  to `2025` at FY 2027 rollover (Oct 1, 2026). Miss it and the window
+  balloons to 4 years (FY 2024 stays in when it should drop out) — old
+  projects visibly mixed with current in org/researcher/saved-people
+  aggregations. Fix: pull to a single shared constant in
+  `src/lib/config/retention.ts`, then bump one place per FY close.
+  Set an Oct 1 calendar reminder either way.
+- **Analysis narrative disagrees with org/researcher drill-through when
+  data ages out** (2026-09-13) — Reports are frozen JSONB snapshots and
+  keep quoting FY 2024 figures forever. Project/patent/trial/publication
+  detail pages don't filter by fiscal year, so those drill-throughs stay
+  correct. But org and researcher profile pages DO apply
+  `MIN_FISCAL_YEAR`, so drilling from an aged analysis into an org card
+  silently truncates the org's project set — analysis says "Vanderbilt:
+  47 projects, $23M", drill-through shows 30 projects, $15M, no
+  disclosure. Options: (a) show a "filtered to FY YYYY+" note on
+  org/researcher pages, (b) make org/researcher drill-throughs from an
+  analysis honor the analysis's snapshot instead of live-filtering,
+  (c) leave as-is and accept the mismatch. Decide when we see it
+  matter to a buyer.
+
+---
+
 # Parking Lot — 03SEP2026
 
 Consolidated nice-to-haves accumulated during the multi-month pre-launch
