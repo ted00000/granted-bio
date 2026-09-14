@@ -10,6 +10,7 @@
 // each destination. The counts are computed once in the layout and
 // passed in so we don't refetch per section.
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
@@ -28,6 +29,8 @@ import {
   Gauge,
   Network,
   DollarSign,
+  Menu,
+  X,
 } from 'lucide-react'
 import { Logo } from '@/components/Logo'
 
@@ -74,6 +77,14 @@ export function ReportPortalNav({
   backHref = '/reports',
 }: ReportPortalNavProps) {
   const pathname = usePathname()
+  // Mobile off-canvas state. On lg+ the sidebar is static and this
+  // is unused. On mobile the sidebar is fixed + translated off-screen
+  // by default; the hamburger toggles it in. Auto-close whenever the
+  // path changes so tapping a section swaps content AND dismisses.
+  const [mobileOpen, setMobileOpen] = useState(false)
+  useEffect(() => {
+    setMobileOpen(false)
+  }, [pathname])
   // Prefer the explicit basePath (set by the report layout) so share
   // views correctly prefix every section link with /share/[token].
   // Fall back to path-derived defaults for the sample pages which
@@ -133,7 +144,56 @@ export function ReportPortalNav({
   ]
 
   return (
-    <aside className="w-72 flex-shrink-0 bg-white border-r border-gray-100 flex flex-col h-full overflow-hidden">
+    <>
+      {/* Mobile hamburger — fixed top-left on <lg only. Positioned
+          below the attribution bar's ~50px height plus safe-area
+          inset so it doesn't collide with "All samples" / "Shared
+          by X" on the left side of the bar. On owner view (no
+          attribution bar) there's just an extra ~50px of top space
+          — acceptable for the trade of not doing dynamic
+          positioning based on presence-of-attribution-bar. */}
+      <button
+        type="button"
+        onClick={() => setMobileOpen(true)}
+        aria-expanded={mobileOpen}
+        aria-controls="report-portal-nav"
+        aria-label="Open analysis menu"
+        className="lg:hidden fixed top-[calc(env(safe-area-inset-top)+56px)] left-3 z-30 p-2 rounded-lg bg-white shadow-md border border-gray-200 print:hidden"
+      >
+        <Menu className="w-5 h-5 text-gray-700" aria-hidden="true" />
+      </button>
+
+      {/* Overlay backdrop — only rendered when the drawer is open. */}
+      {mobileOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/30 z-40"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      <aside
+        id="report-portal-nav"
+        className={`
+          fixed lg:static inset-y-0 left-0 z-50 lg:z-auto
+          w-72 flex-shrink-0 bg-white border-r border-gray-100
+          flex flex-col h-full overflow-hidden
+          transform transition-transform duration-200 ease-in-out
+          pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)]
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          print:hidden
+        `}
+      >
+        {/* Mobile close button — inline in the header on <lg only. */}
+        <button
+          type="button"
+          onClick={() => setMobileOpen(false)}
+          aria-label="Close analysis menu"
+          className="lg:hidden absolute top-3 right-3 z-10 p-1.5 rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
+
       {/* Brand + back */}
       <div className="flex-shrink-0 px-4 pt-6 pb-4 border-b border-gray-100">
         <Link href="/" className="flex items-center hover:opacity-80 transition-opacity mb-3">
@@ -212,6 +272,7 @@ export function ReportPortalNav({
           </div>
         ))}
       </nav>
-    </aside>
+      </aside>
+    </>
   )
 }
