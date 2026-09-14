@@ -129,6 +129,9 @@ def parse_api_response(data: dict) -> dict:
     sponsor_module = protocol.get('sponsorCollaboratorsModule', {})
     lead_sponsor = sponsor_module.get('leadSponsor', {})
     lead_sponsor_name = lead_sponsor.get('name')
+    # Sponsor classification (INDUSTRY / NIH / OTHER_GOV / NETWORK / ...)
+    # See migration 20260914_clinical_trial_lead_sponsor_class.sql.
+    lead_sponsor_class = lead_sponsor.get('class')
 
     # Eligibility module
     eligibility = protocol.get('eligibilityModule', {})
@@ -153,6 +156,7 @@ def parse_api_response(data: dict) -> dict:
         'eligibility_criteria': eligibility_criteria if eligibility_criteria else None,
         'study_type': study_type,
         'primary_purpose': primary_purpose,
+        'lead_sponsor_class': lead_sponsor_class,
         'brief_summary': brief_summary if brief_summary else None,
         'api_last_updated': datetime.now().isoformat(),
         'api_raw_data': data  # Store full response
