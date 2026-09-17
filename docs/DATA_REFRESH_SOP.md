@@ -1,4 +1,4 @@
-# Data Refresh SOP — 26JUN2026
+# Data Refresh SOP — 14SEP2026
 
 Standard operating procedure for refreshing platform data. Covers both
 the **catch-up** (one-time, bringing the DB current after the
@@ -21,7 +21,8 @@ Companion docs:
    try to mirror PubMed, USPTO, or ClinicalTrials.gov.
 2. **Subset of fields per entity.** Each entity has a fixed list of
    fields the UI/reports actually consume (see "Field requirements"
-   below). We ingest only those fields.
+   below). We ingest only those fields — PLUS the full raw API
+   response (see principle 6).
 3. **Per-project publication cap of 50, most-recent.** Center grants
    (P30/P50/U01/U54) can accumulate 1,000+ publications over a
    decade. We keep the 50 most recent per project; the platform
@@ -35,6 +36,18 @@ Companion docs:
 5. **Idempotent upserts.** Every write uses the entity's natural key.
    Re-running a step produces the same DB state. `updated_at` on
    unchanged rows is never touched.
+6. **Always store the raw API response as `api_raw_data JSONB`.**
+   Rule established 2026-09-14 after finding that every one-off
+   backfill script we've written (`backfill_program_officers_api.py`,
+   the aborted patent enrichment migration, etc.) exists because we
+   didn't preserve the source response on original ingest. Storage
+   is cheap; API calls are constrained. When we later discover we
+   need a new field, we extract from stored raw (one-hour job)
+   instead of re-hitting the source API for hundreds of thousands
+   of rows (multi-day operation). Enforced across all four
+   API-driven paths: `sync_projects_via_api.py`, `fetch_fy2026.py`,
+   `enrich_clinical_trials.py`, `fetch_pubmed_metadata.py`, plus
+   the patents ODP hydrator (`src/lib/patents/hydrator.ts`).
 
 ---
 
@@ -45,11 +58,13 @@ not on this list is **not ingested** even if the upstream provides it.
 
 ### Projects
 - Identity: `application_id`, `project_number`
-- Award: `activity_code`, `funding_mechanism`, `award_date`, `project_start`, `project_end`, `total_cost`, `fiscal_year`
-- Content: `title`, `phr`, `terms`
-- People: `pi_names`
+- Award: `activity_code`, `funding_mechanism`, `award_date`, `project_start`, `project_end`, `total_cost`, `direct_cost_amt`, `indirect_cost_amt`, `fiscal_year`, `foa_number`
+- Content: `title`, `phr`, `terms`, `spending_categories` (NIH RCDC topic tags)
+- People: `pi_names` (delimited), `contact_pi_name` (load-bearing PI, separately), `program_officer`
 - Org: `org_name`, `org_type`, `org_city`, `org_state`, `org_country`, `org_zip`
+- Administrative: `admin_ic` (Institute/Center abbrev), `study_section`
 - Classification: `primary_category`, `primary_category_confidence` (set by the canonical classifier, not the upstream)
+- Raw: `api_raw_data` (full RePORTER v2 response — see principle 6)
 
 ### Abstracts
 - `application_id` (FK to projects), `abstract_text`, `abstract_length`
@@ -62,23 +77,39 @@ not on this list is **not ingested** even if the upstream provides it.
   - `abstract` — runtime-lazy via PubMed `efetch` ([src/lib/reports/agents/publications.ts:182](../src/lib/reports/agents/publications.ts#L182))
   - `pi_email` — separate enrichment, populated by a dedicated script
 - Internal: `publication_embedding` (title-based, set by our embedding script)
+- Raw: `api_raw_data` (full PubMed esummary record — see principle 6)
 
 ### project_publications (link table)
 - Composite key: `(project_number, pmid)`
 - `created_at`
 
 ### Patents
-- `patent_id`, `patent_title`, `patent_org`, `issue_date`, `filing_date`, `patent_type`
-- Derived flags (set at ingest): `is_device_patent`, `is_method_patent`, `is_therapeutic_patent`
-- Not ingested: `abstract` (runtime-fetched from USPTO image-ppubs / Google Patents)
+- Identity: `patent_id`, `application_number` (from USPTO ODP lookup)
+- Bibliographic: `patent_title`, `patent_org`, `issue_date`, `filing_date`, `patent_type`, `patent_type_code`, `patent_status`
+- People: `inventors[]`, `assignees[]` (original applicant), `current_assignees[]` (post-transfer owner)
+- Prosecution: `examiner_name`, `art_unit`, `assignment_history` (JSONB — conveyance chain)
+- Classification: `cpc_codes[]`, `uspc_code` (USPTO classifications), plus rule-based `is_device_patent`, `is_method_patent`, `is_therapeutic_patent`
+- Ingest state: `api_last_updated`, `hydration_error`, `hydration_error_at`
+- Raw: `api_raw_data` (bundle of ODP search + meta_data + assignment responses)
+- **Not ingested at bulk time — lazy on view:** All ODP-hydrated fields (inventors, assignees, CPC codes, examiner, etc.) populate only when a user opens the patent detail page. See `src/lib/patents/hydrator.ts`. At 60 req/min per key, bulk backfill is not feasible (~42h dedicated key time for all 49K patents).
+- Not ingested: `abstract` — some patents have it from a legacy NIH-linked load (~1% overall coverage, ~70% for report-surfaced patents); no active enrichment path.
 
 ### project_patents (link table)
 - Composite key: `(project_number, patent_id)`
 - `created_at`
 
 ### Clinical studies
-- `nct_id`, `project_number`, `study_title`, `study_status`, `phase`, `study_type`, `enrollment_count`, `lead_sponsor`, `conditions`, `interventions`, `start_date`, `completion_date`, `eligibility_criteria`, `brief_summary`, `api_last_updated`
-- Derived flags (set at ingest): `is_therapeutic_trial`, `is_diagnostic_trial`
+- Identity: `nct_id`, `project_number`, composite unique `(nct_id, project_number)`
+- Bibliographic: `study_title`, `study_status`, `phase`, `study_type`, `enrollment_count`, `start_date`, `completion_date`, `eligibility_criteria`, `brief_summary`, `api_last_updated`
+- Sponsor: `lead_sponsor` (name), `lead_sponsor_class` (INDUSTRY / NIH / OTHER_GOV / NETWORK / OTHER), `collaborators` (JSONB [{name, class}])
+- People: `overall_officials` (JSONB [{name, role, affiliation}] — source-truth trial PI attribution with role: PRINCIPAL_INVESTIGATOR / STUDY_CHAIR / STUDY_DIRECTOR)
+- Purpose + rigor: `primary_purpose` (TREATMENT / PREVENTION / DIAGNOSTIC / SCREENING / SUPPORTIVE_CARE / HEALTH_SERVICES_RESEARCH / BASIC_SCIENCE / DEVICE_FEASIBILITY / OTHER), `allocation` (RANDOMIZED / NON_RANDOMIZED / NA), `intervention_model` (PARALLEL / SINGLE_GROUP / CROSSOVER / FACTORIAL / SEQUENTIAL), `masking` (NONE / SINGLE / DOUBLE / TRIPLE / QUADRUPLE), `has_dmc`
+- Content: `conditions[]`, `interventions` (JSONB)
+- Topic tags: `condition_mesh[]`, `intervention_mesh[]` (NIH MeSH descriptors from CT.gov's derivedSection — canonical vocabulary shared with PubMed)
+- Endpoints: `primary_outcomes` (JSONB), `secondary_outcomes` (JSONB)
+- Regulatory: `is_fda_regulated_drug`, `is_fda_regulated_device`, `why_stopped` (populated only on early-terminated trials)
+- Legacy title-keyword flags (retained but no longer authoritative — prefer `primary_purpose`): `is_therapeutic_trial`, `is_diagnostic_trial`
+- Raw: `api_raw_data` (full CT.gov v2 response)
 
 ---
 
@@ -364,6 +395,45 @@ this.
 Run this once after the catch-up validates the new scripts.
 Probably as an overnight job. Re-running is safe — upserts are
 idempotent.
+
+---
+
+## Historical raw-data backfill (separate phase)
+
+Every API-driven ETL now writes `api_raw_data JSONB` on every new or
+updated row (see principle 6). Rows synced BEFORE 2026-09-14 have
+`api_raw_data = NULL` and can't be filled from local state — the raw
+response wasn't preserved at the time.
+
+Consequence: any future column addition on `projects`, `publications`,
+or `patents` will only auto-populate on rows touched since 2026-09-14.
+Historical rows require a targeted re-fetch.
+
+For projects specifically, the historical gap can be closed by:
+
+```bash
+python3 etl/sync_projects_via_api.py --refresh-all
+```
+
+- **Scope:** every project row currently in the DB (~200K)
+- **Wall time:** ~55h at 1 req/sec
+- **Effect:** re-fetches the RePORTER response for every project,
+  writes `api_raw_data` and re-populates every extracted column
+  (including the RePORTER audit fields added 2026-09-14:
+  `contact_pi_name`, `admin_ic`, `foa_number`, `direct_cost_amt`,
+  `indirect_cost_amt`, `study_section`, `spending_categories`)
+- **Cost:** zero (free API)
+- **When to run:** once, opportunistically. Not required — the
+  quarterly refresh covers new rows on its own.
+
+The `--refresh-all` flag doesn't exist yet; it's a planned extension
+to `sync_projects_via_api.py`. Alternative today: a one-off script
+that iterates project_numbers and calls the transform. Same effect.
+
+For `publications` and `patents`, the analogous historical refresh
+would be `fetch_pubmed_metadata.py --refresh-all` (~30 minutes for
+300K rows at 10 req/s with NCBI key) and USPTO ODP lazy hydration
+which is per-view by design (never bulk-refresh).
 
 ---
 
