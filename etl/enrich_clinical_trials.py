@@ -113,6 +113,22 @@ def parse_api_response(data: dict) -> dict:
     conditions_module = protocol.get('conditionsModule', {})
     conditions = conditions_module.get('conditions', [])
 
+    # MeSH descriptors (derivedSection). CT.gov auto-maps the trial's
+    # free-text conditions and interventions to NIH's MeSH vocabulary
+    # — canonical topic tags shared with PubMed. See migration
+    # 20260914_clinical_trial_mesh.sql.
+    derived = data.get('derivedSection', {}) or {}
+    condition_browse = derived.get('conditionBrowseModule', {}) or {}
+    intervention_browse = derived.get('interventionBrowseModule', {}) or {}
+    condition_mesh = [
+        m.get('term') for m in (condition_browse.get('meshes') or [])
+        if m.get('term')
+    ]
+    intervention_mesh = [
+        m.get('term') for m in (intervention_browse.get('meshes') or [])
+        if m.get('term')
+    ]
+
     # Arms/Interventions module
     arms_module = protocol.get('armsInterventionsModule', {})
     interventions_raw = arms_module.get('interventions', [])
@@ -157,6 +173,8 @@ def parse_api_response(data: dict) -> dict:
         'study_type': study_type,
         'primary_purpose': primary_purpose,
         'lead_sponsor_class': lead_sponsor_class,
+        'condition_mesh': condition_mesh if condition_mesh else None,
+        'intervention_mesh': intervention_mesh if intervention_mesh else None,
         'brief_summary': brief_summary if brief_summary else None,
         'api_last_updated': datetime.now().isoformat(),
         'api_raw_data': data  # Store full response
