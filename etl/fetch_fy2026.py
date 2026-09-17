@@ -164,6 +164,27 @@ def transform_project(api_project: Dict, fiscal_year: int = None) -> Dict:
     # Use API's fiscal_year field (original award year) unless overridden
     fy = fiscal_year if fiscal_year is not None else api_project.get('fiscal_year')
 
+    # RePORTER audit fields (see migration
+    # 20260914_projects_reporter_audit.sql).
+    contact_pi_name = api_project.get('contact_pi_name') or None
+    program_officers = ';'.join(
+        p.get('full_name')
+        for p in (api_project.get('program_officers') or [])
+        if p.get('full_name')
+    ) or None
+    agency_ic_admin = api_project.get('agency_ic_admin') or {}
+    admin_ic = (
+        agency_ic_admin.get('abbreviation')
+        or agency_ic_admin.get('name')
+        or None
+    )
+    study_section_obj = api_project.get('full_study_section') or {}
+    study_section = study_section_obj.get('name') or None
+    spending_desc = api_project.get('spending_categories_desc') or ''
+    spending_categories = [
+        t.strip() for t in spending_desc.split(';') if t.strip()
+    ] or None
+
     return {
         'application_id': str(api_project.get('appl_id', '')),
         'project_number': api_project.get('project_num', ''),
@@ -185,6 +206,14 @@ def transform_project(api_project: Dict, fiscal_year: int = None) -> Dict:
         'project_end': parse_date(api_project.get('project_end_date')),
         'fiscal_year': fy,  # Use API's fiscal_year (original award year)
         'pi_names': pi_names,
+        'contact_pi_name': contact_pi_name,
+        'program_officer': program_officers,
+        'admin_ic': admin_ic,
+        'foa_number': api_project.get('opportunity_number') or None,
+        'direct_cost_amt': api_project.get('direct_cost_amt') or None,
+        'indirect_cost_amt': api_project.get('indirect_cost_amt') or None,
+        'study_section': study_section,
+        'spending_categories': spending_categories,
         'funding_agency': 'NIH',
         'is_bio_related': True,
         'is_supplement': False,  # TODO: Parse from project number

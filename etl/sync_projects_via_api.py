@@ -117,9 +117,23 @@ def api_row_to_process_dict(api: Dict[str, Any]) -> Dict[str, Any]:
             if a.get('abbreviation') or a.get('name')
         ]
     )
+    agency_ic_admin = api.get('agency_ic_admin') or {}
+    admin_ic = agency_ic_admin.get('abbreviation') or agency_ic_admin.get('name') or None
     if not ic_string:
-        admin = api.get('agency_ic_admin') or {}
-        ic_string = admin.get('abbreviation') or admin.get('name') or ''
+        ic_string = admin_ic or ''
+
+    # Study section from full_study_section object.
+    study_section_obj = api.get('full_study_section') or {}
+    study_section = study_section_obj.get('name') or None
+
+    # NIH RCDC spending categories — semicolon-delimited human-readable
+    # topic tags. Parse into TEXT[]. Keep as None (not empty array) when
+    # the field is absent so we can distinguish "unclassified" from
+    # "classified with no tags".
+    spending_desc = api.get('spending_categories_desc') or ''
+    spending_categories = [
+        t.strip() for t in spending_desc.split(';') if t.strip()
+    ] or None
 
     return {
         # ExPORTER-style raw column names — used by the bio filter
@@ -152,8 +166,21 @@ def api_row_to_process_dict(api: Dict[str, Any]) -> Dict[str, Any]:
         'project_end': parse_date(api.get('project_end_date') or ''),
         'fiscal_year': api.get('fiscal_year'),
         'pi_names': pi_names,
-        'program_officer': program_officers,
+        # Contact PI as a separate column (RePORTER audit ship). pi_names
+        # keeps the delimited join for backward compat; contact_pi_name
+        # is the load-bearing PI identity most downstream code should
+        # prefer once wired.
+        'contact_pi_name': pi_profile or None,
+        'program_officer': program_officers or None,
         'funding_agency': 'NIH',
+        # RePORTER audit fields — see migration
+        # 20260914_projects_reporter_audit.sql.
+        'admin_ic': admin_ic,
+        'foa_number': api.get('opportunity_number') or None,
+        'direct_cost_amt': parse_cost(str(api.get('direct_cost_amt') or 0)) or None,
+        'indirect_cost_amt': parse_cost(str(api.get('indirect_cost_amt') or 0)) or None,
+        'study_section': study_section,
+        'spending_categories': spending_categories,
         # Full RePORTER API response preserved for future column additions.
         # See supabase/migrations/20260914_store_api_raw_data.sql. Extraction
         # here is partial by design; raw preserves optionality.
