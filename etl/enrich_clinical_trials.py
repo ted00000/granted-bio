@@ -101,6 +101,12 @@ def parse_api_response(data: dict) -> dict:
     # is_therapeutic_trial / is_diagnostic_trial title-keyword heuristic.
     design_info = design.get('designInfo', {})
     primary_purpose = design_info.get('primaryPurpose')
+    # Rigor signals from designModule.designInfo — trial-quality pack
+    # (see migration 20260914_clinical_trial_quality_pack.sql).
+    allocation = design_info.get('allocation')
+    intervention_model = design_info.get('interventionModel')
+    masking_info = design_info.get('maskingInfo') or {}
+    masking = masking_info.get('masking')
 
     # Status module
     status = protocol.get('statusModule', {})
@@ -108,6 +114,15 @@ def parse_api_response(data: dict) -> dict:
     start_date = start_date_struct.get('date')
     completion_date_struct = status.get('completionDateStruct', {}) or status.get('primaryCompletionDateStruct', {})
     completion_date = completion_date_struct.get('date')
+    # Termination reason from statusModule.whyStopped — populated only
+    # on trials that stopped early. Trial-quality pack.
+    why_stopped = status.get('whyStopped')
+
+    # Oversight module — FDA jurisdiction flags and DMC presence.
+    oversight = protocol.get('oversightModule', {}) or {}
+    is_fda_regulated_drug = oversight.get('isFdaRegulatedDrug')
+    is_fda_regulated_device = oversight.get('isFdaRegulatedDevice')
+    has_dmc = oversight.get('oversightHasDmc')
 
     # Conditions module
     conditions_module = protocol.get('conditionsModule', {})
@@ -148,6 +163,44 @@ def parse_api_response(data: dict) -> dict:
     # Sponsor classification (INDUSTRY / NIH / OTHER_GOV / NETWORK / ...)
     # See migration 20260914_clinical_trial_lead_sponsor_class.sql.
     lead_sponsor_class = lead_sponsor.get('class')
+    # Collaborators: array of {name, class}. Enables "academic-led trial
+    # with industry collaborator" queries. Trial-quality pack.
+    collaborators_raw = sponsor_module.get('collaborators') or []
+    collaborators = [
+        {'name': c.get('name'), 'class': c.get('class')}
+        for c in collaborators_raw
+        if c.get('name')
+    ]
+
+    # Contacts/Locations module — overall officials give source-truth PI
+    # attribution for trials, including role. Fixes the trial-side of
+    # the PI ambiguity that projects.pi_names still has.
+    contacts = protocol.get('contactsLocationsModule', {}) or {}
+    officials_raw = contacts.get('overallOfficials') or []
+    overall_officials = [
+        {
+            'name': o.get('name'),
+            'role': o.get('role'),
+            'affiliation': o.get('affiliation'),
+        }
+        for o in officials_raw
+        if o.get('name')
+    ]
+
+    # Outcomes module — what the trial actually measures. Endpoint
+    # sophistication signal. Description truncated to keep row size sane.
+    outcomes = protocol.get('outcomesModule', {}) or {}
+    def _norm_outcome(o):
+        desc = (o.get('description') or '').strip()
+        if len(desc) > 500:
+            desc = desc[:500] + '...'
+        return {
+            'measure': o.get('measure'),
+            'time_frame': o.get('timeFrame'),
+            'description': desc or None,
+        }
+    primary_outcomes = [_norm_outcome(o) for o in (outcomes.get('primaryOutcomes') or [])]
+    secondary_outcomes = [_norm_outcome(o) for o in (outcomes.get('secondaryOutcomes') or [])]
 
     # Eligibility module
     eligibility = protocol.get('eligibilityModule', {})
@@ -175,6 +228,17 @@ def parse_api_response(data: dict) -> dict:
         'lead_sponsor_class': lead_sponsor_class,
         'condition_mesh': condition_mesh if condition_mesh else None,
         'intervention_mesh': intervention_mesh if intervention_mesh else None,
+        'allocation': allocation,
+        'intervention_model': intervention_model,
+        'masking': masking,
+        'why_stopped': why_stopped,
+        'is_fda_regulated_drug': is_fda_regulated_drug,
+        'is_fda_regulated_device': is_fda_regulated_device,
+        'has_dmc': has_dmc,
+        'collaborators': collaborators if collaborators else None,
+        'overall_officials': overall_officials if overall_officials else None,
+        'primary_outcomes': primary_outcomes if primary_outcomes else None,
+        'secondary_outcomes': secondary_outcomes if secondary_outcomes else None,
         'brief_summary': brief_summary if brief_summary else None,
         'api_last_updated': datetime.now().isoformat(),
         'api_raw_data': data  # Store full response
