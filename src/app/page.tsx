@@ -17,13 +17,13 @@ import { SignUpModal } from '@/components/SignUpModal'
 // Hero stats. Bumped manually after each data refresh — the SOP
 // (docs/DATA_REFRESH_SOP.md) reminds to update these here. Values
 // are rounded to the nearest K so small weekly deltas don't require
-// a marketing-page redeploy. Actual DB counts as of 2026-07-28:
-//   projects 180,165 · patents 49,830 · publications 502,869 · trials 39,275
+// a marketing-page redeploy. Actual DB counts as of 2026-09-18:
+//   projects 199,864 · patents 50,203 · publications 511,960 · trials 39,607
 const stats = [
-  { label: 'NIH Projects', value: '180K' },
+  { label: 'NIH Projects', value: '200K' },
   { label: 'Patents', value: '50K' },
-  { label: 'Publications', value: '503K' },
-  { label: 'Clinical Trials', value: '39K' },
+  { label: 'Publications', value: '512K' },
+  { label: 'Clinical Trials', value: '40K' },
 ]
 
 export default function Home() {

@@ -369,7 +369,12 @@ def main() -> None:
     supabase = get_supabase_client()
     print('Upserting to DB...')
     projects_written = batch_upsert(supabase, 'projects', classified, on_conflict='application_id')
-    abstracts_written = batch_upsert(supabase, 'abstracts', abstracts_to_load, on_conflict='application_id')
+    # abstracts_to_load carries the full abstract_text — much heavier per
+    # row than projects. 100-row batches reliably hit the PostgREST
+    # statement timeout on this table; 25 works. Same pattern the
+    # clinical-studies delta loader uses for the same reason (see
+    # DATA_REFRESH_SOP.md).
+    abstracts_written = batch_upsert(supabase, 'abstracts', abstracts_to_load, on_conflict='application_id', batch_size=25)
 
     print()
     print('=' * 72)
