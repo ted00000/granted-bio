@@ -220,6 +220,7 @@ export interface SearchTrialsParams {
     industry_sponsored?: boolean   // lead_sponsor_class === 'INDUSTRY'
     randomized?: boolean           // allocation === 'RANDOMIZED'
     fda_regulated?: boolean        // is_fda_regulated_drug || is_fda_regulated_device
+    has_dmc?: boolean              // Data Monitoring Committee present
   }
   limit?: number
 }

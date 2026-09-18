@@ -53,7 +53,10 @@ export async function runPublicationsAgent(projectNumbers: string[]): Promise<Pu
   // records.
   const { data: publications, error: pubError } = await supabaseAdmin
     .from('publications')
-    .select('pmid, pub_title, journal_title, pub_date, pub_year, author_list, abstract')
+    // mesh_terms added 2026-09-18 — backfilled MajorTopic MeSH descriptors
+    // from PubMed efetch. Enables cross-source topic matching against
+    // trials' condition_mesh / intervention_mesh in downstream synthesis.
+    .select('pmid, pub_title, journal_title, pub_date, pub_year, author_list, abstract, mesh_terms')
     .in('pmid', uniquePmids)
     .order('pub_date', { ascending: false })
 
@@ -76,6 +79,7 @@ export async function runPublicationsAgent(projectNumbers: string[]): Promise<Pu
     pub_year: pub.pub_year,
     authors: pub.author_list,
     abstract: pub.abstract,
+    mesh_terms: (pub as { mesh_terms?: string[] | null }).mesh_terms ?? null,
   }))
 
   console.log(`[Publications Agent] Found ${results.length} publications`)
@@ -110,6 +114,7 @@ function processResults(rawResults: RawPublicationResult[]): PublicationsAgentOu
     pub_year: p.pub_year ?? null,
     authors: p.authors || null,
     abstract: p.abstract || null,
+    mesh_terms: p.mesh_terms ?? null,
   }))
 
   // Group by journal
@@ -142,13 +147,38 @@ function processResults(rawResults: RawPublicationResult[]): PublicationsAgentOu
     .map(([year, count]) => ({ year, count }))
     .sort((a, b) => b.year - a.year)
 
-  console.log(`[Publications Agent] Processed ${items.length} publications`)
+  // Aggregate MeSH descriptor frequency across the surfaced publications.
+  // Top 15 lets the downstream renderer emit a compact tag cloud without
+  // dominating the section. Coverage is tracked separately so the prompt
+  // can say "N of M carry MeSH" without inflating that count via the
+  // multi-tag sum.
+  const meshFreq = new Map<string, number>()
+  let withMesh = 0
+  for (const p of items) {
+    if (!p.mesh_terms || p.mesh_terms.length === 0) continue
+    withMesh++
+    for (const term of p.mesh_terms) {
+      if (!term || typeof term !== 'string') continue
+      meshFreq.set(term, (meshFreq.get(term) || 0) + 1)
+    }
+  }
+  const topMeshTerms = Array.from(meshFreq.entries())
+    .map(([term, count]) => ({ term, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 15)
+
+  console.log(
+    `[Publications Agent] Processed ${items.length} publications; ` +
+    `${withMesh} carry MeSH descriptors (${meshFreq.size} unique)`
+  )
 
   return {
     items,
     byJournal,
     byYear,
     totalUniqueJournals,
+    topMeshTerms,
+    meshCoverage: { withMesh, total: items.length },
   }
 }
 
@@ -226,6 +256,8 @@ function emptyOutput(): PublicationsAgentOutput {
     byJournal: [],
     byYear: [],
     totalUniqueJournals: 0,
+    topMeshTerms: [],
+    meshCoverage: { withMesh: 0, total: 0 },
   }
 }
 
@@ -238,4 +270,5 @@ interface RawPublicationResult {
   pub_year?: number | null
   authors?: string | null
   abstract?: string | null
+  mesh_terms?: string[] | null
 }

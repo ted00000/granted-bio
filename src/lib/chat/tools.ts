@@ -217,6 +217,10 @@ export const AGENT_TOOLS: Tool[] = [
             fda_regulated: {
               type: 'boolean',
               description: 'Only show trials that CT.gov flags as FDA-regulated drug OR FDA-regulated device. Excludes purely observational studies.'
+            },
+            has_dmc: {
+              type: 'boolean',
+              description: 'Only show trials with a Data Monitoring Committee (has_dmc = true). Rigor signal — typically present on serious late-phase, adaptive, or high-risk designs.'
             }
           }
         },
@@ -2444,6 +2448,9 @@ export async function searchTrials(
     }
     if (filters?.fda_regulated === true) {
       results = results.filter(t => t.is_fda_regulated_drug === true || t.is_fda_regulated_device === true)
+    }
+    if (filters?.has_dmc === true) {
+      results = results.filter(t => t.has_dmc === true)
     }
 
     // Get linked project info for top results. Key the lookup map by

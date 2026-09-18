@@ -144,6 +144,14 @@ export interface PublicationItem {
   pub_year: number | null
   authors: string | null
   abstract: string | null
+  /**
+   * MajorTopic MeSH descriptors from PubMed efetch. Backfilled 2026-09-18
+   * across ~317K NIH-linked publications (62% coverage). Enables cross-
+   * source topic matching (pub descriptor ∩ trial condition_mesh /
+   * intervention_mesh) so reports can surface research → translation
+   * alignment or gaps. Empty array on rows not yet backfilled.
+   */
+  mesh_terms: string[] | null
 }
 
 export interface OrgStats {
@@ -305,6 +313,20 @@ export interface PublicationsAgentOutput {
    * publication base look unrealistically narrow on large samples.
    */
   totalUniqueJournals: number
+  /**
+   * Top MeSH descriptors across the surfaced publications, sorted by
+   * frequency. Aggregated in processResults from the MajorTopic MeSH
+   * captured on each item. Sliced to top 15. Empty when no items carry
+   * MeSH data (legacy sample or non-NIH-linked pubs).
+   */
+  topMeshTerms: Array<{ term: string; count: number }>
+  /**
+   * Count of items with at least one MeSH descriptor — coverage indicator
+   * for downstream renderers ("N of M pubs carry MeSH tags"). Distinct
+   * from the sum of topMeshTerms counts (which multi-counts pubs across
+   * their tags).
+   */
+  meshCoverage: { withMesh: number; total: number }
 }
 
 export interface MarketAgentOutput {

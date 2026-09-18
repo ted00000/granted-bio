@@ -521,6 +521,10 @@ ${formatYearTrendForPrompt(context.fundingStats.byYear)}
 - **FOA (Funding Opportunity Announcement) clustering — grants under the same NIH call (3+ threshold):**${formatFoaClusteringForPrompt(agentOutputs.projects)}
 - **Framing rule for FOA clustering.** When you see 3+ grants under the same FOA, mention it: it indicates a coordinated NIH funding push (RFA/PAR/PA) rather than scattered R01 activity. Example framing: "12 of 123 grants issued under RFA-CA-21-056, signaling a coordinated NCI call for this technology". Do NOT invent FOA-specific narrative for calls not listed above.
 - **NIH RCDC spending category tags (top 10 across surfaced projects; NIH's own topic taxonomy, distinct from our internal primary_category):**${formatSpendingCategoriesForPrompt(agentOutputs.projects)}
+- **PubMed MeSH descriptors on the surfaced publications (MajorTopic tags, backfilled 2026-09; top 10):**${formatPubMeshForPrompt(agentOutputs.publications)}
+- **Framing rule for pub MeSH.** These are MajorTopic descriptors — the tags PubMed indexers judged central to the paper (not incidental mentions). When one descriptor dominates the pub sample, cite it as evidence of research-base concentration. Do NOT list more than 3-4 descriptors in narrative form; itemization gets tedious.
+- **Cross-source MeSH overlap (descriptors appearing on BOTH surfaced trials AND surfaced publications):**${formatPubTrialMeshOverlap(agentOutputs.trials, agentOutputs.publications)}
+- **Framing rule for cross-source overlap.** Shared MeSH between the trial pipeline and the publication base is a strong signal of research-to-translation alignment on that axis. When shared descriptors are absent despite both sides having MeSH data, cite that gap — it suggests the research base and trial pipeline are addressing different problems within the topic. Use verbatim counts when citing.
 - **Framing rule for spending_categories.** These are NIH-emitted tags at project ingest. When primary_category (our classifier) and top spending_categories agree, cite the agreement as validation. When they disagree, note the mismatch as a caveat rather than a contradiction.
 - **STRONGLY PREFERRED: COMPACT FRAMING.** Cite trial status using this exact compact template: "${totalTrialsForSummary - trialStatusCounts.terminated} trials in progress, planned, or completed vs ${trialStatusCounts.terminated} terminated/suspended/withdrawn (${totalTrialsForSummary} total)". This form uses the terminated bucket as the anchor (unambiguous negative counts) and always sums correctly to the total. Every audit finds a new way that itemized enumeration goes wrong (dropped categories, incorrect negations, arithmetic slips), so USE THIS COMPACT FORM unless you have a strong specific reason not to.
 - **IF you must itemize instead of using the compact form**: enumerate ALL non-zero status categories such that the cited counts sum to ${totalTrialsForSummary} EXACTLY. Sum before writing. If your itemization doesn't sum to ${totalTrialsForSummary}, use the compact form instead. Do NOT partially itemize (citing 4-5 categories but missing 2-3). Do NOT negate absent categories ("with no trials in X") - readers understand unlisted = absent. Every itemization must sum exactly to ${totalTrialsForSummary}.
@@ -4425,6 +4429,72 @@ function formatTrialSponsorClassForPrompt(trials: AllAgentOutputs['trials']): st
   if (populated === 0) return ' (no lead_sponsor_class data on the surfaced trials)'
   const ordered = Object.entries(bySponsor).sort((a, b) => b[1] - a[1])
   return '\n' + ordered.map(([cls, n]) => `  - ${cls}: ${n}`).join('\n')
+}
+
+/**
+ * Publications MeSH aggregate — top MajorTopic descriptors across the
+ * surfaced publications, plus coverage. Empty stub when no items carry
+ * MeSH tags (pre-backfill sample or non-NIH-linked pubs).
+ */
+function formatPubMeshForPrompt(publications: AllAgentOutputs['publications']): string {
+  const top = publications.topMeshTerms ?? []
+  const cov = publications.meshCoverage ?? { withMesh: 0, total: 0 }
+  if (top.length === 0) {
+    return ' (no MeSH descriptors on the surfaced publications — pre-backfill sample or non-NIH-linked pubs)'
+  }
+  const cap = Math.min(top.length, 10)
+  const lines = top.slice(0, cap).map(({ term, count }) => `  - ${term}: ${count}`)
+  return (
+    `\n  (${cov.withMesh} of ${cov.total} publications carry MeSH tags)\n` +
+    lines.join('\n')
+  )
+}
+
+/**
+ * Cross-source MeSH overlap — descriptors that appear on BOTH surfaced
+ * publications and surfaced trials (via condition_mesh ∪ intervention_mesh).
+ * Reveals topic axes where the research base and translation pipeline
+ * both concentrate. Empty when either side lacks MeSH.
+ */
+function formatPubTrialMeshOverlap(
+  trials: AllAgentOutputs['trials'],
+  publications: AllAgentOutputs['publications'],
+): string {
+  const trialTerms = new Map<string, number>()
+  for (const t of trials.items) {
+    const bag = [
+      ...(t.condition_mesh ?? []),
+      ...(t.intervention_mesh ?? []),
+    ]
+    for (const term of bag) {
+      if (!term) continue
+      trialTerms.set(term, (trialTerms.get(term) || 0) + 1)
+    }
+  }
+  const pubTerms = new Map<string, number>()
+  for (const p of publications.items) {
+    for (const term of p.mesh_terms ?? []) {
+      if (!term) continue
+      pubTerms.set(term, (pubTerms.get(term) || 0) + 1)
+    }
+  }
+  if (trialTerms.size === 0 || pubTerms.size === 0) {
+    return ' (cross-source MeSH overlap unavailable — one or both sides lack MeSH data on the surfaced sample)'
+  }
+  const shared: Array<{ term: string; trialCount: number; pubCount: number }> = []
+  for (const [term, tCount] of trialTerms.entries()) {
+    const pCount = pubTerms.get(term)
+    if (pCount) shared.push({ term, trialCount: tCount, pubCount: pCount })
+  }
+  if (shared.length === 0) {
+    return ' (no MeSH descriptors appear on BOTH the surfaced trials and the surfaced publications — signals a topical disconnect between the research base and clinical pipeline in this sample)'
+  }
+  // Rank by joint prominence — sum of counts, tiebroken by trial count.
+  shared.sort((a, b) => (b.trialCount + b.pubCount) - (a.trialCount + a.pubCount))
+  const lines = shared.slice(0, 10).map(({ term, trialCount, pubCount }) =>
+    `  - ${term}: ${trialCount} trials, ${pubCount} publications`,
+  )
+  return '\n' + lines.join('\n')
 }
 
 function formatTrialRigorForPrompt(trials: AllAgentOutputs['trials']): string {

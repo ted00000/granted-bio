@@ -173,6 +173,8 @@ interface ResultsPanelProps {
   onTrialRandomizedChange?: (v: boolean | null) => void
   trialFdaRegulatedFilter?: boolean | null
   onTrialFdaRegulatedChange?: (v: boolean | null) => void
+  trialDmcFilter?: boolean | null
+  onTrialDmcChange?: (v: boolean | null) => void
   // Trial saving
   savedTrialIds?: Set<string>
   onSaveTrial?: (nctId: string) => void
@@ -192,7 +194,7 @@ interface ResultsPanelProps {
   hideStatsAndFilters?: boolean
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, crossFilteredByState, byState, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, trialTypeFilter = null, trialIndustryFilter = null, onTrialIndustryChange, trialRandomizedFilter = null, onTrialRandomizedChange, trialFdaRegulatedFilter = null, onTrialFdaRegulatedChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {}, hideStatsAndFilters = false }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, crossFilteredByState, byState, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, trialTypeFilter = null, trialIndustryFilter = null, onTrialIndustryChange, trialRandomizedFilter = null, onTrialRandomizedChange, trialFdaRegulatedFilter = null, onTrialFdaRegulatedChange, trialDmcFilter = null, onTrialDmcChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {}, hideStatsAndFilters = false }: ResultsPanelProps) {
   const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
   // Count active filters for collapsed state display
@@ -999,11 +1001,13 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           const randomizedCount = data.all_results.filter((t: any) => t.allocation === 'RANDOMIZED').length
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const fdaCount = data.all_results.filter((t: any) => t.is_fda_regulated_drug === true || t.is_fda_regulated_device === true).length
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const dmcCount = data.all_results.filter((t: any) => t.has_dmc === true).length
 
           // Hide the whole strip if no result carries any of the new
           // fields — happens on legacy trials that haven't been
           // re-enriched since the 2026-09 backfills.
-          if (industryCount === 0 && randomizedCount === 0 && fdaCount === 0) return null
+          if (industryCount === 0 && randomizedCount === 0 && fdaCount === 0 && dmcCount === 0) return null
 
           const chipClass = (active: boolean) => `
             px-3 py-1.5 text-xs rounded-full border transition-all
@@ -1056,6 +1060,19 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
                     </span>
                   </button>
                 )}
+                {dmcCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => onTrialDmcChange?.(trialDmcFilter === true ? null : true)}
+                    className={chipClass(trialDmcFilter === true)}
+                    title="Only trials with a Data Monitoring Committee (has_dmc = true) — a rigor signal typically present on serious late-phase and high-risk designs"
+                  >
+                    DMC
+                    <span className={`ml-1.5 ${trialDmcFilter === true ? 'text-white/80' : 'text-gray-400'}`}>
+                      {dmcCount}
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
           )
@@ -1089,9 +1106,14 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             filteredTrials = filteredTrials.filter((t: any) => t.is_fda_regulated_drug === true || t.is_fda_regulated_device === true)
           }
+          if (trialDmcFilter === true) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            filteredTrials = filteredTrials.filter((t: any) => t.has_dmc === true)
+          }
           const displayCount = filteredTrials.length
           const hasFilters = trialStatusFilters.length > 0 || trialTypeFilter ||
-            trialIndustryFilter || trialRandomizedFilter || trialFdaRegulatedFilter
+            trialIndustryFilter || trialRandomizedFilter || trialFdaRegulatedFilter ||
+            trialDmcFilter
 
           // Empty state when filters remove all trials
           if (filteredTrials.length === 0 && hasFilters && data.all_results.length > 0) {
@@ -1588,6 +1610,7 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const [trialIndustryFilter, setTrialIndustryFilter] = useState<boolean | null>(null)
   const [trialRandomizedFilter, setTrialRandomizedFilter] = useState<boolean | null>(null)
   const [trialFdaRegulatedFilter, setTrialFdaRegulatedFilter] = useState<boolean | null>(null)
+  const [trialDmcFilter, setTrialDmcFilter] = useState<boolean | null>(null)
   const [trialFiltersExpanded, setTrialFiltersExpanded] = useState(true)
   const [savedTrialIds, setSavedTrialIds] = useState<Set<string>>(new Set())
   const [precision, setPrecision] = useState<'low' | 'med' | 'high'>(initialPrecision || 'low')
@@ -2864,6 +2887,8 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                   onTrialRandomizedChange={setTrialRandomizedFilter}
                   trialFdaRegulatedFilter={trialFdaRegulatedFilter}
                   onTrialFdaRegulatedChange={setTrialFdaRegulatedFilter}
+                  trialDmcFilter={trialDmcFilter}
+                  onTrialDmcChange={setTrialDmcFilter}
                   savedTrialIds={savedTrialIds}
                   onSaveTrial={handleSaveTrial}
                   persona={persona}
