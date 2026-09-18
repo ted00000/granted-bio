@@ -516,6 +516,12 @@ ${formatYearTrendForPrompt(context.fundingStats.byYear)}
 - **Lead sponsor mix (source-truth from CT.gov's sponsorCollaboratorsModule; use these EXACT counts):**${formatTrialSponsorClassForPrompt(agentOutputs.trials)}
 - **Trial rigor evidence (deterministic counts over the surfaced trial set; use verbatim when writing about study rigor):**${formatTrialRigorForPrompt(agentOutputs.trials)}
 - **Purpose framing rule.** If you cite "N therapeutic trials" or "trials dominated by therapeutics", you MUST use the TREATMENT count from the purpose split above — NOT the legacy is_therapeutic_trial boolean, which defaulted to TRUE on ambiguous titles and biased every therapeutic count upward. When cross-cutting purpose with phase, cite BOTH: e.g., "189 TREATMENT (117 Phase 1, 42 Phase 2, ...), 42 DIAGNOSTIC (mostly N/A phase), 18 SCREENING".
+- **NIH Institute administering the grants (source-truth from RePORTER agency_ic_admin.abbreviation):**${formatAdminIcSplitForPrompt(agentOutputs.projects)}
+- **Framing rule for admin_ic.** When one IC administers ≥40% of surfaced grants, cite the concentration explicitly ("Predominantly NCI-administered: 68 of 123 grants") — that's a strong signal about who owns the funding decision at NIH. Do NOT collapse multiple ICs into "NIH" — the IC layer is the actionable segmentation.
+- **FOA (Funding Opportunity Announcement) clustering — grants under the same NIH call (3+ threshold):**${formatFoaClusteringForPrompt(agentOutputs.projects)}
+- **Framing rule for FOA clustering.** When you see 3+ grants under the same FOA, mention it: it indicates a coordinated NIH funding push (RFA/PAR/PA) rather than scattered R01 activity. Example framing: "12 of 123 grants issued under RFA-CA-21-056, signaling a coordinated NCI call for this technology". Do NOT invent FOA-specific narrative for calls not listed above.
+- **NIH RCDC spending category tags (top 10 across surfaced projects; NIH's own topic taxonomy, distinct from our internal primary_category):**${formatSpendingCategoriesForPrompt(agentOutputs.projects)}
+- **Framing rule for spending_categories.** These are NIH-emitted tags at project ingest. When primary_category (our classifier) and top spending_categories agree, cite the agreement as validation. When they disagree, note the mismatch as a caveat rather than a contradiction.
 - **STRONGLY PREFERRED: COMPACT FRAMING.** Cite trial status using this exact compact template: "${totalTrialsForSummary - trialStatusCounts.terminated} trials in progress, planned, or completed vs ${trialStatusCounts.terminated} terminated/suspended/withdrawn (${totalTrialsForSummary} total)". This form uses the terminated bucket as the anchor (unambiguous negative counts) and always sums correctly to the total. Every audit finds a new way that itemized enumeration goes wrong (dropped categories, incorrect negations, arithmetic slips), so USE THIS COMPACT FORM unless you have a strong specific reason not to.
 - **IF you must itemize instead of using the compact form**: enumerate ALL non-zero status categories such that the cited counts sum to ${totalTrialsForSummary} EXACTLY. Sum before writing. If your itemization doesn't sum to ${totalTrialsForSummary}, use the compact form instead. Do NOT partially itemize (citing 4-5 categories but missing 2-3). Do NOT negate absent categories ("with no trials in X") - readers understand unlisted = absent. Every itemization must sum exactly to ${totalTrialsForSummary}.
 - **NO PHRASE "N ACTIVE OR COMPLETED".** That label is ambiguous; readers disagree on whether "recruiting" counts as "active".
@@ -4185,6 +4191,66 @@ The FY${fy} figure shown is YTD only and reflects partial reporting. Do NOT inte
 // Returns '' when there is no signal, so the surrounding bullet stays
 // clean rather than showing "(nothing to report)".
 // ------------------------------------------------------------------
+
+// ------------------------------------------------------------------
+// Consumption push (2026-09-18 — P4) — RePORTER audit fields on
+// projects. Distribution helpers for admin_ic, foa_number, and
+// spending_categories. Each returns an inline block for the DATA
+// SUMMARY, empty string when there is no signal.
+// ------------------------------------------------------------------
+
+function formatAdminIcSplitForPrompt(projects: AllAgentOutputs['projects']): string {
+  const byIc: Record<string, number> = {}
+  let populated = 0
+  for (const p of projects.items) {
+    if (p.admin_ic) {
+      byIc[p.admin_ic] = (byIc[p.admin_ic] || 0) + 1
+      populated++
+    }
+  }
+  if (populated === 0) {
+    return ' (no admin_ic data on surfaced projects — legacy rows loaded before the RePORTER audit ship)'
+  }
+  const ordered = Object.entries(byIc).sort((a, b) => b[1] - a[1])
+  const top = ordered.slice(0, 8)
+  const remaining = ordered.slice(8).reduce((s, [, n]) => s + n, 0)
+  const lines = top.map(([ic, n]) => `  - ${ic}: ${n}`)
+  if (remaining > 0) lines.push(`  - other ICs: ${remaining}`)
+  return '\n' + lines.join('\n')
+}
+
+function formatFoaClusteringForPrompt(projects: AllAgentOutputs['projects']): string {
+  const byFoa: Record<string, number> = {}
+  for (const p of projects.items) {
+    if (p.foa_number) byFoa[p.foa_number] = (byFoa[p.foa_number] || 0) + 1
+  }
+  // Only surface FOAs that appear on 3+ projects — otherwise the
+  // "clustering" signal is noise.
+  const clusters = Object.entries(byFoa)
+    .filter(([, n]) => n >= 3)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+  if (clusters.length === 0) {
+    return ' (no meaningful FOA clustering — no single call issued 3+ of the surfaced grants)'
+  }
+  return '\n' + clusters.map(([foa, n]) => `  - ${foa}: ${n} grants under this call`).join('\n')
+}
+
+function formatSpendingCategoriesForPrompt(projects: AllAgentOutputs['projects']): string {
+  const counts: Record<string, number> = {}
+  for (const p of projects.items) {
+    if (p.spending_categories && p.spending_categories.length > 0) {
+      for (const tag of p.spending_categories) {
+        counts[tag] = (counts[tag] || 0) + 1
+      }
+    }
+  }
+  if (Object.keys(counts).length === 0) {
+    return ' (no NIH RCDC spending_categories data on surfaced projects)'
+  }
+  const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 10)
+  return '\n' + top.map(([tag, n]) => `  - ${tag}: ${n}`).join('\n')
+}
 
 // ------------------------------------------------------------------
 // Consumption push (2026-09-18) — Terminated trials callout.

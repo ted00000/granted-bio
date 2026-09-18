@@ -388,6 +388,13 @@ function processResults(
       primary_category: p.primary_category || null,
       similarity: p.similarity || null,
       match_tier: p.similarity ? getMatchTier(p.similarity) : null,
+      contact_pi_name: p.contact_pi_name ?? null,
+      admin_ic: p.admin_ic ?? null,
+      foa_number: p.foa_number ?? null,
+      direct_cost_amt: p.direct_cost_amt ?? null,
+      indirect_cost_amt: p.indirect_cost_amt ?? null,
+      study_section: p.study_section ?? null,
+      spending_categories: p.spending_categories ?? null,
     }
   })
 
@@ -523,4 +530,13 @@ interface RawProjectResult {
   total_cost?: number
   fiscal_year?: number
   primary_category?: string
+  // RePORTER audit fields — returned by search_projects_filtered RPC
+  // since 2026-09-18 migration. Present on new/updated rows only.
+  contact_pi_name?: string | null
+  admin_ic?: string | null
+  foa_number?: string | null
+  direct_cost_amt?: number | null
+  indirect_cost_amt?: number | null
+  study_section?: string | null
+  spending_categories?: string[] | null
 }

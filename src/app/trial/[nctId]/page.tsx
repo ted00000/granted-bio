@@ -561,6 +561,41 @@ export default function TrialDetailPage() {
           </div>
         )}
 
+        {/* Secondary outcomes — collapsed by default. Kept behind a
+            details/summary because trials frequently have 5-30 secondary
+            outcomes and eager rendering blows up the layout. */}
+        {trial.secondary_outcomes && trial.secondary_outcomes.length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm p-5 mb-6">
+            <details>
+              <summary className="text-sm font-semibold text-gray-900 cursor-pointer flex items-center justify-between gap-2">
+                <span>Secondary Outcomes</span>
+                <span className="text-xs font-normal text-gray-400">
+                  {trial.secondary_outcomes.length} measure{trial.secondary_outcomes.length === 1 ? '' : 's'}
+                </span>
+              </summary>
+              <ol className="mt-3 space-y-3 text-sm">
+                {trial.secondary_outcomes.map((o, i) => (
+                  <li key={i} className="border-l-2 border-gray-100 pl-3">
+                    <div className="text-gray-900 font-medium">
+                      {o.measure || '(unnamed measure)'}
+                    </div>
+                    {o.time_frame && (
+                      <div className="text-xs text-gray-500 mt-0.5">
+                        Time frame: {o.time_frame}
+                      </div>
+                    )}
+                    {o.description && (
+                      <div className="text-xs text-gray-600 mt-1 whitespace-pre-wrap">
+                        {o.description}
+                      </div>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            </details>
+          </div>
+        )}
+
         {/* Timeline */}
         <div className="bg-white rounded-lg shadow-sm p-5 mb-6">
           <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">

@@ -36,6 +36,15 @@ interface Project {
   primary_category: string | null
   secondary_category: string | null
   primary_category_confidence: number | null
+  // RePORTER audit fields (2026-09 audit + 2026-09-18 consumption push).
+  // Populated on new/updated projects only; may be null for legacy rows.
+  contact_pi_name?: string | null
+  admin_ic?: string | null
+  foa_number?: string | null
+  direct_cost_amt?: number | null
+  indirect_cost_amt?: number | null
+  study_section?: string | null
+  spending_categories?: string[] | null
 }
 
 interface Publication {
@@ -356,9 +365,14 @@ export default function ProjectPage() {
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Principal Investigator</div>
+                  <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">
+                    {project.contact_pi_name ? 'Contact PI' : 'Principal Investigator'}
+                  </div>
                   <div className="font-medium text-gray-900">
-                    {normalizePIName(project.pi_names?.split(';')[0]?.trim() || '') || 'N/A'}
+                    {normalizePIName(
+                      project.contact_pi_name ||
+                      project.pi_names?.split(';')[0]?.trim() || ''
+                    ) || 'N/A'}
                   </div>
                   {project.program_officer && (
                     <div className="text-sm text-gray-500">
@@ -377,7 +391,76 @@ export default function ProjectPage() {
                   <div className="font-medium text-gray-900">{project.project_number}</div>
                   <div className="text-xs text-gray-400">{project.full_project_num}</div>
                 </div>
+                {/* RePORTER audit fields (2026-09-18). Each block renders
+                    only when the source populated the field. Legacy rows
+                    from before the audit ship show the old set only. */}
+                {project.admin_ic && (
+                  <div>
+                    <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Administering IC</div>
+                    <div className="font-medium text-gray-900">{project.admin_ic}</div>
+                    <div className="text-xs text-gray-500">NIH institute/center</div>
+                  </div>
+                )}
+                {project.foa_number && (
+                  <div>
+                    <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Funding Opportunity (FOA)</div>
+                    <div className="font-medium text-gray-900">{project.foa_number}</div>
+                    <div className="text-xs text-gray-500">NIH funding call ID</div>
+                  </div>
+                )}
+                {project.study_section && (
+                  <div>
+                    <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Study Section</div>
+                    <div className="font-medium text-gray-900 text-sm leading-snug">{project.study_section}</div>
+                    <div className="text-xs text-gray-500">NIH review body</div>
+                  </div>
+                )}
+                {(project.direct_cost_amt != null || project.indirect_cost_amt != null) && (
+                  <div>
+                    <div className="text-xs text-gray-400 uppercase tracking-wide mb-1">Cost Breakdown</div>
+                    <div className="text-sm text-gray-900">
+                      {project.direct_cost_amt != null && (
+                        <div>
+                          <span className="font-medium">{formatCost(project.direct_cost_amt)}</span>{' '}
+                          <span className="text-gray-500">direct</span>
+                        </div>
+                      )}
+                      {project.indirect_cost_amt != null && (
+                        <div>
+                          <span className="font-medium">{formatCost(project.indirect_cost_amt)}</span>{' '}
+                          <span className="text-gray-500">indirect (F&amp;A)</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
+
+              {/* NIH RCDC spending categories — canonical NIH topic taxonomy
+                  distinct from our internal primary_category. Renders as
+                  chips when the field is populated. */}
+              {project.spending_categories && project.spending_categories.length > 0 && (
+                <div className="pt-4 border-t border-gray-100">
+                  <div className="text-xs text-gray-400 uppercase tracking-wide mb-2">
+                    NIH Spending Categories
+                  </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {project.spending_categories.slice(0, 20).map((tag, i) => (
+                      <span
+                        key={i}
+                        className="px-2 py-0.5 bg-slate-50 text-slate-700 rounded text-xs"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                    {project.spending_categories.length > 20 && (
+                      <span className="px-2 py-0.5 text-xs text-gray-400">
+                        +{project.spending_categories.length - 20} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Tabs */}

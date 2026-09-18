@@ -50,6 +50,16 @@ export interface ProjectItem {
   primary_category: string | null
   similarity: number | null  // Semantic similarity score (0-1)
   match_tier: 'precise' | 'balanced' | 'broad' | null  // Match quality tier
+  // RePORTER audit fields (2026-09 audit + 2026-09-18 consumption push).
+  // Populated on new/updated projects; NULL for legacy rows loaded
+  // before the audit columns were added.
+  contact_pi_name?: string | null
+  admin_ic?: string | null              // NCI / NIAID / NIMH / ...
+  foa_number?: string | null            // funding opportunity announcement
+  direct_cost_amt?: number | null
+  indirect_cost_amt?: number | null
+  study_section?: string | null         // NIH review body name
+  spending_categories?: string[] | null // NIH RCDC topic tags
 }
 
 export interface TrialItem {
