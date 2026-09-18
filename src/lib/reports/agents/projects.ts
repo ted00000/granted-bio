@@ -194,20 +194,66 @@ export async function runProjectsAgent(
     return emptyOutput()
   }
 
-  if (!semanticResults || semanticResults.length === 0) {
+  // Path 2 — MeSH/RCDC rescue. Best-effort: extract topic descriptors
+  // via Haiku, query projects whose spending_categories overlap any
+  // of them. Additive to semantic search. Yields few results today
+  // (spending_categories only populated on rows synced after
+  // 2026-08-05), but grows as the historical RePORTER refresh backfills.
+  //
+  // MeSH descriptor names and NIH RCDC spending-category tags share
+  // vocabulary in many cases ("Cancer", "HIV/AIDS", "Diabetes"), so
+  // direct overlap works as a rough matcher without a separate
+  // extraction pass.
+  let rescueRows: Array<RawProjectResult & { similarity?: number }> = []
+  try {
+    const { default: Anthropic } = await import('@anthropic-ai/sdk')
+    const { extractTopicMesh } = await import('@/lib/search/mesh-extraction')
+    const anthropic = new Anthropic()
+    const topicMesh = await extractTopicMesh(semanticQuery, supabaseAdmin, anthropic)
+    const allTerms = [
+      ...topicMesh.condition_mesh,
+      ...topicMesh.intervention_mesh,
+    ]
+    if (allTerms.length > 0) {
+      const { data: rescueData } = await supabaseAdmin
+        .from('projects')
+        // Same shape as the RPC returns, plus new audit columns.
+        .select(
+          'application_id, project_number, title, phr, pi_names, org_name, ' +
+          'total_cost, fiscal_year, primary_category, ' +
+          'contact_pi_name, admin_ic, foa_number, direct_cost_amt, ' +
+          'indirect_cost_amt, study_section, spending_categories'
+        )
+        .overlaps('spending_categories', allTerms)
+        .eq('is_bio_related', true)
+        .limit(200)
+      rescueRows = ((rescueData as unknown) as Array<RawProjectResult & { similarity?: number }>) ?? []
+      if (rescueRows.length > 0) {
+        console.log(
+          `[Projects Agent] Path 2 (MeSH/RCDC rescue): +${rescueRows.length} projects via spending_categories overlap`,
+        )
+      }
+    }
+  } catch (err) {
+    // Path 2 is best-effort. Semantic search results still ship.
+    console.warn('[Projects Agent] Path 2 rescue failed (non-fatal):', err)
+  }
+
+  if ((!semanticResults || semanticResults.length === 0) && rescueRows.length === 0) {
     console.log('[Projects Agent] No results found')
     return emptyOutput()
   }
 
-  // Results come back sorted by similarity (highest first).
-  //
-  // Rolled back 2026-09-18: a "Path 2 MeSH/RCDC rescue" here (extract
-  // MeSH descriptors via Haiku, query projects whose spending_categories
-  // overlap) caused Phase 1 to hang for 30+ minutes on the first live
-  // regeneration test. Root cause under investigation. Trials-side
-  // Path 3 rescue (src/lib/reports/agents/trials.ts) is unaffected —
-  // it uses the same extraction but a different DB query pattern.
-  const rawResults = semanticResults as Array<RawProjectResult & { similarity?: number }>
+  // Results come back sorted by similarity (highest first). Merge
+  // rescue rows at the tail (similarity: null) — they carry no
+  // embedding-similarity score, so we can't rank them against the
+  // primary results without one, so they slot in at the end.
+  const rawResults = [
+    ...((semanticResults ?? []) as Array<RawProjectResult & { similarity?: number }>),
+    ...rescueRows.filter(
+      (r) => !(semanticResults ?? []).some((s: RawProjectResult) => s.application_id === r.application_id),
+    ),
+  ]
 
   // PASS 1: Deduplicate by core project number (aligned with UI deduplication)
   // This strips budget period suffixes so "5R44MH136894-02" and "1R44MH136894-01" are treated as same project

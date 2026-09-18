@@ -638,6 +638,12 @@ FORMATTING: Do NOT use em dashes (—). Use regular hyphens (-) or rewrite sente
         content: prompt,
       },
     ],
+  }, {
+    // Hard per-call timeout — Anthropic SDK default is 10 min, which
+    // stalled Phase 4 synthesis for the full 15-min Vercel budget on
+    // report 776acdd0 (2026-09-18). 90s matches the pattern used by
+    // every other Sonnet call in this file.
+    timeout: 90_000,
   })
 
   // Track usage
@@ -806,6 +812,11 @@ Return JSON only, no markdown:
       model: 'claude-sonnet-4-6',
       max_tokens: 1500, // Increased for richer section insights
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      // Hard per-call timeout — Anthropic SDK default is 10 min, which
+      // stalled Phase 4 synthesis for the full 15-min Vercel budget on
+      // report 776acdd0 (2026-09-18).
+      timeout: 90_000,
     })
 
     // Track usage
@@ -1207,6 +1218,9 @@ Keep existing key players, market size, and recent developments unchanged.`
       model: 'claude-sonnet-4-6', // Use Sonnet for efficiency
       max_tokens: 1000,
       messages: [{ role: 'user', content: prompt }],
+    }, {
+      // Hard per-call timeout — see generateExecutiveSummary note.
+      timeout: 90_000,
     })
 
     // Track usage
