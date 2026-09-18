@@ -512,6 +512,10 @@ ${formatYearTrendForPrompt(context.fundingStats.byYear)}
   - Suspended: ${agentOutputs.trials.byStatus?.['Suspended'] || 0}
   - Withdrawn: ${agentOutputs.trials.byStatus?.['Withdrawn'] || 0}
   - Total: ${totalTrialsForSummary}
+- **Trial primary purpose split (source-truth from ClinicalTrials.gov's designModule.designInfo.primaryPurpose; use these EXACT counts):**${formatTrialPurposeSplitForPrompt(agentOutputs.trials)}
+- **Lead sponsor mix (source-truth from CT.gov's sponsorCollaboratorsModule; use these EXACT counts):**${formatTrialSponsorClassForPrompt(agentOutputs.trials)}
+- **Trial rigor evidence (deterministic counts over the surfaced trial set; use verbatim when writing about study rigor):**${formatTrialRigorForPrompt(agentOutputs.trials)}
+- **Purpose framing rule.** If you cite "N therapeutic trials" or "trials dominated by therapeutics", you MUST use the TREATMENT count from the purpose split above — NOT the legacy is_therapeutic_trial boolean, which defaulted to TRUE on ambiguous titles and biased every therapeutic count upward. When cross-cutting purpose with phase, cite BOTH: e.g., "189 TREATMENT (117 Phase 1, 42 Phase 2, ...), 42 DIAGNOSTIC (mostly N/A phase), 18 SCREENING".
 - **STRONGLY PREFERRED: COMPACT FRAMING.** Cite trial status using this exact compact template: "${totalTrialsForSummary - trialStatusCounts.terminated} trials in progress, planned, or completed vs ${trialStatusCounts.terminated} terminated/suspended/withdrawn (${totalTrialsForSummary} total)". This form uses the terminated bucket as the anchor (unambiguous negative counts) and always sums correctly to the total. Every audit finds a new way that itemized enumeration goes wrong (dropped categories, incorrect negations, arithmetic slips), so USE THIS COMPACT FORM unless you have a strong specific reason not to.
 - **IF you must itemize instead of using the compact form**: enumerate ALL non-zero status categories such that the cited counts sum to ${totalTrialsForSummary} EXACTLY. Sum before writing. If your itemization doesn't sum to ${totalTrialsForSummary}, use the compact form instead. Do NOT partially itemize (citing 4-5 categories but missing 2-3). Do NOT negate absent categories ("with no trials in X") - readers understand unlisted = absent. Every itemization must sum exactly to ${totalTrialsForSummary}.
 - **NO PHRASE "N ACTIVE OR COMPLETED".** That label is ambiguous; readers disagree on whether "recruiting" counts as "active".
@@ -4156,6 +4160,51 @@ function partialFYPromptDirective(stats: FundingStats): string {
   return `\n\n## CRITICAL — FY${fy} IS A PARTIAL YEAR
 ${stats.partialFYNote}
 The FY${fy} figure shown is YTD only and reflects partial reporting. Do NOT interpret a drop from FY${priorFY} to FY${fy} as a real funding decline — it is incomplete data. When discussing recent funding trends, either exclude FY${fy} from year-over-year comparisons or explicitly label it as YTD. Never use language like "declined to" or "fell to" for FY${fy}.`
+}
+
+// ------------------------------------------------------------------
+// Consumption push (2026-09-18) — prompt formatters for the new
+// trial-quality pack fields. Each returns a small newline-indented
+// block that can be inlined under a bullet in the DATA SUMMARY.
+// Returns '' when there is no signal, so the surrounding bullet stays
+// clean rather than showing "(nothing to report)".
+// ------------------------------------------------------------------
+
+function formatTrialPurposeSplitForPrompt(trials: AllAgentOutputs['trials']): string {
+  const byPurpose = trials.byPurpose || {}
+  const total = trials.items.length
+  const populated = Object.values(byPurpose).reduce((a, b) => a + b, 0)
+  const unspecified = total - populated
+  if (populated === 0) {
+    return ' (no primary_purpose data on the surfaced trials — the source has not enriched these NCTs yet)'
+  }
+  const ordered = Object.entries(byPurpose).sort((a, b) => b[1] - a[1])
+  const lines = ordered.map(([purpose, count]) => `  - ${purpose}: ${count}`)
+  if (unspecified > 0) lines.push(`  - Unspecified: ${unspecified}`)
+  return '\n' + lines.join('\n')
+}
+
+function formatTrialSponsorClassForPrompt(trials: AllAgentOutputs['trials']): string {
+  const bySponsor = trials.byLeadSponsorClass || {}
+  const populated = Object.values(bySponsor).reduce((a, b) => a + b, 0)
+  if (populated === 0) return ' (no lead_sponsor_class data on the surfaced trials)'
+  const ordered = Object.entries(bySponsor).sort((a, b) => b[1] - a[1])
+  return '\n' + ordered.map(([cls, n]) => `  - ${cls}: ${n}`).join('\n')
+}
+
+function formatTrialRigorForPrompt(trials: AllAgentOutputs['trials']): string {
+  const r = trials.rigorCounts
+  if (!r || r.total === 0) return ' (no trials surfaced)'
+  const lines = [
+    `  - RANDOMIZED: ${r.randomized} of ${r.total}`,
+    `  - Blinded (DOUBLE / TRIPLE / QUADRUPLE): ${r.doubleBlindedOrHigher} of ${r.total}`,
+    `  - Data Monitoring Committee present: ${r.withDmc} of ${r.total}`,
+    `  - FDA-regulated drug trial: ${r.fdaRegulatedDrug} of ${r.total}`,
+    `  - FDA-regulated device trial: ${r.fdaRegulatedDevice} of ${r.total}`,
+    `  - With INDUSTRY collaborator: ${r.industryCollaborator} of ${r.total}`,
+    `  - Early-terminated (why_stopped populated): ${r.earlyTerminated} of ${r.total}`,
+  ]
+  return '\n' + lines.join('\n')
 }
 
 // normalizeOrgName, normalizeJournalName, titleCaseToken, ORG_ACRONYMS,

@@ -69,6 +69,38 @@ export interface TrialItem {
    * (which is a different string and won't match across sources).
    */
   project_numbers: string[]
+  // ------------------------------------------------------------------
+  // Consumption push (2026-09-18) — new source-truth fields from the
+  // trial-quality pack and MeSH ships. Present on every enriched row
+  // (~90%+ coverage per the 2026-09 backfills); null for un-enriched
+  // trials or observational studies that don't have the field.
+  // ------------------------------------------------------------------
+  primary_purpose?: string | null       // TREATMENT / DIAGNOSTIC / SCREENING / ...
+  lead_sponsor_class?: string | null    // INDUSTRY / NIH / NETWORK / OTHER / ...
+  allocation?: string | null            // RANDOMIZED / NON_RANDOMIZED / NA
+  masking?: string | null               // NONE / SINGLE / DOUBLE / TRIPLE / QUADRUPLE
+  has_dmc?: boolean | null
+  is_fda_regulated_drug?: boolean | null
+  is_fda_regulated_device?: boolean | null
+  why_stopped?: string | null           // termination reason (early-stopped trials only)
+  condition_mesh?: string[] | null      // canonical NIH MeSH descriptors
+  intervention_mesh?: string[] | null
+  collaborators?: Array<{ name: string | null; class: string | null }> | null
+  overall_officials?: Array<{
+    name: string | null
+    role: string | null
+    affiliation: string | null
+  }> | null
+  primary_outcomes?: Array<{
+    measure: string | null
+    time_frame: string | null
+    description: string | null
+  }> | null
+  secondary_outcomes?: Array<{
+    measure: string | null
+    time_frame: string | null
+    description: string | null
+  }> | null
 }
 
 export interface PatentItem {
@@ -196,6 +228,34 @@ export interface TrialsAgentOutput {
   items: TrialItem[]
   byPhase: Record<string, number>
   byStatus: Record<string, number>
+  // Consumption push (2026-09-18) aggregates. Each is a { value: count }
+  // map computed from the surfaced trials only (not the full DB). Zero
+  // for un-enriched trials so downstream consumers can distinguish
+  // "no data" from "affirmatively that value".
+  byPurpose?: Record<string, number>            // TREATMENT: 12, DIAGNOSTIC: 3, etc.
+  byLeadSponsorClass?: Record<string, number>   // INDUSTRY: 4, NIH: 8, etc.
+  byAllocation?: Record<string, number>         // RANDOMIZED: 15, NON_RANDOMIZED: 3, NA: 4
+  byMasking?: Record<string, number>            // NONE: 8, DOUBLE: 6, ...
+  // Aggregate flags — count of surfaced trials meeting each condition.
+  rigorCounts?: {
+    total: number
+    randomized: number
+    doubleBlindedOrHigher: number     // masking ∈ {DOUBLE, TRIPLE, QUADRUPLE}
+    withDmc: number
+    fdaRegulatedDrug: number
+    fdaRegulatedDevice: number
+    industryCollaborator: number       // any collaborator with class = INDUSTRY
+    earlyTerminated: number            // why_stopped populated
+  }
+  // Full list of surfaced trials that terminated early, with reason.
+  // Ordered by lead_sponsor + status for readable rendering.
+  terminated?: Array<{
+    nct_id: string
+    study_title: string
+    lead_sponsor: string | null
+    why_stopped: string
+    study_status: string | null
+  }>
   /**
    * Diagnostic counters from each lookup path. Persisted via agent_outputs
    * so production runs leave durable evidence of how trials were sourced,

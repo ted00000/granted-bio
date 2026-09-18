@@ -200,11 +200,23 @@ export async function runTrialsAgent(
     const nctIds = uniqueTrials.map((t) => t.nct_id)
     const { data: refreshed } = await supabaseAdmin
       .from('clinical_studies')
-      .select('nct_id, project_number, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
+      // Extended 2026-09-18 to pull the trial-quality pack + MeSH +
+      // audit fields so downstream aggregates can use them.
+      .select(
+        'nct_id, project_number, study_title, study_status, phase, ' +
+        'study_type, enrollment_count, lead_sponsor, conditions, brief_summary, ' +
+        'primary_purpose, lead_sponsor_class, allocation, masking, has_dmc, ' +
+        'is_fda_regulated_drug, is_fda_regulated_device, why_stopped, ' +
+        'condition_mesh, intervention_mesh, collaborators, overall_officials, ' +
+        'primary_outcomes, secondary_outcomes'
+      )
       .in('nct_id', nctIds)
 
     if (refreshed) {
-      const out = processResults(refreshed)
+      // Supabase's generated types don't yet know about the trial-quality
+      // pack columns we added in 2026-09; cast through unknown so the
+      // select shape (which is authoritative at runtime) is trusted.
+      const out = processResults((refreshed as unknown) as RawTrialResult[])
       out.diagnostics = diagnostics
       return out
     }
@@ -238,7 +250,9 @@ function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
   }
   const deduped = Array.from(seen.values())
 
-  // Map to TrialItem format
+  // Map to TrialItem format. New audit-cycle fields are propagated as-is
+  // so downstream consumers (narrative synthesis, trial cards, rigor
+  // callout) can read them without a second query.
   const items: TrialItem[] = deduped.map((t) => ({
     nct_id: t.nct_id,
     study_title: t.study_title,
@@ -249,6 +263,20 @@ function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
     conditions: t.conditions || null,
     enrollment_count: t.enrollment_count || null,
     project_numbers: Array.from(projectNumbersByNct.get(t.nct_id) ?? []),
+    primary_purpose: t.primary_purpose ?? null,
+    lead_sponsor_class: t.lead_sponsor_class ?? null,
+    allocation: t.allocation ?? null,
+    masking: t.masking ?? null,
+    has_dmc: t.has_dmc ?? null,
+    is_fda_regulated_drug: t.is_fda_regulated_drug ?? null,
+    is_fda_regulated_device: t.is_fda_regulated_device ?? null,
+    why_stopped: t.why_stopped ?? null,
+    condition_mesh: t.condition_mesh ?? null,
+    intervention_mesh: t.intervention_mesh ?? null,
+    collaborators: t.collaborators ?? null,
+    overall_officials: t.overall_officials ?? null,
+    primary_outcomes: t.primary_outcomes ?? null,
+    secondary_outcomes: t.secondary_outcomes ?? null,
   }))
 
   // Group by phase
@@ -265,13 +293,81 @@ function processResults(rawResults: RawTrialResult[]): TrialsAgentOutput {
     byStatus[status] = (byStatus[status] || 0) + 1
   })
 
+  // Consumption push (2026-09-18) aggregates. Every roll-up is over the
+  // surfaced trial set only, not the full DB.
+  const byPurpose: Record<string, number> = {}
+  const byLeadSponsorClass: Record<string, number> = {}
+  const byAllocation: Record<string, number> = {}
+  const byMasking: Record<string, number> = {}
+  const rigorCounts = {
+    total: items.length,
+    randomized: 0,
+    doubleBlindedOrHigher: 0,
+    withDmc: 0,
+    fdaRegulatedDrug: 0,
+    fdaRegulatedDevice: 0,
+    industryCollaborator: 0,
+    earlyTerminated: 0,
+  }
+  const terminated: NonNullable<TrialsAgentOutput['terminated']> = []
+  for (const t of items) {
+    if (t.primary_purpose) {
+      byPurpose[t.primary_purpose] = (byPurpose[t.primary_purpose] || 0) + 1
+    }
+    if (t.lead_sponsor_class) {
+      byLeadSponsorClass[t.lead_sponsor_class] =
+        (byLeadSponsorClass[t.lead_sponsor_class] || 0) + 1
+    }
+    if (t.allocation) {
+      byAllocation[t.allocation] = (byAllocation[t.allocation] || 0) + 1
+    }
+    if (t.masking) {
+      byMasking[t.masking] = (byMasking[t.masking] || 0) + 1
+    }
+    if (t.allocation === 'RANDOMIZED') rigorCounts.randomized++
+    if (t.masking && ['DOUBLE', 'TRIPLE', 'QUADRUPLE'].includes(t.masking)) {
+      rigorCounts.doubleBlindedOrHigher++
+    }
+    if (t.has_dmc === true) rigorCounts.withDmc++
+    if (t.is_fda_regulated_drug === true) rigorCounts.fdaRegulatedDrug++
+    if (t.is_fda_regulated_device === true) rigorCounts.fdaRegulatedDevice++
+    if (t.collaborators && t.collaborators.some((c) => c.class === 'INDUSTRY')) {
+      rigorCounts.industryCollaborator++
+    }
+    if (t.why_stopped && t.why_stopped.trim().length > 0) {
+      rigorCounts.earlyTerminated++
+      terminated.push({
+        nct_id: t.nct_id,
+        study_title: t.study_title,
+        lead_sponsor: t.lead_sponsor,
+        why_stopped: t.why_stopped,
+        study_status: t.study_status,
+      })
+    }
+  }
+  // Stable, readable ordering for narrative consumption.
+  terminated.sort((a, b) => {
+    const s = (a.lead_sponsor || '').localeCompare(b.lead_sponsor || '')
+    if (s !== 0) return s
+    return a.nct_id.localeCompare(b.nct_id)
+  })
+
   console.log(`[Trials Agent] Processed ${items.length} trials`)
   console.log(`  - By phase:`, byPhase)
+  console.log(`  - By purpose:`, byPurpose)
+  console.log(`  - Lead sponsor class:`, byLeadSponsorClass)
+  console.log(`  - Rigor counts:`, rigorCounts)
 
   return {
     items,
     byPhase,
     byStatus,
+    byPurpose,
+    byLeadSponsorClass,
+    byAllocation,
+    byMasking,
+    rigorCounts,
+    terminated,
   }
 }
 
@@ -363,6 +459,21 @@ function emptyOutput(): TrialsAgentOutput {
     items: [],
     byPhase: {},
     byStatus: {},
+    byPurpose: {},
+    byLeadSponsorClass: {},
+    byAllocation: {},
+    byMasking: {},
+    rigorCounts: {
+      total: 0,
+      randomized: 0,
+      doubleBlindedOrHigher: 0,
+      withDmc: 0,
+      fdaRegulatedDrug: 0,
+      fdaRegulatedDevice: 0,
+      industryCollaborator: 0,
+      earlyTerminated: 0,
+    },
+    terminated: [],
   }
 }
 
@@ -382,4 +493,33 @@ interface RawTrialResult {
   lead_sponsor?: string | null
   conditions?: string[] | null
   brief_summary?: string | null
+  // Trial-quality pack + MeSH (2026-09-18). All optional — the RPC-only
+  // path (semantic search response) doesn't return them, only the
+  // post-search re-fetch does.
+  primary_purpose?: string | null
+  lead_sponsor_class?: string | null
+  allocation?: string | null
+  masking?: string | null
+  has_dmc?: boolean | null
+  is_fda_regulated_drug?: boolean | null
+  is_fda_regulated_device?: boolean | null
+  why_stopped?: string | null
+  condition_mesh?: string[] | null
+  intervention_mesh?: string[] | null
+  collaborators?: Array<{ name: string | null; class: string | null }> | null
+  overall_officials?: Array<{
+    name: string | null
+    role: string | null
+    affiliation: string | null
+  }> | null
+  primary_outcomes?: Array<{
+    measure: string | null
+    time_frame: string | null
+    description: string | null
+  }> | null
+  secondary_outcomes?: Array<{
+    measure: string | null
+    time_frame: string | null
+    description: string | null
+  }> | null
 }
