@@ -163,6 +163,16 @@ interface ResultsPanelProps {
   onTrialStatusChange?: (statuses: string[]) => void
   // Trial type filter
   trialTypeFilter?: 'therapeutic' | 'diagnostic' | null
+  // 2026-09-18 audit / consumption push — structured toggles over
+  // the trial-quality pack. Each is a Boolean-null tri-state: null =
+  // no filter, true = only matching, (we don't expose false-explicit
+  // because "exclude industry-sponsored" isn't a common ask).
+  trialIndustryFilter?: boolean | null
+  onTrialIndustryChange?: (v: boolean | null) => void
+  trialRandomizedFilter?: boolean | null
+  onTrialRandomizedChange?: (v: boolean | null) => void
+  trialFdaRegulatedFilter?: boolean | null
+  onTrialFdaRegulatedChange?: (v: boolean | null) => void
   // Trial saving
   savedTrialIds?: Set<string>
   onSaveTrial?: (nctId: string) => void
@@ -182,7 +192,7 @@ interface ResultsPanelProps {
   hideStatsAndFilters?: boolean
 }
 
-function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, crossFilteredByState, byState, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, trialTypeFilter = null, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {}, hideStatsAndFilters = false }: ResultsPanelProps) {
+function ResultsPanel({ results, searchContext, filteredResults, onFilterChange, crossFilteredByCategory, crossFilteredByOrgType, crossFilteredByState, byState, quickFilterCounts, onProjectClick, onOrgClick, onResearcherClick, isMobile = false, trialStatusFilters = [], onTrialStatusChange, trialTypeFilter = null, trialIndustryFilter = null, onTrialIndustryChange, trialRandomizedFilter = null, onTrialRandomizedChange, trialFdaRegulatedFilter = null, onTrialFdaRegulatedChange, savedTrialIds = new Set(), onSaveTrial, onTrialClick, persona, precision = 'low', onPrecisionChange, precisionCounts, stickyFilters = false, currentFilters = {}, hideStatsAndFilters = false }: ResultsPanelProps) {
   const [filtersCollapsed, setFiltersCollapsed] = useState(false)
 
   // Count active filters for collapsed state display
@@ -974,6 +984,83 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           )
         })()}
 
+        {/* Trial-quality pack chips (2026-09-18 consumption push).
+            Rendered inline with the status filters so users see all
+            trial-level filters together. Each chip toggles a tri-state
+            (null / true) — clicking flips between "no filter" and
+            "only matching". */}
+        {!hideStatsAndFilters && (() => {
+          // Deterministic counts from the current result set. Uses the
+          // trial-quality pack fields the search_clinical_studies RPC
+          // now returns on every row (P1 migration).
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const industryCount = data.all_results.filter((t: any) => t.lead_sponsor_class === 'INDUSTRY').length
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const randomizedCount = data.all_results.filter((t: any) => t.allocation === 'RANDOMIZED').length
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const fdaCount = data.all_results.filter((t: any) => t.is_fda_regulated_drug === true || t.is_fda_regulated_device === true).length
+
+          // Hide the whole strip if no result carries any of the new
+          // fields — happens on legacy trials that haven't been
+          // re-enriched since the 2026-09 backfills.
+          if (industryCount === 0 && randomizedCount === 0 && fdaCount === 0) return null
+
+          const chipClass = (active: boolean) => `
+            px-3 py-1.5 text-xs rounded-full border transition-all
+            ${active
+              ? 'bg-[#E07A5F] text-white border-[#E07A5F]'
+              : 'bg-white text-gray-600 border-gray-200 hover:border-[#E07A5F]'
+            }
+          `
+
+          return (
+            <div className={`${isMobile ? 'p-4' : 'p-6'} border-b border-gray-100`}>
+              <h3 className="text-xs text-gray-500 mb-2">Trial quality</h3>
+              <div className="flex flex-wrap gap-2">
+                {industryCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => onTrialIndustryChange?.(trialIndustryFilter === true ? null : true)}
+                    className={chipClass(trialIndustryFilter === true)}
+                    title="Only trials where the lead sponsor class is INDUSTRY (source-truth from ClinicalTrials.gov)"
+                  >
+                    Industry-sponsored
+                    <span className={`ml-1.5 ${trialIndustryFilter === true ? 'text-white/80' : 'text-gray-400'}`}>
+                      {industryCount}
+                    </span>
+                  </button>
+                )}
+                {randomizedCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => onTrialRandomizedChange?.(trialRandomizedFilter === true ? null : true)}
+                    className={chipClass(trialRandomizedFilter === true)}
+                    title="Only randomized trials (allocation = RANDOMIZED)"
+                  >
+                    Randomized
+                    <span className={`ml-1.5 ${trialRandomizedFilter === true ? 'text-white/80' : 'text-gray-400'}`}>
+                      {randomizedCount}
+                    </span>
+                  </button>
+                )}
+                {fdaCount > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => onTrialFdaRegulatedChange?.(trialFdaRegulatedFilter === true ? null : true)}
+                    className={chipClass(trialFdaRegulatedFilter === true)}
+                    title="Only trials CT.gov flags as FDA-regulated drug or FDA-regulated device"
+                  >
+                    FDA-regulated
+                    <span className={`ml-1.5 ${trialFdaRegulatedFilter === true ? 'text-white/80' : 'text-gray-400'}`}>
+                      {fdaCount}
+                    </span>
+                  </button>
+                )}
+              </div>
+            </div>
+          )
+        })()}
+
         {/* Trial results - filtered by status and type if filters active */}
         {(() => {
           let filteredTrials = data.all_results
@@ -987,8 +1074,24 @@ function ResultsPanel({ results, searchContext, filteredResults, onFilterChange,
           } else if (trialTypeFilter === 'diagnostic') {
             filteredTrials = filteredTrials.filter(t => t.is_diagnostic_trial)
           }
+          // 2026-09-18 audit / consumption push — three new toggle-based
+          // filters over the trial-quality pack fields. Each is a
+          // tri-state (null / true) — null passes through, true filters.
+          if (trialIndustryFilter === true) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            filteredTrials = filteredTrials.filter((t: any) => t.lead_sponsor_class === 'INDUSTRY')
+          }
+          if (trialRandomizedFilter === true) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            filteredTrials = filteredTrials.filter((t: any) => t.allocation === 'RANDOMIZED')
+          }
+          if (trialFdaRegulatedFilter === true) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            filteredTrials = filteredTrials.filter((t: any) => t.is_fda_regulated_drug === true || t.is_fda_regulated_device === true)
+          }
           const displayCount = filteredTrials.length
-          const hasFilters = trialStatusFilters.length > 0 || trialTypeFilter
+          const hasFilters = trialStatusFilters.length > 0 || trialTypeFilter ||
+            trialIndustryFilter || trialRandomizedFilter || trialFdaRegulatedFilter
 
           // Empty state when filters remove all trials
           if (filteredTrials.length === 0 && hasFilters && data.all_results.length > 0) {
@@ -1481,6 +1584,10 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
   const [currentFilters, setCurrentFilters] = useState<FilterState>(initialFilters || {})
   const [trialStatusFilters, setTrialStatusFilters] = useState<string[]>([])
   const [trialTypeFilter, setTrialTypeFilter] = useState<'therapeutic' | 'diagnostic' | null>(null)
+  // 2026-09-18 audit / consumption push — three new toggle-based trial filters
+  const [trialIndustryFilter, setTrialIndustryFilter] = useState<boolean | null>(null)
+  const [trialRandomizedFilter, setTrialRandomizedFilter] = useState<boolean | null>(null)
+  const [trialFdaRegulatedFilter, setTrialFdaRegulatedFilter] = useState<boolean | null>(null)
   const [trialFiltersExpanded, setTrialFiltersExpanded] = useState(true)
   const [savedTrialIds, setSavedTrialIds] = useState<Set<string>>(new Set())
   const [precision, setPrecision] = useState<'low' | 'med' | 'high'>(initialPrecision || 'low')
@@ -2751,6 +2858,12 @@ export function Chat({ persona, initialQuery, searchMode = 'smart', initialFilte
                   trialStatusFilters={trialStatusFilters}
                   onTrialStatusChange={setTrialStatusFilters}
                   trialTypeFilter={trialTypeFilter}
+                  trialIndustryFilter={trialIndustryFilter}
+                  onTrialIndustryChange={setTrialIndustryFilter}
+                  trialRandomizedFilter={trialRandomizedFilter}
+                  onTrialRandomizedChange={setTrialRandomizedFilter}
+                  trialFdaRegulatedFilter={trialFdaRegulatedFilter}
+                  onTrialFdaRegulatedChange={setTrialFdaRegulatedFilter}
                   savedTrialIds={savedTrialIds}
                   onSaveTrial={handleSaveTrial}
                   persona={persona}
