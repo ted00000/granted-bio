@@ -17,11 +17,13 @@
 //
 // Enriches data from ClinicalTrials.gov if needed.
 
+import Anthropic from '@anthropic-ai/sdk'
 import { supabaseAdmin } from '@/lib/supabase'
 import { generateEmbedding } from '@/lib/openai'
 import type { TrialsAgentOutput, TrialItem } from '../types'
 import { TRIAL_INCLUSION_THRESHOLD } from '../thresholds'
 import { expandProjectNumberVariants } from '@/lib/project-number-utils'
+import { extractTopicMesh, type TopicMesh } from '@/lib/search/mesh-extraction'
 
 /**
  * Run the Trials Agent.
@@ -158,18 +160,101 @@ export async function runTrialsAgent(
     `[Trials Agent] Path 1: ${linkedTrials.length} rows | Path 2: ${semanticTrials.length} rows (status: ${diagnostics.path2Status})`
   )
 
-  if (linkedTrials.length === 0 && semanticTrials.length === 0) {
-    console.log('[Trials Agent] No trials found from either path')
+  // Path 3 — MeSH rescue. Extract MeSH descriptors from the topic
+  // (LLM, cached) and add any trials whose condition_mesh or
+  // intervention_mesh overlaps. Additive by design: never removes
+  // Path 1 / Path 2 results, only adds trials semantic embedding
+  // may have missed because vocabulary drifted from the topic.
+  //
+  // Failure mode is silent — MeSH extraction returning [] just means
+  // Path 3 finds nothing, same as if the topic weren't MeSH-tagged.
+  let meshTrials: RawTrialResult[] = []
+  let path3Mesh: TopicMesh = { condition_mesh: [], intervention_mesh: [] }
+  if (topicQuery && topicQuery.trim().length > 0) {
+    try {
+      const anthropic = new Anthropic()
+      path3Mesh = await extractTopicMesh(topicQuery, supabaseAdmin, anthropic)
+      if (
+        path3Mesh.condition_mesh.length > 0 ||
+        path3Mesh.intervention_mesh.length > 0
+      ) {
+        // Query trials whose condition_mesh OR intervention_mesh
+        // overlaps any of the extracted terms. Cap at 200 to bound
+        // work in case of an over-broad topic.
+        console.log(
+          `[Trials Agent] Path 3: MeSH rescue with ${path3Mesh.condition_mesh.length} condition + ${path3Mesh.intervention_mesh.length} intervention terms`,
+        )
+        const alreadySeen = new Set<string>([
+          ...linkedTrials.map((t) => t.nct_id),
+          ...semanticTrials.map((t) => t.nct_id),
+        ])
+        // Two queries — one per side — because Supabase's or() syntax
+        // is fussy with GIN array overlap operators. Union in code.
+        const collected = new Map<string, RawTrialResult>()
+        if (path3Mesh.condition_mesh.length > 0) {
+          const { data: byCondition } = await supabaseAdmin
+            .from('clinical_studies')
+            .select(
+              'nct_id, project_number, study_title, study_status, phase, ' +
+              'study_type, enrollment_count, lead_sponsor, conditions, brief_summary, ' +
+              'primary_purpose, lead_sponsor_class, allocation, masking, has_dmc, ' +
+              'is_fda_regulated_drug, is_fda_regulated_device, why_stopped, ' +
+              'condition_mesh, intervention_mesh, collaborators, overall_officials, ' +
+              'primary_outcomes, secondary_outcomes'
+            )
+            .overlaps('condition_mesh', path3Mesh.condition_mesh)
+            .limit(200)
+          for (const r of ((byCondition as unknown) as RawTrialResult[] | null) ?? []) {
+            if (!alreadySeen.has(r.nct_id) && !collected.has(r.nct_id)) {
+              collected.set(r.nct_id, r)
+            }
+          }
+        }
+        if (path3Mesh.intervention_mesh.length > 0) {
+          const { data: byIntervention } = await supabaseAdmin
+            .from('clinical_studies')
+            .select(
+              'nct_id, project_number, study_title, study_status, phase, ' +
+              'study_type, enrollment_count, lead_sponsor, conditions, brief_summary, ' +
+              'primary_purpose, lead_sponsor_class, allocation, masking, has_dmc, ' +
+              'is_fda_regulated_drug, is_fda_regulated_device, why_stopped, ' +
+              'condition_mesh, intervention_mesh, collaborators, overall_officials, ' +
+              'primary_outcomes, secondary_outcomes'
+            )
+            .overlaps('intervention_mesh', path3Mesh.intervention_mesh)
+            .limit(200)
+          for (const r of ((byIntervention as unknown) as RawTrialResult[] | null) ?? []) {
+            if (!alreadySeen.has(r.nct_id) && !collected.has(r.nct_id)) {
+              collected.set(r.nct_id, r)
+            }
+          }
+        }
+        meshTrials = Array.from(collected.values())
+        console.log(
+          `[Trials Agent] Path 3: added ${meshTrials.length} MeSH-rescued trials`,
+        )
+      }
+    } catch (err) {
+      // Non-fatal. The path is best-effort augmentation.
+      console.warn('[Trials Agent] Path 3 failed:', err)
+    }
+  }
+
+  if (
+    linkedTrials.length === 0 &&
+    semanticTrials.length === 0 &&
+    meshTrials.length === 0
+  ) {
+    console.log('[Trials Agent] No trials found from any path')
     const empty = emptyOutput()
     empty.diagnostics = diagnostics
     return empty
   }
 
-  // Union both paths, dedupe by NCT ID. Path 1 wins on conflict because its
+  // Union all paths, dedupe by NCT ID. Path 1 wins on conflict because its
   // project-link metadata is what enriches narrative coherence in the report.
-  // Path 2 rows themselves may be duplicated (clinical_studies has one row
-  // per (nct_id, project_number) so a multi-linked trial returns multiple
-  // rows from the .in('nct_id') fetch); the NCT-keyed map collapses them.
+  // Path 3 (MeSH rescue) is added last so it never displaces Path 1/2
+  // rows on the same NCT.
   const seenTrials = new Map<string, RawTrialResult>()
   for (const trial of linkedTrials) {
     if (!seenTrials.has(trial.nct_id)) {
@@ -177,6 +262,11 @@ export async function runTrialsAgent(
     }
   }
   for (const trial of semanticTrials) {
+    if (!seenTrials.has(trial.nct_id)) {
+      seenTrials.set(trial.nct_id, trial)
+    }
+  }
+  for (const trial of meshTrials) {
     if (!seenTrials.has(trial.nct_id)) {
       seenTrials.set(trial.nct_id, trial)
     }
