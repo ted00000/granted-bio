@@ -60,14 +60,30 @@ export async function runTrialsAgent(
   if (projectNumbers.length > 0) {
     const { data, error } = await supabaseAdmin
       .from('clinical_studies')
-      .select('nct_id, project_number, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
+      // Trial-quality pack + MeSH + audit fields pulled here so downstream
+      // aggregates (industry engagement, rigor callout, terminated trials,
+      // MeSH cross-linking) actually see them. The enrichment-triggered
+      // refetch below only runs when enrichment is needed; with CT.gov
+      // enrichment fully deployed that branch is now rarely hit, so this
+      // SELECT is the only place the trial-quality pack is loaded for
+      // Path 1 trials.
+      .select(
+        'nct_id, project_number, study_title, study_status, phase, ' +
+        'study_type, enrollment_count, lead_sponsor, conditions, brief_summary, ' +
+        'primary_purpose, lead_sponsor_class, allocation, masking, has_dmc, ' +
+        'is_fda_regulated_drug, is_fda_regulated_device, why_stopped, ' +
+        'condition_mesh, intervention_mesh, collaborators, overall_officials, ' +
+        'primary_outcomes, secondary_outcomes'
+      )
       .in('project_number', expandProjectNumberVariants(projectNumbers))
       .order('start_date', { ascending: false })
 
     if (error) {
       console.error('[Trials Agent] Path 1 error:', error)
     } else if (data) {
-      linkedTrials = data
+      // Cast via unknown — supabase generated types don't yet know about
+      // the trial-quality pack columns we added in 2026-09.
+      linkedTrials = (data as unknown) as RawTrialResult[]
     }
   }
   diagnostics.path1Count = linkedTrials.length
@@ -136,7 +152,15 @@ export async function runTrialsAgent(
         )
         const { data: fullRows, error: fetchError } = await supabaseAdmin
           .from('clinical_studies')
-          .select('nct_id, project_number, study_title, study_status, phase, study_type, enrollment_count, lead_sponsor, conditions, brief_summary')
+          // Full trial-quality pack — see Path 1 SELECT comment.
+          .select(
+            'nct_id, project_number, study_title, study_status, phase, ' +
+            'study_type, enrollment_count, lead_sponsor, conditions, brief_summary, ' +
+            'primary_purpose, lead_sponsor_class, allocation, masking, has_dmc, ' +
+            'is_fda_regulated_drug, is_fda_regulated_device, why_stopped, ' +
+            'condition_mesh, intervention_mesh, collaborators, overall_officials, ' +
+            'primary_outcomes, secondary_outcomes'
+          )
           .in('nct_id', nctIds)
 
         if (fetchError) {
@@ -144,7 +168,8 @@ export async function runTrialsAgent(
           diagnostics.path2Status = 'fetch_error'
           diagnostics.path2ErrorMessage = fetchError.message ?? String(fetchError)
         } else if (fullRows) {
-          semanticTrials = fullRows
+          // See Path 1 comment — cast for the trial-quality pack columns.
+          semanticTrials = (fullRows as unknown) as RawTrialResult[]
           diagnostics.path2FetchedRowCount = fullRows.length
           diagnostics.path2Status = 'ok'
         }
