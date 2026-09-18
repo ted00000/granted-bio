@@ -1546,6 +1546,12 @@ The point: any mention of phase-labeled counts MUST also acknowledge the ${inter
 - Has mid-stage (Phase 2): ${hasMidPhase ? 'Yes' : 'No'}
 - Has early-stage (Phase 1): ${hasEarlyPhase ? 'Yes' : 'No'}
 
+## TRIAL RIGOR SIGNALS (source-truth from CT.gov protocolSection — 2026-09-18 audit)
+${formatTrialRigorForPrompt(agentOutputs.trials)}
+- **Rigor read for evidenceSummary:** cite these counts verbatim. Randomized + double-blinded + DMC is the statistical-rigor gold standard. Do NOT paraphrase counts. Sample framing you MAY use verbatim: "Of ${agentOutputs.trials.rigorCounts?.total ?? 0} trials, ${agentOutputs.trials.rigorCounts?.randomized ?? 0} are RANDOMIZED and ${agentOutputs.trials.rigorCounts?.doubleBlindedOrHigher ?? 0} carry DOUBLE-blinded or higher masking; ${agentOutputs.trials.rigorCounts?.withDmc ?? 0} have an explicit Data Monitoring Committee. Statistical rigor is [High/Medium/Low]."
+- **Do NOT** collapse the rigor counts into a single "rigorous / not rigorous" binary — always cite the specific dimensions (randomization vs blinding vs DMC). They can diverge (e.g. a randomized trial without blinding).
+- **Purpose framing rule.** Any "therapeutic" or "diagnostic" trial count in Field Maturity MUST come from primary_purpose (see the DATA SUMMARY block in the exec summary prompt) — not from is_therapeutic_trial, which biased upward on ambiguous titles.
+
 ## PATENT SIGNALS
 - Total patents: ${totalPatents}
 - Recent (last 2 years): ${recentPatents}
@@ -2489,7 +2495,17 @@ ${renderCompetitiveTopology(competitiveTopology)}
 
 ---
 
-${whiteSpace && whiteSpace.dimensions.length > 0 ? `## White Space Analysis
+${(() => {
+  const block = renderIndustryEngagementSection(agentOutputs.trials)
+  if (!block) return ''
+  return `## Industry Engagement
+
+${block}
+
+---
+
+`
+})()}${whiteSpace && whiteSpace.dimensions.length > 0 ? `## White Space Analysis
 
 ${renderWhiteSpace(whiteSpace)}
 
@@ -2536,7 +2552,7 @@ ${renderProjects(topFundedProjects(agentOutputs.projects.items, 10), projectInsi
     md += `## ${clinicalSectionTitle}
 
 ${renderClinicalPipeline(agentOutputs.trials, insights.clinicalPipeline)}
-
+${renderTerminatedTrialsCallout(agentOutputs.trials)}
 ---
 
 `
@@ -2594,7 +2610,7 @@ ${renderMarketContext(agentOutputs.market.context)}
     md += `## ${clinicalSectionTitle}
 
 ${renderClinicalPipeline(agentOutputs.trials, insights.clinicalPipeline)}
-
+${renderTerminatedTrialsCallout(agentOutputs.trials)}
 ---
 
 `
@@ -4169,6 +4185,145 @@ The FY${fy} figure shown is YTD only and reflects partial reporting. Do NOT inte
 // Returns '' when there is no signal, so the surrounding bullet stays
 // clean rather than showing "(nothing to report)".
 // ------------------------------------------------------------------
+
+// ------------------------------------------------------------------
+// Consumption push (2026-09-18) — Terminated trials callout.
+// Pure-deterministic. Renders a compact "N of M trials terminated
+// early" block with top reasons. Empty string when no trial has a
+// why_stopped value.
+// ------------------------------------------------------------------
+
+function renderTerminatedTrialsCallout(trials: AllAgentOutputs['trials']): string {
+  const terminated = trials.terminated || []
+  const total = trials.rigorCounts?.total ?? trials.items.length
+  if (terminated.length === 0 || total === 0) return ''
+
+  // Top 5 by whichever reason text is shortest-most-distinct (dedup on
+  // whyStopped word overlap keeps the display honest without collapsing
+  // real distinct terminations). Simple cap at 5 shown; count still
+  // reflects the full set.
+  const shown = terminated.slice(0, 5)
+  const remaining = terminated.length - shown.length
+
+  const lines: string[] = []
+  lines.push(
+    `> **${terminated.length} of ${total} surfaced trial${total === 1 ? '' : 's'} terminated or stopped early** (source: statusModule.whyStopped on ClinicalTrials.gov).`,
+  )
+  lines.push('>')
+  for (const t of shown) {
+    const sponsor = t.lead_sponsor ? ` (${t.lead_sponsor})` : ''
+    // Trim overly-long why_stopped strings to ~180 chars for readable
+    // block rendering. Full text remains on the trial detail card.
+    const reason = t.why_stopped.length > 180
+      ? t.why_stopped.slice(0, 180).trimEnd() + '…'
+      : t.why_stopped
+    lines.push(`> - **${t.nct_id}**${sponsor}: ${reason}`)
+  }
+  if (remaining > 0) {
+    lines.push(
+      `> - *…and ${remaining} more terminated trial${remaining === 1 ? '' : 's'} in the surfaced set. See Trials for the full list.*`,
+    )
+  }
+  lines.push('')
+  return lines.join('\n')
+}
+
+// ------------------------------------------------------------------
+// Consumption push (2026-09-18) — Industry Engagement section.
+// Pure-deterministic. Renders a short markdown block from source-truth
+// counts computed by the trials agent. No LLM call, so no risk of the
+// numbers drifting from the data.
+// ------------------------------------------------------------------
+
+function renderIndustryEngagementSection(trials: AllAgentOutputs['trials']): string {
+  const rigor = trials.rigorCounts
+  if (!rigor || rigor.total === 0) return ''
+
+  const total = rigor.total
+  const industryLed = (trials.byLeadSponsorClass || {})['INDUSTRY'] || 0
+  // Academic-led-with-industry-collab: has an INDUSTRY collaborator AND
+  // isn't itself INDUSTRY-led. Every trial that qualifies for `.
+  // rigorCounts.industryCollaborator has at least one INDUSTRY entry in
+  // its collaborators bag; some of those are also lead=INDUSTRY, so
+  // subtract to avoid double-counting.
+  const academicWithIndustry = Math.max(0, rigor.industryCollaborator - industryLed)
+  const anyIndustryEngagement = industryLed + academicWithIndustry
+  // Everything else — no industry engagement at all.
+  const purelyAcademic = Math.max(0, total - anyIndustryEngagement)
+
+  const pct = (n: number) => ((100 * n) / total).toFixed(0) + '%'
+
+  // Collect the sponsor/collaborator company lists directly from the
+  // surfaced items. Cap at 8 each to keep the block scannable.
+  const industryLedSponsors = new Map<string, number>()
+  const industryCollaborators = new Map<string, number>()
+  for (const t of trials.items) {
+    if (t.lead_sponsor_class === 'INDUSTRY' && t.lead_sponsor) {
+      industryLedSponsors.set(
+        t.lead_sponsor,
+        (industryLedSponsors.get(t.lead_sponsor) || 0) + 1,
+      )
+    }
+    if (t.collaborators) {
+      for (const c of t.collaborators) {
+        if (c.class === 'INDUSTRY' && c.name) {
+          industryCollaborators.set(c.name, (industryCollaborators.get(c.name) || 0) + 1)
+        }
+      }
+    }
+  }
+  const topN = <T>(m: Map<string, T>, n: number, comparator: (a: [string, T], b: [string, T]) => number) =>
+    Array.from(m.entries())
+      .sort(comparator)
+      .slice(0, n)
+  const byCount = (a: [string, number], b: [string, number]) => b[1] - a[1]
+
+  const ledList = topN(industryLedSponsors, 8, byCount)
+    .map(([name, n]) => `${name}${n > 1 ? ` (${n})` : ''}`)
+    .join(', ')
+  const collabList = topN(industryCollaborators, 8, byCount)
+    .map(([name, n]) => `${name}${n > 1 ? ` (${n})` : ''}`)
+    .join(', ')
+
+  // Signal read — deterministic, based on ratios. Kept factual, not
+  // prescriptive.
+  let signalRead: string
+  if (anyIndustryEngagement === 0) {
+    signalRead =
+      '**Signal:** No industry engagement across the surfaced trial set. This landscape is currently NIH- and academic-driven.'
+  } else if (industryLed / total >= 0.3) {
+    signalRead =
+      `**Signal:** Industry is a lead actor in this space (${pct(industryLed)} of trials industry-sponsored). Development is materially commercialized.`
+  } else if (anyIndustryEngagement / total >= 0.3) {
+    signalRead =
+      `**Signal:** Industry is materially engaged as a collaborator (${pct(anyIndustryEngagement)} of trials have an industry partner) but not usually leading. Academic labs typically hold the science with commercial partners providing compounds or capital.`
+  } else {
+    signalRead =
+      `**Signal:** Industry engagement is limited (${pct(anyIndustryEngagement)} of trials). The commercial pipeline for this topic is early or the field is not yet BD-active.`
+  }
+
+  const lines: string[] = []
+  lines.push(`Of ${total} clinical trial${total === 1 ? '' : 's'} in this landscape:`)
+  lines.push('')
+  lines.push(`- **${industryLed} (${pct(industryLed)})** industry-lead (lead sponsor class INDUSTRY on ClinicalTrials.gov)`)
+  lines.push(`- **${academicWithIndustry} (${pct(academicWithIndustry)})** academic- or NIH-led with an industry collaborator`)
+  lines.push(`- **${purelyAcademic} (${pct(purelyAcademic)})** academic / NIH only (no industry sponsor or collaborator)`)
+  lines.push('')
+  if (ledList) {
+    lines.push(`**Industry-lead sponsors on this topic:** ${ledList}`)
+    lines.push('')
+  }
+  if (collabList) {
+    lines.push(`**Industry collaborators on academic-led trials:** ${collabList}`)
+    lines.push('')
+  }
+  lines.push(signalRead)
+  lines.push('')
+  lines.push(
+    '*Method: sponsor and collaborator classes are source-truth from ClinicalTrials.gov (protocolSection.sponsorCollaboratorsModule.leadSponsor.class and collaborators[].class). Coverage varies by trial vintage — some older trials predate CT.gov\'s sponsor classification and are counted as "no data" rather than "not engaged".*',
+  )
+  return lines.join('\n')
+}
 
 function formatTrialPurposeSplitForPrompt(trials: AllAgentOutputs['trials']): string {
   const byPurpose = trials.byPurpose || {}

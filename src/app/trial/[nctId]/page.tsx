@@ -27,6 +27,33 @@ interface TrialData {
   study_type: string | null
   brief_summary: string | null
   api_last_updated: string | null
+  // Trial-quality pack + MeSH (2026-09-18 audit + consumption push).
+  primary_purpose?: string | null
+  lead_sponsor_class?: string | null
+  allocation?: string | null
+  masking?: string | null
+  has_dmc?: boolean | null
+  is_fda_regulated_drug?: boolean | null
+  is_fda_regulated_device?: boolean | null
+  why_stopped?: string | null
+  condition_mesh?: string[] | null
+  intervention_mesh?: string[] | null
+  collaborators?: Array<{ name: string | null; class: string | null }> | null
+  overall_officials?: Array<{
+    name: string | null
+    role: string | null
+    affiliation: string | null
+  }> | null
+  primary_outcomes?: Array<{
+    measure: string | null
+    time_frame: string | null
+    description: string | null
+  }> | null
+  secondary_outcomes?: Array<{
+    measure: string | null
+    time_frame: string | null
+    description: string | null
+  }> | null
 }
 
 interface ProjectData {
@@ -335,24 +362,204 @@ export default function TrialDetailPage() {
               {trial.lead_sponsor && (
                 <div>
                   <dt className="text-gray-500">Lead Sponsor</dt>
-                  <dd className="text-gray-900">{normalizeOrgName(trial.lead_sponsor)}</dd>
+                  <dd className="text-gray-900">
+                    {normalizeOrgName(trial.lead_sponsor)}
+                    {trial.lead_sponsor_class && (
+                      <span className="ml-1.5 text-xs text-gray-500">
+                        ({trial.lead_sponsor_class})
+                      </span>
+                    )}
+                  </dd>
                 </div>
               )}
-              <div className="flex gap-2">
-                {trial.is_therapeutic_trial && (
-                  <span className="px-2 py-0.5 bg-purple-50 text-purple-700 rounded text-xs">
-                    Therapeutic
+              {trial.collaborators && trial.collaborators.length > 0 && (
+                <div>
+                  <dt className="text-gray-500">Collaborators</dt>
+                  <dd className="text-gray-900">
+                    {trial.collaborators
+                      .filter((c) => c.name)
+                      .slice(0, 6)
+                      .map((c, i) => (
+                        <div key={i} className="flex items-center gap-1.5">
+                          <span>{normalizeOrgName(c.name!)}</span>
+                          {c.class && (
+                            <span className="text-xs text-gray-500">({c.class})</span>
+                          )}
+                        </div>
+                      ))}
+                    {trial.collaborators.length > 6 && (
+                      <div className="text-xs text-gray-400">
+                        +{trial.collaborators.length - 6} more
+                      </div>
+                    )}
+                  </dd>
+                </div>
+              )}
+              <div className="flex flex-wrap gap-2">
+                {/* Primary purpose (source-truth from CT.gov) replaces the
+                    lossy is_therapeutic_trial / is_diagnostic_trial booleans
+                    when available. Fallback to the boolean badges only for
+                    trials that haven't been enriched yet. */}
+                {trial.primary_purpose ? (
+                  <span className="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded text-xs">
+                    {trial.primary_purpose}
+                  </span>
+                ) : (
+                  <>
+                    {trial.is_therapeutic_trial && (
+                      <span className="px-2 py-0.5 bg-purple-50 text-purple-700 rounded text-xs">
+                        Therapeutic
+                      </span>
+                    )}
+                    {trial.is_diagnostic_trial && (
+                      <span className="px-2 py-0.5 bg-teal-50 text-teal-700 rounded text-xs">
+                        Diagnostic
+                      </span>
+                    )}
+                  </>
+                )}
+                {trial.allocation === 'RANDOMIZED' && (
+                  <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded text-xs">
+                    Randomized
                   </span>
                 )}
-                {trial.is_diagnostic_trial && (
-                  <span className="px-2 py-0.5 bg-teal-50 text-teal-700 rounded text-xs">
-                    Diagnostic
+                {trial.masking && ['DOUBLE', 'TRIPLE', 'QUADRUPLE'].includes(trial.masking) && (
+                  <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 rounded text-xs">
+                    {trial.masking.charAt(0) + trial.masking.slice(1).toLowerCase()}-blinded
+                  </span>
+                )}
+                {trial.has_dmc && (
+                  <span className="px-2 py-0.5 bg-slate-100 text-slate-700 rounded text-xs">
+                    DMC
+                  </span>
+                )}
+                {trial.is_fda_regulated_drug && (
+                  <span className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-xs">
+                    FDA-regulated drug
+                  </span>
+                )}
+                {trial.is_fda_regulated_device && (
+                  <span className="px-2 py-0.5 bg-amber-50 text-amber-700 rounded text-xs">
+                    FDA-regulated device
                   </span>
                 )}
               </div>
             </dl>
           </div>
         </div>
+
+        {/* Trial officials — source-truth PI attribution from
+            contactsLocationsModule.overallOfficials on CT.gov. Fixes the
+            trial-side of the delimited-string PI ambiguity that projects
+            still have. Only renders when the trial has been enriched. */}
+        {trial.overall_officials && trial.overall_officials.length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Users className="w-4 h-4 text-[#E07A5F]" />
+              Trial Officials
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-3 text-sm">
+              {trial.overall_officials
+                .filter((o) => o.name)
+                .map((o, i) => (
+                  <div key={i}>
+                    <div className="text-gray-900 font-medium">{normalizePIName(o.name!)}</div>
+                    {o.role && (
+                      <div className="text-xs text-gray-500">
+                        {o.role.replaceAll('_', ' ').toLowerCase().replace(/\b\w/g, (l) => l.toUpperCase())}
+                      </div>
+                    )}
+                    {o.affiliation && (
+                      <div className="text-xs text-gray-500">{normalizeOrgName(o.affiliation)}</div>
+                    )}
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {/* Early-termination reason — source-truth from statusModule.whyStopped.
+            Only appears on trials that stopped early; otherwise the block is
+            hidden entirely so the layout doesn't gain an empty section. */}
+        {trial.why_stopped && trial.why_stopped.trim().length > 0 && (
+          <div className="bg-rose-50 border border-rose-200 rounded-lg p-4 mb-6 text-sm">
+            <div className="text-rose-900 font-medium mb-1">
+              This trial stopped early
+            </div>
+            <div className="text-rose-800 whitespace-pre-wrap">{trial.why_stopped}</div>
+          </div>
+        )}
+
+        {/* MeSH tags — canonical NIH topic vocabulary. Renders as chips
+            when available; hidden otherwise. */}
+        {((trial.condition_mesh && trial.condition_mesh.length > 0) ||
+          (trial.intervention_mesh && trial.intervention_mesh.length > 0)) && (
+          <div className="bg-white rounded-lg shadow-sm p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">
+              MeSH Topic Tags
+            </h2>
+            {trial.condition_mesh && trial.condition_mesh.length > 0 && (
+              <div className="mb-3">
+                <div className="text-xs text-gray-500 mb-1.5">Conditions</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {trial.condition_mesh.map((m, i) => (
+                    <span
+                      key={i}
+                      className="px-2 py-0.5 bg-blue-50 text-blue-700 rounded text-xs"
+                    >
+                      {m}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {trial.intervention_mesh && trial.intervention_mesh.length > 0 && (
+              <div>
+                <div className="text-xs text-gray-500 mb-1.5">Interventions</div>
+                <div className="flex flex-wrap gap-1.5">
+                  {trial.intervention_mesh.map((m, i) => (
+                    <span
+                      key={i}
+                      className="px-2 py-0.5 bg-violet-50 text-violet-700 rounded text-xs"
+                    >
+                      {m}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Primary outcomes — CT.gov outcomesModule.primaryOutcomes.
+            The most direct answer to "what does this trial measure?".
+            Rendered as a small list when the trial has been enriched. */}
+        {trial.primary_outcomes && trial.primary_outcomes.length > 0 && (
+          <div className="bg-white rounded-lg shadow-sm p-5 mb-6">
+            <h2 className="text-sm font-semibold text-gray-900 mb-3">
+              Primary Outcomes
+            </h2>
+            <ol className="space-y-3 text-sm">
+              {trial.primary_outcomes.map((o, i) => (
+                <li key={i} className="border-l-2 border-gray-100 pl-3">
+                  <div className="text-gray-900 font-medium">
+                    {o.measure || '(unnamed measure)'}
+                  </div>
+                  {o.time_frame && (
+                    <div className="text-xs text-gray-500 mt-0.5">
+                      Time frame: {o.time_frame}
+                    </div>
+                  )}
+                  {o.description && (
+                    <div className="text-xs text-gray-600 mt-1 whitespace-pre-wrap">
+                      {o.description}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+        )}
 
         {/* Timeline */}
         <div className="bg-white rounded-lg shadow-sm p-5 mb-6">

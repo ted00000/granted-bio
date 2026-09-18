@@ -11,7 +11,9 @@ export async function GET(
     const { nctId } = await params
     const supabase = await createServerSupabaseClient()
 
-    // Fetch trial with all enriched data
+    // Fetch trial with all enriched data. Extended 2026-09-18 to include
+    // the trial-quality pack + MeSH + collaborators + overall_officials
+    // + outcomes so the detail page can render source-truth trial info.
     const { data: trial, error } = await supabase
       .from('clinical_studies')
       .select(`
@@ -31,7 +33,21 @@ export async function GET(
         eligibility_criteria,
         study_type,
         brief_summary,
-        api_last_updated
+        api_last_updated,
+        primary_purpose,
+        lead_sponsor_class,
+        allocation,
+        masking,
+        has_dmc,
+        is_fda_regulated_drug,
+        is_fda_regulated_device,
+        why_stopped,
+        condition_mesh,
+        intervention_mesh,
+        collaborators,
+        overall_officials,
+        primary_outcomes,
+        secondary_outcomes
       `)
       .eq('nct_id', nctId)
       .limit(1)
