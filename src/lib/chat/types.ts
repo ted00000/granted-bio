@@ -215,6 +215,11 @@ export interface SearchTrialsParams {
     status?: string[] // RECRUITING, COMPLETED, etc.
     is_therapeutic?: boolean
     is_diagnostic?: boolean
+    // 2026-09-18 audit / consumption push — structured filters over
+    // the trial-quality pack fields.
+    industry_sponsored?: boolean   // lead_sponsor_class === 'INDUSTRY'
+    randomized?: boolean           // allocation === 'RANDOMIZED'
+    fda_regulated?: boolean        // is_fda_regulated_drug || is_fda_regulated_device
   }
   limit?: number
 }

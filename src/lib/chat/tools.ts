@@ -200,11 +200,23 @@ export const AGENT_TOOLS: Tool[] = [
             },
             is_therapeutic: {
               type: 'boolean',
-              description: 'Only show therapeutic trials'
+              description: 'Only show therapeutic trials (legacy — prefer primary_purpose)'
             },
             is_diagnostic: {
               type: 'boolean',
-              description: 'Only show diagnostic trials'
+              description: 'Only show diagnostic trials (legacy — prefer primary_purpose)'
+            },
+            industry_sponsored: {
+              type: 'boolean',
+              description: 'Only show trials where the lead sponsor class is INDUSTRY. Source-truth from ClinicalTrials.gov sponsorCollaboratorsModule.leadSponsor.class.'
+            },
+            randomized: {
+              type: 'boolean',
+              description: 'Only show trials with allocation = RANDOMIZED. Rigor signal for statistical soundness.'
+            },
+            fda_regulated: {
+              type: 'boolean',
+              description: 'Only show trials that CT.gov flags as FDA-regulated drug OR FDA-regulated device. Excludes purely observational studies.'
             }
           }
         },
@@ -2396,6 +2408,16 @@ export async function searchTrials(
       is_therapeutic_trial: boolean
       project_number: string | null
       similarity: number
+      // Extended 2026-09-18 by the search_clinical_studies RPC to include
+      // trial-quality pack fields so Chat can filter on them client-side
+      // without extra queries.
+      primary_purpose: string | null
+      lead_sponsor_class: string | null
+      allocation: string | null
+      masking: string | null
+      has_dmc: boolean | null
+      is_fda_regulated_drug: boolean | null
+      is_fda_regulated_device: boolean | null
     }
 
     // Sort by similarity (semantic relevance)
@@ -2411,6 +2433,17 @@ export async function searchTrials(
     }
     if (filters?.is_diagnostic === true) {
       results = results.filter(t => t.is_diagnostic_trial)
+    }
+    // 2026-09-18 filters — extend the natural-language Chat surface with
+    // structured toggles for the highest-value new dimensions.
+    if (filters?.industry_sponsored === true) {
+      results = results.filter(t => t.lead_sponsor_class === 'INDUSTRY')
+    }
+    if (filters?.randomized === true) {
+      results = results.filter(t => t.allocation === 'RANDOMIZED')
+    }
+    if (filters?.fda_regulated === true) {
+      results = results.filter(t => t.is_fda_regulated_drug === true || t.is_fda_regulated_device === true)
     }
 
     // Get linked project info for top results. Key the lookup map by
