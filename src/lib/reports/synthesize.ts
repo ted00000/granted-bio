@@ -803,65 +803,68 @@ When writing the clinicalPipeline insight, do NOT selectively narrate encouragin
 
 **COMPLETE ENUMERATION OR COMPACT FORM — required.** If you cite two or more status counts (e.g. "10 terminated and 2 suspended, alongside 21 recruiting and 10 active-not-recruiting") the numbers you cite MUST sum to the total. Partial enumerations (43 cited of 69 total) fail the linter and mislead the reader. Preferred: use the compact form "N active/planned/completed vs M terminated/suspended/withdrawn (T total)". If you insist on itemizing, include EVERY non-zero status so the counts sum exactly to the total (add "Not yet recruiting", "Completed", "Withdrawn" etc. as needed). Do the arithmetic before writing the sentence.
 
-Return JSON only, no markdown:
-{
-  "funding": "3-4 sentences analyzing what researchers are actually working on and what the funding patterns reveal about scientific priorities",
-  "clinicalPipeline": "3-4 sentences on what conditions are being targeted, intervention types, and progression through clinical development — INCLUDING any Terminated/Withdrawn/Suspended trials if present in the sample",
-  "patents": "3-4 sentences on what innovations are being protected and what this indicates about translational potential",
-  "publications": "3-4 sentences on what scientific questions are being addressed and methodological advances observed"
-}`
+Produce four insight strings — one per section — via the return_section_insights tool.`
 
-  try {
-    const response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1500, // Increased for richer section insights
-      messages: [{ role: 'user', content: prompt }],
-    }, {
-      // Hard per-call timeout — Anthropic SDK default is 10 min, which
-      // stalled Phase 4 synthesis for the full 15-min Vercel budget on
-      // report 776acdd0 (2026-09-18).
-      timeout: 90_000,
-    })
-
-    // Track usage
-    usageTracker.inputTokens += response.usage.input_tokens
-    usageTracker.outputTokens += response.usage.output_tokens
-
-    const textContent = response.content.find((c) => c.type === 'text')
-    if (!textContent || textContent.type !== 'text') {
-      return defaultInsights()
-    }
-
-    // Strip markdown fences before parsing. Claude reliably wraps JSON output
-    // in ```json ... ``` even when instructed not to; without this strip the
-    // bare JSON.parse throws and four section narratives silently vanish.
-    let jsonText = textContent.text.trim()
-    if (jsonText.startsWith('```')) {
-      jsonText = jsonText.replace(/```json?\n?/g, '').replace(/```$/g, '').trim()
-    }
-    const jsonMatch = jsonText.match(/\{[\s\S]*\}/)
-    if (!jsonMatch) {
-      console.warn('[Synthesis Agent] No JSON object found in section insights response')
-      return defaultInsights()
-    }
-
-    const parsed = JSON.parse(jsonMatch[0])
-    // Gibberish guard. r29 audit surfaced a Key Publications intro
-    // ending in literal LLM corruption ("ihl tliid bifldttiifillhih flt
-    // thbd idif th"). Not a code bug — a transient LLM emission that
-    // shouldn't ship. Detects text with impossible consonant clusters
-    // or a very low vowel ratio and replaces with an empty string so
-    // the section falls back to just the disclaimer + curated
-    // publications, not the corrupted narrative.
-    return {
-      funding: sanitizeInsight(parsed.funding),
-      clinicalPipeline: sanitizeInsight(parsed.clinicalPipeline),
-      patents: sanitizeInsight(parsed.patents),
-      publications: sanitizeInsight(parsed.publications),
-    }
-  } catch (error) {
-    console.warn('[Synthesis Agent] Failed to generate section insights:', error)
+  // Migrated 2026-09-18 from raw text→JSON parse to tool_use. The prior
+  // implementation asked Sonnet to emit JSON in prose, then extracted it
+  // with a regex fallback. On broad topics (radioligand cancer therapy
+  // audit 2026-09-18 report 2c86dccc), Sonnet's output failed the regex,
+  // fell back to defaultInsights() with all-empty strings, and the empty
+  // funding insight collapsed the "NIH Funding Landscape" section body
+  // under the 400-char completeness gate. The completeness gate then
+  // threw, Inngest retried the whole synthesis, same failure, again ×3
+  // — 45-min report loop. generateStructured uses Anthropic tool_use so
+  // the SDK validates the JSON shape at the API layer; no regex, no
+  // fallback path.
+  const { generateStructured } = await import('./llm-json')
+  const schema = {
+    type: 'object' as const,
+    properties: {
+      funding: {
+        type: 'string',
+        description: '3-4 sentences analyzing what researchers are working on and what the funding patterns reveal about scientific priorities. Sample-hedged language.',
+      },
+      clinicalPipeline: {
+        type: 'string',
+        description: '3-4 sentences on what conditions are being targeted, intervention types, and progression through clinical development. MUST include Terminated/Withdrawn/Suspended trials if any are in the sample.',
+      },
+      patents: {
+        type: 'string',
+        description: '3-4 sentences on what innovations are being protected and what this indicates about translational potential. Aggregate; no institution names in prescriptive framing.',
+      },
+      publications: {
+        type: 'string',
+        description: '3-4 sentences on what scientific questions are being addressed and methodological advances observed.',
+      },
+    },
+    required: ['funding', 'clinicalPipeline', 'patents', 'publications'],
+  }
+  const parsed = await generateStructured<{
+    funding: string
+    clinicalPipeline: string
+    patents: string
+    publications: string
+  }>({
+    client,
+    model: 'claude-sonnet-4-6',
+    maxTokens: 1500,
+    toolName: 'return_section_insights',
+    toolDescription:
+      'Return four section-narrative strings (funding, clinicalPipeline, patents, publications) for the research intelligence report. Each 3-4 sentences, sample-hedged.',
+    schema,
+    prompt,
+    timeoutMs: 90_000,
+    usageTracker,
+  })
+  if (!parsed) {
+    console.warn('[Synthesis Agent] section insights call returned null')
     return defaultInsights()
+  }
+  return {
+    funding: sanitizeInsight(parsed.funding),
+    clinicalPipeline: sanitizeInsight(parsed.clinicalPipeline),
+    patents: sanitizeInsight(parsed.patents),
+    publications: sanitizeInsight(parsed.publications),
   }
 }
 
