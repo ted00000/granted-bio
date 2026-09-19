@@ -15,7 +15,6 @@ import {
   runTopicReportPhase2DataAgents,
   runTopicReportPhase3Aggregation,
   runTopicReportPhase4Synthesis,
-  runTopicReportPhase5Save,
   markReportFailed,
   executePortfolioReportGeneration,
 } from '@/lib/reports/generate'
@@ -31,8 +30,14 @@ import {
  *   2. phase-1-projects - projects agent (~30-60s)
  *   3. phase-2-data-agents - trials/patents/pubs/market in parallel (~30-60s)
  *   4. phase-3-aggregation - deterministic aggregates (fast)
- *   5. phase-4-synthesis - all LLM synthesis + lint-retry (~240-300s)
- *   6. phase-5-save - single DB write
+ *   5. phase-4-synthesis - all LLM synthesis + lint-retry + DB save (~240-360s)
+ *
+ * Phase 4 previously returned `{ reportData, agentOutputs }` to Inngest,
+ * which then handed them to a Phase 5 save step. On broad topics that
+ * payload exceeded Inngest's step-state size limit (~4 MB) and the
+ * step boundary threw "error validating generator opcode". Phase 4
+ * now writes to Supabase itself and returns `{ ok: true }`, keeping
+ * the multi-megabyte object out of Inngest's checkpoint.
  *
  * Inngest checkpoints state between steps: each step's return value
  * is serialized and passed to the next as the input. State budget per
@@ -77,13 +82,13 @@ const generateReport = inngest.createFunction(
             runTopicReportPhase3Aggregation(reportId, agentOutputs),
           )
 
-        // Step 5: synthesis (LLM-heavy - the phase that most needed
-        // its own budget window). Includes lint-retry. Returns both
-        // reportData AND the mutated agentOutputs (relevance filter
-        // runs inside synthesizeReport and mutates counts in place;
-        // Inngest state serialization means we must return the
-        // mutated version explicitly to propagate it to Phase 5).
-        const { reportData, agentOutputs: filteredAgentOutputs } = await step.run('phase-4-synthesis', () =>
+        // Step 5: synthesis + persist. Phase 4 does the LLM-heavy work
+        // (~9 Sonnet calls + audit-agent + lint-retry) AND writes the
+        // completed report to Supabase inline. Returns { ok: true } so
+        // Inngest's step checkpoint stays tiny — see the function-header
+        // comment for why the previous split-into-Phase-5 architecture
+        // was rejected.
+        await step.run('phase-4-synthesis', () =>
           runTopicReportPhase4Synthesis(
             reportId,
             userId,
@@ -92,26 +97,12 @@ const generateReport = inngest.createFunction(
             fundingStats,
             topOrgs,
             topResearchers,
+            allOrgs,
+            allResearchers,
             dataLimited ?? false,
             persona,
             interpretation,
             report.createdAt,
-          ),
-        )
-
-        // Step 6: persist. Uses filteredAgentOutputs so the DB
-        // agent_outputs.trials.byPhase matches the markdown table.
-        await step.run('phase-5-save', () =>
-          runTopicReportPhase5Save(
-            reportId,
-            persona,
-            filteredAgentOutputs,
-            reportData,
-            fundingStats,
-            topOrgs,
-            topResearchers,
-            allOrgs,
-            allResearchers,
           ),
         )
       } else {

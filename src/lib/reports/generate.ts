@@ -259,11 +259,19 @@ export async function runTopicReportPhase3Aggregation(
 /**
  * Phase 4: LLM-heavy synthesis (executive summary, field maturity,
  * competitive topology, IP landscape, white space, next steps,
- * markdown assembly, lint-retry). This is the phase most likely to
- * push a step past the 300s budget - synthesizeReport internally does
- * ~10 LLM calls plus a lint-retry pass. Under Inngest, this step gets
- * its own maxDuration window courtesy of a fresh /api/inngest
- * invocation.
+ * markdown assembly, lint-retry) AND persistence.
+ *
+ * Save was previously a separate Phase 5 that received the synthesis
+ * output as an Inngest step-return payload. On broad topics (radioligand
+ * cancer therapy audit 2026-09-18: 589 trials × trial-quality pack,
+ * 911 pubs × MeSH, 122K chars of markdown) that payload — `{ reportData,
+ * agentOutputs }` — exceeded Inngest's ~4 MB step-state limit and
+ * triggered "error validating generator opcode 364e5137afe5268f95f1cd..."
+ * at the step boundary, causing the whole synthesis to be retried 3x.
+ *
+ * Fix: this phase now writes to Supabase itself and returns a tiny
+ * `{ ok: true }`. Same DB shape, same data — just Inngest never sees
+ * the multi-megabyte object.
  */
 export async function runTopicReportPhase4Synthesis(
   reportId: string,
@@ -273,11 +281,13 @@ export async function runTopicReportPhase4Synthesis(
   fundingStats: FundingStats,
   topOrgs: OrgStats[],
   topResearchers: ResearcherStats[],
+  allOrgs: OrgStats[],
+  allResearchers: ResearcherStats[],
   dataLimited: boolean,
   persona: ReportPersona,
   injectedInterpretation: InjectedInterpretation | undefined,
   generatedAt: string,
-): Promise<{ reportData: ReportData; agentOutputs: AllAgentOutputs }> {
+): Promise<{ ok: true }> {
   console.log(`[Report ${reportId}] Synthesizing report for ${persona} persona...`)
   await updateProgressStage(reportId, 'synthesizing')
   const reportData = await synthesizeReport(topic, agentOutputs, {
@@ -292,29 +302,9 @@ export async function runTopicReportPhase4Synthesis(
   })
   // synthesizeReport mutates agentOutputs in place (relevance filter
   // recomputes byPhase/byStatus over topically-relevant trials, filters
-  // patents, etc). Under Inngest, state is serialized between steps -
-  // if we don't return the mutated version, Phase 5's save writes the
-  // PRE-filter counts to the DB while the markdown carries POST-filter
-  // counts. That produced two contradictory phase tables (chart from
-  // DB shows pre-filter, markdown table shows post-filter) in r40.
-  return { reportData, agentOutputs }
-}
-
-/**
- * Phase 5: Persist the completed report to Supabase. Single DB write.
- * Small, fast, deterministic. Marks status='complete'.
- */
-export async function runTopicReportPhase5Save(
-  reportId: string,
-  persona: ReportPersona,
-  agentOutputs: AllAgentOutputs,
-  reportData: ReportData,
-  fundingStats: FundingStats,
-  topOrgs: OrgStats[],
-  topResearchers: ResearcherStats[],
-  allOrgs: OrgStats[],
-  allResearchers: ResearcherStats[],
-): Promise<void> {
+  // patents). The save below uses the mutated agentOutputs so the DB
+  // reflects the post-filter counts that the markdown carries.
+  console.log(`[Report ${reportId}] Saving synthesized report...`)
   const { error: updateError } = await supabaseAdmin
     .from('user_reports')
     .update({
@@ -330,9 +320,7 @@ export async function runTopicReportPhase5Save(
       top_organizations: topOrgs,
       top_researchers: topResearchers,
       // Full sorted lists persisted alongside the top-N so the
-      // Data pages can paginate the "show all N" view. Full
-      // projects are the entire agentOutputs.projects.items array
-      // (already the raw retrieval, not a curated slice).
+      // Data pages can paginate the "show all N" view.
       all_projects: agentOutputs.projects.items,
       all_organizations: allOrgs,
       all_researchers: allResearchers,
@@ -353,11 +341,11 @@ export async function runTopicReportPhase5Save(
       updated_at: new Date().toISOString(),
     })
     .eq('id', reportId)
-
   if (updateError) {
     throw new Error(`Failed to save report: ${updateError.message}`)
   }
   console.log(`[Report ${reportId}] Report complete`)
+  return { ok: true }
 }
 
 /**
@@ -405,7 +393,7 @@ export async function executeTopicReportGeneration(
     const agentOutputs = await runTopicReportPhase2DataAgents(reportId, topic, projectsOutput, injectedInterpretation)
     const { fundingStats, topOrgs, topResearchers, allOrgs, allResearchers } =
       await runTopicReportPhase3Aggregation(reportId, agentOutputs)
-    const { reportData, agentOutputs: filteredAgentOutputs } = await runTopicReportPhase4Synthesis(
+    await runTopicReportPhase4Synthesis(
       reportId,
       userId,
       topic,
@@ -413,21 +401,12 @@ export async function executeTopicReportGeneration(
       fundingStats,
       topOrgs,
       topResearchers,
+      allOrgs,
+      allResearchers,
       dataLimited,
       persona,
       injectedInterpretation,
       report.createdAt,
-    )
-    await runTopicReportPhase5Save(
-      reportId,
-      persona,
-      filteredAgentOutputs,
-      reportData,
-      fundingStats,
-      topOrgs,
-      topResearchers,
-      allOrgs,
-      allResearchers,
     )
   } catch (error) {
     await markReportFailed(reportId, userId, error)
