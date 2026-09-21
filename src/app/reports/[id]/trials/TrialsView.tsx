@@ -217,8 +217,11 @@ export function TrialsView({ trials, byPhase, byStatus, inShare }: TrialsViewPro
                   key={phase}
                   type="button"
                   onClick={() => setPhaseFilter(active ? null : phase)}
+                  // Active ring is granted.bio coral (#E07A5F) rather
+                  // than black — matches the rest of the product's
+                  // selection state color (chip toggles, buttons).
                   className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full transition ${chipBase} ${
-                    active ? 'ring-2 ring-offset-1 ring-gray-900' : 'hover:ring-1 hover:ring-gray-400'
+                    active ? 'ring-2 ring-offset-1 ring-[#E07A5F]' : 'hover:ring-1 hover:ring-gray-400'
                   } ${inactive ? 'opacity-50' : ''}`}
                   title={active ? `Clear ${phase} filter` : `Filter to ${phase} trials only`}
                 >
