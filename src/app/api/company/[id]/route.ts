@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { getCoreProjectNumber, expandProjectNumberVariants } from '@/lib/project-number-utils'
+import { classifyLazyFlags } from '@/lib/classifiers/lazy-flags'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -144,21 +145,35 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       }
     }
 
+    // Lazy-on-view Haiku classifier. Reclassifies any patent or
+    // publication whose flags_classifier_version is stale (see
+    // src/lib/classifiers/lazy-flags.ts for rationale). Zero LLM
+    // cost when everything on this page is already up-to-date;
+    // ~$0.005-0.02 the first time a project's surfaced items are
+    // classified. Never throws — a classifier failure leaves the
+    // legacy keyword-derived flags in place.
+    const classified = await classifyLazyFlags({
+      patents: patents ?? [],
+      publications: publications ?? [],
+    })
+    const finalPatents = classified.patents
+    const finalPublications = classified.publications
+
     return NextResponse.json({
       project: {
         ...project,
         biotools_signals: biotoolsSignals,
       },
       abstract: abstract?.abstract_text || null,
-      publications: publications || [],
-      patents: patents || [],
+      publications: finalPublications,
+      patents: finalPatents,
       clinicalStudies: clinicalStudies || [],
       stats: {
-        publicationCount: publications?.length || 0,
-        patentCount: patents?.length || 0,
+        publicationCount: finalPublications.length,
+        patentCount: finalPatents.length,
         clinicalStudyCount: clinicalStudies?.length || 0,
-        methodsJournalCount: publications?.filter((p) => p.is_methods_journal).length || 0,
-        devicePatentCount: patents?.filter((p) => p.is_device_patent).length || 0,
+        methodsJournalCount: finalPublications.filter((p) => p.is_methods_journal).length,
+        devicePatentCount: finalPatents.filter((p) => p.is_device_patent).length,
       },
     })
   } catch (error) {
