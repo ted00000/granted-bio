@@ -248,9 +248,14 @@ export function WhiteSpaceView({ whiteSpace }: { whiteSpace: WhiteSpace | null }
                   <div className="text-[13px] text-gray-500 tabular-nums mb-1.5">
                     Sample: {opp.sampleCount} ({(opp.sampleShare * 100).toFixed(0)}%) · Broader NIH: {opp.broaderNihCount.toLocaleString()}
                   </div>
-                  <p className="text-sm text-gray-700 leading-relaxed">
-                    {opp.rationale}
-                  </p>
+                  {/* MarkdownRenderer handles the inline Markdown in
+                      opp.rationale (bold **mCRPC**, italics) AND extracts
+                      the trailing "**Confidence: <level>**" tag into a
+                      visual chip via the confidence-tags module —
+                      matches the rest of the report's confidence UI. */}
+                  <div className="text-sm text-gray-700 leading-relaxed [&_p:first-child]:mt-0 [&_p:last-child]:mb-0">
+                    <MarkdownRenderer content={opp.rationale} compact />
+                  </div>
                 </div>
               )
             })}
