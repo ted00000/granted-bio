@@ -2803,7 +2803,23 @@ function evaluateScopeCollapse(
   // (compound "Radioligand Therapy with Cancer Vaccines" bucket) during
   // testing 2026-08-11.
   const headTerm = coreTokens[0] ?? ''
-  const COMPOUND_MARKERS = /\b(and|or|with|combined|combination|versus|vs\.?)\b/i
+  // Word-form compound markers ("Radioligand with PARP Inhibition",
+  // "Radioligand and Chemotherapy") AND the spaced "+" notation Sonnet
+  // often uses for combinations ("Radioligand + PARP Inhibition"). Added
+  // " + " on 2026-09-21 after a false-positive on "radioligand therapy for
+  // prostate cancer" — three zero-buckets fired that were all "+" compounds
+  // in the Combination Strategy dimension.
+  const COMPOUND_MARKERS = /\b(and|or|with|combined|combination|versus|vs\.?)\b| \+ /i
+  // Also require the zero-bucket to have meaningful broader-NIH presence.
+  // A category with sample=0 AND broader-NIH < 3 isn't a "sample missed
+  // a real thing" signal — it's a Sonnet-invented category that doesn't
+  // correspond to a real research cluster. Only fire on zero-buckets that
+  // exist in the broader NIH portfolio. Threshold picked so the detector
+  // stays sensitive to niche-but-real clusters (broader-NIH 3-10) while
+  // rejecting speculative buckets Sonnet dreamed up. See same-day audit
+  // of "radioligand therapy for prostate cancer" — three "+ " zero-buckets
+  // all had broader-NIH=0, all were speculative combinations.
+  const MIN_BROADER_NIH_FOR_ZERO_BUCKET = 3
   const zeroBuckets: Array<{ dimension: string; category: string }> = []
   if (whiteSpace && headTerm) {
     for (const dim of whiteSpace.dimensions ?? []) {
@@ -2812,6 +2828,7 @@ function evaluateScopeCollapse(
         if (!catNameLower.startsWith(headTerm)) continue
         if (COMPOUND_MARKERS.test(cat.name)) continue
         if (cat.projectCount !== 0) continue
+        if ((cat.broaderNihCount ?? 0) < MIN_BROADER_NIH_FOR_ZERO_BUCKET) continue
         zeroBuckets.push({ dimension: dim.name, category: cat.name })
       }
     }
