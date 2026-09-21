@@ -106,19 +106,44 @@ function formatStatus(status: string | null): string {
   return cleaned.charAt(0).toUpperCase() + cleaned.slice(1)
 }
 
+// Recognize an actively-recruiting trial from the raw study_status
+// field. CT.gov's RECRUITING enum is the primary signal but the field
+// has picked up several spelling variants over the years (uppercase,
+// SCREAMING_SNAKE with underscore, mixed case with space). Match on
+// the normalized substring so all forms hit.
+function isRecruiting(status: string | null): boolean {
+  if (!status) return false
+  return status.toLowerCase().replace(/[_\s]+/g, ' ').trim() === 'recruiting'
+}
+
 export function TrialsView({ trials, byPhase, byStatus, inShare }: TrialsViewProps) {
-  // Phase filter state. null = no filter, all trials shown. When a chip
-  // is clicked, the table below is filtered to trials that resolve to
-  // that same phase label via formatPhase (which is the same normalization
-  // used to build byPhase, so the label the user clicks matches).
+  // Filter state. Both filters combine with AND semantics — a trial
+  // must match BOTH the phase AND the recruiting filter to render.
+  //   phaseFilter:      null | display-form phase label (e.g. "Phase 2")
+  //   recruitingOnly:   true | false — toggle limits to status=RECRUITING
   const [phaseFilter, setPhaseFilter] = useState<string | null>(null)
+  const [recruitingOnly, setRecruitingOnly] = useState(false)
+
+  // Recruiting count for the chip label. Derived from byStatus so the
+  // number is the sample-wide total (independent of any phase filter);
+  // clicking the chip then intersects with whatever else is active.
+  const recruitingCount = useMemo(
+    () =>
+      Object.entries(byStatus ?? {})
+        .filter(([status]) => isRecruiting(status))
+        .reduce((sum, [, n]) => sum + n, 0),
+    [byStatus],
+  )
 
   const filteredTrials = useMemo(() => {
-    if (!phaseFilter) return trials
-    return trials.filter((t) => formatPhase(t.phase, t.study_type) === phaseFilter)
-  }, [trials, phaseFilter])
+    let out = trials
+    if (phaseFilter) out = out.filter((t) => formatPhase(t.phase, t.study_type) === phaseFilter)
+    if (recruitingOnly) out = out.filter((t) => isRecruiting(t.study_status))
+    return out
+  }, [trials, phaseFilter, recruitingOnly])
 
   const total = filteredTrials.length
+  const anyFilterActive = phaseFilter !== null || recruitingOnly
 
   const columns: Column<Trial>[] = [
     {
@@ -206,28 +231,70 @@ export function TrialsView({ trials, byPhase, byStatus, inShare }: TrialsViewPro
     // end so they don't shove the recognized phases around.
     return i === -1 ? PHASE_ORDER.length + 1 : i
   }
-  const phaseSummary = byPhase
-    ? Object.entries(byPhase)
-        .filter(([, n]) => n > 0)
-        .sort((a, b) => phaseIndex(a[0]) - phaseIndex(b[0]))
-    : []
+  // Recompute the phase counts client-side using the same formatPhase
+  // helper that drives the filter matcher below. The upstream byPhase
+  // aggregate from the trials agent buckets phase=null + OBSERVATIONAL
+  // study_type as "N/A" rather than "Observational", so if we render
+  // chips from that map directly the Observational bucket disappears
+  // AND clicking N/A wouldn't line up with what the row-level cell
+  // shows. Recomputing here keeps chip label ⇔ filter value ⇔ row
+  // display in lockstep.
+  const phaseSummary = useMemo(() => {
+    const counts = new Map<string, number>()
+    for (const t of trials) {
+      const label = formatPhase(t.phase, t.study_type)
+      counts.set(label, (counts.get(label) ?? 0) + 1)
+    }
+    return Array.from(counts.entries())
+      .filter(([, n]) => n > 0)
+      .sort(([a], [b]) => phaseIndex(a) - phaseIndex(b))
+  }, [trials])
 
   return (
     <div className="space-y-4">
-      {phaseSummary.length > 0 && (
+      {(phaseSummary.length > 0 || recruitingCount > 0) && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
           <div className="flex items-center justify-between mb-3">
             <SectionLabel className="mb-0">Distribution — click to filter</SectionLabel>
-            {phaseFilter && (
+            {anyFilterActive && (
               <button
                 type="button"
-                onClick={() => setPhaseFilter(null)}
+                onClick={() => {
+                  setPhaseFilter(null)
+                  setRecruitingOnly(false)
+                }}
                 className="text-[11px] text-gray-500 hover:text-[#E07A5F] transition-colors underline decoration-dotted underline-offset-2"
               >
-                Clear filter
+                Clear filters
               </button>
             )}
           </div>
+          {recruitingCount > 0 && (
+            <div className="flex flex-wrap gap-2 mb-2">
+              <button
+                type="button"
+                onClick={() => setRecruitingOnly((v) => !v)}
+                // Recruiting chip is styled as a status filter — sky
+                // palette matches the "active" color used in the count
+                // line below and in the phase color scheme (Phase 3).
+                // Active state uses the same coral ring as the phase
+                // chips for consistency.
+                className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full transition bg-sky-50 text-sky-800 ${
+                  recruitingOnly
+                    ? 'ring-2 ring-offset-1 ring-[#E07A5F]'
+                    : 'hover:ring-1 hover:ring-gray-400'
+                }`}
+                title={
+                  recruitingOnly
+                    ? 'Clear the Recruiting filter'
+                    : 'Filter to trials with status = RECRUITING'
+                }
+              >
+                Recruiting
+                <span className="text-[11px] opacity-70 tabular-nums">{recruitingCount}</span>
+              </button>
+            </div>
+          )}
           <div className="flex flex-wrap gap-2">
             {phaseSummary.map(([phase, n]) => {
               const active = phaseFilter === phase
@@ -261,10 +328,18 @@ export function TrialsView({ trials, byPhase, byStatus, inShare }: TrialsViewPro
 
       <div className="flex items-baseline justify-between px-1 gap-3 flex-wrap">
         <SectionLabel className="mb-0" count={total}>
-          {phaseFilter ? `${phaseFilter} Trials` : 'Clinical Trials'}
+          {/* Heading reflects whichever filters are active. Order:
+              status modifier ("Recruiting") then phase ("Phase 2
+              Trials"). Neither active → "Clinical Trials". */}
+          {(() => {
+            if (recruitingOnly && phaseFilter) return `Recruiting ${phaseFilter} Trials`
+            if (recruitingOnly) return 'Recruiting Trials'
+            if (phaseFilter) return `${phaseFilter} Trials`
+            return 'Clinical Trials'
+          })()}
         </SectionLabel>
         <div className="text-[12px] text-gray-500 tabular-nums">
-          {byStatus && !phaseFilter && (() => {
+          {byStatus && !anyFilterActive && (() => {
             const active = Object.entries(byStatus)
               .filter(([s]) => /recruit|active|enroll|not.yet/i.test(s))
               .reduce((sum, [, n]) => sum + n, 0)
@@ -288,11 +363,14 @@ export function TrialsView({ trials, byPhase, byStatus, inShare }: TrialsViewPro
         rows={filteredTrials}
         columns={columns}
         rowKey={(t) => t.nct_id}
-        emptyMessage={
-          phaseFilter
-            ? `No ${phaseFilter} trials in this analysis sample.`
-            : 'No clinical trials linked to this analysis sample.'
-        }
+        emptyMessage={(() => {
+          if (recruitingOnly && phaseFilter) {
+            return `No recruiting ${phaseFilter} trials in this analysis sample.`
+          }
+          if (recruitingOnly) return 'No recruiting trials in this analysis sample.'
+          if (phaseFilter) return `No ${phaseFilter} trials in this analysis sample.`
+          return 'No clinical trials linked to this analysis sample.'
+        })()}
       />
     </div>
   )
