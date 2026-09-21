@@ -336,16 +336,21 @@ export default function ReportDetailPage({
       <main className="max-w-4xl mx-auto px-4 py-8 sm:px-6">
         {/* Report Header */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex items-start justify-between gap-4">
+          {/* On narrow viewports the action row stacks BELOW the title —
+              the previous flex-row/justify-between layout kept the buttons
+              alongside a wrapping tall title on iPhone widths and pushed
+              Share/Refine off the right edge (audit 2026-09-21). At sm+
+              breakpoint the two-column layout returns. */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-[#FDF2EF] rounded-lg">
+              <div className="p-3 bg-[#FDF2EF] rounded-lg shrink-0">
                 <FileText className="w-6 h-6 text-[#E07A5F]" strokeWidth={1.5} />
               </div>
-              <div>
-                <h1 className="text-xl font-semibold text-gray-900 mb-1">
+              <div className="min-w-0">
+                <h1 className="text-xl font-semibold text-gray-900 mb-1 break-words">
                   {report.title}
                 </h1>
-                <div className="flex items-center gap-2 text-sm text-gray-500">
+                <div className="flex items-center gap-2 text-sm text-gray-500 flex-wrap">
                   <span>Generated {formatDate(report.created_at)}</span>
                   {report.project_count !== null && (
                     <>
@@ -357,7 +362,7 @@ export default function ReportDetailPage({
               </div>
             </div>
             {report.status === 'complete' && report.markdown_content && (
-              <div className="flex items-center gap-3 text-xs print:hidden">
+              <div className="flex items-center gap-3 text-xs print:hidden flex-wrap">
                 {/* Owner-only actions — hidden for both share recipients
                     and public-sample visitors. Everyone can Print. */}
                 {showOwnerAffordances && (
