@@ -173,7 +173,7 @@ export async function synthesizeReport(
   const [projectInsights, surprisingFindings, nextSteps] = await Promise.all([
     generateProjectInsights(
       topic,
-      topFundedProjects(agentOutputs.projects.items, 10),
+      topRelevantProjects(agentOutputs.projects.items, 10),
       executiveSummary,
       context,
       usageTracker,
@@ -2569,7 +2569,7 @@ ${renderFundingLandscape(context.fundingStats, insights.funding)}
 
 ## Key Research Projects
 
-${renderProjects(topFundedProjects(agentOutputs.projects.items, 10), projectInsights)}
+${renderProjects(topRelevantProjects(agentOutputs.projects.items, 10), projectInsights)}
 
 ---
 
@@ -2621,7 +2621,7 @@ ${renderFundingLandscape(context.fundingStats, insights.funding)}
 
 ## Key Research Projects
 
-${renderProjects(topFundedProjects(agentOutputs.projects.items, 10), projectInsights)}
+${renderProjects(topRelevantProjects(agentOutputs.projects.items, 10), projectInsights)}
 
 ---
 
@@ -3714,14 +3714,32 @@ function renderFundingLandscape(stats: FundingStats, insight: string): string {
   return md
 }
 
-// The projects agent returns items sorted by semantic similarity. The
-// "Top Funded Projects" section needs them ranked by total_cost desc, so
-// we re-sort before slicing. Defensive .slice() so we don't mutate the
-// caller's array (other sections still rely on similarity order).
-function topFundedProjects(projects: ProjectItem[], n: number): ProjectItem[] {
+// The projects agent returns items sorted by semantic similarity (most
+// relevant first). This helper takes the top-N in that order — same
+// ranking Chat search returns, same ranking the persisted `projects` field
+// in user_reports uses.
+//
+// Previously sorted by total_cost DESC ("Top Funded Projects"). That was
+// dropped 2026-09-21 because (a) funding rank is confounded by grant
+// mechanism — a P30 center grant sums to $10M of infrastructure while the
+// R01 doing the actual topic-relevant work is $500K — so top-by-funding
+// systematically elevates umbrella grants that host the relevant work
+// incidentally; (b) it was inconsistent with the rest of the platform
+// (Chat search returns by relevance, so did the persisted top-20
+// projects field on user_reports); (c) the "top-funded" framing is
+// already lint-flagged in narrative (see lint-report.ts:374), so
+// unifying on relevance sidesteps a class of rule the LLM keeps
+// tripping on. Funding total still displays on each project card as
+// scale context — it just isn't the sort key.
+//
+// Defensive .slice() so we don't mutate the caller's array (other
+// sections may re-order for their own purposes) and a defensive re-sort
+// so we don't rely on upstream ordering guarantees the type doesn't
+// enforce.
+function topRelevantProjects(projects: ProjectItem[], n: number): ProjectItem[] {
   return projects
     .slice()
-    .sort((a, b) => (b.total_cost || 0) - (a.total_cost || 0))
+    .sort((a, b) => (b.similarity ?? 0) - (a.similarity ?? 0))
     .slice(0, n)
 }
 
@@ -3730,8 +3748,8 @@ function renderProjects(projects: ProjectItem[], projectInsights?: Record<string
     return 'No projects found for this topic in our database.\n'
   }
 
-  let md = '### Top Funded Projects\n\n'
-  md += '*Funding is the sum of award totals across all budget periods for each project. Latest activity is the most recent fiscal year the project received an award. Category is auto-assigned by AI classification and may occasionally misassign monitoring-oriented diagnostic projects as therapeutics — the abstract is the ground truth for what the project actually does.*\n\n'
+  let md = '### Top Projects by Relevance\n\n'
+  md += '*Projects are ranked by semantic similarity to the topic — the most topic-relevant funded work first, not the largest awards. Funding is shown on each card as scale context (sum of award totals across all budget periods for each project). Latest activity is the most recent fiscal year the project received an award. Category is auto-assigned by AI classification and may occasionally misassign monitoring-oriented diagnostic projects as therapeutics — the abstract is the ground truth for what the project actually does.*\n\n'
 
   projects.forEach((p, i) => {
     md += `#### ${i + 1}. ${p.title}\n`
