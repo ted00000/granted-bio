@@ -105,49 +105,56 @@ export function FundingByYearChart({ data, height = 300, fixedWidth, fixedHeight
   }
 
   return (
-    <div className="w-full" style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={sortedData}
-          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" stroke={COLORS.grid} vertical={false} />
-          <XAxis
-            dataKey="xLabel"
-            tick={{ fill: COLORS.text, fontSize: 12 }}
-            axisLine={{ stroke: COLORS.grid }}
-            tickLine={false}
-          />
-          <YAxis
-            tickFormatter={formatFunding}
-            tick={{ fill: COLORS.text, fontSize: 12 }}
-            axisLine={false}
-            tickLine={false}
-            width={60}
-          />
-          <Tooltip
-            formatter={(value) => [formatFunding(typeof value === 'number' ? value : 0), 'Funding']}
-            labelFormatter={(label) => `FY ${String(label)}`}
-            contentStyle={{
-              backgroundColor: 'white',
-              border: '1px solid #E5E5E5',
-              borderRadius: '8px',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-            }}
-          />
-          <Bar
-            dataKey="funding"
-            radius={[4, 4, 0, 0]}
-            maxBarSize={50}
+    <div className="w-full">
+      {/* Fixed-height wrapper ONLY around the chart itself. Previously
+          the height was on the outer div, so ResponsiveContainer's
+          height=100% consumed the whole box and the hasPartial footnote
+          below it visually collided with the outer view's partialFYNote
+          on mobile (2026-09-21 audit). */}
+      <div style={{ height }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart
+            data={sortedData}
+            margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
           >
-            {sortedData.map((d, index) => (
-              <Cell key={`cell-${index}`} fill={d.isPartial ? COLORS.barPartial : COLORS.bar} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+            <CartesianGrid strokeDasharray="3 3" stroke={COLORS.grid} vertical={false} />
+            <XAxis
+              dataKey="xLabel"
+              tick={{ fill: COLORS.text, fontSize: 12 }}
+              axisLine={{ stroke: COLORS.grid }}
+              tickLine={false}
+            />
+            <YAxis
+              tickFormatter={formatFunding}
+              tick={{ fill: COLORS.text, fontSize: 12 }}
+              axisLine={false}
+              tickLine={false}
+              width={60}
+            />
+            <Tooltip
+              formatter={(value) => [formatFunding(typeof value === 'number' ? value : 0), 'Funding']}
+              labelFormatter={(label) => `FY ${String(label)}`}
+              contentStyle={{
+                backgroundColor: 'white',
+                border: '1px solid #E5E5E5',
+                borderRadius: '8px',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              }}
+            />
+            <Bar
+              dataKey="funding"
+              radius={[4, 4, 0, 0]}
+              maxBarSize={50}
+            >
+              {sortedData.map((d, index) => (
+                <Cell key={`cell-${index}`} fill={d.isPartial ? COLORS.barPartial : COLORS.bar} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
       {hasPartial && (
-        <p className="text-xs text-gray-500 mt-1 ml-1">
+        <p className="text-xs text-gray-500 mt-2 ml-1 leading-snug">
           Lighter bar = partial fiscal year (YTD only); not directly comparable to fully-reported prior years.
         </p>
       )}

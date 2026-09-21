@@ -26,7 +26,8 @@ interface Project {
 }
 
 interface ProjectsTableProps {
-  /** Top-N slice (top 20 by funding) — the default view. */
+  /** Top-N slice (top 20 by relevance to the topic; sorted by semantic
+   *  similarity descending — same ordering as Chat search results). */
   topProjects: Project[]
   /** Full analyzed sample. Null for legacy reports (pre-2026-09-01);
    *  the "Show all" toggle is hidden in that case. */
@@ -133,7 +134,7 @@ export function ProjectsTable({
       allRows={allProjects}
       totalCount={totalProjects}
       columns={columns}
-      topLabel={`Top ${topProjects.length} by Funding`}
+      topLabel={`Top ${topProjects.length} by Relevance`}
       expandedLabel="All Projects"
       rowKey={(p) => p.application_id}
       emptyMessage="No projects in this analysis sample."

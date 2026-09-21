@@ -29,7 +29,7 @@ export default async function ProjectsSectionPage({
       reportTopic={report.topic}
       reportTitle={report.title}
       sectionLabel="Projects"
-      sectionSubtitle="NIH-funded projects in the analyzed sample, ranked by total funding."
+      sectionSubtitle="NIH-funded projects in the analyzed sample, ranked by relevance to the topic. Funding shown as scale context, not the sort key."
       fullMarkdown={report.markdown_content}
     >
       <ProjectsView

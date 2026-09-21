@@ -202,7 +202,10 @@ export async function FundingLandscapeView({ reportId, fundingStats, narrative }
                     <th className="pb-2 px-2 text-right text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
                       Projects
                     </th>
-                    <th className="pb-2 px-2 text-right text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
+                    {/* Share column hidden on narrow phones — 4 tight
+                        columns squeeze on iPhone widths. Share is
+                        derivable from projects/total anyway. */}
+                    <th className="hidden sm:table-cell pb-2 px-2 text-right text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
                       Share
                     </th>
                     <th className="pb-2 pl-2 text-right text-[11px] font-semibold text-gray-500 uppercase tracking-wider">
@@ -221,7 +224,7 @@ export async function FundingLandscapeView({ reportId, fundingStats, narrative }
                         <td className="py-2 px-2 text-[14px] text-gray-700 tabular-nums text-right">
                           {row.projects}
                         </td>
-                        <td className="py-2 px-2 text-[13px] text-gray-500 tabular-nums text-right">
+                        <td className="hidden sm:table-cell py-2 px-2 text-[13px] text-gray-500 tabular-nums text-right">
                           {share}%
                         </td>
                         <td className="py-2 pl-2 text-[14px] text-gray-900 tabular-nums font-medium text-right">

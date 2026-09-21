@@ -1,7 +1,15 @@
+'use client'
+
+// Client component now — the phase distribution chips at the top are
+// interactive filters (click to filter the table below, click again to
+// clear). Converted from a server async component 2026-09-21; the
+// server-only inShare context is now resolved in page.tsx and passed
+// down as a prop.
+
+import { useState, useMemo } from 'react'
 import { DataTable, type Column } from '../DataTable'
 import { SectionLabel } from '../SectionLabel'
 import { InternalLink } from '../EntityLink'
-import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
 import { detailHref } from '@/lib/reports/share-nav'
 
 interface Trial {
@@ -18,6 +26,8 @@ interface TrialsViewProps {
   trials: Trial[]
   byPhase?: Record<string, number>
   byStatus?: Record<string, number>
+  /** Resolved server-side in page.tsx via getShareContextFromHeaders. */
+  inShare: boolean
 }
 
 // Color-code the phase chip using the standard clinical-trial
@@ -96,9 +106,19 @@ function formatStatus(status: string | null): string {
   return cleaned.charAt(0).toUpperCase() + cleaned.slice(1)
 }
 
-export async function TrialsView({ trials, byPhase, byStatus }: TrialsViewProps) {
-  const inShare = !!(await getShareContextFromHeaders())
-  const total = trials.length
+export function TrialsView({ trials, byPhase, byStatus, inShare }: TrialsViewProps) {
+  // Phase filter state. null = no filter, all trials shown. When a chip
+  // is clicked, the table below is filtered to trials that resolve to
+  // that same phase label via formatPhase (which is the same normalization
+  // used to build byPhase, so the label the user clicks matches).
+  const [phaseFilter, setPhaseFilter] = useState<string | null>(null)
+
+  const filteredTrials = useMemo(() => {
+    if (!phaseFilter) return trials
+    return trials.filter((t) => formatPhase(t.phase, t.study_type) === phaseFilter)
+  }, [trials, phaseFilter])
+
+  const total = filteredTrials.length
 
   const columns: Column<Trial>[] = [
     {
@@ -159,7 +179,8 @@ export async function TrialsView({ trials, byPhase, byStatus }: TrialsViewProps)
     },
   ]
 
-  // Phase distribution mini-summary above the table
+  // Phase distribution mini-summary above the table. Sorted by count
+  // desc for consistent visual weight.
   const phaseSummary = byPhase
     ? Object.entries(byPhase)
         .filter(([, n]) => n > 0)
@@ -170,27 +191,52 @@ export async function TrialsView({ trials, byPhase, byStatus }: TrialsViewProps)
     <div className="space-y-4">
       {phaseSummary.length > 0 && (
         <section className="bg-white rounded-lg border border-gray-200 shadow-sm px-6 py-5">
-          <SectionLabel className="mb-3">Distribution</SectionLabel>
-          <div className="flex flex-wrap gap-2">
-            {phaseSummary.map(([phase, n]) => (
-              <span
-                key={phase}
-                className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full ${phaseStyle(phase)}`}
+          <div className="flex items-center justify-between mb-3">
+            <SectionLabel className="mb-0">Distribution — click to filter</SectionLabel>
+            {phaseFilter && (
+              <button
+                type="button"
+                onClick={() => setPhaseFilter(null)}
+                className="text-[11px] text-gray-500 hover:text-[#E07A5F] transition-colors underline decoration-dotted underline-offset-2"
               >
-                {phase}
-                <span className="text-[11px] opacity-70 tabular-nums">{n}</span>
-              </span>
-            ))}
+                Clear filter
+              </button>
+            )}
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {phaseSummary.map(([phase, n]) => {
+              const active = phaseFilter === phase
+              // Base style is the phase's color; active adds a ring for
+              // the currently-selected filter. Inactive chips (when a
+              // different filter is active) dim to signal they're not
+              // the current selection but are still clickable.
+              const chipBase = phaseStyle(phase)
+              const inactive = phaseFilter !== null && !active
+              return (
+                <button
+                  key={phase}
+                  type="button"
+                  onClick={() => setPhaseFilter(active ? null : phase)}
+                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-full transition ${chipBase} ${
+                    active ? 'ring-2 ring-offset-1 ring-gray-900' : 'hover:ring-1 hover:ring-gray-400'
+                  } ${inactive ? 'opacity-50' : ''}`}
+                  title={active ? `Clear ${phase} filter` : `Filter to ${phase} trials only`}
+                >
+                  {phase}
+                  <span className="text-[11px] opacity-70 tabular-nums">{n}</span>
+                </button>
+              )
+            })}
           </div>
         </section>
       )}
 
-      <div className="flex items-baseline justify-between px-1">
+      <div className="flex items-baseline justify-between px-1 gap-3 flex-wrap">
         <SectionLabel className="mb-0" count={total}>
-          Clinical Trials
+          {phaseFilter ? `${phaseFilter} Trials` : 'Clinical Trials'}
         </SectionLabel>
         <div className="text-[12px] text-gray-500 tabular-nums">
-          {byStatus && (() => {
+          {byStatus && !phaseFilter && (() => {
             const active = Object.entries(byStatus)
               .filter(([s]) => /recruit|active|enroll|not.yet/i.test(s))
               .reduce((sum, [, n]) => sum + n, 0)
@@ -211,10 +257,14 @@ export async function TrialsView({ trials, byPhase, byStatus }: TrialsViewProps)
         </div>
       </div>
       <DataTable
-        rows={trials}
+        rows={filteredTrials}
         columns={columns}
         rowKey={(t) => t.nct_id}
-        emptyMessage="No clinical trials linked to this analysis sample."
+        emptyMessage={
+          phaseFilter
+            ? `No ${phaseFilter} trials in this analysis sample.`
+            : 'No clinical trials linked to this analysis sample.'
+        }
       />
     </div>
   )
