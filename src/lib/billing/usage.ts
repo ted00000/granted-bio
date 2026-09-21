@@ -345,51 +345,99 @@ export async function linkReportToPurchase(
 // API Usage Tracking (for associate billing)
 // ============================================
 
+// Canonical Anthropic model IDs the pipeline uses. Keep in sync with
+// what's actually called via client.messages.create in the code —
+// unknown model IDs fall back to Sonnet pricing (conservative choice:
+// overcount by default rather than silently undercount).
+export type TrackedModel =
+  | 'claude-sonnet-4-6'
+  | 'claude-haiku-4-5-20251001'
+  | 'claude-opus-4-8'
+
 export interface ApiUsageParams {
   userId: string
-  endpoint: 'chat' | 'report'
+  endpoint: 'chat' | 'report' | 'lazy_classifier'
   persona?: string
+  /**
+   * Anthropic model ID that generated the tokens in this row. If a
+   * report fires calls against multiple models, log one row per model.
+   * Missing model defaults to Sonnet 4.6 (backward compat with pre-
+   * 2026-09-21 callsites that only tracked cumulative Sonnet totals).
+   */
+  model?: TrackedModel | string
   inputTokens: number
   outputTokens: number
   cacheReadTokens?: number
   cacheWriteTokens?: number
 }
 
-// Anthropic pricing (per million tokens) - Sonnet 4
-const PRICING = {
-  input: 3,        // $3/M input tokens
-  output: 15,      // $15/M output tokens
-  cacheRead: 0.3,  // $0.30/M (10% of input)
-  cacheWrite: 3.75 // $3.75/M (125% of input)
+// Anthropic pricing per million tokens, per model. All figures are
+// public pricing as of 2026-09-21. Cache read is 10% of input; cache
+// write is 125% of input.
+const PRICING_BY_MODEL: Record<string, {
+  input: number
+  output: number
+  cacheRead: number
+  cacheWrite: number
+}> = {
+  'claude-sonnet-4-6':          { input: 3,  output: 15, cacheRead: 0.30, cacheWrite: 3.75 },
+  'claude-haiku-4-5-20251001':  { input: 1,  output: 5,  cacheRead: 0.10, cacheWrite: 1.25 },
+  'claude-opus-4-8':            { input: 15, output: 75, cacheRead: 1.50, cacheWrite: 18.75 },
+}
+
+const DEFAULT_MODEL: TrackedModel = 'claude-sonnet-4-6'
+
+function pricingFor(model: string | undefined): typeof PRICING_BY_MODEL[string] {
+  const pricing = model ? PRICING_BY_MODEL[model] : undefined
+  if (!pricing) {
+    // Unknown model — fall back to Sonnet rates. Overcounting is the
+    // safe direction; undercounting would understate real spend and
+    // hide cost regressions.
+    console.warn(`[API Usage] Unknown model "${model}"; pricing at Sonnet rates.`)
+    return PRICING_BY_MODEL[DEFAULT_MODEL]
+  }
+  return pricing
 }
 
 /**
- * Calculate cost in cents from token counts
+ * Calculate cost in cents from token counts. Prices per-model. Legacy
+ * signature (no model) preserved for backward compat — assumes Sonnet.
  */
 export function calculateCostCents(
   inputTokens: number,
   outputTokens: number,
   cacheReadTokens = 0,
-  cacheWriteTokens = 0
+  cacheWriteTokens = 0,
+  model?: string,
 ): number {
-  const inputCost = (inputTokens * PRICING.input) / 1_000_000
-  const outputCost = (outputTokens * PRICING.output) / 1_000_000
-  const cacheReadCost = (cacheReadTokens * PRICING.cacheRead) / 1_000_000
-  const cacheWriteCost = (cacheWriteTokens * PRICING.cacheWrite) / 1_000_000
-
-  // Convert dollars to cents
+  const p = pricingFor(model)
+  const inputCost = (inputTokens * p.input) / 1_000_000
+  const outputCost = (outputTokens * p.output) / 1_000_000
+  const cacheReadCost = (cacheReadTokens * p.cacheRead) / 1_000_000
+  const cacheWriteCost = (cacheWriteTokens * p.cacheWrite) / 1_000_000
   return (inputCost + outputCost + cacheReadCost + cacheWriteCost) * 100
 }
 
 /**
- * Log API usage for a user (for associate billing)
+ * Log API usage for a user (for associate billing).
+ *
+ * One row per (endpoint, user, model). Callers with mixed-model
+ * workloads (e.g. report generation firing Sonnet synthesis + Haiku
+ * classifier + Opus audit) should invoke this once per model with
+ * that model's token totals — see synthesize.ts for the report
+ * pattern.
+ *
+ * Never throws — logging a usage row must never break the API call
+ * itself. Errors go to console.error.
  */
 export async function logApiUsage(params: ApiUsageParams): Promise<void> {
+  const model = params.model || DEFAULT_MODEL
   const costCents = calculateCostCents(
     params.inputTokens,
     params.outputTokens,
     params.cacheReadTokens || 0,
-    params.cacheWriteTokens || 0
+    params.cacheWriteTokens || 0,
+    model,
   )
 
   const { error } = await supabaseAdmin
@@ -398,6 +446,7 @@ export async function logApiUsage(params: ApiUsageParams): Promise<void> {
       user_id: params.userId,
       endpoint: params.endpoint,
       persona: params.persona || null,
+      model,
       input_tokens: params.inputTokens,
       output_tokens: params.outputTokens,
       cache_read_tokens: params.cacheReadTokens || 0,
@@ -406,7 +455,6 @@ export async function logApiUsage(params: ApiUsageParams): Promise<void> {
     })
 
   if (error) {
-    // Log but don't throw - usage tracking shouldn't break the API
     console.error('[API Usage] Failed to log usage:', error.message)
   }
 }

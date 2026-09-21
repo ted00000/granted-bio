@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { getCoreProjectNumber, expandProjectNumberVariants } from '@/lib/project-number-utils'
 import { classifyLazyFlags } from '@/lib/classifiers/lazy-flags'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -152,9 +153,23 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     // ~$0.005-0.02 the first time a project's surfaced items are
     // classified. Never throws — a classifier failure leaves the
     // legacy keyword-derived flags in place.
+    //
+    // userId attributes the classifier cost to the viewer in
+    // api_usage (endpoint='lazy_classifier'). Anonymous viewers of a
+    // shared/public report don't attribute — the cost still happens
+    // but isn't logged against a user.
+    let viewerUserId: string | undefined
+    try {
+      const supabase = await createServerSupabaseClient()
+      const { data: { user } } = await supabase.auth.getUser()
+      viewerUserId = user?.id
+    } catch {
+      // Auth failure is non-fatal — page still renders, just no billing.
+    }
     const classified = await classifyLazyFlags({
       patents: patents ?? [],
       publications: publications ?? [],
+      userId: viewerUserId,
     })
     const finalPatents = classified.patents
     const finalPublications = classified.publications

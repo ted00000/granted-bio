@@ -30,7 +30,7 @@ import Anthropic from '@anthropic-ai/sdk'
 import { supabaseAdmin } from '@/lib/supabase'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import { sanitizeText } from './sanitize'
-import { generateStructured } from './llm-json'
+import { generateStructured, recordModelUsage } from './llm-json'
 import { getMinFiscalYear } from './fiscal-year'
 import type {
   CoverageCategory,
@@ -1086,8 +1086,7 @@ Return one classification per project via the return_classifications tool.`
   // object when caching is active; log them so we can verify caching
   // is working from prod logs.
   const usage = response.usage
-  usageTracker.inputTokens += usage.input_tokens
-  usageTracker.outputTokens += usage.output_tokens
+  recordModelUsage(usageTracker, CLASSIFIER_MODEL, usage)
   const cacheWrite = (usage as unknown as { cache_creation_input_tokens?: number }).cache_creation_input_tokens ?? 0
   const cacheRead = (usage as unknown as { cache_read_input_tokens?: number }).cache_read_input_tokens ?? 0
   if (cacheWrite > 0 || cacheRead > 0) {

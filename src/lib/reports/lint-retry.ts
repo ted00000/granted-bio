@@ -36,6 +36,7 @@ import type { LintViolation } from './lint-report'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import { sanitizeText } from './sanitize'
 import { applyPostRenderSubstitutions } from './post-render'
+import { recordModelUsage } from './llm-json'
 
 const MODEL = 'claude-sonnet-4-6'
 
@@ -432,8 +433,7 @@ async function correctOneSection(
         timeout: PER_CALL_TIMEOUT_MS,
       },
     )
-    usageTracker.inputTokens += response.usage.input_tokens
-    usageTracker.outputTokens += response.usage.output_tokens
+    recordModelUsage(usageTracker, MODEL, response.usage)
     const text = response.content.find((c) => c.type === 'text')
     if (!text || text.type !== 'text') {
       console.warn(`[Lint Retry] No text response for section "${sectionName}"`)

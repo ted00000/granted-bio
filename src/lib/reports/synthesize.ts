@@ -62,11 +62,10 @@ interface SynthesisContext {
   generatedAt?: string
 }
 
-// Track cumulative token usage across all synthesis API calls
-interface UsageTracker {
-  inputTokens: number
-  outputTokens: number
-}
+// Use the shared UsageTracker interface so per-model tracking + the
+// recordModelUsage helper are available uniformly across synthesis,
+// classifiers, and audit-agent (2026-09-21 model-accurate billing ship).
+import type { UsageTracker } from './llm-json'
 
 interface SectionInsights {
   funding: string
@@ -378,15 +377,59 @@ export async function synthesizeReport(
     reportPersona: persona,
   })
 
-  // Log cumulative API usage for billing
+  // Log cumulative API usage for billing. When per-model tracking has
+  // been populated (report gen fires Sonnet synthesis + Haiku classifier
+  // + Opus audit), write one row per model so Anthropic-side per-model
+  // billing matches api_usage row-by-row. When no per-model breakdown
+  // exists (e.g. only Sonnet Callsites still using the legacy
+  // `tracker.inputTokens += ...` pattern), fall through to a single
+  // Sonnet-priced row from the cumulative totals.
   console.log(`[Synthesis Agent] Total API usage: ${usageTracker.inputTokens} input, ${usageTracker.outputTokens} output tokens`)
-  await logApiUsage({
-    userId: context.userId,
-    endpoint: 'report',
-    persona: persona,
-    inputTokens: usageTracker.inputTokens,
-    outputTokens: usageTracker.outputTokens,
-  })
+  const byModel = usageTracker.byModel || {}
+  const perModelEntries = Object.entries(byModel).filter(
+    ([, counts]) => counts.inputTokens > 0 || counts.outputTokens > 0,
+  )
+  if (perModelEntries.length > 0) {
+    // Compute the residual — tokens accumulated via the legacy path
+    // (untracked callsites still incrementing tracker.inputTokens
+    // directly). Log as a Sonnet row so the total matches. Once every
+    // callsite migrates to recordModelUsage this residual goes to zero
+    // and the branch below drops out naturally.
+    const perModelInputSum = perModelEntries.reduce((s, [, c]) => s + c.inputTokens, 0)
+    const perModelOutputSum = perModelEntries.reduce((s, [, c]) => s + c.outputTokens, 0)
+    const residualInput = Math.max(0, usageTracker.inputTokens - perModelInputSum)
+    const residualOutput = Math.max(0, usageTracker.outputTokens - perModelOutputSum)
+    for (const [model, counts] of perModelEntries) {
+      await logApiUsage({
+        userId: context.userId,
+        endpoint: 'report',
+        persona,
+        model,
+        inputTokens: counts.inputTokens,
+        outputTokens: counts.outputTokens,
+        cacheReadTokens: counts.cacheReadTokens,
+        cacheWriteTokens: counts.cacheWriteTokens,
+      })
+    }
+    if (residualInput > 0 || residualOutput > 0) {
+      await logApiUsage({
+        userId: context.userId,
+        endpoint: 'report',
+        persona,
+        model: 'claude-sonnet-4-6',
+        inputTokens: residualInput,
+        outputTokens: residualOutput,
+      })
+    }
+  } else {
+    await logApiUsage({
+      userId: context.userId,
+      endpoint: 'report',
+      persona,
+      inputTokens: usageTracker.inputTokens,
+      outputTokens: usageTracker.outputTokens,
+    })
+  }
 
   return {
     executiveSummary,

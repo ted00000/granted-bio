@@ -25,8 +25,73 @@ import Anthropic from '@anthropic-ai/sdk'
 import type { Tool } from '@anthropic-ai/sdk/resources/messages'
 
 export interface UsageTracker {
+  // Cumulative across all models. Retained for backward compat with
+  // in-file `usageTracker.inputTokens += ...` incrementers that pre-
+  // date the per-model breakdown.
   inputTokens: number
   outputTokens: number
+  /**
+   * Per-model breakdown (added 2026-09-21). Populated by
+   * `recordModelUsage()` below. Callers that only ever fire against a
+   * single model can rely on the cumulative fields above; report-time
+   * synthesis fires Sonnet + Haiku + Opus and must use the per-model
+   * split so `logApiUsage` can price each row correctly.
+   */
+  byModel?: Record<string, ModelTokenCount>
+}
+
+export interface ModelTokenCount {
+  inputTokens: number
+  outputTokens: number
+  cacheReadTokens: number
+  cacheWriteTokens: number
+}
+
+/**
+ * Record a client.messages.create response's usage against a specific
+ * model bucket. Updates both the legacy cumulative fields and the
+ * per-model breakdown so existing consumers of tracker.inputTokens keep
+ * working while new consumers can price accurately per-model.
+ *
+ * Every callsite that previously did:
+ *   tracker.inputTokens  += response.usage.input_tokens
+ *   tracker.outputTokens += response.usage.output_tokens
+ * should migrate to:
+ *   recordModelUsage(tracker, model, response.usage)
+ *
+ * Both paths still work today; the legacy pattern just assumes Sonnet
+ * pricing at logApiUsage time.
+ */
+export function recordModelUsage(
+  tracker: UsageTracker,
+  model: string,
+  usage: {
+    input_tokens: number
+    output_tokens: number
+    cache_creation_input_tokens?: number | null
+    cache_read_input_tokens?: number | null
+  },
+): void {
+  const inputTokens = usage.input_tokens ?? 0
+  const outputTokens = usage.output_tokens ?? 0
+  const cacheWrite = usage.cache_creation_input_tokens ?? 0
+  const cacheRead = usage.cache_read_input_tokens ?? 0
+
+  tracker.inputTokens += inputTokens
+  tracker.outputTokens += outputTokens
+
+  if (!tracker.byModel) tracker.byModel = {}
+  const bucket = tracker.byModel[model] ?? {
+    inputTokens: 0,
+    outputTokens: 0,
+    cacheReadTokens: 0,
+    cacheWriteTokens: 0,
+  }
+  bucket.inputTokens += inputTokens
+  bucket.outputTokens += outputTokens
+  bucket.cacheReadTokens += cacheRead
+  bucket.cacheWriteTokens += cacheWrite
+  tracker.byModel[model] = bucket
 }
 
 export interface StructuredOutputOptions {
@@ -89,8 +154,11 @@ export async function generateStructured<T>(
     )
 
     if (opts.usageTracker) {
-      opts.usageTracker.inputTokens += response.usage.input_tokens
-      opts.usageTracker.outputTokens += response.usage.output_tokens
+      // Track per-model so logApiUsage can price the row correctly.
+      // Sonnet, Haiku, and Opus all differ; the prior cumulative-only
+      // pattern always priced at Sonnet, undercounting Opus (audit
+      // agent) and overcounting Haiku (classifiers).
+      recordModelUsage(opts.usageTracker, opts.model, response.usage)
     }
 
     const toolUse = response.content.find((c) => c.type === 'tool_use')

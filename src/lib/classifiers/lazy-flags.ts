@@ -37,7 +37,8 @@
 
 import Anthropic from '@anthropic-ai/sdk'
 import { supabaseAdmin } from '@/lib/supabase'
-import type { UsageTracker } from '@/lib/reports/llm-json'
+import { recordModelUsage, type UsageTracker } from '@/lib/reports/llm-json'
+import { logApiUsage } from '@/lib/billing/usage'
 
 // Bump this constant when the classifier prompt or model changes. All
 // items with flags_classifier_version < CURRENT will be re-classified
@@ -200,8 +201,7 @@ async function classifyBatch(
     return null
   }
 
-  usageTracker.inputTokens += response.usage.input_tokens
-  usageTracker.outputTokens += response.usage.output_tokens
+  recordModelUsage(usageTracker, CLASSIFIER_MODEL, response.usage)
   const cacheWrite = (response.usage as unknown as { cache_creation_input_tokens?: number }).cache_creation_input_tokens ?? 0
   const cacheRead = (response.usage as unknown as { cache_read_input_tokens?: number }).cache_read_input_tokens ?? 0
   if (cacheWrite > 0 || cacheRead > 0) {
@@ -339,9 +339,17 @@ interface PublicationRow extends PublicationInput {
 export async function classifyLazyFlags({
   patents,
   publications,
+  userId,
 }: {
   patents: PatentRow[]
   publications: PublicationRow[]
+  /**
+   * User whose page-view triggered the classifier. Cost is attributed
+   * to them in api_usage under endpoint='lazy_classifier'. Optional so
+   * that server-side jobs (backfill scripts, etc.) can call this without
+   * a user; those calls skip api_usage logging.
+   */
+  userId?: string
 }): Promise<{
   patents: PatentRow[]
   publications: PublicationRow[]
@@ -422,6 +430,28 @@ export async function classifyLazyFlags({
     `${pubUpdates.length}/${stalePubs.length} publications; ` +
     `usage: ${usage.inputTokens} input / ${usage.outputTokens} output tokens`,
   )
+
+  // Persist token spend to api_usage so the classifier's cost shows up
+  // in monthly-spend dashboards and matches Anthropic-side billing.
+  // One row per model that actually fired (both calls are Haiku today
+  // but the loop is model-agnostic in case that changes). Skipped when
+  // no userId is provided — server-side backfill scripts don't attribute.
+  if (userId && usage.byModel) {
+    for (const [model, counts] of Object.entries(usage.byModel)) {
+      if (counts.inputTokens === 0 && counts.outputTokens === 0) continue
+      void logApiUsage({
+        userId,
+        endpoint: 'lazy_classifier',
+        model,
+        inputTokens: counts.inputTokens,
+        outputTokens: counts.outputTokens,
+        cacheReadTokens: counts.cacheReadTokens,
+        cacheWriteTokens: counts.cacheWriteTokens,
+      }).catch((err) => {
+        console.warn('[LazyFlags] api_usage log failed:', err)
+      })
+    }
+  }
 
   return { patents: mergedPatents, publications: mergedPubs, usage }
 }
