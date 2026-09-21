@@ -179,12 +179,37 @@ export function TrialsView({ trials, byPhase, byStatus, inShare }: TrialsViewPro
     },
   ]
 
-  // Phase distribution mini-summary above the table. Sorted by count
-  // desc for consistent visual weight.
+  // Phase distribution mini-summary above the table. Sorted by
+  // clinical-progression order (Early Phase 1 → Phase 1 → Phase 1/2 →
+  // Phase 2 → Phase 2/3 → Phase 3 → Phase 4 → non-phased at the end)
+  // so the reader can scan the pipeline earliest-to-latest without
+  // reordering it mentally. Previously sorted by count descending,
+  // which put the biggest bucket first regardless of stage — visually
+  // fine but broke the "phase progression" mental model.
+  const PHASE_ORDER: string[] = [
+    'Early Phase 1',
+    'Phase 1',
+    'Phase 1/2',
+    'Phase 2',
+    'Phase 2/3',
+    'Phase 3',
+    'Phase 4',
+    'N/A',
+    'Observational',
+    'Not reported',
+    'Unknown',
+  ]
+  const phaseIndex = (phase: string): number => {
+    const i = PHASE_ORDER.indexOf(phase)
+    // Unknown labels (future ClinicalTrials.gov enum values, or
+    // legacy raw forms that never got normalized) sort to the very
+    // end so they don't shove the recognized phases around.
+    return i === -1 ? PHASE_ORDER.length + 1 : i
+  }
   const phaseSummary = byPhase
     ? Object.entries(byPhase)
         .filter(([, n]) => n > 0)
-        .sort((a, b) => b[1] - a[1])
+        .sort((a, b) => phaseIndex(a[0]) - phaseIndex(b[0]))
     : []
 
   return (
