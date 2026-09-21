@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { supabaseAdmin } from '@/lib/supabase'
+import { getMinFiscalYear } from '@/lib/reports/fiscal-year'
 
-// Only include recent fiscal years (2024+) - matches detail pages
-const MIN_FISCAL_YEAR = 2024
+// Rolling four-fiscal-year window (see src/lib/reports/fiscal-year.ts).
+// The floor is computed per request, NOT at module scope. Module-scope
+// capture would freeze the value at process boot — the window would then
+// fail to advance at Oct 1 if the serverless process happened to stay warm
+// across the boundary. Compute inside each handler.
 
 /**
  * Extract core project number for deduplication.
@@ -28,6 +32,8 @@ export async function GET() {
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
+
+    const minFiscalYear = getMinFiscalYear()
 
     // Get saved people
     const { data: savedPeople, error: savedError } = await supabase
@@ -55,7 +61,7 @@ export async function GET() {
             .from('projects')
             .select('project_number, total_cost, org_name, fiscal_year')
             .ilike('pi_names', `%${sp.person_name}%`)
-            .gte('fiscal_year', MIN_FISCAL_YEAR)
+            .gte('fiscal_year', minFiscalYear)
 
           // Deduplicate by core project number, keeping most recent fiscal year
           const seenProjects = new Map<string, typeof allProjects extends (infer T)[] | null ? T : never>()
@@ -90,7 +96,7 @@ export async function GET() {
             .from('projects')
             .select('project_number, total_cost, pi_names, fiscal_year')
             .eq('org_name', sp.person_name)
-            .gte('fiscal_year', MIN_FISCAL_YEAR)
+            .gte('fiscal_year', minFiscalYear)
 
           // Deduplicate by core project number, keeping most recent fiscal year
           const seenProjects = new Map<string, typeof allProjects extends (infer T)[] | null ? T : never>()

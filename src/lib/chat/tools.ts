@@ -3,6 +3,7 @@
 import { supabaseAdmin } from '@/lib/supabase'
 import type { SearchMode } from './types'
 import { getCoreProjectNumber, expandProjectNumberVariants } from '@/lib/project-number-utils'
+import { getMinFiscalYear, getWindowedFiscalYears } from '@/lib/reports/fiscal-year'
 
 /**
  * Generate a deduplication key for a project.
@@ -1853,8 +1854,9 @@ export async function getCompanyProfile(
 ): Promise<ReturnType<typeof summarizeCompanyProfile> | null> {
   const { org_name } = params
 
-  // Only include recent fiscal years (2024+) to match org page
-  const MIN_FISCAL_YEAR = 2024
+  // Rolling four-fiscal-year window — matches /api/org/[name]. Computed per
+  // call so serverless-warm processes advance the floor at the NIH FY roll.
+  const minFiscalYear = getMinFiscalYear()
 
   try {
     // First, find the canonical org name with a partial match
@@ -1874,7 +1876,7 @@ export async function getCompanyProfile(
       .from('projects')
       .select('*')
       .eq('org_name', canonicalOrgName)
-      .gte('fiscal_year', MIN_FISCAL_YEAR)
+      .gte('fiscal_year', minFiscalYear)
       .order('fiscal_year', { ascending: false })
 
     if (projectsError) throw projectsError

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { getCoreProjectNumber, expandProjectNumberVariants } from '@/lib/project-number-utils'
+import { getMinFiscalYear } from '@/lib/reports/fiscal-year'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -27,15 +28,16 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const limit = parseInt(searchParams.get('limit') || '50', 10)
     const offset = (page - 1) * limit
 
-    // Only include recent fiscal years (2024+)
-    const MIN_FISCAL_YEAR = 2024
+    // Rolling four-fiscal-year window (see src/lib/reports/fiscal-year.ts).
+    // Do NOT reintroduce a literal — the floor is computed.
+    const minFiscalYear = getMinFiscalYear()
 
     // Get all projects for this researcher (for accurate stats and filter counts)
     const { data: allProjects, error: allError } = await supabaseAdmin
       .from('projects')
       .select('project_number, org_name, org_state, total_cost, fiscal_year, primary_category, project_end, title')
       .ilike('pi_names', `%${piName}%`)
-      .gte('fiscal_year', MIN_FISCAL_YEAR)
+      .gte('fiscal_year', minFiscalYear)
 
     if (allError) {
       console.error('Error fetching researcher projects:', allError)
@@ -175,7 +177,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         project_end
       `, { count: 'exact' })
       .ilike('pi_names', `%${piName}%`)
-      .gte('fiscal_year', MIN_FISCAL_YEAR)
+      .gte('fiscal_year', minFiscalYear)
 
     // Apply search filter
     if (search) {

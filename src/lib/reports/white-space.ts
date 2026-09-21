@@ -31,6 +31,7 @@ import { supabaseAdmin } from '@/lib/supabase'
 import { normalizeConfidenceTagSpacing } from './confidence-tags'
 import { sanitizeText } from './sanitize'
 import { generateStructured } from './llm-json'
+import { getMinFiscalYear } from './fiscal-year'
 import type {
   CoverageCategory,
   CoverageDimension,
@@ -582,10 +583,14 @@ async function countScopeUniverse(scope: TopicScope): Promise<number | null> {
   }
   if (scopePatterns.length === 0) return null
   try {
+    // Apply the same rolling FY window the sample is bounded by. Sample side
+    // is windowed via the projects agent; broader-NIH denominator must match
+    // or the ratio compares two universes and manufactures opportunities.
     const { count, error } = await supabaseAdmin
       .from('projects')
       .select('*', { count: 'exact', head: true })
       .or(scopePatterns.join(','))
+      .gte('fiscal_year', getMinFiscalYear())
     if (error) {
       console.warn('[White Space] Scope-universe count error:', JSON.stringify(error))
       return null
@@ -1160,7 +1165,9 @@ async function addBroaderNihCounts(
 
   // Fire all count queries in parallel. Each query ANDs the category's
   // keyword OR-filter with the topic-scope OR-filter — PostgREST chains
-  // multiple .or() calls with AND semantics.
+  // multiple .or() calls with AND semantics. Also windowed by the rolling
+  // FY floor to match the sample side (see ../fiscal-year.ts).
+  const minFiscalYear = getMinFiscalYear()
   await Promise.all(
     workItems.map(async ({ cat, patterns }) => {
       try {
@@ -1168,6 +1175,7 @@ async function addBroaderNihCounts(
           .from('projects')
           .select('*', { count: 'exact', head: true })
           .or(patterns.join(','))
+          .gte('fiscal_year', minFiscalYear)
         if (scopeIsActive) {
           query = query.or(scopePatterns.join(','))
         }

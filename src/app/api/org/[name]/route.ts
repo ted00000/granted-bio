@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/lib/supabase'
 import { getCoreProjectNumber, expandProjectNumberVariants } from '@/lib/project-number-utils'
+import { getMinFiscalYear } from '@/lib/reports/fiscal-year'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -27,15 +28,17 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const limit = parseInt(searchParams.get('limit') || '50', 10)
     const offset = (page - 1) * limit
 
-    // Only include recent fiscal years (2024+)
-    const MIN_FISCAL_YEAR = 2024
+    // Rolling four-fiscal-year window (see src/lib/reports/fiscal-year.ts).
+    // Do NOT reintroduce a literal here — the floor is computed so the window
+    // advances at the NIH FY boundary automatically.
+    const minFiscalYear = getMinFiscalYear()
 
     // Get accurate total count and all project numbers for this org
     const { data: allProjects, error: allError } = await supabaseAdmin
       .from('projects')
       .select('project_number, pi_names, total_cost, fiscal_year, org_state, org_city, org_type, primary_category, project_end, title')
       .eq('org_name', orgName)
-      .gte('fiscal_year', MIN_FISCAL_YEAR)
+      .gte('fiscal_year', minFiscalYear)
 
     if (allError) {
       console.error('Error fetching org projects:', allError)
@@ -167,7 +170,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         clinical_trial_count
       `, { count: 'exact' })
       .eq('org_name', orgName)
-      .gte('fiscal_year', MIN_FISCAL_YEAR)
+      .gte('fiscal_year', minFiscalYear)
 
     // Apply search filter
     if (search) {

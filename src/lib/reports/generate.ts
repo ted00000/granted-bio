@@ -22,7 +22,7 @@ import { runPatentsAgent } from './agents/patents'
 import { runPublicationsAgent } from './agents/publications'
 import { runMarketAgent } from './agents/market'
 import { synthesizeReport } from './synthesize'
-import { getCurrentNihFiscalYear, formatPartialFYLabel } from './fiscal-year'
+import { getCurrentNihFiscalYear, formatPartialFYLabel, getWindowedFiscalYears } from './fiscal-year'
 import { autoGrantRetryCreditOnFailure } from '@/lib/billing/credits'
 
 /**
@@ -57,10 +57,28 @@ export async function checkProjectCount(
   topic: string,
   matchCount: number = 100
 ): Promise<number> {
-  const { data, error } = await supabaseAdmin.rpc('search_projects', {
+  // Route through search_projects_filtered so the preview/gate count applies
+  // the same rolling FY window as the report itself.
+  //
+  // Previously called search_projects (no fiscal-year parameter) — that RPC
+  // returned an unwindowed count. Because the report path IS windowed for
+  // the data_limited gate, a pre-2024-heavy topic could clear the >=5
+  // interpretation-preview check and pay-gate, then come back tagged
+  // data_limited. That is a refund conversation, not a cosmetic mismatch.
+  //
+  // Ship 2 will add a fiscal-year parameter to search_projects itself; until
+  // then, use the filtered RPC and pass the current windowed year list.
+  const { data, error } = await supabaseAdmin.rpc('search_projects_filtered', {
     query_embedding: await getEmbedding(topic),
     match_threshold: 0.25,
     match_count: matchCount,
+    min_biotools_confidence: 0,
+    filter_fiscal_years: getWindowedFiscalYears(),
+    filter_categories: null,
+    filter_org_types: null,
+    filter_states: null,
+    filter_min_funding: null,
+    filter_max_funding: null,
   })
 
   if (error) {
