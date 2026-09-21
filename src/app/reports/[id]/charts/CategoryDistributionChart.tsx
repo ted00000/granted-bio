@@ -124,7 +124,17 @@ export function CategoryDistributionChart({
         <BarChart
           data={chartData}
           layout="vertical"
-          margin={{ top: 10, right: 30, left: 100, bottom: 10 }}
+          // Tight left/right margins for mobile. Previous margin.left=100
+          // combined with YAxis width=95 reserved ~195px of the plot
+          // area for label space; on a 360px-viewport phone that left
+          // ~85px for the actual bars, so small categories (Diagnostics,
+          // Infrastructure, Training) rendered as slivers barely
+          // distinguishable from the axis. Reset to margin.left=0 and
+          // let YAxis.width alone govern label space (mobile audit
+          // 2026-09-21). Print-mode branch above is untouched — its
+          // fixed pixel dimensions were sized against the desktop PDF
+          // layout and were fine there.
+          margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
         >
           <CartesianGrid strokeDasharray="3 3" stroke="#E5E5E5" horizontal={false} />
           <XAxis
@@ -141,7 +151,11 @@ export function CategoryDistributionChart({
             tick={{ fill: '#525252', fontSize: 11 }}
             axisLine={false}
             tickLine={false}
-            width={95}
+            // 90 gives the two-word category labels ("Basic Research",
+            // "Medical Device") a two-line wrap without truncating.
+            // Narrower would clip; wider re-eats the bar space we just
+            // recovered.
+            width={90}
           />
           <Tooltip
             formatter={(value, name) => {
