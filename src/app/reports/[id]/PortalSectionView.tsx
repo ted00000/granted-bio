@@ -74,7 +74,10 @@ export function PortalSectionView({
           in muted gray. Mirrors the Analyses portal's app-wide
           typography. */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-5 sm:px-6">
+        {/* pl-14 on <lg leaves ~56px clear for the fixed hamburger
+            button. Matches SectionShell (6becfea) so section-page
+            headers align across the two shells. */}
+        <div className="max-w-4xl mx-auto pl-14 pr-4 sm:pr-6 lg:px-6 pt-[max(1rem,env(safe-area-inset-top))] pb-5">
           <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-2">
             <Link
               href={`/reports/${reportId}`}

@@ -57,7 +57,9 @@ export default async function ScopedOrgPage({
   return (
     <div className="min-h-full">
       <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto px-4 pt-[max(1rem,env(safe-area-inset-top))] pb-5 sm:px-6">
+        {/* pl-14 on <lg leaves ~56px clear for the fixed hamburger.
+            Matches SectionShell (6becfea). */}
+        <div className="max-w-4xl mx-auto pl-14 pr-4 sm:pr-6 lg:px-6 pt-[max(1rem,env(safe-area-inset-top))] pb-5">
           {/* Smart back — router.back() so the reader returns to
               wherever they clicked an org name FROM (Competitive
               Topology, Funding Landscape, Projects, Patents,
