@@ -497,25 +497,42 @@ export async function generateWhiteSpaceAnalysis(
     return emptyAnalysis(totalProjects, totalFunding)
   }
 
-  // Step 2: deterministic counting in the sample
-  const dimensionsWithSampleCounts = schema.map((dim) =>
-    computeSampleCoverage(dim, projects),
-  )
-
-  // Step 2b: two-pass category expansion. For any dimension with a high
-  // unclassified rate, ask the LLM to look at the unclassified titles
-  // directly and propose additional categories that would classify them.
-  // Then re-count the sample against the expanded category set. This
-  // catches the class of bug where the initial category proposal misses
-  // real categories present in the data (e.g., no "Bladder" or "Ovarian"
-  // category despite six projects mentioning each).
-  const dimensionsRefined = await expandUnclassifiedCategories(
-    topic,
-    dimensionsWithSampleCounts,
+  // Step 2: Haiku classifier per dimension (2026-09-21 ship). Reads
+  // for inferential meaning ("Lutetium Therapy" → Lu-177 bucket, "PSMA
+  // RPT" → radioligand therapy) instead of the strict-keyword match the
+  // prior version used. Falls back to computeSampleCoverage per-dimension
+  // on any Haiku failure so a partial outage never breaks report
+  // generation. See the Step 2 classifier block above for the full
+  // rationale and cost estimate (~$0.09 per report with prompt caching).
+  const step2Results = await classifySampleViaHaiku(
+    schema,
     projects,
     client,
     usageTracker,
   )
+
+  // Step 2b: second-pass category expansion runs ONLY on dimensions
+  // that used the deterministic fallback in Step 2. When Haiku ran
+  // successfully, its inferential reading already captures the projects
+  // an expansion pass would try to catch — running expansion after Haiku
+  // would re-classify with keyword-only matching and OVERWRITE Haiku's
+  // better semantic assignments (verified 2026-09-21: on the test report,
+  // Step 2b took Targeting Vector from 65 matched → 32 matched when run
+  // over Haiku output because its final keyword-match recount doesn't
+  // know about Haiku's per-project decisions). Skipping expansion for
+  // Haiku-classified dimensions preserves the lift.
+  const haikuDims = step2Results.filter((r) => r.usedHaiku).map((r) => r.dimension)
+  const fallbackDims = step2Results.filter((r) => !r.usedHaiku).map((r) => r.dimension)
+  const expandedFallback = fallbackDims.length > 0
+    ? await expandUnclassifiedCategories(
+        topic,
+        fallbackDims,
+        projects,
+        client,
+        usageTracker,
+      )
+    : []
+  const dimensionsRefined = [...haikuDims, ...expandedFallback]
 
   // Step 3: broader NIH cross-reference (deterministic keyword count
   // against the full projects table), scope-filtered to the topic frame
@@ -848,11 +865,430 @@ Use word-boundary-safe terms (≥${MIN_KEYWORD_LENGTH} chars).
   }
 }
 
+// ------------------------------------------------------------------
+// Step 2 classifier — Haiku pass with deterministic fallback.
+//
+// The prior deterministic-only Step 2 matched projects to categories via
+// exact keyword substring hits. Empirically that recovers only the
+// fraction of projects whose title/abstract commits to a specific
+// vocabulary — for dimensions like Radionuclide, coverage sat at ~22%
+// even though the true text-ceiling was ~44% (audited 2026-09-21 on
+// report 7359b4bb, radioligand-prostate). The gap is projects using
+// inferential language: "Lutetium Therapy" without the "-177" suffix,
+// "PSMA RPT" implying radioligand work, "theranostic" implying
+// isotope-based, and so on. Haiku can read those; keyword patterns
+// can't.
+//
+// Design:
+//   - One Haiku call per dimension (fires in parallel via Promise.all),
+//     classifying every project in the sample against that dimension's
+//     categories plus two escape hatches: "other" (dimension applies
+//     but no listed category fits) and "out_of_scope" (dimension does
+//     not apply to this project).
+//   - generateStructured with a tool_use schema whose enum forces the
+//     model to return only allowed category names — no invented buckets.
+//   - Prompt-cached prefix: the fixed instructions + project list are
+//     identical across all 5 dimension calls, so we mark them for cache
+//     and pay the write once, then read four times.
+//   - Deterministic fallback: if Haiku returns null (network / timeout
+//     / schema violation), fall through to computeSampleCoverage for
+//     that dimension only. Never lose a report to this pass.
+//
+// Cost (Haiku 4.5, 120 projects × 200-char abstracts, 5 dimensions):
+//   ~$0.09 per report with prompt caching, ~$0.17 without.
+// ------------------------------------------------------------------
+const CLASSIFIER_MODEL = 'claude-haiku-4-5-20251001'
+const CLASSIFIER_ABSTRACT_MAX_CHARS = 200
+const CLASSIFIER_TIMEOUT_MS = 90_000
+const CLASSIFIER_MAX_TOKENS = 4000
+// Sentinel category values Haiku may return. Both are treated as
+// "did not match a specific category" for downstream metrics.
+const CAT_OTHER = 'other'
+const CAT_OUT_OF_SCOPE = 'out_of_scope'
+
 /**
- * Step 2 — deterministic keyword count against the analyzed set.
- * A project matches a category if ANY of the category's keywords appears
- * in the project's title or abstract (case-insensitive). A project can
- * match multiple categories — we treat that as multi-topical reality.
+ * Build the compact per-project payload the classifier reads. Uses
+ * application_id as the identifier (short, unique, stable across the
+ * report). Truncates abstract to CLASSIFIER_ABSTRACT_MAX_CHARS to keep
+ * token cost proportional; 200 chars almost always includes the isotope
+ * hint, targeting-vector cue, or scope signal.
+ */
+function formatProjectForClassifier(p: ProjectItem): string {
+  const title = (p.title || '(untitled)').trim()
+  const abstract = (p.abstract || '').replace(/\s+/g, ' ').trim()
+  const snippet = abstract.length > CLASSIFIER_ABSTRACT_MAX_CHARS
+    ? abstract.substring(0, CLASSIFIER_ABSTRACT_MAX_CHARS).trimEnd() + '…'
+    : abstract || '(no abstract)'
+  return `[${p.application_id}]\nTitle: ${title}\nAbstract: ${snippet}`
+}
+
+interface ClassifierAssignment {
+  app_id: string
+  category: string
+}
+
+// The fixed instruction prefix. Identical across all dimension calls
+// within a report, so it gets marked cacheable — pay the ~1.25× write
+// on the first dimension, pay ~0.1× reads on the remaining four.
+const CLASSIFIER_SYSTEM_PROMPT = `You are classifying NIH-funded research projects for a coverage analysis. For each project you will be given a title and a short abstract snippet. You will assign each project to exactly one category from a supplied list, or to one of two sentinels:
+- "other": The dimension applies to the project, but none of the specific listed categories fits (novel approach, edge case, unusual combination).
+- "out_of_scope": The project's work does not discuss this dimension at all (for example, a targeting-vector chemistry project is out_of_scope for a Radionuclide dimension because it does not commit to a specific isotope).
+
+CLASSIFICATION RULES:
+1. Read for meaning, not just literal keyword presence. "PSMA RPT" implies radioligand therapy; "Lutetium Therapy" implies Lu-177 (the clinically-dominant lutetium isotope); "theranostic" implies isotope-based work.
+2. When two specific categories overlap, choose the more specific one.
+3. Use "out_of_scope" liberally. An isotope-agnostic targeting or delivery project genuinely does not fit any Radionuclide bucket — do not force it.
+4. Use "other" only when the dimension DOES apply but no listed specific category fits.
+5. Return an assignment for every project. Do not skip any. Every application_id from the input list must appear exactly once in the assignments array.`
+
+/**
+ * Run Haiku classification for ONE dimension. Returns null on failure
+ * so callers can fall back to the deterministic matcher.
+ *
+ * Uses client.messages.create directly (not the generateStructured
+ * helper) so we can place explicit cache_control markers on the fixed
+ * prefix. Structure of the API call:
+ *
+ *   system:   CLASSIFIER_SYSTEM_PROMPT (cacheable, ~500 tokens)
+ *   messages: [
+ *     user: content blocks:
+ *       - text (cacheable): the project list (~21K tokens per report,
+ *         identical across all dimension calls within one report)
+ *       - text (not cached): the dimension name + category list + ask
+ *         (~1K tokens, varies per dimension)
+ *   ]
+ *
+ * Cache write happens on the first dimension call (~1.25× base input
+ * cost on ~21.5K tokens); cache reads on the remaining four (~0.1×
+ * base cost on ~21.5K each). Cache TTL is 5 min (Anthropic default);
+ * all 5 dimension calls fire within seconds via Promise.all, so the
+ * cache is always warm.
+ */
+async function classifyDimensionViaHaiku(
+  schema: DimensionSchema,
+  projects: ProjectItem[],
+  projectListText: string,
+  client: Anthropic,
+  usageTracker: UsageTracker,
+): Promise<ClassifierAssignment[] | null> {
+  const allowedCategories = [
+    ...schema.categories.map((c) => c.name),
+    CAT_OTHER,
+    CAT_OUT_OF_SCOPE,
+  ]
+
+  // Categories are keyword-list-shaped in the DimensionSchema — the
+  // Sonnet-generated names are usually descriptive on their own (e.g.
+  // "Lutetium-177 (Beta Emitter)"). Include the top few keywords as a
+  // hint so Haiku sees the vocabulary Sonnet had in mind.
+  const categoryListText = schema.categories
+    .map((c) => {
+      const kwHint = c.keywords.slice(0, 4).join(', ')
+      return `- ${c.name}${kwHint ? `  (indicative vocabulary: ${kwHint})` : ''}`
+    })
+    .join('\n')
+
+  const perDimensionAsk = `DIMENSION: ${schema.name}
+DEFINITION: ${schema.description}
+
+CATEGORIES (pick exactly one per project):
+${categoryListText}
+- ${CAT_OTHER}
+- ${CAT_OUT_OF_SCOPE}
+
+Return one classification per project via the return_classifications tool.`
+
+  // Category is a plain string (not enum) so this tool schema is
+  // identical across every dimension call, letting Anthropic's prompt
+  // cache actually match. If the enum were dimension-specific, every
+  // request would have a different tool prefix and cache reads would
+  // always miss (verified experimentally 2026-09-21). We enforce the
+  // allowed-category list defensively in code below instead.
+  const schemaJson = {
+    type: 'object' as const,
+    properties: {
+      assignments: {
+        type: 'array',
+        description: 'One entry per project. Every project in the list must be assigned exactly one category.',
+        items: {
+          type: 'object',
+          properties: {
+            app_id: {
+              type: 'string',
+              description: 'The application_id in square brackets at the start of each project entry.',
+            },
+            category: {
+              type: 'string',
+              description: 'Exactly one category name from the allowed list shown in the user message.',
+            },
+          },
+          required: ['app_id', 'category'],
+        },
+      },
+    },
+    required: ['assignments'],
+  }
+
+  let response
+  try {
+    response = await client.messages.create(
+      {
+        model: CLASSIFIER_MODEL,
+        max_tokens: CLASSIFIER_MAX_TOKENS,
+        system: [
+          {
+            type: 'text',
+            text: CLASSIFIER_SYSTEM_PROMPT,
+            cache_control: { type: 'ephemeral' },
+          },
+        ],
+        messages: [
+          {
+            role: 'user',
+            content: [
+              {
+                type: 'text',
+                text: `PROJECTS TO CLASSIFY:\n\n${projectListText}`,
+                // Cache boundary: everything above this point is
+                // identical across the report's 5 dimension calls, so
+                // 4 of the 5 calls will get cache-read pricing on it.
+                cache_control: { type: 'ephemeral' },
+              },
+              {
+                type: 'text',
+                text: perDimensionAsk,
+              },
+            ],
+          },
+        ],
+        tools: [
+          {
+            name: 'return_classifications',
+            // Generic description — same string across every dimension
+            // call so the tool block doesn't invalidate the prompt cache.
+            description: 'Return one category assignment per project, using the category names shown in the user message.',
+            input_schema: schemaJson,
+          },
+        ],
+        tool_choice: { type: 'tool', name: 'return_classifications' },
+      },
+      { timeout: CLASSIFIER_TIMEOUT_MS },
+    )
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.warn(
+      `[White Space] Haiku classifier call failed for "${schema.name}": ${msg}. Falling back to keyword matcher.`,
+    )
+    return null
+  }
+
+  // Track usage. The Anthropic SDK returns cache metrics on the usage
+  // object when caching is active; log them so we can verify caching
+  // is working from prod logs.
+  const usage = response.usage
+  usageTracker.inputTokens += usage.input_tokens
+  usageTracker.outputTokens += usage.output_tokens
+  const cacheWrite = (usage as unknown as { cache_creation_input_tokens?: number }).cache_creation_input_tokens ?? 0
+  const cacheRead = (usage as unknown as { cache_read_input_tokens?: number }).cache_read_input_tokens ?? 0
+  if (cacheWrite > 0 || cacheRead > 0) {
+    console.log(
+      `[White Space] Dimension "${schema.name}" cache tokens: write=${cacheWrite}, read=${cacheRead}`,
+    )
+  }
+
+  const toolUse = response.content.find((c) => c.type === 'tool_use')
+  if (!toolUse || toolUse.type !== 'tool_use') {
+    console.warn(
+      `[White Space] Haiku returned no tool_use block for "${schema.name}". Falling back.`,
+    )
+    return null
+  }
+
+  const input = toolUse.input as { assignments?: ClassifierAssignment[] }
+  if (!input || !Array.isArray(input.assignments)) {
+    console.warn(
+      `[White Space] Haiku tool_use missing assignments array for "${schema.name}". Falling back.`,
+    )
+    return null
+  }
+
+  // Sanity-check: filter out assignments referencing app_ids not in the
+  // input (Haiku hallucinated an ID) or categories not in the enum (the
+  // SDK's schema validation should have rejected these already, but be
+  // defensive).
+  const validAppIds = new Set(projects.map((p) => p.application_id))
+  const validCategories = new Set(allowedCategories)
+  const clean = input.assignments.filter(
+    (a) => a && validAppIds.has(a.app_id) && validCategories.has(a.category),
+  )
+  const dropped = input.assignments.length - clean.length
+  if (dropped > 0) {
+    console.warn(
+      `[White Space] Dimension "${schema.name}": dropped ${dropped} malformed assignments`,
+    )
+  }
+  return clean
+}
+
+/**
+ * Aggregate a set of per-project assignments into a CoverageDimension
+ * shape matching what the deterministic matcher produces. The returned
+ * dimension's categories carry the same `keywords` from the schema so
+ * downstream code (Step 2b expansion pass, broader-NIH cross-reference)
+ * that reads `cat.keywords` keeps working unchanged.
+ */
+function aggregateAssignments(
+  schema: DimensionSchema,
+  projects: ProjectItem[],
+  assignments: ClassifierAssignment[],
+): CoverageDimension {
+  const projectByAppId = new Map(projects.map((p) => [p.application_id, p]))
+  // Group assignments by category. A project can appear at most once
+  // in `assignments` (the classifier is single-label), so no need to
+  // dedup here.
+  const byCategory = new Map<string, ProjectItem[]>()
+  for (const a of assignments) {
+    const p = projectByAppId.get(a.app_id)
+    if (!p) continue
+    const arr = byCategory.get(a.category) ?? []
+    arr.push(p)
+    byCategory.set(a.category, arr)
+  }
+
+  const categories: CoverageCategory[] = schema.categories.map((cat) => {
+    const matched = byCategory.get(cat.name) ?? []
+    return {
+      name: cat.name,
+      keywords: cat.keywords,
+      projectCount: matched.length,
+      fundingTotal: matched.reduce((sum, p) => sum + (p.total_cost || 0), 0),
+      broaderNihCount: 0, // filled in step 3
+      projectExamples: matched
+        .slice(0, 3)
+        .map((p) => p.project_number || p.application_id)
+        .filter((v): v is string => !!v),
+    }
+  })
+
+  // A project matches the dimension if the classifier assigned it to
+  // any specific category OR to "other". `out_of_scope` counts as
+  // unclassified — the dimension does not apply.
+  const matchedIds = new Set(
+    assignments
+      .filter((a) => a.category !== CAT_OUT_OF_SCOPE)
+      .map((a) => a.app_id),
+  )
+  const totalMatched = matchedIds.size
+
+  return {
+    name: schema.name,
+    description: schema.description,
+    categories,
+    totalMatched,
+    totalUnclassified: projects.length - totalMatched,
+    narrative: '', // filled in step 5
+  }
+}
+
+/**
+ * Result of the Haiku classifier for one dimension. Includes whether
+ * this dimension used Haiku or fell back to the deterministic matcher
+ * so downstream Step 2b can skip expansion for Haiku-classified
+ * dimensions (see rationale in generateWhiteSpaceAnalysis).
+ */
+interface Step2Result {
+  dimension: CoverageDimension
+  usedHaiku: boolean
+}
+
+/**
+ * Step 2 orchestrator — Haiku pass across every dimension.
+ *
+ * Fires the FIRST dimension sequentially and awaits its response before
+ * launching the remaining dimensions in parallel. Reason: Anthropic's
+ * prompt cache is populated by the first request that includes the
+ * cached prefix. If we fire all 5 dimensions in Promise.all
+ * simultaneously, all 5 requests race to write the same cache key and
+ * end up paying the ~1.25× cache-write price on the shared 10K-token
+ * project list five times over. Verified empirically 2026-09-21 —
+ * initial parallel implementation showed cache_creation_input_tokens
+ * ≈10K on every call and cache_read_input_tokens = 0 across the board.
+ *
+ * With the sequential-then-parallel pattern:
+ *   - Call 1 pays the cache write (~10K tokens × $1.25/M = $0.013)
+ *   - Calls 2-5 pay cache reads (~10K each × $0.10/M = $0.001 each)
+ * Total prefix cost drops from ~$0.063 to ~$0.017.
+ *
+ * Falls back to computeSampleCoverage per-dimension on any Haiku
+ * failure. usedHaiku flag on each result lets Step 2b know whether to
+ * skip category expansion — Haiku's inferential reading already
+ * captures the categories keyword-match misses.
+ */
+async function classifySampleViaHaiku(
+  dimensionSchema: DimensionSchema[],
+  projects: ProjectItem[],
+  client: Anthropic,
+  usageTracker: UsageTracker,
+): Promise<Step2Result[]> {
+  const projectListText = projects.map(formatProjectForClassifier).join('\n\n')
+
+  const runOne = async (schema: DimensionSchema): Promise<Step2Result> => {
+    try {
+      const assignments = await classifyDimensionViaHaiku(
+        schema,
+        projects,
+        projectListText,
+        client,
+        usageTracker,
+      )
+      if (assignments === null) {
+        return { dimension: computeSampleCoverage(schema, projects), usedHaiku: false }
+      }
+      return { dimension: aggregateAssignments(schema, projects, assignments), usedHaiku: true }
+    } catch (err) {
+      console.warn(
+        `[White Space] Haiku classifier threw for dimension "${schema.name}"; falling back:`,
+        err,
+      )
+      return { dimension: computeSampleCoverage(schema, projects), usedHaiku: false }
+    }
+  }
+
+  const started = Date.now()
+  const [firstSchema, ...restSchemas] = dimensionSchema
+  if (!firstSchema) return []
+
+  // Sequential first call — populates the prompt cache with the project
+  // list prefix. Subsequent parallel calls read from that cache.
+  const firstResult = await runOne(firstSchema)
+  const restResults = restSchemas.length > 0
+    ? await Promise.all(restSchemas.map(runOne))
+    : []
+  const results = [firstResult, ...restResults]
+  const elapsed = ((Date.now() - started) / 1000).toFixed(1)
+
+  for (const { dimension: dim, usedHaiku } of results) {
+    const rate = dim.totalMatched + dim.totalUnclassified > 0
+      ? ((dim.totalMatched / (dim.totalMatched + dim.totalUnclassified)) * 100).toFixed(1)
+      : '0.0'
+    console.log(
+      `[White Space] Step 2 (${usedHaiku ? 'Haiku' : 'fallback keyword'}) "${dim.name}": ${dim.totalMatched}/${dim.totalMatched + dim.totalUnclassified} classified (${rate}%)`,
+    )
+  }
+  console.log(`[White Space] Step 2 total wall-time: ${elapsed}s across ${results.length} dimensions`)
+
+  return results
+}
+
+/**
+ * Step 2 (fallback) — deterministic keyword count against the analyzed
+ * set. A project matches a category if ANY of the category's keywords
+ * appears in the project's title or abstract (case-insensitive). A
+ * project can match multiple categories — we treat that as multi-topical
+ * reality.
+ *
+ * Retained as the safety net for classifySampleViaHaiku above. Do NOT
+ * remove — this is the code path that runs when Haiku fails.
  */
 function computeSampleCoverage(
   schema: DimensionSchema,
