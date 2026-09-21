@@ -124,15 +124,24 @@ export function TrialsView({ trials, byPhase, byStatus, inShare }: TrialsViewPro
   const [phaseFilter, setPhaseFilter] = useState<string | null>(null)
   const [recruitingOnly, setRecruitingOnly] = useState(false)
 
-  // Recruiting count for the chip label. Derived from byStatus so the
-  // number is the sample-wide total (independent of any phase filter);
-  // clicking the chip then intersects with whatever else is active.
+  // Faceted-filter chip counts. Each chip's number reflects the size
+  // of the filtered set IF that chip were active, intersected with all
+  // OTHER currently-active chips. Rule per chip:
+  //   count = |trials matching (this chip) ∩ (all other active chips)|
+  //
+  // So when Phase 2 is selected, the Recruiting count shrinks to "how
+  // many Phase 2 trials are recruiting" (not "how many recruiting
+  // trials in the whole sample"). Symmetrically, when Recruiting is
+  // selected, each phase pill shows the phase breakdown WITHIN the
+  // recruiting subset. 0-count phase pills drop out via the existing
+  // filter below.
   const recruitingCount = useMemo(
     () =>
-      Object.entries(byStatus ?? {})
-        .filter(([status]) => isRecruiting(status))
-        .reduce((sum, [, n]) => sum + n, 0),
-    [byStatus],
+      trials.filter((t) => {
+        if (phaseFilter && formatPhase(t.phase, t.study_type) !== phaseFilter) return false
+        return isRecruiting(t.study_status)
+      }).length,
+    [trials, phaseFilter],
   )
 
   const filteredTrials = useMemo(() => {
@@ -239,16 +248,22 @@ export function TrialsView({ trials, byPhase, byStatus, inShare }: TrialsViewPro
   // AND clicking N/A wouldn't line up with what the row-level cell
   // shows. Recomputing here keeps chip label ⇔ filter value ⇔ row
   // display in lockstep.
+  //
+  // Each phase's count is intersected with the recruiting filter (if
+  // active), so when Recruiting is toggled the phase pills show the
+  // phase breakdown WITHIN recruiting trials — standard faceted-filter
+  // behavior. Zero-count phase buckets drop out via the < filter.
   const phaseSummary = useMemo(() => {
     const counts = new Map<string, number>()
     for (const t of trials) {
+      if (recruitingOnly && !isRecruiting(t.study_status)) continue
       const label = formatPhase(t.phase, t.study_type)
       counts.set(label, (counts.get(label) ?? 0) + 1)
     }
     return Array.from(counts.entries())
       .filter(([, n]) => n > 0)
       .sort(([a], [b]) => phaseIndex(a) - phaseIndex(b))
-  }, [trials])
+  }, [trials, recruitingOnly])
 
   return (
     <div className="space-y-4">
