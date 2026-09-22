@@ -19,15 +19,27 @@
 
 import { permanentRedirect } from 'next/navigation'
 
-const SAMPLE_REPORT_ID = '0555ef1d-3cdc-4d97-b8da-a114d2721550'
+// Retired 2026-09-22. The liquid-biopsy sample report was generated
+// 2026-09-01, before the audit-cycle work (trial-quality pack, PubMed
+// MeSH, RePORTER audit fields) and the Haiku White Space classifier.
+// It reads materially weaker than the current samples. Rather than
+// break external links to /sample/liquid-biopsy, redirect to the
+// current investor-persona sample — brain organoid electrophysiology —
+// which showcases the same investor lens on a fresh topic. Buyers
+// arriving via the old URL still get a live, current example instead
+// of a 404.
+//
+// The old report row (0555ef1d) has is_public_sample=false as of the
+// same date, so anon direct access to /reports/0555ef1d... is gated
+// behind login. Nothing shipping today points at it anymore.
 
 export const metadata = {
   title:
-    'Sample Intelligence Analysis — Liquid Biopsy for Early Cancer Detection | granted.bio',
+    'Sample Intelligence Analysis | granted.bio',
   description:
-    'See exactly what a granted.bio intelligence analysis contains. NIH funding, clinical trials, patents, and publications synthesized into strategic narrative on the liquid biopsy field. Generates in a few minutes.',
+    'See exactly what a granted.bio intelligence analysis contains. Current samples showcase how the platform cross-links NIH funding, clinical trials, patents, and publications into strategic narrative.',
 }
 
 export default function LiquidBiopsySamplePage() {
-  permanentRedirect(`/reports/${SAMPLE_REPORT_ID}`)
+  permanentRedirect(`/sample/brain-organoids`)
 }

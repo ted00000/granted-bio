@@ -4,10 +4,13 @@
 // count, funding total). Adding a sample = one more entry in SAMPLES
 // below plus a `/sample/<slug>` route.
 //
-// The "New" pill on radioligand is manually flagged for the LinkedIn
-// launch (2026-08-07) and should be removed after ~4 weeks; the flag
-// is a boolean per-entry rather than time-based so removal is one
-// intentional commit rather than a silent decay.
+// Refreshed 2026-09-22: both samples swapped to reports generated
+// after the White Space Haiku classifier + audit-cycle work landed.
+// Old radioligand (broad, investor persona, pre-classifier) and
+// liquid-biopsy (pre-classifier) reports are still in the DB with
+// is_public_sample=false; new samples showcase the current platform
+// output. The "New" pill flags are set for the 2026-09-22 refresh —
+// remove after ~4 weeks.
 
 import Link from 'next/link'
 import { ArrowRight, FlaskConical, Activity, FileText, Sparkles } from 'lucide-react'
@@ -34,30 +37,30 @@ interface Sample {
   isNew?: boolean
 }
 
-// Ordered display list. Radioligand is first + carries the "New" pill
-// for the LinkedIn launch. Reorder or drop `isNew` when the launch
-// window closes.
+// Ordered display list. Both entries carry the "New" pill for the
+// 2026-09-22 sample refresh. Drop `isNew` in ~4 weeks.
 const SAMPLES: Sample[] = [
   {
     slug: 'radioligand-therapy',
-    title: 'Radioligand Therapy for Cancer',
-    topic: 'Radioligand therapy for cancer',
+    title: 'Radioligand Therapy for Prostate Cancer',
+    topic: 'Radioligand therapy for prostate cancer',
     modality: 'Therapeutics',
     personaLabel: 'Research persona',
     description:
-      "The oncology modality behind Pluvicto and Lutathera. PSMA and DOTATATE targeting, alpha- and beta-emitter pipelines, and the theranostic platform companies that emerged from the 2023-2024 M&A cycle.",
-    reportId: '3b638569-8d3e-40c5-96a6-ca6c69c1d798',
+      "The oncology modality behind Pluvicto and Lutathera, scoped to prostate cancer. PSMA-targeted radioligands, alpha- vs beta-emitter tradeoffs, dosimetry and combination-therapy positioning across 115 NIH-funded projects and 511 cross-linked clinical trials.",
+    reportId: '53336db9-2d96-4b70-9432-d2c36f39cf60',
     isNew: true,
   },
   {
-    slug: 'liquid-biopsy',
-    title: 'Liquid Biopsy for Early Cancer Detection',
-    topic: 'Liquid biopsy for early cancer detection',
-    modality: 'Diagnostics',
-    personaLabel: 'Research persona',
+    slug: 'brain-organoids',
+    title: 'Brain Organoid Electrophysiology',
+    topic: 'Brain organoid electrophysiology',
+    modality: 'Biotools',
+    personaLabel: 'Investor persona',
     description:
-      'Cell-free DNA methylation, ctDNA/CTC platforms, and adjacent circulating-biomarker approaches for pre-symptomatic cancer screening. Multi-cancer early detection is the anchor use case.',
-    reportId: 'a4dbfb7b-2343-46a4-8763-35b1f16d8e58',
+      '3D neural tissue platforms with functional electrophysiological readout — the intersection of MEA hardware, iPSC-derived assembloids, and disease-modeling applications. 122 NIH-funded projects, 70 organizations, and $129.8M active commitments, viewed through the investor lens.',
+    reportId: 'b4bdfe2d-d0b7-4a70-9217-2e4009395011',
+    isNew: true,
   },
 ]
 
