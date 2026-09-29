@@ -71,9 +71,9 @@ const TOPIC_STOPWORDS = new Set([
 ])
 
 /**
- * Extract the meaningful "core tokens" from a topic phrase. A core token
- * is a substantive word or hyphenated compound that MUST be represented
- * in the taxonomy for the topic to be well-covered.
+ * Extract the meaningful "core tokens" from a topic phrase. A core
+ * token is a substantive word or hyphenated compound that MUST be
+ * represented in the taxonomy for the topic to be well-covered.
  *
  * Examples:
  *   "cell-free antibody engineering" → ["cell-free", "antibody", "engineering"]
@@ -81,16 +81,21 @@ const TOPIC_STOPWORDS = new Set([
  *   "3D spatial multiomics platform" → ["3d", "spatial", "multiomics", "platform"]
  *   "brain organoid electrophysiology" → ["brain", "organoid", "electrophysiology"]
  *
- * Hyphenated compounds (cell-free, high-throughput, in-vivo) are preserved
- * as one token — they're usually a defining lens that the taxonomy must
- * respect. Splitting them ("cell", "free") produces garbage matches.
+ * Hyphenated compounds (cell-free, high-throughput, in-vivo) are
+ * preserved as one token — they're usually a defining lens that the
+ * taxonomy must respect. Splitting them ("cell", "free") produces
+ * garbage matches.
  *
- * r53 audit rationale: the cell-free antibody engineering report shipped
- * a taxonomy that had "CHO Cell Expression", "E. coli Expression",
- * "Yeast Expression", "HEK293 Expression" as its Production categories —
- * but NO "Cell-Free Expression" bucket. The topic's defining modifier
- * was the very category axis the LLM omitted. This function surfaces
- * the miss deterministically.
+ * Why deterministic extraction is needed: the taxonomy classifier is
+ * generative and can produce a plausible-looking category set that
+ * silently omits the query's defining modifier. A "cell-free antibody
+ * engineering" topic can end up with a Production dimension of "CHO",
+ * "E. coli", "Yeast", "HEK293" — every mammalian and microbial host
+ * bucket but no "Cell-Free Expression" bucket, because the classifier
+ * read the topic as generically about antibody engineering and dropped
+ * the modifier. Surfacing the core tokens deterministically lets
+ * downstream checks (see `evaluateScopeCollapse`) catch that miss
+ * without depending on the classifier to notice its own omission.
  */
 function topicCoreTokens(topic: string): string[] {
   return topic
@@ -132,27 +137,22 @@ function parseExpandedKeywordQuery(keywordQuery: string | undefined): string[] {
  * "on-topic"; those that don't are "adjacent" (matched by broader
  * semantic search but don't foreground the topic's vocabulary).
  *
- * Buckets the ratio into tier labels the White Space renderer uses
- * to decide whether to surface a "Sample Coverage Note" callout above
- * the dimension tables.
+ * Buckets the ratio into tier labels the White Space renderer uses to
+ * decide whether to surface a "Sample Coverage Note" callout above the
+ * dimension tables.
  *
- * r53 Move 1a rationale: for niche intersection topics the semantic
- * retrieval can return a sample dominated by adjacent work.
- *
- * r53 Move 1a-fix rationale (2026-08-03): the first version of this
- * function only checked against topicCoreTokens (raw user input),
- * which under-counted on-topic projects for any topic where the
- * interpretation step expanded meaningfully. A "cell-free antibody
- * engineering" search whose interpretation expanded to include CFPS,
- * IVTT, in-vitro-transcription-translation, PURE system, etc. would
- * retrieve projects titled with those synonyms but score them
- * "off-topic" because the raw phrase "cell-free" wasn't in the title.
- * Same-topic report generations showed a 0.8% vs 65.8% on-topic
- * spread between two runs — clear signal the check was fragile.
- *
- * Fix: pass in the interpretation's keywordQuery and use it (union
- * with raw core tokens) as the on-topic match set. Falls back to raw
- * tokens only when no interpretation is available.
+ * Why check against the EXPANDED keyword set, not just the raw topic
+ * tokens: for niche intersection topics, semantic retrieval can return
+ * a sample dominated by projects that use synonym vocabulary rather
+ * than the raw user phrase. A "cell-free antibody engineering" query
+ * whose interpretation step expands to include CFPS, IVTT, in-vitro-
+ * transcription-translation, PURE system, etc. will retrieve projects
+ * titled with those synonyms — legitimately on-topic — but a check
+ * against the raw phrase "cell-free" alone would score them off-topic
+ * and produce wildly divergent on-topic ratios across otherwise
+ * equivalent runs of the same query. Unioning the raw core tokens
+ * with the interpretation's keywordQuery fixes that under-counting;
+ * falls back to raw tokens only when no interpretation is available.
  */
 export function computeTopicRelevanceSignal(
   topic: string,

@@ -2799,21 +2799,34 @@ This analysis focuses on **depth over breadth**, capturing publicly-funded acade
 // --- Render functions ---
 
 /**
- * Scope-collapse detector. Combines two independent signals to catch the
- * failure mode where retrieval returned a sample that isn't really about
- * the topic. Either signal is enough to fire the banner.
+ * Scope-collapse detector. Combines two independent signals to catch
+ * the failure mode where retrieval returned a sample that isn't really
+ * about the topic. Either signal alone is enough to fire the banner.
  *
- * Signal 1: substring on-topic ratio (from computeTopicRelevanceSignal).
- * Fires when 'off-topic' (<5% of sample mentions topic in title/abstract).
- * Catches extreme cases where the retrieval is way off.
+ * Signal 1 — substring on-topic ratio. Fires when the tier is
+ * 'off-topic' (<5% of sample abstracts explicitly mention the topic's
+ * core tokens or expanded synonyms). Catches extreme retrieval
+ * failures where the sample and the topic barely share vocabulary.
  *
- * Signal 2: head-term taxonomy bucket with zero projects. This is Nathan's
- * (CellFreeGroup) specific catch. When the taxonomy classifier built a
- * category whose name matches the query's head term (e.g. "Cell-Free
- * Expression" for a "cell-free antibody engineering" query) and that
- * bucket got zero projects, the sample is definitively off the head-term
- * axis even if substring matches score high (which happens when abstracts
- * mention the head term casually rather than as the project's focus).
+ * Signal 2 — head-term taxonomy bucket with zero projects. Fires when
+ * the taxonomy classifier built a category whose name starts with the
+ * query's head term (e.g. "Cell-Free Expression" for a "cell-free
+ * antibody engineering" query) AND classified zero projects into it.
+ * This catches cases where substring matches score high on casual
+ * mentions but the sample doesn't actually cluster around the
+ * head-term concept — an empty named bucket is stronger evidence of
+ * scope drift than the substring ratio alone.
+ *
+ * Signal 2 is suppressed when the head term also appears in the name
+ * of another NON-ZERO category anywhere in the taxonomy. That case
+ * arises when the topic is a broad clinical objective or outcome (e.g.
+ * "MRD") that the classifier sliced across sibling method buckets
+ * under names that don't repeat the head term — the sample IS on
+ * topic, the classifier just used more specific labels for most of it
+ * and left the exact head-term-named bucket empty. When the head term
+ * appears ONLY in the empty bucket and nowhere else, the fire is
+ * real: the taxonomy tried to represent the concept and the sample
+ * genuinely missed it.
  */
 interface ScopeCollapse {
   fired: boolean
@@ -2831,40 +2844,68 @@ function evaluateScopeCollapse(
 ): ScopeCollapse {
   const substringFired = !!topicRelevance && topicRelevance.tier === 'off-topic'
   const coreTokens = topicRelevance?.coreTokens ?? []
-  // Head-term zero-bucket detection. The head term is the FIRST core
-  // token, which is typically the query's most specific anchor (e.g.
-  // "cell-free" in "cell-free antibody engineering", "radioligand" in
-  // "radioligand therapy for cancer"). We only fire on categories that:
-  //   1. Start with the head term (prefix match, so "Cell-Free
-  //      Expression" matches but "Radioligand Therapy with Cancer
-  //      Vaccines" wouldn't need to — see #2)
-  //   2. Are NOT compound categories (no "and", "or", "with", "combined"
-  //      in the name — those are combination buckets that name the head
-  //      term as one of several ingredients, not as the standalone
-  //      concept the query is asking about)
-  // Without both guards this produced false positives on radioligand
-  // (compound "Radioligand Therapy with Cancer Vaccines" bucket) during
-  // testing 2026-08-11.
   const headTerm = coreTokens[0] ?? ''
-  // Word-form compound markers ("Radioligand with PARP Inhibition",
-  // "Radioligand and Chemotherapy") AND the spaced "+" notation Sonnet
-  // often uses for combinations ("Radioligand + PARP Inhibition"). Added
-  // " + " on 2026-09-21 after a false-positive on "radioligand therapy for
-  // prostate cancer" — three zero-buckets fired that were all "+" compounds
-  // in the Combination Strategy dimension.
-  const COMPOUND_MARKERS = /\b(and|or|with|combined|combination|versus|vs\.?)\b| \+ /i
-  // Also require the zero-bucket to have meaningful broader-NIH presence.
-  // A category with sample=0 AND broader-NIH < 3 isn't a "sample missed
-  // a real thing" signal — it's a Sonnet-invented category that doesn't
-  // correspond to a real research cluster. Only fire on zero-buckets that
-  // exist in the broader NIH portfolio. Threshold picked so the detector
-  // stays sensitive to niche-but-real clusters (broader-NIH 3-10) while
-  // rejecting speculative buckets Sonnet dreamed up. See same-day audit
-  // of "radioligand therapy for prostate cancer" — three "+ " zero-buckets
-  // all had broader-NIH=0, all were speculative combinations.
+
+  // Head-term zero-bucket detection.
+  //
+  // The head term is the FIRST core token from the topic — typically
+  // the query's most specific anchor (e.g. "cell-free" in "cell-free
+  // antibody engineering", "radioligand" in "radioligand therapy for
+  // cancer").
+  //
+  // A category triggers the fire when ALL are true:
+  //   1. Its name starts with the head term (prefix match).
+  //   2. It is NOT a compound category. Names like "Radioligand with
+  //      PARP Inhibition", "Radioligand + Immunotherapy", or "MRD via
+  //      Somatic Mutation ctDNA Profiling" are subclass-of /
+  //      combination-of patterns that name the head term as one
+  //      ingredient of a specific pairing, not as the standalone
+  //      concept the query asks about. An empty compound bucket says
+  //      little about whether the base concept is in the sample.
+  //   3. Its projectCount in the retrieved sample is zero.
+  //   4. Its broaderNihCount is at least MIN_BROADER_NIH_FOR_ZERO_BUCKET.
+  //      This threshold rejects speculative buckets the classifier
+  //      invented that don't correspond to a real research cluster in
+  //      the broader NIH portfolio — sample=0 AND broader=0 isn't
+  //      "sample missed a real thing," it's "classifier hallucinated a
+  //      bucket that doesn't exist anywhere." Threshold picked to stay
+  //      sensitive to niche-but-real clusters (broader 3-10) while
+  //      filtering pure hallucinations.
+  const COMPOUND_MARKERS = /\b(and|or|with|combined|combination|versus|vs\.?|via)\b| \+ /i
   const MIN_BROADER_NIH_FOR_ZERO_BUCKET = 3
-  const zeroBuckets: Array<{ dimension: string; category: string }> = []
+
+  // Suppression guard: if the head term appears in the name of any
+  // non-zero category anywhere in the taxonomy, the concept IS
+  // represented — a single empty head-term-named bucket is nomenclature
+  // variance, not scope collapse. See header comment for the failure
+  // mode this prevents (broad objectives like "MRD" that get sliced
+  // across sibling method buckets under different labels).
+  //
+  // Uses word-boundary matching that treats alphanumerics and hyphens
+  // as connective (so "cell-free" doesn't match inside a longer
+  // hyphenated word, and short tokens like "3d" or "ai" don't false-
+  // match as substrings of "m3d" or "pair"). Escapes regex-special
+  // characters in the head term defensively.
+  let headTermRepresentedElsewhere = false
   if (whiteSpace && headTerm) {
+    const escaped = headTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const headTermPattern = new RegExp(
+      `(^|[^a-z0-9-])${escaped}([^a-z0-9-]|$)`,
+      'i',
+    )
+    outer: for (const dim of whiteSpace.dimensions ?? []) {
+      for (const cat of dim.categories ?? []) {
+        if ((cat.projectCount ?? 0) <= 0) continue
+        if (headTermPattern.test(cat.name)) {
+          headTermRepresentedElsewhere = true
+          break outer
+        }
+      }
+    }
+  }
+
+  const zeroBuckets: Array<{ dimension: string; category: string }> = []
+  if (whiteSpace && headTerm && !headTermRepresentedElsewhere) {
     for (const dim of whiteSpace.dimensions ?? []) {
       for (const cat of dim.categories ?? []) {
         const catNameLower = cat.name.toLowerCase()
@@ -2895,17 +2936,19 @@ function evaluateScopeCollapse(
 }
 
 /**
- * Scope-integrity warning banner. Rendered at the very top of the report
- * (right after the header metadata) when scope collapse is detected.
- * Silent (empty string) when the retrieval was on-topic.
+ * Scope-integrity warning banner. Rendered at the very top of the
+ * report (right after the header metadata) when scope collapse is
+ * detected. Silent (empty string) when the retrieval was on-topic.
  *
- * Added 2026-08-11 in response to the CellFreeGroup domain review, where
- * a "cell-free antibody engineering" report generated 53 pages of
- * antibody-engineering content with 0 actual cell-free projects in the
- * "Cell-Free Expression" taxonomy bucket. The report acknowledged this
- * on p.17 but buried the finding inside a skimmable section. This banner
- * puts it at the top so the reader sees it before spending time on the
- * body.
+ * The banner exists because a scope-collapse report is still generated
+ * and delivered — the user paid, the pipeline ran, projects were
+ * retrieved and synthesized — but the topic they asked about isn't
+ * what the sample ended up representing. A banner at the top makes
+ * that mismatch visible before the reader spends time on the body, and
+ * gives them a concrete remediation ("narrow the query, regenerate")
+ * instead of an unexplained disappointment. Without it, the mismatch
+ * gets acknowledged only in mid-body sections that are easy to skim
+ * past.
  */
 function renderScopeWarningBanner(
   topic: string,
