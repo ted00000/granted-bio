@@ -66,6 +66,8 @@ interface SynthesisContext {
 // recordModelUsage helper are available uniformly across synthesis,
 // classifiers, and audit-agent (2026-09-21 model-accurate billing ship).
 import type { UsageTracker } from './llm-json'
+import { recordModelUsage } from './llm-json'
+import Anthropic from '@anthropic-ai/sdk'
 
 interface SectionInsights {
   funding: string
@@ -203,9 +205,19 @@ export async function synthesizeReport(
 
   // Combine substring + taxonomy signals into a single scope-collapse
   // decision now that White Space has computed (needed for the head-term
-  // bucket check). Log every scope-collapse fire — high-signal event we
-  // want visible in logs even when the report ships.
-  const scopeCollapse = evaluateScopeCollapse(topicRelevance, whiteSpace, agentOutputs.projects.items.length)
+  // bucket check). Async because it may invoke the agent gate on
+  // suppression candidates. Log every scope-collapse fire AND every
+  // suppression — the fire log lets us confirm the banner ships when it
+  // should; the suppression log (emitted inside evaluateScopeCollapse)
+  // lets us audit whether the gate is over-suppressing without needing
+  // to review every generated report.
+  const scopeCollapse = await evaluateScopeCollapse(
+    topicRelevance,
+    whiteSpace,
+    agentOutputs.projects.items.length,
+    topic,
+    usageTracker,
+  )
   if (scopeCollapse.fired) {
     console.warn(
       `[Synthesis Agent] SCOPE COLLAPSE detected for "${topic}": reason=${scopeCollapse.reason}, ` +
@@ -2837,11 +2849,13 @@ interface ScopeCollapse {
   zeroBuckets: Array<{ dimension: string; category: string }>
 }
 
-function evaluateScopeCollapse(
+async function evaluateScopeCollapse(
   topicRelevance: TopicRelevanceSignal | undefined,
   whiteSpace: WhiteSpaceAnalysis | undefined,
   totalSample: number,
-): ScopeCollapse {
+  topic: string,
+  usageTracker: UsageTracker,
+): Promise<ScopeCollapse> {
   const substringFired = !!topicRelevance && topicRelevance.tier === 'off-topic'
   const coreTokens = topicRelevance?.coreTokens ?? []
   const headTerm = coreTokens[0] ?? ''
@@ -2853,7 +2867,7 @@ function evaluateScopeCollapse(
   // antibody engineering", "radioligand" in "radioligand therapy for
   // cancer").
   //
-  // A category triggers the fire when ALL are true:
+  // A category is a raw fire candidate when ALL are true:
   //   1. Its name starts with the head term (prefix match).
   //   2. It is NOT a compound category. Names like "Radioligand with
   //      PARP Inhibition", "Radioligand + Immunotherapy", or "MRD via
@@ -2874,19 +2888,19 @@ function evaluateScopeCollapse(
   const COMPOUND_MARKERS = /\b(and|or|with|combined|combination|versus|vs\.?|via)\b| \+ /i
   const MIN_BROADER_NIH_FOR_ZERO_BUCKET = 3
 
-  // Suppression guard: if the head term appears in the name of any
-  // non-zero category anywhere in the taxonomy, the concept IS
-  // represented — a single empty head-term-named bucket is nomenclature
-  // variance, not scope collapse. See header comment for the failure
-  // mode this prevents (broad objectives like "MRD" that get sliced
-  // across sibling method buckets under different labels).
+  // Find the sibling non-zero bucket (if any) whose name carries the
+  // head term. Its existence triggers a two-stage suppression check:
+  // first the programmatic Option B (this bucket exists at all), then
+  // the agent gate (the sibling meaningfully represents the same
+  // concept as the empty head-term bucket, not just a coincidental
+  // token-string match).
   //
   // Uses word-boundary matching that treats alphanumerics and hyphens
   // as connective (so "cell-free" doesn't match inside a longer
   // hyphenated word, and short tokens like "3d" or "ai" don't false-
   // match as substrings of "m3d" or "pair"). Escapes regex-special
   // characters in the head term defensively.
-  let headTermRepresentedElsewhere = false
+  let suppressingSibling: { dimension: string; category: string; projectCount: number } | null = null
   if (whiteSpace && headTerm) {
     const escaped = headTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
     const headTermPattern = new RegExp(
@@ -2897,15 +2911,20 @@ function evaluateScopeCollapse(
       for (const cat of dim.categories ?? []) {
         if ((cat.projectCount ?? 0) <= 0) continue
         if (headTermPattern.test(cat.name)) {
-          headTermRepresentedElsewhere = true
+          suppressingSibling = {
+            dimension: dim.name,
+            category: cat.name,
+            projectCount: cat.projectCount ?? 0,
+          }
           break outer
         }
       }
     }
   }
 
-  const zeroBuckets: Array<{ dimension: string; category: string }> = []
-  if (whiteSpace && headTerm && !headTermRepresentedElsewhere) {
+  // Collect the raw fire candidates before suppression.
+  const rawZeroBuckets: Array<{ dimension: string; category: string }> = []
+  if (whiteSpace && headTerm) {
     for (const dim of whiteSpace.dimensions ?? []) {
       for (const cat of dim.categories ?? []) {
         const catNameLower = cat.name.toLowerCase()
@@ -2913,8 +2932,50 @@ function evaluateScopeCollapse(
         if (COMPOUND_MARKERS.test(cat.name)) continue
         if (cat.projectCount !== 0) continue
         if ((cat.broaderNihCount ?? 0) < MIN_BROADER_NIH_FOR_ZERO_BUCKET) continue
-        zeroBuckets.push({ dimension: dim.name, category: cat.name })
+        rawZeroBuckets.push({ dimension: dim.name, category: cat.name })
       }
+    }
+  }
+
+  // Two-stage suppression. If no sibling carries the head term, every
+  // raw candidate fires as-is (matches pre-Option-B behaviour). If a
+  // sibling does carry the head term, ask the agent per raw candidate
+  // whether the topic is meaningfully covered by the surrounding
+  // taxonomy — the token match alone can be coincidental, and the
+  // agent needs the full dimension listing to judge whether an empty
+  // head-term-named bucket is a niche label for something the sample
+  // covers under other names, or a real gap in coverage.
+  let zeroBuckets = rawZeroBuckets
+  if (suppressingSibling && rawZeroBuckets.length > 0 && whiteSpace) {
+    const decisions = await Promise.all(
+      rawZeroBuckets.map(async (zb) => {
+        const emptyDimension = (whiteSpace.dimensions ?? []).find((d) => d.name === zb.dimension)
+        const siblingDimension = (whiteSpace.dimensions ?? []).find((d) => d.name === suppressingSibling!.dimension)
+        const agentJudgment = await confirmSuppressionViaAgent(
+          topic,
+          zb,
+          suppressingSibling!,
+          emptyDimension?.categories ?? [],
+          siblingDimension?.categories ?? [],
+          usageTracker,
+        )
+        return { zb, agentJudgment }
+      }),
+    )
+    zeroBuckets = decisions.filter((d) => !d.agentJudgment.suppress).map((d) => d.zb)
+    // Log every agent decision — suppression and override alike. The log
+    // is the audit surface: if a suppression looks wrong (sibling
+    // meaningfully different from the empty bucket), it shows up here
+    // for review without requiring the reviewer to have domain expertise
+    // on every topic customers query.
+    for (const d of decisions) {
+      const verdict = d.agentJudgment.suppress ? 'SUPPRESSED' : 'CONFIRMED (agent overrode)'
+      console.log(
+        `[SCOPE COLLAPSE ${verdict}] topic="${topic}" ` +
+          `empty_bucket="${d.zb.category}" ` +
+          `sibling="${suppressingSibling!.category}" (${suppressingSibling!.projectCount} projects). ` +
+          `Agent: ${d.agentJudgment.reasoning}`,
+      )
     }
   }
   const bucketFired = zeroBuckets.length > 0
@@ -2933,6 +2994,153 @@ function evaluateScopeCollapse(
     totalSample,
     zeroBuckets,
   }
+}
+
+/**
+ * Agent gate on scope-warning suppression.
+ *
+ * Called when the programmatic detector identified a zero head-term
+ * bucket AND found a sibling non-zero bucket whose name carries the
+ * head term. Asks Haiku whether the topic is meaningfully covered by
+ * the surrounding taxonomy — an empty head-term bucket surrounded by
+ * well-populated sibling buckets that represent the same concept
+ * under different labels is nomenclature variance, not scope
+ * collapse. An empty head-term bucket in a dimension where the OTHER
+ * populated categories represent semantically distinct concepts is a
+ * real gap and should fire the warning.
+ *
+ * The agent receives the FULL category listing for the empty bucket's
+ * dimension (so it can see whether siblings in that dimension cover
+ * the same concept under different labels) plus the specific sibling
+ * that carries the head term (as secondary evidence from another
+ * dimension). Without the full dimension context the agent tends to
+ * over-conservatively judge two isolated bucket names as "different"
+ * even when the empty bucket is just an overly-narrow labeling of
+ * something the sample covers well elsewhere.
+ *
+ * Fail-safe posture: any error, timeout, missing tool_use, or "not
+ * confident" verdict returns { suppress: false }, which fires the
+ * scope-warning banner. This asymmetry is deliberate — a false
+ * suppression means a customer receives a report that misses what
+ * they asked for with no warning; a false fire just shows a banner
+ * they can read past. The prompt reinforces the same asymmetry to
+ * bias the model toward "warn" when uncertain.
+ *
+ * Cost: single Haiku call per raw fire candidate, ~400-600 tokens in
+ * (grows with dimension size) / ~150 out. Runs only when the
+ * pre-suppression detector would have fired, which historical data
+ * shows is rare (~2 of every ~100 reports). Latency: sub-second
+ * typical, 10s hard cap.
+ */
+interface CategoryContext {
+  name: string
+  projectCount?: number
+}
+
+async function confirmSuppressionViaAgent(
+  topic: string,
+  emptyBucket: { dimension: string; category: string },
+  siblingBucket: { dimension: string; category: string; projectCount: number },
+  emptyDimensionCategories: CategoryContext[],
+  siblingDimensionCategories: CategoryContext[],
+  usageTracker: UsageTracker,
+): Promise<{ suppress: boolean; reasoning: string }> {
+  const HAIKU_MODEL = 'claude-haiku-4-5-20251001'
+  const TIMEOUT_MS = 10_000
+
+  const renderCategoryList = (cats: CategoryContext[]): string =>
+    cats
+      .map((c) => {
+        const marker = c.name === emptyBucket.category ? '  ← EMPTY, matches topic head term' : ''
+        return `  - ${c.name}: ${c.projectCount ?? 0} projects${marker}`
+      })
+      .join('\n')
+
+  const emptyDimBlock = emptyDimensionCategories.length > 0
+    ? `Categories in "${emptyBucket.dimension}" (the dimension containing the empty bucket):\n${renderCategoryList(emptyDimensionCategories)}`
+    : `The empty category is "${emptyBucket.category}" in dimension "${emptyBucket.dimension}". (Sibling category listing unavailable.)`
+
+  const siblingDimBlock = emptyBucket.dimension !== siblingBucket.dimension && siblingDimensionCategories.length > 0
+    ? `\n\nAnother dimension, "${siblingBucket.dimension}", also has a category whose name carries the topic's head term — "${siblingBucket.category}" with ${siblingBucket.projectCount} projects. Full listing for that dimension:\n${renderCategoryList(siblingDimensionCategories)}`
+    : ''
+
+  const client = new Anthropic()
+  let response
+  try {
+    response = await client.messages.create(
+      {
+        model: HAIKU_MODEL,
+        max_tokens: 500,
+        messages: [
+          {
+            role: 'user',
+            content: `The user asked for a research intelligence report on this topic:
+"${topic}"
+
+The taxonomy classifier organized retrieved projects into categorized dimensions. One category — "${emptyBucket.category}" in the "${emptyBucket.dimension}" dimension — has ZERO projects classified into it, but its name matches the topic's most distinctive term. That is the scope-warning trigger.
+
+${emptyDimBlock}${siblingDimBlock}
+
+Question: given the full picture above, is the topic MEANINGFULLY COVERED by the retrieved projects, such that a scope-warning banner (telling the user "we didn't find your topic") would MISLEAD them?
+
+Two failure modes to distinguish:
+  A. The empty category is an over-narrow label for a concept that the sibling categories DO represent under different names. In this case the sample covers the topic well — the empty category is just a nomenclature artifact. Suppress the warning (sibling_covers_same_concept=true).
+  B. The empty category names a specific technique/concept that genuinely isn't represented anywhere in the sample; the surrounding sibling categories are about different aspects that only share a word with the topic. In this case the user should be warned that their specific request may not be covered. Fire the warning (sibling_covers_same_concept=false).
+
+Return your answer via the record_scope_judgment tool.
+
+Default to sibling_covers_same_concept=false (fire the warning) if you are not confident. A false positive here (saying "same concept" when they are actually different) means the user gets a report that misses what they asked for, without any warning. A false negative (saying "different concepts" when they are actually the same) just shows a banner the user can read past.`,
+          },
+        ],
+        tools: [
+          {
+            name: 'record_scope_judgment',
+            description: 'Record whether the topic is meaningfully covered by the surrounding taxonomy, such that the scope-warning banner should be SUPPRESSED. Default to false (fire the warning) when uncertain.',
+            input_schema: {
+              type: 'object' as const,
+              properties: {
+                sibling_covers_same_concept: {
+                  type: 'boolean',
+                  description: 'true if the sibling categories represent the topic well under different names (nomenclature variance) — suppress the warning. false if the empty category represents a real gap in coverage — fire the warning.',
+                },
+                reasoning: {
+                  type: 'string',
+                  description: 'One-to-three sentence explanation. Name which specific sibling categories carry the concept (or note their absence).',
+                },
+              },
+              required: ['sibling_covers_same_concept', 'reasoning'],
+            },
+          },
+        ],
+        tool_choice: { type: 'tool', name: 'record_scope_judgment' },
+      },
+      { timeout: TIMEOUT_MS },
+    )
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.warn(
+      `[ScopeCollapse Gate] Haiku call failed for "${topic}" / "${emptyBucket.category}": ${msg}. ` +
+        `Firing warning as fail-safe.`,
+    )
+    return { suppress: false, reasoning: `agent call failed: ${msg}` }
+  }
+
+  recordModelUsage(usageTracker, HAIKU_MODEL, response.usage)
+
+  const toolUse = response.content.find((c) => c.type === 'tool_use')
+  if (!toolUse || toolUse.type !== 'tool_use') {
+    console.warn(
+      `[ScopeCollapse Gate] No tool_use block in Haiku response for "${topic}" / "${emptyBucket.category}". ` +
+        `Firing warning as fail-safe.`,
+    )
+    return { suppress: false, reasoning: 'no tool_use block in response' }
+  }
+  const input = toolUse.input as { sibling_covers_same_concept?: unknown; reasoning?: unknown }
+  const suppress = input.sibling_covers_same_concept === true
+  const reasoning = typeof input.reasoning === 'string' && input.reasoning.trim().length > 0
+    ? input.reasoning.trim()
+    : '(no reasoning returned)'
+  return { suppress, reasoning }
 }
 
 /**
