@@ -90,10 +90,16 @@ async function fetchTargetPage(pageSize: number, afterId: string | null): Promis
   // script, wait a few seconds and retry.
   const BACKOFFS_MS = [3000, 8000, 20000]
   for (let attempt = 0; attempt <= BACKOFFS_MS.length; attempt++) {
+    // Widened predicate: match ALL company rows, not just Non-SBIR/STTR.
+    // The initial Non-SBIR/STTR-only predicate missed rows the older
+    // substring bug (before the word-boundary fix) had misclassified —
+    // e.g. Princeton rows whose funding_mechanism is "Training,
+    // Individual" or "Other Research-Related". Real companies still
+    // classify as company post-fix so they show up as "unchanged" and
+    // don't get written.
     let query = supabaseAdmin
       .from('projects')
       .select('id, org_name, funding_mechanism, org_type')
-      .eq('funding_mechanism', 'Non-SBIR/STTR')
       .eq('org_type', 'company')
       .order('id', { ascending: true })
       .limit(pageSize)
