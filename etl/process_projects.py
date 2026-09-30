@@ -97,34 +97,82 @@ def parse_cost(cost_str: Optional[str]) -> Optional[float]:
         return None
 
 
+import re as _re
+
+
+# Compile once at module load. Word-boundary matching prevents
+# substring collisions — historical bugs the naive `substring in name`
+# checks hit include "PRINCETON UNIVERSITY" matching "inc" (from
+# "prINCeton") and "SAN FRANCISCO" matching "co." variants.
+# `\b` treats "-" as a word boundary, so "co-op" would still match
+# "co" — kept out of the indicator list to avoid that class of noise.
+_COMPANY_WORDS = ['inc', 'llc', 'corp', 'ltd', 'company', 'technologies',
+                  'therapeutics', 'biosciences', 'biotech']
+_UNIVERSITY_WORDS = ['university', 'college']
+_UNIVERSITY_PHRASES = ['institute of technology', 'school of']
+_HOSPITAL_WORDS = ['hospital', 'clinic']
+_HOSPITAL_PHRASES = ['medical center', 'health system']
+_RESEARCH_PHRASES = ['research institute', 'research foundation', 'research center']
+
+_COMPANY_RE = _re.compile(r'\b(?:' + '|'.join(_re.escape(w) for w in _COMPANY_WORDS) + r')\b', _re.IGNORECASE)
+# "co." is a special case — treat it as its own token requiring the period.
+_COMPANY_ABBREV_RE = _re.compile(r'\bco\.', _re.IGNORECASE)
+_UNIVERSITY_RE = _re.compile(
+    r'\b(?:' + '|'.join(_re.escape(w) for w in _UNIVERSITY_WORDS) + r')\b'
+    + '|' + '|'.join(_re.escape(p) for p in _UNIVERSITY_PHRASES),
+    _re.IGNORECASE,
+)
+_HOSPITAL_RE = _re.compile(
+    r'\b(?:' + '|'.join(_re.escape(w) for w in _HOSPITAL_WORDS) + r')\b'
+    + '|' + '|'.join(_re.escape(p) for p in _HOSPITAL_PHRASES),
+    _re.IGNORECASE,
+)
+_RESEARCH_RE = _re.compile(
+    '|'.join(_re.escape(p) for p in _RESEARCH_PHRASES),
+    _re.IGNORECASE,
+)
+# SBIR/STTR mechanism. The RePORTER API v2 started returning the
+# explicit label "Non-SBIR/STTR" on regular R-series grants (R01, R21,
+# R37, P01, K, F, T, etc.). A naive substring check `'sbir' in
+# 'non-sbir/sttr'` returns True and misclassified every such grant as
+# a company (30K+ rows before this fix landed). The regex requires
+# SBIR/STTR to appear as a bounded token AND rejects any preceding
+# "non-" or "non " prefix explicitly.
+_SBIR_RE = _re.compile(r'(?<!non-)(?<!non )\b(?:sbir|sttr)\b', _re.IGNORECASE)
+
+
 def determine_org_type(org_name: str, funding_mechanism: str) -> str:
-    """Determine organization type from name and funding mechanism."""
-    org_name_lower = (org_name or '').lower()
-    funding_lower = (funding_mechanism or '').lower()
+    """Determine organization type from name and funding mechanism.
 
-    # SBIR/STTR indicates company
-    if 'sbir' in funding_lower or 'sttr' in funding_lower:
-        return 'company'
+    Order matters: name-based classification runs FIRST because the org
+    name is a more specific signal than the funding mechanism. Only
+    after every name-based classifier misses do we fall through to the
+    SBIR/STTR mechanism heuristic (SBIR/STTR grants are only awarded to
+    small businesses, so the fallback is a safe signal — but only when
+    no name indicator hit).
 
-    # Check for company indicators
-    company_indicators = ['inc', 'llc', 'corp', 'ltd', 'company', 'co.', 'technologies', 'therapeutics', 'biosciences', 'biotech']
-    if any(ind in org_name_lower for ind in company_indicators):
-        return 'company'
+    Every substring check uses word-boundary matching to prevent
+    collisions like "PRINCETON UNIVERSITY" matching the "inc" indicator
+    via "prINCeton".
+    """
+    name = org_name or ''
+    fm = funding_mechanism or ''
 
-    # Check for university indicators
-    university_indicators = ['university', 'college', 'institute of technology', 'school of']
-    if any(ind in org_name_lower for ind in university_indicators):
+    # Name-based checks — most specific signal, run first.
+    if _UNIVERSITY_RE.search(name):
         return 'university'
-
-    # Check for hospital/medical center
-    hospital_indicators = ['hospital', 'medical center', 'clinic', 'health system']
-    if any(ind in org_name_lower for ind in hospital_indicators):
+    if _HOSPITAL_RE.search(name):
         return 'hospital'
-
-    # Check for research institute
-    research_indicators = ['research institute', 'research foundation', 'research center']
-    if any(ind in org_name_lower for ind in research_indicators):
+    if _RESEARCH_RE.search(name):
         return 'research_institute'
+    if _COMPANY_RE.search(name) or _COMPANY_ABBREV_RE.search(name):
+        return 'company'
+
+    # Fallback: SBIR/STTR mechanism → company. Only reached when no
+    # name indicator matched. The regex explicitly rejects the
+    # "Non-SBIR/STTR" negation the RePORTER API v2 emits.
+    if _SBIR_RE.search(fm):
+        return 'company'
 
     return 'other'
 
