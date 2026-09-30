@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { pickSections, extractScopeWarning } from './section-utils'
+import { PrintButton } from '@/components/PrintButton'
 
 interface PortalSectionViewProps {
   reportId: string
@@ -78,22 +79,30 @@ export function PortalSectionView({
             button. Matches SectionShell (6becfea) so section-page
             headers align across the two shells. */}
         <div className="max-w-4xl mx-auto pl-14 pr-4 sm:pr-6 lg:px-6 pt-[max(1rem,env(safe-area-inset-top))] pb-5">
-          <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-2">
-            <Link
-              href={`/reports/${reportId}`}
-              className="hover:text-gray-700 transition-colors truncate max-w-xs"
-            >
-              {reportTopic || reportTitle}
-            </Link>
-            <ChevronRight className="w-3 h-3 flex-shrink-0" />
-            <span className="text-gray-700">{sectionLabel}</span>
+          <div className="flex items-center justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5 text-[11px] font-medium text-gray-400 uppercase tracking-wider mb-2">
+                <Link
+                  href={`/reports/${reportId}`}
+                  className="hover:text-gray-700 transition-colors truncate max-w-xs"
+                >
+                  {reportTopic || reportTitle}
+                </Link>
+                <ChevronRight className="w-3 h-3 flex-shrink-0" />
+                <span className="text-gray-700">{sectionLabel}</span>
+              </div>
+              <h1 className="text-2xl font-semibold text-gray-900 tracking-tight leading-tight">
+                {sectionLabel}
+              </h1>
+              <p className="text-sm text-gray-500 mt-1.5 max-w-3xl leading-relaxed">
+                {sectionSubtitle}
+              </p>
+            </div>
+            {/* Print — matches SectionShell header shape. Hidden from
+                the printed output via the button's `print:hidden`
+                class. */}
+            <PrintButton className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#E07A5F] transition-colors mt-1" />
           </div>
-          <h1 className="text-2xl font-semibold text-gray-900 tracking-tight leading-tight">
-            {sectionLabel}
-          </h1>
-          <p className="text-sm text-gray-500 mt-1.5 max-w-3xl leading-relaxed">
-            {sectionSubtitle}
-          </p>
         </div>
       </header>
 

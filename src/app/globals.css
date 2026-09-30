@@ -84,14 +84,24 @@ body {
     border-color: transparent !important;
   }
 
-  /* Keep white cards from getting split across page breaks when
-     it's cheap to avoid it. Long tables (Publications, Projects)
-     still break naturally — page-break-inside on a huge element
-     just wastes paper if it exceeds a page. */
-  .report-portal-shell section.bg-white,
+  /* Keep white CARD divs from getting split across page breaks when
+     it's cheap to avoid it. Applies to compact stat/card `<div>`
+     blocks so a label doesn't get orphaned from its value across a
+     page break.
+     Does NOT apply to `<section>` wrappers used by the bespoke views'
+     first narrative block — those blocks routinely exceed the space
+     remaining below the sticky header + scope-warning banner on page
+     1, and `page-break-inside: avoid` on them causes the browser to
+     push the entire section to page 2, leaving page 1 blank. Long
+     narrative content SHOULD flow across pages naturally.
+     Long tables (Publications, Projects) also break naturally. */
   .report-portal-shell div.bg-white.rounded-lg,
   .report-portal-shell div.bg-white.rounded-xl {
     page-break-inside: avoid;
+  }
+  .report-portal-shell section.bg-white,
+  .report-portal-shell div.bg-white.rounded-lg,
+  .report-portal-shell div.bg-white.rounded-xl {
     box-shadow: none !important;
     border-color: #e5e7eb !important;
   }
