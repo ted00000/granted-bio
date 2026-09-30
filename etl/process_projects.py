@@ -106,13 +106,25 @@ import re as _re
 # "prINCeton") and "SAN FRANCISCO" matching "co." variants.
 # `\b` treats "-" as a word boundary, so "co-op" would still match
 # "co" — kept out of the indicator list to avoid that class of noise.
+# NIH RePORTER uses heavy abbreviations in org names — "UNIV OF NORTH
+# CAROLINA CHAPEL HILL", "CHILDREN'S HOSP OF PHILADELPHIA", "DANA-FARBER
+# CANCER INST", "H. LEE MOFFITT CANCER CTR & RES INST", etc. Each
+# indicator list includes both the full word and the RePORTER
+# abbreviation so those org names classify correctly. "res inst" is a
+# two-token phrase for "research institute". "med sch" is a two-token
+# phrase for "medical school" (falls under universities). "hlth" alone
+# is too weak a signal (e.g. "Weill Cornell" doesn't say "health") —
+# hospitals need "hosp" or "hospital" or the full "medical center" /
+# "health system" phrase.
 _COMPANY_WORDS = ['inc', 'llc', 'corp', 'ltd', 'company', 'technologies',
                   'therapeutics', 'biosciences', 'biotech']
-_UNIVERSITY_WORDS = ['university', 'college']
-_UNIVERSITY_PHRASES = ['institute of technology', 'school of']
-_HOSPITAL_WORDS = ['hospital', 'clinic']
-_HOSPITAL_PHRASES = ['medical center', 'health system']
-_RESEARCH_PHRASES = ['research institute', 'research foundation', 'research center']
+_UNIVERSITY_WORDS = ['university', 'univ', 'college', 'coll']
+_UNIVERSITY_PHRASES = ['institute of technology', 'school of', 'med sch']
+_HOSPITAL_WORDS = ['hospital', 'hosp', 'clinic']
+_HOSPITAL_PHRASES = ['medical center', 'med ctr', 'health system']
+_RESEARCH_PHRASES = ['research institute', 'research inst',
+                     'research foundation', 'research center',
+                     'res inst', 'res ctr', 'res fdn']
 
 _COMPANY_RE = _re.compile(r'\b(?:' + '|'.join(_re.escape(w) for w in _COMPANY_WORDS) + r')\b', _re.IGNORECASE)
 # "co." is a special case — treat it as its own token requiring the period.
@@ -135,10 +147,15 @@ _RESEARCH_RE = _re.compile(
 # explicit label "Non-SBIR/STTR" on regular R-series grants (R01, R21,
 # R37, P01, K, F, T, etc.). A naive substring check `'sbir' in
 # 'non-sbir/sttr'` returns True and misclassified every such grant as
-# a company (30K+ rows before this fix landed). The regex requires
-# SBIR/STTR to appear as a bounded token AND rejects any preceding
-# "non-" or "non " prefix explicitly.
-_SBIR_RE = _re.compile(r'(?<!non-)(?<!non )\b(?:sbir|sttr)\b', _re.IGNORECASE)
+# a company (30K+ rows before the initial fix). The full label
+# "Non-SBIR/STTR" also contains "sttr" downstream of "sbir" — a
+# single-token negative-lookbehind only rejects "sbir" but still
+# matches on "sttr". So we do a two-step check: reject the whole
+# mechanism string outright when it contains a "non-sbir" or "non-sttr"
+# marker, then only after that pass check for a bounded sbir/sttr
+# token.
+_NON_SBIR_RE = _re.compile(r'non[-\s](?:sbir|sttr)', _re.IGNORECASE)
+_SBIR_RE = _re.compile(r'\b(?:sbir|sttr)\b', _re.IGNORECASE)
 
 
 def determine_org_type(org_name: str, funding_mechanism: str) -> str:
@@ -169,9 +186,12 @@ def determine_org_type(org_name: str, funding_mechanism: str) -> str:
         return 'company'
 
     # Fallback: SBIR/STTR mechanism → company. Only reached when no
-    # name indicator matched. The regex explicitly rejects the
-    # "Non-SBIR/STTR" negation the RePORTER API v2 emits.
-    if _SBIR_RE.search(fm):
+    # name indicator matched. Two-step check: reject any "non-sbir" /
+    # "non-sttr" marker first, then look for a bounded sbir/sttr
+    # token. Without the pre-reject pass the RePORTER "Non-SBIR/STTR"
+    # label matches on the trailing sttr and misclassifies every
+    # regular R-series grant as company.
+    if not _NON_SBIR_RE.search(fm) and _SBIR_RE.search(fm):
         return 'company'
 
     return 'other'

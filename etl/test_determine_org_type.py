@@ -90,6 +90,37 @@ CASES = [
     # === "co." must be an abbreviation, not any occurrence of "co" ===
     ('SAN FRANCISCO HEALTH CO-OP', '', 'other',
      '"co-op" must not trigger company classification'),
+
+    # === NIH RePORTER abbreviations ===
+    # RePORTER stores org names heavily abbreviated: UNIV, HOSP, COLL,
+    # INST, CTR, RES, SCH. The initial classifier fix caught the full
+    # words but missed these — accounts for ~6K additional
+    # misclassifications discovered during the FY2026 backfill sweep.
+    # Every case below is a real org name from production data.
+    ('UNIV OF NORTH CAROLINA CHAPEL HILL', 'Non-SBIR/STTR', 'university',
+     'RePORTER "UNIV" abbreviation for university'),
+    ('WEILL MEDICAL COLL OF CORNELL UNIV', 'Non-SBIR/STTR', 'university',
+     'RePORTER "COLL" and "UNIV" abbreviations in one name'),
+    ('RUTGERS, THE STATE UNIV OF N.J.', 'Non-SBIR/STTR', 'university',
+     'RePORTER "UNIV" abbreviation, punctuated'),
+    ('CHILDREN\'S HOSP OF PHILADELPHIA', 'Non-SBIR/STTR', 'hospital',
+     'RePORTER "HOSP" abbreviation for hospital'),
+    ('MAYO CLINIC ROCHESTER', 'Non-SBIR/STTR', 'hospital',
+     'Full "Clinic" word — hospital'),
+    ('DANA-FARBER CANCER INST', 'Non-SBIR/STTR', 'other',
+     '"INST" alone (no "RES INST" or "research") is not enough — falls to other, not company'),
+    ('BENAROYA RESEARCH INST AT VIRGINIA MASON', 'Non-SBIR/STTR', 'research_institute',
+     'RePORTER "RES INST" phrase = research_institute'),
+    ('H. LEE MOFFITT CANCER CTR & RES INST', 'Non-SBIR/STTR', 'research_institute',
+     'RePORTER "RES INST" phrase catches even mixed cancer center + research inst'),
+    ('HUGO W. MOSER RES INST KENNEDY KRIEGER', 'Non-SBIR/STTR', 'research_institute',
+     'RePORTER "RES INST" phrase'),
+    ('MASS GENERAL HOSPITAL', '', 'hospital',
+     'Full "HOSPITAL" still works when abbrevation not used'),
+    ('UNIVERSITY OF TEXAS HLTH SCI CTR HOUSTON', 'Non-SBIR/STTR', 'university',
+     'Full "UNIVERSITY" wins over "HLTH SCI CTR"'),
+    ('WEILL CORNELL MEDICINE', '', 'other',
+     'No indicator hits — falls to other, not company'),
 ]
 
 

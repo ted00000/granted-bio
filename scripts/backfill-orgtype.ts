@@ -22,12 +22,15 @@
 import { supabaseAdmin } from '../src/lib/supabase'
 
 // Reproduce etl/process_projects.py:determine_org_type exactly.
+// Keep in sync with that function — same word/phrase lists, same regex
+// shapes. Diverging here means the backfill drifts from what fresh
+// ingests produce.
 const COMPANY_WORDS = ['inc', 'llc', 'corp', 'ltd', 'company', 'technologies', 'therapeutics', 'biosciences', 'biotech']
-const UNIVERSITY_WORDS = ['university', 'college']
-const UNIVERSITY_PHRASES = ['institute of technology', 'school of']
-const HOSPITAL_WORDS = ['hospital', 'clinic']
-const HOSPITAL_PHRASES = ['medical center', 'health system']
-const RESEARCH_PHRASES = ['research institute', 'research foundation', 'research center']
+const UNIVERSITY_WORDS = ['university', 'univ', 'college', 'coll']
+const UNIVERSITY_PHRASES = ['institute of technology', 'school of', 'med sch']
+const HOSPITAL_WORDS = ['hospital', 'hosp', 'clinic']
+const HOSPITAL_PHRASES = ['medical center', 'med ctr', 'health system']
+const RESEARCH_PHRASES = ['research institute', 'research inst', 'research foundation', 'research center', 'res inst', 'res ctr', 'res fdn']
 
 const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
@@ -42,7 +45,12 @@ const HOSPITAL_RE = new RegExp(
   'i',
 )
 const RESEARCH_RE = new RegExp(RESEARCH_PHRASES.map(escape).join('|'), 'i')
-const SBIR_RE = /(?<!non-)(?<!non )\b(?:sbir|sttr)\b/i
+// Two-step SBIR check: reject "non-sbir"/"non-sttr" pattern first,
+// then look for a bounded sbir/sttr token. Same logic as the Python
+// classifier. See etl/process_projects.py for the "Non-SBIR/STTR"
+// context.
+const NON_SBIR_RE = /non[-\s](?:sbir|sttr)/i
+const SBIR_RE = /\b(?:sbir|sttr)\b/i
 
 type OrgType = 'university' | 'hospital' | 'research_institute' | 'company' | 'other'
 
@@ -53,7 +61,7 @@ function determineOrgType(name: string | null, funding: string | null): OrgType 
   if (HOSPITAL_RE.test(n)) return 'hospital'
   if (RESEARCH_RE.test(n)) return 'research_institute'
   if (COMPANY_RE.test(n) || COMPANY_ABBREV_RE.test(n)) return 'company'
-  if (SBIR_RE.test(f)) return 'company'
+  if (!NON_SBIR_RE.test(f) && SBIR_RE.test(f)) return 'company'
   return 'other'
 }
 
@@ -76,17 +84,30 @@ async function fetchTargetPage(pageSize: number, afterId: string | null): Promis
   // Safely resumable: kill mid-run and re-run with the same predicate.
   // Rows that were already updated are out of the filter; the fresh
   // run starts at afterId=null and picks up the remaining ones.
-  let query = supabaseAdmin
-    .from('projects')
-    .select('id, org_name, funding_mechanism, org_type')
-    .eq('funding_mechanism', 'Non-SBIR/STTR')
-    .eq('org_type', 'company')
-    .order('id', { ascending: true })
-    .limit(pageSize)
-  if (afterId !== null) query = query.gt('id', afterId)
-  const { data, error } = await query
-  if (error) throw new Error(`fetch afterId=${afterId}: ${error.message}`)
-  return (data ?? []) as Row[]
+  //
+  // Retry on statement_timeout: bulk updates trigger autovacuum which
+  // temporarily makes index scans slow. Instead of crashing the whole
+  // script, wait a few seconds and retry.
+  const BACKOFFS_MS = [3000, 8000, 20000]
+  for (let attempt = 0; attempt <= BACKOFFS_MS.length; attempt++) {
+    let query = supabaseAdmin
+      .from('projects')
+      .select('id, org_name, funding_mechanism, org_type')
+      .eq('funding_mechanism', 'Non-SBIR/STTR')
+      .eq('org_type', 'company')
+      .order('id', { ascending: true })
+      .limit(pageSize)
+    if (afterId !== null) query = query.gt('id', afterId)
+    const { data, error } = await query
+    if (!error) return (data ?? []) as Row[]
+    if (attempt === BACKOFFS_MS.length) {
+      throw new Error(`fetch afterId=${afterId} after ${BACKOFFS_MS.length + 1} attempts: ${error.message}`)
+    }
+    const wait = BACKOFFS_MS[attempt]
+    console.warn(`  fetch timed out (afterId=${afterId}), retrying in ${wait}ms: ${error.message}`)
+    await new Promise((r) => setTimeout(r, wait))
+  }
+  return []
 }
 
 async function updateBatch(updates: Array<{ id: string; org_type: OrgType }>): Promise<number> {
@@ -122,7 +143,7 @@ async function main() {
   const dryRun = process.argv.includes('--dry-run')
   console.log(`Mode: ${dryRun ? 'DRY RUN (no writes)' : 'APPLY'}`)
 
-  const pageSize = 500
+  const pageSize = 300
   let totalScanned = 0
   let totalChanged = 0
   let totalUnchanged = 0
