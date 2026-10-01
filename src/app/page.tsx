@@ -50,13 +50,15 @@ export default function Home() {
                     NIH Grants Intelligence Layer
                   </div>
                   <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-gray-900 leading-tight">
-                    Deep topical intelligence on any life-sciences research field.
+                    Surface the signals in deep NIH-funded life-sciences research &mdash; in minutes.
                   </h1>
                   <p className="text-lg text-gray-500 leading-relaxed">
-                    Cross-linked synthesis of every NIH-funded project, clinical trial,
-                    patent, and publication on your topic &mdash; for grant writing,
-                    investment diligence, and business development. In a few minutes,
-                    not weeks.
+                    Whether you&apos;re writing a grant, developing your pitch deck,
+                    or conducting diligence, finding signals others miss can greatly
+                    improve your chances for success. NIH-funded research is where
+                    those signals live &mdash; but the scope of the data has always
+                    made finding them a project most teams never actually run.
+                    Until now.
                   </p>
                   <p className="text-2xl font-semibold text-gray-900 pt-2">
                     3 months of platform access. One analysis included. $199.
