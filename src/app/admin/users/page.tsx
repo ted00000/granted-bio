@@ -25,17 +25,32 @@ interface UserUsage {
 export default function UsersPage() {
   const [users, setUsers] = useState<UserProfile[]>([])
   const [usage, setUsage] = useState<Record<string, UserUsage>>({})
+  const [creditBalances, setCreditBalances] = useState<Record<string, number>>({})
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [updating, setUpdating] = useState<string | null>(null)
   const [grantTarget, setGrantTarget] = useState<UserProfile | null>(null)
+  const [revokeTarget, setRevokeTarget] = useState<UserProfile | null>(null)
 
   const supabase = createBrowserSupabaseClient()
 
   useEffect(() => {
     loadUsers()
     loadUsage()
+    loadCreditBalances()
   }, [])
+
+  const loadCreditBalances = async () => {
+    try {
+      const response = await fetch('/api/admin/credit-balances')
+      if (response.ok) {
+        const data = await response.json()
+        setCreditBalances(data.balances ?? {})
+      }
+    } catch (err) {
+      console.error('Failed to load credit balances:', err)
+    }
+  }
 
   const loadUsers = async () => {
     setLoading(true)
@@ -154,7 +169,7 @@ export default function UsersPage() {
             Export CSV
           </a>
           <button
-            onClick={() => { loadUsers(); loadUsage(); }}
+            onClick={() => { loadUsers(); loadUsage(); loadCreditBalances(); }}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
           >
             Refresh
@@ -207,6 +222,9 @@ export default function UsersPage() {
                       API Tokens
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Credits
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Joined
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -217,6 +235,7 @@ export default function UsersPage() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {associates.map((user) => {
                     const userUsage = usage[user.id]
+                    const creditCount = creditBalances[user.id] ?? 0
                     return (
                       <tr key={user.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -244,6 +263,15 @@ export default function UsersPage() {
                             '—'
                           )}
                         </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          {creditCount > 0 ? (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[#FDF2EF] text-[#C96A4F]">
+                              {creditCount} available
+                            </span>
+                          ) : (
+                            <span className="text-gray-400 text-xs">—</span>
+                          )}
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {new Date(user.created_at).toLocaleDateString()}
                         </td>
@@ -255,8 +283,18 @@ export default function UsersPage() {
                               className="text-xs px-2.5 py-1 border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 hover:border-gray-300 transition-colors"
                               title="Grant free analysis credits to this associate"
                             >
-                              Grant credits
+                              Grant
                             </button>
+                            {creditCount > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => setRevokeTarget(user)}
+                                className="text-xs px-2.5 py-1 border border-rose-200 text-rose-700 rounded-md hover:bg-rose-50 hover:border-rose-300 transition-colors"
+                                title="Revoke unconsumed credits from this associate"
+                              >
+                                Revoke
+                              </button>
+                            )}
                             <select
                               value={user.role}
                               onChange={(e) => updateRole(user.id, e.target.value)}
@@ -315,6 +353,9 @@ export default function UsersPage() {
                       API Cost (Month)
                     </th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Credits
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Joined
                     </th>
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -325,6 +366,7 @@ export default function UsersPage() {
                 <tbody className="bg-white divide-y divide-gray-200">
                   {users.map((user) => {
                     const userUsage = usage[user.id]
+                    const creditCount = creditBalances[user.id] ?? 0
                     return (
                       <tr key={user.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -347,6 +389,15 @@ export default function UsersPage() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {userUsage ? formatCost(userUsage.totalCostCents) : '—'}
                         </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          {creditCount > 0 ? (
+                            <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-[#FDF2EF] text-[#C96A4F]">
+                              {creditCount} available
+                            </span>
+                          ) : (
+                            <span className="text-gray-400 text-xs">—</span>
+                          )}
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {new Date(user.created_at).toLocaleDateString()}
                         </td>
@@ -358,8 +409,18 @@ export default function UsersPage() {
                               className="text-xs px-2.5 py-1 border border-gray-200 text-gray-700 rounded-md hover:bg-gray-50 hover:border-gray-300 transition-colors"
                               title="Grant free analysis credits to this user"
                             >
-                              Grant credits
+                              Grant
                             </button>
+                            {creditCount > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => setRevokeTarget(user)}
+                                className="text-xs px-2.5 py-1 border border-rose-200 text-rose-700 rounded-md hover:bg-rose-50 hover:border-rose-300 transition-colors"
+                                title="Revoke unconsumed credits from this user"
+                              >
+                                Revoke
+                              </button>
+                            )}
                             <select
                               value={user.role || 'user'}
                               onChange={(e) => updateRole(user.id, e.target.value)}
@@ -389,7 +450,26 @@ export default function UsersPage() {
             email: grantTarget.email,
             name: grantTarget.full_name,
           }}
-          onClose={() => setGrantTarget(null)}
+          mode="grant"
+          onClose={() => {
+            setGrantTarget(null)
+            loadCreditBalances()
+          }}
+        />
+      )}
+
+      {revokeTarget && (
+        <GrantCreditsModal
+          user={{
+            id: revokeTarget.id,
+            email: revokeTarget.email,
+            name: revokeTarget.full_name,
+          }}
+          mode="revoke"
+          onClose={() => {
+            setRevokeTarget(null)
+            loadCreditBalances()
+          }}
         />
       )}
 

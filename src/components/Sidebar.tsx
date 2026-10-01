@@ -148,6 +148,26 @@ export function Sidebar({ currentPersona, onPersonaChange }: SidebarProps) {
             </span>
           </Link>
 
+          {/* Credit-available callout, pinned under Analyze. Renders
+              only when the user has an unconsumed generation credit
+              (admin comp, press seed, BD gift, etc.). This is the
+              first signal a comped user gets that their grant exists
+              — /chat is the post-login landing page, so a sidebar chip
+              here is seen immediately. Click routes to the Analyze
+              surface so acting on the credit is one click away. */}
+          {user && usage && usage.availableCredits > 0 && (
+            <Link
+              href="/analyze"
+              onClick={() => setIsOpen(false)}
+              className="group ml-8 mb-2 flex items-center gap-2 px-3 py-2 rounded-md bg-[#FDF2EF] border border-[#E07A5F]/30 hover:border-[#E07A5F]/60 transition-colors"
+            >
+              <Sparkles className="w-3.5 h-3.5 flex-shrink-0 text-[#E07A5F]" strokeWidth={2} />
+              <span className="text-xs font-medium text-gray-900 truncate">
+                {usage.availableCredits} free {usage.availableCredits === 1 ? 'analysis' : 'analyses'} available
+              </span>
+            </Link>
+          )}
+
           {/* Saved-work nav — gated on `user`. These pages require a
               session to read from (RLS returns empty otherwise), so
               showing them to logged-out users is a UX bait-and-switch.

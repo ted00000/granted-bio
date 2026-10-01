@@ -415,6 +415,83 @@ export async function countAvailableGenerationCredits(
 }
 
 /**
+ * Batch version of countAvailableGenerationCredits. Returns a map of
+ * userId → credit count for every requested user. Users with zero
+ * credits are omitted from the map. Used by the admin users table to
+ * surface each user's balance alongside role/usage columns without
+ * N round-trips.
+ */
+export async function countAvailableGenerationCreditsForUsers(
+  userIds: string[]
+): Promise<Record<string, number>> {
+  if (userIds.length === 0) return {}
+  const { data, error } = await supabaseAdmin
+    .from('report_credits')
+    .select('user_id')
+    .in('user_id', userIds)
+    .eq('credit_type', 'generation')
+    .is('consumed_at', null)
+    .gt('expires_at', new Date().toISOString())
+  if (error) {
+    console.error('[credits] countAvailableGenerationCreditsForUsers failed:', error)
+    return {}
+  }
+  const out: Record<string, number> = {}
+  for (const row of data ?? []) {
+    const uid = (row as { user_id: string }).user_id
+    out[uid] = (out[uid] ?? 0) + 1
+  }
+  return out
+}
+
+/**
+ * Revoke N oldest unconsumed generation credits for a user. Marks each
+ * revoked credit's consumed_at=NOW() with consumed_for_report_id=null
+ * (distinguishes revocation from report-consumption) and prepends the
+ * admin's identity + reason to the notes field for audit. Returns the
+ * number of credits actually revoked (may be less than requested if
+ * the user has fewer available credits).
+ */
+export async function revokeGenerationCredits(params: {
+  userId: string
+  count: number
+  adminId: string
+  reason: string
+}): Promise<{ revoked: number }> {
+  const { data: candidates, error: fetchErr } = await supabaseAdmin
+    .from('report_credits')
+    .select('id, notes')
+    .eq('user_id', params.userId)
+    .eq('credit_type', 'generation')
+    .is('consumed_at', null)
+    .gt('expires_at', new Date().toISOString())
+    .order('granted_at', { ascending: true })
+    .limit(params.count)
+  if (fetchErr) {
+    console.error('[credits] revokeGenerationCredits fetch failed:', fetchErr)
+    return { revoked: 0 }
+  }
+  if (!candidates || candidates.length === 0) return { revoked: 0 }
+
+  const now = new Date().toISOString()
+  let revoked = 0
+  for (const row of candidates as Array<{ id: string; notes: string | null }>) {
+    const prefix = `[admin_revoke by ${params.adminId}] ${params.reason} — `
+    const newNotes = row.notes ? prefix + row.notes : prefix.replace(/ — $/, '')
+    const { error } = await supabaseAdmin
+      .from('report_credits')
+      .update({
+        consumed_at: now,
+        notes: newNotes,
+      })
+      .eq('id', row.id)
+      .is('consumed_at', null) // TOCTOU guard — don't revoke a credit that just got spent on a report
+    if (!error) revoked++
+  }
+  return { revoked }
+}
+
+/**
  * Find the oldest unconsumed generation credit for the user. Returns
  * the credit id (for the TOCTOU-safe tryClaimCredit → finalize/release
  * pair) or null when no credit is available. "Oldest first" so a user
