@@ -250,16 +250,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    // Get initial user — guarded with timeout + try/catch so a hanging or thrown
-    // auth call can never strand isLoading=true (which would leave the app
-    // showing a permanent spinner). Timeout covers getUser + fetchProfile,
-    // not fetchUsage. fetchUsage was previously in the critical path which
-    // made isLoading wait on a Vercel cold-start of /api/billing/usage —
-    // observed in production as a 10s spinner on first page load. Usage is
-    // only consumed by the sidebar search counter / upsell prompts; nothing
-    // in the auth or checkout flow needs it to be ready synchronously, so
-    // we fire it as a side effect and let it populate state when it
-    // resolves.
+    // Handle a profile fetch result end-to-end: trigger ghost cleanup
+    // when the row is definitively missing, flag profileLoadFailed when
+    // transient retries exhausted, clear the flag on success. Shared
+    // between initAuth and the onAuthStateChange handler so the two
+    // paths never diverge in how they treat the three outcomes.
+    const runProfileFetch = async (userId: string) => {
+      const result = await fetchProfile(userId)
+      if (cancelled) return
+      if (result.found === false) {
+        console.warn(
+          `[AuthContext] ghost session detected for ${userId} — signing out`,
+        )
+        await cleanupGhostSession()
+      } else if (result.found === 'error') {
+        // Transient failure survived all retries. Session is valid but
+        // profile couldn't be hydrated — flag it so UI can surface a
+        // reload affordance instead of silently rendering the nether
+        // state (name missing, admin link vanishes, tier reads free).
+        console.warn(
+          `[AuthContext] profile load failed for ${userId} after retries — flagging profileLoadFailed`,
+        )
+        setProfileLoadFailed(true)
+      } else {
+        setProfileLoadFailed(false)
+      }
+    }
+
+    // Get initial user — guarded with timeout + try/catch so a hanging
+    // or thrown auth call can never strand isLoading=true (which would
+    // leave the app showing a permanent spinner).
+    //
+    // Timeout covers ONLY the getUser() identity check. fetchProfile
+    // and fetchUsage both fire-and-forget and populate state as they
+    // resolve on their own retry schedules. Previously fetchProfile
+    // was awaited inside the race, so a profile fetch that burned its
+    // 3-step backoff (500ms + 1200ms + 2000ms of waits plus 3× query
+    // time) could blow the 10s budget, hit the catch block, and leave
+    // profile=null + profileLoadFailed=false — the exact "undefined
+    // user" state where the sidebar renders the credit chip (fed by
+    // the independent fetchUsage) but not the user's name or pass
+    // (fed by the never-completed profile). Decoupling the profile
+    // fetch from the timeout means it ALWAYS runs its own retry +
+    // flag-on-exhaustion loop, which also surfaces the amber Reload
+    // affordance in the sidebar when it fails.
     const initAuth = async () => {
       const inner = async () => {
         const { data: { user } } = await supabase.auth.getUser()
@@ -267,24 +301,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(user)
         if (user) {
           fetchUsage()
-          const profileResult = await fetchProfile(user.id)
-          if (profileResult.found === false) {
-            console.warn(
-              `[AuthContext] ghost session detected for ${user.id} — signing out`
-            )
-            await cleanupGhostSession()
-          } else if (profileResult.found === 'error') {
-            // Transient failure survived all retries. Session is valid
-            // but profile couldn't be hydrated — flag it so UI can
-            // surface a reload affordance instead of silently rendering
-            // the nether state (admin link vanishes, tier reads free).
-            console.warn(
-              `[AuthContext] profile load failed for ${user.id} after retries — flagging profileLoadFailed`
-            )
-            if (!cancelled) setProfileLoadFailed(true)
-          } else if (!cancelled) {
-            setProfileLoadFailed(false)
-          }
+          runProfileFetch(user.id)
         }
       }
       const timeoutPromise = new Promise<never>((_, reject) =>
@@ -294,6 +311,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         await Promise.race([inner(), timeoutPromise])
       } catch (error) {
         console.error('[AuthContext] initial auth check failed:', error)
+        // If we had already set user before the race fell over, flag
+        // profileLoadFailed so the sidebar renders the Reload prompt
+        // instead of staying silently stuck.
+        if (!cancelled) setProfileLoadFailed(true)
       } finally {
         if (!cancelled) setIsLoading(false)
       }
@@ -323,20 +344,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (newUser) {
           setUser(newUser)
           fetchUsage()
-          const profileResult = await fetchProfile(newUser.id)
-          if (profileResult.found === false) {
-            console.warn(
-              `[AuthContext] ghost session detected for ${newUser.id} — signing out`
-            )
-            await cleanupGhostSession()
-          } else if (profileResult.found === 'error') {
-            console.warn(
-              `[AuthContext] profile load failed for ${newUser.id} after retries — flagging profileLoadFailed`
-            )
-            if (!cancelled) setProfileLoadFailed(true)
-          } else if (!cancelled) {
-            setProfileLoadFailed(false)
-          }
+          runProfileFetch(newUser.id)
         }
         // Other events without a session (rare in practice) are
         // intentionally ignored — initAuth or a later SIGNED_IN /
