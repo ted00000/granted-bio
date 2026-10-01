@@ -36,7 +36,7 @@ export const viewport: Viewport = {
 const OG_TITLE =
   "granted.bio — Deep topical intelligence on any life-sciences research field"
 const OG_DESCRIPTION =
-  "Cross-linked synthesis of every NIH-funded project, clinical trial, patent, and publication on your topic. For grant writing, investment diligence, and partnership scouting."
+  "Cross-linked synthesis of every NIH-funded project, clinical trial, patent, and publication on your topic. For grant writing, investment diligence, and business development."
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.granted.bio"),

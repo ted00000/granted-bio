@@ -55,7 +55,7 @@ export default function Home() {
                   <p className="text-lg text-gray-500 leading-relaxed">
                     Cross-linked synthesis of every NIH-funded project, clinical trial,
                     patent, and publication on your topic &mdash; for grant writing,
-                    investment diligence, and partnership scouting. In a few minutes,
+                    investment diligence, and business development. In a few minutes,
                     not weeks.
                   </p>
                   <p className="text-2xl font-semibold text-gray-900 pt-2">
