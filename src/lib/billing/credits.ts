@@ -388,3 +388,55 @@ export async function findRetryCreditForReport(
   if (!data) return null
   return { id: data.id, expiresAt: data.expires_at }
 }
+
+/**
+ * Count the user's unconsumed, unexpired generation credits. Used by the
+ * UI to surface a credit balance and by the generation flow to decide
+ * whether a user can bypass Stripe checkout. A grant made via the admin
+ * panel (source='admin_grant') inserts a pending generation credit with
+ * consumed_at=null; this count is how downstream code knows one is
+ * available.
+ */
+export async function countAvailableGenerationCredits(
+  userId: string
+): Promise<number> {
+  const { count, error } = await supabaseAdmin
+    .from('report_credits')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', userId)
+    .eq('credit_type', 'generation')
+    .is('consumed_at', null)
+    .gt('expires_at', new Date().toISOString())
+  if (error) {
+    console.error('[credits] countAvailableGenerationCredits failed:', error)
+    return 0
+  }
+  return count ?? 0
+}
+
+/**
+ * Find the oldest unconsumed generation credit for the user. Returns
+ * the credit id (for the TOCTOU-safe tryClaimCredit → finalize/release
+ * pair) or null when no credit is available. "Oldest first" so a user
+ * granted multiple credits consumes the one that would expire soonest.
+ */
+export async function findAvailableGenerationCredit(
+  userId: string
+): Promise<{ id: string; expiresAt: string } | null> {
+  const { data, error } = await supabaseAdmin
+    .from('report_credits')
+    .select('id, expires_at')
+    .eq('user_id', userId)
+    .eq('credit_type', 'generation')
+    .is('consumed_at', null)
+    .gt('expires_at', new Date().toISOString())
+    .order('granted_at', { ascending: true })
+    .limit(1)
+    .maybeSingle()
+  if (error) {
+    console.error('[credits] findAvailableGenerationCredit failed:', error)
+    return null
+  }
+  if (!data) return null
+  return { id: data.id, expiresAt: data.expires_at }
+}

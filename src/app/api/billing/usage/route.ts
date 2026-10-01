@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { getUserUsage, getMonthlyApiUsage } from '@/lib/billing/usage'
+import { countAvailableGenerationCredits } from '@/lib/billing/credits'
 import { supabaseAdmin } from '@/lib/supabase'
 
 export async function GET(request: NextRequest) {
@@ -38,6 +39,12 @@ export async function GET(request: NextRequest) {
       apiUsage = await getMonthlyApiUsage(user.id)
     }
 
+    // Available (unconsumed, unexpired) generation credits. Lets the
+    // dashboard surface a balance and the generation flow skip Stripe
+    // for users who have a comped credit sitting in the ledger (e.g.
+    // from an admin grant).
+    const availableCredits = await countAvailableGenerationCredits(user.id)
+
     // Flatten structure for account page
     // Handle Infinity (for admin/associate) - JSON can't serialize Infinity
     const isUnlimited = !Number.isFinite(usage.searches.limit)
@@ -51,6 +58,7 @@ export async function GET(request: NextRequest) {
       currentPeriodEnd: usage.currentPeriodEnd,
       reportPurchases: purchases || [],
       apiUsage, // null for non-associates
+      availableCredits,
     })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'

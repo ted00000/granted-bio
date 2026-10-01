@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { generateTopicReport, generatePortfolioReport } from '@/lib/reports'
-import { grantBypassCredits } from '@/lib/billing/credits'
+import {
+  grantBypassCredits,
+  findAvailableGenerationCredit,
+  tryClaimCredit,
+  finalizeCreditConsumption,
+  releaseCredit,
+} from '@/lib/billing/credits'
 import type { ReportPersona } from '@/lib/reports/types'
 
 // Report generation runs 5 agents in parallel plus a synthesis chain;
@@ -120,13 +126,33 @@ export async function POST(request: NextRequest) {
 
     // Associates get expanded search but NOT free report generation —
     // they pay $199 like any regular user. Only admins and active beta
-    // users bypass payment. (The isAdminOrAssociate flag is preserved
-    // above for the beta-cap exemption: an associate running as beta
-    // for testing isn't subject to the 3-report cap.)
+    // users bypass payment unconditionally. (The isAdminOrAssociate
+    // flag is preserved above for the beta-cap exemption: an associate
+    // running as beta for testing isn't subject to the 3-report cap.)
     const canBypassPayment = profile?.role === 'admin' || isActiveBeta
 
-    // If user cannot bypass payment, verify they have a completed purchase for this topic
+    // Granted-credit path: any user (regular, associate, etc.) with an
+    // unconsumed generation credit sitting in the ledger — typically
+    // from an admin comp — can bypass Stripe for this generation. The
+    // credit is claimed BEFORE generation starts (TOCTOU-safe via
+    // tryClaimCredit) so parallel requests can't both pass the
+    // eligibility check and both run full generations against a single
+    // credit. On success we finalize-bind the claim to the report; on
+    // failure we release the claim so the credit stays spendable.
+    let claimedCreditId: string | null = null
     if (!canBypassPayment && report_type === 'topic') {
+      const available = await findAvailableGenerationCredit(user.id)
+      if (available) {
+        const won = await tryClaimCredit(available.id)
+        if (won) claimedCreditId = available.id
+      }
+    }
+
+    const hasValidEntitlement = canBypassPayment || claimedCreditId !== null
+
+    // If user has neither bypass nor a claimed credit, verify they have a
+    // completed purchase for this topic.
+    if (!hasValidEntitlement && report_type === 'topic') {
       const { data: purchase } = await supabase
         .from('report_purchases')
         .select('id, status')
@@ -147,24 +173,44 @@ export async function POST(request: NextRequest) {
     // Start report generation (runs async, returns immediately with report ID)
     let reportId: string
 
-    if (report_type === 'topic') {
-      reportId = await generateTopicReport(
-        user.id,
-        topic,
-        data_limited ?? false,
-        reportPersona,
-        injectedInterpretation
-      )
-    } else if (report_type === 'portfolio') {
-      reportId = await generatePortfolioReport(user.id)
-    } else {
-      return NextResponse.json({ error: 'Invalid report_type' }, { status: 400 })
+    try {
+      if (report_type === 'topic') {
+        reportId = await generateTopicReport(
+          user.id,
+          topic,
+          data_limited ?? false,
+          reportPersona,
+          injectedInterpretation
+        )
+      } else if (report_type === 'portfolio') {
+        reportId = await generatePortfolioReport(user.id)
+      } else {
+        if (claimedCreditId) await releaseCredit(claimedCreditId)
+        return NextResponse.json({ error: 'Invalid report_type' }, { status: 400 })
+      }
+    } catch (err) {
+      // Generation failed to kick off — release the credit so the user
+      // can try again without losing it.
+      if (claimedCreditId) await releaseCredit(claimedCreditId)
+      throw err
     }
 
-    // Shadow-ledger write: when the bypass path produced the report, record
-    // the corresponding credit grant + immediate consumption so the ledger
-    // is consistent across paid and comped generations. Source distinguishes
-    // admin/associate from beta so support tooling can tell them apart.
+    // Bind the claimed credit to the generated report. finalizeCreditConsumption
+    // writes consumed_at + consumed_for_report_id; the claim is now spent.
+    if (claimedCreditId) {
+      await finalizeCreditConsumption({
+        creditId: claimedCreditId,
+        consumedForReportId: reportId,
+      })
+    }
+
+    // Shadow-ledger write: when the admin/beta bypass path produced the
+    // report, record the corresponding credit grant + immediate
+    // consumption so the ledger is consistent across paid and comped
+    // generations. Source distinguishes admin/associate from beta so
+    // support tooling can tell them apart. (Skipped on the claimed-
+    // credit path above because that credit was already granted by the
+    // admin-grant endpoint and we just consumed it.)
     if (canBypassPayment && report_type === 'topic') {
       const source: 'admin_grant' | 'beta_grant' = isAdminOrAssociate
         ? 'admin_grant'

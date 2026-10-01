@@ -193,10 +193,18 @@ export async function POST(request: NextRequest) {
 }
 
 /**
- * Get existing Stripe customer ID or create a new one
+ * Get existing Stripe customer ID or create a new one.
+ *
+ * Validates the stored customer ID against Stripe before returning it.
+ * A stored ID can go stale when it was created in test mode and Stripe
+ * is now in live mode, when the customer was deleted from the Stripe
+ * dashboard, or when the ID was manually corrupted. Without validation
+ * the checkout endpoint returns "No such customer: 'cus_xxx'" to the
+ * user and the flow dead-ends with an unactionable error. On a stale
+ * ID we null out the stored value and create a fresh customer.
  */
 async function getOrCreateStripeCustomer(userId: string, email: string): Promise<string> {
-  // Check if user already has a Stripe customer ID
+  if (!stripe) throw new Error('Stripe is not configured')
   const { data: profile } = await supabaseAdmin
     .from('user_profiles')
     .select('stripe_customer_id, full_name')
@@ -204,7 +212,22 @@ async function getOrCreateStripeCustomer(userId: string, email: string): Promise
     .single()
 
   if (profile?.stripe_customer_id) {
-    return profile.stripe_customer_id
+    try {
+      const existing = await stripe.customers.retrieve(profile.stripe_customer_id)
+      // Stripe returns a deleted customer wrapper when the customer
+      // has been deleted — not an error. Treat deletion as stale too.
+      if (!existing.deleted) {
+        return profile.stripe_customer_id
+      }
+      console.warn(
+        `[Stripe Checkout] Stored customer ${profile.stripe_customer_id} is deleted; creating fresh customer for user ${userId}.`,
+      )
+    } catch (err) {
+      const message = err instanceof Error ? err.message : String(err)
+      console.warn(
+        `[Stripe Checkout] Stored customer ${profile.stripe_customer_id} is stale (${message}); creating fresh customer for user ${userId}.`,
+      )
+    }
   }
 
   // Create new Stripe customer
@@ -216,7 +239,7 @@ async function getOrCreateStripeCustomer(userId: string, email: string): Promise
     },
   })
 
-  // Save customer ID to profile
+  // Save customer ID to profile — overwrites any stale value.
   await supabaseAdmin
     .from('user_profiles')
     .update({ stripe_customer_id: customer.id })

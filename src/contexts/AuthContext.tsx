@@ -22,6 +22,13 @@ interface UsageData {
   searchLimit: number
   isUnlimited: boolean
   subscriptionStatus: string | null
+  /**
+   * Count of unconsumed, unexpired generation credits for this user.
+   * Non-zero when an admin granted a comp or a prior purchase credit
+   * is still unspent. Read by the generation flow to decide whether to
+   * skip Stripe checkout and consume a credit instead.
+   */
+  availableCredits: number
 }
 
 interface AuthContextType {
@@ -198,7 +205,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           searchesUsed: data.searchesUsed,
           searchLimit: data.searchLimit,
           isUnlimited: data.isUnlimited || false,
-          subscriptionStatus: data.subscriptionStatus
+          subscriptionStatus: data.subscriptionStatus,
+          availableCredits: data.availableCredits ?? 0,
         })
       }
     } catch {

@@ -14,6 +14,7 @@ import {
   AlertCircle,
   Loader2,
   Activity,
+  Sparkles,
 } from 'lucide-react'
 import { AppLayout } from '@/components/AppLayout'
 import { AccountPageSkeleton } from '@/components/ui/Skeleton'
@@ -49,6 +50,7 @@ type UsageData = {
   currentPeriodEnd: string | null
   reportPurchases: ReportPurchase[]
   apiUsage: ApiUsage | null
+  availableCredits: number
 }
 
 export default function AccountPage() {
@@ -483,10 +485,28 @@ export default function AccountPage() {
                 href="/analyze"
                 className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors"
               >
-                Generate Report
+                Generate Analysis
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
+
+            {usage.availableCredits > 0 && (
+              <div className="border-t border-gray-100 pt-4 mt-4">
+                <div className="flex items-center justify-between bg-[#FDF2EF] border border-[#E07A5F]/30 rounded-lg px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <Sparkles className="w-5 h-5 text-[#E07A5F]" strokeWidth={1.75} />
+                    <div>
+                      <p className="text-sm font-semibold text-gray-900">
+                        {usage.availableCredits} free analysis {usage.availableCredits === 1 ? 'credit' : 'credits'} available
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        Your next analysis is free — no payment needed at checkout.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {usage.reportPurchases.length > 0 ? (
               <div className="border-t border-gray-100 pt-4 mt-4">

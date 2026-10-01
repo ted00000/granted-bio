@@ -59,7 +59,7 @@ export function GenerateReportDialog({
   const [critique, setCritique] = useState<string | null>(null)
   const [recommendedId, setRecommendedId] = useState<'narrow' | 'standard' | 'broad' | null>(null)
 
-  const { isAdmin, profile } = useAuth()
+  const { isAdmin, profile, usage } = useAuth()
 
   // Active beta gets free reports up to a lifetime cap of 3
   const isActiveBeta =
@@ -71,13 +71,19 @@ export function GenerateReportDialog({
   const reportsRemaining = Math.max(0, BETA_REPORT_CAP - reportsUsed)
   const betaCapReached = isActiveBeta && reportsUsed >= BETA_REPORT_CAP
 
+  // Granted-credit path: a user with an unconsumed generation credit
+  // (typically from an admin comp) bypasses Stripe for this generation.
+  // Credit is claimed and consumed server-side in /api/reports.
+  const availableCredits = usage?.availableCredits ?? 0
+  const hasAvailableCredit = availableCredits > 0
+
   // Associates get expanded search but NOT free report generation —
-  // they pay like regular users. Only admins and active beta users
-  // (within the cap) bypass payment. Server-side check at
-  // /api/reports re-enforces this; the client copy of the flag is
-  // cosmetic (it just decides whether to show "Purchase Anyway -
-  // $199" vs "Generate Anyway").
-  const canBypassPayment = isAdmin || (isActiveBeta && !betaCapReached)
+  // they pay like regular users unless an admin has granted them a
+  // credit. Admins and active beta users (within the cap) bypass
+  // unconditionally. Server-side check at /api/reports re-enforces all
+  // of this; the client copy of the flag is cosmetic (it just decides
+  // whether to show "Purchase Anyway - $199" vs "Generate Anyway").
+  const canBypassPayment = isAdmin || (isActiveBeta && !betaCapReached) || hasAvailableCredit
 
   // Step 1: Fetch 3 scoped interpretations, their empirical project counts,
   // and a Claude critique + recommendation. Persona is included so the
