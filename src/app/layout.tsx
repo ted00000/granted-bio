@@ -34,9 +34,9 @@ export const viewport: Viewport = {
 //     the URL into a draft tweet — the preview re-fetches)
 //   - Facebook: https://developers.facebook.com/tools/debug/
 const OG_TITLE =
-  "granted.bio — Deep topical intelligence on any life-sciences research field"
+  "granted.bio — Surface the signals in deep NIH-funded life-sciences research, in minutes"
 const OG_DESCRIPTION =
-  "Cross-linked synthesis of every NIH-funded project, clinical trial, patent, and publication on your topic. For grant writing, investment diligence, and business development."
+  "Surface the signals in NIH-funded life-sciences research that improve your chances in a grant, pitch deck, or diligence memo. In minutes, not weeks."
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://www.granted.bio"),
