@@ -106,7 +106,7 @@ export default function Home() {
                   </h2>
                   <p className="text-sm text-gray-500 mb-6">
                     Free account. Search every project, trial, patent, and publication —
-                    verify your topic has signal before you buy a report.
+                    verify your topic has signal before you buy an analysis.
                   </p>
                   <Suspense fallback={<AuthFormFallback />}>
                     <AuthForm />
@@ -128,8 +128,8 @@ export default function Home() {
                 What you actually get
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Three layers of analysis, cross-linked. The preview below uses the public
-                sample report on liquid biopsy.
+                Three layers of analysis, cross-linked. The preview below uses a public
+                sample analysis on liquid biopsy.
               </p>
             </div>
 
@@ -241,7 +241,7 @@ export default function Home() {
                 generated report. */}
             <div className="mt-10">
               <p className="text-xs uppercase tracking-wider text-gray-400 text-center mb-4">
-                Every report includes
+                Every analysis includes
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-w-4xl mx-auto">
                 {[
@@ -545,7 +545,7 @@ export default function Home() {
               Start with a free account.
             </h2>
             <p className="text-white/80 mb-8">
-              Browse the data, validate your topic has signal, then generate a report when ready.
+              Browse the data, validate your topic has signal, then generate an analysis when ready.
             </p>
             <button
               type="button"
