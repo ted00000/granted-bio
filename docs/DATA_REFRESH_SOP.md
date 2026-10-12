@@ -29,10 +29,18 @@ Companion docs:
    never displays more than that anyway. Patents and trials have no
    cap (per-project counts are naturally small — max 4 patents,
    max 65 trials in the live DB).
-4. **Retention window.** Current FY + 2 prior years (FY2024–FY2026
-   today, shifts each Sep 30). Pre-window projects are ignored at
-   ingest; pre-window publications/patents/trials are allowed as long
-   as they link to a retained project AND make the per-project cap.
+4. **Retention window.** Rolling 4 years — 3 complete fiscal years
+   plus the FY in progress. Floor = currentFY − 3. Shifts automatically
+   on Oct 1 each year as the new FY opens. Today (post-2026-10-01):
+   FY2024, FY2025, FY2026, FY2027. Computed, never typed — all three
+   runtimes share the logic via a single module each:
+   [`src/lib/reports/fiscal-year.ts`](../src/lib/reports/fiscal-year.ts)
+   (TS), [`etl/fiscal_year.py`](../etl/fiscal_year.py) (Python), and
+   `get_windowed_fiscal_years()` / `get_min_fiscal_year()` / `get_current_nih_fiscal_year()`
+   in Postgres (see migration `20261001_rolling_fy_window_db_enforcement.sql`).
+   Pre-window projects are ignored at ingest; pre-window
+   publications/patents/trials are allowed as long as they link to a
+   retained project AND make the per-project cap.
 5. **Idempotent upserts.** Every write uses the entity's natural key.
    Re-running a step produces the same DB state. `updated_at` on
    unchanged rows is never touched.

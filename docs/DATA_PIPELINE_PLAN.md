@@ -447,7 +447,11 @@ the relevant phase, not now.
 2. ~~Does the RePORTER API V2's `criteria` object support the
    `date_added` filter we plan to use, with the exact semantics
    we expect?~~ Confirmed 2026-06-19: yes, used in
-   `etl/sync_projects_via_api.py` against `FISCAL_YEARS = [2024, 2025, 2026]`.
+   `etl/sync_projects_via_api.py` against the current fiscal-year
+   window (computed from today via [`etl/fiscal_year.py`](../etl/fiscal_year.py);
+   the previous hardcoded `FISCAL_YEARS = [2024, 2025, 2026]` was
+   removed 2026-10-01 as part of the rolling-window DB-enforcement
+   ship — see migration `20261001_rolling_fy_window_db_enforcement.sql`).
 3. How do we want to handle a row that disappears from the
    bulk file (orphan)? Phase 2 just reports them. Phase 6
    probably soft-flags. Hard delete is off the table.

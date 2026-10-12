@@ -46,12 +46,18 @@ from process_projects import (
     parse_cost,
 )
 from classifier import classify_projects as run_classifier
+from fiscal_year import get_windowed_fiscal_years
 
 
 API_URL = 'https://api.reporter.nih.gov/v2/projects/search'
 
-# Retention window today. Update on each Sep 30 FY rollover.
-FISCAL_YEARS = [2024, 2025, 2026]
+# Retention window — computed per-call from today's date via the shared
+# fiscal-year module (Python mirror of src/lib/reports/fiscal-year.ts).
+# Do not type a literal here. The rolling 4-year window (3 complete +
+# 1 in progress) advances automatically on Oct 1 each year. Previously
+# this was `FISCAL_YEARS = [2024, 2025, 2026]`, which went silently
+# stale on 2026-10-01 — any FY2027 awards NIH loaded would be filtered
+# out at the API call.
 
 # Default snapshot floor (our last bulk ExPORTER projects date).
 DEFAULT_FROM_DATE = '2026-03-09'
@@ -198,9 +204,10 @@ def fetch_all_pages(from_date: str, to_date: Optional[str] = None) -> List[Dict[
     date_added: Dict[str, str] = {'from_date': from_date}
     if to_date:
         date_added['to_date'] = to_date
+    fiscal_years = get_windowed_fiscal_years()
     criteria = {
         'criteria': {
-            'fiscal_years': FISCAL_YEARS,
+            'fiscal_years': fiscal_years,
             'date_added': date_added,
         },
     }
@@ -286,7 +293,7 @@ def main() -> None:
     print('=' * 72)
     print(f'  date_added.from_date = {args.from_date}')
     print(f'  date_added.to_date   = {args.to_date or "(none)"}')
-    print(f'  fiscal_years         = {FISCAL_YEARS}')
+    print(f'  fiscal_years         = {get_windowed_fiscal_years()} (computed from today)')
     print(f'  dry-run              = {args.dry_run}')
     print()
 

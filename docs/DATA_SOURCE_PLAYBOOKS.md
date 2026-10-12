@@ -20,12 +20,23 @@ Re-date the header when revising.
 
 ## Retention policy
 
-**The platform retains the current fiscal year + the two prior fiscal
-years. Older data is not ingested and (over time) is purged from the DB
-on FY rollover.**
+**The platform retains a rolling 4-year fiscal-year window — 3 complete
+fiscal years plus the FY in progress. Floor = currentFY − 3. Older data
+is not ingested; on FY rollover (Oct 1 each year) the floor advances
+automatically and the newly-outside year is excluded from queries.**
 
-Today (2026-06-19): FY2024 + FY2025 + FY2026.
-After Sep 30, 2026 (next FY close): FY2025 + FY2026 + FY2027.
+Today (post-2026-10-01): FY2024 + FY2025 + FY2026 + FY2027.
+After Sep 30, 2027 (next FY close): FY2025 + FY2026 + FY2027 + FY2028.
+
+The window is computed, never typed. See [`src/lib/reports/fiscal-year.ts`](../src/lib/reports/fiscal-year.ts),
+[`etl/fiscal_year.py`](../etl/fiscal_year.py), and the DB-side
+`get_windowed_fiscal_years()` function (migration
+`20261001_rolling_fy_window_db_enforcement.sql`). Prior framing
+("current FY + 2 prior years" / 3-year window) was superseded 2026-09-20
+when FY2027 was about to open with near-zero data — a 3-year window
+would have dropped FY2024 immediately. The 4-year framing guarantees
+three mature years are always in-window regardless of the current FY's
+fill rate.
 
 **Why.** Our product delivers insights contemporary to current
 conditions. Awards from 3+ years ago add noise without serving the

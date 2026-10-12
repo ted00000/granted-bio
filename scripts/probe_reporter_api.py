@@ -30,15 +30,17 @@ from collections import Counter
 # self-signed-certificate-in-chain error that urllib hits out of the box.
 import requests
 
-# Use the etl/ bio-boundary check on the sample
+# Use the etl/ bio-boundary check + shared fiscal-year module
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'etl'))
 from process_projects import is_bio_related
+from fiscal_year import get_windowed_fiscal_years
 
 
 API_URL = 'https://api.reporter.nih.gov/v2/projects/search'
 
-# Our retention window today (2026-06-19). Shifts at next FY close.
-FISCAL_YEARS = [2024, 2025, 2026]
+# Our retention window — rolling 4-year, computed per-run from today's
+# date via the shared fiscal_year module. Do not type a literal.
+FISCAL_YEARS = get_windowed_fiscal_years()
 
 # Date floor = our current bulk snapshot. Anything newer than this is content
 # we don't yet have.
