@@ -17,6 +17,7 @@
 
 import { notFound } from 'next/navigation'
 import { supabaseAdmin } from '@/lib/supabase'
+import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { getReport, getShareContextFromHeaders } from '@/lib/reports/fetch-report'
 import { ReportPortalNav, type SectionCounts } from './ReportPortalNav'
 import { ReportViewProvider, type ReportViewCtx } from './ReportViewContext'
@@ -38,12 +39,25 @@ export default async function ReportPortalLayout({
 
   const share = await getShareContextFromHeaders()
   const isShared = share !== null && share.report_id === id
+
+  // Owner check: if the signed-in viewer owns the row, treat it as
+  // their own analysis regardless of flags. Without this, an admin
+  // who flipped is_public_sample=true on one of their own reports
+  // (e.g. to seed the website samples page) would land in the
+  // sample-visitor UI when they open the report from "My Analyses"
+  // — no share button, back link routes to /samples instead of
+  // /reports, etc. Owner wins over the public-sample framing.
+  const supabase = await createServerSupabaseClient()
+  const {
+    data: { user: currentUser },
+  } = await supabase.auth.getUser()
+  const isOwner = currentUser?.id === report.user_id
+
   // Public sample = row's is_public_sample flag is set AND the
-  // visitor didn't arrive via a share URL. Share view takes
-  // precedence: someone who accesses a sample report via a valid
-  // share token gets the "shared" framing (attribution bar), not
-  // the marketing sample bar.
-  const isPublicSample = !isShared && report.is_public_sample === true
+  // visitor is neither the owner nor arriving via a share URL.
+  // Precedence: owner → share → public-sample → anon-blocked.
+  const isPublicSample =
+    !isShared && !isOwner && report.is_public_sample === true
 
   // Sidebar counts must reflect the FULL analyzed sample, not the
   // truncated top-N slices stored in some columns. Storage layout:
