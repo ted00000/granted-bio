@@ -24,39 +24,73 @@ const LENS_CONFIG: Array<{
   { id: 'trials', label: 'Trials', searchLabel: 'trial', icon: Activity },
 ]
 
-// Search tips for each lens
-const SEARCH_TIPS: Record<PersonaType, {
-  description: string
-  examples: Array<{ label: string; queries: string[] }>
-}> = {
+// Dynamic help-box content for each (persona × mode) combination.
+// The box replaces the previous static example tiles — those taught WHAT
+// kind of query runs, not WHEN to pick which combination. Each entry
+// below explains what the combination actually does, when to reach for
+// it, and shows one clickable example that drops into the input.
+//
+// Not every mode applies to every persona. "name" (direct profile
+// lookup) is People-only — the mode-selector hides the Name button for
+// other personas and auto-switches to "smart" if the lens changes
+// away from People (see effect below).
+interface ComboHelp {
+  what: string
+  when: string
+  example: string
+}
+const MODE_HELP: Record<PersonaType, Partial<Record<SearchMode, ComboHelp>>> = {
   researcher: {
-    description: 'Find NIH-funded research by topic, technology, or disease area',
-    examples: [
-      { label: 'Research topics', queries: ['CAR-T therapy', 'gene editing', 'neural organoids'] },
-      { label: 'Disease areas', queries: ["Alzheimer's", 'pancreatic cancer', 'ALS'] },
-      { label: 'Technologies', queries: ['CRISPR', 'mass spectrometry', 'single-cell RNA-seq'] },
-    ]
+    smart: {
+      what: 'Searches project titles and abstracts by meaning, so paraphrases and related terms match.',
+      when: "Use when the exact wording may vary or you're not sure of the terminology.",
+      example: 'CAR-T manufacturing scalability',
+    },
+    standard: {
+      what: 'Matches your exact words in titles, abstracts, and project numbers. No synonym expansion.',
+      when: 'Use when you know a specific drug name, acronym, or project number.',
+      example: 'PSMA-617',
+    },
   },
   bd: {
-    description: 'Find researchers, labs, and organizations working in specific areas',
-    examples: [
-      { label: 'Researcher names', queries: ['Jane Doe', 'John Doe'] },
-      { label: 'Organizations', queries: ['Stanford University', 'Genentech', 'MIT'] },
-      { label: 'Research areas', queries: ['immunotherapy researchers', 'CRISPR labs'] },
-    ]
+    smart: {
+      what: 'Finds researchers, labs, or organizations by the topics they work on.',
+      when: "Use when you're searching by research area, not a specific person or org.",
+      example: 'immunotherapy researchers at Stanford',
+    },
+    standard: {
+      what: 'Matches exact PI names and organization names appearing in project records.',
+      when: 'Use when you know the exact spelling of a person or organization.',
+      example: 'Jennifer Doudna',
+    },
+    name: {
+      what: 'Direct profile lookup for one person or one organization. No topic search; just the full record.',
+      when: 'Use when you want everything we have on a specific name and nothing else.',
+      example: 'Genentech',
+    },
   },
   trials: {
-    description: 'Find clinical trials linked to NIH-funded research',
-    examples: [
-      { label: 'Conditions', queries: ['ALS', 'scleroderma', 'glioblastoma'] },
-      { label: 'Interventions', queries: ['CAR-T', 'gene therapy', 'checkpoint inhibitor'] },
-      { label: 'Therapeutic areas', queries: ['oncology trials', 'rare disease treatments'] },
-    ]
+    smart: {
+      what: 'Semantic search across trial titles, conditions, and interventions — paraphrases match.',
+      when: "Use when you're searching by disease area or treatment approach.",
+      example: 'gene therapy for sickle cell',
+    },
+    standard: {
+      what: 'Matches exact terms including NCT identifier, condition name, or intervention name.',
+      when: 'Use when you have the NCT ID or an exact clinical term.',
+      example: 'NCT04381832',
+    },
   },
-  investor: {
-    description: 'Generate intelligence reports on research landscapes',
-    examples: []
-  }
+  investor: {},
+}
+
+// Human-readable labels for the help-box header. Mode internal values
+// ('smart' / 'standard' / 'name') stay as-is in the data layer and API
+// — only the display label changes to something less jargon-y.
+const MODE_LABELS: Record<SearchMode, string> = {
+  smart: 'Describe',
+  standard: 'Exact',
+  name: 'By name',
 }
 
 export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsName, onNameSubmit }: WelcomeScreenProps) {
@@ -89,7 +123,7 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
     setSavingName(false)
   }
 
-  const currentTips = SEARCH_TIPS[selectedLens]
+  const currentHelp = MODE_HELP[selectedLens]?.[searchMode]
 
   // Reset to 'smart' if leaving bd persona while 'name' mode is selected
   useEffect(() => {
@@ -227,7 +261,7 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                 title="Semantic search - finds conceptually related results"
               >
                 <Sparkles className={`w-4 h-4 ${searchMode === 'smart' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'smart' ? 2 : 1.5} aria-hidden="true" />
-                <span className={searchMode === 'smart' ? 'font-medium' : ''}>Smart</span>
+                <span className={searchMode === 'smart' ? 'font-medium' : ''}>{MODE_LABELS.smart}</span>
               </button>
               <button
                 role="tab"
@@ -243,7 +277,7 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                 title="Keyword search - finds exact matches for names, IDs, organizations"
               >
                 <Crosshair className={`w-4 h-4 ${searchMode === 'standard' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'standard' ? 2 : 1.5} aria-hidden="true" />
-                <span className={searchMode === 'standard' ? 'font-medium' : ''}>Exact</span>
+                <span className={searchMode === 'standard' ? 'font-medium' : ''}>{MODE_LABELS.standard}</span>
               </button>
               {/* Name option - only for People persona */}
               {selectedLens === 'bd' && (
@@ -265,28 +299,49 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
                     <span className={`text-xs ${searchMode === 'name' ? 'text-[#E07A5F]' : 'text-gray-400'}`}>/</span>
                     <User className={`w-4 h-4 ml-0.5 ${searchMode === 'name' ? 'text-[#E07A5F]' : ''}`} strokeWidth={searchMode === 'name' ? 2 : 1.5} />
                   </div>
-                  <span className={searchMode === 'name' ? 'font-medium' : ''}>Name</span>
+                  <span className={searchMode === 'name' ? 'font-medium' : ''}>{MODE_LABELS.name}</span>
                 </button>
               )}
             </div>
           </div>
 
-          {/* Search Tips */}
-          <div className="text-center">
-            <p className="text-sm text-gray-500 mb-4">{currentTips.description}</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {currentTips.examples.map((example, idx) => (
-                <div key={idx} className="p-3 bg-gray-50 rounded-lg text-left">
-                  <p className="text-xs font-medium text-gray-400 uppercase tracking-wider mb-1.5">
-                    {example.label}
-                  </p>
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    {example.queries.join(', ')}
-                  </p>
-                </div>
-              ))}
+          {/* Dynamic help box — explains the current lens × mode
+              combination. Replaces the previous static example tiles,
+              which taught WHAT a query might look like but not WHEN to
+              pick which combination. The box updates immediately as
+              the user toggles persona or mode above.
+              Example is clickable: tapping it drops the text into the
+              search input so the user can tweak and submit. */}
+          {currentHelp && (
+            <div className="p-4 bg-gray-50 rounded-xl text-left">
+              <div className="flex items-center gap-2 text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
+                <span>{LENS_CONFIG.find(l => l.id === selectedLens)?.label}</span>
+                <span className="text-gray-300">·</span>
+                <span>{MODE_LABELS[searchMode]}</span>
+              </div>
+              <p className="text-sm text-gray-700 leading-relaxed mb-2">
+                {currentHelp.what}
+              </p>
+              <p className="text-sm text-gray-500 leading-relaxed mb-4">
+                {currentHelp.when}
+              </p>
+              <div className="pt-3 border-t border-gray-200">
+                <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1.5">
+                  Example
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchInput(currentHelp.example)
+                    inputRef.current?.focus()
+                  }}
+                  className="text-sm text-gray-700 hover:text-[#E07A5F] transition-colors underline-offset-4 hover:underline text-left"
+                >
+                  {currentHelp.example}
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
