@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect, KeyboardEvent } from 'react'
-import { FlaskConical, Activity, Users, Sparkles, Crosshair, User, Building2 } from 'lucide-react'
+import { FlaskConical, Activity, Users, Sparkles, Crosshair, User, Building2, Lightbulb } from 'lucide-react'
 import type { PersonaType, SearchMode } from '@/lib/chat/types'
 
 interface WelcomeScreenProps {
@@ -330,6 +330,14 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
             const ModeIcon = MODE_ICONS[searchMode]
             return (
               <div className="p-4 bg-[#FDF2EF] rounded-xl text-left">
+                {/* Box title — identifies the panel as search guidance
+                    before the user parses the pills + prose. Keeps the
+                    small uppercase tracking style used by other section
+                    labels in the component. */}
+                <div className="flex items-center gap-1.5 text-[10px] font-medium text-[#C96A4F] uppercase tracking-wider mb-3">
+                  <Lightbulb className="w-3.5 h-3.5" strokeWidth={2} aria-hidden="true" />
+                  <span>Search Hints</span>
+                </div>
                 {/* Header pills — mirror the lens and mode pill the user
                     just clicked above, with a visual "+" between them.
                     Reinforces the mental model that the box is about the
