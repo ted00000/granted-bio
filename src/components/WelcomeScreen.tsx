@@ -93,6 +93,18 @@ const MODE_LABELS: Record<SearchMode, string> = {
   name: 'By name',
 }
 
+// Icons for the help-box pills. Same icons as the actual mode-selector
+// buttons above the box so the user sees the same visual element
+// mirrored back — reinforces the connection between the pill they
+// clicked and what the box explains. For "name" we show just User
+// (single icon reads cleaner at pill scale than the Building2 / User
+// pair used on the selector button).
+const MODE_ICONS: Record<SearchMode, typeof FlaskConical> = {
+  smart: Sparkles,
+  standard: Crosshair,
+  name: User,
+}
+
 export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsName, onNameSubmit }: WelcomeScreenProps) {
   const [selectedLens, setSelectedLens] = useState<PersonaType>(initialLens || 'researcher')
   const [searchMode, setSearchMode] = useState<SearchMode>('smart')
@@ -312,36 +324,51 @@ export function WelcomeScreen({ onSelectPersona, userName, initialLens, needsNam
               the user toggles persona or mode above.
               Example is clickable: tapping it drops the text into the
               search input so the user can tweak and submit. */}
-          {currentHelp && (
-            <div className="p-4 bg-gray-50 rounded-xl text-left">
-              <div className="flex items-center gap-2 text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
-                <span>{LENS_CONFIG.find(l => l.id === selectedLens)?.label}</span>
-                <span className="text-gray-300">·</span>
-                <span>{MODE_LABELS[searchMode]}</span>
-              </div>
-              <p className="text-sm text-gray-700 leading-relaxed mb-2">
-                {currentHelp.what}
-              </p>
-              <p className="text-sm text-gray-500 leading-relaxed mb-4">
-                {currentHelp.when}
-              </p>
-              <div className="pt-3 border-t border-gray-200">
-                <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wider mb-1.5">
-                  Example
+          {currentHelp && (() => {
+            const currentLens = LENS_CONFIG.find(l => l.id === selectedLens)
+            const LensIcon = currentLens?.icon ?? FlaskConical
+            const ModeIcon = MODE_ICONS[searchMode]
+            return (
+              <div className="p-4 bg-[#FDF2EF] rounded-xl text-left">
+                {/* Header pills — mirror the lens and mode pill the user
+                    just clicked above, with a visual "+" between them.
+                    Reinforces the mental model that the box is about the
+                    combination of those two choices. */}
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-full shadow-sm">
+                    <LensIcon className="w-3.5 h-3.5 text-[#E07A5F]" strokeWidth={2} aria-hidden="true" />
+                    <span className="text-xs font-medium text-gray-900">{currentLens?.label}</span>
+                  </div>
+                  <span className="text-[#E07A5F] text-sm font-medium" aria-hidden="true">+</span>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-full shadow-sm">
+                    <ModeIcon className="w-3.5 h-3.5 text-[#E07A5F]" strokeWidth={2} aria-hidden="true" />
+                    <span className="text-xs font-medium text-gray-900">{MODE_LABELS[searchMode]}</span>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-700 leading-relaxed mb-2">
+                  {currentHelp.what}
                 </p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSearchInput(currentHelp.example)
-                    inputRef.current?.focus()
-                  }}
-                  className="text-sm text-gray-700 hover:text-[#E07A5F] transition-colors underline-offset-4 hover:underline text-left"
-                >
-                  {currentHelp.example}
-                </button>
+                <p className="text-sm text-gray-500 leading-relaxed mb-4">
+                  {currentHelp.when}
+                </p>
+                <div className="pt-3 border-t border-[#E07A5F]/15">
+                  <p className="text-[10px] font-medium text-gray-500 uppercase tracking-wider mb-1.5">
+                    Example
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchInput(currentHelp.example)
+                      inputRef.current?.focus()
+                    }}
+                    className="text-sm text-gray-700 hover:text-[#C96A4F] transition-colors underline-offset-4 hover:underline text-left"
+                  >
+                    {currentHelp.example}
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )
+          })()}
         </div>
       </div>
     </div>
