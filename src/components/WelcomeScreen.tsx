@@ -90,7 +90,7 @@ const MODE_HELP: Record<PersonaType, Partial<Record<SearchMode, ComboHelp>>> = {
 const MODE_LABELS: Record<SearchMode, string> = {
   smart: 'Describe',
   standard: 'Exact',
-  name: 'By name',
+  name: 'Name',
 }
 
 // Icons for the help-box pills. Same icons as the actual mode-selector
