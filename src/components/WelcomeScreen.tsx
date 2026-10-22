@@ -61,7 +61,7 @@ const MODE_HELP: Record<PersonaType, Partial<Record<SearchMode, ComboHelp>>> = {
     standard: {
       what: 'Matches exact PI names and organization names appearing in project records.',
       when: 'Use when you know the exact spelling of a person or organization.',
-      example: 'Jennifer Doudna',
+      example: 'Jane Smith',
     },
     name: {
       what: 'Direct profile lookup for one person or one organization. No topic search; just the full record.',
