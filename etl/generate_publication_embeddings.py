@@ -44,17 +44,24 @@ def main() -> None:
     print(f"  Model: {MODEL}")
     print(f"  Batch size: {BATCH_SIZE}", flush=True)
 
-    # Count what's left
-    remaining = supabase.table('publications').select(
-        'pmid', count='estimated', head=True
-    ).is_('publication_embedding', 'null').filter('pub_title', 'not.is', 'null').neq('pub_title', '').execute()
-    total_remaining = remaining.count or 0
-    print(f"\n  Publications needing embedding: {total_remaining:,}")
-    print(f"  Estimated cost: ${total_remaining * 0.00002:.2f}\n", flush=True)
-
-    if total_remaining == 0:
-        print("All publications already have embeddings. Done.")
-        return
+    # Count what's left (informational). This filtered count can
+    # fail with a PostgREST 500 / empty-body response when Supabase's
+    # REST layer times out on the scan; the main batch loop below
+    # doesn't depend on the count, so tolerate the failure and keep
+    # going. The loop terminates naturally when it finds no more
+    # publications with a NULL publication_embedding.
+    try:
+        remaining = supabase.table('publications').select(
+            'pmid', count='estimated', head=True
+        ).is_('publication_embedding', 'null').filter('pub_title', 'not.is', 'null').neq('pub_title', '').execute()
+        total_remaining = remaining.count or 0
+        print(f"\n  Publications needing embedding: {total_remaining:,}")
+        print(f"  Estimated cost: ${total_remaining * 0.00002:.2f}\n", flush=True)
+        if total_remaining == 0:
+            print("All publications already have embeddings. Done.")
+            return
+    except Exception as e:
+        print(f"\n  Count query failed ({str(e)[:120]}); proceeding to batch loop.", flush=True)
 
     total_generated = 0
     total_tokens = 0
