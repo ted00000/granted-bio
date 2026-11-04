@@ -3,7 +3,7 @@
 import { useState, useEffect, use } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { FileText, AlertCircle, Loader2, RefreshCw, Sparkles, X, ArrowRight, Share2, Printer } from 'lucide-react'
+import { FileText, AlertCircle, Loader2, RefreshCw, Sparkles, X, ArrowRight, Share2, Printer, Download } from 'lucide-react'
 import { Breadcrumbs } from '@/components/Breadcrumbs'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { pickSections, extractScopeWarning, DASHBOARD_SECTIONS, extractSurprisingHeadlines } from './section-utils'
@@ -409,6 +409,15 @@ export default function ReportDetailPage({
                     )}
                   </>
                 )}
+                <a
+                  href={`/api/reports/${report.id}/download`}
+                  title="Download this analysis as a Markdown file — portable, LLM-ready. Drop into Claude, ChatGPT, Notion, or anywhere that reads .md."
+                  className="flex items-center gap-1.5 text-gray-500 hover:text-[#E07A5F] transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  Download
+                </a>
+                <span className="text-gray-300">|</span>
                 <button
                   onClick={() => window.print()}
                   title="Print this page. Use 'Save as PDF' in the print dialog for a PDF."

@@ -11,7 +11,7 @@
 // consistent while the body render is custom.
 
 import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Download } from 'lucide-react'
 import { MarkdownRenderer } from './MarkdownRenderer'
 import { extractScopeWarning } from './section-utils'
 import { getShareContextFromHeaders } from '@/lib/reports/fetch-report'
@@ -76,9 +76,22 @@ export async function SectionShell({
                 {sectionSubtitle}
               </p>
             </div>
-            {/* Print — always visible (owner + share recipient). CSS
-                @media print hides it from the printed output. */}
-            <PrintButton className="flex-shrink-0 inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#E07A5F] transition-colors mt-1" />
+            {/* Download + Print — always visible (owner + share
+                recipient + public-sample viewer). Download returns the
+                full analysis as portable markdown with absolute
+                granted.bio links (API route handles auth). Print uses
+                @media print to hide chrome and page the body. */}
+            <div className="flex-shrink-0 flex items-center gap-3 mt-1">
+              <a
+                href={`/api/reports/${reportId}/download`}
+                title="Download this analysis as a Markdown file — portable, LLM-ready."
+                className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#E07A5F] transition-colors print:hidden"
+              >
+                <Download className="w-3.5 h-3.5" strokeWidth={1.5} />
+                Download
+              </a>
+              <PrintButton className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#E07A5F] transition-colors" />
+            </div>
           </div>
         </div>
       </header>
