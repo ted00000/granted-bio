@@ -13,9 +13,52 @@
  * downstream modules can call it without a circular import.
  */
 
+// Unicode confusables — Cyrillic letters that look like Latin letters.
+// These leak into LLM output (and into web content the market-context
+// scrape ingests before the LLM ever sees it) and silently corrupt
+// brand names, URLs, and search terms. Known case: "NeurоNexus" with
+// Cyrillic 'о' (U+043E) in place of Latin 'o' (U+006F) — breaks copy-
+// paste, in-page find, and any downstream keyword match.
+//
+// Greek letters are deliberately NOT normalized here — they have
+// legitimate scientific uses in this corpus (α-synuclein, TNF-α,
+// IFN-γ, β-amyloid, etc.) where swapping to Latin would corrupt
+// real content.
+const CYRILLIC_TO_LATIN: Record<string, string> = {
+  // Lowercase
+  'а': 'a', 'е': 'e', 'о': 'o', 'р': 'p', 'с': 'c',
+  'х': 'x', 'у': 'y', 'ѕ': 's', 'і': 'i', 'ј': 'j',
+  // Uppercase
+  'А': 'A', 'В': 'B', 'Е': 'E', 'Н': 'H', 'К': 'K',
+  'М': 'M', 'О': 'O', 'Р': 'P', 'С': 'C', 'Т': 'T',
+  'Х': 'X', 'У': 'Y', 'Ѕ': 'S', 'І': 'I', 'Ј': 'J',
+}
+const CYRILLIC_CONFUSABLE_RE = new RegExp(
+  '[' + Object.keys(CYRILLIC_TO_LATIN).join('') + ']',
+  'g',
+)
+
+/**
+ * Replace Cyrillic look-alike characters with their Latin equivalents.
+ * Idempotent. Safe to apply unconditionally in this app's
+ * English-language corpus — we have no Russian/Ukrainian content path,
+ * so any Cyrillic in generated text is contamination, not intent.
+ *
+ * Exported so callers that bypass sanitizeText (e.g. the market-
+ * context web-scrape path) can still de-confusable before persist.
+ */
+export function normalizeConfusables(text: string): string {
+  return text.replace(CYRILLIC_CONFUSABLE_RE, (ch) => CYRILLIC_TO_LATIN[ch] ?? ch)
+}
+
 export function sanitizeText(raw: unknown, contextLabel = 'text'): string {
   if (typeof raw !== 'string' || raw.length === 0) return ''
-  const text = raw
+  // Normalize confusables FIRST, before the heuristic gibberish checks
+  // run. A word like "NeurоNexus" (Cyrillic о) passes every gibberish
+  // check — it looks like valid English — while silently breaking
+  // downstream keyword search and copy-paste. Catch it here and let
+  // the rest of the pipeline treat the text as the user expects.
+  const text = normalizeConfusables(raw)
 
   const tokens = text.match(/[a-zA-Z]{3,}/g) || []
   for (const token of tokens) {

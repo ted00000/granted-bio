@@ -3614,7 +3614,15 @@ function renderWhiteSpace(ws: WhiteSpaceAnalysis): string {
       md += `- Analyzed sample: **${op.sampleCount}** projects (${sampleSharePct}% of ${ws.totalProjects} sample projects)\n`
       if (broaderSharePct !== null && scopeUniv) {
         md += `- Broader ${ws.broaderNihScopeLabel || 'NIH RePORTER'}: **${broader}** matching projects (${broaderSharePct}% of ${scopeUniv.toLocaleString()} scope universe)\n`
-        md += `- **Share ratio:** broader-share is ${shareRatio}x sample-share - this is what identifies the gap, not the raw count difference.\n`
+        if (shareRatio !== null) {
+          md += `- **Share ratio:** broader-share is ${shareRatio}x sample-share - this is what identifies the gap, not the raw count difference.\n`
+        } else {
+          // sampleShare === 0 (absent-in-topic). The ratio is
+          // mathematically undefined — don't render "nullx". State
+          // the gap in words and let the reader see it's a
+          // zero-sample case rather than a weak-sample case.
+          md += `- **Share gap:** broader-share is ${broaderSharePct}% while the topic sample has no projects in this category (absent-in-topic).\n`
+        }
       } else {
         md += `- Broader ${ws.broaderNihScopeLabel || 'NIH RePORTER'}: **${broader}** matching projects\n`
       }
